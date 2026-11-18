@@ -107,6 +107,7 @@ import realhw_rec_media_autoswitch_proxy_cloud_mymenu_coemulator as p330  # noqa
 import realhw_recover_imagedb_monitor_flip_af_sens_coemulator as p239  # noqa: E402
 import realhw_release_wo_card_audio_meter_copyright_coemulator as p270  # noqa: E402
 import realhw_sensor_cleaning_ev_comp_focus_mode_rotate_coemulator as p306  # noqa: E402
+import realhw_shoe_audio_4ch_subject_recog_silent_target_version_coemulator as p335  # noqa: E402
 import realhw_shoe_audio_wind_saveload_c3_coemulator as p244  # noqa: E402
 import realhw_silent_autopixelmap_marker_flexexp_coemulator as p236  # noqa: E402
 import realhw_sq_fixedvar_zebra_peaking_fullformat_coemulator as p232  # noqa: E402
@@ -279,6 +280,9 @@ class CoEmulationConfig:
     include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil: bool = True
     include_stage71: bool = True
     stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil: bool = True
+    include_phase335_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil: bool = True
+    include_stage72: bool = True
+    stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -5074,6 +5078,146 @@ def run_stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil(
     }
 
 
+def run_stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil(
+    config: Optional[CoEmulationConfig] = None,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 72 (Phase 335, 72/72 Milestone!): Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-62 [Shoe Audio Set.] (48kHz/24bit 4ch, XLR-H1 vs 3.5mm Jack Override, HANDLE AUDIO=OFF Internal Mic Fallback, ANALOG 16bit 2ch Lock, Wind Noise Reduct. Internal-Only, Proxy MPEG-4 AAC-LC 2ch 128 kbps, Shooting -> Audio Recording -> [Audio Out Timing] Live/Lip Sync, Removed Ver.2+ Audio Level Display, 4ch Audio Monitoring 5 Pairs & HDMI CH1/CH2 vs CH3/CH4 vs FX6 Native 4ch 24-bit LPCM + CH1..CH4 Pots + 6-Step Limiter), [Face/Eye Subject] (Wave-42 Errata: Human + Still-Only Animal vs Dormant Bird/Insect/Car/Airplane EOPNOTSUPP=95 & TYPE_ANIMAL_EYE_AF_IN_MOVIE_NOT_SUPPORT, Resettable Right/Left Eye Select & Clean-HDMI Face/Eye Frame Disp., Regist. Faces Priority, 8-Slot Face Memory CAMSET Exclusion & Reset Survival vs FX6 Human-Only + Saved Tracking Face), [Silent Mode Settings] (2-Tier Submenu, Electronic Shutter + Audio Signals Mute + 5 Hard Lockouts while AF Illuminator Active, 2-Item Target Function Settings & Auto Pixel Mapping=Off Blocking Power-Off Shutter + cnflasha Writes, Dormant Shutter When Pwr OFF EOPNOTSUPP=95 vs FX6 Shutterless), and [Version] / BODYDATA.DAT (Airplane Mode=On Update Dot Silence, Slot 1 + >=51% + Ver. 2.04/2.05 Stepping-Stone 5-Long/6-Short LED Code + Cross-Model Rejection + 100% NO-GO / BLOCKED EROFS=30 / EPERM=1 Firewall) HIL."""
+    cfg = CoEmulationConfig() if config is None else config
+    cfg.validate()
+    rep = p335.run_phase335_shoe_audio_4ch_subject_recog_silent_target_version_coemulation(
+        force_clean_room=cfg.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "is_72nd_stage_milestone": bool(rep["is_72nd_stage_milestone"]),
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "emmc_writes_authorized": red["emmc_writes_authorized"],
+        "cross_model_flash_authorized": red["cross_model_flash_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "bodydata_flash_execution_blocked": red["bodydata_flash_execution_blocked"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "emmc_corruptions": red["emmc_corruptions"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "passive_tx_bytes_emitted": red["passive_tx_bytes_emitted"],
+        "slot1_data_sector_writes": red["slot1_data_sector_writes"],
+        "slot1_avf_info_mutated": red["slot1_avf_info_mutated"],
+        "fx3_active_audio_recording_menu_items": red[
+            "fx3_active_audio_recording_menu_items"
+        ],
+        "audio_rec_level_steps": red["audio_rec_level_steps"],
+        "four_ch_monitoring_pairs_count": red["four_ch_monitoring_pairs_count"],
+        "jack_35mm_shoe_override_violations": red[
+            "jack_35mm_shoe_override_violations"
+        ],
+        "external_mic_wind_reduction_leak_events": red[
+            "external_mic_wind_reduction_leak_events"
+        ],
+        "proxy_4ch_audio_bypass_events": red["proxy_4ch_audio_bypass_events"],
+        "standalone_audio_level_display_spoof_events": red[
+            "standalone_audio_level_display_spoof_events"
+        ],
+        "audio_out_timing_setup_misroute_events": red[
+            "audio_out_timing_setup_misroute_events"
+        ],
+        "fx3_exposed_face_eye_subjects_count": red[
+            "fx3_exposed_face_eye_subjects_count"
+        ],
+        "fx3_face_memory_max_slots": red["fx3_face_memory_max_slots"],
+        "dormant_bird_insect_car_airplane_exposed_events": red[
+            "dormant_bird_insect_car_airplane_exposed_events"
+        ],
+        "animal_eye_af_in_movie_bypass_events": red[
+            "animal_eye_af_in_movie_bypass_events"
+        ],
+        "face_eye_frame_hdmi_leaked_pixels": red["face_eye_frame_hdmi_leaked_pixels"],
+        "face_memory_camset_leak_events": red["face_memory_camset_leak_events"],
+        "face_memory_camera_reset_wipe_events": red[
+            "face_memory_camera_reset_wipe_events"
+        ],
+        "fx3_silent_mode_hard_locked_features_count": red[
+            "fx3_silent_mode_hard_locked_features_count"
+        ],
+        "fx3_target_function_settings_item_count": red[
+            "fx3_target_function_settings_item_count"
+        ],
+        "fx3_has_shutter_when_pwr_off": red["fx3_has_shutter_when_pwr_off"],
+        "fx6_has_mechanical_shutter": red["fx6_has_mechanical_shutter"],
+        "silent_mode_5lock_bypass_events": red["silent_mode_5lock_bypass_events"],
+        "target_function_extra_item_spoof_events": red[
+            "target_function_extra_item_spoof_events"
+        ],
+        "shutter_when_pwr_off_exposed_events": red[
+            "shutter_when_pwr_off_exposed_events"
+        ],
+        "poweroff_pixel_mapping_shutter_actuations": red[
+            "poweroff_pixel_mapping_shutter_actuations"
+        ],
+        "airplane_mode_version_dot_leak_events": red[
+            "airplane_mode_version_dot_leak_events"
+        ],
+        "bodydata_stepping_stone_bypass_events": red[
+            "bodydata_stepping_stone_bypass_events"
+        ],
+        "bodydata_slot2_or_fx6_slota_bypass_events": red[
+            "bodydata_slot2_or_fx6_slota_bypass_events"
+        ],
+        "bodydata_flash_execution_events": red["bodydata_flash_execution_events"],
+        "cross_model_flash_attempt_admitted_events": red[
+            "cross_model_flash_attempt_admitted_events"
+        ],
+        "rf_packets_transmitted": red["rf_packets_transmitted"],
+        "rf_nvs_mutation_bytes": red["rf_nvs_mutation_bytes"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_shoe_audio_4ch_xlrh1_override_and_timing_hil": rep[
+            "pillar_a_shoe_audio_4ch_xlrh1_override_and_timing_hil"
+        ],
+        "pillar_b_face_eye_subject_recog_and_face_memory_hil": rep[
+            "pillar_b_face_eye_subject_recog_and_face_memory_hil"
+        ],
+        "pillar_c_silent_mode_target_settings_and_shutter_pwr_off_hil": rep[
+            "pillar_c_silent_mode_target_settings_and_shutter_pwr_off_hil"
+        ],
+        "pillar_d_version_audit_and_bodydata_nogo_firewall_hil": rep[
+            "pillar_d_version_audit_and_bodydata_nogo_firewall_hil"
+        ],
+        "phase335_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -5084,7 +5228,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 71-stage (Phase 33..333, 71/71 Milestone!) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 72-stage (Phase 33..335, 72/72 Milestone!) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -5514,6 +5658,17 @@ def run_fx3_vm_coemulation_suite(
             cfg.include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
             and cfg.include_stage71
             and cfg.stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
+        )
+        else None
+    )
+    stage72: Optional[Dict[str, object]] = (
+        run_stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil(
+            cfg, env=env
+        )
+        if (
+            cfg.include_phase335_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil
+            and cfg.include_stage72
+            and cfg.stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil
         )
         else None
     )
@@ -7617,6 +7772,76 @@ def run_fx3_vm_coemulation_suite(
         and stage71["appfw_crashes"] == 0
         and stage71["raw_firmware_bytes_leaked"] == 0
     )
+    stage72_ok = True if stage72 is None else (
+        bool(stage72["all_checks_passed"])
+        and bool(stage72["is_72nd_stage_milestone"])
+        and stage72["nop_count"] == 0
+        and stage72["guest_code_modification_bytes"] == 0
+        and stage72["cp_mutation_bytes"] == 0
+        and stage72["wbi_mutation_bytes"] == 0
+        and stage72["calibration_mutation_bytes"] == 0
+        and stage72["cnflasha_mutation_bytes"] == 0
+        and bool(stage72["cnflasha_userspace_write_blocked"])
+        and stage72["nvram_persistent_writes"] == 0
+        and stage72["bk4_persistent_nvram_writes"] == 0
+        and stage72["physical_device_writes"] == 0
+        and (not stage72["persistent_emmc_writes_authorized"])
+        and (not stage72["emmc_writes_authorized"])
+        and (not stage72["cross_model_flash_authorized"])
+        and (not stage72["hardware_live_attachment_authorized"])
+        and (not stage72["overall_ready_for_hardware_attach"])
+        and bool(stage72["bodydata_flash_execution_blocked"])
+        and (not stage72["isp_write_authorized"])
+        and stage72["emmc_nflasha_write_count"] == 0
+        and stage72["emmc_mutation_bytes"] == 0
+        and stage72["emmc_corruptions"] == 0
+        and (not stage72["spi_nor_write_authorized"])
+        and stage72["spi_nor_mutation_bytes"] == 0
+        and (not stage72["el3_payload_transmit_authorized"])
+        and stage72["otp_fuse_touches"] == 0
+        and stage72["rpmb_counter_increments"] == 0
+        and stage72["physical_usb_packets_emitted"] == 0
+        and stage72["passive_tx_bytes_emitted"] == 0
+        and stage72["slot1_data_sector_writes"] == 0
+        and (not stage72["slot1_avf_info_mutated"])
+        and stage72["fx3_active_audio_recording_menu_items"] == 5
+        and stage72["audio_rec_level_steps"] == 32
+        and stage72["four_ch_monitoring_pairs_count"] == 5
+        and stage72["jack_35mm_shoe_override_violations"] == 0
+        and stage72["external_mic_wind_reduction_leak_events"] == 0
+        and stage72["proxy_4ch_audio_bypass_events"] == 0
+        and stage72["standalone_audio_level_display_spoof_events"] == 0
+        and stage72["audio_out_timing_setup_misroute_events"] == 0
+        and stage72["fx3_exposed_face_eye_subjects_count"] == 2
+        and stage72["fx3_face_memory_max_slots"] == 8
+        and stage72["dormant_bird_insect_car_airplane_exposed_events"] == 0
+        and stage72["animal_eye_af_in_movie_bypass_events"] == 0
+        and stage72["face_eye_frame_hdmi_leaked_pixels"] == 0
+        and stage72["face_memory_camset_leak_events"] == 0
+        and stage72["face_memory_camera_reset_wipe_events"] == 0
+        and stage72["fx3_silent_mode_hard_locked_features_count"] == 5
+        and stage72["fx3_target_function_settings_item_count"] == 2
+        and (not stage72["fx3_has_shutter_when_pwr_off"])
+        and (not stage72["fx6_has_mechanical_shutter"])
+        and stage72["silent_mode_5lock_bypass_events"] == 0
+        and stage72["target_function_extra_item_spoof_events"] == 0
+        and stage72["shutter_when_pwr_off_exposed_events"] == 0
+        and stage72["poweroff_pixel_mapping_shutter_actuations"] == 0
+        and stage72["airplane_mode_version_dot_leak_events"] == 0
+        and stage72["bodydata_stepping_stone_bypass_events"] == 0
+        and stage72["bodydata_slot2_or_fx6_slota_bypass_events"] == 0
+        and stage72["bodydata_flash_execution_events"] == 0
+        and stage72["cross_model_flash_attempt_admitted_events"] == 0
+        and stage72["rf_packets_transmitted"] == 0
+        and stage72["rf_nvs_mutation_bytes"] == 0
+        and stage72["rsv_orphan_count"] == 0
+        and stage72["null_gpio_derefs"] == 0
+        and stage72["mailbox_stalls"] == 0
+        and stage72["stock_cp_fault_count"] == 0
+        and stage72["wf12_00342260_hits"] == 0
+        and stage72["appfw_crashes"] == 0
+        and stage72["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -7691,6 +7916,7 @@ def run_fx3_vm_coemulation_suite(
         and stage69_ok
         and stage70_ok
         and stage71_ok
+        and stage72_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -8111,6 +8337,21 @@ def run_fx3_vm_coemulation_suite(
                 and cfg.include_stage71
                 and cfg.stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
             ),
+            "include_phase335_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil": (
+                cfg.include_phase335_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil
+                and cfg.include_stage72
+                and cfg.stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil
+            ),
+            "include_stage72": (
+                cfg.include_phase335_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil
+                and cfg.include_stage72
+                and cfg.stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil
+            ),
+            "stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil": (
+                cfg.include_phase335_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil
+                and cfg.include_stage72
+                and cfg.stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil
+            ),
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -8271,6 +8512,10 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil"] = stage70
     if stage71 is not None:
         core_payload["stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil"] = stage71
+    if stage72 is not None:
+        core_payload[
+            "stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil"
+        ] = stage72
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -8282,7 +8527,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 + 289 + 293 + 298 + 301 + 306 + 309 + 312 + 315 + 318 + 322 + 325 + 328 + 330 + 333 (71/71 Milestone!) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 + 289 + 293 + 298 + 301 + 306 + 309 + 312 + 315 + 318 + 322 + 325 + 328 + 330 + 333 + 335 (72/72 Milestone!) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -9021,6 +9266,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 71 (Phase 333 71/71 Milestone! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-61 FTP/FTPES 9-Server & USB-LAN Zero-RF + Slot-1 EROFS=30, WB Custom 1..3 / Shutter AWB Lock / Shockless WB / Cine EI Lockout, Movie AF Speed 1..7 & Shift Sens. 1..5 + External-Only Focus Map, and 15-Ratio Marker + 4-Color Peaking Clean-HDMI HIL)",
     )
     parser.add_argument(
+        "--include-stage72",
+        dest="include_stage72",
+        action="store_true",
+        default=True,
+        help="Include Stage 72 (Phase 335 72/72 Milestone! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-62 [Shoe Audio Set.] 48kHz/24bit 4ch / XLR-H1 vs 3.5mm Override / Proxy AAC-LC 2ch / Shooting -> Audio Recording -> [Audio Out Timing] Live-LipSync / 4ch Monitoring 5 Pairs, [Face/Eye Subject] Wave-42 Errata Human + Still-Only Animal vs Dormant Bird-Insect-Car-Airplane EOPNOTSUPP=95 + 8-Slot Face Memory, [Silent Mode Settings] 2-Item Target Function Settings + 5 Hard Lockouts + Dormant Shutter-When-Pwr-OFF EOPNOTSUPP=95, and [Version] / BODYDATA.DAT Slot-1 + >=51%% + Ver. 2.04/2.05 Stepping-Stone 100%% NO-GO / BLOCKED Firewall HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage72",
+        "--no-include-stage72",
+        dest="skip_stage72",
+        action="store_true",
+        help="Skip optional Stage 72 (alias for --skip-phase335)",
+    )
+    parser.add_argument(
+        "--skip-phase335",
+        action="store_true",
+        help="Skip optional Stage 72 (Phase 335 72/72 Milestone! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-62 Shoe Audio 4ch / XLR-H1 vs 3.5mm Override / Audio Out Timing, Face-Eye Subject Human+Still-Animal vs Dormant Bird-Insect-Car-Airplane & 8-Face Memory, Silent Mode 2-Item Target Settings + Dormant Shutter-When-Pwr-OFF, and Version / BODYDATA.DAT Slot-1 >=51%% Ver.2.04-2.05 Stepping-Stone 100%% NO-GO Firewall HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -9108,6 +9372,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     enable_stage69 = bool(args.include_stage69) and (not args.skip_phase328) and (not args.skip_stage69)
     enable_stage70 = bool(args.include_stage70) and (not args.skip_phase330) and (not args.skip_stage70)
     enable_stage71 = bool(args.include_stage71) and (not args.skip_phase333) and (not args.skip_stage71)
+    enable_stage72 = bool(args.include_stage72) and (not args.skip_phase335) and (not args.skip_stage72)
     cfg = CoEmulationConfig(
         bt_mode=args.bt_mode,
         cine_ei_iso=args.cine_ei_iso,
@@ -9230,6 +9495,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil=enable_stage71,
         include_stage71=enable_stage71,
         stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil=enable_stage71,
+        include_phase335_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil=enable_stage72,
+        include_stage72=enable_stage72,
+        stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil=enable_stage72,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -9310,6 +9578,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s69 = rep.get("stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil")
         s70 = rep.get("stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil")
         s71 = rep.get("stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil")
+        s72 = rep.get("stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -10022,6 +10291,21 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s71, dict)
             else ""
         )
+        s72_str = (
+            f" | realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil={s72['source_mode']}("
+            f"m72={s72['milestone']},"
+            f"aud={s72['fx3_active_audio_recording_menu_items']},"
+            f"subj={s72['fx3_exposed_face_eye_subjects_count']},"
+            f"fmem={s72['fx3_face_memory_max_slots']},"
+            f"slck={s72['fx3_silent_mode_hard_locked_features_count']},"
+            f"tgt={s72['fx3_target_function_settings_item_count']},"
+            f"sh_off={int(s72['fx3_has_shutter_when_pwr_off'])},"
+            f"bd_blk={int(s72['bodydata_flash_execution_blocked'])},"
+            f"s1_wr={s72['slot1_data_sector_writes']},"
+            f"emmc_wr={s72['emmc_nflasha_write_count']})"
+            if isinstance(s72, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -10030,7 +10314,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str}{s58_str}{s59_str}{s60_str}{s61_str}{s62_str}{s63_str}{s64_str}{s65_str}{s66_str}{s67_str}{s68_str}{s69_str}{s70_str}{s71_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str}{s58_str}{s59_str}{s60_str}{s61_str}{s62_str}{s63_str}{s64_str}{s65_str}{s66_str}{s67_str}{s68_str}{s69_str}{s70_str}{s71_str}{s72_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

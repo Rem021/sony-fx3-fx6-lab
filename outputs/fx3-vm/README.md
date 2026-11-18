@@ -2423,6 +2423,45 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 335（Stage 72 — `72/72` VM HIL Stages Milestone!）：Wave-62 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` `[Shoe Audio Set.]` 4ch 24-bit & `XLR-H1` vs `3.5mm` 优先级 + `[Audio Out Timing]` / `[Face/Eye Subject]` 破谣言（`Human` + Still-Only `Animal` vs 休眠 `Bird`/`Insect`/`Car/Train`/`Airplane`）& 8 槽 `[Face Memory]` / `[Silent Mode Settings]` 2 项 `[Target Function Settings]` & 休眠 `[Shutter When Pwr OFF]` / `[Version]` & `BODYDATA.DAT` `Slot 1` + `Ver. 2.04/2.05` 跳板 `NO-GO` 防火墙 HIL
+
+[`realhw_shoe_audio_4ch_subject_recog_silent_target_version_coemulator.py`](realhw_shoe_audio_4ch_subject_recog_silent_target_version_coemulator.py)（Schema `realhw_shoe_audio_4ch_subject_recog_silent_target_version_coemulator_v1`）作为 **Stage 72（`72/72` VM HIL Stages Milestone!）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase335` / `--skip-stage72` / `--no-include-stage72` 跳过，支持 `--include-stage72`），严格遵循 `os.O_RDONLY` + `<= 4096 B` 受界 `os.pread`、`physical_device_writes == 0`、`emmc_writes_authorized == False`、`cross_model_flash_authorized == False`、`slot1_data_sector_writes == 0`、`emmc_nflasha_write_count == 0` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 21 供体 `O_RDONLY` + 受界 `os.pread` 审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 核验 `ILME-FX3 Ver. 7.02`、`FX3 Ver. 2.05` 与 `ILME-FX6 Ver. 6.01` 的 **21 份真实供体**（`12` 份 FX3 四语 `.uxc` + `2` 份 FX6 英文 `.uxc` + `AVBB_SCN_START_AUDIO.so` + `libInfraHotshoe.so` + `libsdfileinputupdaterapi.so` + `libInfraAirplaneMode.so` + `FX3 appFw.so`、`FX3 BK4`、`FX6 appFw.so` 3 份大镜像），冷读 `< 0.20s`，并在无供体 CI 环境下（`work_root is None`、`FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或 `--clean-room`）零 `NoneType / str` 异常无缝回退至 `CLEAN_ROOM_SYNTHETIC`。
+2. **Sub-Model 72A — `[Shoe Audio Set.]` 4ch 24-bit、`XLR-H1` vs `3.5mm` 硬件接管、Proxy `AAC-LC 2ch` 与 `[Audio Out Timing]` (`Shooting -> Audio Recording`)**：
+   - `Shooting -> [Audio Recording]` 仅暴露 5 项：`[Audio Recording]`（`On[def]/Off`，`S&Q` 禁用）、32 级 `[Audio Rec Level]`（`0..31`，def `26`，`Delete` 一键复位，内置 Limiter 常开不可关闭）、`[Shoe Audio Set.]`（`48kHz/24bit 4ch` / `24bit 2ch` / `16bit 2ch[def]`）、仅作用于内置立体声麦的 `[Wind Noise Reduct.]`（`Off[def]/On`），以及 **`[Audio Out Timing]`（`Live[def]` / `Lip Sync` — 归属 `Shooting -> Audio Recording`，非 `Setup -> Sound Option`）**；`Ver. 2.00..7.02` 已移除独立 `Audio Level Display` 开关（`EOPNOTSUPP=95`）。
+   - `Setup -> [Sound Option] -> [4ch Audio Monitoring]`（5 种立体声对组合）+ HDMI `[4ch Audio Output]`（`CH1/CH2[def]` / `CH3/CH4`）；硬件优先级：`3.5mm MIC` 插孔接管 MI 靴（强制 2ch 模拟并置灰 `[Shoe Audio Set.]`）、`XLR-H1 HANDLE AUDIO = OFF` 回落内置麦、`ANALOG` 拨挡限制为 `16-bit 2ch`、同步 Proxy 永远下混为 `MPEG-4 AAC-LC 2ch 128 kbps`（`>=100p` 禁用 Proxy），对比 FX6 原生 4ch 24-bit LPCM + 物理 `CH1..CH4` 旋钮 + 6 档 `Limiter Mode` + 休眠 `32bit float`。
+3. **Sub-Model 72B — `[Face/Eye Subject]` Wave-42 显式勘误与破谣言（`Human` + Still-Only `Animal` vs 休眠 `Bird`/`Insect`/`Car/Train`/`Airplane`）& 8 槽 `[Face Memory]`**：
+   - `ILME-FX3 Ver. 7.02` `[Face/Eye Subject]` 仅开放 **`Human[def]`** 与 **`Animal`**；共享 ELF 中的 `Bird` / `Animal/Bird` / `Insect` / `Car/Train` / `Airplane`（`_f 0x6cb1..0x7440` 且 `BKID_APP_*` 中 `airplane` 为 `0` 命中）严格休眠拦截（`EOPNOTSUPP=95`）。
+   - `Animal` 眼部识别**仅在 Still 静态照片模式下生效**，Movie/S&Q 下由 `TYPE_ANIMAL_EYE_AF_IN_MOVIE_NOT_SUPPORT` 硬阻断；支持可 Reset 的 `[Right/Left Eye Select]`、`[Face/Eye Frame Disp.]`（`Off[def]`，Clean-HDMI 零泄漏）、`[Regist. Faces Priority]`（`On[def]`，选 `Animal` 时置灰）及仅 `Initialize` 清除、抗 Reset 且不随 `CAMSET*.DAT` 导出的 8 槽 `[Face Memory]`，对比 FX6 `Human`-only + 会话临时 `Saved Tracking Face`。
+4. **Sub-Model 72C — `[Silent Mode Settings]` 二级菜单、5 项硬锁定、2 项 `[Target Function Settings]` 与休眠 `[Shutter When Pwr OFF]`**：
+   - `[Silent Mode]`（`Off[def]/On`）强制电子快门与 `Audio signals = Off`，硬锁定 **5 项功能**（Flash、`Long Exposure NR`、`e-Front Curtain Shut.`、`BULB`、`Anti-flicker Shoot.`），**不自动禁用 `[AF Illuminator]`**；
+   - `[Target Function Settings]` 严格仅开放 2 项：`[Aperture Drive in AF]`（`Standard[def]/Silent Priority/Not Target`，仅 Still AF 生效）与 `[Auto Pixel Mapping]`（`Off[def]/Not Target`；设为 `Off` 阻断关机自动机械快门闭帘及 `cnflasha` 坏点写）；`[Shutter When Pwr OFF]`（`_f 0x709f` / `image_sensor_barrier`）在 FX3 上严格休眠（`EOPNOTSUPP=95`），对比 FX6 无机械快门（`APR` + e-ND）。
+5. **Sub-Model 72D — `[Version]` 只读审计与 `BODYDATA.DAT` `Slot 1` / `Ver. 2.04-2.05` 跳板 `NO-GO` 防火墙**：
+   - `Setup -> [Setup Option] -> [Version]`（`Body Ver. 7.02` / `Lens` / `Mount Adaptor`；`Airplane Mode = On` 时静默 `Ver. 6.00+` 联网更新红点）；`BODYDATA.DAT` 升级门控校验 `Slot 1` 根目录（FX6 为 `Slot B` + 强制 `AC Adaptor`）、`NP-FZ100 >= 51%`（3 格）、`<= 2.02` 机身必须经 `Ver. 2.04/2.05` 跳板（否则触发 **5 长 / 6 短** LED 故障码）与跨机型拒绝；Tier-0 `NO-GO / BLOCKED` 防火墙 100% 拦截暂存与执行（`EROFS=30` / `EPERM=1`，`slot1_data_sector_writes == 0`、`emmc_nflasha_write_count == 0`）。
+
+### Phase 335 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 335 Stage 72（72/72 里程碑！）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_shoe_audio_4ch_subject_recog_silent_target_version_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_shoe_audio_4ch_subject_recog_silent_target_version_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_shoe_audio_4ch_subject_recog_silent_target_version_coemulator.py --self-test --json
+
+# 2. 全板 72 阶段（Stage 1..72, 72/72 里程碑！）统一校验（支持 --include-stage72 与 --skip-phase335 / --skip-stage72 / --no-include-stage72）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage72 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 335 四模式 96 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_shoe_audio_4ch_subject_recog_silent_target_version_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_shoe_audio_4ch_subject_recog_silent_target_version_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_shoe_audio_4ch_subject_recog_silent_target_version_coemulator.py -v
+FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_shoe_audio_4ch_subject_recog_silent_target_version_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+
 
 
 

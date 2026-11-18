@@ -90,6 +90,7 @@ import realhw_filesettings_shotmark_tcregen_reclamp_coemulator as p217  # noqa: 
 import realhw_focus_area_zoom_lever_iso_minss_flash_coemulator as p298  # noqa: E402
 import realhw_focus_mag_datetime_videolight_hdmires_coemulator as p278  # noqa: E402
 import realhw_framing_usbpower_lun_antiflicker_coemulator as p250  # noqa: E402
+import realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_coemulator as p333  # noqa: E402
 import realhw_fx3a_branch_firewall_and_xlrh1_4ch_mishoe_coemulator as p188  # noqa: E402
 import realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_coemulator as p213  # noqa: E402
 import realhw_imx510_color_and_network_usb_coemulator as p157  # noqa: E402
@@ -275,6 +276,9 @@ class CoEmulationConfig:
     include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil: bool = True
     include_stage70: bool = True
     stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil: bool = True
+    include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil: bool = True
+    include_stage71: bool = True
+    stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -4961,6 +4965,115 @@ def run_stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil(
     }
 
 
+def run_stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil(
+    config: Optional[CoEmulationConfig] = None,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 71 (Phase 333, 71/71 Milestone!): Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-61 [FTP Transfer Func.] (9-Server Passive-Only FTP/FTPES vs Dormant SFTP/Active/Implicit-990/Transfer-JPEG-HEIF-Size EOPNOTSUPP=95, cacert.pem <=1MB from Slot 1, USB-LAN Zero-RF Bypass Firewall + Slot-1 AVF_INFO EROFS=30 vs FX6 3-Server Active+Passive / Slot B certification.pem / Chunk), [White Balance] (2500K..9900K, Custom 1..3 CAMSET Exclusion & 0x0220 Error, Still Shutter AWB Lock Initialize-Only, Movie Shockless WB 0-Frame Dial Bypass, Cine EI Auto Lockout vs FX6 Memory A..H / ATW Speed 1..5), [Movie AF & Focus Map] (1..7 Transition Speed & 1..5 Shift Sens. Shared FX3/FX6, AF Assist, Zero In-Body Focus Map vs External M&C <150fps vs FX6 Native In-Body Focus Map), and [Marker Display] / [Peaking Display] (15-Ratio Marker + 4-Color Peaking Clean-HDMI 0-Leak & Initialize-Only Persistence vs FX6 Aspect Mask 0..15 / User Box / B&W Peaking) HIL."""
+    cfg = CoEmulationConfig() if config is None else config
+    cfg.validate()
+    rep = p333.run_phase333_ftp_ftpes_usblan_customwb_af_focusmap_marker_coemulation(
+        force_clean_room=cfg.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "is_71st_stage_milestone": bool(rep["is_71st_stage_milestone"]),
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "emmc_corruptions": red["emmc_corruptions"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "passive_tx_bytes_emitted": red["passive_tx_bytes_emitted"],
+        "fx3_ftp_max_servers": red["fx3_ftp_max_servers"],
+        "fx6_ftp_max_servers": red["fx6_ftp_max_servers"],
+        "dormant_sftp_exposed_events": red["dormant_sftp_exposed_events"],
+        "active_ftp_or_implicit_ftps_bypass_events": red[
+            "active_ftp_or_implicit_ftps_bypass_events"
+        ],
+        "dormant_transfer_jpeg_heif_size_exposed_events": red[
+            "dormant_transfer_jpeg_heif_size_exposed_events"
+        ],
+        "usblan_zero_rf_bypass_events": red["usblan_zero_rf_bypass_events"],
+        "ftp_cloud_mutual_exclusion_violations": red[
+            "ftp_cloud_mutual_exclusion_violations"
+        ],
+        "slot1_data_sector_writes": red["slot1_data_sector_writes"],
+        "slot1_avf_info_mutated": red["slot1_avf_info_mutated"],
+        "slot1_vault_ftp_mutation_events": red["slot1_vault_ftp_mutation_events"],
+        "custom_wb_camset_leak_events": red["custom_wb_camset_leak_events"],
+        "cine_ei_auto_wb_bypass_events": red["cine_ei_auto_wb_bypass_events"],
+        "shockless_wb_direct_ctemp_lag_frames": red[
+            "shockless_wb_direct_ctemp_lag_frames"
+        ],
+        "fx3_has_inbody_focus_map": red["fx3_has_inbody_focus_map"],
+        "fx6_has_inbody_focus_map": red["fx6_has_inbody_focus_map"],
+        "inbody_focus_map_exposed_events": red["inbody_focus_map_exposed_events"],
+        "focus_map_150fps_or_autoframing_bypass_events": red[
+            "focus_map_150fps_or_autoframing_bypass_events"
+        ],
+        "af_subj_shift_6_7_spoof_events": red["af_subj_shift_6_7_spoof_events"],
+        "fx3_marker_active_ratio_count": red["fx3_marker_active_ratio_count"],
+        "hdmi_marker_or_peaking_leaked_pixels": red[
+            "hdmi_marker_or_peaking_leaked_pixels"
+        ],
+        "camera_reset_marker_or_peaking_wipe_events": red[
+            "camera_reset_marker_or_peaking_wipe_events"
+        ],
+        "marker_focus_magnifier_collision_events": red[
+            "marker_focus_magnifier_collision_events"
+        ],
+        "rf_packets_transmitted": red["rf_packets_transmitted"],
+        "rf_nvs_mutation_bytes": red["rf_nvs_mutation_bytes"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_ftp_ftpes_usblan_zerorf_and_slot1_vault_hil": rep[
+            "pillar_a_ftp_ftpes_usblan_zerorf_and_slot1_vault_hil"
+        ],
+        "pillar_b_wb_custom13_shutter_lock_shockless_and_cineei_hil": rep[
+            "pillar_b_wb_custom13_shutter_lock_shockless_and_cineei_hil"
+        ],
+        "pillar_c_movie_af_scales_assist_and_external_focusmap_hil": rep[
+            "pillar_c_movie_af_scales_assist_and_external_focusmap_hil"
+        ],
+        "pillar_d_marker_15ratio_and_peaking_4color_clean_hdmi_hil": rep[
+            "pillar_d_marker_15ratio_and_peaking_4color_clean_hdmi_hil"
+        ],
+        "phase333_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -4971,7 +5084,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 70-stage (Phase 33..330, 70/70 Milestone!) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 71-stage (Phase 33..333, 71/71 Milestone!) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -5392,6 +5505,15 @@ def run_fx3_vm_coemulation_suite(
             cfg.include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
             and cfg.include_stage70
             and cfg.stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
+        )
+        else None
+    )
+    stage71: Optional[Dict[str, object]] = (
+        run_stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil(cfg, env=env)
+        if (
+            cfg.include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
+            and cfg.include_stage71
+            and cfg.stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
         )
         else None
     )
@@ -7436,6 +7558,65 @@ def run_fx3_vm_coemulation_suite(
         and stage70["appfw_crashes"] == 0
         and stage70["raw_firmware_bytes_leaked"] == 0
     )
+    stage71_ok = True if stage71 is None else (
+        bool(stage71["all_checks_passed"])
+        and bool(stage71["is_71st_stage_milestone"])
+        and stage71["nop_count"] == 0
+        and stage71["guest_code_modification_bytes"] == 0
+        and stage71["cp_mutation_bytes"] == 0
+        and stage71["wbi_mutation_bytes"] == 0
+        and stage71["calibration_mutation_bytes"] == 0
+        and stage71["cnflasha_mutation_bytes"] == 0
+        and bool(stage71["cnflasha_userspace_write_blocked"])
+        and stage71["nvram_persistent_writes"] == 0
+        and stage71["bk4_persistent_nvram_writes"] == 0
+        and stage71["physical_device_writes"] == 0
+        and (not stage71["persistent_emmc_writes_authorized"])
+        and (not stage71["hardware_live_attachment_authorized"])
+        and (not stage71["overall_ready_for_hardware_attach"])
+        and (not stage71["isp_write_authorized"])
+        and stage71["emmc_nflasha_write_count"] == 0
+        and stage71["emmc_mutation_bytes"] == 0
+        and stage71["emmc_corruptions"] == 0
+        and (not stage71["spi_nor_write_authorized"])
+        and stage71["spi_nor_mutation_bytes"] == 0
+        and (not stage71["el3_payload_transmit_authorized"])
+        and stage71["otp_fuse_touches"] == 0
+        and stage71["rpmb_counter_increments"] == 0
+        and stage71["physical_usb_packets_emitted"] == 0
+        and stage71["passive_tx_bytes_emitted"] == 0
+        and stage71["fx3_ftp_max_servers"] == 9
+        and stage71["fx6_ftp_max_servers"] == 3
+        and stage71["dormant_sftp_exposed_events"] == 0
+        and stage71["active_ftp_or_implicit_ftps_bypass_events"] == 0
+        and stage71["dormant_transfer_jpeg_heif_size_exposed_events"] == 0
+        and stage71["usblan_zero_rf_bypass_events"] == 0
+        and stage71["ftp_cloud_mutual_exclusion_violations"] == 0
+        and stage71["slot1_data_sector_writes"] == 0
+        and (not stage71["slot1_avf_info_mutated"])
+        and stage71["slot1_vault_ftp_mutation_events"] == 0
+        and stage71["custom_wb_camset_leak_events"] == 0
+        and stage71["cine_ei_auto_wb_bypass_events"] == 0
+        and stage71["shockless_wb_direct_ctemp_lag_frames"] == 0
+        and (not stage71["fx3_has_inbody_focus_map"])
+        and bool(stage71["fx6_has_inbody_focus_map"])
+        and stage71["inbody_focus_map_exposed_events"] == 0
+        and stage71["focus_map_150fps_or_autoframing_bypass_events"] == 0
+        and stage71["af_subj_shift_6_7_spoof_events"] == 0
+        and stage71["fx3_marker_active_ratio_count"] == 15
+        and stage71["hdmi_marker_or_peaking_leaked_pixels"] == 0
+        and stage71["camera_reset_marker_or_peaking_wipe_events"] == 0
+        and stage71["marker_focus_magnifier_collision_events"] == 0
+        and stage71["rf_packets_transmitted"] == 0
+        and stage71["rf_nvs_mutation_bytes"] == 0
+        and stage71["rsv_orphan_count"] == 0
+        and stage71["null_gpio_derefs"] == 0
+        and stage71["mailbox_stalls"] == 0
+        and stage71["stock_cp_fault_count"] == 0
+        and stage71["wf12_00342260_hits"] == 0
+        and stage71["appfw_crashes"] == 0
+        and stage71["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -7509,6 +7690,7 @@ def run_fx3_vm_coemulation_suite(
         and stage68_ok
         and stage69_ok
         and stage70_ok
+        and stage71_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -7914,6 +8096,21 @@ def run_fx3_vm_coemulation_suite(
                 and cfg.include_stage70
                 and cfg.stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
             ),
+            "include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil": (
+                cfg.include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
+                and cfg.include_stage71
+                and cfg.stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
+            ),
+            "include_stage71": (
+                cfg.include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
+                and cfg.include_stage71
+                and cfg.stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
+            ),
+            "stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil": (
+                cfg.include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
+                and cfg.include_stage71
+                and cfg.stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
+            ),
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -8072,6 +8269,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil"] = stage69
     if stage70 is not None:
         core_payload["stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil"] = stage70
+    if stage71 is not None:
+        core_payload["stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil"] = stage71
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -8083,7 +8282,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 + 289 + 293 + 298 + 301 + 306 + 309 + 312 + 315 + 318 + 322 + 325 + 328 + 330 (70/70 Milestone!) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 + 289 + 293 + 298 + 301 + 306 + 309 + 312 + 315 + 318 + 322 + 325 + 328 + 330 + 333 (71/71 Milestone!) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -8803,6 +9002,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 70 (Phase 330 70/70 Milestone! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-60 Rec. Media Settings / Auto Switch / VPG200-400, Proxy Settings sq_proxy / M4ROOT SUB / Slot-1 EROFS=30, Creators' Cloud / C3 Portal / Power-OFF BLE Zero-RF 3-Lock, and My Menu 6x7=42 vs FX6 20-Item User Menu with Lock PIN HIL)",
     )
     parser.add_argument(
+        "--include-stage71",
+        dest="include_stage71",
+        action="store_true",
+        default=True,
+        help="Include Stage 71 (Phase 333 71/71 Milestone! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-61 [FTP Transfer Func.] 9-Server Passive-Only FTP/FTPES vs Dormant SFTP/Active/Implicit-990/Transfer-JPEG-HEIF-Size EOPNOTSUPP=95 + cacert.pem <=1MB Slot 1 + USB-LAN Zero-RF Bypass Firewall + Slot-1 AVF_INFO 100%% Fail-Closed EROFS=30, [White Balance] 2500K..9900K / Custom 1..3 CAMSET Exclusion & 0x0220 Error / Still Shutter AWB Lock Initialize-Only / Movie Shockless WB 0-Frame Dial Bypass / Cine EI Auto Lockout, [Movie AF & Focus Map] 1..7 Transition Speed & 1..5 Shift Sens. Shared FX3/FX6 / AF Assist / Zero In-Body Focus Map vs External M&C <150fps, and [Marker Display] 15-Ratio + [Peaking Display] 4-Color Clean-HDMI 0-Leak & Initialize-Only Persistence HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage71",
+        "--no-include-stage71",
+        dest="skip_stage71",
+        action="store_true",
+        help="Skip optional Stage 71 (alias for --skip-phase333)",
+    )
+    parser.add_argument(
+        "--skip-phase333",
+        action="store_true",
+        help="Skip optional Stage 71 (Phase 333 71/71 Milestone! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-61 FTP/FTPES 9-Server & USB-LAN Zero-RF + Slot-1 EROFS=30, WB Custom 1..3 / Shutter AWB Lock / Shockless WB / Cine EI Lockout, Movie AF Speed 1..7 & Shift Sens. 1..5 + External-Only Focus Map, and 15-Ratio Marker + 4-Color Peaking Clean-HDMI HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -8889,6 +9107,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     enable_stage68 = bool(args.include_stage68) and (not args.skip_phase325) and (not args.skip_stage68)
     enable_stage69 = bool(args.include_stage69) and (not args.skip_phase328) and (not args.skip_stage69)
     enable_stage70 = bool(args.include_stage70) and (not args.skip_phase330) and (not args.skip_stage70)
+    enable_stage71 = bool(args.include_stage71) and (not args.skip_phase333) and (not args.skip_stage71)
     cfg = CoEmulationConfig(
         bt_mode=args.bt_mode,
         cine_ei_iso=args.cine_ei_iso,
@@ -9008,6 +9227,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil=enable_stage70,
         include_stage70=enable_stage70,
         stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil=enable_stage70,
+        include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil=enable_stage71,
+        include_stage71=enable_stage71,
+        stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil=enable_stage71,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -9087,6 +9309,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s68 = rep.get("stage68_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil")
         s69 = rep.get("stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil")
         s70 = rep.get("stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil")
+        s71 = rep.get("stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -9784,6 +10007,21 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s70, dict)
             else ""
         )
+        s71_str = (
+            f" | realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil={s71['source_mode']}("
+            f"m71={s71['milestone']},"
+            f"srv={s71['fx3_ftp_max_servers']}/{s71['fx6_ftp_max_servers']},"
+            f"usblan_byp={s71['usblan_zero_rf_bypass_events']},"
+            f"wb_leak={s71['custom_wb_camset_leak_events']},"
+            f"fmap_ib={int(s71['fx3_has_inbody_focus_map'])},"
+            f"mrk_rat={s71['fx3_marker_active_ratio_count']},"
+            f"hdmi_px={s71['hdmi_marker_or_peaking_leaked_pixels']},"
+            f"rf_tx={s71['rf_packets_transmitted']},"
+            f"s1_wr={s71['slot1_data_sector_writes']},"
+            f"emmc_wr={s71['emmc_nflasha_write_count']})"
+            if isinstance(s71, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -9792,7 +10030,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str}{s58_str}{s59_str}{s60_str}{s61_str}{s62_str}{s63_str}{s64_str}{s65_str}{s66_str}{s67_str}{s68_str}{s69_str}{s70_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str}{s58_str}{s59_str}{s60_str}{s61_str}{s62_str}{s63_str}{s64_str}{s65_str}{s66_str}{s67_str}{s68_str}{s69_str}{s70_str}{s71_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

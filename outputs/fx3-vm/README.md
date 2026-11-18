@@ -2385,5 +2385,44 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 333（Stage 71 — `71/71` VM HIL Stages Milestone!）：Wave-61 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` FTP/FTPES 9-Server & USB-LAN Zero-RF Bypass + Slot-1 `EROFS=30` / WB `Custom 1..3`, `Shutter AWB Lock`, `Shockless WB` & `Cine EI` / Movie AF `1..7` & `1..5` + External-Only `Focus Map` / 15-Ratio `Marker` & 4-Color `Peaking` Clean-HDMI HIL
+
+[`realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_coemulator.py`](realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_coemulator.py)（Schema `realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_coemulator_v1`）作为 **Stage 71（`71/71` VM HIL Stages Milestone!）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase333` / `--skip-stage71` / `--no-include-stage71` 跳过，支持 `--include-stage71`），严格遵循 `os.O_RDONLY` + `<= 4096 B` 受界 `os.pread`、`physical_device_writes == 0`、`rf_packets_transmitted == 0`、`slot1_data_sector_writes == 0`、`slot1_avf_info_mutated == False` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 19 供体 `O_RDONLY` + 受界 `os.pread` 审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **19 份真实供体**（`14` 份四语/英文 `.uxc` + `libInfraAirplaneMode.so` + `libInfraBluetooth.so` + `FX3 appFw.so`、`FX3 BK4`、`FX6 appFw.so` 3 份大镜像），冷读 `< 0.20s`，并在无供体 CI 环境下（`work_root is None`、`FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或 `--clean-room`）零 `NoneType / str` 异常地无缝回退至 `CLEAN_ROOM_SYNTHETIC`。
+2. **Sub-Model 71A — `FTP/FTPES` 9-Server Passive-Only、休眠 `SFTP`/`Transfer JPEG Size`、USB-LAN 零射频旁路防火墙 & `Slot-1` `AVF_INFO` `EROFS=30`**：
+   - FX3 Ver. 7.02 `Network -> [FTP Transfer] -> [FTP Transfer Func.]`：支持 `Server 1..9`（`BKID_APP_ftp_server_settings_*0..8`）、仅 Passive 模式 `FTP` 与 `FTPES`（Explicit TLS `_f 0x6553`）；对休眠 `SFTP`、Active Mode、Implicit FTPS:990 与 `[Transfer JPEG/HEIF Size]`（`_f 0x6aed`/`0x63dd`，FX3 `appFw.so` `0` 命中）严格返回 `EOPNOTSUPP=95`；`cacert.pem <= 1 MB` 从 `Slot 1` 根目录导入；`[FTP Function] = On` 与 `[Cloud Connection] = On` 互斥返回 `EBUSY=16`；
+   - **Zero-RF + 有线旁路防火墙**：Sony 在 `[Airplane Mode] = On` 时仍允许有线 `USB-LAN`（`USB_ETHER`）传输 FTP，故台架 Zero-Exfiltration 必须同时锁定 `Airplane Mode = On` + 禁用 `[USB-LAN/Tethering]` + `FTP Function = Off`；针对 `Slot 1` Tier-0 Vault 的 `save_ftp_transfer_list_to_media` / `CONTENT_INFO_FTP_TRANS_STAT` / `AVF_INFO` 恢复（`0x0a13`）100% fail-closed 返回 `EROFS=30`（`slot1_data_sector_writes == 0`），对比 `ILME-FX6` `Server 1..3`、Active+Passive、`Slot B` `certification.pem` 与 `Auto Upload (Proxy): Chunk`。
+3. **Sub-Model 71B — White Balance `2500K..9900K`、`Custom 1..3`、`Shutter AWB Lock`、`Shockless WB` & `Cine EI` 锁定**：
+   - `2500K..9900K`（100K 步进）+ `A7..B7`（0.5 步进）× `G7..M7`（0.25 步进）；`Custom 1..3` 不导出至 `CAMSET*.DAT`，`Log Shooting != Off` / `S-Log3` / `PPLUT1..4` 下触发 `Custom WB Error (0x0220)` 拦截；`Cine EI` / `Cine EI Quick` 锁定禁止 `Auto` 与 `Underwater Auto`；可 Reset `[Priority Set in AWB]` 与 Movie `[Shockless WB]`（直拧 `C.Temp./Filter` 拨轮时 0 帧瞬切旁路）对比仅 `Initialize` 重置的 Still `[Shutter AWB Lock]`（`Shut. Halfway / Cont. Shooting / Off[def]`），对比 FX6 `PRST/A/B` + `Memory A..H` + `ATW Speed 1..5`。
+4. **Sub-Model 71C — 共享 Movie AF `1..7` / `1..5` 标度 & FX3 仅外置 *Monitor & Control* Focus Map（`<150fps`）**：
+   - **FX3 Ver. 7.02 与 FX6 Ver. 6.01 均使用** `1..7` `[AF Transition Speed]`（FX3 默认 `5`）与 `1..5` `[AF Subj. Shift Sensitivity]`（FX3 默认 `5`，FX6 `6/7` 均为 `0` 命中，严格拒绝 `6/7` `EINVAL=22`）；可 Reset `[AF Assist]` 拒绝 `SELP1650` / `SEL18200LE` / 非 PDAF；
+   - FX3 机身内置 `[Focus Map]` 为 **ZERO**（`USER_MENU_FOCUS_MAP` `0` 命中 -> `EOPNOTSUPP=95`），仅 Ver. 6.00+ 支持 `< 150fps` 外部 *Monitor & Control* 遥测渲染（在 `>= 150fps` 200/240fps S&Q、Auto Framing、Playback、MF/非 PDAF、USB 有线遥控下阻断），对比 FX6 原生机内 `Focus Map`（`> 6fps & < 150fps`）。
+5. **Sub-Model 71D — 15 比例 `[Marker Display]` & 4 色 `[Peaking Display]` Clean-HDMI 零泄漏 HIL**：
+   - 全部 8 项参数（`Marker Display`、`Center Marker`、`Aspect Marker` [`Off` + 15 种比例 = 16 态，含 Ver. 3.00+ `16:9` 与 `2.39:1`]、`Safety Zone` [`Off/80%/90%`]、`Guideframe`、`Peaking Display`、`Peaking Level` [`High/Mid/Low`]、`Peaking Color` [`Red/Yellow/Blue/White`]）均免疫 `[Camera Settings Reset]`（仅 `[Initialize]` 重置）、绝不叠加至 HDMI 输出（`hdmi_marker_or_peaking_leaked_pixels == 0`），且 `Marker Display` 在 `Focus Magnifier` 放大对焦时自动隐藏；对比 FX6 `Aspect Mask 0..15`、`User Box`（`3..479 x 3..269`）与 `B&W/Red/Yellow/Blue` Peaking。
+
+### Phase 333 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 333 Stage 71（71/71 里程碑！）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_coemulator.py --self-test --json
+
+# 2. 全板 71 阶段（Stage 1..71, 71/71 里程碑！）统一校验（支持 --include-stage71 与 --skip-phase333 / --skip-stage71 / --no-include-stage71）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage71 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 333 四模式 96 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_coemulator.py -v
+FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+
+
 
 

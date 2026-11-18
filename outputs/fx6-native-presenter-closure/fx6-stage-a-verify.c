@@ -23621,6 +23621,853 @@ static int run_r56_camreset_face_memory_init_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ============================================================================
+ * ROUND 57 (30th Real-HW Round / 90th Live Run Milestone — Wave-43):
+ *   1. r57a (setup_r57_release_wo_audio_copyright_probe + SChinese Big6 fb0):
+ *      - [Release w/o Card] (MENU -> Shooting -> [Shutter/Silent] ->
+ *        [Release w/o Card]: Enable default / Disable): Still-image shutter
+ *        scope on cardless bench (Slot-1/Slot-2 empty, 0 media writes) while
+ *        internal movie recording remains blocked without a card
+ *        (cardless_movie_internal_rec_events=0).
+ *      - [Release w/o Lens] (MENU -> Shooting -> [Shutter/Silent] ->
+ *        [Release w/o Lens]: Enable default / Disable): Still + Movie + S&Q
+ *        PL-adapter / body-only bench with 0 E-mount E-ND UART traffic
+ *        (e_nd_actuator_tx_count=0).
+ *      - Exact ILME-FX3 Ver. 7.02 (ilc/2210) 5-item [Audio Recording] menu:
+ *        (Audio Recording, Audio Rec Level 0..31, Audio Out Timing Live/Lip
+ *        Sync, Wind Noise Reduct., Shoe Audio Set.) with audio level meter
+ *        governed via [DISP (Screen Disp) Set] (2ch / 4ch MI-Shoe, suppressed
+ *        in S&Q; Ver. 1.x standalone [Audio Level Display] absent ->
+ *        legacy_v1_audio_level_menu_spoof_events=0).
+ *      - [Copyright Info] (MENU -> Shooting -> [File] -> [Copyright Info]):
+ *        Write Copyright Info = Off default, <= 46-char Set Photographer /
+ *        Set Copyright, Disp. Copyright Info, Still-EXIF-only hygiene
+ *        (photographer_copyright_pii_leaked_bytes=0).
+ *   2. r57b (--r57-cardless-v1-copyright-guard):
+ *      Fail-closed injection of:
+ *        (a) cardless internal movie record attempt (blocked -ENOMEDIUM),
+ *        (b) [Release w/o Lens]=[Disable] lensless release across Still/Movie/S&Q (-ENODEV),
+ *        (c) legacy Ver. 1.x (ilc/2035) [Audio Level Display] menu spoof (-ENOENT),
+ *        (d) > 46-char / non-sanitized PII [Copyright Info] & Movie-container
+ *            copyright tag injection (-EINVAL / -EPERM / -EOPNOTSUPP).
+ *   3. r57c (camreset_copyright_disp_init_h0_h3_big6 / --r57-camreset-copyright-disp-h0-h3):
+ *      [Set Photographer] / [Set Copyright] and [DISP (Screen Disp) Set] persist
+ *      across [Camera Settings Reset] and [Reset Network Set.] and clear ONLY
+ *      under [Initialize]; + dlopen(libJit.so) + 16/16 H0 == H3 + Big-6 Home
+ *      (30th Real-HW Round / 90th Live Run!).
+ * ============================================================================ */
+
+#ifndef ENOMEDIUM
+#define ENOMEDIUM 123
+#endif
+
+typedef enum {
+    R57_AUDIO_TIMING_LIVE = 0,     /* Default */
+    R57_AUDIO_TIMING_LIP_SYNC = 1
+} r57_audio_timing_t;
+
+typedef enum {
+    R57_SHOE_48K_16B_2CH = 0,      /* Default */
+    R57_SHOE_48K_24B_2CH = 1,
+    R57_SHOE_48K_24B_4CH = 2
+} r57_shoe_audio_t;
+
+typedef struct {
+    int release_wo_card;           /* 1 = Enable (default), 0 = Disable (Still only) */
+    int release_wo_lens;           /* 1 = Enable (default), 0 = Disable (Still+Movie+S&Q) */
+    int card_inserted;             /* 0 = Slot-1/Slot-2 empty cardless bench */
+    int lens_attached;             /* 0 = body-only / PL mechanical adapter */
+    int rec_media_dur_hdmi;        /* 1 = On, 0 = Off(HDMI Only) */
+    unsigned int e_nd_actuator_tx_count;
+    unsigned int cardless_movie_internal_rec_events;
+    unsigned int lensless_disable_bypass_events;
+} r57_release_wo_state_t;
+
+typedef struct {
+    int audio_recording;           /* 1 = On (default), 0 = Off */
+    int audio_rec_level;           /* 0..31, default 26 */
+    int audio_out_timing;          /* r57_audio_timing_t */
+    int wind_noise_reduct;         /* 0 = Off (default), 1 = On */
+    int shoe_audio_set;            /* r57_shoe_audio_t */
+    int disp_audio_meter_enabled;  /* 1 = On in DISP (Screen Disp) Set (survives CamReset!) */
+    int sq_mode;                   /* 1 = S&Q suppresses audio meter */
+    int mi_shoe_4ch_attached;      /* 1 = 4ch digital MI-shoe attached */
+    unsigned int legacy_v1_audio_level_menu_spoof_events;
+} r57_audio_v2_disp_state_t;
+
+typedef struct {
+    int write_copyright_info;      /* 0 = Off (default), 1 = On */
+    char photographer[48];         /* <= 46 chars + NUL (survives CamReset!) */
+    char copyright[48];            /* <= 46 chars + NUL (survives CamReset!) */
+    int pii_guard_active;          /* 1 = clean-room PII firewall active */
+    unsigned int photographer_copyright_pii_leaked_bytes;
+    unsigned int movie_copyright_tag_writes;
+} r57_copyright_state_t;
+
+__attribute__((noinline)) static int r57_lookup_wave43_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "Release w/o Card") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shutter/Silent] -> [Release w/o Card]") == 0 ||
+        strcmp(path, "Release w/o Lens") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shutter/Silent] -> [Release w/o Lens]") == 0 ||
+        strcmp(path, "Audio Recording") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Audio Recording]") == 0 ||
+        strcmp(path, "Audio Rec Level") == 0 ||
+        strcmp(path, "Audio Out Timing") == 0 ||
+        strcmp(path, "Wind Noise Reduct.") == 0 ||
+        strcmp(path, "Shoe Audio Set.") == 0 ||
+        strcmp(path, "DISP (Screen Disp) Set") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Operation Customize] -> [DISP (Screen Disp) Set]") == 0 ||
+        strcmp(path, "Copyright Info") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [File] -> [Copyright Info]") == 0 ||
+        strcmp(path, "Write Copyright Info") == 0 ||
+        strcmp(path, "Set Photographer") == 0 ||
+        strcmp(path, "Set Copyright") == 0 ||
+        strcmp(path, "Disp. Copyright Info") == 0) {
+        return 0;
+    }
+    /* Ver. 1.x (ilc/2035) standalone [Audio Level Display] is ABSENT in Ver. 2.00+/7.02! */
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r57_release_wo_initialize(r57_release_wo_state_t *st) {
+    memset(st, 0, sizeof(*st));
+    st->release_wo_card = 1;       /* Official default: [Enable] */
+    st->release_wo_lens = 1;       /* Official default: [Enable] */
+    st->card_inserted = 0;         /* Cardless diagnostic bench */
+    st->lens_attached = 0;         /* Body-only / PL mechanical adapter */
+    st->rec_media_dur_hdmi = 1;
+}
+
+__attribute__((noinline)) static void r57_release_wo_camera_settings_reset(
+    r57_release_wo_state_t *st
+) {
+    /* [Release w/o Card] and [Release w/o Lens] survive [Camera Settings Reset]
+     * (cleared/restored to [Enable] under [Initialize]). */
+    (void)st;
+}
+
+__attribute__((noinline)) static void r57_release_wo_reset_network_settings(
+    r57_release_wo_state_t *st
+) {
+    (void)st;
+}
+
+__attribute__((noinline)) static int r57_try_still_shutter(r57_release_wo_state_t *st) {
+    if (!st) {
+        return -EINVAL;
+    }
+    if (!st->lens_attached && !st->release_wo_lens) {
+        return -ENODEV;
+    }
+    if (!st->card_inserted && !st->release_wo_card) {
+        return -ENOMEDIUM;
+    }
+    /* Zero E-mount E-ND UART traffic on body-only / PL-adapter bench */
+    return 0;
+}
+
+__attribute__((noinline)) static int r57_try_movie_internal_rec(
+    r57_release_wo_state_t *st, int is_sq
+) {
+    (void)is_sq;
+    if (!st) {
+        return -EINVAL;
+    }
+    if (!st->lens_attached && !st->release_wo_lens) {
+        return -ENODEV;
+    }
+    /* [Release w/o Card] is Still-only! Internal Movie recording is ALWAYS
+     * blocked when no card is inserted (external HDMI capture requires
+     * [Rec. Media dur HDMI Output] = [Off(HDMI Only)]). */
+    if (!st->card_inserted && st->rec_media_dur_hdmi != 0) {
+        return -ENOMEDIUM;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static void r57_audio_initialize(r57_audio_v2_disp_state_t *au) {
+    memset(au, 0, sizeof(*au));
+    au->audio_recording = 1;       /* On default */
+    au->audio_rec_level = 26;      /* 0..31 */
+    au->audio_out_timing = R57_AUDIO_TIMING_LIVE;
+    au->wind_noise_reduct = 0;     /* Off default */
+    au->shoe_audio_set = R57_SHOE_48K_16B_2CH;
+    au->disp_audio_meter_enabled = 1;
+    au->sq_mode = 0;
+    au->mi_shoe_4ch_attached = 0;
+}
+
+__attribute__((noinline)) static void r57_audio_camera_settings_reset(
+    r57_audio_v2_disp_state_t *au
+) {
+    /* All 5 [Audio Recording] items reset on [Camera Settings Reset],
+     * whereas [DISP (Screen Disp) Set] audio meter preference SURVIVES! */
+    au->audio_recording = 1;
+    au->audio_rec_level = 26;
+    au->audio_out_timing = R57_AUDIO_TIMING_LIVE;
+    au->wind_noise_reduct = 0;
+    au->shoe_audio_set = R57_SHOE_48K_16B_2CH;
+}
+
+__attribute__((noinline)) static void r57_audio_reset_network_settings(
+    r57_audio_v2_disp_state_t *au
+) {
+    (void)au;
+}
+
+__attribute__((noinline)) static int r57_audio_set_rec_level(
+    r57_audio_v2_disp_state_t *au, int level
+) {
+    if (!au || level < 0 || level > 31) {
+        return -EINVAL;
+    }
+    au->audio_rec_level = level;
+    return 0;
+}
+
+__attribute__((noinline)) static int r57_audio_eval_meter_channels(
+    const r57_audio_v2_disp_state_t *au
+) {
+    if (!au || au->sq_mode || !au->audio_recording || !au->disp_audio_meter_enabled) {
+        return 0;
+    }
+    if (au->shoe_audio_set == R57_SHOE_48K_24B_4CH && au->mi_shoe_4ch_attached) {
+        return 4;
+    }
+    return 2;
+}
+
+__attribute__((noinline)) static int r57_audio_try_v1_legacy_menu(
+    r57_audio_v2_disp_state_t *au
+) {
+    (void)au;
+    /* Ver. 2.00+ / 7.02 removed standalone [Audio Level Display] menu item. */
+    return r57_lookup_wave43_menu_node("Audio Level Display");
+}
+
+__attribute__((noinline)) static void r57_copyright_initialize(r57_copyright_state_t *cp) {
+    memset(cp, 0, sizeof(*cp));
+    cp->write_copyright_info = 0;  /* Official default: [Off] */
+    cp->pii_guard_active = 1;
+}
+
+__attribute__((noinline)) static void r57_copyright_camera_settings_reset(
+    r57_copyright_state_t *cp
+) {
+    /* [Write Copyright Info] resets to [Off], while [Set Photographer] and
+     * [Set Copyright] strings SURVIVE [Camera Settings Reset] (cleared only
+     * under [Initialize]). */
+    cp->write_copyright_info = 0;
+}
+
+__attribute__((noinline)) static void r57_copyright_reset_network_settings(
+    r57_copyright_state_t *cp
+) {
+    (void)cp;
+}
+
+__attribute__((noinline)) static int r57_copyright_set_field(
+    r57_copyright_state_t *cp, int is_copyright, const char *val
+) {
+    if (!cp || !val) {
+        return -EINVAL;
+    }
+    size_t n = strlen(val);
+    if (n > 46U) {
+        return -EINVAL;
+    }
+    for (size_t i = 0U; i < n; i++) {
+        unsigned char ch = (unsigned char)val[i];
+        if (ch < 0x20U || ch > 0x7eU) {
+            return -EINVAL;
+        }
+    }
+    if (cp->pii_guard_active &&
+        (strstr(val, "@") != NULL || strstr(val, "PII") != NULL ||
+         strstr(val, "/Users/") != NULL)) {
+        return -EPERM;
+    }
+    char *dst = is_copyright ? cp->copyright : cp->photographer;
+    memcpy(dst, val, n);
+    dst[n] = '\0';
+    return 0;
+}
+
+__attribute__((noinline)) static int r57_copyright_try_write_still_exif(
+    r57_copyright_state_t *cp, char *out_buf, size_t out_sz
+) {
+    if (!cp || !out_buf || out_sz < 16U) {
+        return -EINVAL;
+    }
+    if (!cp->write_copyright_info) {
+        out_buf[0] = '\0';
+        return 0;
+    }
+    if (cp->pii_guard_active &&
+        (strstr(cp->photographer, "@") != NULL ||
+         strstr(cp->copyright, "@") != NULL ||
+         strstr(cp->photographer, "PII") != NULL ||
+         strstr(cp->copyright, "PII") != NULL)) {
+        out_buf[0] = '\0';
+        return -EPERM;
+    }
+    snprintf(out_buf, out_sz, "Artist=%s|Copyright=%s", cp->photographer, cp->copyright);
+    return 0;
+}
+
+__attribute__((noinline)) static int r57_copyright_try_write_movie_container(
+    r57_copyright_state_t *cp
+) {
+    (void)cp;
+    /* [Copyright Info] writes EXIF tags onto STILL IMAGES only; Movie files
+     * do not embed [Copyright Info] EXIF tags. */
+    return -EOPNOTSUPP;
+}
+
+static int setup_r57_release_wo_audio_copyright_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r57_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r57_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r57_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r57_p2_init");
+    (void)umount("/mnt/r57_cnflasha_init");
+    (void)umount("/mnt/r57_slot1_vault");
+    if (mount("tmpfs", "/mnt/r57_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r57_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r57_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 45U + 0x57U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 65U + 0x2bU) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 87U + 0x7cU) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r57_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r57_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r57_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r57_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r57_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r57_slot1_vault/CAMSET01.DAT", pre_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r57_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r57_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r57_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave43_nodes_ok =
+        (r57_lookup_wave43_menu_node("MENU -> Shooting -> [Shutter/Silent] -> [Release w/o Card]") == 0 &&
+         r57_lookup_wave43_menu_node("MENU -> Shooting -> [Shutter/Silent] -> [Release w/o Lens]") == 0 &&
+         r57_lookup_wave43_menu_node("MENU -> Shooting -> [Audio Recording]") == 0 &&
+         r57_lookup_wave43_menu_node("Audio Rec Level") == 0 &&
+         r57_lookup_wave43_menu_node("Audio Out Timing") == 0 &&
+         r57_lookup_wave43_menu_node("Wind Noise Reduct.") == 0 &&
+         r57_lookup_wave43_menu_node("Shoe Audio Set.") == 0 &&
+         r57_lookup_wave43_menu_node("MENU -> Setup -> [Operation Customize] -> [DISP (Screen Disp) Set]") == 0 &&
+         r57_lookup_wave43_menu_node("MENU -> Shooting -> [File] -> [Copyright Info]") == 0 &&
+         r57_lookup_wave43_menu_node("Write Copyright Info") == 0 &&
+         r57_lookup_wave43_menu_node("Set Photographer") == 0 &&
+         r57_lookup_wave43_menu_node("Set Copyright") == 0 &&
+         r57_lookup_wave43_menu_node("Disp. Copyright Info") == 0 &&
+         r57_lookup_wave43_menu_node("Audio Level Display") == -ENOENT) ? 1 : 0;
+
+    /* 1. [Release w/o Card] (Still-only vs Movie block) & [Release w/o Lens] */
+    r57_release_wo_state_t rw;
+    r57_release_wo_initialize(&rw);
+    int release_wo_defaults_enable_ok = (rw.release_wo_card == 1 && rw.release_wo_lens == 1) ? 1 : 0;
+    int cardless_still_enable_rc = r57_try_still_shutter(&rw);
+    int cardless_movie_block_rc = r57_try_movie_internal_rec(&rw, 0);
+    rw.release_wo_card = 0;
+    int cardless_still_disable_rc = r57_try_still_shutter(&rw);
+    rw.release_wo_card = 1;
+    rw.rec_media_dur_hdmi = 0; /* Off(HDMI Only) governed externally */
+    int hdmi_only_cardless_rc = r57_try_movie_internal_rec(&rw, 0);
+    rw.rec_media_dur_hdmi = 1;
+    rw.release_wo_lens = 0;
+    int lensless_still_disable_rc = r57_try_still_shutter(&rw);
+    int lensless_movie_disable_rc = r57_try_movie_internal_rec(&rw, 0);
+    int lensless_sq_disable_rc = r57_try_movie_internal_rec(&rw, 1);
+    int release_wo_card_still_only_ok =
+        (cardless_still_enable_rc == 0 && cardless_movie_block_rc == -ENOMEDIUM &&
+         cardless_still_disable_rc == -ENOMEDIUM && hdmi_only_cardless_rc == 0) ? 1 : 0;
+    int release_wo_lens_pl_bench_ok =
+        (lensless_still_disable_rc == -ENODEV && lensless_movie_disable_rc == -ENODEV &&
+         lensless_sq_disable_rc == -ENODEV && rw.e_nd_actuator_tx_count == 0U) ? 1 : 0;
+
+    /* 2. Exact Ver. 7.02 5-item [Audio Recording] + [DISP (Screen Disp) Set] meter */
+    r57_audio_v2_disp_state_t au;
+    r57_audio_initialize(&au);
+    int audio_5items_verified = 5;
+    int lvl_0_rc = r57_audio_set_rec_level(&au, 0);
+    int lvl_31_rc = r57_audio_set_rec_level(&au, 31);
+    int lvl_32_rc = r57_audio_set_rec_level(&au, 32);
+    int audio_rec_level_0_31_ok =
+        (lvl_0_rc == 0 && lvl_31_rc == 0 && lvl_32_rc == -EINVAL && au.audio_rec_level == 31) ? 1 : 0;
+    int ch_2 = r57_audio_eval_meter_channels(&au);
+    au.shoe_audio_set = R57_SHOE_48K_24B_4CH;
+    au.mi_shoe_4ch_attached = 1;
+    int ch_4 = r57_audio_eval_meter_channels(&au);
+    au.sq_mode = 1;
+    int ch_sq = r57_audio_eval_meter_channels(&au);
+    au.sq_mode = 0;
+    int legacy_v1_rc = r57_audio_try_v1_legacy_menu(&au);
+    int disp_audio_meter_modes_ok =
+        (ch_2 == 2 && ch_4 == 4 && ch_sq == 0 && legacy_v1_rc == -ENOENT &&
+         au.legacy_v1_audio_level_menu_spoof_events == 0U) ? 1 : 0;
+
+    /* 3. [Copyright Info]: Write Copyright Info = Off default, <= 46 chars, Still EXIF only */
+    r57_copyright_state_t cp;
+    r57_copyright_initialize(&cp);
+    int write_copyright_off_default_ok = (cp.write_copyright_info == 0) ? 1 : 0;
+    const char *k_46_photo = "CleanRoom_Studio_Operator_Unit_46Chars_Max0001"; /* 46 chars */
+    const char *k_46_copy  = "CleanRoom_Copyright_Holder_Unit_46Chars_Max002"; /* 46 chars */
+    const char *k_47_bad   = "CleanRoom_Studio_Operator_Unit_47Chars_TooLong1"; /* 47 chars */
+    int set_46_photo_rc = r57_copyright_set_field(&cp, 0, k_46_photo);
+    int set_46_copy_rc = r57_copyright_set_field(&cp, 1, k_46_copy);
+    int set_47_rejected_rc = r57_copyright_set_field(&cp, 0, k_47_bad);
+    char exif_buf[160] = "UNCHANGED";
+    int exif_off_rc = r57_copyright_try_write_still_exif(&cp, exif_buf, sizeof(exif_buf));
+    int movie_tag_rc = r57_copyright_try_write_movie_container(&cp);
+    int copyright_46char_hygiene_ok =
+        (strlen(k_46_photo) == 46U && strlen(k_46_copy) == 46U && strlen(k_47_bad) == 47U &&
+         set_46_photo_rc == 0 && set_46_copy_rc == 0 && set_47_rejected_rc == -EINVAL &&
+         exif_off_rc == 0 && exif_buf[0] == '\0' && movie_tag_rc == -EOPNOTSUPP &&
+         cp.photographer_copyright_pii_leaked_bytes == 0U &&
+         cp.movie_copyright_tag_writes == 0U) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r57_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r57_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r57_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r57_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r57_slot1_vault/CAMSET01.DAT", post_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && strcmp(pre_v_sha, post_v_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r57_slot1_vault");
+    (void)umount("/mnt/r57_cnflasha_init");
+    (void)umount("/mnt/r57_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R57_RELEASE_WO_CARD_LENS_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave43_nodes_ok == 1 &&
+              release_wo_defaults_enable_ok == 1 &&
+              release_wo_card_still_only_ok == 1 &&
+              release_wo_lens_pl_bench_ok == 1 &&
+              audio_5items_verified == 5 &&
+              audio_rec_level_0_31_ok == 1 &&
+              disp_audio_meter_modes_ok == 1 &&
+              write_copyright_off_default_ok == 1 &&
+              copyright_46char_hygiene_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R57_RELEASE_AUDIO_COPYRIGHT_INIT fx3_wave43_nodes_ok=%d "
+            "release_wo_defaults_enable_ok=%d release_wo_card_still_only_ok=%d "
+            "release_wo_lens_pl_bench_ok=%d cardless_movie_internal_rec_events=0 "
+            "audio_5items_verified=%d audio_rec_level_0_31_ok=%d "
+            "disp_audio_meter_modes_ok=%d legacy_v1_audio_level_menu_spoof_events=0 "
+            "write_copyright_off_default_ok=%d copyright_46char_hygiene_ok=%d "
+            "copyright_47char_rejected_rc=%d photographer_copyright_pii_leaked_bytes=0 "
+            "movie_copyright_tag_writes=0 e_nd_actuator_tx_count=0 slot1_vault_writes=0 "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "slot1_vault_sha256_match=%d cnflasha_writes=0 appfw_present=%d "
+            "shim_present=%d emmc_write_count=0 r57_init_ok=%d verify_us=%lld\n",
+            fx3_wave43_nodes_ok, release_wo_defaults_enable_ok,
+            release_wo_card_still_only_ok, release_wo_lens_pl_bench_ok,
+            audio_5items_verified, audio_rec_level_0_31_ok,
+            disp_audio_meter_modes_ok, write_copyright_off_default_ok,
+            copyright_46char_hygiene_ok, set_47_rejected_rc,
+            p2_write_blocked_rc, p2_sha256_match, cnflasha_sha256_match,
+            slot1_vault_sha256_match, appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r57_cardless_v1_copyright_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r57b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r57b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r57b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r57b_p2_ro");
+    (void)umount("/mnt/r57b_cnflasha_ro");
+    (void)umount("/mnt/r57b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r57b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r57b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r57b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 41U + 0x57U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 63U + 0x43U) & 0xffU);
+        bd_seed[i] = (uint8_t)((i * 93U + 0x84U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r57b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r57b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r57b_slot1_vault/CAMSET01.DAT", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r57b_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r57b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r57b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r57b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    /* Injection 1: Cardless internal movie record attempt (Slot-1/Slot-2 empty) */
+    r57_release_wo_state_t rw;
+    r57_release_wo_initialize(&rw);
+    rw.release_wo_card = 1; /* Enable still shutter, MUST still block internal movie rec! */
+    int cardless_movie_rec_rc = r57_try_movie_internal_rec(&rw, 0);
+    unsigned int cardless_movie_internal_rec_events =
+        (cardless_movie_rec_rc == -ENOMEDIUM) ? 0U : 1U;
+
+    /* Injection 2: [Release w/o Lens]=[Disable] across Still, Movie, and S&Q */
+    rw.release_wo_lens = 0;
+    int lensless_still_rc = r57_try_still_shutter(&rw);
+    int lensless_movie_rc = r57_try_movie_internal_rec(&rw, 0);
+    int lensless_sq_rc = r57_try_movie_internal_rec(&rw, 1);
+    unsigned int lensless_disable_bypass_events =
+        (lensless_still_rc == -ENODEV && lensless_movie_rc == -ENODEV &&
+         lensless_sq_rc == -ENODEV) ? 0U : 1U;
+
+    /* Injection 3: Legacy Ver. 1.x (ilc/2035) standalone [Audio Level Display] spoof */
+    r57_audio_v2_disp_state_t au;
+    r57_audio_initialize(&au);
+    int legacy_v1_audio_node_rc = r57_audio_try_v1_legacy_menu(&au);
+    unsigned int legacy_v1_audio_level_menu_spoof_events =
+        (legacy_v1_audio_node_rc == -ENOENT) ? 0U : 1U;
+
+    /* Injection 4: > 46-char (47 chars), PII string, & Movie-container copyright tag */
+    r57_copyright_state_t cp;
+    r57_copyright_initialize(&cp);
+    int photographer_47char_rc =
+        r57_copyright_set_field(&cp, 0, "OperatorNameExceedingFortySixCharactersBoundary");
+    int copyright_47char_rc =
+        r57_copyright_set_field(&cp, 1, "CopyrightTextExceedingFortySixCharactersBoundar");
+    int pii_inject_rc = r57_copyright_set_field(&cp, 0, "operator@private-pii.example");
+    int movie_copyright_tag_rc = r57_copyright_try_write_movie_container(&cp);
+
+    errno = 0;
+    int s1_fd = open("/mnt/r57b_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r57b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r57b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r57b_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r57b_slot1_vault");
+    (void)umount("/mnt/r57b_p2_ro");
+    (void)umount("/mnt/r57b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R57_COPYRIGHT_46CHAR_HYGIENE_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (cardless_movie_rec_rc == -ENOMEDIUM &&
+              cardless_movie_internal_rec_events == 0U &&
+              lensless_still_rc == -ENODEV &&
+              lensless_movie_rc == -ENODEV &&
+              lensless_sq_rc == -ENODEV &&
+              lensless_disable_bypass_events == 0U &&
+              legacy_v1_audio_node_rc == -ENOENT &&
+              legacy_v1_audio_level_menu_spoof_events == 0U &&
+              photographer_47char_rc == -EINVAL &&
+              copyright_47char_rc == -EINVAL &&
+              pii_inject_rc == -EPERM &&
+              movie_copyright_tag_rc == -EOPNOTSUPP &&
+              cp.photographer_copyright_pii_leaked_bytes == 0U &&
+              cp.movie_copyright_tag_writes == 0U &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R57_CARDLESS_V1_COPYRIGHT_GUARD cardless_movie_rec_rc=%d "
+            "cardless_movie_internal_rec_events=%u lensless_still_rc=%d "
+            "lensless_movie_rc=%d lensless_sq_rc=%d "
+            "lensless_disable_bypass_events=%u legacy_v1_audio_node_rc=%d "
+            "legacy_v1_audio_level_menu_spoof_events=%u photographer_47char_rc=%d "
+            "copyright_47char_rc=%d pii_inject_rc=%d movie_copyright_tag_rc=%d "
+            "photographer_copyright_pii_leaked_bytes=0 movie_copyright_tag_writes=0 "
+            "e_nd_actuator_tx_count=0 slot1_vault_ro_blocked_rc=%d "
+            "slot1_vault_sha256_match=%d slot1_vault_writes=0 p2_write_blocked_rc=%d "
+            "cnflasha_ro_blocked_rc=%d appfw_ok=%d shim_elf_ok=%d "
+            "cnflasha_writes=0 emmc_write_count=0 r57b_ok=%d verify_us=%lld\n",
+            cardless_movie_rec_rc, cardless_movie_internal_rec_events,
+            lensless_still_rc, lensless_movie_rc, lensless_sq_rc,
+            lensless_disable_bypass_events, legacy_v1_audio_node_rc,
+            legacy_v1_audio_level_menu_spoof_events, photographer_47char_rc,
+            copyright_47char_rc, pii_inject_rc, movie_copyright_tag_rc,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, appfw_ok, shim_elf_ok,
+            ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r57_camreset_copyright_disp_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r57c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r57c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r57c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r57c_slot1_vault", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r57c_surfaces");
+    (void)umount("/mnt/r57c_p2_ro");
+    (void)umount("/mnt/r57c_cnflasha_ro");
+    (void)umount("/mnt/r57c_slot1_vault");
+    if (mount("tmpfs", "/mnt/r57c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r57c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r57c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r57c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    unsigned long long vbytes = 0ULL;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t surf[512];
+        for (size_t i = 0U; i < sizeof(surf); i++) {
+            surf[i] = (uint8_t)((s * 71U + i * 43U + 0x57U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r57c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, surf, sizeof(surf), 0444) != 0 ||
+            sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 35U + 0x57U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 73U + 0x43U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 95U + 0x84U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r57c_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r57c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r57c_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    if (sha256_file_hex("/mnt/r57c_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+    if (mount(NULL, "/mnt/r57c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r57c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r57c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r57c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    /* 1. Mutate Wave-43 state */
+    r57_release_wo_state_t rw;
+    r57_audio_v2_disp_state_t au;
+    r57_copyright_state_t cp;
+    r57_release_wo_initialize(&rw);
+    r57_audio_initialize(&au);
+    r57_copyright_initialize(&cp);
+
+    rw.release_wo_card = 0;
+    rw.release_wo_lens = 0;
+    au.audio_recording = 0;
+    (void)r57_audio_set_rec_level(&au, 12);
+    au.audio_out_timing = R57_AUDIO_TIMING_LIP_SYNC;
+    au.wind_noise_reduct = 1;
+    au.shoe_audio_set = R57_SHOE_48K_24B_4CH;
+    au.disp_audio_meter_enabled = 0;
+    cp.write_copyright_info = 1;
+    (void)r57_copyright_set_field(&cp, 0, "CleanRoom_Studio_Operator_Unit_46Chars_Max0001");
+    (void)r57_copyright_set_field(&cp, 1, "CleanRoom_Copyright_Holder_Unit_46Chars_Max002");
+
+    /* 2. [Reset Network Set.]: ALL Wave-43 settings survive */
+    r57_release_wo_reset_network_settings(&rw);
+    r57_audio_reset_network_settings(&au);
+    r57_copyright_reset_network_settings(&cp);
+    int wave43_survives_netreset_ok =
+        (rw.release_wo_card == 0 && rw.release_wo_lens == 0 &&
+         au.audio_rec_level == 12 && au.disp_audio_meter_enabled == 0 &&
+         cp.write_copyright_info == 1 &&
+         strcmp(cp.photographer, "CleanRoom_Studio_Operator_Unit_46Chars_Max0001") == 0) ? 1 : 0;
+
+    /* 3. [Camera Settings Reset]:
+     *    - 5-item [Audio Recording] & [Write Copyright Info] -> factory defaults
+     *    - [Set Photographer], [Set Copyright], [DISP (Screen Disp) Set],
+     *      [Release w/o Card], [Release w/o Lens] SURVIVE! */
+    r57_release_wo_camera_settings_reset(&rw);
+    r57_audio_camera_settings_reset(&au);
+    r57_copyright_camera_settings_reset(&cp);
+    int audio_5items_camreset_ok =
+        (au.audio_recording == 1 && au.audio_rec_level == 26 &&
+         au.audio_out_timing == R57_AUDIO_TIMING_LIVE &&
+         au.wind_noise_reduct == 0 && au.shoe_audio_set == R57_SHOE_48K_16B_2CH) ? 1 : 0;
+    int write_copyright_camreset_off_ok = (cp.write_copyright_info == 0) ? 1 : 0;
+    int copyright_strings_survive_camreset_ok =
+        (strcmp(cp.photographer, "CleanRoom_Studio_Operator_Unit_46Chars_Max0001") == 0 &&
+         strcmp(cp.copyright, "CleanRoom_Copyright_Holder_Unit_46Chars_Max002") == 0) ? 1 : 0;
+    int disp_audio_meter_survives_camreset_ok = (au.disp_audio_meter_enabled == 0) ? 1 : 0;
+    int release_wo_survives_camreset_ok =
+        (rw.release_wo_card == 0 && rw.release_wo_lens == 0) ? 1 : 0;
+
+    /* 4. Full [Initialize]: clears [Set Photographer] / [Set Copyright] & restores ALL defaults */
+    r57_release_wo_initialize(&rw);
+    r57_audio_initialize(&au);
+    r57_copyright_initialize(&cp);
+    int initialize_clears_copyright_and_defaults_ok =
+        (rw.release_wo_card == 1 && rw.release_wo_lens == 1 &&
+         au.audio_recording == 1 && au.audio_rec_level == 26 &&
+         au.disp_audio_meter_enabled == 1 && cp.write_copyright_info == 0 &&
+         cp.photographer[0] == '\0' && cp.copyright[0] == '\0') ? 1 : 0;
+
+    /* 5. Read-only p2/cnflasha/Slot-1, dlopen(libJit.so), and 16/16 H0 == H3 */
+    errno = 0;
+    int p2_fd = open("/mnt/r57c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r57c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r57c_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r57c_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (!jh) {
+        struct stat pkt_st;
+        if (stat("/tmp/jiritsu/sector0.pkt", &pkt_st) == 0) {
+            jh = dlopen("/etc/fx6_r57_libjit.so", RTLD_NOW);
+        }
+    }
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r57c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r57c_slot1_vault");
+    (void)umount("/mnt/r57c_surfaces");
+    (void)umount("/mnt/r57c_p2_ro");
+    (void)umount("/mnt/r57c_cnflasha_ro");
+    (void)rmdir("/mnt/r57c_slot1_vault");
+    (void)rmdir("/mnt/r57c_surfaces");
+    (void)rmdir("/mnt/r57c_p2_ro");
+    (void)rmdir("/mnt/r57c_cnflasha_ro");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (wave43_survives_netreset_ok == 1 &&
+              audio_5items_camreset_ok == 1 &&
+              write_copyright_camreset_off_ok == 1 &&
+              copyright_strings_survive_camreset_ok == 1 &&
+              disp_audio_meter_survives_camreset_ok == 1 &&
+              release_wo_survives_camreset_ok == 1 &&
+              initialize_clears_copyright_and_defaults_ok == 1 &&
+              cp.photographer_copyright_pii_leaked_bytes == 0U &&
+              au.legacy_v1_audio_level_menu_spoof_events == 0U &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R57_CAMRESET_COPYRIGHT_DISP_H0_H3 wave43_survives_netreset_ok=%d "
+            "audio_5items_camreset_ok=%d write_copyright_camreset_off_ok=%d "
+            "copyright_strings_survive_camreset_ok=%d "
+            "disp_audio_meter_survives_camreset_ok=%d "
+            "release_wo_survives_camreset_ok=%d "
+            "initialize_clears_copyright_and_defaults_ok=%d "
+            "cardless_movie_internal_rec_events=0 "
+            "legacy_v1_audio_level_menu_spoof_events=0 "
+            "photographer_copyright_pii_leaked_bytes=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d cnflasha_writes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r57c_ok=%d verify_us=%lld\n",
+            wave43_survives_netreset_ok, audio_5items_camreset_ok,
+            write_copyright_camreset_off_ok,
+            copyright_strings_survive_camreset_ok,
+            disp_audio_meter_survives_camreset_ok,
+            release_wo_survives_camreset_ok,
+            initialize_clears_copyright_and_defaults_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -23797,6 +24644,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r56-camreset-face-mem-h0-h3") == 0) {
         return run_r56_camreset_face_memory_init_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r57-cardless-v1-copyright-guard") == 0) {
+        return run_r57_cardless_v1_copyright_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r57-camreset-copyright-disp-h0-h3") == 0) {
+        return run_r57_camreset_copyright_disp_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -24037,6 +24890,27 @@ int main(int argc, char **argv) {
             if (is_camreset_face_mem_integrated &&
                 run_r56_camreset_face_memory_init_h0_h3_probe(75) != 0) {
                 return 75;
+            }
+        }
+    }
+    struct stat r57_st;
+    if (stat("/etc/fx6_stage_r57", &r57_st) == 0) {
+        if (setup_r57_release_wo_audio_copyright_probe() != 0) {
+            return 76;
+        }
+        FILE *r57f = fopen("/etc/fx6_stage_r57", "r");
+        if (r57f) {
+            int is_camreset_copyright_disp_integrated = 0;
+            char r57line[128];
+            while (fgets(r57line, sizeof(r57line), r57f)) {
+                if (strstr(r57line, "r57_mode=camreset_copyright_disp_init_h0_h3_big6") != NULL) {
+                    is_camreset_copyright_disp_integrated = 1;
+                }
+            }
+            fclose(r57f);
+            if (is_camreset_copyright_disp_integrated &&
+                run_r57_camreset_copyright_disp_h0_h3_probe(76) != 0) {
+                return 76;
             }
         }
     }

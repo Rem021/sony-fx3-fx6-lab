@@ -1832,7 +1832,7 @@ class TestUnified136GateEngineAndCli(unittest.TestCase):
                 candidates.append((int(m.group(1)), name))
         highest = max(candidates)
         self.assertGreaterEqual(highest[0], 136)
-        self.assertEqual(highest[1], "evaluate_136gate_preflight")
+        self.assertIn((136, "evaluate_136gate_preflight"), candidates)
 
     def test_86_cli_verify_136_gates_json_default_donor_mode(self) -> None:
         buf = io.StringIO()

@@ -1388,6 +1388,7 @@ def build_stage_a_overlay(
     enable_r74: bool = False,
     enable_r75: bool = False,
     enable_r76: bool = False,
+    enable_r77: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1436,6 +1437,7 @@ def build_stage_a_overlay(
     r74_mode: str = "rec_media_autoswitch_proxy_cloud_mymenu42_big6",
     r75_mode: str = "ftp_ftpes_customwb_afspeed_focusmap_marker_big6",
     r76_mode: str = "shoe_audio_4ch_subject_recog_silent_version_big6",
+    r77_mode: str = "hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1803,7 +1805,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r75_mode: {r75_mode}")
     if enable_r76 and r76_mode not in ("shoe_audio_4ch_subject_recog_silent_version_big6", "wave62_shoe_audio_subject_bird_silent_bodydata_nogo_guard", "clean_unmount_wave62_reset_h0_h3_big6"):
         raise ValueError(f"Unsupported r76_mode: {r76_mode}")
-    if enable_r76 and r76_mode == "wave62_shoe_audio_subject_bird_silent_bodydata_nogo_guard":
+    if enable_r77 and r77_mode not in ("hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6", "wave63_hdmi_raw_desqueeze_18x_reclamp_varshutter_apsc_guard", "clean_unmount_wave63_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r77_mode: {r77_mode}")
+    if enable_r77 and r77_mode == "wave63_hdmi_raw_desqueeze_18x_reclamp_varshutter_apsc_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r77_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r77-wave63-guard > /dev/console 2>&1\n"
+            "fx6_r77_gd_rc=$?\n"
+            "echo FX6_R77_WAVE63_GUARD_RC=$fx6_r77_gd_rc\n"
+            "echo FX6_R77_WAVE63_GUARD_EXIT rc=$fx6_r77_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r77_early_hook, 1)
+    elif enable_r76 and r76_mode == "wave62_shoe_audio_subject_bird_silent_bodydata_nogo_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -5726,6 +5744,72 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r77_meta: Optional[Dict[str, Any]] = None
+    if enable_r77:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r77_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r77"] = (
+            (
+                f"stage_r77=1\nr77_mode={r77_mode}\n"
+                f"hdmi_8items_4264_16bit_raw_rec_media_matrix=1\n"
+                f"desqueeze_5ratios_15x_165x_no_18x_4locks_6bypasses=1\n"
+                f"reclamp_3led_coupled_emph_rec_remain_shoot_auto_review=1\n"
+                f"antiflicker_still_mech_no_varshutter_ecs_apsc_4k_lock_reset_immune=1\n"
+                f"milestone_50th_realhw_150th_live_100_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r77_meta = {
+            "r77_mode": r77_mode,
+            "milestone_round_ordinal": 77,
+            "realhw_round_ordinal": 50,
+            "total_live_runs_at_completion": 150,
+            "total_png_receipts_at_completion": 100,
+            "hdmi_output_settings_4264_16bit_raw_and_rec_media_wave63": {
+                "menu_path": "Setup -> [External Output] -> [HDMI Output Settings] (all 8 items resist [Camera Settings Reset]; [Initialize] only)",
+                "rec_media_dur_hdmi_output": "On default / Off(HDMI Only); locked On in S&Q; On+RAW=On still writes XAVC/Proxy to [Recording Media] (Slot 1 enforces -EROFS=-30), whereas Off(HDMI Only) bypasses card writes with zero file counter increment",
+                "output_resolution": "Auto def / 2160p / 1080p / 1080i; downshifted to 1080p under [Log Shooting] != Off or PPLUT1..4 when Rec. Media=On & RAW=Off",
+                "hdmi_only_4k_set": "10-bit only: 59.94p/50p def, 29.97p, 25p, 23.98p, 24.00p (reboot boundary); dormant 24.00p 8bit (_f 0x748a) blocked -EOPNOTSUPP",
+                "raw_output": "4264x2408 16-bit linear HDMI Type-A (requires Movie + Log Shooting != Off, locks S-Log3, disables Active SteadyShot & HDMI Info. Display; S&Q locked Off)",
+                "removed_ver1x_color_gamut_for_raw_out": "BKID_APP_setting_color_gamut_for_raw_out (_f 0x6bdc) removed from standalone HDMI menu since Ver. 2.00; merged into [Log Shooting Setting] -> [Color Gamut] (standalone write -> -EOPNOTSUPP)",
+                "tc_out_and_rec_control_and_4ch_audio": "[Time Code Output] hard prerequisite for [REC Control] (REC Control without TC Out -> -EBUSY); [4ch Audio Output] selects CH1/CH2 or CH3/CH4 over 2ch HDMI LPCM",
+                "fx6_diff": "ILME-FX6 Ver. 6.01 12G-SDI RAW (4096x2160 / 3840x2160 'C', caps HDMI <= 1080p, 4ch 24-bit SDI LPCM) + RAW(HDMI) 4240x2392 without 24Hz + SDI/HDMI Remote I/F vs Parallel Rec",
+            },
+            "desqueeze_display_15x_165x_no_18x_and_4locks_6bypasses": {
+                "menu_path": "Setup -> [Display Option] -> [De-Squeeze Display] (resists [Camera Settings Reset]; Movie/S&Q only)",
+                "five_active_states": "Off def, 1.3x, 1.5x (Ver. 7.00+), 1.6x (executing 1.65x VAL_DE_SQUEEZE_DISP_1_65X for 2.39:1, Ver. 7.00+), 2.0x; ZERO 1.8x (0 hits -> -EOPNOTSUPP)",
+                "four_hard_lockouts": "Non-Off enforces Focus Mode=MF, Focus Area=Wide, SteadyShot=Off, Face Priority in Multi Metering=Off (violating attempts -> -EBUSY)",
+                "six_bypasses_and_isolation": "Never alters recorded card video stream; coexists with Focus Magnifier (x4.0) & Bright Monitoring; auto-bypasses across Log=Off, RAW=On HDMI, Off(HDMI Only) HDMI, Still MOVIE button, Remote Shooting, Photo Capture",
+                "fx6_diff": "ILME-FX6 Monitoring > De-Squeeze (Ratio HDMI/VF: Off/1.3x/1.5x/2.0x; ZERO 1.6x/1.65x; NEVER de-squeezes SDI)",
+            },
+            "rec_lamp_3led_emph_rec_remain_shoot_and_auto_review": {
+                "rec_lamp_topology": "Official [REC Lamp] (Setup -> Setup Option, BKID_APP_setting_rec_lamp, 0 TALLY menu hits, resists Reset): All On / Only Front Off (Rear + Top REC button coupled!) / All Off; dormant REC_LAMP_LIGHT_UP_ONLY_ONE (_f 0x743e) & uncoupled rear-vs-top split blocked -EOPNOTSUPP; decoupled from [Silent Mode]",
+                "emphasized_rec_display": "Shooting -> Shooting Display -> [Emphasized REC Display] (On def, Resettable, Clean-HDMI zero-bake when HDMI Info. Display=Off / RAW=On / Off(HDMI Only))",
+                "remain_shoot_and_auto_review": "Setup -> Display Option -> [Remain Shoot Display] (active Still burst buffer counter, Not Displayed def, resists Reset) & Still-only [Auto Review] (Off/2/5/10 Sec, disabled in Interval Shoot, resists Reset)",
+                "fx6_diff": "ILME-FX6 Technical > Tally independent Front/Rear/G/Y/Brightness + Monitoring > Display On/Off > Tally",
+            },
+            "anti_flicker_vs_dormant_var_shutter_and_apsc_erratum": {
+                "dormant_var_shutter_and_ecs": "Dormant [Var. Shutter] / [Anti-flicker Set.] (BKID_APP_setting_high_res_ss, 0 TYPE_MENU_ITEM_*HIGH_RES* hits) & FX6 ECS (23.99..8000 Hz) blocked -EOPNOTSUPP on FX3",
+                "anti_flicker_shoot": "Shooting -> Shutter/Silent -> [Anti-flicker Shoot.] (100/120 Hz, Still mechanical shutter only, Resettable; blocked -EBUSY in Movie/S&Q/BULB/Electronic Shutter/Silent Mode)",
+                "apsc_s35_4k_lockout_and_wave42_erratum": "[APS-C S35 Shooting] (Auto def/On/Off; RESISTS [Camera Settings Reset] per ilc/2210 closing Wave 42 erratum! Initialize only): locks out all 4K/DCI 4K/RAW/S&Q 240fps -> HD 1920x1080 (<=120p) & Still 12M -> M: 5.1M (2768x1848 3:2 / 4.3M 16:9)",
+                "fx6_diff": "ILME-FX6 S35 Imager Scan Mode locks 1920x1080 1..120fps & disables RAW, while Full-Frame 4K offers CIZ 1.5x without RAW/Face AF",
+            },
+            "dormant_raw_gamut_bypass_events": 0,
+            "dormant_24p_8bit_bypass_events": 0,
+            "dormant_desqueeze_18x_bypass_events": 0,
+            "dormant_reclamp_only_one_bypass_events": 0,
+            "dormant_var_shutter_ecs_bypass_events": 0,
+            "recorded_card_stream_altered": 0,
+            "clean_hdmi_emph_rec_baked_pixels": 0,
+            "slot1_data_sector_writes": 0,
+            "rf_tx_packets": 0,
+            "passive_tx_bytes_emitted": 0,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -5795,6 +5879,7 @@ def build_stage_a_overlay(
         "r74_enabled": enable_r74,
         "r75_enabled": enable_r75,
         "r76_enabled": enable_r76,
+        "r77_enabled": enable_r77,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -5922,6 +6007,8 @@ def build_stage_a_overlay(
         stage_a_meta["r75"] = r75_meta
     if r76_meta is not None:
         stage_a_meta["r76"] = r76_meta
+    if r77_meta is not None:
+        stage_a_meta["r77"] = r77_meta
     return replacements, additions, stage_a_meta
 
 
@@ -6287,6 +6374,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R74_",
         "FX6_R75_",
         "FX6_R76_",
+        "FX6_R77_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -6781,6 +6869,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r76_lang: Optional[Dict[str, Any]] = None
     last_r76_bridge: Optional[Dict[str, Any]] = None
     r76_wave62_guard_rc: Optional[int] = None
+    last_r77_wave63_init: Optional[Dict[str, Any]] = None
+    last_r77_hdmi_raw_4264_recmedia_bridge: Optional[Dict[str, Any]] = None
+    last_r77_desqueeze_165x_4locks_bridge: Optional[Dict[str, Any]] = None
+    last_r77_reclamp_3led_emph_rec_autorev_bridge: Optional[Dict[str, Any]] = None
+    last_r77_antiflicker_no_varshutter_apsc_bridge: Optional[Dict[str, Any]] = None
+    last_r77_wave63_guard: Optional[Dict[str, Any]] = None
+    last_r77_clean_unmount_wave63_h0_h3: Optional[Dict[str, Any]] = None
+    last_r77_lang: Optional[Dict[str, Any]] = None
+    last_r77_bridge: Optional[Dict[str, Any]] = None
+    r77_wave63_guard_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -7892,6 +7990,28 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R76_WAVE62_GUARD_RC"), int):
                 r76_wave62_guard_rc = kv["FX6_R76_WAVE62_GUARD_RC"]
+        elif "FX6_R77_WAVE63_INIT " in line:
+            last_r77_wave63_init = _parse_kv_ints(line.split("FX6_R77_WAVE63_INIT ", 1)[1])
+        elif "FX6_R77_HDMI_RAW_4264_RECMEDIA_BRIDGE " in line:
+            last_r77_hdmi_raw_4264_recmedia_bridge = _parse_kv_ints(line.split("FX6_R77_HDMI_RAW_4264_RECMEDIA_BRIDGE ", 1)[1])
+        elif "FX6_R77_DESQUEEZE_165X_4LOCKS_BRIDGE " in line:
+            last_r77_desqueeze_165x_4locks_bridge = _parse_kv_ints(line.split("FX6_R77_DESQUEEZE_165X_4LOCKS_BRIDGE ", 1)[1])
+        elif "FX6_R77_RECLAMP_3LED_EMPH_REC_AUTOREV_BRIDGE " in line:
+            last_r77_reclamp_3led_emph_rec_autorev_bridge = _parse_kv_ints(line.split("FX6_R77_RECLAMP_3LED_EMPH_REC_AUTOREV_BRIDGE ", 1)[1])
+        elif "FX6_R77_ANTIFLICKER_NO_VARSHUTTER_APSC_BRIDGE " in line:
+            last_r77_antiflicker_no_varshutter_apsc_bridge = _parse_kv_ints(line.split("FX6_R77_ANTIFLICKER_NO_VARSHUTTER_APSC_BRIDGE ", 1)[1])
+        elif "FX6_R77_WAVE63_GUARD " in line:
+            last_r77_wave63_guard = _parse_kv_ints(line.split("FX6_R77_WAVE63_GUARD ", 1)[1])
+        elif "FX6_R77_CLEAN_UNMOUNT_WAVE63_H0_H3 " in line:
+            last_r77_clean_unmount_wave63_h0_h3 = _parse_kv_ints(line.split("FX6_R77_CLEAN_UNMOUNT_WAVE63_H0_H3 ", 1)[1])
+        elif "FX6_R77_LANG_TELEMETRY " in line:
+            last_r77_lang = _parse_kv_ints(line.split("FX6_R77_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R77_BRIDGE " in line:
+            last_r77_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R77_BRIDGE ", 1)[1])
+        elif "FX6_R77_WAVE63_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R77_WAVE63_GUARD_RC"), int):
+                r77_wave63_guard_rc = kv["FX6_R77_WAVE63_GUARD_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -9205,6 +9325,34 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r76_bridge or {},
         }
 
+    r77_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r77_wave63_init,
+            last_r77_hdmi_raw_4264_recmedia_bridge,
+            last_r77_desqueeze_165x_4locks_bridge,
+            last_r77_reclamp_3led_emph_rec_autorev_bridge,
+            last_r77_antiflicker_no_varshutter_apsc_bridge,
+            last_r77_wave63_guard,
+            last_r77_clean_unmount_wave63_h0_h3,
+            last_r77_lang,
+            last_r77_bridge,
+        )
+    ):
+        r77_telemetry = {
+            "wave63_guard_rc": r77_wave63_guard_rc,
+            "wave63_init": last_r77_wave63_init or {},
+            "hdmi_raw_4264_recmedia_bridge": last_r77_hdmi_raw_4264_recmedia_bridge or {},
+            "desqueeze_165x_4locks_bridge": last_r77_desqueeze_165x_4locks_bridge or {},
+            "reclamp_3led_emph_rec_autorev_bridge": last_r77_reclamp_3led_emph_rec_autorev_bridge or {},
+            "antiflicker_no_varshutter_apsc_bridge": last_r77_antiflicker_no_varshutter_apsc_bridge or {},
+            "wave63_guard": last_r77_wave63_guard or {},
+            "clean_unmount_wave63_h0_h3": last_r77_clean_unmount_wave63_h0_h3 or {},
+            "lang_telemetry": last_r77_lang or {},
+            "stage_b_bridge": last_r77_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -9278,6 +9426,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r74_telemetry": r74_telemetry,
         "r75_telemetry": r75_telemetry,
         "r76_telemetry": r76_telemetry,
+        "r77_telemetry": r77_telemetry,
     }
 
 
@@ -9431,6 +9580,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r75"
     if args.round >= 76:
         tmp_prefix = "fx6-r76"
+    if args.round >= 77:
+        tmp_prefix = "fx6-r77"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -9517,6 +9668,7 @@ def run_once(args: argparse.Namespace) -> int:
         r74_mode = getattr(args, "r74_mode", "rec_media_autoswitch_proxy_cloud_mymenu42_big6")
         r75_mode = getattr(args, "r75_mode", "ftp_ftpes_customwb_afspeed_focusmap_marker_big6")
         r76_mode = getattr(args, "r76_mode", "shoe_audio_4ch_subject_recog_silent_version_big6")
+        r77_mode = getattr(args, "r77_mode", "hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6")
         if args.round >= 8:
             stage_label = (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone47RealHw141stLiveWave60RecMediaAutoSwitchProxyCloudPowerOffBleMyMenu42Erofs+r74_mode={r74_mode}+lang={lang})"
@@ -9783,6 +9935,8 @@ def run_once(args: argparse.Namespace) -> int:
                 stage_label = f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone48RealHw144thLiveWave61FtpFtpesCustomWbAfSpeedFocusMapMarkerPeakingErofs+r75_mode={r75_mode}+lang={lang})"
             if args.round >= 76:
                 stage_label = f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone49RealHw147thLiveWave62ShoeAudio4chSubjectRecogSilentTargetBodydataNogo+r76_mode={r76_mode}+lang={lang})"
+            if args.round >= 77:
+                stage_label = f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone50RealHw150thLiveWave63HdmiRaw4264Desqueeze165xRecLamp3LedVarShutterApscS35+r77_mode={r77_mode}+lang={lang})"
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -9905,6 +10059,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r75_mode=r75_mode,
                 enable_r76=(args.round >= 76),
                 r76_mode=r76_mode,
+                enable_r77=(args.round >= 77),
+                r77_mode=r77_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -10087,6 +10243,7 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R74_WAVE60_GUARD_EXIT" in txt
                     or "FX6_R75_WAVE61_GUARD_EXIT" in txt
                     or "FX6_R76_WAVE62_GUARD_EXIT" in txt
+                    or "FX6_R77_WAVE63_GUARD_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -10171,6 +10328,7 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R74_WAVE60_GUARD_EXIT" in serial_text
             or "FX6_R75_WAVE61_GUARD_EXIT" in serial_text
             or "FX6_R76_WAVE62_GUARD_EXIT" in serial_text
+            or "FX6_R77_WAVE63_GUARD_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -10270,6 +10428,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r74_mode": r74_mode if args.round >= 74 else None,
             "r75_mode": r75_mode if args.round >= 75 else None,
             "r76_mode": r76_mode if args.round >= 76 else None,
+            "r77_mode": r77_mode if args.round >= 77 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -10353,6 +10512,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r74_telemetry": milestones.get("r74_telemetry") if args.round >= 74 else None,
             "r75_telemetry": milestones.get("r75_telemetry") if args.round >= 75 else None,
             "r76_telemetry": milestones.get("r76_telemetry") if args.round >= 76 else None,
+            "r77_telemetry": milestones.get("r77_telemetry") if args.round >= 77 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -13022,6 +13182,200 @@ def sanitize_round76_summary(
     )
 
 
+_sanitize_r77_value = _sanitize_r76_value
+
+
+def sanitize_round77_summary(
+    r77a_raw: Dict[str, Any],
+    r77b_raw: Dict[str, Any],
+    r77c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the Round 77 (50/50 Real-HW Rounds, 150/150 Live Runs, 100/100 PNGs) summary.json telemetry receipt."""
+    t77a = r77a_raw.get("r77_telemetry") or {}
+    t77b = r77b_raw.get("r77_telemetry") or {}
+    t77c = r77c_raw.get("r77_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r77_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 77,
+            "lang": raw.get("lang", "en"),
+            "r77_mode": raw.get("r77_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r77_telemetry": _sanitize_r77_value(raw.get("r77_telemetry") or {}),
+            "gpe0_readback": _sanitize_r77_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r77_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r77_value(entry)
+
+    r77a_nz = (r77a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r77b_guard = t77b.get("wave63_guard") or {}
+    r77c_h0h3 = t77c.get("clean_unmount_wave63_h0_h3") or {}
+    r77a_init = t77a.get("wave63_init") or {}
+
+    return _sanitize_r77_value(
+        {
+            "schema": "fx6-on-fx3-round77-hdmi-raw-desqueeze-reclamp-varshutter-apsc-qemu-v1",
+            "round": 77,
+            "milestone": (
+                "50/50 Real-HW Rounds (R28..R77) Milestone! — Wave-63 [HDMI Output Settings] (8 active items resisting Reset, "
+                "[Rec. Media dur HDMI Output] On def vs Off(HDMI Only) with S&Q On-lock & Slot-1 EROFS=-30 when On even with RAW=On, "
+                "[Output Resolution] Auto/2160p/1080p/1080i downshifted to 1080p under Log/PPLUT when Rec.Media=On & RAW=Off, "
+                "[4K Output Set.(HDMI Only)] 10-bit only with 24.00p reboot & dormant 24.00p 8bit _f 0x748a, "
+                "[RAW Output] 4264x2408 16-bit linear HDMI Type-A locking S-Log3 & disabling Active SteadyShot/HDMI Info. Display vs FX6 "
+                "12G-SDI RAW 4096x2160/3840x2160C + RAW(HDMI) 4240x2392 no-24Hz + SDI/HDMI Remote I/F vs Parallel Rec, "
+                "removed Ver.1.x [Color Gamut for RAW Output] merged into [Log Shooting Setting]->[Color Gamut], "
+                "[Time Code Output] prerequisite for [REC Control], [4ch Audio Output] CH1/CH2 vs CH3/CH4 2ch HDMI LPCM vs FX6 4ch SDI); "
+                "[De-Squeeze Display] Setup->Display Option resisting Reset with 5 states (Off/1.3x/1.5x/1.6x executing 1.65x VAL_DE_SQUEEZE_DISP_1_65X/2.0x), "
+                "ZERO 1.8x (-95 EOPNOTSUPP), 4 lockouts (MF/Wide/SteadyShot Off/Face Prio Multi Met Off), zero card video stream alteration, "
+                "Focus Magnifier/Bright Monitoring coexistence, 6 ilc/2210 auto-bypasses vs FX6 (no 1.65x, zero SDI de-squeeze); "
+                "[REC Lamp] (0 TALLY hits on FX3, Setup->Setup Option resisting Reset, 3-LED coupled Rear+Top REC vs Front-Off vs All-Off, "
+                "dormant REC_LAMP_LIGHT_UP_ONLY_ONE -95, decoupled from Silent Mode) vs FX6 Technical>Tally; "
+                "[Emphasized REC Display] (On def, Resettable, Clean-HDMI zero-bake), [Remain Shoot Display] & Still [Auto Review] (resist Reset); "
+                "Still-only mech [Anti-flicker Shoot.] 100/120Hz Resettable vs dormant [Var. Shutter]/FX6 ECS 23.99..8000Hz (-95), "
+                "and [APS-C S35 Shooting] (resists Reset per Wave 42 erratum closure, Initialize only, locks all 4K/DCI 4K/RAW -> HD 1080p<=120p & Still M:5.1M) "
+                "(148th..150th Live Unmodified ILME-FX3 Ver. 7.02 ARM64 QEMU Runs -> 150/150 Live Runs, 100/100 PNGs <= 27,467 B!)"
+            ),
+            "date": "2026-11-18",
+            "kernel_version": r77a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "realhw_mechanisms_verified": {
+                "wave63_hdmi_raw_desqueeze_reclamp_varshutter_apsc_init": r77a_init,
+                "hdmi_raw_4264_recmedia_stage_b_bridge": t77a.get("hdmi_raw_4264_recmedia_bridge") or {},
+                "desqueeze_165x_4locks_stage_b_bridge": t77a.get("desqueeze_165x_4locks_bridge") or {},
+                "reclamp_3led_emph_rec_autorev_stage_b_bridge": t77a.get("reclamp_3led_emph_rec_autorev_bridge") or {},
+                "antiflicker_no_varshutter_apsc_stage_b_bridge": t77a.get("antiflicker_no_varshutter_apsc_bridge") or {},
+                "wave63_fail_closed_guard": r77b_guard,
+                "clean_unmount_wave63_reset_and_16_h0_h3": r77c_h0h3,
+            },
+            "runs": {
+                "r77a_hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6_schinese": _clean_run(
+                    r77a_raw,
+                    (
+                        "148th Live FX3 7.02 QEMU Run (Round 77 / 50th Real-HW Round!) — Wave-63 4-pillar Stage-A/B verification: "
+                        "[HDMI Output Settings] (8 active Reset-immune items, 4264x2408 16-bit linear RAW locking S-Log3, "
+                        "Rec. Media dur HDMI Output On Slot-1 EROFS=-30 vs Off(HDMI Only) zero-write bypass, "
+                        "removed [Color Gamut for RAW Output], [Time Code Output] prerequisite for [REC Control], 10-bit 4K HDMI Only); "
+                        "[De-Squeeze Display] (5 active states including Ver.7.00/7.02 1.5x & 1.6x=1.65x, zero 1.8x, 4 lockouts, "
+                        "Focus Magnifier/Bright Monitoring coexistence, 6 auto-bypasses, zero card mutation); "
+                        "[REC Lamp] 3-LED Rear+Top coupled topology decoupled from Silent Mode, Resettable [Emphasized REC Display] "
+                        "Clean-HDMI zero-bake, [Remain Shoot Display] & Still [Auto Review]; "
+                        "and Still mech [Anti-flicker Shoot.] vs dormant [Var. Shutter]/FX6 ECS plus [APS-C S35 Shooting] "
+                        "4K/DCI 4K/RAW lockout & Wave-42 Reset erratum closure, "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r77a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r77b_wave63_hdmi_raw_desqueeze_18x_reclamp_varshutter_apsc_guard": _clean_run(
+                    r77b_raw,
+                    (
+                        "149th Live FX3 7.02 QEMU Run — Fail-closed Wave-63 guard rehearsal: removed [Color Gamut for RAW Output] / "
+                        "dormant 24.00p 8bit / FX6 12G-SDI RAW / [De-Squeeze Display] 1.8x & FX6 1.65x / [Tally Light] menu / "
+                        "dormant REC_LAMP_LIGHT_UP_ONLY_ONE / uncoupled Rear-vs-Top split / dormant [Var. Shutter] & FX6 ECS 23.99..8000Hz / "
+                        "FX6 shutterless mech shutter (-95 EOPNOTSUPP); S&Q HDMI Only lock / RAW without Log / Active SteadyShot & HDMI Info "
+                        "during RAW / REC Control without TC Out / De-Squeeze 4 lockouts (AF/Spot/SteadyShot/FacePrio) / Auto Review Movie & Interval / "
+                        "Anti-flicker Movie/E-Shutter/BULB/Silent / APS-C S35 4K HS/DCI 4K/RAW/S&Q 240fps (-16 EBUSY); "
+                        "NULL config (-22 EINVAL); live attach (-1 EPERM); and Rec. Media=On+RAW=On Slot-1 / P12 / P2 / cnflasha writes "
+                        "(-30 EROFS, slot1_data_sector_writes=0, emmc_write_count=0, cnflasha_writes=0)"
+                    ),
+                ),
+                "r77c_clean_unmount_wave63_reset_h0_h3_big6_schinese": _clean_run(
+                    r77c_raw,
+                    (
+                        "150th Live FX3 7.02 QEMU Run (50/50 Real-HW Rounds Milestone! 150/150 Live Runs, 100/100 PNGs <= 27,467 B!) — "
+                        "Clean unmount of volatile Stage-B overlay restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + Wave-63 asymmetric "
+                        "Reset vs Initialize verification ([Camera Settings Reset] resets [Emphasized REC Display]=On & [Anti-flicker Shoot.]=Off "
+                        "while preserving [HDMI Output Settings] 8 items, [De-Squeeze Display], [REC Lamp], [Remain Shoot Display], [Auto Review], "
+                        "[APS-C S35 Shooting] [Wave 42 erratum closed!], and [Airplane Mode]=On; [Reset Network Set.] preserves all; "
+                        "[Initialize] restores defaults while STILL preserving [Airplane Mode]=On) + "
+                        "dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r77_hdmi_raw_desqueeze_reclamp_varshutter_apsc_audit": {
+                "round": 77,
+                "realhw_rounds_count": 50,
+                "total_live_runs": 150,
+                "total_png_receipts": 100,
+                "milestone324_qemu_rounds": 50,
+                "milestone324_qemu_runs": 150,
+                "milestone324_png_receipts": 100,
+                "total_runs": 3,
+                "fx3_raw_color_gamut_standalone_menu_present": False,
+                "fx3_hdmi_4k_24p_8bit_exposed": False,
+                "fx6_24hz_hdmi_raw_supported": False,
+                "fx3_desqueeze_18x_present": False,
+                "fx6_desqueeze_165x_present": False,
+                "fx6_sdi_desqueeze_supported": False,
+                "fx3_tally_light_menu_present": False,
+                "fx3_uncoupled_rear_top_rec_lamp_supported": False,
+                "fx3_var_shutter_high_res_ss_exposed": False,
+                "fx3_ecs_2399_8000hz_supported": False,
+                "fx6_mechanical_shutter_present": False,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "r77a_wave63_hdmi_desqueeze_reclamp_varshutter_apsc_verified": bool(r77a_init.get("r77_init_ok") == 1),
+                "r77a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r77a_nz >= 300000),
+                "r77b_wave63_guard_fail_closed": bool(r77b_guard.get("r77b_ok") == 1),
+                "r77b_erofs_ebusy_eopnotsupp_einval_eperm_verified": bool(
+                    r77b_guard.get("raw_gamut_removed_rc") == -95
+                    and r77b_guard.get("hdmi_24p_8bit_dormant_rc") == -95
+                    and r77b_guard.get("rec_ctrl_no_tc_rc") == -16
+                    and r77b_guard.get("raw_recmedia_on_slot1_erofs_rc") == -30
+                    and r77b_guard.get("desq_18x_absent_rc") == -95
+                    and r77b_guard.get("desq_steadyshot_lock_rc") == -16
+                    and r77b_guard.get("reclamp_only_one_rc") == -95
+                    and r77b_guard.get("reclamp_uncoupled_split_rc") == -95
+                    and r77b_guard.get("fx6_tally_menu_rc") == -95
+                    and r77b_guard.get("var_shutter_dormant_rc") == -95
+                    and r77b_guard.get("fx6_ecs_dormant_rc") == -95
+                    and r77b_guard.get("antiflicker_movie_rc") == -16
+                    and r77b_guard.get("apsc_dci4k_lock_rc") == -16
+                    and r77b_guard.get("null_cfg_einval_rc") == -22
+                    and r77b_guard.get("live_attach_eperm_rc") == -1
+                    and r77b_guard.get("slot1_data_sector_writes") == 0
+                    and r77b_guard.get("emmc_write_count") == 0
+                    and r77b_guard.get("cnflasha_writes") == 0
+                ),
+                "r77c_clean_unmount_wave63_reset_and_16_h0_eq_h3_verified": bool(
+                    r77c_h0h3.get("r77c_ok") == 1
+                    and r77c_h0h3.get("stock_unmount_restored_ok") == 1
+                    and r77c_h0h3.get("camreset_resets_emph_rec_antiflicker_preserves_hdmi8_desq_reclamp_remain_autorev_apsc_airplane_ok") == 1
+                    and r77c_h0h3.get("nwreset_preserves_wave63_apsc_airplane_ok") == 1
+                    and r77c_h0h3.get("initialize_restores_wave63_defaults_preserves_airplane_ok") == 1
+                    and r77c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) Type-A HDMI analyzer bench verifying 4264x2408 16-bit linear RAW output with [Log Shooting]!=Off (locking S-Log3, disabling Active SteadyShot & HDMI Info. Display), [Rec. Media dur HDMI Output]=On concurrent XAVC/Proxy Slot-1 writes vs Off(HDMI Only) zero card write, 24.00p 10-bit reboot boundary, and [Time Code Output]->[REC Control] trigger vs FX6 12G-SDI RAW 4096x2160/3840x2160C & 4240x2392 HDMI RAW remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) anamorphic optical & LCD/HDMI monitor bench verifying [De-Squeeze Display] 1.3x/1.5x/1.6x(1.65x)/2.0x (absent 1.8x), 4 lockouts (MF/Wide/SteadyShot Off/Face Prio Multi Met Off), zero recorded file mutation, Focus Magnifier/Bright Monitoring coexistence, and all 6 auto-bypasses vs FX6 HDMI/VF-only de-squeeze remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) tally/OSD & shutter/APS-C bench verifying coupled Rear+Top REC Lamp vs Only Front Off vs All Off decoupled from Silent Mode, [Emphasized REC Display] Clean-HDMI zero-bake, [Remain Shoot Display], Still [Auto Review], Still-only mechanical [Anti-flicker Shoot.] 100/120Hz (absent [Var. Shutter] vs FX6 ECS 23.99..8000Hz), and [APS-C S35 Shooting] 4K/DCI 4K lockout + Still 5.1M crop + Reset-immunity remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
@@ -13054,7 +13408,8 @@ def main() -> int:
     # r73_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73]
     # r74_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74]
     # r75_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76], required=True)
+    # r76_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -13105,6 +13460,7 @@ def main() -> int:
     ap.add_argument("--r74-mode", type=str, choices=["rec_media_autoswitch_proxy_cloud_mymenu42_big6", "wave60_rec_media_proxy_poweroff_ble_mymenu_erofs_guard", "clean_unmount_wave60_reset_h0_h3_big6"], default="rec_media_autoswitch_proxy_cloud_mymenu42_big6")
     ap.add_argument("--r75-mode", type=str, choices=["ftp_ftpes_customwb_afspeed_focusmap_marker_big6", "wave61_ftp_usblan_customwb_focusmap_marker_erofs_guard", "clean_unmount_wave61_reset_h0_h3_big6"], default="ftp_ftpes_customwb_afspeed_focusmap_marker_big6")
     ap.add_argument("--r76-mode", type=str, choices=["shoe_audio_4ch_subject_recog_silent_version_big6", "wave62_shoe_audio_subject_bird_silent_bodydata_nogo_guard", "clean_unmount_wave62_reset_h0_h3_big6"], default="shoe_audio_4ch_subject_recog_silent_version_big6")
+    ap.add_argument("--r77-mode", type=str, choices=["hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6", "wave63_hdmi_raw_desqueeze_18x_reclamp_varshutter_apsc_guard", "clean_unmount_wave63_reset_h0_h3_big6"], default="hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

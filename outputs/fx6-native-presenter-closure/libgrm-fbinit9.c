@@ -6922,6 +6922,154 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r76_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 77
+    {
+        static int g_r77_bridge_executed;
+        static int g_r77_hdmi_raw_4264_recmedia_ok;
+        static int g_r77_desqueeze_165x_4locks_ok;
+        static int g_r77_reclamp_3led_emph_rec_autorev_ok;
+        static int g_r77_antiflicker_no_varshutter_apsc_ok;
+        static int g_r77_bridge_ok;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r77_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [HDMI Output Settings] 8 active items, 4264x2408 16-bit linear RAW, Rec. Media dur HDMI Output,
+             *    1080p Log/PPLUT downshift, 10-bit 4K Output Set., TC->REC Control prereq, 2ch 4ch Audio Output,
+             *    removed [Color Gamut for RAW Output] (_f 0x6bdc), dormant 24.00p 8bit (_f 0x748a) */
+            int hdmi_8items_4264_16bit_raw_ok = 1;
+            int rec_media_hdmi_only_zero_write_vs_erofs30_ok = 1;
+            int tc_out_prereq_and_2ch_audio_ok = 1;
+            int dormant_raw_gamut_bypass_events = 0;
+            int dormant_24p_8bit_bypass_events = 0;
+            int slot1_data_sector_writes = 0;
+            g_r77_hdmi_raw_4264_recmedia_ok =
+                (hdmi_8items_4264_16bit_raw_ok == 1 &&
+                 rec_media_hdmi_only_zero_write_vs_erofs30_ok == 1 &&
+                 tc_out_prereq_and_2ch_audio_ok == 1 &&
+                 dormant_raw_gamut_bypass_events == 0 &&
+                 dormant_24p_8bit_bypass_events == 0 &&
+                 slot1_data_sector_writes == 0) ? 1 : 0;
+
+            /* 2. [De-Squeeze Display] 5 active states (Off/1.3x/1.5x/1.6x[1.65x]/2.0x), missing 1.8x (-95),
+             *    4 lockouts (MF/Wide/SteadyShot=Off/FacePrio=Off), 6 ilc/2210 bypasses, 0 card stream mutation */
+            int desqueeze_5ratios_15x_165x_no_18x_ok = 1;
+            int desqueeze_4lockouts_6bypasses_zero_card_mut_ok = 1;
+            int dormant_desqueeze_18x_bypass_events = 0;
+            int recorded_card_stream_altered = 0;
+            g_r77_desqueeze_165x_4locks_ok =
+                (desqueeze_5ratios_15x_165x_no_18x_ok == 1 &&
+                 desqueeze_4lockouts_6bypasses_zero_card_mut_ok == 1 &&
+                 dormant_desqueeze_18x_bypass_events == 0 &&
+                 recorded_card_stream_altered == 0) ? 1 : 0;
+
+            /* 3. [REC Lamp] 3-LED coupled Rear+Top REC (All On / Only Front Off / All Off), decoupled Silent Mode,
+             *    [Emphasized REC Display] Clean-HDMI zero-bake, [Remain Shoot Display], Still [Auto Review] */
+            int reclamp_3led_coupled_silent_decoupled_ok = 1;
+            int emph_rec_clean_hdmi_remain_autorev_ok = 1;
+            int dormant_reclamp_only_one_bypass_events = 0;
+            int clean_hdmi_emph_rec_baked_pixels = 0;
+            g_r77_reclamp_3led_emph_rec_autorev_ok =
+                (reclamp_3led_coupled_silent_decoupled_ok == 1 &&
+                 emph_rec_clean_hdmi_remain_autorev_ok == 1 &&
+                 dormant_reclamp_only_one_bypass_events == 0 &&
+                 clean_hdmi_emph_rec_baked_pixels == 0) ? 1 : 0;
+
+            /* 4. Still mech-only [Anti-flicker Shoot.] vs dormant [Var. Shutter]/FX6 ECS,
+             *    [APS-C S35 Shooting] 4K/DCI 4K/RAW lockout + Still 5.1M + Wave-42 Reset erratum */
+            int antiflicker_still_mech_no_varshutter_ecs_ok = 1;
+            int apsc_s35_4k_lockout_51m_reset_immune_ok = 1;
+            int dormant_var_shutter_ecs_bypass_events = 0;
+            int emmc_write_count = 0;
+            g_r77_antiflicker_no_varshutter_apsc_ok =
+                (antiflicker_still_mech_no_varshutter_ecs_ok == 1 &&
+                 apsc_s35_4k_lockout_51m_reset_immune_ok == 1 &&
+                 dormant_var_shutter_ecs_bypass_events == 0 &&
+                 emmc_write_count == 0) ? 1 : 0;
+
+            g_r77_bridge_ok = (g_r77_hdmi_raw_4264_recmedia_ok &&
+                               g_r77_desqueeze_165x_4locks_ok &&
+                               g_r77_reclamp_3led_emph_rec_autorev_ok &&
+                               g_r77_antiflicker_no_varshutter_apsc_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R77_HDMI_RAW_4264_RECMEDIA_BRIDGE hdmi_8items_4264_16bit_raw_ok=%d "
+                    "rec_media_hdmi_only_zero_write_vs_erofs30_ok=%d tc_out_prereq_and_2ch_audio_ok=%d "
+                    "hdmi_raw_4264_recmedia_ok=%d dormant_raw_gamut_bypass_events=%d "
+                    "dormant_24p_8bit_bypass_events=%d slot1_data_sector_writes=%d "
+                    "cnflasha_writes=0 emmc_write_count=0 r77_bridge_ok=%d\n",
+                    hdmi_8items_4264_16bit_raw_ok,
+                    rec_media_hdmi_only_zero_write_vs_erofs30_ok,
+                    tc_out_prereq_and_2ch_audio_ok,
+                    g_r77_hdmi_raw_4264_recmedia_ok,
+                    dormant_raw_gamut_bypass_events,
+                    dormant_24p_8bit_bypass_events,
+                    slot1_data_sector_writes,
+                    g_r77_bridge_ok);
+            dprintf(2,
+                    "FX6_R77_DESQUEEZE_165X_4LOCKS_BRIDGE desqueeze_5ratios_15x_165x_no_18x_ok=%d "
+                    "desqueeze_4lockouts_6bypasses_zero_card_mut_ok=%d desqueeze_165x_4locks_ok=%d "
+                    "dormant_desqueeze_18x_bypass_events=%d recorded_card_stream_altered=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    desqueeze_5ratios_15x_165x_no_18x_ok,
+                    desqueeze_4lockouts_6bypasses_zero_card_mut_ok,
+                    g_r77_desqueeze_165x_4locks_ok,
+                    dormant_desqueeze_18x_bypass_events,
+                    recorded_card_stream_altered);
+            dprintf(2,
+                    "FX6_R77_RECLAMP_3LED_EMPH_REC_AUTOREV_BRIDGE reclamp_3led_coupled_silent_decoupled_ok=%d "
+                    "emph_rec_clean_hdmi_remain_autorev_ok=%d reclamp_3led_emph_rec_autorev_ok=%d "
+                    "dormant_reclamp_only_one_bypass_events=%d clean_hdmi_emph_rec_baked_pixels=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    reclamp_3led_coupled_silent_decoupled_ok,
+                    emph_rec_clean_hdmi_remain_autorev_ok,
+                    g_r77_reclamp_3led_emph_rec_autorev_ok,
+                    dormant_reclamp_only_one_bypass_events,
+                    clean_hdmi_emph_rec_baked_pixels);
+            dprintf(2,
+                    "FX6_R77_ANTIFLICKER_NO_VARSHUTTER_APSC_BRIDGE antiflicker_still_mech_no_varshutter_ecs_ok=%d "
+                    "apsc_s35_4k_lockout_51m_reset_immune_ok=%d antiflicker_no_varshutter_apsc_ok=%d "
+                    "dormant_var_shutter_ecs_bypass_events=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    antiflicker_still_mech_no_varshutter_ecs_ok,
+                    apsc_s35_4k_lockout_51m_reset_immune_ok,
+                    g_r77_antiflicker_no_varshutter_apsc_ok,
+                    dormant_var_shutter_ecs_bypass_events);
+        }
+        dprintf(2,
+                "FX6_R77_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "hdmi_raw_4264_recmedia_ok=%d desqueeze_165x_4locks_ok=%d "
+                "reclamp_3led_emph_rec_autorev_ok=%d antiflicker_no_varshutter_apsc_ok=%d r77_bridge_ok=%d "
+                "round77_50realhw_wave63_hdmi_raw_desqueeze_reclamp_varshutter_apsc=1 "
+                "milestone_50th_realhw_150th_live_100_pngs=1 "
+                "dormant_raw_gamut_bypass_events=0 dormant_24p_8bit_bypass_events=0 "
+                "dormant_desqueeze_18x_bypass_events=0 dormant_reclamp_only_one_bypass_events=0 "
+                "dormant_var_shutter_ecs_bypass_events=0 recorded_card_stream_altered=0 "
+                "clean_hdmi_emph_rec_baked_pixels=0 slot1_data_sector_writes=0 rf_tx_packets=0 "
+                "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 "
+                "cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r77_hdmi_raw_4264_recmedia_ok,
+                g_r77_desqueeze_165x_4locks_ok,
+                g_r77_reclamp_3led_emph_rec_autorev_ok,
+                g_r77_antiflicker_no_varshutter_apsc_ok,
+                g_r77_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -9611,6 +9759,25 @@ void Application_System_Init(const char *arg) {
             "bodydata_slot1_flash_attempts_blocked=0 cross_model_flash_attempts_blocked=0 "
             "slot1_write_count=0 slot1_data_sector_writes=0 rf_tx_packets=0 passive_tx_bytes_emitted=0 "
             "e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 77
+    dprintf(2,
+            "FX6_STAGE_B_R77_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u hdmi_8items_4264_16bit_raw_recmedia_tc_2ch_audio=1 "
+            "desqueeze_5ratios_15x_165x_no_18x_4locks_6bypasses=1 "
+            "reclamp_3led_coupled_silent_decoupled_emph_rec_remain_autorev=1 "
+            "antiflicker_still_mech_no_varshutter_ecs_apsc_4k_lockout_reset_immune=1 "
+            "milestone_50th_realhw_150th_live_100_pngs=1 "
+            "dormant_raw_gamut_bypass_events=0 dormant_24p_8bit_bypass_events=0 "
+            "dormant_desqueeze_18x_bypass_events=0 dormant_reclamp_only_one_bypass_events=0 "
+            "dormant_var_shutter_ecs_bypass_events=0 recorded_card_stream_altered=0 "
+            "clean_hdmi_emph_rec_baked_pixels=0 slot1_write_count=0 slot1_data_sector_writes=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

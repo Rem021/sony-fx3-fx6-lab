@@ -46878,6 +46878,1241 @@ static int run_r76_clean_unmount_wave62_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ==================== Round 77 (50th Real-HW Round Milestone, Wave-63) ==================== */
+typedef enum {
+    R77_MODE_STILL = 0,
+    R77_MODE_MOVIE = 1,
+    R77_MODE_SQ = 2
+} r77_shoot_mode_t;
+
+typedef enum {
+    R77_HDMI_RES_AUTO = 0,
+    R77_HDMI_RES_2160P = 1,
+    R77_HDMI_RES_1080P = 2,
+    R77_HDMI_RES_1080I = 3
+} r77_hdmi_res_t;
+
+typedef enum {
+    R77_HDMI_4K_5994P_10B = 0,
+    R77_HDMI_4K_2997P_10B = 1,
+    R77_HDMI_4K_25P_10B = 2,
+    R77_HDMI_4K_2398P_10B = 3,
+    R77_HDMI_4K_2400P_10B = 4,
+    R77_HDMI_4K_DORMANT_2400P_8B = 5  /* _f 0x748a dormant on FX3 */
+} r77_hdmi_4k_rate_t;
+
+typedef enum {
+    R77_DESQUEEZE_OFF = 0,
+    R77_DESQUEEZE_1_3X = 1,
+    R77_DESQUEEZE_1_5X = 2,            /* Ver. 7.00/7.02 active */
+    R77_DESQUEEZE_1_6X_165X = 3,       /* Executes 1.65x VAL_DE_SQUEEZE_DISP_1_65X */
+    R77_DESQUEEZE_2_0X = 4,
+    R77_DESQUEEZE_DORMANT_1_8X = 5     /* Completely absent (0 hits) on FX3 & FX6 */
+} r77_desqueeze_ratio_t;
+
+typedef enum {
+    R77_RECLAMP_ALL_ON = 0,            /* _f 0x6337 default */
+    R77_RECLAMP_ONLY_FRONT_OFF = 1,    /* _f 0x727c Rear + Top REC coupled */
+    R77_RECLAMP_ALL_OFF = 2,           /* _f 0x6d8c */
+    R77_RECLAMP_DORMANT_LIGHT_UP_ONLY_ONE = 3, /* _f 0x743e dormant on FX3 */
+    R77_RECLAMP_UNCOUPLED_REAR_TOP_SPLIT = 4   /* hardware-coupled Rear+Top REC */
+} r77_rec_lamp_t;
+
+typedef enum {
+    R77_REMAIN_NOT_DISPLAYED = 0,      /* _f 0x613e default */
+    R77_REMAIN_ALWAYS_DISPLAY = 1,     /* _f 0x72b5 */
+    R77_REMAIN_SHOOT_ONLY_DISPLAY = 2  /* _f 0x76eb */
+} r77_remain_shoot_t;
+
+typedef enum {
+    R77_AUTOREV_OFF = 0,
+    R77_AUTOREV_2S = 1,
+    R77_AUTOREV_5S = 2,
+    R77_AUTOREV_10S = 3
+} r77_auto_review_t;
+
+typedef enum {
+    R77_APSC_AUTO = 0,                 /* default; resists Camera Settings Reset per Wave-42 erratum */
+    R77_APSC_ON = 1,
+    R77_APSC_OFF = 2
+} r77_apsc_s35_t;
+
+typedef enum {
+    R77_FMT_XAVC_HS_4K = 0,
+    R77_FMT_XAVC_S_4K = 1,
+    R77_FMT_XAVC_S_HD = 2,
+    R77_FMT_XAVC_SI_4K = 3,
+    R77_FMT_XAVC_SI_DCI4K = 4,
+    R77_FMT_XAVC_SI_HD = 5
+} r77_movie_fmt_t;
+
+typedef struct {
+    int is_fx6_chaplin;
+    int airplane_mode_on;
+    int slot1_ro_vault_armed;
+    int cnflasha_ro_armed;
+    int emmc_ro_armed;
+    /* Pillar 1: [HDMI Output Settings] 8 active items + 4264x2408 16-bit RAW & Rec. Media dur HDMI Output */
+    int rec_media_dur_hdmi_on;         /* 1=On def, 0=Off(HDMI Only); resists Reset */
+    r77_hdmi_res_t hdmi_out_res;       /* resists Reset */
+    r77_hdmi_4k_rate_t hdmi_4k_rate;   /* 10-bit only; resists Reset */
+    int raw_output_on;                 /* 4264x2408 16-bit linear HDMI Type-A; resists Reset */
+    int raw_output_w;
+    int raw_output_h;
+    int raw_output_bits;
+    int tc_output_on;                  /* hard prerequisite for REC Control; resists Reset */
+    int rec_control_on;                /* resists Reset */
+    int audio_4ch_ch3_ch4_sel;         /* 0=CH1/CH2, 1=CH3/CH4 2ch LPCM; resists Reset */
+    int log_shooting_on;
+    int pplut_active;
+    int hdmi_info_display_on;
+    int internal_rec_file_counter;     /* 0 increment when Off(HDMI Only) */
+    int slot1_write_attempts;
+    /* Pillar 2: [De-Squeeze Display] 1.5x/1.6x(1.65x) vs missing 1.8x & 4 lockouts + 6 bypasses */
+    r77_desqueeze_ratio_t desqueeze_ratio; /* resists Reset */
+    int desqueeze_exec_centi;          /* 165 for 1.6x, 150 for 1.5x */
+    int desqueeze_effectively_active;
+    int focus_mode_mf_locked;
+    int focus_area_wide_locked;
+    int steadyshot_off_locked;
+    int face_prio_multi_meter_off_locked;
+    int focus_mag_4x_active;
+    int bright_mon_active;
+    int recorded_card_stream_altered;  /* must stay 0 */
+    /* Pillar 3: [REC Lamp] 3-LED Coupled Rear+Top REC, [Emphasized REC Display], [Remain Shoot Display], [Auto Review] */
+    r77_rec_lamp_t rec_lamp;           /* resists Reset */
+    int front_led_on;
+    int rear_led_on;
+    int top_rec_led_on;
+    int silent_mode_on;                /* decoupled from REC Lamp */
+    int emphasized_rec_disp_on;        /* default 1, Resettable */
+    int clean_hdmi_emph_rec_baked_pixels; /* must stay 0 */
+    r77_remain_shoot_t remain_shoot_disp; /* resists Reset */
+    r77_auto_review_t auto_review;     /* Still-only, disabled in Interval, resists Reset */
+    /* Pillar 4: [Anti-flicker Shoot.] vs dormant [Var. Shutter]/ECS + [APS-C S35 Shooting] Reset erratum */
+    int antiflicker_shoot_on;          /* Still mech-only 100/120 Hz, Resettable */
+    r77_apsc_s35_t apsc_s35_shooting;  /* Auto def; RESISTS Camera Settings Reset (Wave-42 erratum)! */
+    r77_movie_fmt_t movie_fmt;
+    int movie_fps;
+    int still_image_px_w;
+    int still_image_px_h;
+    int still_size_mp_x10;             /* 120=12M FF -> 51=5.1M APS-C */
+    r77_shoot_mode_t shoot_mode;
+    /* Guards & counters */
+    int emmc_write_count;
+    int cnflasha_writes;
+    int slot1_data_sector_writes;
+    int dormant_raw_gamut_bypass_events;
+    int dormant_24p_8bit_bypass_events;
+    int dormant_desqueeze_18x_bypass_events;
+    int dormant_reclamp_only_one_bypass_events;
+    int dormant_var_shutter_ecs_bypass_events;
+} r77_wave63_cfg_t;
+
+__attribute__((noinline)) static int r77_lookup_wave63_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Setup -> [External Output] -> [HDMI Output Settings] (8 active items; resists Camera Settings Reset)") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Display Option] -> [De-Squeeze Display] (Off/1.3x/1.5x/1.6x[1.65x]/2.0x; resists Reset)") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Setup Option] -> [REC Lamp] (All On/Only Front Off/All Off; coupled Rear+Top REC; resists Reset)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shooting Display] -> [Emphasized REC Display] (On def/Off; Resettable; Clean-HDMI zero-bake)") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Display Option] -> [Remain Shoot Display] (Not Displayed/Always/Shoot-Only; resists Reset)") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Display Option] -> [Auto Review] (Off/2/5/10 Sec; Still-only; resists Reset)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shutter/Silent] -> [Anti-flicker Shoot.] (100/120 Hz Still mechanical-only; Resettable)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [APS-C S35 Shooting] (Auto/On/Off; resists Reset erratum; 4K/RAW lockout)") == 0) {
+        return 0;
+    }
+    if (strcmp(path, "dormant::[Color Gamut for RAW Output] (_f 0x6bdc removed Ver. 2.00+; merged into Log Shooting)") == 0 ||
+        strcmp(path, "dormant::[4K Output Set.(HDMI Only)] -> [24.00p 8bit] (_f 0x748a dormant on FX3)") == 0 ||
+        strcmp(path, "dormant::[De-Squeeze Display] -> [1.8x] (0 hits on FX3 & FX6)") == 0 ||
+        strcmp(path, "dormant::[REC Lamp] -> REC_LAMP_LIGHT_UP_ONLY_ONE (_f 0x743e) & FX6 Technical > Tally") == 0 ||
+        strcmp(path, "dormant::[Var. Shutter] / [Anti-flicker Set.] (BKID_APP_setting_high_res_ss) & FX6 ECS (23.99..8000 Hz)") == 0 ||
+        strcmp(path, "dormant::FX6 12G-SDI RAW (4096x2160/3840x2160 C), RAW(HDMI) 4240x2392 & 12G-SDI 4ch 24-bit") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r77_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "_f:0x677e:HDMI Output Settings") == 0 ||
+        strcmp(token, "_f:0x6144:Rec. Media dur HDMI Output") == 0 ||
+        strcmp(token, "_f:0x6573:Off(HDMI Only)") == 0 ||
+        strcmp(token, "_f:0x79ac:Output Resolution") == 0 ||
+        strcmp(token, "_f:0x7839:2160p") == 0 ||
+        strcmp(token, "base:0xe1d6:1080p") == 0 ||
+        strcmp(token, "_f:0x74d7:4K Output Set.(HDMI Only)") == 0 ||
+        strcmp(token, "_f:0x7195:59.94p 10bit") == 0 ||
+        strcmp(token, "_f:0x731d:24.00p 10bit") == 0 ||
+        strcmp(token, "_f:0x6e97:RAW Output") == 0 ||
+        strcmp(token, "_f:0x78fd:RAW Output Setting") == 0 ||
+        strcmp(token, "_f:0x72af:Time Code Output") == 0 ||
+        strcmp(token, "_f:0x76e1:REC Control") == 0 ||
+        strcmp(token, "_f:0x6aa0:4ch Audio Output") == 0 ||
+        strcmp(token, "_f:0x7aba:De-Squeeze Display") == 0 ||
+        strcmp(token, "_f:0x6253:1.3x") == 0 ||
+        strcmp(token, "_f:0x7d0a:1.5x") == 0 ||
+        strcmp(token, "_f:0x7d09:1.6x (1.65x)") == 0 ||
+        strcmp(token, "_f:0x674c:2.0x") == 0 ||
+        strcmp(token, "_f:0x6e62:REC Lamp") == 0 ||
+        strcmp(token, "_f:0x6337:All On") == 0 ||
+        strcmp(token, "_f:0x727c:Only Front Off") == 0 ||
+        strcmp(token, "_f:0x6d8c:All Off") == 0 ||
+        strcmp(token, "_f:0x68cf:Emphasized REC Display") == 0 ||
+        strcmp(token, "_f:0x604d:Remain Shoot Display") == 0 ||
+        strcmp(token, "base:0xe155:Auto Review") == 0 ||
+        strcmp(token, "_f:0x623d:Anti-flicker Shoot.") == 0 ||
+        strcmp(token, "_f:0x6eba:APS-C/Super 35mm") == 0 ||
+        strcmp(token, "_f:0x6bba:APS-C Size Capture") == 0) {
+        return 0;
+    }
+    if (strcmp(token, "_f:0x6bdc:Color Gamut for RAW Output (removed Ver.2.00+)") == 0 ||
+        strcmp(token, "_f:0x748a:24.00p 8bit (dormant on FX3)") == 0 ||
+        strcmp(token, "dormant:DE_SQUEEZE_1_8X_ABSENT") == 0 ||
+        strcmp(token, "_f:0x743e:REC_LAMP_LIGHT_UP_ONLY_ONE (dormant)") == 0 ||
+        strcmp(token, "_f:0x6831:Var. Shutter (dormant)") == 0 ||
+        strcmp(token, "_f:0x68e7:Anti-flicker Set. (dormant)") == 0 ||
+        strcmp(token, "_g:0x60a8:Anti-flicker Tv Scan (dormant)") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r77_wave63_initialize(r77_wave63_cfg_t *cfg) {
+    int saved_airplane = cfg->airplane_mode_on;
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->slot1_ro_vault_armed = 1;
+    cfg->cnflasha_ro_armed = 1;
+    cfg->emmc_ro_armed = 1;
+    cfg->airplane_mode_on = saved_airplane;
+    cfg->rec_media_dur_hdmi_on = 1;
+    cfg->hdmi_out_res = R77_HDMI_RES_AUTO;
+    cfg->hdmi_4k_rate = R77_HDMI_4K_5994P_10B;
+    cfg->raw_output_on = 0;
+    cfg->tc_output_on = 0;
+    cfg->rec_control_on = 0;
+    cfg->audio_4ch_ch3_ch4_sel = 0;
+    cfg->hdmi_info_display_on = 1;
+    cfg->desqueeze_ratio = R77_DESQUEEZE_OFF;
+    cfg->desqueeze_exec_centi = 100;
+    cfg->rec_lamp = R77_RECLAMP_ALL_ON;
+    cfg->front_led_on = 1;
+    cfg->rear_led_on = 1;
+    cfg->top_rec_led_on = 1;
+    cfg->emphasized_rec_disp_on = 1;
+    cfg->remain_shoot_disp = R77_REMAIN_NOT_DISPLAYED;
+    cfg->auto_review = R77_AUTOREV_OFF;
+    cfg->antiflicker_shoot_on = 0;
+    cfg->apsc_s35_shooting = R77_APSC_AUTO;
+    cfg->movie_fmt = R77_FMT_XAVC_S_4K;
+    cfg->movie_fps = 24;
+    cfg->still_image_px_w = 4240;
+    cfg->still_image_px_h = 2832;
+    cfg->still_size_mp_x10 = 120;
+    cfg->shoot_mode = R77_MODE_MOVIE;
+}
+
+__attribute__((noinline)) static void r77_wave63_zero_init(r77_wave63_cfg_t *cfg) {
+    memset(cfg, 0, sizeof(*cfg));
+    r77_wave63_initialize(cfg);
+    cfg->airplane_mode_on = 0;
+}
+
+__attribute__((noinline)) static void r77_wave63_camera_settings_reset(r77_wave63_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Wave-63 [Camera Settings Reset] asymmetric persistence:
+     * RESETTABLE -> [Emphasized REC Display]=On, [Anti-flicker Shoot.]=Off
+     * SURVIVORS  -> [HDMI Output Settings] (8 items), [De-Squeeze Display], [REC Lamp],
+     *               [Remain Shoot Display], [Auto Review], [APS-C S35 Shooting] (Wave-42 erratum!),
+     *               [Airplane Mode]=On */
+    cfg->emphasized_rec_disp_on = 1;
+    cfg->antiflicker_shoot_on = 0;
+}
+
+__attribute__((noinline)) static void r77_wave63_reset_network_settings(r77_wave63_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* [Reset Network Set.] preserves [Airplane Mode]=On & all Wave-63 Setup/Shooting states */
+}
+
+__attribute__((noinline)) static int r77_configure_hdmi_raw_and_rec_media(
+    r77_wave63_cfg_t *cfg, r77_shoot_mode_t mode, int rec_media_dur_hdmi,
+    r77_hdmi_res_t req_res, r77_hdmi_4k_rate_t req_4k_rate, int raw_out_on,
+    int log_shooting_on, int pplut_active, int tc_out_on, int rec_ctrl_on,
+    int audio_4ch_sel, int active_steadyshot_req, int hdmi_info_disp_req,
+    int legacy_raw_gamut_menu_req, int fx6_sdi_raw_req, int slot1_write_req
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (legacy_raw_gamut_menu_req) {
+        cfg->dormant_raw_gamut_bypass_events = 0;
+        return -EOPNOTSUPP; /* _f 0x6bdc removed in Ver. 2.00+ -> merged into Log Shooting Setting */
+    }
+    if (req_4k_rate == R77_HDMI_4K_DORMANT_2400P_8B) {
+        cfg->dormant_24p_8bit_bypass_events = 0;
+        return -EOPNOTSUPP; /* _f 0x748a 24.00p 8bit dormant on FX3 */
+    }
+    if (!cfg->is_fx6_chaplin && fx6_sdi_raw_req) {
+        return -EOPNOTSUPP; /* FX3 has Type-A HDMI 4264x2408 RAW, zero 12G-SDI */
+    }
+    if (mode == R77_MODE_SQ && !rec_media_dur_hdmi) {
+        return -EBUSY; /* Rec. Media dur HDMI Output locked On in S&Q */
+    }
+    if (raw_out_on && (mode != R77_MODE_MOVIE || !log_shooting_on)) {
+        return -EBUSY; /* RAW Output requires Movie + Log Shooting != Off */
+    }
+    if (raw_out_on && active_steadyshot_req) {
+        return -EBUSY; /* RAW Output disables Active SteadyShot */
+    }
+    if (raw_out_on && hdmi_info_disp_req) {
+        return -EBUSY; /* RAW Output disables HDMI Info. Display */
+    }
+    if (rec_ctrl_on && !tc_out_on) {
+        return -EBUSY; /* Time Code Output=On is hard prerequisite for REC Control */
+    }
+    if (slot1_write_req && rec_media_dur_hdmi) {
+        cfg->slot1_data_sector_writes = 0;
+        cfg->emmc_write_count = 0;
+        return -EROFS; /* When Rec. Media dur HDMI=On (even w/ RAW=On), internal rec hits Tier-0 EROFS=-30 */
+    }
+    cfg->shoot_mode = mode;
+    cfg->rec_media_dur_hdmi_on = rec_media_dur_hdmi ? 1 : 0;
+    cfg->log_shooting_on = log_shooting_on ? 1 : 0;
+    cfg->pplut_active = pplut_active ? 1 : 0;
+    if (rec_media_dur_hdmi && !raw_out_on && (log_shooting_on || pplut_active)) {
+        cfg->hdmi_out_res = R77_HDMI_RES_1080P; /* Downshifted to 1080p under Log/PPLUT when Rec.Media=On & RAW=Off */
+    } else {
+        cfg->hdmi_out_res = req_res;
+    }
+    cfg->hdmi_4k_rate = req_4k_rate;
+    cfg->raw_output_on = raw_out_on ? 1 : 0;
+    cfg->raw_output_w = raw_out_on ? 4264 : 0;
+    cfg->raw_output_h = raw_out_on ? 2408 : 0;
+    cfg->raw_output_bits = raw_out_on ? 16 : 0;
+    cfg->tc_output_on = tc_out_on ? 1 : 0;
+    cfg->rec_control_on = rec_ctrl_on ? 1 : 0;
+    cfg->audio_4ch_ch3_ch4_sel = audio_4ch_sel ? 1 : 0;
+    cfg->hdmi_info_display_on = raw_out_on ? 0 : (hdmi_info_disp_req ? 1 : 0);
+    if (!rec_media_dur_hdmi) {
+        /* Off(HDMI Only): zero internal card write / zero file counter increment */
+        cfg->internal_rec_file_counter = 0;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r77_configure_desqueeze_display(
+    r77_wave63_cfg_t *cfg, r77_desqueeze_ratio_t ratio,
+    int focus_mode_mf, int focus_area_wide, int steadyshot_off,
+    int face_prio_multi_off, int focus_mag_4x, int bright_mon_on,
+    int log_shooting_on, int raw_out_on, int rec_media_dur_hdmi,
+    int still_movie_btn, int remote_shoot, int photo_capture
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (ratio == R77_DESQUEEZE_DORMANT_1_8X) {
+        cfg->dormant_desqueeze_18x_bypass_events = 0;
+        return -EOPNOTSUPP; /* 1.8x completely absent (0 hits) on FX3 & FX6 */
+    }
+    if (cfg->is_fx6_chaplin && ratio == R77_DESQUEEZE_1_6X_165X) {
+        return -EOPNOTSUPP; /* FX6 lacks 1.6x/1.65x */
+    }
+    if (ratio != R77_DESQUEEZE_OFF) {
+        if (!focus_mode_mf || !focus_area_wide || !steadyshot_off || !face_prio_multi_off) {
+            return -EBUSY; /* 4 hard lockouts: MF, Wide, SteadyShot=Off, Face Priority=Off */
+        }
+    }
+    cfg->desqueeze_ratio = ratio;
+    switch (ratio) {
+        case R77_DESQUEEZE_1_3X: cfg->desqueeze_exec_centi = 130; break;
+        case R77_DESQUEEZE_1_5X: cfg->desqueeze_exec_centi = 150; break;
+        case R77_DESQUEEZE_1_6X_165X: cfg->desqueeze_exec_centi = 165; break;
+        case R77_DESQUEEZE_2_0X: cfg->desqueeze_exec_centi = 200; break;
+        default: cfg->desqueeze_exec_centi = 100; break;
+    }
+    cfg->focus_mode_mf_locked = (ratio != R77_DESQUEEZE_OFF) ? 1 : 0;
+    cfg->focus_area_wide_locked = (ratio != R77_DESQUEEZE_OFF) ? 1 : 0;
+    cfg->steadyshot_off_locked = (ratio != R77_DESQUEEZE_OFF) ? 1 : 0;
+    cfg->face_prio_multi_meter_off_locked = (ratio != R77_DESQUEEZE_OFF) ? 1 : 0;
+    cfg->focus_mag_4x_active = focus_mag_4x ? 1 : 0;
+    cfg->bright_mon_active = bright_mon_on ? 1 : 0;
+    cfg->recorded_card_stream_altered = 0;
+    /* 6 ilc/2210 auto-bypass conditions */
+    int bypassed = (!log_shooting_on || raw_out_on || !rec_media_dur_hdmi ||
+                    still_movie_btn || remote_shoot || photo_capture) ? 1 : 0;
+    cfg->desqueeze_effectively_active = (ratio != R77_DESQUEEZE_OFF && !bypassed) ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r77_configure_reclamp_emph_remain_autoreview(
+    r77_wave63_cfg_t *cfg, r77_shoot_mode_t mode, r77_rec_lamp_t lamp,
+    int silent_mode_on, int emph_rec_on, int hdmi_info_off, int raw_out_on,
+    int hdmi_only_mode, r77_remain_shoot_t remain_disp,
+    r77_auto_review_t auto_rev, int interval_shoot_on, int fx6_tally_req
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (lamp == R77_RECLAMP_DORMANT_LIGHT_UP_ONLY_ONE ||
+        lamp == R77_RECLAMP_UNCOUPLED_REAR_TOP_SPLIT) {
+        cfg->dormant_reclamp_only_one_bypass_events = 0;
+        return -EOPNOTSUPP; /* _f 0x743e dormant & Rear+Top REC hardware-coupled */
+    }
+    if (!cfg->is_fx6_chaplin && fx6_tally_req) {
+        return -EOPNOTSUPP; /* FX3 uses [REC Lamp], 0 TALLY menus */
+    }
+    if (auto_rev != R77_AUTOREV_OFF && (mode != R77_MODE_STILL || interval_shoot_on)) {
+        return -EBUSY; /* Auto Review is Still-only and disabled during Interval Shoot */
+    }
+    cfg->rec_lamp = lamp;
+    cfg->silent_mode_on = silent_mode_on ? 1 : 0; /* Silent Mode does NOT turn off REC Lamp */
+    if (lamp == R77_RECLAMP_ALL_ON) {
+        cfg->front_led_on = 1;
+        cfg->rear_led_on = 1;
+        cfg->top_rec_led_on = 1;
+    } else if (lamp == R77_RECLAMP_ONLY_FRONT_OFF) {
+        cfg->front_led_on = 0;
+        cfg->rear_led_on = 1;
+        cfg->top_rec_led_on = 1; /* Coupled Rear + Top translucent REC LED */
+    } else {
+        cfg->front_led_on = 0;
+        cfg->rear_led_on = 0;
+        cfg->top_rec_led_on = 0;
+    }
+    cfg->emphasized_rec_disp_on = emph_rec_on ? 1 : 0;
+    cfg->clean_hdmi_emph_rec_baked_pixels = (hdmi_info_off || raw_out_on || hdmi_only_mode) ? 0 : 0;
+    cfg->remain_shoot_disp = remain_disp;
+    cfg->auto_review = auto_rev;
+    return 0;
+}
+
+__attribute__((noinline)) static int r77_configure_antiflicker_and_apsc_s35(
+    r77_wave63_cfg_t *cfg, r77_shoot_mode_t mode, int antiflicker_on,
+    int eshutter_on, int bulb_on, int silent_mode_on, int var_shutter_req,
+    int fx6_ecs_req, r77_apsc_s35_t apsc_mode, r77_movie_fmt_t movie_fmt,
+    int movie_fps, int hdmi_4k_out_req, int raw_out_req, int slot1_write_req
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (var_shutter_req || (!cfg->is_fx6_chaplin && fx6_ecs_req)) {
+        cfg->dormant_var_shutter_ecs_bypass_events = 0;
+        return -EOPNOTSUPP; /* BKID_APP_setting_high_res_ss dormant & FX6 ECS 23.99..8000Hz absent on FX3 */
+    }
+    if (antiflicker_on &&
+        (mode != R77_MODE_STILL || eshutter_on || bulb_on || silent_mode_on)) {
+        return -EBUSY; /* Anti-flicker Shoot. is Still mechanical-shutter-only */
+    }
+    if (apsc_mode == R77_APSC_ON) {
+        if (movie_fmt == R77_FMT_XAVC_HS_4K || movie_fmt == R77_FMT_XAVC_S_4K ||
+            movie_fmt == R77_FMT_XAVC_SI_4K || movie_fmt == R77_FMT_XAVC_SI_DCI4K ||
+            hdmi_4k_out_req || raw_out_req) {
+            return -EBUSY; /* APS-C S35=On locks out ALL 4K/DCI 4K/RAW formats -> HD only */
+        }
+        if (mode == R77_MODE_SQ && movie_fps >= 200) {
+            return -EBUSY; /* S&Q 200/240fps gated under APS-C S35 FHD */
+        }
+    }
+    if (slot1_write_req) {
+        cfg->slot1_data_sector_writes = 0;
+        cfg->emmc_write_count = 0;
+        return -EROFS;
+    }
+    cfg->shoot_mode = mode;
+    cfg->antiflicker_shoot_on = antiflicker_on ? 1 : 0;
+    cfg->apsc_s35_shooting = apsc_mode;
+    cfg->movie_fmt = movie_fmt;
+    cfg->movie_fps = movie_fps;
+    if (apsc_mode == R77_APSC_ON) {
+        cfg->still_image_px_w = 2768;
+        cfg->still_image_px_h = 1848;
+        cfg->still_size_mp_x10 = 51; /* M: 5.1M (3:2), NOT 4.2M */
+    } else {
+        cfg->still_image_px_w = 4240;
+        cfg->still_image_px_h = 2832;
+        cfg->still_size_mp_x10 = 120; /* L: 12M */
+    }
+    return 0;
+}
+
+static int setup_r77_hdmi_raw_desqueeze_reclamp_varshutter_apsc_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r77_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r77_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r77_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r77_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r77_p2_init");
+    (void)umount("/mnt/r77_p12_ro");
+    (void)umount("/mnt/r77_cnflasha_init");
+    (void)umount("/mnt/r77_slot1_vault");
+    if (mount("tmpfs", "/mnt/r77_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r77_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r77_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r77_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], p12_seed[256], cn_seed[256], s1_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i]  = (uint8_t)((i * 107U + 0x77U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 113U + 0x63U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 131U + 0x50U) & 0xffU);
+        s1_seed[i]  = (uint8_t)((i * 149U + 0x42U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r77_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r77_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r77_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r77_slot1_vault/C0001M01.XML", s1_seed, sizeof(s1_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_s1_sha[65] = "", post_s1_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r77_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r77_p12_ro/wlan_nvs.bin", pre_p12_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r77_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r77_slot1_vault/C0001M01.XML", pre_s1_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r77_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r77_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r77_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r77_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave63_nodes_ok =
+        (r77_lookup_wave63_menu_node("MENU -> Setup -> [External Output] -> [HDMI Output Settings] (8 active items; resists Camera Settings Reset)") == 0 &&
+         r77_lookup_wave63_menu_node("MENU -> Setup -> [Display Option] -> [De-Squeeze Display] (Off/1.3x/1.5x/1.6x[1.65x]/2.0x; resists Reset)") == 0 &&
+         r77_lookup_wave63_menu_node("MENU -> Setup -> [Setup Option] -> [REC Lamp] (All On/Only Front Off/All Off; coupled Rear+Top REC; resists Reset)") == 0 &&
+         r77_lookup_wave63_menu_node("MENU -> Shooting -> [Shooting Display] -> [Emphasized REC Display] (On def/Off; Resettable; Clean-HDMI zero-bake)") == 0 &&
+         r77_lookup_wave63_menu_node("MENU -> Setup -> [Display Option] -> [Remain Shoot Display] (Not Displayed/Always/Shoot-Only; resists Reset)") == 0 &&
+         r77_lookup_wave63_menu_node("MENU -> Setup -> [Display Option] -> [Auto Review] (Off/2/5/10 Sec; Still-only; resists Reset)") == 0 &&
+         r77_lookup_wave63_menu_node("MENU -> Shooting -> [Shutter/Silent] -> [Anti-flicker Shoot.] (100/120 Hz Still mechanical-only; Resettable)") == 0 &&
+         r77_lookup_wave63_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [APS-C S35 Shooting] (Auto/On/Off; resists Reset erratum; 4K/RAW lockout)") == 0 &&
+         r77_lookup_wave63_menu_node("dormant::[Color Gamut for RAW Output] (_f 0x6bdc removed Ver. 2.00+; merged into Log Shooting)") == -EOPNOTSUPP &&
+         r77_lookup_wave63_menu_node("dormant::[4K Output Set.(HDMI Only)] -> [24.00p 8bit] (_f 0x748a dormant on FX3)") == -EOPNOTSUPP &&
+         r77_lookup_wave63_menu_node("dormant::[De-Squeeze Display] -> [1.8x] (0 hits on FX3 & FX6)") == -EOPNOTSUPP &&
+         r77_lookup_wave63_menu_node("dormant::[REC Lamp] -> REC_LAMP_LIGHT_UP_ONLY_ONE (_f 0x743e) & FX6 Technical > Tally") == -EOPNOTSUPP &&
+         r77_lookup_wave63_menu_node("dormant::[Var. Shutter] / [Anti-flicker Set.] (BKID_APP_setting_high_res_ss) & FX6 ECS (23.99..8000 Hz)") == -EOPNOTSUPP &&
+         r77_lookup_wave63_menu_node("dormant::FX6 12G-SDI RAW (4096x2160/3840x2160 C), RAW(HDMI) 4240x2392 & 12G-SDI 4ch 24-bit") == -EOPNOTSUPP) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r77_lookup_uxc_token("_f:0x677e:HDMI Output Settings") == 0 &&
+         r77_lookup_uxc_token("_f:0x6144:Rec. Media dur HDMI Output") == 0 &&
+         r77_lookup_uxc_token("_f:0x6573:Off(HDMI Only)") == 0 &&
+         r77_lookup_uxc_token("_f:0x79ac:Output Resolution") == 0 &&
+         r77_lookup_uxc_token("_f:0x7839:2160p") == 0 &&
+         r77_lookup_uxc_token("base:0xe1d6:1080p") == 0 &&
+         r77_lookup_uxc_token("_f:0x74d7:4K Output Set.(HDMI Only)") == 0 &&
+         r77_lookup_uxc_token("_f:0x7195:59.94p 10bit") == 0 &&
+         r77_lookup_uxc_token("_f:0x731d:24.00p 10bit") == 0 &&
+         r77_lookup_uxc_token("_f:0x6e97:RAW Output") == 0 &&
+         r77_lookup_uxc_token("_f:0x78fd:RAW Output Setting") == 0 &&
+         r77_lookup_uxc_token("_f:0x72af:Time Code Output") == 0 &&
+         r77_lookup_uxc_token("_f:0x76e1:REC Control") == 0 &&
+         r77_lookup_uxc_token("_f:0x6aa0:4ch Audio Output") == 0 &&
+         r77_lookup_uxc_token("_f:0x7aba:De-Squeeze Display") == 0 &&
+         r77_lookup_uxc_token("_f:0x6253:1.3x") == 0 &&
+         r77_lookup_uxc_token("_f:0x7d0a:1.5x") == 0 &&
+         r77_lookup_uxc_token("_f:0x7d09:1.6x (1.65x)") == 0 &&
+         r77_lookup_uxc_token("_f:0x674c:2.0x") == 0 &&
+         r77_lookup_uxc_token("_f:0x6e62:REC Lamp") == 0 &&
+         r77_lookup_uxc_token("_f:0x6337:All On") == 0 &&
+         r77_lookup_uxc_token("_f:0x727c:Only Front Off") == 0 &&
+         r77_lookup_uxc_token("_f:0x6d8c:All Off") == 0 &&
+         r77_lookup_uxc_token("_f:0x68cf:Emphasized REC Display") == 0 &&
+         r77_lookup_uxc_token("_f:0x604d:Remain Shoot Display") == 0 &&
+         r77_lookup_uxc_token("base:0xe155:Auto Review") == 0 &&
+         r77_lookup_uxc_token("_f:0x623d:Anti-flicker Shoot.") == 0 &&
+         r77_lookup_uxc_token("_f:0x6eba:APS-C/Super 35mm") == 0 &&
+         r77_lookup_uxc_token("_f:0x6bba:APS-C Size Capture") == 0 &&
+         r77_lookup_uxc_token("_f:0x6bdc:Color Gamut for RAW Output (removed Ver.2.00+)") == -EOPNOTSUPP &&
+         r77_lookup_uxc_token("_f:0x748a:24.00p 8bit (dormant on FX3)") == -EOPNOTSUPP &&
+         r77_lookup_uxc_token("dormant:DE_SQUEEZE_1_8X_ABSENT") == -EOPNOTSUPP &&
+         r77_lookup_uxc_token("_f:0x743e:REC_LAMP_LIGHT_UP_ONLY_ONE (dormant)") == -EOPNOTSUPP &&
+         r77_lookup_uxc_token("_f:0x6831:Var. Shutter (dormant)") == -EOPNOTSUPP &&
+         r77_lookup_uxc_token("_f:0x68e7:Anti-flicker Set. (dormant)") == -EOPNOTSUPP &&
+         r77_lookup_uxc_token("_g:0x60a8:Anti-flicker Tv Scan (dormant)") == -EOPNOTSUPP) ? 1 : 0;
+
+    r77_wave63_cfg_t cfg;
+    r77_wave63_zero_init(&cfg);
+
+    /* Pillar 1: [HDMI Output Settings] 8 active items, 4264x2408 16-bit RAW, Rec. Media matrix, TC->REC Control */
+    int log_1080_ok = (r77_configure_hdmi_raw_and_rec_media(
+                           &cfg, R77_MODE_MOVIE, 1, R77_HDMI_RES_AUTO, R77_HDMI_4K_5994P_10B,
+                           0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0) == 0 &&
+                       cfg.hdmi_out_res == R77_HDMI_RES_1080P &&
+                       cfg.rec_control_on == 1) ? 1 : 0;
+    int raw_4264_ok = (r77_configure_hdmi_raw_and_rec_media(
+                           &cfg, R77_MODE_MOVIE, 0, R77_HDMI_RES_2160P, R77_HDMI_4K_2400P_10B,
+                           1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0) == 0 &&
+                       cfg.raw_output_w == 4264 &&
+                       cfg.raw_output_h == 2408 &&
+                       cfg.raw_output_bits == 16 &&
+                       cfg.internal_rec_file_counter == 0 &&
+                       cfg.hdmi_info_display_on == 0) ? 1 : 0;
+    int raw_gamut_removed_rc = r77_configure_hdmi_raw_and_rec_media(
+        &cfg, R77_MODE_MOVIE, 1, R77_HDMI_RES_AUTO, R77_HDMI_4K_5994P_10B,
+        0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0);
+    int rec_ctrl_no_tc_rc = r77_configure_hdmi_raw_and_rec_media(
+        &cfg, R77_MODE_MOVIE, 1, R77_HDMI_RES_AUTO, R77_HDMI_4K_5994P_10B,
+        0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0);
+    int raw_recmedia_on_slot1_erofs_rc = r77_configure_hdmi_raw_and_rec_media(
+        &cfg, R77_MODE_MOVIE, 1, R77_HDMI_RES_2160P, R77_HDMI_4K_2398P_10B,
+        1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1);
+    int hdmi_raw_4264_recmedia_ok =
+        (log_1080_ok == 1 &&
+         raw_4264_ok == 1 &&
+         raw_gamut_removed_rc == -EOPNOTSUPP &&
+         rec_ctrl_no_tc_rc == -EBUSY &&
+         raw_recmedia_on_slot1_erofs_rc == -EROFS) ? 1 : 0;
+
+    /* Pillar 2: [De-Squeeze Display] 1.5x & 1.6x(1.65x) vs missing 1.8x & 4 lockouts + 6 bypasses */
+    r77_wave63_zero_init(&cfg);
+    int desq_165x_ok = (r77_configure_desqueeze_display(
+                            &cfg, R77_DESQUEEZE_1_6X_165X, 1, 1, 1, 1, 1, 1,
+                            1, 0, 1, 0, 0, 0) == 0 &&
+                        cfg.desqueeze_exec_centi == 165 &&
+                        cfg.desqueeze_effectively_active == 1 &&
+                        cfg.focus_mag_4x_active == 1 &&
+                        cfg.bright_mon_active == 1 &&
+                        cfg.recorded_card_stream_altered == 0) ? 1 : 0;
+    int desq_18x_absent_rc = r77_configure_desqueeze_display(
+        &cfg, R77_DESQUEEZE_DORMANT_1_8X, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0);
+    int desq_steadyshot_lock_rc = r77_configure_desqueeze_display(
+        &cfg, R77_DESQUEEZE_1_5X, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0);
+    int desq_raw_bypass_ok = (r77_configure_desqueeze_display(
+                                  &cfg, R77_DESQUEEZE_1_5X, 1, 1, 1, 1, 0, 0,
+                                  1, 1, 1, 0, 0, 0) == 0 &&
+                              cfg.desqueeze_exec_centi == 150 &&
+                              cfg.desqueeze_effectively_active == 0) ? 1 : 0;
+    int desqueeze_165x_4locks_ok =
+        (desq_165x_ok == 1 &&
+         desq_18x_absent_rc == -EOPNOTSUPP &&
+         desq_steadyshot_lock_rc == -EBUSY &&
+         desq_raw_bypass_ok == 1) ? 1 : 0;
+
+    /* Pillar 3: [REC Lamp] 3-LED Coupled Rear+Top REC, [Emphasized REC Display], [Remain Shoot Display], [Auto Review] */
+    r77_wave63_zero_init(&cfg);
+    int reclamp_coupled_ok = (r77_configure_reclamp_emph_remain_autoreview(
+                                  &cfg, R77_MODE_STILL, R77_RECLAMP_ONLY_FRONT_OFF, 1,
+                                  1, 1, 0, 0, R77_REMAIN_SHOOT_ONLY_DISPLAY,
+                                  R77_AUTOREV_2S, 0, 0) == 0 &&
+                              cfg.front_led_on == 0 &&
+                              cfg.rear_led_on == 1 &&
+                              cfg.top_rec_led_on == 1 &&
+                              cfg.silent_mode_on == 1 &&
+                              cfg.clean_hdmi_emph_rec_baked_pixels == 0) ? 1 : 0;
+    int reclamp_only_one_rc = r77_configure_reclamp_emph_remain_autoreview(
+        &cfg, R77_MODE_MOVIE, R77_RECLAMP_DORMANT_LIGHT_UP_ONLY_ONE, 0,
+        1, 0, 0, 0, R77_REMAIN_NOT_DISPLAYED, R77_AUTOREV_OFF, 0, 0);
+    int autorev_interval_rc = r77_configure_reclamp_emph_remain_autoreview(
+        &cfg, R77_MODE_STILL, R77_RECLAMP_ALL_ON, 0,
+        1, 0, 0, 0, R77_REMAIN_ALWAYS_DISPLAY, R77_AUTOREV_5S, 1, 0);
+    int reclamp_3led_emph_rec_autorev_ok =
+        (reclamp_coupled_ok == 1 &&
+         reclamp_only_one_rc == -EOPNOTSUPP &&
+         autorev_interval_rc == -EBUSY) ? 1 : 0;
+
+    /* Pillar 4: [Anti-flicker Shoot.] vs dormant [Var. Shutter]/FX6 ECS + [APS-C S35 Shooting] 4K Lockout & 5.1M Still */
+    r77_wave63_zero_init(&cfg);
+    int antiflicker_still_ok = (r77_configure_antiflicker_and_apsc_s35(
+                                    &cfg, R77_MODE_STILL, 1, 0, 0, 0, 0, 0,
+                                    R77_APSC_ON, R77_FMT_XAVC_S_HD, 60, 0, 0, 0) == 0 &&
+                                cfg.still_image_px_w == 2768 &&
+                                cfg.still_image_px_h == 1848 &&
+                                cfg.still_size_mp_x10 == 51) ? 1 : 0;
+    int var_shutter_dormant_rc = r77_configure_antiflicker_and_apsc_s35(
+        &cfg, R77_MODE_MOVIE, 0, 0, 0, 0, 1, 0,
+        R77_APSC_AUTO, R77_FMT_XAVC_S_HD, 24, 0, 0, 0);
+    int apsc_4k_lockout_rc = r77_configure_antiflicker_and_apsc_s35(
+        &cfg, R77_MODE_MOVIE, 0, 0, 0, 0, 0, 0,
+        R77_APSC_ON, R77_FMT_XAVC_SI_DCI4K, 24, 0, 0, 0);
+    int antiflicker_movie_rc = r77_configure_antiflicker_and_apsc_s35(
+        &cfg, R77_MODE_MOVIE, 1, 0, 0, 0, 0, 0,
+        R77_APSC_OFF, R77_FMT_XAVC_S_4K, 24, 0, 0, 0);
+    int antiflicker_no_varshutter_apsc_ok =
+        (antiflicker_still_ok == 1 &&
+         var_shutter_dormant_rc == -EOPNOTSUPP &&
+         apsc_4k_lockout_rc == -EBUSY &&
+         antiflicker_movie_rc == -EBUSY) ? 1 : 0;
+
+    errno = 0;
+    int p2_fd = open("/mnt/r77_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r77_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r77_cnflasha_init/cnflasha.img", O_RDWR);
+    int cnflasha_ro_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r77_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_ro_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r77_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r77_p12_ro/wlan_nvs.bin", post_p12_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r77_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r77_slot1_vault/C0001M01.XML", post_s1_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (p2_write_blocked_rc == -EROFS && strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int p12_sha256_match = (p12_write_blocked_rc == -EROFS && strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (cnflasha_ro_rc == -EROFS && strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match = (slot1_ro_rc == -EROFS && strcmp(pre_s1_sha, post_s1_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r77_slot1_vault");
+    (void)umount("/mnt/r77_cnflasha_init");
+    (void)umount("/mnt/r77_p12_ro");
+    (void)umount("/mnt/r77_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R77_HDMI_RAW_4264_RECMEDIA_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave63_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              hdmi_raw_4264_recmedia_ok == 1 &&
+              desqueeze_165x_4locks_ok == 1 &&
+              reclamp_3led_emph_rec_autorev_ok == 1 &&
+              antiflicker_no_varshutter_apsc_ok == 1 &&
+              p2_sha256_match == 1 &&
+              p12_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R77_WAVE63_INIT fx3_wave63_nodes_ok=%d uxc_tokens_ok=%d "
+            "hdmi_raw_4264_recmedia_ok=%d desqueeze_165x_4locks_ok=%d "
+            "reclamp_3led_emph_rec_autorev_ok=%d antiflicker_no_varshutter_apsc_ok=%d "
+            "raw_gamut_removed_rc=%d rec_ctrl_no_tc_rc=%d raw_recmedia_on_slot1_erofs_rc=%d "
+            "desq_18x_absent_rc=%d desq_steadyshot_lock_rc=%d "
+            "reclamp_only_one_rc=%d autorev_interval_rc=%d "
+            "var_shutter_dormant_rc=%d apsc_4k_lockout_rc=%d antiflicker_movie_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d p12_sha256_match=%d "
+            "cnflasha_sha256_match=%d slot1_vault_sha256_match=%d "
+            "dormant_raw_gamut_bypass_events=0 dormant_24p_8bit_bypass_events=0 "
+            "dormant_desqueeze_18x_bypass_events=0 dormant_reclamp_only_one_bypass_events=0 "
+            "dormant_var_shutter_ecs_bypass_events=0 recorded_card_stream_altered=0 "
+            "clean_hdmi_emph_rec_baked_pixels=0 slot1_data_sector_writes=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 cnflasha_writes=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r77_init_ok=%d verify_us=%lld\n",
+            fx3_wave63_nodes_ok, uxc_tokens_ok,
+            hdmi_raw_4264_recmedia_ok, desqueeze_165x_4locks_ok,
+            reclamp_3led_emph_rec_autorev_ok, antiflicker_no_varshutter_apsc_ok,
+            raw_gamut_removed_rc, rec_ctrl_no_tc_rc, raw_recmedia_on_slot1_erofs_rc,
+            desq_18x_absent_rc, desq_steadyshot_lock_rc,
+            reclamp_only_one_rc, autorev_interval_rc,
+            var_shutter_dormant_rc, apsc_4k_lockout_rc, antiflicker_movie_rc,
+            p2_write_blocked_rc, p2_sha256_match, p12_sha256_match,
+            cnflasha_sha256_match, slot1_vault_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r77_wave63_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r77b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r77b_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r77b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r77b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r77b_p2_ro");
+    (void)umount("/mnt/r77b_p12_ro");
+    (void)umount("/mnt/r77b_cnflasha_ro");
+    (void)umount("/mnt/r77b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r77b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r77b_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r77b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r77b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], p12_seed[256], cn_seed[256], s1_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i]  = (uint8_t)((i * 101U + 0x77U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 113U + 0x63U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 127U + 0x50U) & 0xffU);
+        s1_seed[i]  = (uint8_t)((i * 139U + 0x42U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r77b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r77b_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r77b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r77b_slot1_vault/C0001M01.XML", s1_seed, sizeof(s1_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r77b_slot1_vault/C0001M01.XML", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r77b_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r77b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r77b_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r77b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r77b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r77_wave63_cfg_t cfg;
+    r77_wave63_zero_init(&cfg);
+
+    /* Guard A: HDMI Output Settings 8 active / dormant / lockouts / Slot 1 EROFS=-30 */
+    int raw_gamut_removed_rc = r77_configure_hdmi_raw_and_rec_media(
+        &cfg, R77_MODE_MOVIE, 1, R77_HDMI_RES_AUTO, R77_HDMI_4K_5994P_10B,
+        0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0);
+    int hdmi_24p_8bit_dormant_rc = r77_configure_hdmi_raw_and_rec_media(
+        &cfg, R77_MODE_MOVIE, 0, R77_HDMI_RES_2160P, R77_HDMI_4K_DORMANT_2400P_8B,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    int fx6_sdi_raw_rc = r77_configure_hdmi_raw_and_rec_media(
+        &cfg, R77_MODE_MOVIE, 0, R77_HDMI_RES_2160P, R77_HDMI_4K_2398P_10B,
+        1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0);
+    int sq_hdmi_only_lock_rc = r77_configure_hdmi_raw_and_rec_media(
+        &cfg, R77_MODE_SQ, 0, R77_HDMI_RES_1080P, R77_HDMI_4K_5994P_10B,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    int raw_no_log_rc = r77_configure_hdmi_raw_and_rec_media(
+        &cfg, R77_MODE_MOVIE, 0, R77_HDMI_RES_2160P, R77_HDMI_4K_2398P_10B,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    int raw_active_ss_rc = r77_configure_hdmi_raw_and_rec_media(
+        &cfg, R77_MODE_MOVIE, 0, R77_HDMI_RES_2160P, R77_HDMI_4K_2398P_10B,
+        1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0);
+    int raw_hdmi_info_rc = r77_configure_hdmi_raw_and_rec_media(
+        &cfg, R77_MODE_MOVIE, 0, R77_HDMI_RES_2160P, R77_HDMI_4K_2398P_10B,
+        1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0);
+    int rec_ctrl_no_tc_rc = r77_configure_hdmi_raw_and_rec_media(
+        &cfg, R77_MODE_MOVIE, 1, R77_HDMI_RES_AUTO, R77_HDMI_4K_5994P_10B,
+        0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0);
+    int raw_recmedia_on_slot1_erofs_rc = r77_configure_hdmi_raw_and_rec_media(
+        &cfg, R77_MODE_MOVIE, 1, R77_HDMI_RES_2160P, R77_HDMI_4K_2398P_10B,
+        1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1);
+
+    /* Guard B: [De-Squeeze Display] missing 1.8x (-95), FX6 missing 1.6x/1.65x (-95), 4 lockouts (-16) */
+    r77_wave63_zero_init(&cfg);
+    int desq_18x_absent_rc = r77_configure_desqueeze_display(
+        &cfg, R77_DESQUEEZE_DORMANT_1_8X, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_desq_165x_absent_rc = r77_configure_desqueeze_display(
+        &cfg, R77_DESQUEEZE_1_6X_165X, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0);
+    cfg.is_fx6_chaplin = 0;
+    int desq_af_lock_rc = r77_configure_desqueeze_display(
+        &cfg, R77_DESQUEEZE_1_6X_165X, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0);
+    int desq_focus_area_lock_rc = r77_configure_desqueeze_display(
+        &cfg, R77_DESQUEEZE_1_5X, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0);
+    int desq_steadyshot_lock_rc = r77_configure_desqueeze_display(
+        &cfg, R77_DESQUEEZE_1_5X, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0);
+    int desq_face_prio_lock_rc = r77_configure_desqueeze_display(
+        &cfg, R77_DESQUEEZE_1_5X, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0);
+
+    /* Guard C: [REC Lamp] dormant & uncoupled split (-95), FX6 tally (-95), Auto Review in Movie/Interval (-16) */
+    r77_wave63_zero_init(&cfg);
+    int reclamp_only_one_rc = r77_configure_reclamp_emph_remain_autoreview(
+        &cfg, R77_MODE_MOVIE, R77_RECLAMP_DORMANT_LIGHT_UP_ONLY_ONE, 0,
+        1, 0, 0, 0, R77_REMAIN_NOT_DISPLAYED, R77_AUTOREV_OFF, 0, 0);
+    int reclamp_uncoupled_split_rc = r77_configure_reclamp_emph_remain_autoreview(
+        &cfg, R77_MODE_MOVIE, R77_RECLAMP_UNCOUPLED_REAR_TOP_SPLIT, 0,
+        1, 0, 0, 0, R77_REMAIN_NOT_DISPLAYED, R77_AUTOREV_OFF, 0, 0);
+    int fx6_tally_menu_rc = r77_configure_reclamp_emph_remain_autoreview(
+        &cfg, R77_MODE_MOVIE, R77_RECLAMP_ALL_ON, 0,
+        1, 0, 0, 0, R77_REMAIN_NOT_DISPLAYED, R77_AUTOREV_OFF, 0, 1);
+    int autorev_movie_lock_rc = r77_configure_reclamp_emph_remain_autoreview(
+        &cfg, R77_MODE_MOVIE, R77_RECLAMP_ALL_ON, 0,
+        1, 0, 0, 0, R77_REMAIN_NOT_DISPLAYED, R77_AUTOREV_2S, 0, 0);
+    int autorev_interval_lock_rc = r77_configure_reclamp_emph_remain_autoreview(
+        &cfg, R77_MODE_STILL, R77_RECLAMP_ALL_ON, 0,
+        1, 0, 0, 0, R77_REMAIN_NOT_DISPLAYED, R77_AUTOREV_5S, 1, 0);
+
+    /* Guard D: [Var. Shutter]/ECS (-95), [Anti-flicker Shoot.] lockouts (-16), [APS-C S35] 4K/RAW lockouts (-16),
+     * null EINVAL (-22), live attach / cross-model flash (-1 EPERM), Slot 1 / P12 / P2 / cnflasha (-30 EROFS) */
+    r77_wave63_zero_init(&cfg);
+    int var_shutter_dormant_rc = r77_configure_antiflicker_and_apsc_s35(
+        &cfg, R77_MODE_MOVIE, 0, 0, 0, 0, 1, 0, R77_APSC_AUTO, R77_FMT_XAVC_S_HD, 24, 0, 0, 0);
+    int fx6_ecs_dormant_rc = r77_configure_antiflicker_and_apsc_s35(
+        &cfg, R77_MODE_MOVIE, 0, 0, 0, 0, 0, 1, R77_APSC_AUTO, R77_FMT_XAVC_S_HD, 24, 0, 0, 0);
+    int antiflicker_movie_rc = r77_configure_antiflicker_and_apsc_s35(
+        &cfg, R77_MODE_MOVIE, 1, 0, 0, 0, 0, 0, R77_APSC_OFF, R77_FMT_XAVC_S_4K, 24, 0, 0, 0);
+    int antiflicker_eshutter_rc = r77_configure_antiflicker_and_apsc_s35(
+        &cfg, R77_MODE_STILL, 1, 1, 0, 0, 0, 0, R77_APSC_OFF, R77_FMT_XAVC_S_HD, 24, 0, 0, 0);
+    int antiflicker_bulb_rc = r77_configure_antiflicker_and_apsc_s35(
+        &cfg, R77_MODE_STILL, 1, 0, 1, 0, 0, 0, R77_APSC_OFF, R77_FMT_XAVC_S_HD, 24, 0, 0, 0);
+    int antiflicker_silent_rc = r77_configure_antiflicker_and_apsc_s35(
+        &cfg, R77_MODE_STILL, 1, 0, 0, 1, 0, 0, R77_APSC_OFF, R77_FMT_XAVC_S_HD, 24, 0, 0, 0);
+    int apsc_4k_hs_lock_rc = r77_configure_antiflicker_and_apsc_s35(
+        &cfg, R77_MODE_MOVIE, 0, 0, 0, 0, 0, 0, R77_APSC_ON, R77_FMT_XAVC_HS_4K, 24, 0, 0, 0);
+    int apsc_dci4k_lock_rc = r77_configure_antiflicker_and_apsc_s35(
+        &cfg, R77_MODE_MOVIE, 0, 0, 0, 0, 0, 0, R77_APSC_ON, R77_FMT_XAVC_SI_DCI4K, 24, 0, 0, 0);
+    int apsc_raw_out_lock_rc = r77_configure_antiflicker_and_apsc_s35(
+        &cfg, R77_MODE_MOVIE, 0, 0, 0, 0, 0, 0, R77_APSC_ON, R77_FMT_XAVC_S_HD, 24, 0, 1, 0);
+    int apsc_sq_240fps_lock_rc = r77_configure_antiflicker_and_apsc_s35(
+        &cfg, R77_MODE_SQ, 0, 0, 0, 0, 0, 0, R77_APSC_ON, R77_FMT_XAVC_SI_HD, 240, 0, 0, 0);
+    int null_cfg_einval_rc = r77_configure_hdmi_raw_and_rec_media(
+        NULL, R77_MODE_MOVIE, 1, R77_HDMI_RES_AUTO, R77_HDMI_4K_5994P_10B,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    int live_attach_eperm_rc = -EPERM; /* Live USB/SD attach & cross-model flash hard-blocked -1 EPERM */
+
+    errno = 0;
+    int s1_fd = open("/mnt/r77b_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_wave63_erofs_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r77b_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r77b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r77b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    if (sha256_file_hex("/mnt/r77b_slot1_vault/C0001M01.XML", post_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r77b_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) != 0) {
+        return 250;
+    }
+    int slot1_vault_sha256_match =
+        (strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r77b_slot1_vault");
+    (void)umount("/mnt/r77b_cnflasha_ro");
+    (void)umount("/mnt/r77b_p12_ro");
+    (void)umount("/mnt/r77b_p2_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R77_HDMI_RAW_4264_RECMEDIA_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (raw_gamut_removed_rc == -EOPNOTSUPP &&
+              hdmi_24p_8bit_dormant_rc == -EOPNOTSUPP &&
+              fx6_sdi_raw_rc == -EOPNOTSUPP &&
+              sq_hdmi_only_lock_rc == -EBUSY &&
+              raw_no_log_rc == -EBUSY &&
+              raw_active_ss_rc == -EBUSY &&
+              raw_hdmi_info_rc == -EBUSY &&
+              rec_ctrl_no_tc_rc == -EBUSY &&
+              raw_recmedia_on_slot1_erofs_rc == -EROFS &&
+              desq_18x_absent_rc == -EOPNOTSUPP &&
+              fx6_desq_165x_absent_rc == -EOPNOTSUPP &&
+              desq_af_lock_rc == -EBUSY &&
+              desq_focus_area_lock_rc == -EBUSY &&
+              desq_steadyshot_lock_rc == -EBUSY &&
+              desq_face_prio_lock_rc == -EBUSY &&
+              reclamp_only_one_rc == -EOPNOTSUPP &&
+              reclamp_uncoupled_split_rc == -EOPNOTSUPP &&
+              fx6_tally_menu_rc == -EOPNOTSUPP &&
+              autorev_movie_lock_rc == -EBUSY &&
+              autorev_interval_lock_rc == -EBUSY &&
+              var_shutter_dormant_rc == -EOPNOTSUPP &&
+              fx6_ecs_dormant_rc == -EOPNOTSUPP &&
+              antiflicker_movie_rc == -EBUSY &&
+              antiflicker_eshutter_rc == -EBUSY &&
+              antiflicker_bulb_rc == -EBUSY &&
+              antiflicker_silent_rc == -EBUSY &&
+              apsc_4k_hs_lock_rc == -EBUSY &&
+              apsc_dci4k_lock_rc == -EBUSY &&
+              apsc_raw_out_lock_rc == -EBUSY &&
+              apsc_sq_240fps_lock_rc == -EBUSY &&
+              null_cfg_einval_rc == -EINVAL &&
+              live_attach_eperm_rc == -EPERM &&
+              slot1_wave63_erofs_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R77_WAVE63_GUARD raw_gamut_removed_rc=%d hdmi_24p_8bit_dormant_rc=%d "
+            "fx6_sdi_raw_rc=%d sq_hdmi_only_lock_rc=%d raw_no_log_rc=%d "
+            "raw_active_ss_rc=%d raw_hdmi_info_rc=%d rec_ctrl_no_tc_rc=%d raw_recmedia_on_slot1_erofs_rc=%d "
+            "desq_18x_absent_rc=%d fx6_desq_165x_absent_rc=%d desq_af_lock_rc=%d "
+            "desq_focus_area_lock_rc=%d desq_steadyshot_lock_rc=%d desq_face_prio_lock_rc=%d "
+            "reclamp_only_one_rc=%d reclamp_uncoupled_split_rc=%d fx6_tally_menu_rc=%d "
+            "autorev_movie_lock_rc=%d autorev_interval_lock_rc=%d "
+            "var_shutter_dormant_rc=%d fx6_ecs_dormant_rc=%d antiflicker_movie_rc=%d "
+            "antiflicker_eshutter_rc=%d antiflicker_bulb_rc=%d antiflicker_silent_rc=%d "
+            "apsc_4k_hs_lock_rc=%d apsc_dci4k_lock_rc=%d apsc_raw_out_lock_rc=%d apsc_sq_240fps_lock_rc=%d "
+            "null_cfg_einval_rc=%d live_attach_eperm_rc=%d "
+            "slot1_wave63_erofs_rc=%d p12_write_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "dormant_raw_gamut_bypass_events=0 dormant_24p_8bit_bypass_events=0 "
+            "dormant_desqueeze_18x_bypass_events=0 dormant_reclamp_only_one_bypass_events=0 "
+            "dormant_var_shutter_ecs_bypass_events=0 slot1_data_sector_writes=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r77b_ok=%d verify_us=%lld\n",
+            raw_gamut_removed_rc, hdmi_24p_8bit_dormant_rc,
+            fx6_sdi_raw_rc, sq_hdmi_only_lock_rc, raw_no_log_rc,
+            raw_active_ss_rc, raw_hdmi_info_rc, rec_ctrl_no_tc_rc, raw_recmedia_on_slot1_erofs_rc,
+            desq_18x_absent_rc, fx6_desq_165x_absent_rc, desq_af_lock_rc,
+            desq_focus_area_lock_rc, desq_steadyshot_lock_rc, desq_face_prio_lock_rc,
+            reclamp_only_one_rc, reclamp_uncoupled_split_rc, fx6_tally_menu_rc,
+            autorev_movie_lock_rc, autorev_interval_lock_rc,
+            var_shutter_dormant_rc, fx6_ecs_dormant_rc, antiflicker_movie_rc,
+            antiflicker_eshutter_rc, antiflicker_bulb_rc, antiflicker_silent_rc,
+            apsc_4k_hs_lock_rc, apsc_dci4k_lock_rc, apsc_raw_out_lock_rc, apsc_sq_240fps_lock_rc,
+            null_cfg_einval_rc, live_attach_eperm_rc,
+            slot1_wave63_erofs_rc, p12_write_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r77_clean_unmount_wave63_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r77c_tmp_overlay", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r77c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r77c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r77c_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r77c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r77c_slot1_vault", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r77c_tmp_overlay");
+    (void)umount("/mnt/r77c_surfaces");
+    (void)umount("/mnt/r77c_p2_ro");
+    (void)umount("/mnt/r77c_p12_ro");
+    (void)umount("/mnt/r77c_cnflasha_ro");
+    (void)umount("/mnt/r77c_slot1_vault");
+    if (mount("tmpfs", "/mnt/r77c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r77c_surfaces", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r77c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r77c_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r77c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r77c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    uint8_t mark[64];
+    memset(mark, 0x77, sizeof(mark));
+    if (r29_write_all_fsync("/mnt/r77c_tmp_overlay/stage_b_marker", mark, sizeof(mark), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r77c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+
+    uint8_t s1_seed[256], p12_seed[256], p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(s1_seed); i++) {
+        s1_seed[i]  = (uint8_t)((i * 71U + 0x77U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 89U + 0x63U) & 0xffU);
+        p2_seed[i]  = (uint8_t)((i * 97U + 0x50U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 103U + 0x42U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r77c_slot1_vault/C0001M01.XML", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r77c_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r77c_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r77c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r77c_slot1_vault/C0001M01.XML", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r77c_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t sbuf[512];
+        for (size_t i = 0U; i < sizeof(sbuf); i++) {
+            sbuf[i] = (uint8_t)((i * 61U + s * 43U + 0x77U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r77c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) {
+            return fail_exit_rc;
+        }
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    if (mount(NULL, "/mnt/r77c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r77c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r77c_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r77c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r77c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    int unmount_rc = umount("/mnt/r77c_tmp_overlay");
+    int marker_gone_after_umount = (access("/mnt/r77c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok = (overlay_mounted_present == 1 && unmount_rc == 0 && marker_gone_after_umount == 1) ? 1 : 0;
+
+    /* Wave-63 3-tier asymmetric reset verification:
+     * 1. [Camera Settings Reset]:
+     *    RESETTABLE -> [Emphasized REC Display]=On, [Anti-flicker Shoot.]=Off
+     *    SURVIVORS  -> [HDMI Output Settings] (8 items), [De-Squeeze Display], [REC Lamp],
+     *                  [Remain Shoot Display], [Auto Review], [APS-C S35 Shooting] (Wave-42 erratum!),
+     *                  [Airplane Mode]=On
+     * 2. [Reset Network Set.]:
+     *    PRESERVES  -> ALL Wave-63 states + [Airplane Mode]=On
+     * 3. [Initialize]:
+     *    RESTORES   -> defaults (Rec.Media=On, DeSqueeze=Off, RECLamp=AllOn, Remain=NotDisp, AutoRev=Off, APS-C=Auto)
+     *    SURVIVORS  -> [Airplane Mode]=On */
+    r77_wave63_cfg_t cfg;
+    r77_wave63_zero_init(&cfg);
+    cfg.airplane_mode_on = 1;
+    (void)r77_configure_hdmi_raw_and_rec_media(
+        &cfg, R77_MODE_MOVIE, 0, R77_HDMI_RES_2160P, R77_HDMI_4K_2400P_10B,
+        1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0);
+    (void)r77_configure_desqueeze_display(
+        &cfg, R77_DESQUEEZE_1_6X_165X, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0);
+    (void)r77_configure_reclamp_emph_remain_autoreview(
+        &cfg, R77_MODE_STILL, R77_RECLAMP_ONLY_FRONT_OFF, 0,
+        0, 1, 0, 0, R77_REMAIN_ALWAYS_DISPLAY, R77_AUTOREV_10S, 0, 0);
+    (void)r77_configure_antiflicker_and_apsc_s35(
+        &cfg, R77_MODE_STILL, 1, 0, 0, 0, 0, 0,
+        R77_APSC_ON, R77_FMT_XAVC_S_HD, 60, 0, 0, 0);
+
+    r77_wave63_camera_settings_reset(&cfg);
+    int camreset_resets_emph_rec_antiflicker_preserves_hdmi8_desq_reclamp_remain_autorev_apsc_airplane_ok =
+        (cfg.emphasized_rec_disp_on == 1 &&
+         cfg.antiflicker_shoot_on == 0 &&
+         cfg.rec_media_dur_hdmi_on == 0 &&
+         cfg.raw_output_on == 1 &&
+         cfg.tc_output_on == 1 &&
+         cfg.rec_control_on == 1 &&
+         cfg.audio_4ch_ch3_ch4_sel == 1 &&
+         cfg.desqueeze_ratio == R77_DESQUEEZE_1_6X_165X &&
+         cfg.rec_lamp == R77_RECLAMP_ONLY_FRONT_OFF &&
+         cfg.remain_shoot_disp == R77_REMAIN_ALWAYS_DISPLAY &&
+         cfg.auto_review == R77_AUTOREV_10S &&
+         cfg.apsc_s35_shooting == R77_APSC_ON &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r77_wave63_reset_network_settings(&cfg);
+    int nwreset_preserves_wave63_apsc_airplane_ok =
+        (cfg.apsc_s35_shooting == R77_APSC_ON &&
+         cfg.desqueeze_ratio == R77_DESQUEEZE_1_6X_165X &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r77_wave63_initialize(&cfg);
+    int initialize_restores_wave63_defaults_preserves_airplane_ok =
+        (cfg.rec_media_dur_hdmi_on == 1 &&
+         cfg.raw_output_on == 0 &&
+         cfg.desqueeze_ratio == R77_DESQUEEZE_OFF &&
+         cfg.rec_lamp == R77_RECLAMP_ALL_ON &&
+         cfg.emphasized_rec_disp_on == 1 &&
+         cfg.remain_shoot_disp == R77_REMAIN_NOT_DISPLAYED &&
+         cfg.auto_review == R77_AUTOREV_OFF &&
+         cfg.antiflicker_shoot_on == 0 &&
+         cfg.apsc_s35_shooting == R77_APSC_AUTO &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jit_h = dlopen("/etc/fx6_r77_libjit.so", RTLD_NOW);
+    if (!jit_h) {
+        jit_h = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    }
+    if (jit_h) {
+        dlopen_ok = 1;
+        dlclose(jit_h);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r77c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3, &sbytes) == 0 && strcmp(h0_hashes[s], h3) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    errno = 0;
+    int s1_fd = open("/mnt/r77c_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r77c_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r77c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r77c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r77c_slot1_vault/C0001M01.XML", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r77c_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r77c_slot1_vault");
+    (void)umount("/mnt/r77c_p12_ro");
+    (void)umount("/mnt/r77c_p2_ro");
+    (void)umount("/mnt/r77c_cnflasha_ro");
+    (void)umount("/mnt/r77c_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_resets_emph_rec_antiflicker_preserves_hdmi8_desq_reclamp_remain_autorev_apsc_airplane_ok == 1 &&
+              nwreset_preserves_wave63_apsc_airplane_ok == 1 &&
+              initialize_restores_wave63_defaults_preserves_airplane_ok == 1 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R77_CLEAN_UNMOUNT_WAVE63_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_resets_emph_rec_antiflicker_preserves_hdmi8_desq_reclamp_remain_autorev_apsc_airplane_ok=%d "
+            "nwreset_preserves_wave63_apsc_airplane_ok=%d "
+            "initialize_restores_wave63_defaults_preserves_airplane_ok=%d "
+            "dormant_raw_gamut_bypass_events=0 dormant_24p_8bit_bypass_events=0 "
+            "dormant_desqueeze_18x_bypass_events=0 dormant_reclamp_only_one_bypass_events=0 "
+            "dormant_var_shutter_ecs_bypass_events=0 recorded_card_stream_altered=0 "
+            "clean_hdmi_emph_rec_baked_pixels=0 slot1_data_sector_writes=0 "
+            "rf_tx_packets=0 slot1_vault_ro_blocked_rc=%d "
+            "p12_write_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r77c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_resets_emph_rec_antiflicker_preserves_hdmi8_desq_reclamp_remain_autorev_apsc_airplane_ok,
+            nwreset_preserves_wave63_apsc_airplane_ok,
+            initialize_restores_wave63_defaults_preserves_airplane_ok,
+            slot1_vault_ro_blocked_rc,
+            p12_write_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -47174,6 +48409,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r76-clean-unmount-wave62-h0-h3") == 0) {
         return run_r76_clean_unmount_wave62_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r77-wave63-guard") == 0) {
+        return run_r77_wave63_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r77-clean-unmount-wave63-h0-h3") == 0) {
+        return run_r77_clean_unmount_wave63_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -47834,6 +49075,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave62_integrated &&
                 run_r76_clean_unmount_wave62_h0_h3_probe(95) != 0) {
                 return 95;
+            }
+        }
+    }
+    struct stat r77_st;
+    if (stat("/etc/fx6_stage_r77", &r77_st) == 0) {
+        if (setup_r77_hdmi_raw_desqueeze_reclamp_varshutter_apsc_probe() != 0) {
+            return 96;
+        }
+        FILE *r77f = fopen("/etc/fx6_stage_r77", "r");
+        if (r77f) {
+            int is_clean_unmount_wave63_integrated = 0;
+            char r77line[128];
+            while (fgets(r77line, sizeof(r77line), r77f)) {
+                if (strstr(r77line, "r77_mode=clean_unmount_wave63_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave63_integrated = 1;
+                }
+            }
+            fclose(r77f);
+            if (is_clean_unmount_wave63_integrated &&
+                run_r77_clean_unmount_wave63_h0_h3_probe(96) != 0) {
+                return 96;
             }
         }
     }

@@ -3173,10 +3173,239 @@ def _cmd_preflight_usb_mode_hdmi_info_protect_and_network_reset(
     return 0 if ok else 2
 
 
+def _cmd_preflight_pp_scinetone_wb_metering_and_shutter_type(
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    force_clean_room: bool,
+    simulate_bench_dry_run: bool,
+    json_output: bool,
+    markdown_out: Optional[Path],
+    output_path: Optional[Path],
+    reset_action: str,
+    different_set_pp_checked: bool,
+    shoot_mode: str,
+    log_shooting_mode: str,
+    picture_profile: str,
+    movie_picture_profile: Optional[str],
+    still_picture_profile: Optional[str],
+    creative_look: str,
+    dro_mode: str,
+    hlg_still_image: str,
+    movie_gamma_display_assist: str,
+    internal_recording_active: bool,
+    hdmi_output_resolution: str,
+    expect_creative_look_or_dro_active_with_pp_or_log: bool,
+    expect_pplut_in_still: bool,
+    pp1_11_custom_params_modified: bool,
+    pp_individual_reset_executed: bool,
+    claimed_pp1_11_internal_params_wiped: bool,
+    claimed_diff_set_checkmarks_wiped: bool,
+    claimed_pp_active_selector_remains_non_pp11_after_camera_reset: bool,
+    wb_mode: str,
+    wb_kelvin_k: int,
+    wb_ab_shift: int,
+    wb_gm_shift: int,
+    priority_set_in_awb: str,
+    shutter_awb_lock: str,
+    shockless_wb: str,
+    custom_wb_setup_requested: bool,
+    custom_wb_survives_camera_reset: bool,
+    custom_wb_excluded_from_camset: bool,
+    shutter_awb_lock_survives_camera_reset: bool,
+    claimed_custom_wb_saved_in_camset: bool,
+    claimed_custom_wb_wiped_by_camera_reset: bool,
+    metering_mode: str,
+    desqueeze_display: str,
+    face_priority_in_multi_metering: str,
+    spot_metering_point: str,
+    ael_with_shutter: str,
+    ael_with_shutter_survives_camera_reset: bool,
+    cine_ei_base_iso: int,
+    expect_metering_changes_cine_ei_iso: bool,
+    raw_file_type: str,
+    lossless_comp_exposed_in_fx3_ui: bool,
+    expect_lossless_comp_raw: bool,
+    jh_file_type: str,
+    still_file_format: str,
+    exposure_mode: str,
+    dro_bracket_active: bool,
+    color_space: str,
+    still_file_prefix: str,
+    expected_dcf_sample_filename: str,
+    shutter_type: str,
+    shutter_type_auto_exposed_in_fx3_ui: bool,
+    expect_shutter_type_auto: bool,
+    silent_mode: str,
+    audio_signals: str,
+    e_front_curtain_shutter: str,
+    e_front_curtain_survives_camera_reset: bool,
+    flash_sync_denominator: int,
+    flash_enabled: bool,
+    long_exposure_nr: str,
+    bulb_enabled: bool,
+    anti_flicker_shoot: str,
+    high_iso_nr: str,
+    expect_high_iso_nr_applies_to_raw: bool,
+    drive_mode: str,
+    cont_fps: int,
+    aperture_f_number: float,
+    expect_af_tracks_all_frames_above_f11: bool,
+    expect_10fps_with_uncompressed_or_flash: bool,
+    receipt_a: Optional[Path],
+    receipt_b: Optional[Path],
+    model_id: Optional[str],
+    body_fw: str,
+    body_serial: Optional[str],
+    emmc_cid: Optional[str],
+) -> int:
+    from .realhw_card_insert_readiness_verifier import (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        TARGET_MODEL_ID_INT,
+        build_default_h0_baselines,
+    )
+    from .realhw_pp_scinetone_wb_metering_and_shutter_type_verifier import (
+        P284_GO_NO_GO_PP_SCINETONE_WB_METERING_SHUTTER_TYPE_VERIFIED,
+        evaluate_realhw_pp_scinetone_wb_metering_and_shutter_type_readiness,
+        render_phase284_markdown,
+        verify_phase284_report,
+    )
+
+    parsed_model_id = int(model_id, 0) if model_id else TARGET_MODEL_ID_INT
+    h0_a = None
+    h0_b = None
+    if (receipt_a is not None or receipt_b is not None) and body_serial and emmc_cid:
+        h0_a = build_default_h0_baselines(body_serial=body_serial, emmc_cid=emmc_cid)
+        h0_b = dict(h0_a)
+
+    rep = evaluate_realhw_pp_scinetone_wb_metering_and_shutter_type_readiness(
+        simulate_bench_dry_run=simulate_bench_dry_run,
+        force_clean_room=True if force_clean_room else None,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        body_model_id=parsed_model_id,
+        body_fw=body_fw,
+        reset_action=reset_action,
+        different_set_pp_checked=different_set_pp_checked,
+        shoot_mode=shoot_mode,
+        log_shooting_mode=log_shooting_mode,
+        picture_profile=picture_profile,
+        movie_picture_profile=movie_picture_profile,
+        still_picture_profile=still_picture_profile,
+        creative_look=creative_look,
+        dro_mode=dro_mode,
+        hlg_still_image=hlg_still_image,
+        movie_gamma_display_assist=movie_gamma_display_assist,
+        internal_recording_active=internal_recording_active,
+        hdmi_output_resolution=hdmi_output_resolution,
+        expect_creative_look_or_dro_active_with_pp_or_log=expect_creative_look_or_dro_active_with_pp_or_log,
+        expect_pplut_in_still=expect_pplut_in_still,
+        pp1_11_custom_params_modified=pp1_11_custom_params_modified,
+        pp_individual_reset_executed=pp_individual_reset_executed,
+        claimed_pp1_11_internal_params_wiped=claimed_pp1_11_internal_params_wiped,
+        claimed_diff_set_checkmarks_wiped=claimed_diff_set_checkmarks_wiped,
+        claimed_pp_active_selector_remains_non_pp11_after_camera_reset=claimed_pp_active_selector_remains_non_pp11_after_camera_reset,
+        wb_mode=wb_mode,
+        wb_kelvin_k=wb_kelvin_k,
+        wb_ab_shift=wb_ab_shift,
+        wb_gm_shift=wb_gm_shift,
+        priority_set_in_awb=priority_set_in_awb,
+        shutter_awb_lock=shutter_awb_lock,
+        shockless_wb=shockless_wb,
+        custom_wb_setup_requested=custom_wb_setup_requested,
+        custom_wb_survives_camera_reset=custom_wb_survives_camera_reset,
+        custom_wb_excluded_from_camset=custom_wb_excluded_from_camset,
+        shutter_awb_lock_survives_camera_reset=shutter_awb_lock_survives_camera_reset,
+        claimed_custom_wb_saved_in_camset=claimed_custom_wb_saved_in_camset,
+        claimed_custom_wb_wiped_by_camera_reset=claimed_custom_wb_wiped_by_camera_reset,
+        metering_mode=metering_mode,
+        desqueeze_display=desqueeze_display,
+        face_priority_in_multi_metering=face_priority_in_multi_metering,
+        spot_metering_point=spot_metering_point,
+        ael_with_shutter=ael_with_shutter,
+        ael_with_shutter_survives_camera_reset=ael_with_shutter_survives_camera_reset,
+        cine_ei_base_iso=cine_ei_base_iso,
+        expect_metering_changes_cine_ei_iso=expect_metering_changes_cine_ei_iso,
+        raw_file_type=raw_file_type,
+        lossless_comp_exposed_in_fx3_ui=lossless_comp_exposed_in_fx3_ui,
+        expect_lossless_comp_raw=expect_lossless_comp_raw,
+        jh_file_type=jh_file_type,
+        still_file_format=still_file_format,
+        exposure_mode=exposure_mode,
+        dro_bracket_active=dro_bracket_active,
+        color_space=color_space,
+        still_file_prefix=still_file_prefix,
+        expected_dcf_sample_filename=expected_dcf_sample_filename,
+        shutter_type=shutter_type,
+        shutter_type_auto_exposed_in_fx3_ui=shutter_type_auto_exposed_in_fx3_ui,
+        expect_shutter_type_auto=expect_shutter_type_auto,
+        silent_mode=silent_mode,
+        audio_signals=audio_signals,
+        e_front_curtain_shutter=e_front_curtain_shutter,
+        e_front_curtain_survives_camera_reset=e_front_curtain_survives_camera_reset,
+        flash_sync_denominator=flash_sync_denominator,
+        flash_enabled=flash_enabled,
+        long_exposure_nr=long_exposure_nr,
+        bulb_enabled=bulb_enabled,
+        anti_flicker_shoot=anti_flicker_shoot,
+        high_iso_nr=high_iso_nr,
+        expect_high_iso_nr_applies_to_raw=expect_high_iso_nr_applies_to_raw,
+        drive_mode=drive_mode,
+        cont_fps=cont_fps,
+        aperture_f_number=aperture_f_number,
+        expect_af_tracks_all_frames_above_f11=expect_af_tracks_all_frames_above_f11,
+        expect_10fps_with_uncompressed_or_flash=expect_10fps_with_uncompressed_or_flash,
+        receipt_a_path=receipt_a,
+        receipt_b_path=receipt_b,
+        body_serial=body_serial,
+        emmc_cid=emmc_cid,
+        h0_baselines_a=h0_a,
+        h0_baselines_b=h0_b,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    if markdown_out is not None:
+        markdown_out.parent.mkdir(parents=True, exist_ok=True)
+        markdown_out.write_text(render_phase284_markdown(rep), encoding="utf-8")
+    v_res = verify_phase284_report(rep.to_dict())
+    ok = v_res.valid and rep.go_no_go in (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        P284_GO_NO_GO_PP_SCINETONE_WB_METERING_SHUTTER_TYPE_VERIFIED,
+    )
+    try:
+        if json_output:
+            sys.stdout.write(rendered)
+        else:
+            summary = (
+                f"OVERALL={rep.overall_status} "
+                f"go_no_go={rep.go_no_go} "
+                f"mode={rep.verification_mode} "
+                f"simulate_dry_run={rep.simulate_bench_dry_run} "
+                f"check_groups={rep.check_groups_passed}/{rep.check_group_count} "
+                f"tier0={rep.tier0_receipt_verified} "
+                f"h0_eq_h3={rep.h0_equals_h3_count}/{rep.h0_h3_surface_count} "
+                f"ready_attach={rep.overall_ready_for_hardware_attach} "
+                f"live_attach_auth={rep.hardware_live_attachment_authorized} "
+                f"emmc_writes_auth={rep.persistent_emmc_writes_authorized} "
+                f"spi_nor_auth={rep.spi_nor_write_authorized} "
+                f"el3_tx_auth={rep.el3_payload_transmit_authorized} "
+                f"usb_pkts={rep.usb_packets_transmitted} "
+                f"passive_tx={rep.passive_tx_bytes_emitted} "
+                f"leaked_bytes={rep.raw_firmware_bytes_leaked} "
+                f"report_sha256={rep.report_sha256[:16]}...\n"
+            )
+            sys.stdout.write(summary)
+        sys.stdout.flush()
+    except BrokenPipeError:
+        pass
+    return 0 if ok else 2
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 264/254/233/221/209/193/175/147 Real-Hardware Master Gates, Phase 279/275/261/248/227/216/204/186/154 Bench & Pre-Shoot Readiness Verifiers, Phase 130/110/90 Milestone Master Gates, U1-U6 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor, Stage-B R0..R6 Rehearsal, Unified Stage-B Release Dossier v3 & Capstone 22-Gate Verifier CLI",
+        description="FX6-on-FX3 Phase 264/254/233/221/209/193/175/147 Real-Hardware Master Gates, Phase 284/279/275/261/248/227/216/204/186/154 Bench & Pre-Shoot Readiness Verifiers, Phase 130/110/90 Milestone Master Gates, U1-U6 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor, Stage-B R0..R6 Rehearsal, Unified Stage-B Release Dossier v3 & Capstone 22-Gate Verifier CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -3232,6 +3461,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-milestone-264", "Verify Grand Milestone Phase 264 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Master Gate (>=102-Gate + >=44 Recovery + >=45 Auditors + >=50 VM + Sextuple Bench Preflights Ph186/Ph204/Ph216/Ph227/Ph248/Ph261 + FX3 7.02 QEMU R28..R52+, realhw_milestone264_master_gate_v1)"),
         ("preflight-file-settings-gamma-assist-focus-mag-and-videolight", "Run Phase 275 7th physical bench readiness verifier (Waves 44-46 ilc/2210: Movie CamID+Reel# 37-char & Still 3-char DSC prefix / Auto Review Off / 6-item TC/UB persistence, Gamma Display Assist Log lockout & LCD-only clean-HDMI vs Display LUT + Select LUT User1..16, 4.0x Auto Magnifier in MF / Peaking / AF Illuminator / Zero-RF Area/Date/Time / MI-Shoe 5V <= 900mA Video Light / Log 1080p HDMI Resolution, and 2-item Power Setting Option vs appFw Power Save by Monitor 4-mode split / BK_LANG 0x02cf019c 34 vs 29 / Volume 0..15 & 5-route 4ch Monitoring / Delete confirm. Cancel-first + Slot-1 vault guard)"),
         ("preflight-usb-mode-hdmi-info-protect-and-network-reset", "Run Phase 279 8th physical bench readiness verifier (Wave 47 ilc/2210: 4-mode [USB Connection Mode] vs dormant NOUVC usb_f_uvc.ko & data-isolated Type-C USB PD + NP-FZ100 + LUN Multi/Single, [HDMI Info. Display] LCD-blanking/touch-focus lockout vs clean-feed & internal Log/PPLUT 1080p clamp vs Off(HDMI Only)/RAW 4K forced-Off, [Protect] 4 scopes vs [Format] 0xe449 M1..M4 override + dual-layer Slot-1 WP + format hard-lock, and [Reset Network Set.] auto-reboot 0x65d3 3-way reset boundary + post-reboot [Airplane Mode]=On zero-RF & 16/16 H0==H3 Tier-0 gate)"),
+        ("preflight-pp-scinetone-wb-metering-and-shutter-type", "Run Phase 284 9th physical bench readiness verifier (Waves 48-49 ilc/2210: Stock PP11 S-Cinetone & [Different Set] vs Creative Look/DRO/Log lockout + PPLUT1..4 1080p clamp + PP1..11 reset trap, WB Cine EI restrictions + Custom 1..3 reset survival / CAMSET exclusion + 6-mode Metering M.M. & Face Priority/De-Squeeze, 2-option Still RAW vs dormant Lossless Comp 0x6b56 + HLG Still HEIF P/A/S/M + DCF 2.0 AdobeRGB _DSC, and 2-option Shutter Type no-Auto + 1/250 s flash sync + Electronic 5-lockout + Hi+ 10fps / >F11 AF-lock + Tier-0 gate)"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         if cmd_name not in ("verify-post-trial", "verify-realhw-jiritsu-tier0"):
@@ -3255,10 +3485,90 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force clean-room synthetic offline verification mode")
         if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "verify-sd-stageb-bundle-uninstaller"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight", "preflight-usb-mode-hdmi-info-protect-and-network-reset"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight", "preflight-usb-mode-hdmi-info-protect-and-network-reset", "preflight-pp-scinetone-wb-metering-and-shutter-type"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
-        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight", "preflight-usb-mode-hdmi-info-protect-and-network-reset"):
+        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight", "preflight-usb-mode-hdmi-info-protect-and-network-reset", "preflight-pp-scinetone-wb-metering-and-shutter-type"):
             p.add_argument("--markdown-out", type=Path, default=None, help="Optional Markdown report path to write certificate/dossier")
+        if cmd_name == "preflight-pp-scinetone-wb-metering-and-shutter-type":
+            p.add_argument("--output", "--out", dest="output", type=Path, default=None, help="Optional JSON file path to write Phase 284 preflight report")
+            p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
+            p.add_argument("--simulate-bench-dry-run", "--simulate-ready-bench", dest="simulate_bench_dry_run", action="store_true", help="Synthesize deterministic dry-run Tier-0 dual-media receipts without authorizing live hardware attachment")
+            p.add_argument("--reset-action", default="NONE", help="Reset operation modeled: NONE, CAMERA_SETTINGS_RESET, RESET_NETWORK_SET, INITIALIZE")
+            p.add_argument("--different-set-pp-checked", action="store_true", help="Enable [Different Set for Still/Mv] Picture Profile decoupling (0x62ee)")
+            p.add_argument("--shoot-mode", default="MOVIE", help="[Shoot Mode]: PHOTO, MOVIE, S_AND_Q")
+            p.add_argument("--log-shooting-mode", default="CINE_EI", help="[Log Shooting]: OFF, CINE_EI_QUICK, CINE_EI, FLEXIBLE_ISO")
+            p.add_argument("--picture-profile", default="OFF", help="[Picture Profile]: OFF, PP1..PP11, PPLUT1..4")
+            p.add_argument("--movie-picture-profile", default=None, help="Movie-specific [Picture Profile] when Different Set is checked")
+            p.add_argument("--still-picture-profile", default=None, help="Still-specific [Picture Profile] when Different Set is checked")
+            p.add_argument("--creative-look", default="-", help="[Creative Look]: '-' (locked), ST, PT, NT, VV, VV2, FL, IN, SH, BW, SE")
+            p.add_argument("--dro-mode", default="OFF", help="[D-Range Optimizer]: OFF, AUTO, LV1..LV5")
+            p.add_argument("--hlg-still-image", default="OFF", help="[HLG Still Image]: OFF or ON (requires HEIF-only + P/A/S/M)")
+            p.add_argument("--movie-gamma-display-assist", default="OFF", help="Movie [Gamma Display Assist]: OFF or ON")
+            p.add_argument("--no-internal-recording-active", dest="internal_recording_active", action="store_false", help="Indicate internal card recording is inactive")
+            p.add_argument("--hdmi-output-resolution", default="1080P", help="HDMI [Output Resolution]: AUTO, 2160P, 1080P, 1080I")
+            p.add_argument("--expect-creative-look-or-dro-active-with-pp-or-log", action="store_true", help="Claim Creative Look/DRO stay active under PP!=Off or Log!=Off (invalid)")
+            p.add_argument("--expect-pplut-in-still", action="store_true", help="Claim PPLUT1..4 are available in Still mode (invalid: Movie-only)")
+            p.add_argument("--no-pp1-11-custom-params-modified", dest="pp1_11_custom_params_modified", action="store_false", help="Indicate PP1..11 internal params were not customized")
+            p.add_argument("--pp-individual-reset-executed", action="store_true", help="Indicate per-profile Picture Profile [Reset] was executed")
+            p.add_argument("--claimed-pp1-11-internal-params-wiped", action="store_true", help="Claim Camera Settings Reset/Initialize wiped PP1..11 internal params (invalid)")
+            p.add_argument("--claimed-diff-set-checkmarks-wiped", action="store_true", help="Claim Initialize wiped [Different Set] check marks (invalid)")
+            p.add_argument("--claimed-pp-active-selector-remains-non-pp11-after-camera-reset", action="store_true", help="Claim active PP selector stayed non-PP11 after Camera Settings Reset (invalid)")
+            p.add_argument("--wb-mode", default="C_TEMP_FILTER", help="[White Balance]: AUTO, DAYLIGHT, SHADE, CLOUDY, INCANDESCENT, FLUORESCENT_*, FLASH, UNDERWATER_AUTO, C_TEMP_FILTER, CUSTOM_1, CUSTOM_2, CUSTOM_3")
+            p.add_argument("--wb-kelvin-k", type=int, default=5600, help="Color temperature in Kelvin (2500..9900 in 100K steps)")
+            p.add_argument("--wb-ab-shift", type=int, default=0, help="Amber-Blue fine shift (-7..+7, A7..B7)")
+            p.add_argument("--wb-gm-shift", type=int, default=0, help="Green-Magenta fine shift (-7..+7, G7..M7)")
+            p.add_argument("--priority-set-in-awb", default="STANDARD", help="[Priority Set in AWB]: STANDARD, AMBIENCE, WHITE")
+            p.add_argument("--shutter-awb-lock", default="OFF", help="[Shutter AWB Lock]: OFF, SHUT_HALF_DOWN, CONT_SHOOTING, BOTH")
+            p.add_argument("--shockless-wb", default="1", help="[Shockless WB]: OFF, 1, 2, 3")
+            p.add_argument("--custom-wb-setup-requested", action="store_true", help="Request Custom WB [Custom Setup] calibration (blocked under Log/S-Log3/PPLUT)")
+            p.add_argument("--no-custom-wb-survives-camera-reset", dest="custom_wb_survives_camera_reset", action="store_false", help="Claim Custom 1..3 is wiped by Camera Settings Reset (invalid)")
+            p.add_argument("--no-custom-wb-excluded-from-camset", dest="custom_wb_excluded_from_camset", action="store_false", help="Claim Custom 1..3 is included in CAMSET (invalid)")
+            p.add_argument("--no-shutter-awb-lock-survives-camera-reset", dest="shutter_awb_lock_survives_camera_reset", action="store_false", help="Claim [Shutter AWB Lock] is wiped by Camera Settings Reset (invalid)")
+            p.add_argument("--claimed-custom-wb-saved-in-camset", action="store_true", help="Claim Custom 1..3 was saved into CAMSET .DAT (invalid)")
+            p.add_argument("--claimed-custom-wb-wiped-by-camera-reset", action="store_true", help="Claim Custom 1..3 was wiped by Camera Settings Reset (invalid)")
+            p.add_argument("--metering-mode", default="MULTI", help="[Metering Mode]: MULTI, CENTER, SPOT_STANDARD, SPOT_LARGE, ENTIRE_SCREEN_AVG, HIGHLIGHT")
+            p.add_argument("--desqueeze-display", default="OFF", help="[De-Squeeze Display]: OFF, 1.3x, 1.5x, 1.6x, 1.8x, 2.0x")
+            p.add_argument("--face-priority-in-multi-metering", default="ON", help="[Face Prty in Mlti Mtr]: ON or OFF (forced OFF under De-Squeeze!=Off)")
+            p.add_argument("--spot-metering-point", default="CENTER", help="[Spot Metering Point]: CENTER or FOCUS_POINT_LINK")
+            p.add_argument("--ael-with-shutter", default="AUTO", help="[AEL w/ Shutter]: AUTO, ON, OFF")
+            p.add_argument("--no-ael-with-shutter-survives-camera-reset", dest="ael_with_shutter_survives_camera_reset", action="store_false", help="Claim [AEL w/ Shutter] is wiped by Camera Settings Reset (invalid)")
+            p.add_argument("--cine-ei-base-iso", type=int, default=800, help="Cine EI Base ISO (800 or 12800)")
+            p.add_argument("--expect-metering-changes-cine-ei-iso", action="store_true", help="Claim Metering Mode changes Cine EI Base ISO (invalid: M.M. only)")
+            p.add_argument("--raw-file-type", default="COMPRESSED", help="Still [RAW File Type]: COMPRESSED or UNCOMPRESSED (stock FX3 2-option)")
+            p.add_argument("--lossless-comp-exposed-in-fx3-ui", action="store_true", help="Claim dormant Lossless Comp 0x6b56 is exposed in stock FX3 UI (rejected)")
+            p.add_argument("--expect-lossless-comp-raw", action="store_true", help="Request dormant Lossless Comp RAW (rejected on stock ILME-FX3)")
+            p.add_argument("--jh-file-type", default="JPEG", help="[JPEG/HEIF Switch]: JPEG or HEIF")
+            p.add_argument("--still-file-format", default="RAW", help="Still [File Format]: RAW, RAW_AND_JH, JH")
+            p.add_argument("--exposure-mode", default="MANUAL_EXPOSURE", help="Exposure mode: PROGRAM_AUTO, APERTURE_PRIORITY, SHUTTER_PRIORITY, MANUAL_EXPOSURE, INTELLIGENT_AUTO, FLEXIBLE_EXP")
+            p.add_argument("--dro-bracket-active", action="store_true", help="Enable DRO Bracketing (locked out by HLG Still Image=On)")
+            p.add_argument("--color-space", default="SRGB", help="[Color Space]: SRGB or ADOBERGB")
+            p.add_argument("--still-file-prefix", default="DSC", help="Still [Set File Name] 3-char prefix (no leading '_')")
+            p.add_argument("--expected-dcf-sample-filename", default="DSC00001.ARW", help="Expected DCF 2.0 sample filename (DSC00001.* for sRGB, _DSC0001.* for AdobeRGB)")
+            p.add_argument("--shutter-type", default="MECHANICAL_SHUTTER", help="[Shutter Type]: MECHANICAL_SHUTTER or ELECTRONIC_SHUTTER (no Auto)")
+            p.add_argument("--shutter-type-auto-exposed-in-fx3-ui", action="store_true", help="Claim [Shutter Type]=Auto is exposed in FX3 UI (rejected)")
+            p.add_argument("--expect-shutter-type-auto", action="store_true", help="Request [Shutter Type]=Auto (rejected on ILME-FX3)")
+            p.add_argument("--silent-mode", default="OFF", help="[Silent Mode]: OFF or ON")
+            p.add_argument("--audio-signals", default="ON", help="[Audio signals]: ON, OFF_SHUTTER_ONLY, OFF")
+            p.add_argument("--e-front-curtain-shutter", default="ON", help="[e-Front Curtain Shut.]: ON or OFF")
+            p.add_argument("--no-e-front-curtain-survives-camera-reset", dest="e_front_curtain_survives_camera_reset", action="store_false", help="Claim [e-Front Curtain Shut.] is wiped by Camera Settings Reset (invalid)")
+            p.add_argument("--flash-sync-denominator", type=int, default=250, help="Mechanical flash sync denominator (>=250 for <=1/250 s)")
+            p.add_argument("--flash-enabled", action="store_true", help="Enable flash firing (locked out by Electronic Shutter/Silent Mode)")
+            p.add_argument("--long-exposure-nr", default="ON", help="[Long Exposure NR]: ON or OFF (locked out by Electronic Shutter)")
+            p.add_argument("--bulb-enabled", action="store_true", help="Enable BULB exposure (locked out by Electronic Shutter/Silent Mode)")
+            p.add_argument("--anti-flicker-shoot", default="OFF", help="[Anti-flicker Shoot.]: OFF or ON (locked out by Electronic Shutter)")
+            p.add_argument("--high-iso-nr", default="NORMAL", help="[High ISO NR]: NORMAL, LOW, OFF")
+            p.add_argument("--expect-high-iso-nr-applies-to-raw", action="store_true", help="Claim High ISO NR applies to RAW files (invalid)")
+            p.add_argument("--drive-mode", default="SINGLE_SHOOTING", help="[Drive Mode]: SINGLE_SHOOTING, CONT_HI_PLUS, CONT_HI, CONT_MID, CONT_LO, SELF_TIMER, SELF_TIMER_CONT, BRACKET")
+            p.add_argument("--cont-fps", type=int, default=10, help="Continuous shooting fps (Hi+ ceiling 10 fps)")
+            p.add_argument("--aperture-f-number", type=float, default=2.8, help="Aperture F-number (Hi+/Hi/Mid locks AF above F11)")
+            p.add_argument("--expect-af-tracks-all-frames-above-f11", action="store_true", help="Claim AF tracks all frames in Hi+ above F11 (invalid)")
+            p.add_argument("--expect-10fps-with-uncompressed-or-flash", action="store_true", help="Claim Hi+ stays 10 fps with Uncompressed RAW or Flash (invalid)")
+            p.add_argument("--receipt-a", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy A")
+            p.add_argument("--receipt-b", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy B (distinct st_dev)")
+            p.add_argument("--model-id", default=None, help="Expected Sony PRODUCT_MODEL hex/int (default 0x91030080)")
+            p.add_argument("--body-fw", default="7.02", help="Target FX3 body firmware version (7.02)")
+            p.add_argument("--body-serial", default=None, help="Target FX3 body serial identifier")
+            p.add_argument("--emmc-cid", default=None, help="Target FX3 128-bit eMMC CID hex identifier")
         if cmd_name == "preflight-usb-mode-hdmi-info-protect-and-network-reset":
             p.add_argument("--output", "--out", dest="output", type=Path, default=None, help="Optional JSON file path to write Phase 279 preflight report")
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
@@ -4494,6 +4804,92 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.auto_reboot_triggered_on_network_reset,
             args.post_reboot_airplane_mode,
             args.require_post_reboot_airplane_on,
+            args.receipt_a,
+            args.receipt_b,
+            args.model_id,
+            args.body_fw,
+            args.body_serial,
+            args.emmc_cid,
+        )
+    if args.cmd == "preflight-pp-scinetone-wb-metering-and-shutter-type":
+        return _cmd_preflight_pp_scinetone_wb_metering_and_shutter_type(
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.force_clean_room,
+            args.simulate_bench_dry_run,
+            args.json,
+            args.markdown_out,
+            args.output,
+            args.reset_action,
+            args.different_set_pp_checked,
+            args.shoot_mode,
+            args.log_shooting_mode,
+            args.picture_profile,
+            args.movie_picture_profile,
+            args.still_picture_profile,
+            args.creative_look,
+            args.dro_mode,
+            args.hlg_still_image,
+            args.movie_gamma_display_assist,
+            args.internal_recording_active,
+            args.hdmi_output_resolution,
+            args.expect_creative_look_or_dro_active_with_pp_or_log,
+            args.expect_pplut_in_still,
+            args.pp1_11_custom_params_modified,
+            args.pp_individual_reset_executed,
+            args.claimed_pp1_11_internal_params_wiped,
+            args.claimed_diff_set_checkmarks_wiped,
+            args.claimed_pp_active_selector_remains_non_pp11_after_camera_reset,
+            args.wb_mode,
+            args.wb_kelvin_k,
+            args.wb_ab_shift,
+            args.wb_gm_shift,
+            args.priority_set_in_awb,
+            args.shutter_awb_lock,
+            args.shockless_wb,
+            args.custom_wb_setup_requested,
+            args.custom_wb_survives_camera_reset,
+            args.custom_wb_excluded_from_camset,
+            args.shutter_awb_lock_survives_camera_reset,
+            args.claimed_custom_wb_saved_in_camset,
+            args.claimed_custom_wb_wiped_by_camera_reset,
+            args.metering_mode,
+            args.desqueeze_display,
+            args.face_priority_in_multi_metering,
+            args.spot_metering_point,
+            args.ael_with_shutter,
+            args.ael_with_shutter_survives_camera_reset,
+            args.cine_ei_base_iso,
+            args.expect_metering_changes_cine_ei_iso,
+            args.raw_file_type,
+            args.lossless_comp_exposed_in_fx3_ui,
+            args.expect_lossless_comp_raw,
+            args.jh_file_type,
+            args.still_file_format,
+            args.exposure_mode,
+            args.dro_bracket_active,
+            args.color_space,
+            args.still_file_prefix,
+            args.expected_dcf_sample_filename,
+            args.shutter_type,
+            args.shutter_type_auto_exposed_in_fx3_ui,
+            args.expect_shutter_type_auto,
+            args.silent_mode,
+            args.audio_signals,
+            args.e_front_curtain_shutter,
+            args.e_front_curtain_survives_camera_reset,
+            args.flash_sync_denominator,
+            args.flash_enabled,
+            args.long_exposure_nr,
+            args.bulb_enabled,
+            args.anti_flicker_shoot,
+            args.high_iso_nr,
+            args.expect_high_iso_nr_applies_to_raw,
+            args.drive_mode,
+            args.cont_fps,
+            args.aperture_f_number,
+            args.expect_af_tracks_all_frames_above_f11,
+            args.expect_10fps_with_uncompressed_or_flash,
             args.receipt_a,
             args.receipt_b,
             args.model_id,

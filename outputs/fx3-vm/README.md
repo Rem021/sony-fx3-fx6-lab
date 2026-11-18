@@ -2502,7 +2502,41 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 339（Stage 74 — `74/74` VM HIL Stages Milestone!）：Wave-64 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` `[Breathing Comp.]` `120p/100p`/RAW/S&Q & Catalyst Prepare-Only 勘误、电影 `[File Settings]` `Cam ID + Reel#` / `37` 字符标题 / `SDHC` `4 GB` 分割、`[Copyright Info]` `46` 字符 & Still+Movie `[Write Serial Number]` Reset 免疫 & `CAMSET` 隔离，以及 `[Power Setting Option]` 9 条件 / 休眠 `[Power Save by Monitor]` + `[NTSC/PAL Selector]` `Slot 1` `EROFS=30` HIL
 
+[`realhw_breathing_camid_copyright_powersave_ntsc_pal_coemulator.py`](realhw_breathing_camid_copyright_powersave_ntsc_pal_coemulator.py)（Schema `phase339_realhw_breathing_camid_copyright_powersave_ntsc_pal_coemulation_v1`）作为 **Stage 74（`74/74` VM HIL Stages Milestone!）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase339` / `--skip-stage74` / `--no-include-stage74` 跳过，支持 `--include-stage74`），严格遵循 `os.O_RDONLY` + `<= 4096 B` 受界 `os.pread`、`physical_device_writes == 0`、`emmc_writes_authorized == False`、`cross_model_flash_authorized == False`、`slot1_data_sector_writes == 0`、`emmc_nflasha_write_count == 0` 与 `raw_firmware_bytes_leaked == 0`：
 
+1. **高速双模 18 供体 `O_RDONLY` + 受界 `os.pread` 审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **18 份真实供体**（`12` 份 FX3 四语 `_f` / 基础 / `_g` `.uxc` + `libSaveLoadSettings.so` `18,760 B` + `2` 份 FX6 英文 `.uxc` + `FX3 appFw.so`、`FX3 BK4`、`FX6 appFw.so` 3 份大镜像），冷读 `< 0.20s`，并在无供体 CI 环境下（`work_root is None`、`FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1`、`FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__` 或 `--clean-room`）零 `NoneType / str` 异常无缝回退至 `CLEAN_ROOM_SYNTHETIC`（`raw_firmware_bytes_leaked == 0`）。
+2. **Sub-Model 74A — `[Breathing Comp.]` `Ver. 3.00+` Reset 反对称、`120p/100p`/RAW/S&Q 锁死 & Catalyst Prepare-Only 勘误**：
+   - `Shooting -> [Image Quality/Rec] -> [Lens Compensation] -> [Breathing Comp.]`（`Off` 默认 / `On`；**可被 `[Camera Settings Reset]` 复位**，与同组其余 3 项抗 Reset 的 `Shading` / `Chromatic` / `Distortion Comp.` 形成明确反对称）。
+   - 严格拦截 **Still 静态照片**、**普通电影 `119.88p / 100p`**、**`S&Q >= 100/120fps`**（`<100/120fps` 的 `S&Q` 在 FX3 可用，对比 **FX6 禁用全部 `S&Q`**）、**HDMI 16-bit `RAW Output`**、**增距镜 `SEL14TC` / `SEL20TC`**、**`SEL100F28GM` 微距环 `0.57m–1.0m`**、**第三方/手动镜头**、**数字变焦** 与 **`Auto Framing`**；Clear Image Zoom 在 `<100/120fps` 下兼容；机内 `[Breathing Comp.] = Off` 时的元数据后期呼吸补偿为 **付费版 `Catalyst Prepare` / `Catalyst Prepare Plugin` 独占**且要求 **`[Distortion Comp.] = Auto`**（**免费版 `Catalyst Browse` 不支持** -> `EOPNOTSUPP=95`）。对比 `ILME-FX6` `Technical > Lens > Breathing Compensation`（`Auto`/`Off`，硬锁 `Distortion = Off`、全部 `S&Q` 及全部 `RAW` 编码）。
+3. **Sub-Model 74B — 电影 `[File Settings]` Reset 免疫、`Cam ID + Reel#`（`C999 -> D001` & `YYMMDD`）、`37` 字符 `Title`、`SDHC` `4 GB` 分割 & `Slot 1` `EROFS=30`**：
+   - `Shooting -> [File] -> [File Settings]` 全组抗 `[Camera Settings Reset]`（仅 `[Initialize]` 复位；目录固定 `PRIVATE/M4ROOT/CLIP/*.MP4`）：`File Number`（`Series`/`Reset` + `Series Counter Reset` 在目录有文件时设 `max + 1`）、`Cam ID + Reel#`（`YYMMDD` 6 位日期；`C999 -> D001` 仅递增文件名位置字母而不篡改菜单 `[Camera Position]`；修改 `Camera ID` 重置 `Reel#` 而 `File Number = Reset` 保留 `Reel#`）、`Title`（上限 `37` 字符，默认 `"C"`）、`Date + Title` / `Title + Date`（`YYYYMMDD` 8 位日期）；`SDHC`（`FAT32 <= 32 GB`）强制 `Standard` + `4 GB` 分割且禁止与 `exFAT` 混用 `[Simult. Recording]`；`Slot 1` Tier-0 防火墙阻断落盘/重置写卡并返回 `EROFS=30`（`slot1_data_sector_writes == 0`）。对比 `ILME-FX6` `TC/Media > Clip Name Format`（`4..46` 字符 `nnn_` 前缀，`/XDROOT/Clip/*.MXF` 或 `/PRIVATE/XDROOT/Clip/*.MXF`，支持卡内继承）。
+4. **Sub-Model 74C — `[Copyright Info]`（`46` 字符）、Still+Movie `[Write Serial Number]` Round-57 Reset 勘误修复 & `CAMSET*.DAT` 隔离**：
+   - `[Copyright Info]`（`Write Copyright Info` 默认 `Off`，仅写 Still EXIF；`Set Photographer` / `Set Copyright` 上限 `46` ASCII 字符）与 `[Write Serial Number]`（`Ver. 2.00..7.02` 已由 Still-only 扩展为 **Still + Movie 均活跃** 的 `BKID_APP_setting_write_serial_number_still_movie`）**全部 5 项均抗 `[Camera Settings Reset]`**（修复 Round-57 勘误，仅 `[Initialize]` 清零）。
+   - `[Save/Load Settings]`（`CAMSET*.DAT`）明确排除 `[Copyright Info]`（零 PII 字节泄漏），而 `[Write Serial Number]` 仅导出布尔开关且绝不泄漏机身物理序列号字符串；`Slot 1` 拍摄与 `CAMSET` 导出触发 Tier-0 `EROFS=30`；对比 `ILME-FX6` 仅追踪 `CURRENT/PRESET_LENS_SERIAL_NUMBER0..5`。
+5. **Sub-Model 74D — `[Power Setting Option]`（6 档 / 9 条件 / 100% 休眠 `[Power Save by Monitor]`）+ `[NTSC/PAL Selector]` `Slot 1` `EROFS=30` 格式化防呆**：
+   - `Setup -> [Power Setting Option]` 抗 Reset，暴露 6 档活跃 `[Power Save Start Time]`（`Off` / `30 Min` / `5 Min[def]` / `2 Min` / `1 Min` / `10 Sec`，5 档休眠步进返回 `EOPNOTSUPP=95`）并严格执行 **9 类官方自动旁路条件**；`[Auto Power OFF Temp.] = High` 触发三脚架固定告警；**`[Power Save by Monitor]`**（`BKID_APP_setting_monitor_power_linkage`）在无 EVF 眼感应器的 FX3 上 **100% 休眠**（`EOPNOTSUPP=95`）。
+   - `[NTSC/PAL Selector]`（抗 Reset）切换触发强制自动重启与 `Running on NTSC.` / `Running on PAL.` 横幅；`PAL` 禁用 `23.98p` 与 `DF` 丢帧时间码（强制 `NDF`），禁止跨制式回放（`_g`）；面对 `base.uxc` 遗留 `Format? Slot 1` 提示，Tier-0 `Slot 1` 防火墙硬阻断 SD-Erase / TRIM（`EROFS=30`，`slot1_data_sector_writes == 0`）。对比 `ILME-FX6` `Project > Rec Format > Frequency`。
 
+### Phase 339 CLI 运行与测试命令
 
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 339 Stage 74（74/74 里程碑！）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_breathing_camid_copyright_powersave_ntsc_pal_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_breathing_camid_copyright_powersave_ntsc_pal_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_breathing_camid_copyright_powersave_ntsc_pal_coemulator.py --self-test --json
+
+# 2. 全板 74 阶段（Stage 1..74, 74/74 里程碑！）统一校验（支持 --include-stage74 与 --skip-phase339 / --skip-stage74 / --no-include-stage74）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage74 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 339 四模式 96 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_breathing_camid_copyright_powersave_ntsc_pal_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_breathing_camid_copyright_powersave_ntsc_pal_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_breathing_camid_copyright_powersave_ntsc_pal_coemulator.py -v
+FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_breathing_camid_copyright_powersave_ntsc_pal_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```

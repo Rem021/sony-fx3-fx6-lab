@@ -1878,3 +1878,31 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   python3 -B -m fx3_safety verify-138-gates [--clean-room] [--simulate-bench-dry-run] [--summary] [--json]
 ```
 
+---
+
+## 70. Phase 317 (Task H378, Wave-60, `140/140` Safety Gates Grand Milestone!): `[Rec. Media Settings]` Split & `Auto Switch Media` `Slot-2 -> Slot-1` Overflow Trap, `VPG200/VPG400` Card Speed Gates & `[Proxy Settings]` `M4ROOT/SUB` Vault Firewall (`Gate G139`), `[Creators' Cloud]`/`[C3 Portal]` Init-Persistence, `[Cnct. while Power OFF]` Zero-RF BLE Firewall & Exact `42`-Slot `[My Menu]` vs `20`-Item `FX6` `User Menu with Lock` (`Gate G140`), and Unified `140`-Gate Preflight (`realhw_rec_media_autoswitch_proxy_cloud_mymenu_and_140gate_guard.py`)
+
+`realhw_rec_media_autoswitch_proxy_cloud_mymenu_and_140gate_guard.py` (`schema_version = "realhw_140gate_preflight_v1"`) delegates `G01..G138` directly to `evaluate_138gate_preflight()` (preserving `100%` backward compatibility across `verify-58-gates` through `verify-138-gates`) and adds Wave-60 real-hardware safety gates **`G139`** and **`G140`** into the unified **`140`-Gate Milestone Master Safety Preflight (`G01..G140` / `run_140_gate_preflight` / `evaluate_140gate_preflight`)**, hard-locking `EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`, `SPI_NOR_WRITE_AUTHORIZED = False`, `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`, `CROSS_MODEL_FLASH_AUTHORIZED = False`, `HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`, `USB_PACKETS_TRANSMITTED = 0`, `RAW_FIRMWARE_BYTES_LEAKED = 0`, and `overall_ready_for_hardware_attach = False`:
+
+1. **`[Rec. Media Settings]` Split & `Auto Switch Media` `Slot-2 -> Slot-1` Overflow Trap, `VPG200/VPG400` Card Speed Gates & `[Proxy Settings]` `M4ROOT/SUB` Vault Firewall (`verify_rec_media_autoswitch_proxy_vault_guard`, Gate `G139`)**:
+   - Performs a fast `< 0.20s` `os.open(..., os.O_RDONLY)` + targeted `os.pread` local donor audit across FX3 `appFw.so` (`79,015,712 B`, 24 Wave-60 slices), FX3 `string_english.uxc` / `_f.uxc` / `_g.uxc` + 4-language `_f.uxc` parity packs, `FX3-CX95900_ALLLANG-Backup.bin`, and FX6 `appFw.so` (`50,520,424 B`, 7 slices) + FX6 UXC (`raw_firmware_bytes_leaked == 0`), with deterministic `FX3_FX6_FORCE_CLEAN_ROOM=1` / `FX3_CLEAN_ROOM_TEST=1` fallback.
+   - Enforces Ver. `2.00+`–`7.02` split `Initialize`-only **`[Recording Media]`** (rejecting dormant `[Prioritize Rec. Media]` `_f.uxc 0x719e` -> `EOPNOTSUPP=95`, rejecting Movie `Sort Recording` -> `EINVAL=22`, and requiring matching `exFAT`/`FAT32` across slots for `Simult. Recording`) and **`[Auto Switch Media]`** (`_f.uxc 0x6dd9`, `BKID_APP_setting_relay_rec`, survives `[Camera Settings Reset]`).
+   - Enforces dual fail-closed lock against the **`Slot-2 -> Slot-1` Overflow Trap** (`Auto Switch Media == Off` + `EROFS=30` on `Slot-1` Tier-0 Vault, `slot1_data_sector_writes == 0`, `slot1_avf_info_mutated == False`), validates `V60`/`V90`/`CFexpress Type A VPG200/VPG400` (`.uxc 0xe228`/`0xe224`, rejecting `CFexpress Type B` -> `ENODEV=19`) and `[Proxy Settings]` (`XAVC S HD` `1280x720 6M 8bit` vs `XAVC HS HD` `1920x1080 9M/16M 10bit`, blocking `119.88p/100p` & `S&Q 120/100fps` while permitting `XAVC S-I DCI 4K <=59.94p`, locking `M4ROOT/SUB/*S03.MP4` and coupled Delete/Protect via `EROFS=30` on `Slot 1` vs FX6 `Simul Rec`/`Chunk Proxy`) across `256` matrix states.
+2. **`[Creators' Cloud]`/`[C3 Portal]` Init-Persistence, `[Cnct. while Power OFF]` Zero-RF BLE Firewall & Exact `42`-Slot `[My Menu]` vs `20`-Item `FX6` `User Menu with Lock` (`verify_creators_cloud_zerorf_mymenu42_guard`, Gate `G140`)**:
+   - Enforces `[Creators' Cloud]` (`Cloud Connection *` / `Cloud Information *` **survive even `[Initialize]`** and require explicit sign-out; `CLOUD_CONNECTION_ON_FTP_OFF` mutual exclusion) + `C3 Portal` + Ver. `7.00+` `Clip Flag` (`OK`/`NG`/`KEEP`).
+   - Enforces **CRITICAL Zero-RF Firewall** on `[Cnct. while Power OFF]` (`_f.uxc 0x6ab3`, `BKID_APP_extern_menu_cnct_while_power_off`, survives `[Camera Settings Reset]`): requires BOTH `[Airplane Mode] == On` AND `[Cnct. while Power OFF] == Off` so `UIBIZ_KEY_BLUETOOTH_LOWENERGY_POWER` is never energized when physical switch is `OFF` (`rf_packets_transmitted == 0`), contrasted with Bluetooth-less `ILME-FX6`.
+   - Enforces exact **`6 × 7 = 42`-slot `[My Menu]`** (`BKID_APP_mymenu_group{1..6}_setting_list{0..6}`, rejecting `30`/`36` slot myths, index `>= 42`, and `(Playback)` tab item registration -> `EINVAL=22`, protecting `CAMSET*.DAT` `Slot 1` exports via `EROFS=30`), contrasted with `FX6` `20`-item `User Menu` + `User Menu Only` + rental `User Menu with Lock` (`0000..9999` PIN, `Multi-Function Dial + MENU`, excluded from `All File`, rejected on `FX3` -> `EOPNOTSUPP=95`) across `256` matrix states.
+3. **Unified `140`-Gate Milestone Master Preflight (`evaluate_140gate_preflight` / `verify-140-gates`)**:
+   - **Offline default mode**: `137/140` gates pass (`VERIFIED_137_OF_140_AWAITING_PHYSICAL_TIER0`, `overall_ready_for_hardware_attach = False`).
+   - **`--simulate-bench-dry-run` rehearsal mode**: `140/140` simulation gates pass (`VERIFIED_ALL_140_GATES_DRY_RUN_SIMULATED_BACKUP`, `all_140_gates_verified = True`, `dry_run_rehearsal_only = True`) while all hardware write/live-attach redlines remain `False`, `cross_model_flash_authorized == False`, and `usb_packets_transmitted == 0`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-rec-media-autoswitch-proxy-vault-guard [--clean-room] [--summary] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-creators-cloud-zerorf-mymenu42-guard [--clean-room] [--summary] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-140-gates [--clean-room] [--simulate-bench-dry-run] [--summary] [--json]
+```
+
+

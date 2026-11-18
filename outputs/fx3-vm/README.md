@@ -2076,3 +2076,39 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 309 Stage 63（63/63 VM 阶段里程碑！）— 真实硬件 Wave-53：`[Lens Compensation]` Shading Auto/Off vs 休眠 `Auto: Low` & `SteadyShot = Active` 畸变锁、内置前部 AF 辅助照明 LED（`#8`）vs 零照明 `FX6` + 电影 AF 运动学、AF 行为 `Initialize-only` 五项持久化（正交循环聚焦点），以及 `[Create New Folder]` + 回放 `[Rating]`（1..5 星）Slot-1 Tier-0 Vault 防火墙协同仿真台架
+
+[`realhw_lens_comp_af_illuminator_folder_rating_coemulator.py`](realhw_lens_comp_af_illuminator_folder_rating_coemulator.py) 作为 **Phase 309 Stage 63（`63/63` 里程碑，Schema `realhw_lens_comp_af_illuminator_folder_rating_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase309_realhw_lens_comp_af_illuminator_folder_rating_hil=True` / `include_stage63=True` / `stage63_realhw_lens_comp_af_illuminator_folder_rating_hil=True`，支持显式 `--include-stage63` 以及 `--skip-phase309` / `--skip-stage63` / `--no-include-stage63` 跳过），在严格锁定 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`emmc_nflasha_write_count == 0`、`emmc_corruptions == 0`、`nop_count == 0`、`guest_code_modification_bytes == 0`、`physical_usb_packets_emitted == 0`、`dormant_shading_auto_low_exposed_events == 0`、`steadyshot_active_distortion_bypass_events == 0`、**`fx3_has_builtin_af_illuminator == True`**、**`fx6_has_builtin_af_illuminator == False`**、`af_illuminator_non_afs_or_silent_fire_events == 0`、`initialize_only_af_reset_wipe_events == 0`、`diagonal_focus_point_wrap_events == 0`、**`slot1_data_sector_writes == 0`**、`slot1_vault_folder_or_rating_mutation_bytes == 0`、**`slot1_avf_info_mutated == False`** 与 **`raw_firmware_bytes_leaked == 0`**（共 42 项红线不变量）的前提下完成五大闭环：
+
+1. **高速双模 12 供体 `O_RDONLY` 字节与 SHA-256 精确锚定审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 通过受界 `os.O_RDONLY`（`<= 4096 B`）核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **12 份真实供体**：FX3 `string_*_f.uxc` 4 语种全集（`en_f=373,820 B`、`sc_f=322,652 B`、`tc_f=324,148 B`、`ja_f=447,840 B`）、FX3 `string_english.uxc`（`165,740 B`）、FX3 `string_english_g.uxc`（`69,600 B`）、**FX3 `libInfraLensCommunicator.so`（`14,544 B`）**、FX6 `string_english.uxc`（`118,208 B`）与 `string_english_2.uxc`（`118,676 B`），以及 `FX3 appFw.so`（`79,015,712 B`）、`FX3 BK4`（`2,229,740 B`）与 `FX6 appFw.so`（`50,520,424 B`）；支持 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 与 CLI `--clean-room` 切换至确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 63A — `[Lens Compensation]` Shading Auto/Off vs 休眠 `Auto: Low` 与 `SteadyShot = Active` 畸变锁**：
+   - 精确建模 `ILME-FX3 Ver. 7.02` `[Shading Comp.]` 仅暴露 `Auto`（默认）/ `Off`，严格拒绝休眠 `LENS_COMP_SHADING_AUTO_LOW` / `_f.uxc 0x6c9c` `'Auto: Low'`（`ILCE-6700`/`ILCE-7RM5`，`EOPNOTSUPP=95`）；`[Chromatic Aberration Comp.]` 开放 `Auto`/`Off`；`[Distortion Comp.]` 开放 `Auto`/`Off`，但在特定镜头档案（`SELP1650`、`FE 28-70mm`）或 Movie/S&Q `[SteadyShot] = Active` 时强制锁定 `Auto`（尝试切 `Off` 拒绝 `EOPNOTSUPP=95`）；无触点手动镜头拒绝菜单补偿（`EOPNOTSUPP=95`）；Shading/CA/Distortion 跨 `[Camera Settings Reset]` 留存并仅在 `[Initialize]` 重置，而 Movie-only `[Breathing Comp.]` 随 `[Camera Settings Reset]` 复位；对比 `ILME-FX6 Ver. 6.01` `Technical > Lens`（`All File` 作用域，Distortion=Off / S&Q / RAW 强制禁用 Breathing）及与传感器 `White/Black Shading`（`PID_SET_{WHITE,BLACK}_SHADING`）的本质隔离。
+3. **Sub-Model 63B — 内置前部 AF 辅助照明 LED（`#8`, `0.3..3.0 m`）vs 零照明 `ILME-FX6` & 电影 AF 运动学**：
+   - 建模 FX3 前部自拍定时/AF 辅助照明 LED（`TP1000886886.html` Front `#8`，`0.3..3.0 m`）+ MI 热靴外闪 AF 辅助灯仅在 **Still `AF-S`**（`Auto`、非静音、非对焦放大、无转接环）触发，并在 `Movie`、`S&Q`、`AF-C`、`MF`、`Silent Mode = On`、`Focus Magnifier` 与 `Mount Adaptor` 下严格锁定拦截（`EOPNOTSUPP=95`）；严格对比 **零内置 AF 辅助照明 LED 的 `ILME-FX6`**（`fx6_has_builtin_af_illuminator == False`）；同时覆盖 Movie/`S&Q` `[AF Transition Speed]`（`1..7`，默认 `5`）、`[AF Subj. Shift Sensitivity]`（`1..5`，默认 `5`）与 `[AF Assist]`（Movie/`S&Q` `AF-C` 专用，不兼容 `SELP1650`/`SEL18200LE`）及其 `[Camera Settings Reset]` 复位逻辑。
+4. **Sub-Model 63C — AF 行为 `Initialize-only` 五项持久化与正交聚焦点循环**：
+   - 建模 `[Aperture Drive in AF]`（`Focus Priority` / `Standard` / `Silent Priority`，Still-only 且与 `Silent Mode Settings` 联动）、Still-only `[AF w/ Shutter]`、`[Pre-AF]`（镜头门控 `VAL_lens_pre_af_support`）、`[Circ. of Focus Point]`（**仅允许水平/垂直正交环绕，严禁对角线斜向环绕 -> `EOPNOTSUPP=95`**）以及 `[Focus Area Color]`（`White` / `Red`，拒绝旧版 `Focus Frame Color` 伪造名称 -> `EOPNOTSUPP=95`）；全部 5 项均跨 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 保留，**仅通过 `[Initialize]` 复位**；对比 `ILME-FX6` 缺席此 5 项而采用电影 `Iris`（`Auto Iris` / `Manual` / `Push Auto Iris` / `Override -1.0..+1.0` 步进 `0.25`）与 `Focus Area Marker`。
+5. **Sub-Model 63D & Redlines — `[Create New Folder]` 与回放 `[Rating]`（1..5 星）Slot-1 Tier-0 Vault 防火墙**：
+   - 建模 `[File/Folder Settings]`（`Standard Form` `100MSDCF..999MSDCF` vs `Date Form` 禁用 `[Select REC Folder]`；`Series`/`Reset`；3 字符前缀拒绝前导 `_`）、`[Create New Folder]` / `[Forced File Number Reset]`（`max + 1`、`999` 文件夹上限、双卡同录检测）与回放 `[Rating]`（1..5 星 + `[Rating Set(Custom Key)]` 复选框过滤 + 拍摄画面 `[Add Rating]` 拒绝重复评分 `_g.uxc 0x627d` 及后台 FTP 传输拦截 `EBUSY=16`）；**核心 Vault 防火墙**：当 `Slot 1` 挂载 Tier-0 Recovery Vault 时，任何 `[Create New Folder]`、`[Forced File Number Reset]`、`[Select REC Folder]` 隐式写入或 `[Rating]`/`[Add Rating]` 改写 EXIF/`AVF_INFO` 均强制 fail-closed（`EROFS=30`，`slot1_data_sector_writes == 0`、`slot1_avf_info_mutated == False`、`slot1_vault_folder_or_rating_mutation_bytes == 0`），仅允许在虚拟 `Slot 2` 执行零物理写入仿真；对比 `FX6` 使用 `XDROOT/Clip` 与 `Clip Flag`（`OK/NG/KEEP`）。
+
+### Phase 309 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 309 Stage 63（63/63 里程碑！）自检
+PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_lens_comp_af_illuminator_folder_rating_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_lens_comp_af_illuminator_folder_rating_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_lens_comp_af_illuminator_folder_rating_coemulator.py --self-test --json
+
+# 2. 全板 63 阶段（Stage 1..63, 63/63 里程碑！）统一校验（支持 --include-stage63 与 --skip-phase309 / --skip-stage63 / --no-include-stage63）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage63 --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 309 三模式 88 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_lens_comp_af_illuminator_folder_rating_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_lens_comp_af_illuminator_folder_rating_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_lens_comp_af_illuminator_folder_rating_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+
+

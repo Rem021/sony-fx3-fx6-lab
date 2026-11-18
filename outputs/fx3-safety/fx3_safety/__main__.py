@@ -257,6 +257,11 @@ from .realhw_breathing_camid_copyright_powersave_ntscpal_and_148gate_guard impor
     evaluate_g147_breathing_comp_120p_catalyst_and_camid_reel_sdhc_vault_guard,
     evaluate_g148_copyright_46ch_serial_errata_and_powersave_ntscpal_vault_guard,
 )
+from .realhw_zoom_ciz_autoslow_iso_arw_rawcomp_usblun_uvc_and_150gate_guard import (
+    evaluate_150gate_preflight,
+    evaluate_g149_zoom_ciz_digital_8step_speed_reset_split_and_autoslow_dual_base_iso_guard,
+    evaluate_g150_still_arw_dormant_lossless_hlg_photo_and_usb_lun_single_slot1_npfz100_uvc_firewall,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -4838,6 +4843,95 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_148.add_argument("--json", action="store_true", help="Emit structured JSON report")
     p_148.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 182. verify-zoom-ciz-autoslow-baseiso-guard
+    p_g149 = sub.add_parser(
+        "verify-zoom-ciz-autoslow-baseiso-guard",
+        aliases=["verify-g149-zoom-ciz-autoslow-baseiso", "verify-g149"],
+        help="Verify Gate G149: Reset-immune [Zoom Range] & [Zoom Ring Rotate] vs Resettable 8-step [Zoom Lever Speed]/[Custom Key Z. Speed]/[Remote Zoom Speed] + pre-entry/active lockouts, Movie-only [Auto Slow Shutter] 7-cond locks, Reset-immune [ISO Range Limit], Still-only [ISO AUTO Min. SS], and Dual Base ISO (Cine EI 800/12800 vs 20x per-Gamma auto)",
+    )
+    p_g149.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g149.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g149.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g149.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g149.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 183. verify-still-arw-hlg-usblun-uvc-guard
+    p_g150 = sub.add_parser(
+        "verify-still-arw-hlg-usblun-uvc-guard",
+        aliases=["verify-g150-still-arw-hlg-usblun-uvc", "verify-g150"],
+        help="Verify Gate G150: Still [RAW File Type] Compressed/Uncompressed vs 100%% dormant Lossless Comp (EOPNOTSUPP=95), [HLG Still Image] BT.2100 + ISO 100/125, [Sort Recording] Slot-1 EROFS=30, [USB LUN Setting]=Single Slot-1 exposure trap & host-MSC firewall, NP-FZ100 PD boot gate vs DC-C1, and Dual FX3/FX6 native UVC myth-busting (EOPNOTSUPP=95)",
+    )
+    p_g150.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g150.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g150.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g150.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g150.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 184. verify-150-gates
+    p_150 = sub.add_parser(
+        "verify-150-gates",
+        help="Run Phase 347 (Task H432, Wave-65) Unified 150-Gate Milestone Master Safety Preflight Engine (G01..G150)",
+    )
+    p_150.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_150.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_150.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G150 gates can be rehearsed offline",
+    )
+    p_150.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_150.add_argument("--summary", action="store_true", help="Emit concise summary output")
 
     args = parser.parse_args(argv)
 
@@ -10591,6 +10685,161 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_148_gates_verified if args.dry_run_simulated else report.offline_145_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-zoom-ciz-autoslow-baseiso-guard",
+        "verify-g149-zoom-ciz-autoslow-baseiso",
+        "verify-g149",
+    ):
+        verdict, res = evaluate_g149_zoom_ciz_digital_8step_speed_reset_split_and_autoslow_dual_base_iso_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.zoom_ciz_autoslow_baseiso_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_zoom_range": guard["effective_zoom_range"],
+                    "effective_max_zoom_scale": guard["effective_max_zoom_scale"],
+                    "zoom_range_and_ring_resettable_by_camset_reset": guard["zoom_range_and_ring_resettable_by_camset_reset"],
+                    "zoom_speeds_resettable_by_camset_reset": guard["zoom_speeds_resettable_by_camset_reset"],
+                    "effective_auto_slow_shutter": guard["effective_auto_slow_shutter"],
+                    "effective_low_base_iso": guard["effective_low_base_iso"],
+                    "effective_high_base_iso": guard["effective_high_base_iso"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.zoom_ciz_autoslow_baseiso_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} zoom_range={guard['effective_zoom_range']} "
+                f"scale={guard['effective_max_zoom_scale']} "
+                f"autoslow={guard['effective_auto_slow_shutter']} "
+                f"base_iso={guard['effective_low_base_iso']}/{guard['effective_high_base_iso']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-still-arw-hlg-usblun-uvc-guard",
+        "verify-g150-still-arw-hlg-usblun-uvc",
+        "verify-g150",
+    ):
+        verdict, res = evaluate_g150_still_arw_dormant_lossless_hlg_photo_and_usb_lun_single_slot1_npfz100_uvc_firewall(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.still_arw_hlg_usblun_uvc_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_raw_file_type": guard["effective_raw_file_type"],
+                    "dormant_lossless_raw_rejected": guard["dormant_lossless_raw_rejected"],
+                    "effective_hlg_still_image": guard["effective_hlg_still_image"],
+                    "effective_usb_lun_setting": guard["effective_usb_lun_setting"],
+                    "np_fz100_pd_boot_gate_satisfied": guard["np_fz100_pd_boot_gate_satisfied"],
+                    "dormant_native_uvc_streaming_rejected": guard["dormant_native_uvc_streaming_rejected"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.still_arw_hlg_usblun_uvc_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} raw={guard['effective_raw_file_type']} "
+                f"hlg={guard['effective_hlg_still_image']} "
+                f"lun={guard['effective_usb_lun_setting']} "
+                f"pd_ok={guard['np_fz100_pd_boot_gate_satisfied']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-150-gates":
+        report = evaluate_150gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "schema_version": report.schema_version,
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g149_status": report.g149_result["status"],
+                    "g150_status": report.g150_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/150 "
+                f"g149_to_g150_all_passed={report.g149_to_g150_all_passed} "
+                f"all_150_gates_verified={report.all_150_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_150_gates_verified if args.dry_run_simulated else report.offline_147_gates_verified
         return 0 if ok else 1
 
     return 2

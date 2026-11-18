@@ -2012,6 +2012,34 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   python3 -B -m fx3_safety verify-148-gates [--clean-room] [--simulate-bench-dry-run] [--summary] [--json]
 ```
 
+---
+
+## 75. Phase 347 (Task H432, Wave-65, `150/150` Safety Gates Milestone!): `[Zoom Range]` (Optical/ClearImage/Digital) & 8-Step Speed Reset Split + `[Auto Slow Shutter]` / `[ISO Range Limit]` / Still-Only `[ISO AUTO Min. SS]` / Dual Base ISO (`Gate G149`), Still `.ARW` Dormant `Lossless Comp` Myth-Busting + `[HLG Still Image]` + `[USB LUN Setting] = Single` `Slot-1` Exposure Trap + `NP-FZ100` USB-PD + Dual `FX3`/`FX6` `UVC` Myth-Busting (`Gate G150`), and Unified `150`-Gate Master Preflight (`realhw_zoom_ciz_autoslow_iso_arw_rawcomp_usblun_uvc_and_150gate_guard.py`)
+
+`realhw_zoom_ciz_autoslow_iso_arw_rawcomp_usblun_uvc_and_150gate_guard.py` (`schema_version = "realhw_150gate_preflight_v1"`) delegates `G01..G148` directly to `evaluate_148gate_preflight()` (preserving `100%` backward compatibility across `verify-58-gates` through `verify-148-gates`) and adds Wave-65 real-hardware safety gates **`G149`** and **`G150`** into the unified **`150`-Gate Master Safety Preflight (`G01..G150` / `run_150_gate_preflight` / `evaluate_150gate_preflight`)**, auto-wired into `verify-milestone-324` / `verify-milestone-311` while hard-locking `EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`, `SPI_NOR_WRITE_AUTHORIZED = False`, `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`, `CROSS_MODEL_FLASH_AUTHORIZED = False`, `HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`, `USB_PACKETS_TRANSMITTED = 0`, `RAW_FIRMWARE_BYTES_LEAKED = 0`, and `overall_ready_for_hardware_attach = False`:
+
+1. **`[Zoom Range]`, 8-Step Speed Reset Split & `[Auto Slow Shutter]` / `[ISO Range Limit]` / Still-Only `[ISO AUTO Min. SS]` / Dual Base ISO (`verify_zoom_ciz_autoslow_iso_baseiso_guard`, Gate `G149`)**:
+   - Performs a fast `< 0.20s` `os.open(..., os.O_RDONLY)` + targeted `os.pread` local donor audit across `17` Wave-65 donor artifacts (`FX3 appFw.so` `79,015,712 B` 31 slices, `FX3-CX95900_ALLLANG-Backup.bin`, `FX3 usr/kmod/{usbg_storage.ko, usbg_stillimage.ko, usb_f_uvc.ko, g_webcam.ko}`, 4-language `_f.uxc` / `.uxc` / `_g.uxc`, `FX6 appFw.so` `50,520,424 B` 6 slices, `FX6 kmod/{usbg_storage.ko, usb_f_uvc.ko}`, and `FX6 string_english.uxc` / `string_english_2.uxc`, `raw_firmware_bytes_leaked == 0`) with explicit `work_root is None` clean-room fallback for donorless Ubuntu CI.
+   - Enforces the `Shooting -> [Zoom]` + `Setup -> [Zoom Ring Rotate]` **Reset Split Law**: `[Zoom Range]` (`Optical zoom only` def / `ClearImage Zoom` `1.5x` 4K & `2.0x` HD / `Digital Zoom` `4.0x` Movie & `8.0x` Still `S`; `Smart Zoom` Still `M/S` only, disabled in Movie) and `[Zoom Ring Rotate]` (`Left(W)/Right(T)` def / `Right(W)/Left(T)`) are **`Initialize`-only / Reset-immune**, whereas `[Zoom Lever Speed]` (`1st=3` def, `2nd=8 Fast` def, `1..8` Standby/Rec), `[Custom Key Z. Speed]` (`1..8` def `3`), and `[Remote Zoom Speed]` (`Variable` def / `Fixed 1..8` def `3`) ARE **Resettable**; enforces pre-entry lockouts (Still `RAW`, Movie `119.88p/100p`, `S&Q >= 100/120fps`, HDMI 16-bit `RAW`) and active non-optical lockouts (`[Focus Area]` disabled -> center AF, `[Metering Mode]` locked `[Multi]`, `Face/Eye Prior.` / `Tracking` disabled), vs `ILME-FX6` (`Optical Zoom Only` / `On(Clear Image Zoom)`, zero user `Digital Zoom`, `Handle Zoom` `Off/Low=3/High=8/Variable`).
+   - Enforces Movie-only Resettable `[Auto Slow Shutter]` (`On` def, locked disabled across `S&Q`, `S`, `M`, manual `ISO`, `Flexible Exp.` manual shutter, `Cine EI`/`Cine EI Quick`, and `Shutter Mode = Angle`), Reset-immune `[ISO Range Limit]` (manual ISO only), Still-only Resettable `[ISO AUTO Min. SS]` (`P`/`A` + `ISO AUTO`, `1/250 s` flash sync override, zero exposure on `FX6`), and Dual Base ISO (`[Base ISO]` `800`/`12800` visible ONLY in `Cine EI`/`Cine EI Quick`, automatic `20x` per-Gamma switching `640/12800`, `100/2000`, `80/1600`, `64/1280`, `50/1000` elsewhere vs `FX6` `Base Sensitivity = Low/High` + `AGC`) across `384` matrix states.
+2. **Still `.ARW` Dormant `Lossless Comp` Myth-Busting, `[HLG Still Image]`, `[Sort Recording]` `Slot-1` Vault, `[USB LUN Setting] = Single` Trap, `NP-FZ100` PD & Dual `FX3`/`FX6` `UVC` Myth-Busting (`verify_still_arw_hlg_usblun_uvc_guard`, Gate `G150`)**:
+   - Enforces `[RAW File Type]` strictly exposing `Compressed` (def) and `Uncompressed` (`14-bit .ARW`, Resettable), rejecting 100% dormant `Lossless Comp (L/M/S)` (`RAW_FILE_TYPE_LOSSLESS* -> EOPNOTSUPP=95`); enforces `[HLG Still Image]` (`STILL_HLD_PHOTO_{OFF,ON}` requiring `HEIF` + `File Format = HEIF` + `P/A/S/M`, forcing `BT.2100` & ISO floor `100/125`); and blocks `[Sort Recording]` + `[Auto Switch Media]` spillover on `Slot 1` (`EROFS=30`).
+   - Enforces the critical **`[USB LUN Setting] = Single` (`_f 0x776d`) trap**: `Multi` (def) exposes `Slot 1 + Slot 2`, **`Single` exposes ONLY `Slot 1` (does NOT hide `Slot 1`)** and `MTP` also targets `Slot 1` (`usbg_storage.ko` writable LUNs -> macOS `Spotlight`/`fseventsd`/`fsck_exfat` contamination hazard blocked via host-MSC prohibition & `Slot 1` `EROFS=30`, `slot1_data_sector_writes == 0`).
+   - Enforces `[USB Power Supply]` (`On` def, Reset-immune, USB-C PD `9V/3A` requiring charged `NP-FZ100` inserted, or `DC-C1` + `>=65W PD` + `5A e-Marked` cable vs `FX6` `19.5V DC IN` battery-less boot), plus **Dual UVC Myth-Busting**: rejects native `UVC/UAC USB Streaming` (`EOPNOTSUPP=95`) on BOTH `FX3 Ver. 7.02` and `FX6 Ver. 6.01` while distinguishing `[Movie Rec During Streaming]` (`_f 0x79d5`, Network Streaming) from HDMI `[Rec. Media dur HDMI Output]` (`_f 0x6144`) across `384` matrix states.
+3. **Unified `150`-Gate Master Preflight (`evaluate_150gate_preflight` / `verify-150-gates`)**:
+   - **Offline default mode**: `147/150` gates pass (`VERIFIED_147_OF_150_AWAITING_PHYSICAL_TIER0`, `overall_ready_for_hardware_attach = False`).
+   - **`--simulate-bench-dry-run` rehearsal mode**: `150/150` simulation gates pass (`VERIFIED_ALL_150_GATES_DRY_RUN_SIMULATED_BACKUP`, `all_150_gates_verified = True`, `dry_run_rehearsal_only = True`) while all hardware write/live-attach redlines remain `False`, `cross_model_flash_authorized == False`, and `usb_packets_transmitted == 0`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-zoom-ciz-autoslow-baseiso-guard [--clean-room] [--summary] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-still-arw-hlg-usblun-uvc-guard [--clean-room] [--summary] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-150-gates [--clean-room] [--simulate-bench-dry-run] [--summary] [--json]
+```
+
+
 
 
 

@@ -701,7 +701,7 @@ class TestRealHwMilestone295MasterGate(unittest.TestCase):
             "pillar50_b_wb_camset_exclusion_metering_vault",
         ):
             rec_50 = self._unpack_clean_raw()[2]
-            rec_50[sub_key]["passed"] = False
+            rec_50.setdefault(sub_key, {})["passed"] = False
             self.assertFalse(
                 _evaluate_pillar_2(rec_50, RealHwMilestone295FaultInjection())[0].passed,
                 sub_key,

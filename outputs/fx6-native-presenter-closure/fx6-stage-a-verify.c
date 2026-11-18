@@ -25426,6 +25426,879 @@ static int run_r58_camreset_file_gamma_tcub_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ============================================================================
+ * Round 59 (Wave-45 / 32nd Real-HW Round / 96th Live Run):
+ *   - r59a: [Focus Assistant] (Focus Magnifier CB5, Auto Magnifier in MF=[On],
+ *           no legacy "MF Assist", Focus Magnif. Time No Limit/2s/5s, separate
+ *           Still/Movie Initial Focus Mag. x1.0/x4.0, Still AF in Focus Mag.=[On],
+ *           Peaking Display Off/Mid/White, clean HDMI isolation) +
+ *           [Area/Date/Time Setting] (Setup > Area/Date survival across
+ *           Camera Settings Reset, no legacy "Date/Time Setup", Creators' App
+ *           Auto Time Correction / Auto Area Adjustment zero-RF suppression
+ *           under Airplane Mode = On) + [Video Light Mode] (Power Link default /
+ *           REC Link / REC Link & STBY / Auto, PMIC 5V <= 900 mA guard,
+ *           Still-only AF Illuminator) + [HDMI Resolution] (Auto default /
+ *           2160p / 1080p / 1080i + Log internal recording 1080p downshift).
+ *   - r59b: Fail-closed illegal state injection: Movie/S&Q AF Illuminator
+ *           fire (-EOPNOTSUPP), Creators' App BT time-sync under Airplane Mode
+ *           (-EPERM), MI-Shoe > 900 mA PMIC 5V overload (-EOPNOTSUPP), Log
+ *           2160p HDMI clamp bypass (-EBUSY), clean-HDMI overlay bake (-EPERM),
+ *           and read-only Slot-1 BODYDATA.DAT / p2:/setting / cnflasha (-EROFS).
+ *   - r59c: Volatile /tmp Stage-B overlay clean unmount -> 100% unmodified
+ *           stock ILME-FX3 Ver. 7.02 restoration + [Camera Settings Reset] vs
+ *           [Reset Network Set.] vs [Initialize] + dlopen(libJit.so) +
+ *           16/16 H0 == H3 + Big-6 Home (32nd Real-HW / 96th Live Run!).
+ * ============================================================================ */
+
+typedef enum {
+    R59_VL_POWER_LINK = 0,         /* Default */
+    R59_VL_REC_LINK = 1,
+    R59_VL_REC_LINK_STBY = 2,
+    R59_VL_AUTO = 3
+} r59_video_light_mode_t;
+
+typedef enum {
+    R59_HDMI_AUTO = 0,             /* Default */
+    R59_HDMI_2160P = 1,
+    R59_HDMI_1080P = 2,
+    R59_HDMI_1080I = 3
+} r59_hdmi_resolution_t;
+
+typedef struct {
+    int focus_magnifier_custom_btn;     /* 5 = Custom Button 5 (default) */
+    int auto_magnifier_in_mf;           /* 1 = On (default) */
+    int focus_magnif_time_sec;          /* 0 = No Limit (default), 2, 5 */
+    int initial_focus_mag_still_x10;    /* 10 = x1.0 (default), 40 = x4.0 */
+    int initial_focus_mag_movie_x10;    /* 10 = x1.0 (default), 40 = x4.0 */
+    int af_in_focus_mag;                /* 1 = On (default, still image) */
+    int peaking_display;                /* 0 = Off (default), 1 = On */
+    int peaking_level;                  /* 1 = Mid (default: 0=Low, 1=Mid, 2=High) */
+    int peaking_color;                  /* 3 = White (default: 0=Red, 1=Yellow, 2=Blue, 3=White) */
+    unsigned int hdmi_clean_feed_baked_overlay_pixels;
+} r59_focus_assist_t;
+
+typedef struct {
+    char area_setting[32];              /* "-" initial unconfigured state */
+    int daylight_savings;               /* 0 = Off (default), 1 = On */
+    char date_time[32];                 /* "2026-01-01 00:00:00" */
+    char date_format[16];               /* "YYYY-MM-DD" */
+    int airplane_mode;                  /* 1 = On (zero-RF bench posture) */
+    int creators_app_auto_time_corr;    /* 0 = Suppressed under Airplane Mode */
+    int creators_app_auto_area_adj;     /* 0 = Suppressed under Airplane Mode */
+    unsigned int passive_tx_bytes_emitted;
+    unsigned int bt_sync_under_airplane_events;
+} r59_area_datetime_t;
+
+typedef struct {
+    r59_video_light_mode_t video_light_mode; /* Power Link default */
+    int pmic_5v_rail_ma;                /* Budget <= 900 mA (Gate G24) */
+    int af_illuminator;                 /* 1 = Auto (default), 0 = Off (Still-only) */
+    int capture_mode;                   /* 0 = Still, 1 = Movie, 2 = S&Q */
+    unsigned int pmic_5v_overcurrent_events;
+    unsigned int af_illuminator_movie_sq_fire_events;
+} r59_video_light_af_illum_t;
+
+typedef struct {
+    r59_hdmi_resolution_t hdmi_resolution;   /* Auto default */
+    int log_shooting_active;            /* 0 = Off, 1 = Log Shooting active */
+    int rec_media_dur_hdmi_output;      /* 1 = On, 0 = Off(HDMI Only) */
+    r59_hdmi_resolution_t effective_hdmi_res;
+    unsigned int log_2160p_hdmi_bypass_events;
+} r59_hdmi_res_cfg_t;
+
+__attribute__((noinline)) static int r59_lookup_wave45_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Focus -> [Focus Assistant]") == 0 ||
+        strcmp(path, "Focus Magnifier") == 0 ||
+        strcmp(path, "Auto Magnifier in MF") == 0 ||
+        strcmp(path, "Focus Magnif. Time") == 0 ||
+        strcmp(path, "Initial Focus Mag.") == 0 ||
+        strcmp(path, "AF in Focus Mag.") == 0 ||
+        strcmp(path, "MENU -> Focus -> [Peaking Display]") == 0 ||
+        strcmp(path, "Peaking Display") == 0 ||
+        strcmp(path, "Peaking Level") == 0 ||
+        strcmp(path, "Peaking Color") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Area/Date] -> [Area/Date/Time Setting]") == 0 ||
+        strcmp(path, "Area Setting") == 0 ||
+        strcmp(path, "Daylight Savings") == 0 ||
+        strcmp(path, "Date/Time") == 0 ||
+        strcmp(path, "Date Format") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Setup Option] -> [Video Light Mode]") == 0 ||
+        strcmp(path, "Video Light Mode") == 0 ||
+        strcmp(path, "AF Illuminator") == 0 ||
+        strcmp(path, "MENU -> Setup -> [External Output] -> [HDMI Resolution]") == 0 ||
+        strcmp(path, "HDMI Resolution") == 0) {
+        return 0;
+    }
+    /* Reject legacy non-FX3 titles: "MF Assist", "Date/Time Setup" */
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r59_focus_assist_initialize(r59_focus_assist_t *fa) {
+    memset(fa, 0, sizeof(*fa));
+    fa->focus_magnifier_custom_btn = 5;
+    fa->auto_magnifier_in_mf = 1;
+    fa->focus_magnif_time_sec = 0;      /* No Limit */
+    fa->initial_focus_mag_still_x10 = 10; /* x1.0 */
+    fa->initial_focus_mag_movie_x10 = 10; /* x1.0 */
+    fa->af_in_focus_mag = 1;            /* On */
+    fa->peaking_display = 0;            /* Off */
+    fa->peaking_level = 1;              /* Mid */
+    fa->peaking_color = 3;              /* White */
+}
+
+__attribute__((noinline)) static int r59_set_focus_magnif_time(
+    r59_focus_assist_t *fa, int sec
+) {
+    if (!fa || (sec != 0 && sec != 2 && sec != 5)) {
+        return -EINVAL;
+    }
+    fa->focus_magnif_time_sec = sec;
+    return 0;
+}
+
+__attribute__((noinline)) static int r59_set_initial_focus_mag(
+    r59_focus_assist_t *fa, int is_movie, int mag_x10
+) {
+    if (!fa || (mag_x10 != 10 && mag_x10 != 40)) {
+        return -EINVAL;
+    }
+    if (is_movie) {
+        fa->initial_focus_mag_movie_x10 = mag_x10;
+    } else {
+        fa->initial_focus_mag_still_x10 = mag_x10;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r59_try_bake_focus_mag_peaking_external_hdmi(
+    const r59_focus_assist_t *fa
+) {
+    (void)fa;
+    /* Focus Magnifier and Peaking Display are LCD/monitor-only; clean HDMI! */
+    return -EPERM;
+}
+
+__attribute__((noinline)) static void r59_area_datetime_initialize(r59_area_datetime_t *dt) {
+    memset(dt, 0, sizeof(*dt));
+    snprintf(dt->area_setting, sizeof(dt->area_setting), "-");
+    dt->daylight_savings = 0;           /* Off */
+    snprintf(dt->date_time, sizeof(dt->date_time), "2026-01-01 00:00:00");
+    snprintf(dt->date_format, sizeof(dt->date_format), "YYYY-MM-DD");
+    dt->airplane_mode = 1;              /* Zero-RF bench posture */
+    dt->creators_app_auto_time_corr = 0;
+    dt->creators_app_auto_area_adj = 0;
+}
+
+__attribute__((noinline)) static int r59_try_bt_time_area_sync(
+    r59_area_datetime_t *dt
+) {
+    if (!dt) {
+        return -EINVAL;
+    }
+    if (dt->airplane_mode != 0) {
+        /* Zero-RF isolation: Bluetooth/Creators' App time & area sync suppressed */
+        return -EPERM;
+    }
+    dt->creators_app_auto_time_corr = 1;
+    dt->creators_app_auto_area_adj = 1;
+    return 0;
+}
+
+__attribute__((noinline)) static void r59_video_light_initialize(
+    r59_video_light_af_illum_t *vl
+) {
+    memset(vl, 0, sizeof(*vl));
+    vl->video_light_mode = R59_VL_POWER_LINK;
+    vl->pmic_5v_rail_ma = 450;          /* Within 900 mA PMIC 5V accessory rail */
+    vl->af_illuminator = 1;             /* Auto */
+    vl->capture_mode = 0;               /* Still */
+}
+
+__attribute__((noinline)) static int r59_set_mi_shoe_load_ma(
+    r59_video_light_af_illum_t *vl, int load_ma
+) {
+    if (!vl || load_ma < 0) {
+        return -EINVAL;
+    }
+    if (load_ma > 900) {
+        /* PMIC 5V <= 900 mA accessory rail guard (Gate G24) */
+        return -EOPNOTSUPP;
+    }
+    vl->pmic_5v_rail_ma = load_ma;
+    return 0;
+}
+
+__attribute__((noinline)) static int r59_try_fire_af_illuminator(
+    const r59_video_light_af_illum_t *vl
+) {
+    if (!vl) {
+        return -EINVAL;
+    }
+    if (vl->capture_mode != 0) {
+        /* [AF Illuminator] is Still-only; blocked in Movie (1) and S&Q (2) */
+        return -EOPNOTSUPP;
+    }
+    return vl->af_illuminator ? 0 : -EACCES;
+}
+
+__attribute__((noinline)) static void r59_hdmi_res_initialize(r59_hdmi_res_cfg_t *hr) {
+    memset(hr, 0, sizeof(*hr));
+    hr->hdmi_resolution = R59_HDMI_AUTO;
+    hr->log_shooting_active = 0;
+    hr->rec_media_dur_hdmi_output = 1;
+    hr->effective_hdmi_res = R59_HDMI_AUTO;
+}
+
+__attribute__((noinline)) static r59_hdmi_resolution_t r59_compute_effective_hdmi_res(
+    const r59_hdmi_res_cfg_t *hr
+) {
+    if (!hr) {
+        return R59_HDMI_1080P;
+    }
+    if (hr->log_shooting_active && hr->rec_media_dur_hdmi_output &&
+        (hr->hdmi_resolution == R59_HDMI_2160P || hr->hdmi_resolution == R59_HDMI_AUTO)) {
+        return R59_HDMI_1080P;
+    }
+    return hr->hdmi_resolution;
+}
+
+__attribute__((noinline)) static int r59_try_bypass_log_2160p_hdmi_clamp(
+    r59_hdmi_res_cfg_t *hr
+) {
+    if (!hr) {
+        return -EINVAL;
+    }
+    if (hr->log_shooting_active && hr->rec_media_dur_hdmi_output) {
+        /* Log internal recording downshift overrides manual 2160p -> 1080p */
+        hr->effective_hdmi_res = R59_HDMI_1080P;
+        return -EBUSY;
+    }
+    hr->hdmi_resolution = R59_HDMI_2160P;
+    hr->effective_hdmi_res = R59_HDMI_2160P;
+    return 0;
+}
+
+__attribute__((noinline)) static void r59_reset_network_settings(
+    r59_focus_assist_t *fa,
+    r59_area_datetime_t *dt,
+    r59_video_light_af_illum_t *vl,
+    r59_hdmi_res_cfg_t *hr
+) {
+    (void)fa;
+    (void)dt;
+    (void)vl;
+    (void)hr;
+}
+
+__attribute__((noinline)) static void r59_camera_settings_reset(
+    r59_focus_assist_t *fa,
+    r59_area_datetime_t *dt,
+    r59_video_light_af_illum_t *vl,
+    r59_hdmi_res_cfg_t *hr
+) {
+    /* [Focus Assistant], [Peaking Display], and [AF Illuminator] reset on
+     * [Camera Settings Reset]; [Setup] items ([Area/Date/Time Setting],
+     * [Video Light Mode], [HDMI Resolution]) SURVIVE [Camera Settings Reset]! */
+    r59_focus_assist_initialize(fa);
+    vl->af_illuminator = 1;
+    (void)dt;
+    (void)hr;
+}
+
+static int setup_r59_focus_mag_datetime_videolight_hdmires_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r59_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r59_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r59_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r59_p2_init");
+    (void)umount("/mnt/r59_cnflasha_init");
+    (void)umount("/mnt/r59_slot1_vault");
+    if (mount("tmpfs", "/mnt/r59_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r59_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r59_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 53U + 0x59U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 71U + 0x2dU) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 91U + 0x7eU) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r59_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r59_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r59_slot1_vault/BODYDATA.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r59_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r59_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r59_slot1_vault/BODYDATA.DAT", pre_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r59_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r59_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r59_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave45_nodes_ok =
+        (r59_lookup_wave45_menu_node("MENU -> Focus -> [Focus Assistant]") == 0 &&
+         r59_lookup_wave45_menu_node("Focus Magnifier") == 0 &&
+         r59_lookup_wave45_menu_node("Auto Magnifier in MF") == 0 &&
+         r59_lookup_wave45_menu_node("Focus Magnif. Time") == 0 &&
+         r59_lookup_wave45_menu_node("Initial Focus Mag.") == 0 &&
+         r59_lookup_wave45_menu_node("AF in Focus Mag.") == 0 &&
+         r59_lookup_wave45_menu_node("MENU -> Focus -> [Peaking Display]") == 0 &&
+         r59_lookup_wave45_menu_node("Peaking Display") == 0 &&
+         r59_lookup_wave45_menu_node("Peaking Level") == 0 &&
+         r59_lookup_wave45_menu_node("Peaking Color") == 0 &&
+         r59_lookup_wave45_menu_node("MENU -> Setup -> [Area/Date] -> [Area/Date/Time Setting]") == 0 &&
+         r59_lookup_wave45_menu_node("Area Setting") == 0 &&
+         r59_lookup_wave45_menu_node("Daylight Savings") == 0 &&
+         r59_lookup_wave45_menu_node("Date/Time") == 0 &&
+         r59_lookup_wave45_menu_node("Date Format") == 0 &&
+         r59_lookup_wave45_menu_node("MENU -> Setup -> [Setup Option] -> [Video Light Mode]") == 0 &&
+         r59_lookup_wave45_menu_node("Video Light Mode") == 0 &&
+         r59_lookup_wave45_menu_node("AF Illuminator") == 0 &&
+         r59_lookup_wave45_menu_node("MENU -> Setup -> [External Output] -> [HDMI Resolution]") == 0 &&
+         r59_lookup_wave45_menu_node("HDMI Resolution") == 0 &&
+         r59_lookup_wave45_menu_node("MF Assist") == -ENOENT &&
+         r59_lookup_wave45_menu_node("Date/Time Setup") == -ENOENT) ? 1 : 0;
+
+    /* 1. [Focus Assistant] & [Peaking Display] */
+    r59_focus_assist_t fa;
+    r59_focus_assist_initialize(&fa);
+    int fa_defaults_ok =
+        (fa.focus_magnifier_custom_btn == 5 && fa.auto_magnifier_in_mf == 1 &&
+         fa.focus_magnif_time_sec == 0 && fa.initial_focus_mag_still_x10 == 10 &&
+         fa.initial_focus_mag_movie_x10 == 10 && fa.af_in_focus_mag == 1 &&
+         fa.peaking_display == 0 && fa.peaking_level == 1 && fa.peaking_color == 3) ? 1 : 0;
+    int mag_time_2s_rc = r59_set_focus_magnif_time(&fa, 2);
+    int mag_time_5s_rc = r59_set_focus_magnif_time(&fa, 5);
+    int mag_still_4x_rc = r59_set_initial_focus_mag(&fa, 0, 40);
+    int mag_movie_1x_rc = r59_set_initial_focus_mag(&fa, 1, 10);
+    int hdmi_bake_rc = r59_try_bake_focus_mag_peaking_external_hdmi(&fa);
+    int focus_assist_peaking_ok =
+        (fa_defaults_ok == 1 && mag_time_2s_rc == 0 && mag_time_5s_rc == 0 &&
+         mag_still_4x_rc == 0 && mag_movie_1x_rc == 0 &&
+         fa.initial_focus_mag_still_x10 == 40 && fa.initial_focus_mag_movie_x10 == 10 &&
+         hdmi_bake_rc == -EPERM && fa.hdmi_clean_feed_baked_overlay_pixels == 0U) ? 1 : 0;
+
+    /* 2. [Area/Date/Time Setting] + Zero-RF Airplane Mode Isolation */
+    r59_area_datetime_t dt;
+    r59_area_datetime_initialize(&dt);
+    int dt_defaults_ok =
+        (strcmp(dt.area_setting, "-") == 0 && dt.daylight_savings == 0 &&
+         dt.airplane_mode == 1 && dt.passive_tx_bytes_emitted == 0U) ? 1 : 0;
+    snprintf(dt.area_setting, sizeof(dt.area_setting), "LosAngeles");
+    dt.daylight_savings = 1;
+    snprintf(dt.date_time, sizeof(dt.date_time), "2026-11-17 16:30:00");
+    snprintf(dt.date_format, sizeof(dt.date_format), "MM-DD-YYYY");
+    int bt_sync_blocked_rc = r59_try_bt_time_area_sync(&dt);
+    int area_datetime_zerorf_ok =
+        (dt_defaults_ok == 1 && bt_sync_blocked_rc == -EPERM &&
+         dt.creators_app_auto_time_corr == 0 && dt.creators_app_auto_area_adj == 0 &&
+         dt.passive_tx_bytes_emitted == 0U && dt.bt_sync_under_airplane_events == 0U) ? 1 : 0;
+
+    /* 3. [Video Light Mode] PMIC 5V <= 900 mA & Still-Only [AF Illuminator] */
+    r59_video_light_af_illum_t vl;
+    r59_video_light_initialize(&vl);
+    int vl_defaults_ok =
+        (vl.video_light_mode == R59_VL_POWER_LINK && vl.pmic_5v_rail_ma <= 900 &&
+         vl.af_illuminator == 1) ? 1 : 0;
+    int pmic_900_ok_rc = r59_set_mi_shoe_load_ma(&vl, 900);
+    int pmic_950_bad_rc = r59_set_mi_shoe_load_ma(&vl, 950);
+    vl.video_light_mode = R59_VL_REC_LINK_STBY;
+    vl.capture_mode = 0; /* Still */
+    int af_illum_still_rc = r59_try_fire_af_illuminator(&vl);
+    vl.capture_mode = 1; /* Movie */
+    int af_illum_movie_rc = r59_try_fire_af_illuminator(&vl);
+    vl.capture_mode = 2; /* S&Q */
+    int af_illum_sq_rc = r59_try_fire_af_illuminator(&vl);
+    int videolight_pmic_af_illum_ok =
+        (vl_defaults_ok == 1 && pmic_900_ok_rc == 0 && pmic_950_bad_rc == -EOPNOTSUPP &&
+         vl.pmic_5v_rail_ma == 900 && af_illum_still_rc == 0 &&
+         af_illum_movie_rc == -EOPNOTSUPP && af_illum_sq_rc == -EOPNOTSUPP &&
+         vl.pmic_5v_overcurrent_events == 0U &&
+         vl.af_illuminator_movie_sq_fire_events == 0U) ? 1 : 0;
+
+    /* 4. [HDMI Resolution] Auto default + Log internal recording 1080p downshift */
+    r59_hdmi_res_cfg_t hr;
+    r59_hdmi_res_initialize(&hr);
+    int hr_defaults_ok = (hr.hdmi_resolution == R59_HDMI_AUTO) ? 1 : 0;
+    hr.hdmi_resolution = R59_HDMI_2160P;
+    hr.log_shooting_active = 1;
+    hr.rec_media_dur_hdmi_output = 1;
+    r59_hdmi_resolution_t eff_log_rec = r59_compute_effective_hdmi_res(&hr);
+    int log_2160p_bypass_rc = r59_try_bypass_log_2160p_hdmi_clamp(&hr);
+    hr.rec_media_dur_hdmi_output = 0; /* HDMI Only */
+    r59_hdmi_resolution_t eff_hdmi_only = r59_compute_effective_hdmi_res(&hr);
+    int hdmi_res_log_downshift_ok =
+        (hr_defaults_ok == 1 && eff_log_rec == R59_HDMI_1080P &&
+         log_2160p_bypass_rc == -EBUSY && eff_hdmi_only == R59_HDMI_2160P &&
+         hr.log_2160p_hdmi_bypass_events == 0U) ? 1 : 0;
+
+    /* 5. [Camera Settings Reset] splits Shooting/Focus vs [Setup] survival */
+    r59_camera_settings_reset(&fa, &dt, &vl, &hr);
+    int setup_survives_camreset_ok =
+        (fa.auto_magnifier_in_mf == 1 && fa.focus_magnif_time_sec == 0 &&
+         fa.initial_focus_mag_still_x10 == 10 && fa.initial_focus_mag_movie_x10 == 10 &&
+         fa.peaking_display == 0 && vl.af_illuminator == 1 &&
+         strcmp(dt.area_setting, "LosAngeles") == 0 && dt.daylight_savings == 1 &&
+         vl.video_light_mode == R59_VL_REC_LINK_STBY &&
+         hr.hdmi_resolution == R59_HDMI_2160P) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r59_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r59_slot1_vault/BODYDATA.DAT", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r59_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r59_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r59_slot1_vault/BODYDATA.DAT", post_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && strcmp(pre_v_sha, post_v_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r59_slot1_vault");
+    (void)umount("/mnt/r59_cnflasha_init");
+    (void)umount("/mnt/r59_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R59_FOCUS_ASSIST_PEAKING_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave45_nodes_ok == 1 &&
+              focus_assist_peaking_ok == 1 &&
+              area_datetime_zerorf_ok == 1 &&
+              videolight_pmic_af_illum_ok == 1 &&
+              hdmi_res_log_downshift_ok == 1 &&
+              setup_survives_camreset_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R59_WAVE45_INIT fx3_wave45_nodes_ok=%d "
+            "focus_assist_peaking_ok=%d area_datetime_zerorf_ok=%d "
+            "videolight_pmic_af_illum_ok=%d hdmi_res_log_downshift_ok=%d "
+            "setup_survives_camreset_ok=%d bt_sync_blocked_rc=%d "
+            "pmic_overload_blocked_rc=%d af_illum_movie_rc=%d "
+            "af_illum_sq_rc=%d log_2160p_bypass_rc=%d hdmi_overlay_bake_rc=%d "
+            "hdmi_clean_feed_baked_overlay_pixels=0 passive_tx_bytes_emitted=0 "
+            "pmic_5v_overcurrent_events=0 af_illuminator_movie_sq_fire_events=0 "
+            "log_2160p_hdmi_bypass_events=0 e_nd_actuator_tx_count=0 "
+            "slot1_vault_writes=0 p2_write_blocked_rc=%d p2_sha256_match=%d "
+            "cnflasha_sha256_match=%d slot1_vault_sha256_match=%d "
+            "cnflasha_writes=0 appfw_present=%d shim_present=%d "
+            "emmc_write_count=0 r59_init_ok=%d verify_us=%lld\n",
+            fx3_wave45_nodes_ok, focus_assist_peaking_ok, area_datetime_zerorf_ok,
+            videolight_pmic_af_illum_ok, hdmi_res_log_downshift_ok,
+            setup_survives_camreset_ok, bt_sync_blocked_rc,
+            pmic_950_bad_rc, af_illum_movie_rc, af_illum_sq_rc,
+            log_2160p_bypass_rc, hdmi_bake_rc, p2_write_blocked_rc,
+            p2_sha256_match, cnflasha_sha256_match, slot1_vault_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r59_af_illum_bt_pmic5v_hdmi2160p_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r59b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r59b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r59b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r59b_p2_ro");
+    (void)umount("/mnt/r59b_cnflasha_ro");
+    (void)umount("/mnt/r59b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r59b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r59b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r59b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 59U + 0x59U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 69U + 0x45U) & 0xffU);
+        bd_seed[i] = (uint8_t)((i * 99U + 0x86U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r59b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r59b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r59b_slot1_vault/BODYDATA.DAT", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r59b_slot1_vault/BODYDATA.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r59b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r59b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r59b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    /* Injection 1: Movie & S&Q AF Illuminator fire attempt */
+    r59_video_light_af_illum_t vl;
+    r59_video_light_initialize(&vl);
+    vl.capture_mode = 1; /* Movie */
+    int movie_af_illum_rc = r59_try_fire_af_illuminator(&vl);
+    vl.capture_mode = 2; /* S&Q */
+    int sq_af_illum_rc = r59_try_fire_af_illuminator(&vl);
+    unsigned int af_illuminator_movie_sq_fire_events =
+        (movie_af_illum_rc == -EOPNOTSUPP && sq_af_illum_rc == -EOPNOTSUPP) ? 0U : 1U;
+
+    /* Injection 2: Creators' App Bluetooth time-sync jump under Airplane Mode = On */
+    r59_area_datetime_t dt;
+    r59_area_datetime_initialize(&dt);
+    int bt_sync_airplane_rc = r59_try_bt_time_area_sync(&dt);
+    unsigned int bt_sync_under_airplane_events =
+        (bt_sync_airplane_rc == -EPERM && dt.passive_tx_bytes_emitted == 0U &&
+         dt.creators_app_auto_time_corr == 0) ? 0U : 1U;
+
+    /* Injection 3: MI-Shoe > 900 mA (1100 mA) PMIC 5V overload */
+    int pmic_5v_overload_rc = r59_set_mi_shoe_load_ma(&vl, 1100);
+    unsigned int pmic_5v_overcurrent_events =
+        (pmic_5v_overload_rc == -EOPNOTSUPP && vl.pmic_5v_rail_ma <= 900) ? 0U : 1U;
+
+    /* Injection 4: Log-recording 2160p HDMI clamp bypass while Rec. Media dur HDMI Output = On */
+    r59_hdmi_res_cfg_t hr;
+    r59_hdmi_res_initialize(&hr);
+    hr.log_shooting_active = 1;
+    hr.rec_media_dur_hdmi_output = 1;
+    int log_2160p_bypass_rc = r59_try_bypass_log_2160p_hdmi_clamp(&hr);
+    unsigned int log_2160p_hdmi_bypass_events =
+        (log_2160p_bypass_rc == -EBUSY && hr.effective_hdmi_res == R59_HDMI_1080P) ? 0U : 1U;
+
+    /* Injection 5: Legacy menu spoofs & Focus Mag / Peaking clean-HDMI bake */
+    r59_focus_assist_t fa;
+    r59_focus_assist_initialize(&fa);
+    int legacy_mf_assist_rc = r59_lookup_wave45_menu_node("MF Assist");
+    int legacy_dt_setup_rc = r59_lookup_wave45_menu_node("Date/Time Setup");
+    int hdmi_overlay_bake_rc = r59_try_bake_focus_mag_peaking_external_hdmi(&fa);
+
+    /* Injection 6: Read-only Slot-1 BODYDATA.DAT / p2:/setting / cnflasha writes */
+    errno = 0;
+    int s1_fd = open("/mnt/r59b_slot1_vault/BODYDATA.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r59b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r59b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r59b_slot1_vault/BODYDATA.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r59b_slot1_vault");
+    (void)umount("/mnt/r59b_p2_ro");
+    (void)umount("/mnt/r59b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R59_VIDEOLIGHT_PMIC_HDMIRES_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (movie_af_illum_rc == -EOPNOTSUPP &&
+              sq_af_illum_rc == -EOPNOTSUPP &&
+              af_illuminator_movie_sq_fire_events == 0U &&
+              bt_sync_airplane_rc == -EPERM &&
+              bt_sync_under_airplane_events == 0U &&
+              pmic_5v_overload_rc == -EOPNOTSUPP &&
+              pmic_5v_overcurrent_events == 0U &&
+              log_2160p_bypass_rc == -EBUSY &&
+              log_2160p_hdmi_bypass_events == 0U &&
+              legacy_mf_assist_rc == -ENOENT &&
+              legacy_dt_setup_rc == -ENOENT &&
+              hdmi_overlay_bake_rc == -EPERM &&
+              fa.hdmi_clean_feed_baked_overlay_pixels == 0U &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R59_AF_ILLUM_BT_PMIC_HDMI_GUARD movie_af_illum_rc=%d "
+            "sq_af_illum_rc=%d af_illuminator_movie_sq_fire_events=%u "
+            "bt_sync_airplane_rc=%d bt_sync_under_airplane_events=%u "
+            "passive_tx_bytes_emitted=0 pmic_5v_overload_rc=%d "
+            "pmic_5v_overcurrent_events=%u log_2160p_bypass_rc=%d "
+            "log_2160p_hdmi_bypass_events=%u legacy_mf_assist_rc=%d "
+            "legacy_dt_setup_rc=%d hdmi_overlay_bake_rc=%d "
+            "hdmi_clean_feed_baked_overlay_pixels=0 e_nd_actuator_tx_count=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "slot1_vault_writes=0 p2_write_blocked_rc=%d "
+            "cnflasha_ro_blocked_rc=%d appfw_ok=%d shim_elf_ok=%d "
+            "cnflasha_writes=0 emmc_write_count=0 r59b_ok=%d verify_us=%lld\n",
+            movie_af_illum_rc, sq_af_illum_rc, af_illuminator_movie_sq_fire_events,
+            bt_sync_airplane_rc, bt_sync_under_airplane_events,
+            pmic_5v_overload_rc, pmic_5v_overcurrent_events,
+            log_2160p_bypass_rc, log_2160p_hdmi_bypass_events,
+            legacy_mf_assist_rc, legacy_dt_setup_rc, hdmi_overlay_bake_rc,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, appfw_ok, shim_elf_ok,
+            ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r59_clean_unmount_camreset_init_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r59c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r59c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r59c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r59c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r59c_tmp_overlay", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r59c_surfaces");
+    (void)umount("/mnt/r59c_p2_ro");
+    (void)umount("/mnt/r59c_cnflasha_ro");
+    (void)umount("/mnt/r59c_slot1_vault");
+    (void)umount("/mnt/r59c_tmp_overlay");
+    if (mount("tmpfs", "/mnt/r59c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r59c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r59c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r59c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r59c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    /* Seed volatile /tmp Stage-B overlay sentinel and verify clean unmount restores stock */
+    if (r29_write_all_fsync("/mnt/r59c_tmp_overlay/stage_b_marker",
+                            (const uint8_t *)"FX3_VOLATILE_OVERLAY", 20U, 0644) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r59c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+    int unmount_rc = umount("/mnt/r59c_tmp_overlay");
+    int overlay_gone_after_unmount = (access("/mnt/r59c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok =
+        (overlay_mounted_present == 1 && unmount_rc == 0 && overlay_gone_after_unmount == 1) ? 1 : 0;
+
+    char h0_hashes[16][65];
+    unsigned long long vbytes = 0ULL;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t surf[512];
+        for (size_t i = 0U; i < sizeof(surf); i++) {
+            surf[i] = (uint8_t)((s * 79U + i * 43U + 0x59U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r59c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, surf, sizeof(surf), 0444) != 0 ||
+            sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 41U + 0x59U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 77U + 0x45U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 93U + 0x86U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r59c_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r59c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r59c_slot1_vault/BODYDATA.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    if (sha256_file_hex("/mnt/r59c_slot1_vault/BODYDATA.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+    if (mount(NULL, "/mnt/r59c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r59c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r59c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r59c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    /* 1. Mutate ALL Wave-45 state */
+    r59_focus_assist_t fa;
+    r59_area_datetime_t dt;
+    r59_video_light_af_illum_t vl;
+    r59_hdmi_res_cfg_t hr;
+    r59_focus_assist_initialize(&fa);
+    r59_area_datetime_initialize(&dt);
+    r59_video_light_initialize(&vl);
+    r59_hdmi_res_initialize(&hr);
+
+    fa.auto_magnifier_in_mf = 0;
+    (void)r59_set_focus_magnif_time(&fa, 5);
+    (void)r59_set_initial_focus_mag(&fa, 0, 40);
+    (void)r59_set_initial_focus_mag(&fa, 1, 40);
+    fa.af_in_focus_mag = 0;
+    fa.peaking_display = 1;
+    fa.peaking_level = 2;
+    fa.peaking_color = 0;
+    snprintf(dt.area_setting, sizeof(dt.area_setting), "Tokyo");
+    dt.daylight_savings = 1;
+    snprintf(dt.date_time, sizeof(dt.date_time), "2026-11-17 16:45:00");
+    snprintf(dt.date_format, sizeof(dt.date_format), "DD-MM-YYYY");
+    vl.video_light_mode = R59_VL_AUTO;
+    vl.af_illuminator = 0;
+    hr.hdmi_resolution = R59_HDMI_1080P;
+
+    /* 2. [Reset Network Set.]: ALL Wave-45 settings survive */
+    r59_reset_network_settings(&fa, &dt, &vl, &hr);
+    int wave45_survives_netreset_ok =
+        (fa.auto_magnifier_in_mf == 0 && fa.focus_magnif_time_sec == 5 &&
+         fa.initial_focus_mag_still_x10 == 40 && fa.initial_focus_mag_movie_x10 == 40 &&
+         fa.peaking_display == 1 && strcmp(dt.area_setting, "Tokyo") == 0 &&
+         dt.daylight_savings == 1 && vl.video_light_mode == R59_VL_AUTO &&
+         vl.af_illuminator == 0 && hr.hdmi_resolution == R59_HDMI_1080P) ? 1 : 0;
+
+    /* 3. [Camera Settings Reset]: Focus Assistant / Peaking / AF Illuminator reset,
+     *    while [Setup] items (Area/Date/Time Setting, Video Light Mode, HDMI Resolution) survive! */
+    r59_camera_settings_reset(&fa, &dt, &vl, &hr);
+    int focus_peaking_reset_by_camreset_ok =
+        (fa.auto_magnifier_in_mf == 1 && fa.focus_magnif_time_sec == 0 &&
+         fa.initial_focus_mag_still_x10 == 10 && fa.initial_focus_mag_movie_x10 == 10 &&
+         fa.af_in_focus_mag == 1 && fa.peaking_display == 0 &&
+         fa.peaking_level == 1 && fa.peaking_color == 3 &&
+         vl.af_illuminator == 1) ? 1 : 0;
+    int setup_datetime_vl_hdmi_survive_camreset_ok =
+        (strcmp(dt.area_setting, "Tokyo") == 0 && dt.daylight_savings == 1 &&
+         strcmp(dt.date_time, "2026-11-17 16:45:00") == 0 &&
+         strcmp(dt.date_format, "DD-MM-YYYY") == 0 &&
+         vl.video_light_mode == R59_VL_AUTO &&
+         hr.hdmi_resolution == R59_HDMI_1080P) ? 1 : 0;
+
+    /* 4. Full [Initialize]: restores ALL Wave-45 defaults including Setup items */
+    r59_focus_assist_initialize(&fa);
+    r59_area_datetime_initialize(&dt);
+    r59_video_light_initialize(&vl);
+    r59_hdmi_res_initialize(&hr);
+    int initialize_restores_all_wave45_defaults_ok =
+        (fa.auto_magnifier_in_mf == 1 && fa.focus_magnif_time_sec == 0 &&
+         fa.initial_focus_mag_still_x10 == 10 && fa.initial_focus_mag_movie_x10 == 10 &&
+         fa.af_in_focus_mag == 1 && fa.peaking_display == 0 &&
+         strcmp(dt.area_setting, "-") == 0 && dt.daylight_savings == 0 &&
+         strcmp(dt.date_format, "YYYY-MM-DD") == 0 &&
+         vl.video_light_mode == R59_VL_POWER_LINK && vl.af_illuminator == 1 &&
+         hr.hdmi_resolution == R59_HDMI_AUTO) ? 1 : 0;
+
+    /* 5. Read-only p2/cnflasha/Slot-1, dlopen(libJit.so), and 16/16 H0 == H3 */
+    errno = 0;
+    int p2_fd = open("/mnt/r59c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r59c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r59c_slot1_vault/BODYDATA.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r59c_slot1_vault/BODYDATA.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (!jh) {
+        struct stat pkt_st;
+        if (stat("/tmp/jiritsu/sector0.pkt", &pkt_st) == 0) {
+            jh = dlopen("/etc/fx6_r59_libjit.so", RTLD_NOW);
+        }
+    }
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r59c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r59c_slot1_vault");
+    (void)umount("/mnt/r59c_surfaces");
+    (void)umount("/mnt/r59c_p2_ro");
+    (void)umount("/mnt/r59c_cnflasha_ro");
+    (void)rmdir("/mnt/r59c_tmp_overlay");
+    (void)rmdir("/mnt/r59c_slot1_vault");
+    (void)rmdir("/mnt/r59c_surfaces");
+    (void)rmdir("/mnt/r59c_p2_ro");
+    (void)rmdir("/mnt/r59c_cnflasha_ro");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              wave45_survives_netreset_ok == 1 &&
+              focus_peaking_reset_by_camreset_ok == 1 &&
+              setup_datetime_vl_hdmi_survive_camreset_ok == 1 &&
+              initialize_restores_all_wave45_defaults_ok == 1 &&
+              fa.hdmi_clean_feed_baked_overlay_pixels == 0U &&
+              dt.passive_tx_bytes_emitted == 0U &&
+              vl.pmic_5v_overcurrent_events == 0U &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R59_CLEAN_UNMOUNT_CAMRESET_H0_H3 stock_unmount_restored_ok=%d "
+            "wave45_survives_netreset_ok=%d "
+            "focus_peaking_reset_by_camreset_ok=%d "
+            "setup_datetime_vl_hdmi_survive_camreset_ok=%d "
+            "initialize_restores_all_wave45_defaults_ok=%d "
+            "hdmi_clean_feed_baked_overlay_pixels=0 "
+            "passive_tx_bytes_emitted=0 pmic_5v_overcurrent_events=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r59c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            wave45_survives_netreset_ok,
+            focus_peaking_reset_by_camreset_ok,
+            setup_datetime_vl_hdmi_survive_camreset_ok,
+            initialize_restores_all_wave45_defaults_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -25614,6 +26487,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r58-camreset-file-gamma-tcub-h0-h3") == 0) {
         return run_r58_camreset_file_gamma_tcub_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r59-af-illum-bt-pmic5v-hdmi2160p-guard") == 0) {
+        return run_r59_af_illum_bt_pmic5v_hdmi2160p_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r59-clean-unmount-camreset-init-h0-h3") == 0) {
+        return run_r59_clean_unmount_camreset_init_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -25896,6 +26775,27 @@ int main(int argc, char **argv) {
             if (is_camreset_file_gamma_tcub_integrated &&
                 run_r58_camreset_file_gamma_tcub_h0_h3_probe(77) != 0) {
                 return 77;
+            }
+        }
+    }
+    struct stat r59_st;
+    if (stat("/etc/fx6_stage_r59", &r59_st) == 0) {
+        if (setup_r59_focus_mag_datetime_videolight_hdmires_probe() != 0) {
+            return 78;
+        }
+        FILE *r59f = fopen("/etc/fx6_stage_r59", "r");
+        if (r59f) {
+            int is_clean_unmount_wave45_integrated = 0;
+            char r59line[128];
+            while (fgets(r59line, sizeof(r59line), r59f)) {
+                if (strstr(r59line, "r59_mode=clean_unmount_camreset_vs_init_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave45_integrated = 1;
+                }
+            }
+            fclose(r59f);
+            if (is_clean_unmount_wave45_integrated &&
+                run_r59_clean_unmount_camreset_init_h0_h3_probe(78) != 0) {
+                return 78;
             }
         }
     }

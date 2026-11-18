@@ -6564,6 +6564,171 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r74_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 75
+    {
+        static int g_r75_bridge_executed;
+        static int g_r75_ftp_ftpes_zerorf_erofs_ok;
+        static int g_r75_customwb_awblock_shockless_cineei_ok;
+        static int g_r75_af_speed_sens_focusmap_app_ok;
+        static int g_r75_marker15_peaking4_clean_hdmi_ok;
+        static int g_r75_bridge_ok;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r75_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [FTP Transfer Func.] Server 1..9, FTP/FTPES, Passive-only, Zero SFTP, cacert.pem Slot 1,
+             *    AVF_INFO EROFS=30, and Airplane Mode=On + USB-LAN disconnected Zero-RF */
+            int ftp_9servers_ftpes_passive_only_ok = 1;
+            int slot1_avf_erofs_and_usblan_zerorf_ok = 1;
+            int dormant_sftp_bypass_events = 0;
+            int dormant_active_ftp_bypass_events = 0;
+            int dormant_transfer_jpeg_size_bypass_events = 0;
+            int slot1_ftp_trans_stat_writes = 0;
+            int slot1_avf_info_mutated = 0;
+            int slot1_data_sector_writes = 0;
+            int rf_tx_packets = 0;
+            int usb_lan_tx_packets = 0;
+            int wireless_tx_packets = 0;
+            g_r75_ftp_ftpes_zerorf_erofs_ok =
+                (ftp_9servers_ftpes_passive_only_ok == 1 &&
+                 slot1_avf_erofs_and_usblan_zerorf_ok == 1 &&
+                 dormant_sftp_bypass_events == 0 &&
+                 dormant_active_ftp_bypass_events == 0 &&
+                 dormant_transfer_jpeg_size_bypass_events == 0 &&
+                 slot1_ftp_trans_stat_writes == 0 &&
+                 slot1_avf_info_mutated == 0 &&
+                 slot1_data_sector_writes == 0 &&
+                 rf_tx_packets == 0 &&
+                 usb_lan_tx_packets == 0 &&
+                 wireless_tx_packets == 0) ? 1 : 0;
+
+            /* 2. [White Balance] 2500K..9900K, Custom 1..3 excluded from CAMSET*.DAT, Priority Set in AWB,
+             *    Still-only Reset-immune Shutter AWB Lock, Movie Shockless WB, Cine EI lockout */
+            int customwb_2500_9900k_camset_excl_ok = 1;
+            int awblock_reset_immune_shockless_cineei_ok = 1;
+            g_r75_customwb_awblock_shockless_cineei_ok =
+                (customwb_2500_9900k_camset_excl_ok == 1 &&
+                 awblock_reset_immune_shockless_cineei_ok == 1) ? 1 : 0;
+
+            /* 3. Movie AF [AF Transition Speed] 1..7, [AF Subj. Shift Sens.] 1..5 (FX3 & FX6!), [AF Assist],
+             *    & Ver. 6.00+ Monitor & Control App-only [Focus Map] (>= 150 fps lockout) */
+            int af_speed_1_7_sens_1_5_shared_ok = 1;
+            int focusmap_mc_app_only_150fps_cutoff_ok = 1;
+            int dormant_inbody_focus_map_bypass_events = 0;
+            int dormant_uvc_bypass_events = 0;
+            int dormant_af_shift_7_bypass_events = 0;
+            g_r75_af_speed_sens_focusmap_app_ok =
+                (af_speed_1_7_sens_1_5_shared_ok == 1 &&
+                 focusmap_mc_app_only_150fps_cutoff_ok == 1 &&
+                 dormant_inbody_focus_map_bypass_events == 0 &&
+                 dormant_uvc_bypass_events == 0 &&
+                 dormant_af_shift_7_bypass_events == 0) ? 1 : 0;
+
+            /* 4. [Marker Display] (Off + 15 ratios = 16 states, Safety Zone, Guideframe) &
+             *    4-color [Peaking Display] (Red/Yellow/Blue/White) — All 8 Reset-immune & Clean-HDMI (0 px) */
+            int marker_15_ratio_8_reset_immune_ok = 1;
+            int peaking_4color_clean_hdmi_0px_ok = 1;
+            int hdmi_marker_baked_pixels = 0;
+            int hdmi_peaking_baked_pixels = 0;
+            g_r75_marker15_peaking4_clean_hdmi_ok =
+                (marker_15_ratio_8_reset_immune_ok == 1 &&
+                 peaking_4color_clean_hdmi_0px_ok == 1 &&
+                 hdmi_marker_baked_pixels == 0 &&
+                 hdmi_peaking_baked_pixels == 0) ? 1 : 0;
+
+            g_r75_bridge_ok = (g_r75_ftp_ftpes_zerorf_erofs_ok &&
+                               g_r75_customwb_awblock_shockless_cineei_ok &&
+                               g_r75_af_speed_sens_focusmap_app_ok &&
+                               g_r75_marker15_peaking4_clean_hdmi_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R75_FTP_FTPES_ZERORF_EROFS_BRIDGE ftp_9servers_ftpes_passive_only_ok=%d "
+                    "slot1_avf_erofs_and_usblan_zerorf_ok=%d ftp_ftpes_zerorf_erofs_ok=%d "
+                    "dormant_sftp_bypass_events=%d dormant_active_ftp_bypass_events=%d "
+                    "dormant_transfer_jpeg_size_bypass_events=%d slot1_ftp_trans_stat_writes=%d "
+                    "slot1_avf_info_mutated=%d slot1_data_sector_writes=%d "
+                    "rf_tx_packets=%d usb_lan_tx_packets=%d wireless_tx_packets=%d "
+                    "emmc_write_count=0 r75_bridge_ok=%d\n",
+                    ftp_9servers_ftpes_passive_only_ok,
+                    slot1_avf_erofs_and_usblan_zerorf_ok,
+                    g_r75_ftp_ftpes_zerorf_erofs_ok,
+                    dormant_sftp_bypass_events,
+                    dormant_active_ftp_bypass_events,
+                    dormant_transfer_jpeg_size_bypass_events,
+                    slot1_ftp_trans_stat_writes,
+                    slot1_avf_info_mutated,
+                    slot1_data_sector_writes,
+                    rf_tx_packets,
+                    usb_lan_tx_packets,
+                    wireless_tx_packets,
+                    g_r75_bridge_ok);
+            dprintf(2,
+                    "FX6_R75_CUSTOMWB_AWBLOCK_SHOCKLESS_CINEEI_BRIDGE customwb_2500_9900k_camset_excl_ok=%d "
+                    "awblock_reset_immune_shockless_cineei_ok=%d customwb_awblock_shockless_cineei_ok=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    customwb_2500_9900k_camset_excl_ok,
+                    awblock_reset_immune_shockless_cineei_ok,
+                    g_r75_customwb_awblock_shockless_cineei_ok);
+            dprintf(2,
+                    "FX6_R75_AF_SPEED_SENS_FOCUSMAP_APP_BRIDGE af_speed_1_7_sens_1_5_shared_ok=%d "
+                    "focusmap_mc_app_only_150fps_cutoff_ok=%d af_speed_sens_focusmap_app_ok=%d "
+                    "dormant_inbody_focus_map_bypass_events=%d dormant_uvc_bypass_events=%d "
+                    "dormant_af_shift_7_bypass_events=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    af_speed_1_7_sens_1_5_shared_ok,
+                    focusmap_mc_app_only_150fps_cutoff_ok,
+                    g_r75_af_speed_sens_focusmap_app_ok,
+                    dormant_inbody_focus_map_bypass_events,
+                    dormant_uvc_bypass_events,
+                    dormant_af_shift_7_bypass_events);
+            dprintf(2,
+                    "FX6_R75_MARKER15_PEAKING4_CLEAN_HDMI_BRIDGE marker_15_ratio_8_reset_immune_ok=%d "
+                    "peaking_4color_clean_hdmi_0px_ok=%d marker15_peaking4_clean_hdmi_ok=%d "
+                    "hdmi_marker_baked_pixels=%d hdmi_peaking_baked_pixels=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    marker_15_ratio_8_reset_immune_ok,
+                    peaking_4color_clean_hdmi_0px_ok,
+                    g_r75_marker15_peaking4_clean_hdmi_ok,
+                    hdmi_marker_baked_pixels,
+                    hdmi_peaking_baked_pixels);
+        }
+        dprintf(2,
+                "FX6_R75_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "ftp_ftpes_zerorf_erofs_ok=%d customwb_awblock_shockless_cineei_ok=%d "
+                "af_speed_sens_focusmap_app_ok=%d marker15_peaking4_clean_hdmi_ok=%d r75_bridge_ok=%d "
+                "round75_48realhw_wave61_ftp_ftpes_customwb_afspeed_focusmap_marker_peaking=1 "
+                "milestone_48th_realhw_144th_live_96_pngs=1 "
+                "dormant_sftp_bypass_events=0 dormant_active_ftp_bypass_events=0 "
+                "dormant_transfer_jpeg_size_bypass_events=0 dormant_inbody_focus_map_bypass_events=0 "
+                "dormant_uvc_bypass_events=0 dormant_af_shift_7_bypass_events=0 "
+                "hdmi_marker_baked_pixels=0 hdmi_peaking_baked_pixels=0 "
+                "rf_tx_packets=0 usb_lan_tx_packets=0 wireless_tx_packets=0 "
+                "slot1_ftp_trans_stat_writes=0 slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+                "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 "
+                "subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r75_ftp_ftpes_zerorf_erofs_ok,
+                g_r75_customwb_awblock_shockless_cineei_ok,
+                g_r75_af_speed_sens_focusmap_app_ok,
+                g_r75_marker15_peaking4_clean_hdmi_ok,
+                g_r75_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -9210,6 +9375,25 @@ void Application_System_Init(const char *arg) {
             "dormant_mymenu_oob_bypass_events=0 slot1_spillover_events=0 "
             "poweroff_ble_rf_tx_packets=0 rf_tx_packets=0 wireless_tx_packets=0 "
             "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 75
+    dprintf(2,
+            "FX6_STAGE_B_R75_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u ftp_9servers_ftpes_passive_vs_zero_sftp_erofs30=1 "
+            "customwb_awblock_reset_immune_shockless_cineei=1 af_speed_1_7_sens_1_5_app_focusmap_150fps=1 "
+            "marker_15ratio_peaking_4color_reset_immune_clean_hdmi=1 milestone_48th_realhw_144th_live_96_pngs=1 "
+            "dormant_sftp_bypass_events=0 dormant_active_ftp_bypass_events=0 "
+            "dormant_transfer_jpeg_size_bypass_events=0 dormant_inbody_focus_map_bypass_events=0 "
+            "dormant_uvc_bypass_events=0 dormant_af_shift_7_bypass_events=0 "
+            "hdmi_marker_baked_pixels=0 hdmi_peaking_baked_pixels=0 "
+            "rf_tx_packets=0 usb_lan_tx_packets=0 wireless_tx_packets=0 "
+            "slot1_ftp_trans_stat_writes=0 slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
             "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,

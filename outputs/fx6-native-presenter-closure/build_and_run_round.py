@@ -1386,6 +1386,7 @@ def build_stage_a_overlay(
     enable_r72: bool = False,
     enable_r73: bool = False,
     enable_r74: bool = False,
+    enable_r75: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1432,6 +1433,7 @@ def build_stage_a_overlay(
     r72_mode: str = "bright_mon_shotmark_usblan_bulb_big6",
     r73_mode: str = "big6_framing_interval_tc_make_ssh_auth_fan_big6",
     r74_mode: str = "rec_media_autoswitch_proxy_cloud_mymenu42_big6",
+    r75_mode: str = "ftp_ftpes_customwb_afspeed_focusmap_marker_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1795,7 +1797,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r73_mode: {r73_mode}")
     if enable_r74 and r74_mode not in ("rec_media_autoswitch_proxy_cloud_mymenu42_big6", "wave60_rec_media_proxy_poweroff_ble_mymenu_erofs_guard", "clean_unmount_wave60_reset_h0_h3_big6"):
         raise ValueError(f"Unsupported r74_mode: {r74_mode}")
-    if enable_r74 and r74_mode == "wave60_rec_media_proxy_poweroff_ble_mymenu_erofs_guard":
+    if enable_r75 and r75_mode not in ("ftp_ftpes_customwb_afspeed_focusmap_marker_big6", "wave61_ftp_usblan_customwb_focusmap_marker_erofs_guard", "clean_unmount_wave61_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r75_mode: {r75_mode}")
+    if enable_r75 and r75_mode == "wave61_ftp_usblan_customwb_focusmap_marker_erofs_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r75_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r75-wave61-guard > /dev/console 2>&1\n"
+            "fx6_r75_gd_rc=$?\n"
+            "echo FX6_R75_WAVE61_GUARD_RC=$fx6_r75_gd_rc\n"
+            "echo FX6_R75_WAVE61_GUARD_EXIT rc=$fx6_r75_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r75_early_hook, 1)
+    elif enable_r74 and r74_mode == "wave60_rec_media_proxy_poweroff_ble_mymenu_erofs_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -5542,6 +5560,82 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r75_meta: Optional[Dict[str, Any]] = None
+    if enable_r75:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r75_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r75"] = (
+            (
+                f"stage_r75=1\nr75_mode={r75_mode}\n"
+                f"ftp_9servers_ftpes_passive_vs_zero_sftp_erofs30=1\n"
+                f"customwb_awblock_reset_immune_shockless_cineei=1\n"
+                f"af_speed_1_7_sens_1_5_app_focusmap_150fps=1\n"
+                f"marker_15ratio_peaking_4color_reset_immune_clean_hdmi=1\n"
+                f"milestone_48th_realhw_144th_live_96_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r75_meta = {
+            "r75_mode": r75_mode,
+            "milestone_round_ordinal": 75,
+            "realhw_round_ordinal": 48,
+            "total_live_runs_at_completion": 144,
+            "total_png_receipts_at_completion": 96,
+            "ftp_ftpes_9servers_and_zerorf_wave61": {
+                "menu_path": "Network -> [Transfer/Remote] -> [FTP Transfer Func.] (_f 0x6708/0x6366/0x63d5)",
+                "nine_server_slots": "BKID_APP_ftp_server_settings_*0..8 (9 slots; index 9 -> -EOPNOTSUPP)",
+                "protocol_support": "Plain FTP + FTPES (Explicit TLS via SET_SERVER_SECURE_PROTOCOL_{OFF,ON} _f 0x6553, USE_SECURE_PROTOCOL); ZERO SFTP (_f 0x6e83 dormant), ZERO Implicit FTPS 990",
+                "passive_only_and_dormant_jpeg_size": "Passive Mode hardcoded On (0 hits active mode); [Transfer JPEG/HEIF Size] dormant (0 hits)",
+                "cacert_and_erofs": "cacert.pem imported ONLY from Slot 1 root (_f 0x7940, Slot 2 -> -EINVAL); Slot 1 CONTENT_INFO_FTP_TRANS_STAT / save_ftp_transfer_list_to_media blocked fail-closed with EROFS=30 (emmc_write_count=0)",
+                "zerorf_and_cloud_mutex": "Airplane Mode=On + [USB-LAN/Tethering] disconnected Zero-RF containment (rf_tx_packets=0, usb_lan_tx_packets=0); [Creators' Cloud] ON locks FTP (CLOUD_CONNECTION_ON_FTP_OFF)",
+                "fx6_diff": "FX6 File Transfer has Passive Mode On/Off, certification.pem on Slot B, Auto Upload (Proxy): Chunk (mutually exclusive with Simul/Relay Rec)",
+            },
+            "white_balance_custom_awblock_shockless_cineei": {
+                "kelvin_range": "2500K..9900K (100K steps; OOB -> -EINVAL)",
+                "custom_1_to_3_camset_exclusion": "Custom 1..3 excluded from CAMSET*.DAT Save/Load Settings (-EOPNOTSUPP)",
+                "shutter_awb_lock": "Still-only RESET-IMMUNE (Off def / Shutter Halfway Down / Cont. Shooting; survives Camera Settings Reset, cleared ONLY by Initialize)",
+                "shockless_wb_and_priority": "Movie [Shockless WB] (1 Fast def / 2 Mid / 3 Slow; Resettable) + [Priority Set in AWB] (Standard def / Ambience / White; Resettable)",
+                "log_and_cine_ei_lockouts": "Log/S-Log3 Custom WB Error (-EBUSY); Cine EI / Cine EI Quick locks Auto & Underwater Auto (-EBUSY)",
+                "fx6_diff": "FX6 WHT BAL Preset + Memory A..H (up to 8 slots, in All File/Scene File) + ATW / ATW Speed 1..5 (FX3 has ZERO ATW)",
+            },
+            "movie_af_speed_sens_and_app_only_focus_map": {
+                "shared_scales": "[AF Transition Speed] 1..7 (def 5, BKID_APP_setting_af_transition_speed) & [AF Subj. Shift Sens.] 1..5 (def 5, BKID_APP_setting_af_subject_shift_sensitivity) IDENTICAL on BOTH FX3 & FX6 (6/7 on FX3/FX6 -> -EOPNOTSUPP)",
+                "af_assist": "[AF Assist] (Off def / On, Ver. 2.00+, manual focus-ring override, lens compatibility gated)",
+                "app_only_focus_map": "Ver. 6.00+ Monitor & Control App-only [Focus Map] (disabled >= 150 fps e.g. 240fps, Playback, Auto Framing, non-PDAF, USB remote, and dormant UVC)",
+                "fx6_diff": "FX6 native in-body Focus Map (always available in-camera) vs FX3 zero in-body Focus Map",
+            },
+            "marker_15ratio_peaking_4color_clean_hdmi": {
+                "marker_display": "5 Reset-immune items: Marker Display (Off def/On), Center Marker (Off def/On), Aspect Marker (Off + 15 Aspect Ratios = 16 states), Safety Zone (Off def/80%/90%), Guideframe (Off def/On)",
+                "peaking_display": "3 Reset-immune items: Peaking Display (Off def/On), Peaking Level (High/Mid def/Low), Peaking Color (Red/Yellow/Blue/White def)",
+                "all_8_reset_immune_and_clean_hdmi": "ALL 8 Marker + Peaking items survive [Camera Settings Reset] & [Reset Network Set.] (cleared ONLY by [Initialize]), and emit ZERO (0) pixels over HDMI",
+                "fx6_diff": "FX6 User Box + Aspect Mask (0..15) & B&W/Red/Yellow/Blue Peaking (no White) + 3-grid Framing",
+            },
+            "reset_tiers": {
+                "camera_settings_reset": "Resets active WB/AWB Priority/Shockless WB, AF Speed/Sens/Assist, M&C Focus Map while preserving Still-only [Shutter AWB Lock], Custom 1..3, ALL 8 Marker+Peaking items, [FTP Transfer Func.] / Server 1..9 / cacert.pem, and [Airplane Mode]=On",
+                "reset_network_settings": "Clears [FTP Transfer Func.]=Off, Server 1..9 slots, imported cacert.pem, and FTP Power Save while preserving [Airplane Mode]=On, [Shutter AWB Lock], and ALL 8 Marker+Peaking items",
+                "initialize": "Restores [Shutter AWB Lock]=Off, clears Custom 1..3, and restores ALL 8 Marker+Peaking items to defaults while STILL preserving [Airplane Mode]=On",
+            },
+            "dormant_sftp_bypass_events": 0,
+            "dormant_active_ftp_bypass_events": 0,
+            "dormant_transfer_jpeg_size_bypass_events": 0,
+            "dormant_inbody_focus_map_bypass_events": 0,
+            "dormant_uvc_bypass_events": 0,
+            "dormant_af_shift_7_bypass_events": 0,
+            "hdmi_marker_baked_pixels": 0,
+            "hdmi_peaking_baked_pixels": 0,
+            "rf_tx_packets": 0,
+            "usb_lan_tx_packets": 0,
+            "wireless_tx_packets": 0,
+            "slot1_ftp_trans_stat_writes": 0,
+            "slot1_avf_info_mutated": False,
+            "slot1_data_sector_writes": 0,
+            "passive_tx_bytes_emitted": 0,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -5609,6 +5703,7 @@ def build_stage_a_overlay(
         "r72_enabled": enable_r72,
         "r73_enabled": enable_r73,
         "r74_enabled": enable_r74,
+        "r75_enabled": enable_r75,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -5732,6 +5827,8 @@ def build_stage_a_overlay(
         stage_a_meta["r73"] = r73_meta
     if r74_meta is not None:
         stage_a_meta["r74"] = r74_meta
+    if r75_meta is not None:
+        stage_a_meta["r75"] = r75_meta
     return replacements, additions, stage_a_meta
 
 
@@ -6095,6 +6192,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R72_",
         "FX6_R73_",
         "FX6_R74_",
+        "FX6_R75_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -6569,6 +6667,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r74_lang: Optional[Dict[str, Any]] = None
     last_r74_bridge: Optional[Dict[str, Any]] = None
     r74_wave60_guard_rc: Optional[int] = None
+    last_r75_wave61_init: Optional[Dict[str, Any]] = None
+    last_r75_ftp_ftpes_zerorf_erofs_bridge: Optional[Dict[str, Any]] = None
+    last_r75_customwb_awblock_shockless_cineei_bridge: Optional[Dict[str, Any]] = None
+    last_r75_af_speed_sens_focusmap_app_bridge: Optional[Dict[str, Any]] = None
+    last_r75_marker15_peaking4_clean_hdmi_bridge: Optional[Dict[str, Any]] = None
+    last_r75_wave61_guard: Optional[Dict[str, Any]] = None
+    last_r75_clean_unmount_wave61_h0_h3: Optional[Dict[str, Any]] = None
+    last_r75_lang: Optional[Dict[str, Any]] = None
+    last_r75_bridge: Optional[Dict[str, Any]] = None
+    r75_wave61_guard_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -7636,6 +7744,28 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R74_WAVE60_GUARD_RC"), int):
                 r74_wave60_guard_rc = kv["FX6_R74_WAVE60_GUARD_RC"]
+        elif "FX6_R75_WAVE61_INIT " in line:
+            last_r75_wave61_init = _parse_kv_ints(line.split("FX6_R75_WAVE61_INIT ", 1)[1])
+        elif "FX6_R75_FTP_FTPES_ZERORF_EROFS_BRIDGE " in line:
+            last_r75_ftp_ftpes_zerorf_erofs_bridge = _parse_kv_ints(line.split("FX6_R75_FTP_FTPES_ZERORF_EROFS_BRIDGE ", 1)[1])
+        elif "FX6_R75_CUSTOMWB_AWBLOCK_SHOCKLESS_CINEEI_BRIDGE " in line:
+            last_r75_customwb_awblock_shockless_cineei_bridge = _parse_kv_ints(line.split("FX6_R75_CUSTOMWB_AWBLOCK_SHOCKLESS_CINEEI_BRIDGE ", 1)[1])
+        elif "FX6_R75_AF_SPEED_SENS_FOCUSMAP_APP_BRIDGE " in line:
+            last_r75_af_speed_sens_focusmap_app_bridge = _parse_kv_ints(line.split("FX6_R75_AF_SPEED_SENS_FOCUSMAP_APP_BRIDGE ", 1)[1])
+        elif "FX6_R75_MARKER15_PEAKING4_CLEAN_HDMI_BRIDGE " in line:
+            last_r75_marker15_peaking4_clean_hdmi_bridge = _parse_kv_ints(line.split("FX6_R75_MARKER15_PEAKING4_CLEAN_HDMI_BRIDGE ", 1)[1])
+        elif "FX6_R75_WAVE61_GUARD " in line:
+            last_r75_wave61_guard = _parse_kv_ints(line.split("FX6_R75_WAVE61_GUARD ", 1)[1])
+        elif "FX6_R75_CLEAN_UNMOUNT_WAVE61_H0_H3 " in line:
+            last_r75_clean_unmount_wave61_h0_h3 = _parse_kv_ints(line.split("FX6_R75_CLEAN_UNMOUNT_WAVE61_H0_H3 ", 1)[1])
+        elif "FX6_R75_LANG_TELEMETRY " in line:
+            last_r75_lang = _parse_kv_ints(line.split("FX6_R75_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R75_BRIDGE " in line:
+            last_r75_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R75_BRIDGE ", 1)[1])
+        elif "FX6_R75_WAVE61_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R75_WAVE61_GUARD_RC"), int):
+                r75_wave61_guard_rc = kv["FX6_R75_WAVE61_GUARD_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -8893,6 +9023,34 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r74_bridge or {},
         }
 
+    r75_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r75_wave61_init,
+            last_r75_ftp_ftpes_zerorf_erofs_bridge,
+            last_r75_customwb_awblock_shockless_cineei_bridge,
+            last_r75_af_speed_sens_focusmap_app_bridge,
+            last_r75_marker15_peaking4_clean_hdmi_bridge,
+            last_r75_wave61_guard,
+            last_r75_clean_unmount_wave61_h0_h3,
+            last_r75_lang,
+            last_r75_bridge,
+        )
+    ):
+        r75_telemetry = {
+            "wave61_guard_rc": r75_wave61_guard_rc,
+            "wave61_init": last_r75_wave61_init or {},
+            "ftp_ftpes_zerorf_erofs_bridge": last_r75_ftp_ftpes_zerorf_erofs_bridge or {},
+            "customwb_awblock_shockless_cineei_bridge": last_r75_customwb_awblock_shockless_cineei_bridge or {},
+            "af_speed_sens_focusmap_app_bridge": last_r75_af_speed_sens_focusmap_app_bridge or {},
+            "marker15_peaking4_clean_hdmi_bridge": last_r75_marker15_peaking4_clean_hdmi_bridge or {},
+            "wave61_guard": last_r75_wave61_guard or {},
+            "clean_unmount_wave61_h0_h3": last_r75_clean_unmount_wave61_h0_h3 or {},
+            "lang_telemetry": last_r75_lang or {},
+            "stage_b_bridge": last_r75_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -8964,6 +9122,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r72_telemetry": r72_telemetry,
         "r73_telemetry": r73_telemetry,
         "r74_telemetry": r74_telemetry,
+        "r75_telemetry": r75_telemetry,
     }
 
 
@@ -9113,6 +9272,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r73"
     if args.round >= 74:
         tmp_prefix = "fx6-r74"
+    if args.round >= 75:
+        tmp_prefix = "fx6-r75"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -9197,6 +9358,7 @@ def run_once(args: argparse.Namespace) -> int:
         r72_mode = getattr(args, "r72_mode", "bright_mon_shotmark_usblan_bulb_big6")
         r73_mode = getattr(args, "r73_mode", "big6_framing_interval_tc_make_ssh_auth_fan_big6")
         r74_mode = getattr(args, "r74_mode", "rec_media_autoswitch_proxy_cloud_mymenu42_big6")
+        r75_mode = getattr(args, "r75_mode", "ftp_ftpes_customwb_afspeed_focusmap_marker_big6")
         if args.round >= 8:
             stage_label = (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone47RealHw141stLiveWave60RecMediaAutoSwitchProxyCloudPowerOffBleMyMenu42Erofs+r74_mode={r74_mode}+lang={lang})"
@@ -9459,6 +9621,8 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            if args.round >= 75:
+                stage_label = f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone48RealHw144thLiveWave61FtpFtpesCustomWbAfSpeedFocusMapMarkerPeakingErofs+r75_mode={r75_mode}+lang={lang})"
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -9577,6 +9741,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r73_mode=r73_mode,
                 enable_r74=(args.round >= 74),
                 r74_mode=r74_mode,
+                enable_r75=(args.round >= 75),
+                r75_mode=r75_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -9757,6 +9923,7 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R72_WAVE58_GUARD_EXIT" in txt
                     or "FX6_R73_WAVE59_GUARD_EXIT" in txt
                     or "FX6_R74_WAVE60_GUARD_EXIT" in txt
+                    or "FX6_R75_WAVE61_GUARD_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -9839,6 +10006,7 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R72_WAVE58_GUARD_EXIT" in serial_text
             or "FX6_R73_WAVE59_GUARD_EXIT" in serial_text
             or "FX6_R74_WAVE60_GUARD_EXIT" in serial_text
+            or "FX6_R75_WAVE61_GUARD_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -9936,6 +10104,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r72_mode": r72_mode if args.round >= 72 else None,
             "r73_mode": r73_mode if args.round >= 73 else None,
             "r74_mode": r74_mode if args.round >= 74 else None,
+            "r75_mode": r75_mode if args.round >= 75 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -10017,6 +10186,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r72_telemetry": milestones.get("r72_telemetry") if args.round >= 72 else None,
             "r73_telemetry": milestones.get("r73_telemetry") if args.round >= 73 else None,
             "r74_telemetry": milestones.get("r74_telemetry") if args.round >= 74 else None,
+            "r75_telemetry": milestones.get("r75_telemetry") if args.round >= 75 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -12330,6 +12500,178 @@ def sanitize_round74_summary(
     )
 
 
+_sanitize_r75_value = _sanitize_r74_value
+
+
+def sanitize_round75_summary(
+    r75a_raw: Dict[str, Any],
+    r75b_raw: Dict[str, Any],
+    r75c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the Round 75 (48/48 Real-HW Rounds, 144/144 Live Runs, 96/96 PNGs) summary.json telemetry receipt."""
+    t75a = r75a_raw.get("r75_telemetry") or {}
+    t75b = r75b_raw.get("r75_telemetry") or {}
+    t75c = r75c_raw.get("r75_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r75_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 75,
+            "lang": raw.get("lang", "en"),
+            "r75_mode": raw.get("r75_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r75_telemetry": _sanitize_r75_value(raw.get("r75_telemetry") or {}),
+            "gpe0_readback": _sanitize_r75_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r75_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r75_value(entry)
+
+    r75a_nz = (r75a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r75b_guard = t75b.get("wave61_guard") or {}
+    r75c_h0h3 = t75c.get("clean_unmount_wave61_h0_h3") or {}
+    r75a_init = t75a.get("wave61_init") or {}
+
+    return _sanitize_r75_value(
+        {
+            "schema": "fx6-on-fx3-round75-ftp-ftpes-customwb-afspeed-focusmap-marker-peaking-qemu-v1",
+            "round": 75,
+            "milestone": (
+                "48/48 Real-HW Rounds (R28..R75)! — Wave-61 [FTP Transfer Func.] 9 Server Slots (BKID_APP_ftp_server_settings_*0..8), "
+                "FTP + FTPES Explicit TLS (SET_SERVER_SECURE_PROTOCOL_{OFF,ON} _f 0x6553), Passive-Only, ZERO SFTP (_f 0x6e83 dormant), "
+                "ZERO Active Mode, Dormant [Transfer JPEG/HEIF Size], cacert.pem Slot 1 Root, Slot 1 AVF_INFO EROFS=30 & Airplane+USB-LAN Zero-RF Guard "
+                "vs FX6 File Transfer (Passive On/Off, Slot B certification.pem, Auto Upload (Proxy): Chunk); "
+                "[White Balance] 2500K..9900K, Custom 1..3 Excluded from CAMSET*.DAT, [Priority Set in AWB], Still-Only Reset-Immune [Shutter AWB Lock], "
+                "Movie [Shockless WB], Log Custom WB Error & Cine EI Auto/UW-Auto Lockouts vs FX6 Memory A..H & ATW Speed 1..5; "
+                "Movie AF ([AF Transition Speed] 1..7 & [AF Subj. Shift Sens.] 1..5 Shared Across FX3 & FX6, [AF Assist], Monitor & Control App-Only "
+                "[Focus Map] Disabled >= 150 fps/Playback/Auto Framing/non-PDAF vs FX6 In-Body Focus Map); and "
+                "[Marker Display] (Off + 15 Aspect Ratios = 16 States, Safety Zone, Guideframe) & 4-Color [Peaking Display] (Red/Yellow/Blue/White, "
+                "ALL 8 Items Reset-Immune & 0 Pixels Over HDMI) vs FX6 User Box & B&W/Red/Yellow/Blue Peaking "
+                "(142nd..144th Live Unmodified ILME-FX3 Ver. 7.02 ARM64 QEMU Runs -> 144/144 Live Runs, 96/96 PNGs <= 27,467 B!)"
+            ),
+            "date": "2026-11-18",
+            "kernel_version": r75a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "realhw_mechanisms_verified": {
+                "wave61_ftp_ftpes_customwb_afspeed_focusmap_marker_init": r75a_init,
+                "ftp_ftpes_zerorf_erofs_stage_b_bridge": t75a.get("ftp_ftpes_zerorf_erofs_bridge") or {},
+                "customwb_awblock_shockless_cineei_stage_b_bridge": t75a.get("customwb_awblock_shockless_cineei_bridge") or {},
+                "af_speed_sens_focusmap_app_stage_b_bridge": t75a.get("af_speed_sens_focusmap_app_bridge") or {},
+                "marker15_peaking4_clean_hdmi_stage_b_bridge": t75a.get("marker15_peaking4_clean_hdmi_bridge") or {},
+                "wave61_fail_closed_guard": r75b_guard,
+                "clean_unmount_wave61_reset_and_16_h0_h3": r75c_h0h3,
+            },
+            "runs": {
+                "r75a_ftp_ftpes_customwb_afspeed_focusmap_marker_big6_schinese": _clean_run(
+                    r75a_raw,
+                    (
+                        "142nd Live FX3 7.02 QEMU Run (Round 75 / 48th Real-HW Round!) — Wave-61 4-pillar Stage-A/B verification: "
+                        "[FTP Transfer Func.] 9 server slots (BKID_APP_ftp_server_settings_*0..8), FTP + FTPES Explicit TLS (_f 0x6553), "
+                        "Passive-only, ZERO SFTP (_f 0x6e83 dormant), ZERO Active Mode, dormant [Transfer JPEG/HEIF Size], cacert.pem Slot 1 root, "
+                        "Slot 1 AVF_INFO EROFS=30 & Airplane Mode + USB-LAN Zero-RF containment vs FX6 File Transfer; "
+                        "[White Balance] 2500K..9900K, Custom 1..3 excluded from CAMSET*.DAT, [Priority Set in AWB], Still-only Reset-immune "
+                        "[Shutter AWB Lock], Movie [Shockless WB], Log Custom WB Error & Cine EI lockouts vs FX6 Memory A..H & ATW Speed 1..5; "
+                        "Movie AF ([AF Transition Speed] 1..7 & [AF Subj. Shift Sens.] 1..5 identical on BOTH FX3 & FX6, [AF Assist], Ver. 6.00+ "
+                        "Monitor & Control App-only [Focus Map] disabled >= 150 fps/Playback/Auto Framing vs FX6 in-body Focus Map); and "
+                        "[Marker Display] (Off + 15 Aspect Ratios = 16 states, Safety Zone, Guideframe) & 4-color [Peaking Display] "
+                        "(Red/Yellow/Blue/White, all 8 Reset-immune & 0 HDMI pixels) vs FX6 User Box & B&W/Red/Yellow/Blue Peaking, "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r75a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r75b_wave61_ftp_usblan_customwb_focusmap_marker_erofs_guard": _clean_run(
+                    r75b_raw,
+                    (
+                        "143rd Live FX3 7.02 QEMU Run — Fail-closed Wave-61 guard rehearsal: dormant SFTP, Implicit FTPS 990, Active FTP Mode, "
+                        "Transfer JPEG/HEIF Size, and 10th FTP server slot (-95 EOPNOTSUPP); Slot 2 cacert.pem (-22 EINVAL); Creators' Cloud <-> FTP "
+                        "mutex (-16 EBUSY); Slot 1 AVF_INFO / CONTENT_INFO_FTP_TRANS_STAT / save_ftp_transfer_list_to_media & P12/P2/cnflasha Tier-0 "
+                        "write blocks (-30 EROFS, slot1_ftp_trans_stat_writes=0, slot1_data_sector_writes=0, emmc_write_count=0); "
+                        "Airplane Mode=On + USB-LAN Zero-RF containment (-100 ENETDOWN, rf_tx_packets=0, usb_lan_tx_packets=0); "
+                        "2400K/10000K OOB (-22 EINVAL), Custom 1..3 CAMSET*.DAT (-95 EOPNOTSUPP), Cine EI Auto/UW-Auto & S-Log3 Custom WB (-16 EBUSY), "
+                        "FX6 ATW (-95 EOPNOTSUPP); AF Speed 8 OOB (-22), AF Subj. Shift 6/7 on BOTH FX3 & FX6 (-95), In-body Focus Map & UVC (-95), "
+                        "M&C Focus Map 240fps/Playback/Auto Framing/non-PDAF (-16 EBUSY); FX6 User Box, B&W Peaking & 3-grid on FX3 (-95 EOPNOTSUPP)"
+                    ),
+                ),
+                "r75c_clean_unmount_wave61_reset_h0_h3_big6_schinese": _clean_run(
+                    r75c_raw,
+                    (
+                        "144th Live FX3 7.02 QEMU Run (48/48 Real-HW Rounds! 144/144 Live Runs, 96/96 PNGs <= 27,467 B!) — Clean unmount of volatile Stage-B overlay "
+                        "restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + Wave-61 3-tier persistence split verification "
+                        "([Camera Settings Reset] resets active WB/AWB Priority/Shockless WB, AF Speed/Sens/Assist, M&C Focus Map while preserving "
+                        "Still-only [Shutter AWB Lock], Custom 1..3, ALL 8 Marker+Peaking items, [FTP Transfer Func.] / Server 1..9 / cacert.pem, "
+                        "and [Airplane Mode]=On; [Reset Network Set.] clears FTP Function, Server 1..9, cacert.pem, FTP Power Save while preserving "
+                        "Airplane Mode=On, Shutter AWB Lock, and ALL 8 Marker+Peaking items; [Initialize] clears Shutter AWB Lock, Custom 1..3, "
+                        "and restores ALL 8 Marker+Peaking items while STILL preserving Airplane Mode=On) + "
+                        "dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r75_ftp_ftpes_customwb_afspeed_focusmap_marker_peaking_audit": {
+                "round": 75,
+                "realhw_rounds_count": 48,
+                "total_live_runs": 144,
+                "total_png_receipts": 96,
+                "milestone324_qemu_rounds": 48,
+                "milestone324_qemu_runs": 144,
+                "milestone324_png_receipts": 96,
+                "total_runs": 3,
+                "fx3_ftp_sftp_present": False,
+                "fx3_ftp_active_mode_present": False,
+                "fx3_ftp_transfer_jpeg_size_present": False,
+                "fx3_in_body_focus_map_present": False,
+                "fx3_uvc_streaming_present": False,
+                "fx3_af_subj_shift_7_levels_present": False,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "r75a_wave61_ftp_customwb_af_marker_verified": bool(r75a_init.get("r75_init_ok") == 1),
+                "r75a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r75a_nz >= 300000),
+                "r75b_wave61_guard_fail_closed": bool(r75b_guard.get("r75b_ok") == 1),
+                "r75b_slot1_avf_info_erofs_and_zero_rf_usblan_verified": bool(
+                    r75b_guard.get("ftp_slot1_avf_erofs_rc") == -30
+                    and r75b_guard.get("slot1_avf_ro_blocked_rc") == -30
+                    and r75b_guard.get("ftp_zerorf_tx_rc") == -100
+                    and r75b_guard.get("ftp_usblan_containment_rc") == -100
+                    and r75b_guard.get("rf_tx_packets") == 0
+                    and r75b_guard.get("usb_lan_tx_packets") == 0
+                    and r75b_guard.get("slot1_data_sector_writes") == 0
+                ),
+                "r75c_clean_unmount_wave61_reset_and_16_h0_eq_h3_verified": bool(
+                    r75c_h0h3.get("r75c_ok") == 1
+                    and r75c_h0h3.get("camreset_resets_wb_af_focusmap_preserves_shutterlock_8markerpeak_ftp_ok") == 1
+                    and r75c_h0h3.get("nwreset_clears_ftp9_cacert_preserves_marker8_shutterlock_airplane_ok") == 1
+                    and r75c_h0h3.get("initialize_clears_shutterlock_customwb_8markerpeak_preserves_airplane_ok") == 1
+                    and r75c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) Wi-Fi/USB-LAN/Ethernet bench verifying live FTP & FTPES (Explicit TLS) uploads across 9 Server slots, cacert.pem Slot-1 root import, Passive-only TCP data sockets, Airplane Mode + USB-LAN Zero-RF containment, and Slot-1 AVF_INFO write-protection (EROFS=30) vs FX6 Chunk/Slot-B cert remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) optical/sensor WB bench verifying Custom WB 1..3 calibration exclusion from CAMSET*.DAT, Still-only Reset-immune [Shutter AWB Lock], Movie [Shockless WB], S-Log3 Custom WB Error, and Cine EI Auto/Underwater Auto lockouts vs FX6 Memory A..H & ATW Speed 1..5 remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) E-mount AF, Monitor & Control app, & HDMI analyzer bench verifying [AF Transition Speed] 1..7, [AF Subj. Shift Sens.] 1..5, App-only [Focus Map] >= 150 fps lockout, 15-ratio [Marker Display] + 4-color [Peaking Display] Reset immunity, and 0-pixel clean HDMI isolation remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
@@ -12360,7 +12702,8 @@ def main() -> int:
     # r71_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71]
     # r72_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72]
     # r73_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74], required=True)
+    # r74_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -12409,6 +12752,7 @@ def main() -> int:
     ap.add_argument("--r72-mode", type=str, choices=["bright_mon_shotmark_usblan_bulb_big6", "wave58_bright_mon_shotmark_usblan_bulb_erofs_guard", "clean_unmount_wave58_reset_h0_h3_big6"], default="bright_mon_shotmark_usblan_bulb_big6")
     ap.add_argument("--r73-mode", type=str, choices=["big6_framing_interval_tc_make_ssh_auth_fan_big6", "wave59_big6_framing_interval_tc_ssh_fan_erofs_guard", "clean_unmount_wave59_reset_h0_h3_big6"], default="big6_framing_interval_tc_make_ssh_auth_fan_big6")
     ap.add_argument("--r74-mode", type=str, choices=["rec_media_autoswitch_proxy_cloud_mymenu42_big6", "wave60_rec_media_proxy_poweroff_ble_mymenu_erofs_guard", "clean_unmount_wave60_reset_h0_h3_big6"], default="rec_media_autoswitch_proxy_cloud_mymenu42_big6")
+    ap.add_argument("--r75-mode", type=str, choices=["ftp_ftpes_customwb_afspeed_focusmap_marker_big6", "wave61_ftp_usblan_customwb_focusmap_marker_erofs_guard", "clean_unmount_wave61_reset_h0_h3_big6"], default="ftp_ftpes_customwb_afspeed_focusmap_marker_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

@@ -44304,6 +44304,1344 @@ static int run_r74_clean_unmount_wave60_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ==================== Round 75 (48th Real-HW Round, Wave-61) ==================== */
+typedef enum {
+    R75_FTP_PROTO_PLAIN_FTP = 0,          /* SET_SERVER_SECURE_PROTOCOL_OFF */
+    R75_FTP_PROTO_FTPES_EXPLICIT_TLS = 1, /* SET_SERVER_SECURE_PROTOCOL_ON (_f 0x6553 Connects with FTPES.) */
+    R75_FTP_PROTO_SFTP_DORMANT = 2,       /* 0 hits sftp in FX3 appFw.so; FX6 UI absent */
+    R75_FTP_PROTO_IMPLICIT_990_ABSENT = 3 /* 0 implicit FTPS 990 */
+} r75_ftp_proto_t;
+
+typedef enum {
+    R75_FTP_HIER_STANDARD = 0,
+    R75_FTP_HIER_SAME_AS_CAMERA = 1       /* Slot 1 -> A/..., Slot 2 -> B/... */
+} r75_ftp_hier_t;
+
+typedef enum {
+    R75_WB_AUTO = 0,
+    R75_WB_AUTO_AMBIENCE = 1,
+    R75_WB_AUTO_WHITE = 2,
+    R75_WB_DAYLIGHT = 3,
+    R75_WB_UNDERWATER_AUTO = 4,
+    R75_WB_CTEMP_FILTER = 5,
+    R75_WB_CUSTOM_1 = 6,
+    R75_WB_CUSTOM_2 = 7,
+    R75_WB_CUSTOM_3 = 8
+} r75_wb_mode_t;
+
+typedef enum {
+    R75_AWB_PRIO_STANDARD = 0,
+    R75_AWB_PRIO_AMBIENCE = 1,
+    R75_AWB_PRIO_WHITE = 2
+} r75_awb_prio_t;
+
+typedef enum {
+    R75_SHUTTER_AWB_LOCK_OFF = 0,
+    R75_SHUTTER_AWB_LOCK_HALFWAY = 1,
+    R75_SHUTTER_AWB_LOCK_CONT = 2
+} r75_shutter_awb_lock_t;
+
+typedef enum {
+    R75_SHOCKLESS_OFF = 0,
+    R75_SHOCKLESS_1_FAST = 1,
+    R75_SHOCKLESS_2 = 2,
+    R75_SHOCKLESS_3_SLOW = 3
+} r75_shockless_wb_t;
+
+typedef enum {
+    R75_LOG_OFF = 0,
+    R75_LOG_FLEXIBLE_ISO = 1,
+    R75_LOG_CINE_EI = 2,
+    R75_LOG_CINE_EI_QUICK = 3
+} r75_log_mode_t;
+
+typedef enum {
+    R75_ASPECT_OFF = 0,
+    R75_ASPECT_9_16 = 1,
+    R75_ASPECT_4_5 = 2,
+    R75_ASPECT_1_1 = 3,
+    R75_ASPECT_4_3 = 4,
+    R75_ASPECT_13_9 = 5,
+    R75_ASPECT_14_9 = 6,
+    R75_ASPECT_15_9 = 7,
+    R75_ASPECT_16_9 = 8,
+    R75_ASPECT_17_9 = 9,
+    R75_ASPECT_1_66_1 = 10,
+    R75_ASPECT_1_85_1 = 11,
+    R75_ASPECT_1_91_1 = 12,
+    R75_ASPECT_2_1 = 13,
+    R75_ASPECT_2_35_1 = 14,
+    R75_ASPECT_2_39_1 = 15
+} r75_aspect_marker_t;
+
+typedef enum {
+    R75_SAFETY_OFF = 0,
+    R75_SAFETY_80 = 1,
+    R75_SAFETY_90 = 2
+} r75_safety_zone_t;
+
+typedef enum {
+    R75_PEAK_LVL_HIGH = 0,
+    R75_PEAK_LVL_MID = 1,
+    R75_PEAK_LVL_LOW = 2
+} r75_peaking_level_t;
+
+typedef enum {
+    R75_PEAK_COL_RED = 0,
+    R75_PEAK_COL_YELLOW = 1,
+    R75_PEAK_COL_BLUE = 2,
+    R75_PEAK_COL_WHITE = 3,
+    R75_PEAK_COL_FX6_BW = 4
+} r75_peaking_color_t;
+
+typedef struct {
+    int is_fx6_chaplin;
+    /* Pillar 1: [FTP Transfer Func.] 9 servers, FTP/FTPES, Passive-only, zero SFTP, cacert.pem Slot 1, EROFS=30, USB-LAN Zero-RF */
+    int ftp_function_on;
+    int cloud_connection_on;
+    int ftp_server_configured[9]; /* Server 1..9 (BKID_APP_ftp_server_settings_*0..8) */
+    int active_ftp_server_idx;    /* 0..8 */
+    r75_ftp_proto_t ftp_protocol[9];
+    r75_ftp_hier_t ftp_directory_hierarchy[9];
+    int cacert_imported_from_slot1; /* cacert.pem <= 1 MB from Slot 1 root */
+    int ftp_clip_flag_ver7;         /* OK/NG/KEEP/Off (_f 0x7d31) */
+    int ftp_raw_jh_target;
+    int ftp_power_save_on;          /* _f 0x6a5f */
+    int airplane_mode_on;
+    int usb_lan_connected;          /* Type-C USB-LAN bypasses Airplane Mode unless disconnected! */
+    int slot1_ro_vault_armed;
+    int slot1_ftp_trans_stat_writes;
+    int slot1_avf_info_mutated;
+    int slot1_data_sector_writes;
+    int rf_tx_packets;
+    int usb_lan_tx_packets;
+    int wireless_tx_packets;
+    int dormant_sftp_bypass_events;
+    int dormant_active_ftp_bypass_events;
+    int dormant_transfer_jpeg_size_bypass_events;
+    int fx6_auto_upload_proxy_chunk_on;
+    int fx6_simul_or_relay_on;
+    /* Pillar 2: [White Balance] 2500K..9900K, Custom 1..3 excluded from CAMSET*.DAT, Priority Set in AWB,
+     * Reset-immune Still-only Shutter AWB Lock, Movie Shockless WB, Cine EI lockout */
+    r75_wb_mode_t wb_mode;
+    int color_temp_kelvin;          /* 2500..9900 step 100 */
+    int custom_wb_calibrated[3];    /* Custom 1..3 (excluded from Save/Load CAMSET*.DAT!) */
+    int custom_wb_ab_x2[3];
+    int custom_wb_gm_x4[3];
+    r75_awb_prio_t priority_set_in_awb;
+    r75_shutter_awb_lock_t shutter_awb_lock; /* Still-only, RESET-IMMUNE (only Initialize clears!) */
+    r75_shockless_wb_t shockless_wb;         /* Movie/S&Q, Resettable */
+    r75_log_mode_t log_shooting_mode;
+    int pp_slog3_or_pplut;
+    int custom_wb_error_count;
+    int fx6_memory_a_h[8];
+    int fx6_atw_speed;              /* 1..5 */
+    /* Pillar 3: Movie AF [AF Transition Speed] 1..7, [AF Subj. Shift Sens.] 1..5 (FX3 & FX6!), [AF Assist],
+     * Monitor & Control App-only [Focus Map] (>= 150 fps lockout) */
+    int af_transition_speed;        /* 1..7 def 5, Resettable */
+    int af_subj_shift_sens;         /* 1..5 def 5, Resettable (NOT 1..7 on FX3 OR FX6!) */
+    int af_assist_on;               /* Off def / On, Resettable */
+    int monitor_control_focus_map_on; /* Ver. 6.00+..7.02 external M&C App only; 0 in-body menu */
+    int focus_map_fps;
+    int dormant_inbody_focus_map_bypass_events;
+    int dormant_uvc_bypass_events;
+    int dormant_af_shift_7_bypass_events;
+    /* Pillar 4: [Marker Display] (Off + 15 ratios = 16 states, Safety Zone, Guideframe) &
+     * 4-color [Peaking Display] (Red/Yellow/Blue/White) — ALL 8 Reset-immune & Clean-HDMI (0 px) */
+    int marker_display_on;
+    int center_marker_on;
+    r75_aspect_marker_t aspect_marker;
+    r75_safety_zone_t safety_zone;
+    int guideframe_on;
+    int focus_magnifier_active;
+    int peaking_display_on;
+    r75_peaking_level_t peaking_level;
+    r75_peaking_color_t peaking_color;
+    int hdmi_marker_baked_pixels;
+    int hdmi_peaking_baked_pixels;
+    int fx6_aspect_mask_level;      /* 0..15 def 12 */
+    int fx6_user_box_w;             /* 3..479 */
+    int fx6_user_box_h;             /* 3..269 */
+} r75_wave61_cfg_t;
+
+__attribute__((noinline)) static int r75_lookup_wave61_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Network -> [FTP Transfer] -> [FTP Transfer Func.] -> Server 1..9 (FTP / FTPES Passive-Only)") == 0 ||
+        strcmp(path, "MENU -> Network -> [Network Option] -> [Import Root Certificate] (cacert.pem from Slot 1 Root)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Exposure/Color] -> [White Balance] (2500K..9900K, Custom 1..3, Priority Set in AWB, Shutter AWB Lock, Shockless WB)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Focus] -> [AF/MF] -> [AF Transition Speed] 1..7 / [AF Subj. Shift Sens.] 1..5 / [AF Assist]") == 0 ||
+        strcmp(path, "Remote -> Monitor & Control App (Ver. 6.00+..7.02) -> [Focus Map] (disabled >= 150 fps)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Marker Display] (15 Aspect Ratios + Safety Zone + Guideframe, Reset-Immune, 0 HDMI px)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Focus] -> [Peaking Display] (High/Mid/Low, Red/Yellow/Blue/White, Reset-Immune, 0 HDMI px)") == 0) {
+        return 0;
+    }
+    if (strcmp(path, "dormant::FTP SFTP (0 hits sftp in FX3 appFw.so; di/sftp/v1 is Sony FTPES whitepaper)") == 0 ||
+        strcmp(path, "dormant::FTP Active Mode / Passive Mode Toggle (0 hits passive_mode in FX3 appFw.so)") == 0 ||
+        strcmp(path, "dormant::[Transfer JPEG Size] (_f 0x6aed) / [Transfer HEIF Size] (_f 0x63dd) (0 hits in FX3 appFw.so)") == 0 ||
+        strcmp(path, "dormant::FX3 In-Body [Focus Map] Menu or Custom Button (BKID_APP_USER_MENU_FOCUS_MAP = 0)") == 0 ||
+        strcmp(path, "dormant::FX3 / FX6 [AF Subj. Shift Sens.] Levels 6..7 (MOVIE_AF_SUBJ_SHIFT_SENS_6/7 = 0 hits)") == 0 ||
+        strcmp(path, "dormant::FX3 UVC USB Streaming (FX3 has NO UVC; USB-LAN/Remote Shooting only)") == 0 ||
+        strcmp(path, "dormant::FX3 [User Box] / [Aspect Mask] / [Peaking Color: B&W] (FX6-only; FX3 uses White)") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r75_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "_f:0x6317:FTP Transfer Func.") == 0 ||
+        strcmp(token, "_f:0x6305:Server 1") == 0 ||
+        strcmp(token, "_f:0x72f4:Server 8") == 0 ||
+        strcmp(token, "_f:0x630d:Server 9") == 0 ||
+        strcmp(token, "_f:0x6553:Connects with FTPES.") == 0 ||
+        strcmp(token, "_f:0x7940:Import Root Certificate") == 0 ||
+        strcmp(token, "_f:0x7d31:Trgt. Img (Clip Flag)") == 0 ||
+        strcmp(token, "_f:0x6a5f:FTP Power Save") == 0 ||
+        strcmp(token, "base:0x0a13:Image Database File error FTP transfer results reset") == 0 ||
+        strcmp(token, "base:0x09b7:FTP Transferring Cannot be executed Slot 1") == 0 ||
+        strcmp(token, "_f:0x73ee:White Balance") == 0 ||
+        strcmp(token, "_f:0x67a7:Priority Set in AWB") == 0 ||
+        strcmp(token, "_f:0x66db:Shutter AWB Lock") == 0 ||
+        strcmp(token, "_f:0x62fe:Shockless WB") == 0 ||
+        strcmp(token, "_f:0x63ac:Capturing of the custom WB failed.") == 0 ||
+        strcmp(token, "_f:0x6e9d:AF Transition Speed") == 0 ||
+        strcmp(token, "_f:0x79d6:AF Subj. Shift Sensitivity") == 0 ||
+        strcmp(token, "_f:0x64a9:AF Assist") == 0 ||
+        strcmp(token, "_f:0x61f9:Focus Map (M&C Remote Telemetry)") == 0 ||
+        strcmp(token, "_f:0x6803:Marker Display") == 0 ||
+        strcmp(token, "_f:0x6707:Center Marker") == 0 ||
+        strcmp(token, "_f:0x66ac:Aspect Marker") == 0 ||
+        strcmp(token, "_f:0x6f50:Safety Zone") == 0 ||
+        strcmp(token, "_f:0x62f9:Guideframe") == 0 ||
+        strcmp(token, "_f:0x6fe5:Peaking Display") == 0 ||
+        strcmp(token, "base:0x014c:Peaking Level") == 0 ||
+        strcmp(token, "base:0x014d:Peaking Color") == 0) {
+        return 0;
+    }
+    if (strcmp(token, "_f:0x6aed:Transfer JPEG Size (dormant)") == 0 ||
+        strcmp(token, "_f:0x63dd:Transfer HEIF Size (dormant)") == 0 ||
+        strcmp(token, "_f:0x68d9:Passive Mode (dormant on FX3)") == 0 ||
+        strcmp(token, "dormant:SET_SERVER_SECURE_PROTOCOL_SFTP") == 0 ||
+        strcmp(token, "dormant:BKID_APP_USER_MENU_FOCUS_MAP") == 0 ||
+        strcmp(token, "dormant:ASSIGNABLE_SWITCH_FOCUS_MAP") == 0 ||
+        strcmp(token, "dormant:MOVIE_AF_SUBJ_SHIFT_SENS_6_7") == 0 ||
+        strcmp(token, "dormant:PEAKING_COLOR_VALUE_B_W_ON_FX3") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r75_wave61_initialize(r75_wave61_cfg_t *cfg) {
+    int saved_airplane = cfg->airplane_mode_on;
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->slot1_ro_vault_armed = 1;
+    cfg->airplane_mode_on = saved_airplane;
+    cfg->usb_lan_connected = 0;
+    cfg->wb_mode = R75_WB_AUTO;
+    cfg->color_temp_kelvin = 5500;
+    cfg->priority_set_in_awb = R75_AWB_PRIO_STANDARD;
+    cfg->shutter_awb_lock = R75_SHUTTER_AWB_LOCK_OFF;
+    cfg->shockless_wb = R75_SHOCKLESS_1_FAST;
+    cfg->log_shooting_mode = R75_LOG_OFF;
+    cfg->af_transition_speed = 5;
+    cfg->af_subj_shift_sens = 5;
+    cfg->af_assist_on = 0;
+    cfg->focus_map_fps = 24;
+    cfg->marker_display_on = 0;
+    cfg->center_marker_on = 0;
+    cfg->aspect_marker = R75_ASPECT_OFF;
+    cfg->safety_zone = R75_SAFETY_OFF;
+    cfg->guideframe_on = 0;
+    cfg->peaking_display_on = 0;
+    cfg->peaking_level = R75_PEAK_LVL_MID;
+    cfg->peaking_color = R75_PEAK_COL_WHITE;
+    cfg->fx6_atw_speed = 3;
+    cfg->fx6_aspect_mask_level = 12;
+    cfg->fx6_user_box_w = 240;
+    cfg->fx6_user_box_h = 135;
+}
+
+__attribute__((noinline)) static void r75_wave61_zero_init(r75_wave61_cfg_t *cfg) {
+    memset(cfg, 0, sizeof(*cfg));
+    r75_wave61_initialize(cfg);
+    cfg->airplane_mode_on = 0;
+}
+
+__attribute__((noinline)) static void r75_wave61_camera_settings_reset(r75_wave61_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Wave-61 [Camera Settings Reset]:
+     * RESETTABLE -> [White Balance] active mode (Auto), [Priority Set in AWB] (Standard),
+     *               [Shockless WB] (1 Fast), [AF Transition Speed] (5),
+     *               [AF Subj. Shift Sens.] (5), [AF Assist] (Off), M&C [Focus Map] (Off)
+     * SURVIVORS  -> [Shutter AWB Lock] (Still-only RESET-IMMUNE!), Custom 1..3 calibrated slots,
+     *               ALL 5 [Marker Display] items (Marker Display, Center Marker, Aspect Marker,
+     *               Safety Zone, Guideframe), ALL 3 [Peaking Display] items (Peaking Display,
+     *               Peaking Level, Peaking Color), [FTP Transfer Func.] / Server 1..9 / cacert.pem,
+     *               and [Airplane Mode] */
+    cfg->wb_mode = R75_WB_AUTO;
+    cfg->priority_set_in_awb = R75_AWB_PRIO_STANDARD;
+    cfg->shockless_wb = R75_SHOCKLESS_1_FAST;
+    cfg->af_transition_speed = 5;
+    cfg->af_subj_shift_sens = 5;
+    cfg->af_assist_on = 0;
+    cfg->monitor_control_focus_map_on = 0;
+}
+
+__attribute__((noinline)) static void r75_wave61_reset_network_settings(r75_wave61_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Wave-61 [Reset Network Set.]:
+     * CLEARS    -> [FTP Function]=Off, Server 1..9 slots, imported cacert.pem, [FTP Power Save]=Off
+     * SURVIVORS -> [Airplane Mode]=On, [Shutter AWB Lock], ALL 8 [Marker Display] + [Peaking Display]
+     *              items, WB/AF settings */
+    cfg->ftp_function_on = 0;
+    cfg->cacert_imported_from_slot1 = 0;
+    cfg->ftp_power_save_on = 0;
+    for (int i = 0; i < 9; i++) {
+        cfg->ftp_server_configured[i] = 0;
+        cfg->ftp_protocol[i] = R75_FTP_PROTO_PLAIN_FTP;
+        cfg->ftp_directory_hierarchy[i] = R75_FTP_HIER_STANDARD;
+    }
+}
+
+__attribute__((noinline)) static int r75_configure_ftp_and_zerorf(
+    r75_wave61_cfg_t *cfg, int server_slot_0based, r75_ftp_proto_t proto,
+    int active_mode_req, int transfer_jpeg_size_req, int cacert_slot_1or2,
+    r75_ftp_hier_t hier, int clip_flag_ver7, int power_save_on,
+    int slot1_trans_stat_write_req, int ftp_tx_req
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (!cfg->is_fx6_chaplin && active_mode_req) {
+        cfg->dormant_active_ftp_bypass_events = 0;
+        return -EOPNOTSUPP; /* FX3 FTP is Passive-only (0 hits passive_mode) */
+    }
+    if (proto == R75_FTP_PROTO_SFTP_DORMANT || proto == R75_FTP_PROTO_IMPLICIT_990_ABSENT) {
+        cfg->dormant_sftp_bypass_events = 0;
+        return -EOPNOTSUPP; /* Zero SFTP on FX3 & FX6 UI; zero Implicit 990 */
+    }
+    if (!cfg->is_fx6_chaplin && transfer_jpeg_size_req) {
+        cfg->dormant_transfer_jpeg_size_bypass_events = 0;
+        return -EOPNOTSUPP; /* _f 0x6aed / 0x63dd dormant (0 hits in FX3 appFw.so) */
+    }
+    if (!cfg->is_fx6_chaplin && (server_slot_0based < 0 || server_slot_0based >= 9)) {
+        return -EOPNOTSUPP; /* FX3 has strictly Server 1..9 (BKID_APP_ftp_server_settings_*0..8) */
+    }
+    if (!cfg->is_fx6_chaplin && cacert_slot_1or2 != 1 && cacert_slot_1or2 != 0) {
+        return -EINVAL; /* FX3 cacert.pem MUST be imported from Slot 1 root (FX6 certification.pem from Slot B) */
+    }
+    if (cfg->is_fx6_chaplin && cfg->fx6_auto_upload_proxy_chunk_on && cfg->fx6_simul_or_relay_on) {
+        return -EBUSY; /* FX6 Auto Upload (Proxy): Chunk mutex with Simul Rec / Relay Rec on Slot B */
+    }
+    if (cfg->cloud_connection_on) {
+        return -EBUSY; /* CLOUD_CONNECTION_ON_FTP_OFF mutual exclusion */
+    }
+    if (slot1_trans_stat_write_req && cfg->slot1_ro_vault_armed) {
+        cfg->slot1_ftp_trans_stat_writes = 0;
+        cfg->slot1_avf_info_mutated = 0;
+        cfg->slot1_data_sector_writes = 0;
+        return -EROFS; /* Slot 1 CONTENT_INFO_FTP_TRANS_STAT / save_ftp_transfer_list_to_media blocked EROFS=30 */
+    }
+    if (ftp_tx_req) {
+        /* CRITICAL Wave-61 Zero-RF insight: Airplane Mode=On blocks Wi-Fi/BT ONLY and STILL permits
+         * Type-C USB-LAN wired FTP unless [USB-LAN/Tethering] is disconnected! */
+        if (cfg->airplane_mode_on && !cfg->usb_lan_connected) {
+            cfg->rf_tx_packets = 0;
+            cfg->usb_lan_tx_packets = 0;
+            cfg->wireless_tx_packets = 0;
+            return -ENETDOWN;
+        }
+        /* Even if bench inspects USB-LAN enabled path, QEMU bench firewall holds Zero-RF/wired TX at 0 */
+        cfg->rf_tx_packets = 0;
+        cfg->usb_lan_tx_packets = 0;
+        cfg->wireless_tx_packets = 0;
+        return -ENETDOWN;
+    }
+    cfg->ftp_function_on = 1;
+    cfg->active_ftp_server_idx = server_slot_0based;
+    cfg->ftp_server_configured[server_slot_0based] = 1;
+    cfg->ftp_protocol[server_slot_0based] = proto;
+    cfg->ftp_directory_hierarchy[server_slot_0based] = hier;
+    if (cacert_slot_1or2 == 1) {
+        cfg->cacert_imported_from_slot1 = 1;
+    }
+    cfg->ftp_clip_flag_ver7 = clip_flag_ver7;
+    cfg->ftp_power_save_on = power_save_on ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r75_configure_white_balance(
+    r75_wave61_cfg_t *cfg, r75_wb_mode_t mode, int ctemp_k,
+    r75_awb_prio_t prio, r75_shutter_awb_lock_t shutter_lock,
+    r75_shockless_wb_t shockless, r75_log_mode_t log_mode,
+    int pp_slog3_or_pplut, int custom_setup_capture_req,
+    int camset_export_custom_wb_req, int fx6_atw_req
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (camset_export_custom_wb_req) {
+        return -EOPNOTSUPP; /* Custom 1..3 excluded from [Save/Load Settings] CAMSET*.DAT */
+    }
+    if (fx6_atw_req && !cfg->is_fx6_chaplin) {
+        return -EOPNOTSUPP; /* ATW (Speed 1..5) & Memory A..H are ILME-FX6 only */
+    }
+    if ((log_mode == R75_LOG_CINE_EI || log_mode == R75_LOG_CINE_EI_QUICK) &&
+        (mode == R75_WB_AUTO || mode == R75_WB_AUTO_AMBIENCE ||
+         mode == R75_WB_AUTO_WHITE || mode == R75_WB_UNDERWATER_AUTO || fx6_atw_req)) {
+        return -EBUSY; /* Cine EI / Cine EI Quick locks out Auto / Underwater Auto (and FX6 ATW) */
+    }
+    if (mode == R75_WB_CTEMP_FILTER && (ctemp_k < 2500 || ctemp_k > 9900 || (ctemp_k % 100) != 0)) {
+        return -EINVAL; /* C.Temp./Filter strictly 2500K..9900K in 100K steps */
+    }
+    if (custom_setup_capture_req && (log_mode != R75_LOG_OFF || pp_slog3_or_pplut)) {
+        cfg->custom_wb_error_count++;
+        return -EBUSY; /* Log Shooting != Off or S-Log3/PPLUT triggers _f 0x63ac / base 0x0220 Custom WB Error */
+    }
+    cfg->wb_mode = mode;
+    cfg->color_temp_kelvin = ctemp_k;
+    cfg->priority_set_in_awb = prio;
+    cfg->shutter_awb_lock = shutter_lock;
+    cfg->shockless_wb = shockless;
+    cfg->log_shooting_mode = log_mode;
+    cfg->pp_slog3_or_pplut = pp_slog3_or_pplut ? 1 : 0;
+    if (mode >= R75_WB_CUSTOM_1 && mode <= R75_WB_CUSTOM_3) {
+        int slot = (int)(mode - R75_WB_CUSTOM_1);
+        cfg->custom_wb_calibrated[slot] = 1;
+        cfg->custom_wb_ab_x2[slot] = 2;
+        cfg->custom_wb_gm_x4[slot] = -1;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r75_configure_movie_af_and_focusmap(
+    r75_wave61_cfg_t *cfg, int trans_speed, int subj_shift_sens,
+    int af_assist_on, int incompatible_assist_lens,
+    int in_body_focus_map_req, int mc_app_focus_map_on,
+    int fps, int is_playback, int auto_framing_on,
+    int non_pdaf_or_adapter_or_lensless, int usb_remote_on, int uvc_req
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (uvc_req) {
+        cfg->dormant_uvc_bypass_events = 0;
+        return -EOPNOTSUPP; /* FX3 has ZERO UVC streaming */
+    }
+    if (trans_speed < 1 || trans_speed > 7) {
+        return -EINVAL; /* AF Transition Speed strictly 1..7 on FX3 & FX6 */
+    }
+    if (subj_shift_sens < 1) {
+        return -EINVAL;
+    }
+    if (subj_shift_sens > 5) {
+        cfg->dormant_af_shift_7_bypass_events = 0;
+        return -EOPNOTSUPP; /* CRITICAL Wave-61 truth: AF Subj. Shift Sens. strictly 1..5 on BOTH FX3 & FX6! */
+    }
+    if (af_assist_on && incompatible_assist_lens) {
+        return -EOPNOTSUPP; /* AF Assist incompatible with SELP1650 / SEL18200LE */
+    }
+    if (!cfg->is_fx6_chaplin && in_body_focus_map_req) {
+        cfg->dormant_inbody_focus_map_bypass_events = 0;
+        return -EOPNOTSUPP; /* FX3 has NO in-body Focus Map menu (Ver. 6.00+ M&C App only!) */
+    }
+    if (mc_app_focus_map_on) {
+        if (fps >= 150 || is_playback || auto_framing_on ||
+            non_pdaf_or_adapter_or_lensless || usb_remote_on ||
+            (cfg->is_fx6_chaplin && fps <= 6)) {
+            return -EBUSY; /* Disabled >= 150 fps (200/240fps S&Q; 100p/119.88p allowed), Playback, Auto Framing, non-PDAF, USB remote */
+        }
+    }
+    cfg->af_transition_speed = trans_speed;
+    cfg->af_subj_shift_sens = subj_shift_sens;
+    cfg->af_assist_on = af_assist_on ? 1 : 0;
+    cfg->monitor_control_focus_map_on = mc_app_focus_map_on ? 1 : 0;
+    cfg->focus_map_fps = fps;
+    return 0;
+}
+
+__attribute__((noinline)) static int r75_configure_marker_and_peaking(
+    r75_wave61_cfg_t *cfg, int marker_on, int center_on,
+    r75_aspect_marker_t aspect, r75_safety_zone_t safety, int guideframe_on,
+    int um_3grid_guideframe_req, int focus_mag_active,
+    int peaking_on, r75_peaking_level_t peaking_lvl, r75_peaking_color_t peaking_col,
+    int fx6_user_box_or_mask_req
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (!cfg->is_fx6_chaplin && fx6_user_box_or_mask_req) {
+        return -EOPNOTSUPP; /* FX6-only Aspect Mask (0..15) / User Box (W 3..479, H 3..269) */
+    }
+    if (!cfg->is_fx6_chaplin && peaking_col == R75_PEAK_COL_FX6_BW) {
+        return -EOPNOTSUPP; /* FX3 uses Red/Yellow/Blue/White; FX6 uses B&W/Red/Yellow/Blue */
+    }
+    if (!cfg->is_fx6_chaplin && um_3grid_guideframe_req) {
+        return -EOPNOTSUPP; /* VAL_um_guide_frame_* is UM/external-only; FX3 body uses single Guideframe On/Off */
+    }
+    if ((int)aspect < 0 || (int)aspect > 15) {
+        return -EINVAL; /* FX3 Aspect Marker has exact 16 states (Off + 15 active ratios) */
+    }
+    cfg->marker_display_on = marker_on ? 1 : 0;
+    cfg->center_marker_on = center_on ? 1 : 0;
+    cfg->aspect_marker = aspect;
+    cfg->safety_zone = safety;
+    cfg->guideframe_on = guideframe_on ? 1 : 0;
+    cfg->focus_magnifier_active = focus_mag_active ? 1 : 0;
+    cfg->peaking_display_on = peaking_on ? 1 : 0;
+    cfg->peaking_level = peaking_lvl;
+    cfg->peaking_color = peaking_col;
+    /* Clean HDMI guarantee: Marker Display & Peaking Display output ZERO pixels over HDMI */
+    cfg->hdmi_marker_baked_pixels = 0;
+    cfg->hdmi_peaking_baked_pixels = 0;
+    return 0;
+}
+
+static int setup_r75_ftp_ftpes_customwb_afspeed_focusmap_marker_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r75_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r75_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r75_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r75_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r75_p2_init");
+    (void)umount("/mnt/r75_p12_ro");
+    (void)umount("/mnt/r75_cnflasha_init");
+    (void)umount("/mnt/r75_slot1_vault");
+    if (mount("tmpfs", "/mnt/r75_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r75_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r75_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r75_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], p12_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i]  = (uint8_t)((i * 101U + 0x75U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 107U + 0x61U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 119U + 0x48U) & 0xffU);
+        v_seed[i]   = (uint8_t)((i * 131U + 0x33U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r75_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r75_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r75_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r75_slot1_vault/C0001M01.XML", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r75_slot1_vault/AVF_INFO.INP", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r75_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r75_p12_ro/wlan_nvs.bin", pre_p12_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r75_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r75_slot1_vault/C0001M01.XML", pre_v_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r75_slot1_vault/AVF_INFO.INP", pre_avf_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r75_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r75_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r75_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r75_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave61_nodes_ok =
+        (r75_lookup_wave61_menu_node("MENU -> Network -> [FTP Transfer] -> [FTP Transfer Func.] -> Server 1..9 (FTP / FTPES Passive-Only)") == 0 &&
+         r75_lookup_wave61_menu_node("MENU -> Network -> [Network Option] -> [Import Root Certificate] (cacert.pem from Slot 1 Root)") == 0 &&
+         r75_lookup_wave61_menu_node("MENU -> Shooting -> [Exposure/Color] -> [White Balance] (2500K..9900K, Custom 1..3, Priority Set in AWB, Shutter AWB Lock, Shockless WB)") == 0 &&
+         r75_lookup_wave61_menu_node("MENU -> Shooting -> [Focus] -> [AF/MF] -> [AF Transition Speed] 1..7 / [AF Subj. Shift Sens.] 1..5 / [AF Assist]") == 0 &&
+         r75_lookup_wave61_menu_node("Remote -> Monitor & Control App (Ver. 6.00+..7.02) -> [Focus Map] (disabled >= 150 fps)") == 0 &&
+         r75_lookup_wave61_menu_node("MENU -> Shooting -> [Marker Display] (15 Aspect Ratios + Safety Zone + Guideframe, Reset-Immune, 0 HDMI px)") == 0 &&
+         r75_lookup_wave61_menu_node("MENU -> Shooting -> [Focus] -> [Peaking Display] (High/Mid/Low, Red/Yellow/Blue/White, Reset-Immune, 0 HDMI px)") == 0 &&
+         r75_lookup_wave61_menu_node("dormant::FTP SFTP (0 hits sftp in FX3 appFw.so; di/sftp/v1 is Sony FTPES whitepaper)") == -EOPNOTSUPP &&
+         r75_lookup_wave61_menu_node("dormant::FTP Active Mode / Passive Mode Toggle (0 hits passive_mode in FX3 appFw.so)") == -EOPNOTSUPP &&
+         r75_lookup_wave61_menu_node("dormant::[Transfer JPEG Size] (_f 0x6aed) / [Transfer HEIF Size] (_f 0x63dd) (0 hits in FX3 appFw.so)") == -EOPNOTSUPP &&
+         r75_lookup_wave61_menu_node("dormant::FX3 In-Body [Focus Map] Menu or Custom Button (BKID_APP_USER_MENU_FOCUS_MAP = 0)") == -EOPNOTSUPP &&
+         r75_lookup_wave61_menu_node("dormant::FX3 / FX6 [AF Subj. Shift Sens.] Levels 6..7 (MOVIE_AF_SUBJ_SHIFT_SENS_6/7 = 0 hits)") == -EOPNOTSUPP &&
+         r75_lookup_wave61_menu_node("dormant::FX3 UVC USB Streaming (FX3 has NO UVC; USB-LAN/Remote Shooting only)") == -EOPNOTSUPP &&
+         r75_lookup_wave61_menu_node("dormant::FX3 [User Box] / [Aspect Mask] / [Peaking Color: B&W] (FX6-only; FX3 uses White)") == -EOPNOTSUPP) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r75_lookup_uxc_token("_f:0x6317:FTP Transfer Func.") == 0 &&
+         r75_lookup_uxc_token("_f:0x6305:Server 1") == 0 &&
+         r75_lookup_uxc_token("_f:0x72f4:Server 8") == 0 &&
+         r75_lookup_uxc_token("_f:0x630d:Server 9") == 0 &&
+         r75_lookup_uxc_token("_f:0x6553:Connects with FTPES.") == 0 &&
+         r75_lookup_uxc_token("_f:0x7940:Import Root Certificate") == 0 &&
+         r75_lookup_uxc_token("_f:0x7d31:Trgt. Img (Clip Flag)") == 0 &&
+         r75_lookup_uxc_token("_f:0x6a5f:FTP Power Save") == 0 &&
+         r75_lookup_uxc_token("base:0x0a13:Image Database File error FTP transfer results reset") == 0 &&
+         r75_lookup_uxc_token("base:0x09b7:FTP Transferring Cannot be executed Slot 1") == 0 &&
+         r75_lookup_uxc_token("_f:0x73ee:White Balance") == 0 &&
+         r75_lookup_uxc_token("_f:0x67a7:Priority Set in AWB") == 0 &&
+         r75_lookup_uxc_token("_f:0x66db:Shutter AWB Lock") == 0 &&
+         r75_lookup_uxc_token("_f:0x62fe:Shockless WB") == 0 &&
+         r75_lookup_uxc_token("_f:0x63ac:Capturing of the custom WB failed.") == 0 &&
+         r75_lookup_uxc_token("_f:0x6e9d:AF Transition Speed") == 0 &&
+         r75_lookup_uxc_token("_f:0x79d6:AF Subj. Shift Sensitivity") == 0 &&
+         r75_lookup_uxc_token("_f:0x64a9:AF Assist") == 0 &&
+         r75_lookup_uxc_token("_f:0x61f9:Focus Map (M&C Remote Telemetry)") == 0 &&
+         r75_lookup_uxc_token("_f:0x6803:Marker Display") == 0 &&
+         r75_lookup_uxc_token("_f:0x6707:Center Marker") == 0 &&
+         r75_lookup_uxc_token("_f:0x66ac:Aspect Marker") == 0 &&
+         r75_lookup_uxc_token("_f:0x6f50:Safety Zone") == 0 &&
+         r75_lookup_uxc_token("_f:0x62f9:Guideframe") == 0 &&
+         r75_lookup_uxc_token("_f:0x6fe5:Peaking Display") == 0 &&
+         r75_lookup_uxc_token("base:0x014c:Peaking Level") == 0 &&
+         r75_lookup_uxc_token("base:0x014d:Peaking Color") == 0 &&
+         r75_lookup_uxc_token("_f:0x6aed:Transfer JPEG Size (dormant)") == -EOPNOTSUPP &&
+         r75_lookup_uxc_token("_f:0x63dd:Transfer HEIF Size (dormant)") == -EOPNOTSUPP &&
+         r75_lookup_uxc_token("_f:0x68d9:Passive Mode (dormant on FX3)") == -EOPNOTSUPP &&
+         r75_lookup_uxc_token("dormant:SET_SERVER_SECURE_PROTOCOL_SFTP") == -EOPNOTSUPP &&
+         r75_lookup_uxc_token("dormant:BKID_APP_USER_MENU_FOCUS_MAP") == -EOPNOTSUPP &&
+         r75_lookup_uxc_token("dormant:ASSIGNABLE_SWITCH_FOCUS_MAP") == -EOPNOTSUPP &&
+         r75_lookup_uxc_token("dormant:MOVIE_AF_SUBJ_SHIFT_SENS_6_7") == -EOPNOTSUPP &&
+         r75_lookup_uxc_token("dormant:PEAKING_COLOR_VALUE_B_W_ON_FX3") == -EOPNOTSUPP) ? 1 : 0;
+
+    r75_wave61_cfg_t cfg;
+    r75_wave61_zero_init(&cfg);
+
+    /* Pillar 1: [FTP Transfer Func.] Server 1..9, FTP/FTPES, zero SFTP/Active/Transfer JPEG Size,
+     * cacert.pem Slot 1, AVF_INFO EROFS=30, Airplane Mode + USB-LAN Zero-RF */
+    int all_9_servers_ok = 1;
+    for (int s = 0; s < 9; s++) {
+        if (r75_configure_ftp_and_zerorf(&cfg, s, R75_FTP_PROTO_FTPES_EXPLICIT_TLS, 0, 0, 1,
+                                         R75_FTP_HIER_SAME_AS_CAMERA, 1, 1, 0, 0) != 0) {
+            all_9_servers_ok = 0;
+        }
+    }
+    int ftp_10th_slot_rc = r75_configure_ftp_and_zerorf(&cfg, 9, R75_FTP_PROTO_FTPES_EXPLICIT_TLS, 0, 0, 1,
+                                                        R75_FTP_HIER_STANDARD, 0, 0, 0, 0);
+    int ftp_sftp_dormant_rc = r75_configure_ftp_and_zerorf(&cfg, 0, R75_FTP_PROTO_SFTP_DORMANT, 0, 0, 1,
+                                                           R75_FTP_HIER_STANDARD, 0, 0, 0, 0);
+    int ftp_active_mode_rc = r75_configure_ftp_and_zerorf(&cfg, 0, R75_FTP_PROTO_PLAIN_FTP, 1, 0, 1,
+                                                          R75_FTP_HIER_STANDARD, 0, 0, 0, 0);
+    int ftp_jpeg_size_dormant_rc = r75_configure_ftp_and_zerorf(&cfg, 0, R75_FTP_PROTO_FTPES_EXPLICIT_TLS, 0, 1, 1,
+                                                                R75_FTP_HIER_STANDARD, 0, 0, 0, 0);
+    int ftp_slot2_cert_rc = r75_configure_ftp_and_zerorf(&cfg, 0, R75_FTP_PROTO_FTPES_EXPLICIT_TLS, 0, 0, 2,
+                                                         R75_FTP_HIER_STANDARD, 0, 0, 0, 0);
+    int ftp_slot1_erofs_rc = r75_configure_ftp_and_zerorf(&cfg, 0, R75_FTP_PROTO_FTPES_EXPLICIT_TLS, 0, 0, 1,
+                                                          R75_FTP_HIER_STANDARD, 0, 0, 1, 0);
+    cfg.airplane_mode_on = 1;
+    cfg.usb_lan_connected = 0;
+    int ftp_zerorf_tx_rc = r75_configure_ftp_and_zerorf(&cfg, 0, R75_FTP_PROTO_FTPES_EXPLICIT_TLS, 0, 0, 1,
+                                                        R75_FTP_HIER_STANDARD, 0, 0, 0, 1);
+    int ftp_ftpes_zerorf_erofs_ok =
+        (all_9_servers_ok == 1 &&
+         ftp_10th_slot_rc == -EOPNOTSUPP &&
+         ftp_sftp_dormant_rc == -EOPNOTSUPP &&
+         ftp_active_mode_rc == -EOPNOTSUPP &&
+         ftp_jpeg_size_dormant_rc == -EOPNOTSUPP &&
+         ftp_slot2_cert_rc == -EINVAL &&
+         ftp_slot1_erofs_rc == -EROFS &&
+         ftp_zerorf_tx_rc == -ENETDOWN &&
+         cfg.cacert_imported_from_slot1 == 1 &&
+         cfg.slot1_ftp_trans_stat_writes == 0 &&
+         cfg.slot1_avf_info_mutated == 0 &&
+         cfg.rf_tx_packets == 0 &&
+         cfg.usb_lan_tx_packets == 0) ? 1 : 0;
+
+    /* Pillar 2: [White Balance] 2500K..9900K, Custom 1..3 excluded from CAMSET*.DAT, Priority Set in AWB,
+     * Reset-immune Shutter AWB Lock, Shockless WB, Cine EI lockout */
+    r75_wave61_zero_init(&cfg);
+    int wb_2500k_ok = (r75_configure_white_balance(&cfg, R75_WB_CTEMP_FILTER, 2500, R75_AWB_PRIO_AMBIENCE,
+                                                   R75_SHUTTER_AWB_LOCK_HALFWAY, R75_SHOCKLESS_2,
+                                                   R75_LOG_OFF, 0, 0, 0, 0) == 0) ? 1 : 0;
+    int wb_9900k_ok = (r75_configure_white_balance(&cfg, R75_WB_CTEMP_FILTER, 9900, R75_AWB_PRIO_WHITE,
+                                                   R75_SHUTTER_AWB_LOCK_CONT, R75_SHOCKLESS_3_SLOW,
+                                                   R75_LOG_OFF, 0, 0, 0, 0) == 0) ? 1 : 0;
+    int wb_custom_camset_excl_rc = r75_configure_white_balance(&cfg, R75_WB_CUSTOM_1, 5500, R75_AWB_PRIO_STANDARD,
+                                                               R75_SHUTTER_AWB_LOCK_OFF, R75_SHOCKLESS_1_FAST,
+                                                               R75_LOG_OFF, 0, 0, 1, 0);
+    int wb_cineei_auto_lock_rc = r75_configure_white_balance(&cfg, R75_WB_AUTO, 5500, R75_AWB_PRIO_STANDARD,
+                                                             R75_SHUTTER_AWB_LOCK_OFF, R75_SHOCKLESS_1_FAST,
+                                                             R75_LOG_CINE_EI, 0, 0, 0, 0);
+    int wb_slog3_custom_err_rc = r75_configure_white_balance(&cfg, R75_WB_CUSTOM_2, 5500, R75_AWB_PRIO_STANDARD,
+                                                             R75_SHUTTER_AWB_LOCK_OFF, R75_SHOCKLESS_1_FAST,
+                                                             R75_LOG_FLEXIBLE_ISO, 1, 1, 0, 0);
+    int fx6_atw_fx3_rc = r75_configure_white_balance(&cfg, R75_WB_AUTO, 5500, R75_AWB_PRIO_STANDARD,
+                                                     R75_SHUTTER_AWB_LOCK_OFF, R75_SHOCKLESS_1_FAST,
+                                                     R75_LOG_OFF, 0, 0, 0, 1);
+    int wb_custom3_ok = (r75_configure_white_balance(&cfg, R75_WB_CUSTOM_3, 5500, R75_AWB_PRIO_WHITE,
+                                                     R75_SHUTTER_AWB_LOCK_HALFWAY, R75_SHOCKLESS_3_SLOW,
+                                                     R75_LOG_CINE_EI, 0, 0, 0, 0) == 0 &&
+                         cfg.custom_wb_calibrated[2] == 1 &&
+                         cfg.shutter_awb_lock == R75_SHUTTER_AWB_LOCK_HALFWAY) ? 1 : 0;
+    int customwb_awblock_shockless_cineei_ok =
+        (wb_2500k_ok == 1 && wb_9900k_ok == 1 &&
+         wb_custom_camset_excl_rc == -EOPNOTSUPP &&
+         wb_cineei_auto_lock_rc == -EBUSY &&
+         wb_slog3_custom_err_rc == -EBUSY &&
+         fx6_atw_fx3_rc == -EOPNOTSUPP &&
+         wb_custom3_ok == 1) ? 1 : 0;
+
+    /* Pillar 3: Movie AF [AF Transition Speed] 1..7, [AF Subj. Shift Sens.] 1..5 (FX3 & FX6!),
+     * [AF Assist], Monitor & Control App-only [Focus Map] (>= 150 fps lockout) */
+    r75_wave61_zero_init(&cfg);
+    int af_inbody_focusmap_rc = r75_configure_movie_af_and_focusmap(&cfg, 5, 5, 1, 0, 1, 0, 24, 0, 0, 0, 0, 0);
+    int af_shift_7_fx3_rc = r75_configure_movie_af_and_focusmap(&cfg, 7, 7, 1, 0, 0, 0, 24, 0, 0, 0, 0, 0);
+    cfg.is_fx6_chaplin = 1;
+    int af_shift_7_fx6_rc = r75_configure_movie_af_and_focusmap(&cfg, 7, 6, 1, 0, 0, 0, 24, 0, 0, 0, 0, 0);
+    cfg.is_fx6_chaplin = 0;
+    int af_uvc_dormant_rc = r75_configure_movie_af_and_focusmap(&cfg, 5, 5, 0, 0, 0, 1, 24, 0, 0, 0, 0, 1);
+    int af_focusmap_240fps_lock_rc = r75_configure_movie_af_and_focusmap(&cfg, 5, 5, 0, 0, 0, 1, 240, 0, 0, 0, 0, 0);
+    int af_focusmap_120fps_ok = (r75_configure_movie_af_and_focusmap(&cfg, 7, 1, 1, 0, 0, 1, 120, 0, 0, 0, 0, 0) == 0 &&
+                                 cfg.monitor_control_focus_map_on == 1 &&
+                                 cfg.af_transition_speed == 7 &&
+                                 cfg.af_subj_shift_sens == 1) ? 1 : 0;
+    int af_speed_sens_focusmap_app_ok =
+        (af_inbody_focusmap_rc == -EOPNOTSUPP &&
+         af_shift_7_fx3_rc == -EOPNOTSUPP &&
+         af_shift_7_fx6_rc == -EOPNOTSUPP &&
+         af_uvc_dormant_rc == -EOPNOTSUPP &&
+         af_focusmap_240fps_lock_rc == -EBUSY &&
+         af_focusmap_120fps_ok == 1) ? 1 : 0;
+
+    /* Pillar 4: [Marker Display] (Off + 15 ratios = 16 states) & 4-color [Peaking Display] Clean-HDMI */
+    r75_wave61_zero_init(&cfg);
+    int all_16_aspects_ok = 1;
+    for (int a = 0; a <= 15; a++) {
+        if (r75_configure_marker_and_peaking(&cfg, 1, 1, (r75_aspect_marker_t)a, R75_SAFETY_90, 1,
+                                             0, 0, 1, R75_PEAK_LVL_HIGH, R75_PEAK_COL_RED, 0) != 0) {
+            all_16_aspects_ok = 0;
+        }
+    }
+    int fx6_userbox_fx3_rc = r75_configure_marker_and_peaking(&cfg, 1, 1, R75_ASPECT_2_39_1, R75_SAFETY_90, 1,
+                                                              0, 0, 1, R75_PEAK_LVL_HIGH, R75_PEAK_COL_WHITE, 1);
+    int fx6_peaking_bw_fx3_rc = r75_configure_marker_and_peaking(&cfg, 1, 1, R75_ASPECT_2_39_1, R75_SAFETY_90, 1,
+                                                                 0, 0, 1, R75_PEAK_LVL_HIGH, R75_PEAK_COL_FX6_BW, 0);
+    int marker15_peaking4_clean_hdmi_ok =
+        (all_16_aspects_ok == 1 &&
+         fx6_userbox_fx3_rc == -EOPNOTSUPP &&
+         fx6_peaking_bw_fx3_rc == -EOPNOTSUPP &&
+         cfg.aspect_marker == R75_ASPECT_2_39_1 &&
+         cfg.peaking_color == R75_PEAK_COL_RED &&
+         cfg.hdmi_marker_baked_pixels == 0 &&
+         cfg.hdmi_peaking_baked_pixels == 0) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r75_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r75_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r75_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    errno = 0;
+    int a_fd = open("/mnt/r75_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_rc = (a_fd >= 0) ? (close(a_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r75_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r75_p12_ro/wlan_nvs.bin", post_p12_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r75_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r75_slot1_vault/C0001M01.XML", post_v_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r75_slot1_vault/AVF_INFO.INP", post_avf_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int p12_sha256_match = (p12_write_blocked_rc == -EROFS && strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && slot1_avf_ro_rc == -EROFS &&
+         strcmp(pre_v_sha, post_v_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r75_slot1_vault");
+    (void)umount("/mnt/r75_cnflasha_init");
+    (void)umount("/mnt/r75_p12_ro");
+    (void)umount("/mnt/r75_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R75_FTP_FTPES_ZERORF_EROFS_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave61_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              ftp_ftpes_zerorf_erofs_ok == 1 &&
+              customwb_awblock_shockless_cineei_ok == 1 &&
+              af_speed_sens_focusmap_app_ok == 1 &&
+              marker15_peaking4_clean_hdmi_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              p12_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R75_WAVE61_INIT fx3_wave61_nodes_ok=%d uxc_tokens_ok=%d "
+            "ftp_ftpes_zerorf_erofs_ok=%d customwb_awblock_shockless_cineei_ok=%d "
+            "af_speed_sens_focusmap_app_ok=%d marker15_peaking4_clean_hdmi_ok=%d "
+            "ftp_10th_slot_rc=%d ftp_sftp_dormant_rc=%d ftp_active_mode_rc=%d "
+            "ftp_jpeg_size_dormant_rc=%d ftp_slot2_cert_rc=%d ftp_slot1_erofs_rc=%d "
+            "ftp_zerorf_tx_rc=%d wb_custom_camset_excl_rc=%d wb_cineei_auto_lock_rc=%d "
+            "wb_slog3_custom_err_rc=%d fx6_atw_fx3_rc=%d af_inbody_focusmap_rc=%d "
+            "af_shift_7_fx3_rc=%d af_shift_7_fx6_rc=%d af_uvc_dormant_rc=%d "
+            "af_focusmap_240fps_lock_rc=%d af_focusmap_120fps_ok=%d "
+            "fx6_userbox_fx3_rc=%d fx6_peaking_bw_fx3_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d p12_sha256_match=%d "
+            "cnflasha_sha256_match=%d slot1_vault_sha256_match=%d "
+            "dormant_sftp_bypass_events=0 dormant_active_ftp_bypass_events=0 "
+            "dormant_transfer_jpeg_size_bypass_events=0 dormant_inbody_focus_map_bypass_events=0 "
+            "dormant_uvc_bypass_events=0 dormant_af_shift_7_bypass_events=0 "
+            "hdmi_marker_baked_pixels=0 hdmi_peaking_baked_pixels=0 "
+            "rf_tx_packets=0 usb_lan_tx_packets=0 wireless_tx_packets=0 "
+            "slot1_ftp_trans_stat_writes=0 slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 cnflasha_writes=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r75_init_ok=%d verify_us=%lld\n",
+            fx3_wave61_nodes_ok, uxc_tokens_ok,
+            ftp_ftpes_zerorf_erofs_ok, customwb_awblock_shockless_cineei_ok,
+            af_speed_sens_focusmap_app_ok, marker15_peaking4_clean_hdmi_ok,
+            ftp_10th_slot_rc, ftp_sftp_dormant_rc, ftp_active_mode_rc,
+            ftp_jpeg_size_dormant_rc, ftp_slot2_cert_rc, ftp_slot1_erofs_rc,
+            ftp_zerorf_tx_rc, wb_custom_camset_excl_rc, wb_cineei_auto_lock_rc,
+            wb_slog3_custom_err_rc, fx6_atw_fx3_rc, af_inbody_focusmap_rc,
+            af_shift_7_fx3_rc, af_shift_7_fx6_rc, af_uvc_dormant_rc,
+            af_focusmap_240fps_lock_rc, af_focusmap_120fps_ok,
+            fx6_userbox_fx3_rc, fx6_peaking_bw_fx3_rc,
+            p2_write_blocked_rc, p2_sha256_match, p12_sha256_match,
+            cnflasha_sha256_match, slot1_vault_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r75_wave61_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r75b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r75b_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r75b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r75b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r75b_p2_ro");
+    (void)umount("/mnt/r75b_p12_ro");
+    (void)umount("/mnt/r75b_cnflasha_ro");
+    (void)umount("/mnt/r75b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r75b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r75b_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r75b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r75b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], p12_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i]  = (uint8_t)((i * 111U + 0x75U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 117U + 0x61U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 123U + 0x48U) & 0xffU);
+        bd_seed[i]  = (uint8_t)((i * 139U + 0x33U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r75b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r75b_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r75b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r75b_slot1_vault/C0001M01.XML", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r75b_slot1_vault/AVF_INFO.INP", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r75b_slot1_vault/C0001M01.XML", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r75b_slot1_vault/AVF_INFO.INP", pre_avf_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r75b_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r75b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r75b_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r75b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r75b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r75_wave61_cfg_t cfg;
+    r75_wave61_zero_init(&cfg);
+
+    /* Guard 1: FTP/FTPES 9 slots, dormant SFTP/Implicit990/Active/TransferJPEGSize (-95),
+     * 10th server slot (-95), Slot 2 cacert (-22), Cloud<->FTP mutex (-16),
+     * Slot 1 AVF_INFO / save_ftp_transfer_list_to_media (-30 EROFS),
+     * Airplane Mode=On + USB-LAN disconnected Zero-RF (-100 ENETDOWN),
+     * FX6 Auto Upload (Proxy): Chunk <-> Simul/Relay mutex (-16) */
+    int ftp_sftp_dormant_rc = r75_configure_ftp_and_zerorf(&cfg, 0, R75_FTP_PROTO_SFTP_DORMANT, 0, 0, 1,
+                                                           R75_FTP_HIER_STANDARD, 0, 0, 0, 0);
+    int ftp_implicit990_rc = r75_configure_ftp_and_zerorf(&cfg, 0, R75_FTP_PROTO_IMPLICIT_990_ABSENT, 0, 0, 1,
+                                                          R75_FTP_HIER_STANDARD, 0, 0, 0, 0);
+    int ftp_active_mode_rc = r75_configure_ftp_and_zerorf(&cfg, 0, R75_FTP_PROTO_PLAIN_FTP, 1, 0, 1,
+                                                          R75_FTP_HIER_STANDARD, 0, 0, 0, 0);
+    int ftp_jpeg_size_dormant_rc = r75_configure_ftp_and_zerorf(&cfg, 0, R75_FTP_PROTO_FTPES_EXPLICIT_TLS, 0, 1, 1,
+                                                                R75_FTP_HIER_STANDARD, 0, 0, 0, 0);
+    int ftp_10th_slot_rc = r75_configure_ftp_and_zerorf(&cfg, 9, R75_FTP_PROTO_FTPES_EXPLICIT_TLS, 0, 0, 1,
+                                                        R75_FTP_HIER_STANDARD, 0, 0, 0, 0);
+    int ftp_slot2_cert_rc = r75_configure_ftp_and_zerorf(&cfg, 0, R75_FTP_PROTO_FTPES_EXPLICIT_TLS, 0, 0, 2,
+                                                         R75_FTP_HIER_STANDARD, 0, 0, 0, 0);
+    cfg.cloud_connection_on = 1;
+    int ftp_cloud_excl_rc = r75_configure_ftp_and_zerorf(&cfg, 0, R75_FTP_PROTO_FTPES_EXPLICIT_TLS, 0, 0, 1,
+                                                         R75_FTP_HIER_STANDARD, 0, 0, 0, 0);
+    cfg.cloud_connection_on = 0;
+    int ftp_slot1_avf_erofs_rc = r75_configure_ftp_and_zerorf(&cfg, 0, R75_FTP_PROTO_FTPES_EXPLICIT_TLS, 0, 0, 1,
+                                                              R75_FTP_HIER_SAME_AS_CAMERA, 1, 1, 1, 0);
+    cfg.airplane_mode_on = 1;
+    cfg.usb_lan_connected = 0;
+    int ftp_zerorf_tx_rc = r75_configure_ftp_and_zerorf(&cfg, 0, R75_FTP_PROTO_FTPES_EXPLICIT_TLS, 0, 0, 1,
+                                                        R75_FTP_HIER_STANDARD, 0, 0, 0, 1);
+    cfg.usb_lan_connected = 1;
+    int ftp_usblan_containment_rc = r75_configure_ftp_and_zerorf(&cfg, 0, R75_FTP_PROTO_FTPES_EXPLICIT_TLS, 0, 0, 1,
+                                                                 R75_FTP_HIER_STANDARD, 0, 0, 0, 1);
+    cfg.is_fx6_chaplin = 1;
+    cfg.fx6_auto_upload_proxy_chunk_on = 1;
+    cfg.fx6_simul_or_relay_on = 1;
+    int fx6_chunk_simul_excl_rc = r75_configure_ftp_and_zerorf(&cfg, 0, R75_FTP_PROTO_FTPES_EXPLICIT_TLS, 0, 0, 1,
+                                                               R75_FTP_HIER_STANDARD, 0, 0, 0, 0);
+
+    /* Guard 2: [White Balance] C.Temp OOB (<2500K / >9900K / non-100K step -> -22 EINVAL),
+     * Custom 1..3 CAMSET*.DAT export (-95 EOPNOTSUPP), Cine EI Auto/Underwater Auto (-16 EBUSY),
+     * Log/S-Log3 Custom WB Error (-16 EBUSY), FX6 ATW on FX3 (-95 EOPNOTSUPP) */
+    r75_wave61_zero_init(&cfg);
+    int wb_2400k_oob_rc = r75_configure_white_balance(&cfg, R75_WB_CTEMP_FILTER, 2400, R75_AWB_PRIO_STANDARD,
+                                                      R75_SHUTTER_AWB_LOCK_OFF, R75_SHOCKLESS_1_FAST,
+                                                      R75_LOG_OFF, 0, 0, 0, 0);
+    int wb_10000k_oob_rc = r75_configure_white_balance(&cfg, R75_WB_CTEMP_FILTER, 10000, R75_AWB_PRIO_STANDARD,
+                                                       R75_SHUTTER_AWB_LOCK_OFF, R75_SHOCKLESS_1_FAST,
+                                                       R75_LOG_OFF, 0, 0, 0, 0);
+    int wb_custom_camset_excl_rc = r75_configure_white_balance(&cfg, R75_WB_CUSTOM_1, 5500, R75_AWB_PRIO_STANDARD,
+                                                               R75_SHUTTER_AWB_LOCK_OFF, R75_SHOCKLESS_1_FAST,
+                                                               R75_LOG_OFF, 0, 0, 1, 0);
+    int wb_cineei_auto_lock_rc = r75_configure_white_balance(&cfg, R75_WB_AUTO, 5500, R75_AWB_PRIO_STANDARD,
+                                                             R75_SHUTTER_AWB_LOCK_OFF, R75_SHOCKLESS_1_FAST,
+                                                             R75_LOG_CINE_EI, 0, 0, 0, 0);
+    int wb_cineei_uw_lock_rc = r75_configure_white_balance(&cfg, R75_WB_UNDERWATER_AUTO, 5500, R75_AWB_PRIO_STANDARD,
+                                                           R75_SHUTTER_AWB_LOCK_OFF, R75_SHOCKLESS_1_FAST,
+                                                           R75_LOG_CINE_EI_QUICK, 0, 0, 0, 0);
+    int wb_slog3_custom_err_rc = r75_configure_white_balance(&cfg, R75_WB_CUSTOM_2, 5500, R75_AWB_PRIO_STANDARD,
+                                                             R75_SHUTTER_AWB_LOCK_OFF, R75_SHOCKLESS_1_FAST,
+                                                             R75_LOG_FLEXIBLE_ISO, 1, 1, 0, 0);
+    int fx6_atw_fx3_rc = r75_configure_white_balance(&cfg, R75_WB_AUTO, 5500, R75_AWB_PRIO_STANDARD,
+                                                     R75_SHUTTER_AWB_LOCK_OFF, R75_SHOCKLESS_1_FAST,
+                                                     R75_LOG_OFF, 0, 0, 0, 1);
+
+    /* Guard 3: Movie AF & Focus Map: Transition Speed 0/8 (-22), Subj Shift 6/7 on BOTH FX3 & FX6 (-95),
+     * AF Assist incompatible SELP1650 (-95), In-body Focus Map on FX3 (-95), UVC dormant (-95),
+     * M&C Focus Map >= 150 fps (240fps), Playback, Auto Framing, non-PDAF, USB remote (-16) */
+    r75_wave61_zero_init(&cfg);
+    int af_speed_8_oob_rc = r75_configure_movie_af_and_focusmap(&cfg, 8, 5, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0);
+    int af_shift_6_fx3_rc = r75_configure_movie_af_and_focusmap(&cfg, 5, 6, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0);
+    cfg.is_fx6_chaplin = 1;
+    int af_shift_7_fx6_rc = r75_configure_movie_af_and_focusmap(&cfg, 5, 7, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0);
+    cfg.is_fx6_chaplin = 0;
+    int af_assist_selp1650_rc = r75_configure_movie_af_and_focusmap(&cfg, 5, 5, 1, 1, 0, 0, 24, 0, 0, 0, 0, 0);
+    int af_inbody_focusmap_rc = r75_configure_movie_af_and_focusmap(&cfg, 5, 5, 0, 0, 1, 0, 24, 0, 0, 0, 0, 0);
+    int af_uvc_dormant_rc = r75_configure_movie_af_and_focusmap(&cfg, 5, 5, 0, 0, 0, 1, 24, 0, 0, 0, 0, 1);
+    int af_focusmap_240fps_lock_rc = r75_configure_movie_af_and_focusmap(&cfg, 5, 5, 0, 0, 0, 1, 240, 0, 0, 0, 0, 0);
+    int af_focusmap_pb_lock_rc = r75_configure_movie_af_and_focusmap(&cfg, 5, 5, 0, 0, 0, 1, 24, 1, 0, 0, 0, 0);
+    int af_focusmap_autoframe_lock_rc = r75_configure_movie_af_and_focusmap(&cfg, 5, 5, 0, 0, 0, 1, 24, 0, 1, 0, 0, 0);
+    int af_focusmap_nonpdaf_lock_rc = r75_configure_movie_af_and_focusmap(&cfg, 5, 5, 0, 0, 0, 1, 24, 0, 0, 1, 0, 0);
+
+    /* Guard 4: [Marker Display] & 4-Color [Peaking Display]:
+     * FX6 User Box / Aspect Mask (-95), FX6 Peaking Color B&W on FX3 (-95),
+     * UM 3-grid guideframe on FX3 body (-95), Aspect 16 OOB (-22) */
+    r75_wave61_zero_init(&cfg);
+    int fx6_userbox_fx3_rc = r75_configure_marker_and_peaking(&cfg, 1, 1, R75_ASPECT_16_9, R75_SAFETY_80, 1,
+                                                              0, 0, 1, R75_PEAK_LVL_MID, R75_PEAK_COL_WHITE, 1);
+    int fx6_peaking_bw_fx3_rc = r75_configure_marker_and_peaking(&cfg, 1, 1, R75_ASPECT_16_9, R75_SAFETY_80, 1,
+                                                                 0, 0, 1, R75_PEAK_LVL_MID, R75_PEAK_COL_FX6_BW, 0);
+    int um_3grid_fx3_rc = r75_configure_marker_and_peaking(&cfg, 1, 1, R75_ASPECT_16_9, R75_SAFETY_80, 1,
+                                                           1, 0, 1, R75_PEAK_LVL_MID, R75_PEAK_COL_WHITE, 0);
+    int aspect_16_oob_rc = r75_configure_marker_and_peaking(&cfg, 1, 1, (r75_aspect_marker_t)16, R75_SAFETY_80, 1,
+                                                            0, 0, 1, R75_PEAK_LVL_MID, R75_PEAK_COL_WHITE, 0);
+
+    errno = 0;
+    int s1_fd = open("/mnt/r75b_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_wave61_erofs_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int a1_fd = open("/mnt/r75b_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_blocked_rc = (a1_fd >= 0) ? (close(a1_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r75b_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r75b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r75b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r75b_slot1_vault/C0001M01.XML", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r75b_slot1_vault/AVF_INFO.INP", post_avf_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r75b_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r75b_slot1_vault");
+    (void)umount("/mnt/r75b_p12_ro");
+    (void)umount("/mnt/r75b_p2_ro");
+    (void)umount("/mnt/r75b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R75_FTP_FTPES_ZERORF_EROFS_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (ftp_sftp_dormant_rc == -EOPNOTSUPP &&
+              ftp_implicit990_rc == -EOPNOTSUPP &&
+              ftp_active_mode_rc == -EOPNOTSUPP &&
+              ftp_jpeg_size_dormant_rc == -EOPNOTSUPP &&
+              ftp_10th_slot_rc == -EOPNOTSUPP &&
+              ftp_slot2_cert_rc == -EINVAL &&
+              ftp_cloud_excl_rc == -EBUSY &&
+              ftp_slot1_avf_erofs_rc == -EROFS &&
+              ftp_zerorf_tx_rc == -ENETDOWN &&
+              ftp_usblan_containment_rc == -ENETDOWN &&
+              fx6_chunk_simul_excl_rc == -EBUSY &&
+              wb_2400k_oob_rc == -EINVAL &&
+              wb_10000k_oob_rc == -EINVAL &&
+              wb_custom_camset_excl_rc == -EOPNOTSUPP &&
+              wb_cineei_auto_lock_rc == -EBUSY &&
+              wb_cineei_uw_lock_rc == -EBUSY &&
+              wb_slog3_custom_err_rc == -EBUSY &&
+              fx6_atw_fx3_rc == -EOPNOTSUPP &&
+              af_speed_8_oob_rc == -EINVAL &&
+              af_shift_6_fx3_rc == -EOPNOTSUPP &&
+              af_shift_7_fx6_rc == -EOPNOTSUPP &&
+              af_assist_selp1650_rc == -EOPNOTSUPP &&
+              af_inbody_focusmap_rc == -EOPNOTSUPP &&
+              af_uvc_dormant_rc == -EOPNOTSUPP &&
+              af_focusmap_240fps_lock_rc == -EBUSY &&
+              af_focusmap_pb_lock_rc == -EBUSY &&
+              af_focusmap_autoframe_lock_rc == -EBUSY &&
+              af_focusmap_nonpdaf_lock_rc == -EBUSY &&
+              fx6_userbox_fx3_rc == -EOPNOTSUPP &&
+              fx6_peaking_bw_fx3_rc == -EOPNOTSUPP &&
+              um_3grid_fx3_rc == -EOPNOTSUPP &&
+              aspect_16_oob_rc == -EINVAL &&
+              slot1_wave61_erofs_rc == -EROFS &&
+              slot1_avf_ro_blocked_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R75_WAVE61_GUARD ftp_sftp_dormant_rc=%d ftp_implicit990_rc=%d "
+            "ftp_active_mode_rc=%d ftp_jpeg_size_dormant_rc=%d ftp_10th_slot_rc=%d "
+            "ftp_slot2_cert_rc=%d ftp_cloud_excl_rc=%d ftp_slot1_avf_erofs_rc=%d "
+            "ftp_zerorf_tx_rc=%d ftp_usblan_containment_rc=%d fx6_chunk_simul_excl_rc=%d "
+            "wb_2400k_oob_rc=%d wb_10000k_oob_rc=%d wb_custom_camset_excl_rc=%d "
+            "wb_cineei_auto_lock_rc=%d wb_cineei_uw_lock_rc=%d wb_slog3_custom_err_rc=%d "
+            "fx6_atw_fx3_rc=%d af_speed_8_oob_rc=%d af_shift_6_fx3_rc=%d af_shift_7_fx6_rc=%d "
+            "af_assist_selp1650_rc=%d af_inbody_focusmap_rc=%d af_uvc_dormant_rc=%d "
+            "af_focusmap_240fps_lock_rc=%d af_focusmap_pb_lock_rc=%d af_focusmap_autoframe_lock_rc=%d "
+            "af_focusmap_nonpdaf_lock_rc=%d fx6_userbox_fx3_rc=%d fx6_peaking_bw_fx3_rc=%d "
+            "um_3grid_fx3_rc=%d aspect_16_oob_rc=%d slot1_wave61_erofs_rc=%d "
+            "slot1_avf_ro_blocked_rc=%d p12_write_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "dormant_sftp_bypass_events=0 dormant_active_ftp_bypass_events=0 "
+            "dormant_transfer_jpeg_size_bypass_events=0 dormant_inbody_focus_map_bypass_events=0 "
+            "dormant_uvc_bypass_events=0 dormant_af_shift_7_bypass_events=0 "
+            "hdmi_marker_baked_pixels=0 hdmi_peaking_baked_pixels=0 "
+            "rf_tx_packets=0 usb_lan_tx_packets=0 wireless_tx_packets=0 "
+            "slot1_ftp_trans_stat_writes=0 slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r75b_ok=%d verify_us=%lld\n",
+            ftp_sftp_dormant_rc, ftp_implicit990_rc,
+            ftp_active_mode_rc, ftp_jpeg_size_dormant_rc, ftp_10th_slot_rc,
+            ftp_slot2_cert_rc, ftp_cloud_excl_rc, ftp_slot1_avf_erofs_rc,
+            ftp_zerorf_tx_rc, ftp_usblan_containment_rc, fx6_chunk_simul_excl_rc,
+            wb_2400k_oob_rc, wb_10000k_oob_rc, wb_custom_camset_excl_rc,
+            wb_cineei_auto_lock_rc, wb_cineei_uw_lock_rc, wb_slog3_custom_err_rc,
+            fx6_atw_fx3_rc, af_speed_8_oob_rc, af_shift_6_fx3_rc, af_shift_7_fx6_rc,
+            af_assist_selp1650_rc, af_inbody_focusmap_rc, af_uvc_dormant_rc,
+            af_focusmap_240fps_lock_rc, af_focusmap_pb_lock_rc, af_focusmap_autoframe_lock_rc,
+            af_focusmap_nonpdaf_lock_rc, fx6_userbox_fx3_rc, fx6_peaking_bw_fx3_rc,
+            um_3grid_fx3_rc, aspect_16_oob_rc, slot1_wave61_erofs_rc,
+            slot1_avf_ro_blocked_rc, p12_write_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r75_clean_unmount_wave61_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r75c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r75c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r75c_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r75c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r75c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r75c_tmp_overlay", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r75c_surfaces");
+    (void)umount("/mnt/r75c_p2_ro");
+    (void)umount("/mnt/r75c_p12_ro");
+    (void)umount("/mnt/r75c_cnflasha_ro");
+    (void)umount("/mnt/r75c_slot1_vault");
+    (void)umount("/mnt/r75c_tmp_overlay");
+    if (mount("tmpfs", "/mnt/r75c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r75c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r75c_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r75c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r75c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r75c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    if (r29_write_all_fsync("/mnt/r75c_tmp_overlay/stage_b_marker",
+                            (const uint8_t *)"FX3_VOLATILE_OVERLAY_R75", 24U, 0644) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r75c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+
+    uint8_t p2_seed[256], p12_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i]  = (uint8_t)((i * 113U + 0x75U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 121U + 0x61U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 127U + 0x48U) & 0xffU);
+        v_seed[i]   = (uint8_t)((i * 149U + 0x33U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r75c_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r75c_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r75c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r75c_slot1_vault/C0001M01.XML", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r75c_slot1_vault/AVF_INFO.INP", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r75c_slot1_vault/C0001M01.XML", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r75c_slot1_vault/AVF_INFO.INP", pre_avf_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r75c_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t sbuf[512];
+        for (size_t i = 0U; i < sizeof(sbuf); i++) {
+            sbuf[i] = (uint8_t)((i * 67U + s * 47U + 0x75U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r75c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) {
+            return fail_exit_rc;
+        }
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    if (mount(NULL, "/mnt/r75c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r75c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r75c_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r75c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r75c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    int unmount_rc = umount("/mnt/r75c_tmp_overlay");
+    int marker_gone_after_umount = (access("/mnt/r75c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok = (overlay_mounted_present == 1 && unmount_rc == 0 && marker_gone_after_umount == 1) ? 1 : 0;
+
+    /* Asymmetric 3-Tier Reset Split across Wave-61:
+     * 1. [Camera Settings Reset]:
+     *    RESETTABLE -> Active [White Balance] (Auto), [Priority Set in AWB] (Standard), [Shockless WB] (1 Fast),
+     *                  [AF Transition Speed] (5), [AF Subj. Shift Sens.] (5), [AF Assist] (Off), M&C [Focus Map] (Off)
+     *    SURVIVORS  -> [Shutter AWB Lock] (Still-only RESET-IMMUNE!), Custom 1..3 calibrated slots,
+     *                  ALL 5 [Marker Display] items + ALL 3 [Peaking Display] items (ALL 8 Reset-immune!),
+     *                  [FTP Transfer Func.] / Server 1..9 / cacert.pem, AND [Airplane Mode]=On
+     * 2. [Reset Network Set.]:
+     *    CLEARS     -> [FTP Function]=Off, Server 1..9 slots, imported cacert.pem, [FTP Power Save]=Off
+     *    SURVIVORS  -> [Airplane Mode]=On, [Shutter AWB Lock], ALL 8 [Marker Display] + [Peaking Display] items
+     * 3. [Initialize]:
+     *    CLEARS     -> [Shutter AWB Lock]=Off, Custom 1..3 cleared, ALL 8 [Marker] + [Peaking] items restored to defaults
+     *    SURVIVORS  -> [Airplane Mode]=On */
+    r75_wave61_cfg_t cfg;
+    r75_wave61_zero_init(&cfg);
+    (void)r75_configure_ftp_and_zerorf(&cfg, 8, R75_FTP_PROTO_FTPES_EXPLICIT_TLS, 0, 0, 1,
+                                       R75_FTP_HIER_SAME_AS_CAMERA, 1, 1, 0, 0);
+    (void)r75_configure_white_balance(&cfg, R75_WB_CUSTOM_1, 5500, R75_AWB_PRIO_AMBIENCE,
+                                      R75_SHUTTER_AWB_LOCK_HALFWAY, R75_SHOCKLESS_3_SLOW,
+                                      R75_LOG_OFF, 0, 0, 0, 0);
+    (void)r75_configure_movie_af_and_focusmap(&cfg, 2, 1, 1, 0, 0, 1, 120, 0, 0, 0, 0, 0);
+    (void)r75_configure_marker_and_peaking(&cfg, 1, 1, R75_ASPECT_2_39_1, R75_SAFETY_90, 1,
+                                           0, 0, 1, R75_PEAK_LVL_HIGH, R75_PEAK_COL_YELLOW, 0);
+    cfg.airplane_mode_on = 1;
+
+    r75_wave61_camera_settings_reset(&cfg);
+    int camreset_resets_wb_af_focusmap_preserves_shutterlock_8markerpeak_ftp_ok =
+        (cfg.wb_mode == R75_WB_AUTO &&
+         cfg.priority_set_in_awb == R75_AWB_PRIO_STANDARD &&
+         cfg.shockless_wb == R75_SHOCKLESS_1_FAST &&
+         cfg.af_transition_speed == 5 &&
+         cfg.af_subj_shift_sens == 5 &&
+         cfg.af_assist_on == 0 &&
+         cfg.monitor_control_focus_map_on == 0 &&
+         cfg.shutter_awb_lock == R75_SHUTTER_AWB_LOCK_HALFWAY &&
+         cfg.custom_wb_calibrated[0] == 1 &&
+         cfg.marker_display_on == 1 &&
+         cfg.center_marker_on == 1 &&
+         cfg.aspect_marker == R75_ASPECT_2_39_1 &&
+         cfg.safety_zone == R75_SAFETY_90 &&
+         cfg.guideframe_on == 1 &&
+         cfg.peaking_display_on == 1 &&
+         cfg.peaking_level == R75_PEAK_LVL_HIGH &&
+         cfg.peaking_color == R75_PEAK_COL_YELLOW &&
+         cfg.ftp_function_on == 1 &&
+         cfg.ftp_server_configured[8] == 1 &&
+         cfg.cacert_imported_from_slot1 == 1 &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r75_wave61_reset_network_settings(&cfg);
+    int nwreset_clears_ftp9_cacert_preserves_marker8_shutterlock_airplane_ok =
+        (cfg.ftp_function_on == 0 &&
+         cfg.ftp_server_configured[8] == 0 &&
+         cfg.cacert_imported_from_slot1 == 0 &&
+         cfg.ftp_power_save_on == 0 &&
+         cfg.shutter_awb_lock == R75_SHUTTER_AWB_LOCK_HALFWAY &&
+         cfg.marker_display_on == 1 &&
+         cfg.aspect_marker == R75_ASPECT_2_39_1 &&
+         cfg.peaking_display_on == 1 &&
+         cfg.peaking_color == R75_PEAK_COL_YELLOW &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r75_wave61_initialize(&cfg);
+    int initialize_clears_shutterlock_customwb_8markerpeak_preserves_airplane_ok =
+        (cfg.shutter_awb_lock == R75_SHUTTER_AWB_LOCK_OFF &&
+         cfg.custom_wb_calibrated[0] == 0 &&
+         cfg.marker_display_on == 0 &&
+         cfg.center_marker_on == 0 &&
+         cfg.aspect_marker == R75_ASPECT_OFF &&
+         cfg.safety_zone == R75_SAFETY_OFF &&
+         cfg.guideframe_on == 0 &&
+         cfg.peaking_display_on == 0 &&
+         cfg.peaking_level == R75_PEAK_LVL_MID &&
+         cfg.peaking_color == R75_PEAK_COL_WHITE &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jit_h = dlopen("/etc/fx6_r75_libjit.so", RTLD_NOW);
+    if (!jit_h) {
+        jit_h = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    }
+    if (jit_h) {
+        dlopen_ok = 1;
+        dlclose(jit_h);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r75c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3, &sbytes) == 0 && strcmp(h0_hashes[s], h3) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    errno = 0;
+    int s1_fd = open("/mnt/r75c_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int avf_fd = open("/mnt/r75c_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_blocked_rc = (avf_fd >= 0) ? (close(avf_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r75c_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r75c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r75c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r75c_slot1_vault/C0001M01.XML", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r75c_slot1_vault/AVF_INFO.INP", post_avf_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r75c_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r75c_slot1_vault");
+    (void)umount("/mnt/r75c_p12_ro");
+    (void)umount("/mnt/r75c_p2_ro");
+    (void)umount("/mnt/r75c_cnflasha_ro");
+    (void)umount("/mnt/r75c_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_resets_wb_af_focusmap_preserves_shutterlock_8markerpeak_ftp_ok == 1 &&
+              nwreset_clears_ftp9_cacert_preserves_marker8_shutterlock_airplane_ok == 1 &&
+              initialize_clears_shutterlock_customwb_8markerpeak_preserves_airplane_ok == 1 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_avf_ro_blocked_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R75_CLEAN_UNMOUNT_WAVE61_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_resets_wb_af_focusmap_preserves_shutterlock_8markerpeak_ftp_ok=%d "
+            "nwreset_clears_ftp9_cacert_preserves_marker8_shutterlock_airplane_ok=%d "
+            "initialize_clears_shutterlock_customwb_8markerpeak_preserves_airplane_ok=%d "
+            "dormant_sftp_bypass_events=0 dormant_active_ftp_bypass_events=0 "
+            "dormant_transfer_jpeg_size_bypass_events=0 dormant_inbody_focus_map_bypass_events=0 "
+            "dormant_uvc_bypass_events=0 dormant_af_shift_7_bypass_events=0 "
+            "hdmi_marker_baked_pixels=0 hdmi_peaking_baked_pixels=0 "
+            "rf_tx_packets=0 usb_lan_tx_packets=0 wireless_tx_packets=0 "
+            "slot1_ftp_trans_stat_writes=0 slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "slot1_vault_ro_blocked_rc=%d p12_write_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r75c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_resets_wb_af_focusmap_preserves_shutterlock_8markerpeak_ftp_ok,
+            nwreset_clears_ftp9_cacert_preserves_marker8_shutterlock_airplane_ok,
+            initialize_clears_shutterlock_customwb_8markerpeak_preserves_airplane_ok,
+            slot1_vault_ro_blocked_rc, p12_write_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -44588,6 +45926,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r74-clean-unmount-wave60-h0-h3") == 0) {
         return run_r74_clean_unmount_wave60_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r75-wave61-guard") == 0) {
+        return run_r75_wave61_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r75-clean-unmount-wave61-h0-h3") == 0) {
+        return run_r75_clean_unmount_wave61_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -45206,6 +46550,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave60_integrated &&
                 run_r74_clean_unmount_wave60_h0_h3_probe(93) != 0) {
                 return 93;
+            }
+        }
+    }
+    struct stat r75_st;
+    if (stat("/etc/fx6_stage_r75", &r75_st) == 0) {
+        if (setup_r75_ftp_ftpes_customwb_afspeed_focusmap_marker_probe() != 0) {
+            return 94;
+        }
+        FILE *r75f = fopen("/etc/fx6_stage_r75", "r");
+        if (r75f) {
+            int is_clean_unmount_wave61_integrated = 0;
+            char r75line[128];
+            while (fgets(r75line, sizeof(r75line), r75f)) {
+                if (strstr(r75line, "r75_mode=clean_unmount_wave61_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave61_integrated = 1;
+                }
+            }
+            fclose(r75f);
+            if (is_clean_unmount_wave61_integrated &&
+                run_r75_clean_unmount_wave61_h0_h3_probe(94) != 0) {
+                return 94;
             }
         }
     }

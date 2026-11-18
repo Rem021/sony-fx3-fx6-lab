@@ -2188,6 +2188,43 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest disco
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 318：Stage 66（`66/66` 里程碑！）Wave-56 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` 5 项 `[Dial Customize]` & 3 物理拨盘 `Rear Dial L/R` 禁令、`My Dial 1..3` 锁定临时覆盖与 `12 Still + 12 Movie` `Fn Menu`、3 项 `[Live View Display Set.]` & 干净 HDMI `[Grid Line]`，以及 `[Manage User LUTs]` `User1..16` / `[Embed LUT File]` SD/SDHC 硬锁 / `PPLUT1..4` 像素烘焙 & `Slot-1` Tier-0 Vault 防火墙 HIL
 
+[`realhw_dial_customize_mydial_fn_liveview_lut_embed_coemulator.py`](realhw_dial_customize_mydial_fn_liveview_lut_embed_coemulator.py)（Schema `realhw_dial_customize_mydial_fn_liveview_lut_embed_coemulator_v1`）作为 **Stage 66（`66/66` Milestone！）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase318` / `--skip-stage66` / `--no-include-stage66` 跳过，支持 `--include-stage66`），严格遵循 `os.O_RDONLY`、`<= 4096 B` 受界窗口、`physical_device_writes == 0`、`slot1_data_sector_writes == 0` 与 `raw_firmware_bytes_leaked == 0`：
 
+1. **高速双模 17 供体 `O_RDONLY` 字节与 SHA-256 精确锚定审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 通过受界 `os.O_RDONLY`（`<= 4096 B`）核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **17 份真实供体**：FX3 `string_*_f.uxc` 4 语种（`en_f=373,820 B`、`sc_f=322,652 B`、`tc_f=324,148 B`、`ja_f=447,840 B`）、FX3 `string_*.uxc` 4 语种（`en=165,740 B`、`sc=149,064 B`、`tc=151,908 B`、`ja=208,564 B`）、FX3 `string_*_g.uxc` 4 语种（`en_g=69,600 B`、`sc_g=61,296 B`、`tc_g=61,372 B`、`ja_g=89,428 B`）、FX6 `string_english.uxc`（`118,208 B`）与 `string_english_2.uxc`（`118,676 B`），以及 `FX3 appFw.so`（`79,015,712 B`）、`FX3 BK4`（`2,229,740 B`）与 `FX6 appFw.so`（`50,520,424 B`）；支持 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 与 CLI `--clean-room` 切换至确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 66A — 5 项 `[Dial Customize]`（`Initialize`-Only）& Ver. 2.00+ 菜单演进 vs `FX6` 硬件拨盘**：
+   - `MENU -> Setup -> [Dial Customize]` 精确暴露 5 个 `Initialize`-only 子项：`[Custom Key/Dial Set.]`（Ver. 2.00+ 取代 Ver. 1.xx `[Dial Setup]`）、`[My Dial Settings]`、`[Av/Tv Rotate]`（`Normal` 默认 / `Reverse`）、`[Function Ring(Lens)]`（`Power Focus` 默认 / `APS-C/Super 35 mm / Full Frame`，拒绝 `"INVALID"` 返回 `EINVAL=22`），以及 `[Lock Operation Parts]`（`Off` 默认 / `Multi-Selector Only` / `Dial + Wheel` / `All`，支持 `Fn` 长按与 `MENU+Fn` 5s 和弦切换并取代 Ver. 1.xx `[Dial / Wheel Lock]`）；
+   - 对休眠 `BKID_APP_setting_dial_setup` / `DIALCUSTOMIZE_DIAL_SETUP_LEFT_SHUTTER_RIGHT_F_NO` / `Dial/Wheel Setup`（`0x6a89`）fail-closed 返回 `EOPNOTSUPP=95`；对比 `ILME-FX6 Ver. 6.01`（`Multi Function Dial` + `Grip Dial` + `Handle Dial` + `IRIS` 拨盘 + `ND` 拨盘 + 物理 `HOLD` 开关）。
+3. **Sub-Model 66B — 3 物理拨盘拓扑（禁用 `Rear Dial L/R`）、`My Dial 1..3` 锁定覆盖与 `12 Still + 12 Movie` `[Fn Menu Settings]`**：
+   - `ILME-FX3` 机身仅具备 **3 个物理拨盘**（`Front Dial` `0xe4da`、单个 `Rear Dial` `0xe4db`、`Control Wheel` `0xe353`）— 对休眠 4 拨盘 Alpha 符号 `Rear Dial L`（`0x6a5c`）/ `Rear Dial R`（`0x680d`）fail-closed 返回 `EOPNOTSUPP=95`；
+   - `My Dial 1..3`（`list0..2`，`Initialize`-only）跨拍摄模式共享 3 组 NVRAM 槽位，而 `Hold` / `Toggle` / `1->2->3` 自定义键分别独立绑定于 Still/Movie；`1->2->3` 轮循自动跳过全 `Not set` 空槽位，并在召回期间**临时解锁 `[Lock Operation Parts]` 并在退出召回时精确恢复原锁定状态**；
+   - `[Fn Menu Settings]`（`_g 0x614b`，`Initialize`-only）严格隔离 `12 Still` + `12 Movie` 槽位（`fn_menu_item_ids_for_{still,movie}0..11`），当对应模式全部 12 格均为 `Not set`（`0xe0ac`）时通过 `_f 0x6220` 阻断呼出（`EINVAL=22` / `EOPNOTSUPP=95`），对比 `ILME-FX6` 的 `Status Screens` 与 `Direct Menu`。
+4. **Sub-Model 66C — 3 项 `[Live View Display Set.]`（Still-Only）& `[Grid Line]` 干净 HDMI 零渗漏隔离**：
+   - 位于 `Shooting -> Shooting Display -> [Live View Display Set.]`（`_f 0x6429`，**严格 Still-only**，在 `Movie`/`S&Q` 返回 `EBUSY=16`）：`[Live View Display]`（`Setting Effect ON` 默认 / `OFF`，`Initialize`-only，且 `[Bright Monitoring]` 激活时强制切至 `Setting Effect OFF`）、`[Exposure Effect]`（`Exposure Set. & flash` 默认 / `Exposure Setting Only`，`Initialize`-only）与可复位 `[Frame Rate Low Limit]`（`Off` 默认 / `On`，支持 `[Camera Settings Reset]`）；
+   - `[Grid Line Display]`（`Off` 默认 / `On`）与 `[Grid Line Type]`（`Rule of 3rds Grid` 默认 / `Square Grid` / `Diag. + Square Grid`）均 **`Initialize`-only**，且永不渗漏至干净 HDMI 输出（`HDMI Info. Display = Off` 时 `hdmi_clean_feed_grid_leaked_pixels == 0`），对比 `ILME-FX6` 的 `Marker` / `Guide Frame` 与休眠 `CUSTOM_GRID_LINE0..3`。
+5. **Sub-Model 66D & Redlines — `[Manage User LUTs]`（`User1..16`）、`[Embed LUT File]`（`Log Shooting Setting` SD/SDHC 硬锁）vs `PPLUT1..4` 像素烘焙 & `Slot-1` Tier-0 Vault 防火墙**：
+   - `[Manage User LUTs]`（位于 `Color/Tone`，`Initialize`-only）从 SD `/Private/Sony/PRO/LUT` 或 CFexpress `/Sony/PRO/LUT` 纯只读导入 17/33 点 `.cube` 3D LUT（即使经由 `Slot 1` 也保持 `slot1_data_sector_writes == 0`）；`[Select LUT]`（`S-Log3` / `s709` 默认 / `709(800%)` / `User1..16`，支持 `[Camera Settings Reset]` 复位回 `s709`）；
+   - `[Embed LUT File]`（位于 `Shooting -> Image Quality/Rec -> Log Shooting Setting`，默认 `On`，支持 `[Camera Settings Reset]`）仅将 `.cube` 元数据内嵌至封装容器，不生成旁路文件亦不烘焙像素，且在 **SD / SDHC 介质上硬锁 `Off`**（`_g 0x61a0`，请求开启返回 `EOPNOTSUPP=95`）；而 `Picture Profile -> PPLUT1..4` 执行不可逆像素烘焙且在 `[Camera Settings Reset]` 与 `[Initialize]` 时均被复位；任何试图写入/录制/建目录到 `Slot-1` Tier-0 Vault 的操作 **100% fail-closed 拦截（`EROFS=30`）**（`slot1_data_sector_writes == 0`）。
+
+### Phase 318 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 318 Stage 66（66/66 里程碑！）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_dial_customize_mydial_fn_liveview_lut_embed_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_dial_customize_mydial_fn_liveview_lut_embed_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_dial_customize_mydial_fn_liveview_lut_embed_coemulator.py --self-test --json
+
+# 2. 全板 66 阶段（Stage 1..66, 66/66 里程碑！）统一校验（支持 --include-stage66 与 --skip-phase318 / --skip-stage66 / --no-include-stage66）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage66 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 318 三模式 90 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_dial_customize_mydial_fn_liveview_lut_embed_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_dial_customize_mydial_fn_liveview_lut_embed_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_dial_customize_mydial_fn_liveview_lut_embed_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
 

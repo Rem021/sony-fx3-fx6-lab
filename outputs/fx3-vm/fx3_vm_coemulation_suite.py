@@ -77,6 +77,7 @@ import realhw_cfexpress_ufu_and_5tier_recovery_coemulator as p162  # noqa: E402
 import realhw_cxd90058_sabin_codec_and_seal_coemulator as p167  # noqa: E402
 import realhw_dci4k_aspect_custom_hold_camset_photo_capture_coemulator as p301  # noqa: E402
 import realhw_desqueeze_165x_focusmap_simult_shocklesswb_coemulator as p207  # noqa: E402
+import realhw_dial_customize_mydial_fn_liveview_lut_embed_coemulator as p318  # noqa: E402
 import realhw_diff_set_still_mv_custom_key_remain_shoot_coemulator as p258  # noqa: E402
 import realhw_display_quality_bt_rmt_mymenu_coemulator as p257  # noqa: E402
 import realhw_emount_info3d_breathing_and_hdmi_4264_raw_coemulator as p182  # noqa: E402
@@ -255,6 +256,9 @@ class CoEmulationConfig:
     include_phase315_realhw_touch_shooting_disp_zero_evf_interval_pb_hil: bool = True
     include_stage65: bool = True
     stage65_realhw_touch_shooting_disp_zero_evf_interval_pb_hil: bool = True
+    include_phase318_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil: bool = True
+    include_stage66: bool = True
+    stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -4447,6 +4451,96 @@ def run_stage65_realhw_touch_shooting_disp_zero_evf_interval_pb_hil(
     }
 
 
+def run_stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil(
+    config: Optional[CoEmulationConfig] = None,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 66 (Phase 318, 66/66 Milestone): Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-56 5-Item [Dial Customize] & Ver. 2.00+ Menu Evolution vs FX6 Hardware Dials, 3-Physical-Dial [Rear Dial L/R] Ban + My Dial 1..3 Lock-Override & 12 Still + 12 Movie [Fn Menu Settings], 3-Item [Live View Display Set.] (Still-Only) & Clean-HDMI [Grid Line], and [Manage User LUTs] User1..16 vs [Embed LUT File] SD/SDHC Lock vs PPLUT1..4 Pixel-Baking + Slot-1 Tier-0 Vault Firewall HIL."""
+    cfg = CoEmulationConfig() if config is None else config
+    cfg.validate()
+    rep = p318.run_phase318_dial_customize_mydial_fn_liveview_lut_embed_coemulation(
+        force_clean_room=cfg.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "is_66th_stage_milestone": bool(rep["is_66th_stage_milestone"]),
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "emmc_corruptions": red["emmc_corruptions"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "passive_tx_bytes_emitted": red["passive_tx_bytes_emitted"],
+        "fx3_physical_dial_count": red["fx3_physical_dial_count"],
+        "dormant_dial_setup_or_rear_dial_lr_exposed_events": red[
+            "dormant_dial_setup_or_rear_dial_lr_exposed_events"
+        ],
+        "mydial_lock_override_failures": red["mydial_lock_override_failures"],
+        "fn_menu_still_movie_12x2_leak_events": red[
+            "fn_menu_still_movie_12x2_leak_events"
+        ],
+        "live_view_movie_sq_bypass_events": red["live_view_movie_sq_bypass_events"],
+        "grid_line_hdmi_clean_feed_leaked_pixels": red[
+            "grid_line_hdmi_clean_feed_leaked_pixels"
+        ],
+        "embed_lut_sd_sdhc_lock_bypass_events": red[
+            "embed_lut_sd_sdhc_lock_bypass_events"
+        ],
+        "pplut_non_reset_or_metadata_confusion_events": red[
+            "pplut_non_reset_or_metadata_confusion_events"
+        ],
+        "slot1_data_sector_writes": red["slot1_data_sector_writes"],
+        "slot1_avf_info_mutated": red["slot1_avf_info_mutated"],
+        "slot1_vault_lut_mutation_bytes": red["slot1_vault_lut_mutation_bytes"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_dial_customize_5item_and_fx6_dials_hil": rep[
+            "pillar_a_dial_customize_5item_and_fx6_dials_hil"
+        ],
+        "pillar_b_3dial_mydial_lock_override_and_fn_12x2_hil": rep[
+            "pillar_b_3dial_mydial_lock_override_and_fn_12x2_hil"
+        ],
+        "pillar_c_live_view_3item_and_grid_line_clean_hdmi_hil": rep[
+            "pillar_c_live_view_3item_and_grid_line_clean_hdmi_hil"
+        ],
+        "pillar_d_user_lut_embed_vs_pplut_and_slot1_vault_hil": rep[
+            "pillar_d_user_lut_embed_vs_pplut_and_slot1_vault_hil"
+        ],
+        "phase318_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -4457,7 +4551,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 65-stage (Phase 33..315, 65/65 Milestone) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 66-stage (Phase 33..318, 66/66 Milestone) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -4833,6 +4927,15 @@ def run_fx3_vm_coemulation_suite(
             cfg.include_phase315_realhw_touch_shooting_disp_zero_evf_interval_pb_hil
             and cfg.include_stage65
             and cfg.stage65_realhw_touch_shooting_disp_zero_evf_interval_pb_hil
+        )
+        else None
+    )
+    stage66: Optional[Dict[str, object]] = (
+        run_stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil(cfg, env=env)
+        if (
+            cfg.include_phase318_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil
+            and cfg.include_stage66
+            and cfg.stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil
         )
         else None
     )
@@ -6623,6 +6726,52 @@ def run_fx3_vm_coemulation_suite(
         and stage65["appfw_crashes"] == 0
         and stage65["raw_firmware_bytes_leaked"] == 0
     )
+    stage66_ok = True if stage66 is None else (
+        bool(stage66["all_checks_passed"])
+        and bool(stage66["is_66th_stage_milestone"])
+        and stage66["nop_count"] == 0
+        and stage66["guest_code_modification_bytes"] == 0
+        and stage66["cp_mutation_bytes"] == 0
+        and stage66["wbi_mutation_bytes"] == 0
+        and stage66["calibration_mutation_bytes"] == 0
+        and stage66["cnflasha_mutation_bytes"] == 0
+        and bool(stage66["cnflasha_userspace_write_blocked"])
+        and stage66["nvram_persistent_writes"] == 0
+        and stage66["bk4_persistent_nvram_writes"] == 0
+        and stage66["physical_device_writes"] == 0
+        and (not stage66["persistent_emmc_writes_authorized"])
+        and (not stage66["hardware_live_attachment_authorized"])
+        and (not stage66["overall_ready_for_hardware_attach"])
+        and (not stage66["isp_write_authorized"])
+        and stage66["emmc_nflasha_write_count"] == 0
+        and stage66["emmc_mutation_bytes"] == 0
+        and stage66["emmc_corruptions"] == 0
+        and (not stage66["spi_nor_write_authorized"])
+        and stage66["spi_nor_mutation_bytes"] == 0
+        and (not stage66["el3_payload_transmit_authorized"])
+        and stage66["otp_fuse_touches"] == 0
+        and stage66["rpmb_counter_increments"] == 0
+        and stage66["physical_usb_packets_emitted"] == 0
+        and stage66["passive_tx_bytes_emitted"] == 0
+        and stage66["fx3_physical_dial_count"] == 3
+        and stage66["dormant_dial_setup_or_rear_dial_lr_exposed_events"] == 0
+        and stage66["mydial_lock_override_failures"] == 0
+        and stage66["fn_menu_still_movie_12x2_leak_events"] == 0
+        and stage66["live_view_movie_sq_bypass_events"] == 0
+        and stage66["grid_line_hdmi_clean_feed_leaked_pixels"] == 0
+        and stage66["embed_lut_sd_sdhc_lock_bypass_events"] == 0
+        and stage66["pplut_non_reset_or_metadata_confusion_events"] == 0
+        and stage66["slot1_data_sector_writes"] == 0
+        and (not stage66["slot1_avf_info_mutated"])
+        and stage66["slot1_vault_lut_mutation_bytes"] == 0
+        and stage66["rsv_orphan_count"] == 0
+        and stage66["null_gpio_derefs"] == 0
+        and stage66["mailbox_stalls"] == 0
+        and stage66["stock_cp_fault_count"] == 0
+        and stage66["wf12_00342260_hits"] == 0
+        and stage66["appfw_crashes"] == 0
+        and stage66["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -6691,6 +6840,7 @@ def run_fx3_vm_coemulation_suite(
         and stage63_ok
         and stage64_ok
         and stage65_ok
+        and stage66_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -7021,6 +7171,21 @@ def run_fx3_vm_coemulation_suite(
                 and cfg.include_stage65
                 and cfg.stage65_realhw_touch_shooting_disp_zero_evf_interval_pb_hil
             ),
+            "include_phase318_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil": (
+                cfg.include_phase318_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil
+                and cfg.include_stage66
+                and cfg.stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil
+            ),
+            "include_stage66": (
+                cfg.include_phase318_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil
+                and cfg.include_stage66
+                and cfg.stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil
+            ),
+            "stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil": (
+                cfg.include_phase318_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil
+                and cfg.include_stage66
+                and cfg.stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil
+            ),
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -7169,6 +7334,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage64_realhw_switch_vh_af_stdadj_tcub_copy_slot_hil"] = stage64
     if stage65 is not None:
         core_payload["stage65_realhw_touch_shooting_disp_zero_evf_interval_pb_hil"] = stage65
+    if stage66 is not None:
+        core_payload["stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil"] = stage66
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -7180,7 +7347,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 + 289 + 293 + 298 + 301 + 306 + 309 + 312 + 315 (65/65 Milestone) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 + 289 + 293 + 298 + 301 + 306 + 309 + 312 + 315 + 318 (66/66 Milestone) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -7805,6 +7972,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 65 (Phase 315 65/65 Milestone Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-55 4-Item Touch Operation & Dormant Guard, DISP Screen Disp Set & Zero-EVF Blackout Guard, Still-Only AEL/Flash Submenu vs FX6, and 9-Speed Interval Playback + Slot-1 100%% Fail-Closed Tier-0 Vault Firewall HIL)",
     )
     parser.add_argument(
+        "--include-stage66",
+        dest="include_stage66",
+        action="store_true",
+        default=True,
+        help="Include Stage 66 (Phase 318 66/66 Milestone Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-56 5-Item [Dial Customize] & Ver. 2.00+ Menu Evolution vs FX6 Hardware Dials, 3-Physical-Dial [Rear Dial L/R] Ban + My Dial 1..3 Lock-Override & 12 Still + 12 Movie [Fn Menu Settings], 3-Item [Live View Display Set.] (Still-Only) & Clean-HDMI [Grid Line], and [Manage User LUTs] User1..16 vs [Embed LUT File] SD/SDHC Lock vs PPLUT1..4 Pixel-Baking + Slot-1 100%% Fail-Closed Tier-0 Vault Firewall HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage66",
+        "--no-include-stage66",
+        dest="skip_stage66",
+        action="store_true",
+        help="Skip optional Stage 66 (alias for --skip-phase318)",
+    )
+    parser.add_argument(
+        "--skip-phase318",
+        action="store_true",
+        help="Skip optional Stage 66 (Phase 318 66/66 Milestone Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-56 5-Item Dial Customize, 3-Physical-Dial My Dial 1..3 & 12+12 Fn Menu, Still-Only Live View Display Set. & Clean-HDMI Grid Line, and Manage User LUTs / Embed LUT File SD-SDHC Lock vs PPLUT1..4 + Slot-1 100%% Fail-Closed Tier-0 Vault Firewall HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -7886,6 +8072,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     enable_stage63 = bool(args.include_stage63) and (not args.skip_phase309) and (not args.skip_stage63)
     enable_stage64 = bool(args.include_stage64) and (not args.skip_phase312) and (not args.skip_stage64)
     enable_stage65 = bool(args.include_stage65) and (not args.skip_phase315) and (not args.skip_stage65)
+    enable_stage66 = bool(args.include_stage66) and (not args.skip_phase318) and (not args.skip_stage66)
     cfg = CoEmulationConfig(
         bt_mode=args.bt_mode,
         cine_ei_iso=args.cine_ei_iso,
@@ -7990,6 +8177,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase315_realhw_touch_shooting_disp_zero_evf_interval_pb_hil=enable_stage65,
         include_stage65=enable_stage65,
         stage65_realhw_touch_shooting_disp_zero_evf_interval_pb_hil=enable_stage65,
+        include_phase318_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil=enable_stage66,
+        include_stage66=enable_stage66,
+        stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil=enable_stage66,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -8064,6 +8254,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s63 = rep.get("stage63_realhw_lens_comp_af_illuminator_folder_rating_hil")
         s64 = rep.get("stage64_realhw_switch_vh_af_stdadj_tcub_copy_slot_hil")
         s65 = rep.get("stage65_realhw_touch_shooting_disp_zero_evf_interval_pb_hil")
+        s66 = rep.get("stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -8692,6 +8883,20 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s65, dict)
             else ""
         )
+        s66_str = (
+            f" | realhw_dial_customize_mydial_fn_liveview_lut_embed_hil={s66['source_mode']}("
+            f"m66={s66['milestone']},"
+            f"dials={s66['fx3_physical_dial_count']},"
+            f"dl_byp={s66['dormant_dial_setup_or_rear_dial_lr_exposed_events']},"
+            f"fn_leak={s66['fn_menu_still_movie_12x2_leak_events']},"
+            f"lv_byp={s66['live_view_movie_sq_bypass_events']},"
+            f"hdmi_px={s66['grid_line_hdmi_clean_feed_leaked_pixels']},"
+            f"emb_byp={s66['embed_lut_sd_sdhc_lock_bypass_events']},"
+            f"s1_wr={s66['slot1_data_sector_writes']},"
+            f"emmc_wr={s66['emmc_nflasha_write_count']})"
+            if isinstance(s66, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -8700,7 +8905,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str}{s58_str}{s59_str}{s60_str}{s61_str}{s62_str}{s63_str}{s64_str}{s65_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str}{s58_str}{s59_str}{s60_str}{s61_str}{s62_str}{s63_str}{s64_str}{s65_str}{s66_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

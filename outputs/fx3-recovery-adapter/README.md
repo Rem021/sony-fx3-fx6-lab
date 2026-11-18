@@ -1364,6 +1364,27 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-reco
   /usr/bin/python3 -B -m fx3_recovery verify-61pillar-recovery --force-clean-room --json
 ```
 
+## Phase 344（Pillar 62 / `62/62` 统一恢复总检里程碑）：Wave-60 `[Rec. Media Settings]` 分离演进与 `Auto Switch Media` `Slot-1` 溢出防线 / `VPG200/VPG400` 卡速门禁 / `[Proxy Settings]` `sq_proxy` `XAVC S-I DCI 4K` 放行与 `120p/100p` 锁死 / `[Creators' Cloud]` `*` 抗初始化持久性 / `[Cnct. while Power OFF]` 关机 BLE 零射频护栏 / `[My Menu]` `6×7=42` 槽位 vs FX6 `20` 项 `User Menu with Lock` + `Slot-1 EROFS=30` 金库防火墙（`verify-62pillar-recovery` / `verify-pillar62-recovery` / `verify-pillar62-rec-media-autoswitch-proxy-cloud-mymenu-vault`）
+
+- **[`realhw_62pillar_rec_media_autoswitch_proxy_cloud_mymenu_vault_verifier.py`](fx3_recovery/realhw_62pillar_rec_media_autoswitch_proxy_cloud_mymenu_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-60）落地 **Phase 344 Pillar 62（`62/62`）** 并将全套恢复总检正式推进至 **`62/62`（`VERIFIED_62OF62_PILLAR_RECOVERY_MASTER`）**（`< 1.5s` 快速 CLI 预算、`< 4.0s` 标称、`< 6.0s` 并发上限，保持 `verify-22..61pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OVERALL_READY_FOR_HARDWARE_ATTACH = False`、`CROSS_MODEL_FLASH_AUTHORIZED = False`、`P344_AIRPLANE_MODE_FORCED_ON = True`、`P344_POWER_OFF_BLE_FORCED_OFF = True`、`P344_RF_PACKETS_TRANSMITTED = 0`、`P344_SLOT1_FORMAT_HARD_LOCKED = True`、`P344_SLOT1_VAULT_EROFS_EOPNOTSUPP_ENFORCED = True`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02`（14 项）与 `FX6 6.01`（3 项）共 **17 项** Wave-60 供体（`< 2.0s` 预算且显式防护 `work_root is None` 以避免无供体 CI 异常），并在 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时安全回退至 `CLEAN_ROOM_SYNTHETIC`：
+  - **Sub-Pillar 62A（`[Rec. Media Settings]` 演进、`VPG200/VPG400` 门禁、`[Auto Switch Media]` `Slot-1` 溢出防线与 `[Proxy Settings]` `sq_proxy` 规则）**：实证确认旧 Alpha `[Prioritize Rec. Media]`（`_f 0x719e`）在 `FX3 appFw.so` 中 `0` 命中（`EOPNOTSUPP=95`），由拆分的抗 `[Camera Settings Reset]` `[Recording Media]`（Still 4 模式 vs Movie 3 模式零 `Sort Recording`、`Simult. Recording` 同文件系统门禁）与抗 `[Camera Settings Reset]` `[Auto Switch Media]`（`BKID_APP_setting_relay_rec`）替代；强制执行 Tier-0 `Slot-1` 溢出双重闭锁（`RELAY_REC_OFF` + `SLOT_2` + `PRM_HAITA_setting_relay_rec_*_media_read_only_state_slot1` + VFS `EROFS=30`，`slot1_data_sector_writes == 0`），对照 FX6 `Project > Simul Rec` + 双 `Rec Button Set` + 硬互斥；建模 `SDXC V60/V90` vs `CFexpress Type A VPG200/VPG400`（S&Q `1200 Mbps` 强制 CFexpress）；建模 `[Proxy Settings]`（`sq_proxy`，`0` 条 `PRM_HAITA_*proxy*`）中 `XAVC S-I DCI 4K` 允许而仅 Movie `119.88p/100p` 与 `S&Q 120/100fps` 禁用、`XAVC S HD 6M 8bit` / `XAVC HS HD 9M/16M 10bit`、`M4ROOT/SUB/*S03.MP4` 联动保护/删除及 `Slot-1` `EROFS=30` 拦截。
+  - **Sub-Pillar 62B（`[Creators' Cloud]` `*` 抗初始化持久性、`[Cnct. while Power OFF]` 关机 BLE 零射频护栏、`[My Menu]` `6×7=42` 槽位 vs FX6 `20` 项 `User Menu with Lock`）**：锁定 `Cloud Connection *` / `Cloud Information *` 在 `[Camera Settings Reset]` 与 `[Initialize]` 后均保持绑定（`FTP` 互斥、`Ver. 7.00+` `Clip Flag` `OK/NG/KEEP`）；锁定 `[Cnct. while Power OFF]`（`BKID_APP_extern_menu_cnct_while_power_off`，`_f 0x6ab3`，抗 `Camera Settings Reset`）在 `On` 且物理开关 `OFF` 时保持 BLE 常驻通电风险，零射频台架必须同时强制 `[Airplane Mode] = On` 且 `[Cnct. while Power OFF] = Off`（`rf_packets_transmitted == 0`，对照无蓝牙的 `ILME-FX6`）；纠正容量误传，实证锁定 FX3 `[My Menu]` 精确为 **`6×7=42` NVRAM 槽位**（`BKID_APP_mymenu_group{1..6}_setting_list{0..6}`，非 30/36，禁用回放且抗 `Camera Settings Reset`）对照 FX6 `20` 项 `User Menu Only` 与 `User Menu with Lock`（`Multi-selector + MENU` + 4 位 PIN，不入 `All File`/`Scene File`），叠合 Stage-B `/tmp` 覆写隔离、`Backup.bin H0 == H3`（`16/16`）与 `Slot-1 EROFS=30`。
+  - **统一 `62/62` 恢复总检聚合器与 CLI（`evaluate_realhw_62pillar_recovery_master` / `evaluate_62pillar_recovery_master` / `verify-62pillar-recovery` / `verify-pillar62-recovery` / `verify-pillar62-rec-media-autoswitch-proxy-cloud-mymenu-vault`）**：并发聚合 `Pillars 1..61` + `Pillar 62`，自动对接 Milestone 311 / 324 最高支柱发现接口；[`tests/test_realhw_62pillar_rec_media_autoswitch_proxy_cloud_mymenu_vault_verifier.py`](tests/test_realhw_62pillar_rec_media_autoswitch_proxy_cloud_mymenu_vault_verifier.py) 提供 **`>= 100` 项**四模单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-pillar62-rec-media-autoswitch-proxy-cloud-mymenu-vault --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-pillar62-recovery --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-62pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-62pillar-recovery --force-clean-room --json
+```
+
 
 
 

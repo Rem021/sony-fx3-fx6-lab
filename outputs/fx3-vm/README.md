@@ -1896,3 +1896,39 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unit
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
+
+## Phase 289 Stage 58（58/58）— 真实硬件 Wave-48：`[Picture Profile]` `PP11`（`S-Cinetone`）开箱默认 / `[Creative Look]` & `DRO` 互斥锁 / `PP1..11` 内部参数跨复位持久化、`[White Balance]` 13 模式 & `Custom 1..3` `CAMSET` 隔离 / `Cine EI` 自动白平衡锁，与 `[Metering Mode]` 5 模式 / 测光点联动 & `CIZ` `[Multi]` 钳位协同仿真台架
+
+[`realhw_pp_scinetone_creativelook_wb_metering_coemulator.py`](realhw_pp_scinetone_creativelook_wb_metering_coemulator.py) 作为 **Phase 289 Stage 58（`58/58`，Schema `realhw_pp_scinetone_creativelook_wb_metering_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase289_realhw_pp_scinetone_creativelook_wb_metering_hil=True` / `include_stage58=True` / `stage58_realhw_pp_scinetone_creativelook_wb_metering_hil=True`，支持显式 `--include-stage58` 以及 `--skip-phase289` / `--skip-stage58` / `--no-include-stage58` 跳过），在严格锁定 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`emmc_corruptions == 0`、`nop_count == 0`、`guest_code_modification_bytes == 0`、`physical_usb_packets_emitted == 0`、`pp_creative_look_or_reset_wipe_misroute_events == 0`、`wb_cine_ei_auto_or_camset_custom_leak_events == 0`、`metering_spot_link_or_ciz_multi_bypass_events == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大闭环：
+
+1. **高速双模 11 供体 `O_RDONLY` 字节与 SHA-256 精确锚定审计（`LOCAL_DONOR_O_RDONLY` `< 0.2s` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 通过受界 `os.O_RDONLY`（`<= 4096 B`）核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **11 份真实供体**：FX3 `string_*_f.uxc` 4 语种全集（`en_f=373,820 B`、`sc_f=322,652 B`、`tc_f=324,148 B`、`ja_f=447,840 B`）、FX3 `string_english.uxc`（`165,740 B`）、FX3 `string_english_g.uxc`（`69,600 B`）、FX6 `string_english.uxc`（`118,208 B`）与 `string_english_2.uxc`（`118,676 B`），以及 `FX3 appFw.so`（`79,015,712 B`）、`FX3 BK4`（`2,229,740 B`）与 `FX6 appFw.so`（`50,520,424 B`）；支持 `FX3_CLEAN_ROOM_TEST=1` 与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双环境变量触发确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 58A — `[Picture Profile]` `PP11`（`S-Cinetone`）开箱默认、`[Creative Look]` & `DRO` 锁定、`Log Shooting` 互斥与复位持久分裂 HIL**：
+   - 精确建模 `ILME-FX3 Ver. 7.02` 出厂默认 `[Picture Profile] = PP11`（`Gamma: S-Cinetone`、`Color Mode: S-Cinetone`）同时覆盖 **Movie 与 Still**（`Different Set for Still/Mv` 默认不拆分），`PP7/8/9 = S-Log2/S-Log3`、`PP10 = HLG2 + BT.2020`、`PPLUT1..4`；对比 `ILME-FX6 Ver. 6.01` 的 `Base Look`（Custom 默认 `S-Cinetone`）+ `Scene File`。
+   - 任意 `PP1..PP11` / `PPLUT1..4` 激活时，`[Creative Look]`（10 预设 `ST..SE` + `Custom Look 1..6`、8 参数，其中 `Clarity` 在 Movie/`S&Q` 与连拍下锁定）硬锁 `'-'`（`EOPNOTSUPP = 95`），`[D-Range Optimizer]` 强制 `Off`；开启 `[Log Shooting]`（`Flexible ISO` / `Cine EI Quick` / `Cine EI`）同时硬锁三者并经 `[Display LUT]`（`s709`/`709(800%)`/`User1..16`）监看。
+   - 关键复位边界：`[Camera Settings Reset]` 将当前选项恢复至 `PP11`，**但 `PP1..11` 内部自定义参数跨越 `[Camera Settings Reset]` 与 `[Initialize]` 全程存活**——仅逐档 `[Picture Profile] -> [Reset]` 可恢复出厂配方。
+3. **Sub-Model 58B — `[White Balance]` 13 模式、`[Priority Set in AWB]` / `[Shutter AWB Lock]`、`Cine EI` 锁定与 `Custom 1..3` 存卡隔离 HIL**：
+   - 建模全部 13 类 FX3 WB 模式（15 项子模式含 4 档荧光灯、`Flash` 仅 Still 生效 / Movie 与 `S&Q` `EOPNOTSUPP = 95`、`C.Temp./Filter` `2500K..9900K` + `G7..M7`/`A7..B7`、`Custom 1..3`），对比 FX6 机身 `WHT BAL` `Memory B / A / Preset` + `ATW`。
+   - `Cine EI` / `Cine EI Quick` 下硬锁 `Auto` 与 `Underwater Auto` WB（`EOPNOTSUPP = 95`）；`[Shutter AWB Lock]` 仅 Still + Auto/UW Auto 生效；`Custom 1..3` 注册值**跨 `[Camera Settings Reset]` 存活**（仅 `[Initialize]` 清空），且**严禁写入 `CAMSET01..10.DAT`**，仅由 `M1..M4` 携带（`Slot 1` 恢复保险库 `EROFS = 30`）。
+4. **Sub-Model 58C & Redlines — `[Metering Mode]` 5 模式、`[Spot Metering Point]` 联动、`Clear Image Zoom` `[Multi]` 钳位与 16 项红线 HIL**：
+   - 建模全部 5 类 FX3 测光模式（含 `Spot: Standard / Large`）、`[Face Priority in Multi Metering]`、`[AEL w/ Shutter]` 与 `[Exposure Std. Adjust]`（对比 FX6 波形/斑马纹与 `Standard/Backlight/Spotlight`）。`Focus Point Link` 仅在 `Flexible Spot` / `Expand Spot` 联动否则退回 `Center`；当 `CIZ / Digital Zoom > 1.0x` 时强制钳位至 `[Multi]` + `Face Priority = Off`，退回 `1.0x` 后无损恢复，同时锁定全套 16 项安全与零写红线。
+
+### Phase 289 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 289 Stage 58（58/58）自检
+PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_pp_scinetone_creativelook_wb_metering_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_pp_scinetone_creativelook_wb_metering_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_pp_scinetone_creativelook_wb_metering_coemulator.py --self-test --json
+
+# 2. 全板 58 阶段（Stage 1..58, 58/58）统一校验（支持 --include-stage58 与 --skip-phase289 / --skip-stage58）
+PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage58 --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 289 三模式 76 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_pp_scinetone_creativelook_wb_metering_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_pp_scinetone_creativelook_wb_metering_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_pp_scinetone_creativelook_wb_metering_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```

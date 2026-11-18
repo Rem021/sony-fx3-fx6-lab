@@ -1369,6 +1369,7 @@ def build_stage_a_overlay(
     enable_r55: bool = False,
     enable_r56: bool = False,
     enable_r57: bool = False,
+    enable_r58: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1398,6 +1399,7 @@ def build_stage_a_overlay(
     r55_mode: str = "auto_slow_6locks_hdmi_reccontrol_big6",
     r56_mode: str = "apsc_s35_hd_face_eye_af_version_big6",
     r57_mode: str = "release_wo_card_lens_audio_meter_copyright_big6",
+    r58_mode: str = "file_settings_camid_gamma_assist_tcub_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1727,7 +1729,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r56_mode: {r56_mode}")
     if enable_r57 and r57_mode not in ("release_wo_card_lens_audio_meter_copyright_big6", "cardless_movie_v1_audio_spoof_copyright_guard", "camreset_copyright_disp_init_h0_h3_big6"):
         raise ValueError(f"Unsupported r57_mode: {r57_mode}")
-    if enable_r57 and r57_mode == "cardless_movie_v1_audio_spoof_copyright_guard":
+    if enable_r58 and r58_mode not in ("file_settings_camid_gamma_assist_tcub_big6", "slot1_dcim_prefix_log_gamma_guard", "camreset_file_gamma_tcub_init_h0_h3_big6"):
+        raise ValueError(f"Unsupported r58_mode: {r58_mode}")
+    if enable_r58 and r58_mode == "slot1_dcim_prefix_log_gamma_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r58_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r58-slot1-dcim-log-gamma-guard > /dev/console 2>&1\n"
+            "fx6_r58_sd_rc=$?\n"
+            "echo FX6_R58_SLOT1_DCIM_LOG_GAMMA_RC=$fx6_r58_sd_rc\n"
+            "echo FX6_R58_SLOT1_DCIM_LOG_GAMMA_EXIT rc=$fx6_r58_sd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r58_early_hook, 1)
+    elif enable_r57 and r57_mode == "cardless_movie_v1_audio_spoof_copyright_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -3912,6 +3930,68 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r58_meta: Optional[Dict[str, Any]] = None
+    if enable_r58:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r58_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r58"] = (
+            (
+                f"stage_r58=1\nr58_mode={r58_mode}\n"
+                f"mv_camid_reel_37char_st_dsc=1\n"
+                f"gamma_assist_log_lockout_lcd_only_display_lut_user16=1\n"
+                f"auto_review_off_tcub_6items_camreset=1\n"
+                f"milestone_31st_realhw_93rd_live=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r58_meta = {
+            "r58_mode": r58_mode,
+            "movie_file_settings_menu_path": "MENU -> Shooting -> [File] -> [File Settings]",
+            "movie_file_number_default": "Series",
+            "movie_file_name_formats": ["Standard", "Cam ID + Reel#", "Title", "Date + Title", "Title + Date"],
+            "movie_cam_id_range": "A..Z",
+            "movie_reel_num_range": [1, 999],
+            "movie_cam_pos_values": ["C", "L", "R"],
+            "movie_title_name_max_ascii_chars": 37,
+            "movie_title_name_default": "C",
+            "movie_folder_immutable": "PRIVATE/M4ROOT/CLIP",
+            "still_file_folder_menu_path": "MENU -> Shooting -> [File] -> [File/Folder Settings]",
+            "still_file_prefix_default": "DSC",
+            "still_file_prefix_leading_underscore_forbidden": True,
+            "still_folder_forms": ["Standard Form", "Date Form"],
+            "slot1_vault_dcim_mutation_blocked_erofs": True,
+            "gamma_display_assist_menu_path": "MENU -> Setup -> [Display Option] -> [Gamma Display Assist]",
+            "gamma_display_assist_default": "Off",
+            "gamma_display_assist_locked_off_when_log_on": True,
+            "gamma_display_assist_lcd_only_clean_hdmi": True,
+            "display_lut_default": "On",
+            "select_lut_menu_path": "MENU -> Exposure/Color -> [Color/Tone] -> [Select LUT]",
+            "select_lut_user_slots": 16,
+            "auto_review_default": "Off",
+            "tcub_menu_path": "MENU -> Shooting -> [TC/UB]",
+            "tcub_6items": [
+                "Time Code Preset",
+                "User Bit Preset",
+                "Time Code Format",
+                "Time Code Run",
+                "Time Code Make",
+                "User Bit Time Rec",
+            ],
+            "tcub_disp_setting_default": "TC",
+            "tcub_24p_pal_forces_ndf": True,
+            "wave44_survives_camera_settings_reset": True,
+            "wave44_restored_by_initialize_only": True,
+            "slot1_vault_read_only": True,
+            "slot1_vault_folder_mutation_events": 0,
+            "leading_underscore_prefix_events": 0,
+            "log_gamma_assist_bypass_events": 0,
+            "hdmi_clean_feed_assist_baked_pixels": 0,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -3962,6 +4042,7 @@ def build_stage_a_overlay(
         "r55_enabled": enable_r55,
         "r56_enabled": enable_r56,
         "r57_enabled": enable_r57,
+        "r58_enabled": enable_r58,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -4051,6 +4132,8 @@ def build_stage_a_overlay(
         stage_a_meta["r56"] = r56_meta
     if r57_meta is not None:
         stage_a_meta["r57"] = r57_meta
+    if r58_meta is not None:
+        stage_a_meta["r58"] = r58_meta
     return replacements, additions, stage_a_meta
 
 
@@ -4397,6 +4480,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R55_",
         "FX6_R56_",
         "FX6_R57_",
+        "FX6_R58_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -4707,6 +4791,15 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r57_lang: Optional[Dict[str, Any]] = None
     last_r57_bridge: Optional[Dict[str, Any]] = None
     r57_cardless_v1_copyright_rc: Optional[int] = None
+    last_r58_file_gamma_tcub_init: Optional[Dict[str, Any]] = None
+    last_r58_file_settings_camid_bridge: Optional[Dict[str, Any]] = None
+    last_r58_gamma_assist_display_lut_bridge: Optional[Dict[str, Any]] = None
+    last_r58_tcub_6items_nonreset_bridge: Optional[Dict[str, Any]] = None
+    last_r58_slot1_dcim_log_gamma_guard: Optional[Dict[str, Any]] = None
+    last_r58_camreset_file_gamma_tcub_h0_h3: Optional[Dict[str, Any]] = None
+    last_r58_lang: Optional[Dict[str, Any]] = None
+    last_r58_bridge: Optional[Dict[str, Any]] = None
+    r58_slot1_dcim_log_gamma_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -5412,6 +5505,26 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R57_CARDLESS_V1_COPYRIGHT_RC"), int):
                 r57_cardless_v1_copyright_rc = kv["FX6_R57_CARDLESS_V1_COPYRIGHT_RC"]
+        elif "FX6_R58_FILE_GAMMA_TCUB_INIT " in line:
+            last_r58_file_gamma_tcub_init = _parse_kv_ints(line.split("FX6_R58_FILE_GAMMA_TCUB_INIT ", 1)[1])
+        elif "FX6_R58_FILE_SETTINGS_CAMID_BRIDGE " in line:
+            last_r58_file_settings_camid_bridge = _parse_kv_ints(line.split("FX6_R58_FILE_SETTINGS_CAMID_BRIDGE ", 1)[1])
+        elif "FX6_R58_GAMMA_ASSIST_DISPLAY_LUT_BRIDGE " in line:
+            last_r58_gamma_assist_display_lut_bridge = _parse_kv_ints(line.split("FX6_R58_GAMMA_ASSIST_DISPLAY_LUT_BRIDGE ", 1)[1])
+        elif "FX6_R58_TCUB_6ITEMS_NONRESET_BRIDGE " in line:
+            last_r58_tcub_6items_nonreset_bridge = _parse_kv_ints(line.split("FX6_R58_TCUB_6ITEMS_NONRESET_BRIDGE ", 1)[1])
+        elif "FX6_R58_SLOT1_DCIM_LOG_GAMMA_GUARD " in line:
+            last_r58_slot1_dcim_log_gamma_guard = _parse_kv_ints(line.split("FX6_R58_SLOT1_DCIM_LOG_GAMMA_GUARD ", 1)[1])
+        elif "FX6_R58_CAMRESET_FILE_GAMMA_TCUB_H0_H3 " in line:
+            last_r58_camreset_file_gamma_tcub_h0_h3 = _parse_kv_ints(line.split("FX6_R58_CAMRESET_FILE_GAMMA_TCUB_H0_H3 ", 1)[1])
+        elif "FX6_R58_LANG_TELEMETRY " in line:
+            last_r58_lang = _parse_kv_ints(line.split("FX6_R58_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R58_BRIDGE " in line:
+            last_r58_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R58_BRIDGE ", 1)[1])
+        elif "FX6_R58_SLOT1_DCIM_LOG_GAMMA_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R58_SLOT1_DCIM_LOG_GAMMA_RC"), int):
+                r58_slot1_dcim_log_gamma_rc = kv["FX6_R58_SLOT1_DCIM_LOG_GAMMA_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -6205,6 +6318,32 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r57_bridge or {},
         }
 
+    r58_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r58_file_gamma_tcub_init,
+            last_r58_file_settings_camid_bridge,
+            last_r58_gamma_assist_display_lut_bridge,
+            last_r58_tcub_6items_nonreset_bridge,
+            last_r58_slot1_dcim_log_gamma_guard,
+            last_r58_camreset_file_gamma_tcub_h0_h3,
+            last_r58_lang,
+            last_r58_bridge,
+        )
+    ):
+        r58_telemetry = {
+            "slot1_dcim_log_gamma_rc": r58_slot1_dcim_log_gamma_rc,
+            "file_gamma_tcub_init": last_r58_file_gamma_tcub_init or {},
+            "file_settings_camid_bridge": last_r58_file_settings_camid_bridge or {},
+            "gamma_assist_display_lut_bridge": last_r58_gamma_assist_display_lut_bridge or {},
+            "tcub_6items_nonreset_bridge": last_r58_tcub_6items_nonreset_bridge or {},
+            "slot1_dcim_log_gamma_guard": last_r58_slot1_dcim_log_gamma_guard or {},
+            "camreset_file_gamma_tcub_h0_h3": last_r58_camreset_file_gamma_tcub_h0_h3 or {},
+            "lang_telemetry": last_r58_lang or {},
+            "stage_b_bridge": last_r58_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -6259,6 +6398,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r55_telemetry": r55_telemetry,
         "r56_telemetry": r56_telemetry,
         "r57_telemetry": r57_telemetry,
+        "r58_telemetry": r58_telemetry,
     }
 
 
@@ -6374,6 +6514,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r56"
     if args.round >= 57:
         tmp_prefix = "fx6-r57"
+    if args.round >= 58:
+        tmp_prefix = "fx6-r58"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -6441,8 +6583,12 @@ def run_once(args: argparse.Namespace) -> int:
         r55_mode = getattr(args, "r55_mode", "auto_slow_6locks_hdmi_reccontrol_big6")
         r56_mode = getattr(args, "r56_mode", "apsc_s35_hd_face_eye_af_version_big6")
         r57_mode = getattr(args, "r57_mode", "release_wo_card_lens_audio_meter_copyright_big6")
+        r58_mode = getattr(args, "r58_mode", "file_settings_camid_gamma_assist_tcub_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone31stRealHw93rdRunWave44MovieStillFileSettingsCamId37CharGammaDispAssistLogLockoutDisplayLutUser16AutoReviewOffTcub6Items+r58_mode={r58_mode}+lang={lang})"
+                if args.round >= 58
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone30thRealHw90thRunWave43ReleaseWoCardLensDispAudioMeterV2Copyright46Char+r57_mode={r57_mode}+lang={lang})"
                 if args.round >= 57
                 else (
@@ -6635,6 +6781,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -6719,6 +6866,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r56_mode=r56_mode,
                 enable_r57=(args.round >= 57),
                 r57_mode=r57_mode,
+                enable_r58=(args.round >= 58),
+                r58_mode=r58_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -6882,6 +7031,7 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R53_MYMENU_6OPS_EXIT" in txt
                     or "FX6_R56_APSC_4K_BODYDATA_EXIT" in txt
                     or "FX6_R57_CARDLESS_V1_COPYRIGHT_EXIT" in txt
+                    or "FX6_R58_SLOT1_DCIM_LOG_GAMMA_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -6947,6 +7097,7 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R53_MYMENU_6OPS_EXIT" in serial_text
             or "FX6_R56_APSC_4K_BODYDATA_EXIT" in serial_text
             or "FX6_R57_CARDLESS_V1_COPYRIGHT_EXIT" in serial_text
+            or "FX6_R58_SLOT1_DCIM_LOG_GAMMA_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -7027,6 +7178,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r55_mode": r55_mode if args.round >= 55 else None,
             "r56_mode": r56_mode if args.round >= 56 else None,
             "r57_mode": r57_mode if args.round >= 57 else None,
+            "r58_mode": r58_mode if args.round >= 58 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -7091,6 +7243,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r55_telemetry": milestones.get("r55_telemetry") if args.round >= 55 else None,
             "r56_telemetry": milestones.get("r56_telemetry") if args.round >= 56 else None,
             "r57_telemetry": milestones.get("r57_telemetry") if args.round >= 57 else None,
+            "r58_telemetry": milestones.get("r58_telemetry") if args.round >= 58 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -7150,7 +7303,8 @@ def main() -> int:
     # r54_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54]
     # r55_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55]
     # r56_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57], required=True)
+    # r57_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -7182,6 +7336,7 @@ def main() -> int:
     ap.add_argument("--r55-mode", type=str, choices=["auto_slow_6locks_hdmi_reccontrol_big6", "prerequisite_lockout_injection_guard", "camreset_vs_initialize_h0_h3_integrated_big6"], default="auto_slow_6locks_hdmi_reccontrol_big6")
     ap.add_argument("--r56-mode", type=str, choices=["apsc_s35_hd_face_eye_af_version_big6", "apsc_4k_raw_cleanhdmi_bodydata_flash_guard", "camreset_face_memory_initialize_h0_h3_big6"], default="apsc_s35_hd_face_eye_af_version_big6")
     ap.add_argument("--r57-mode", type=str, choices=["release_wo_card_lens_audio_meter_copyright_big6", "cardless_movie_v1_audio_spoof_copyright_guard", "camreset_copyright_disp_init_h0_h3_big6"], default="release_wo_card_lens_audio_meter_copyright_big6")
+    ap.add_argument("--r58-mode", type=str, choices=["file_settings_camid_gamma_assist_tcub_big6", "slot1_dcim_prefix_log_gamma_guard", "camreset_file_gamma_tcub_init_h0_h3_big6"], default="file_settings_camid_gamma_assist_tcub_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

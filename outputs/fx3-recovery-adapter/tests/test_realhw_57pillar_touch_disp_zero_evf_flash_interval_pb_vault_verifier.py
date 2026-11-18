@@ -1812,6 +1812,28 @@ class TestPhase320StandaloneMasterAndCli(unittest.TestCase):
         self.assertIn(57, discovered)
         self.assertGreaterEqual(len(fx3_recovery.MASTER_57_PILLAR_IDS), 57)
 
+    def test_91_donorless_ci_mock_master57_and_cli_exit_zero(self) -> None:
+        from fx3_recovery import files as files_mod
+
+        clean_env = _clean_env()
+        with mock.patch.dict(os.environ, clean_env, clear=True):
+            for mock_roots in ((None,), (Path("/nonexistent-donor-root"),)):
+                with mock.patch.object(files_mod, "iter_donor_work_roots", return_value=mock_roots):
+                    rep = evaluate_realhw_57pillar_recovery_master()
+                    self.assertTrue(rep.all_passed, rep.errors)
+                    self.assertEqual(rep.pillars_passed, 57)
+                    self.assertEqual(rep.verification_mode, "CLEAN_ROOM_SYNTHETIC")
+                    buf = io.StringIO()
+                    with mock.patch.object(
+                        sys, "argv", ["fx3_recovery", "verify-57pillar-recovery", "--json"]
+                    ), redirect_stdout(buf):
+                        rc = cli_main.main()
+                    self.assertEqual(rc, 0, buf.getvalue())
+                    payload = json.loads(buf.getvalue())
+                    self.assertTrue(payload["all_passed"])
+                    self.assertEqual(payload["pillars_passed"], 57)
+                    self.assertEqual(payload["verification_mode"], "CLEAN_ROOM_SYNTHETIC")
+
 
 if __name__ == "__main__":
     unittest.main()

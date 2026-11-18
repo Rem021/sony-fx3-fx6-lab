@@ -3108,6 +3108,43 @@ def _apply_master57_fault_injection(pillar: MasterPillarStatus) -> MasterPillarS
     )
 
 
+def _master57_local_donors_available() -> bool:
+    """Return True only when legacy BODYDATA.DAT and all 17 Wave-55 local donors exist as files."""
+    required_relpaths: Tuple[str, ...] = (
+        "sony-firmware-20261024/fx3-7.02-BODYDATA.DAT",
+        P320_DONOR_FX3_APPFW_702_RELPATH,
+        P320_DONOR_FX6_APPFW_601_RELPATH,
+        P320_DONOR_FX3_BACKUP_BIN_RELPATH,
+        P320_DONOR_FX3_UXC_EN_F_RELPATH,
+        P320_DONOR_FX3_UXC_SC_F_RELPATH,
+        P320_DONOR_FX3_UXC_TC_F_RELPATH,
+        P320_DONOR_FX3_UXC_JA_F_RELPATH,
+        P320_DONOR_FX3_UXC_EN_RELPATH,
+        P320_DONOR_FX3_UXC_SC_RELPATH,
+        P320_DONOR_FX3_UXC_TC_RELPATH,
+        P320_DONOR_FX3_UXC_JA_RELPATH,
+        P320_DONOR_FX3_UXC_EN_G_RELPATH,
+        P320_DONOR_FX3_UXC_SC_G_RELPATH,
+        P320_DONOR_FX3_UXC_TC_G_RELPATH,
+        P320_DONOR_FX3_UXC_JA_G_RELPATH,
+        P320_DONOR_FX6_UXC_EN_RELPATH,
+        P320_DONOR_FX6_UXC_EN_2_RELPATH,
+    )
+    for relpath in required_relpaths:
+        try:
+            resolved = resolve_donor_path(relpath, require_file=True)
+        except Exception:
+            return False
+        if resolved is None:
+            return False
+        try:
+            if not resolved.is_file():
+                return False
+        except OSError:
+            return False
+    return True
+
+
 def evaluate_realhw_57pillar_recovery_master(
     *,
     force_clean_room: Optional[bool] = None,
@@ -3126,6 +3163,8 @@ def evaluate_realhw_57pillar_recovery_master(
     resolved_clean_room: Optional[bool] = (
         True if _is_clean_room_forced(force_clean_room) else force_clean_room
     )
+    if resolved_clean_room is None and not _master57_local_donors_available():
+        resolved_clean_room = True
     kw: Dict[str, Any] = (
         {"force_clean_room": resolved_clean_room} if resolved_clean_room is not None else {}
     )

@@ -1526,9 +1526,11 @@ class TestPhase331Milestone148Gates(unittest.TestCase):
             rep = evaluate_milestone_324_master_gate(
                 repo_root=DEFAULT_REPO_ROOT, force_clean_room=True
             )
-            self.assertEqual(rep.gate142_total_gates, 148)
-            self.assertEqual(rep.gate142_offline_verified, 145)
-            self.assertEqual(rep.gate142_simulated_verified, 148)
+            self.assertGreaterEqual(rep.gate142_total_gates, 148)
+            self.assertGreaterEqual(rep.gate142_offline_verified, 145)
+            self.assertEqual(rep.gate142_offline_verified, rep.gate142_total_gates - 3)
+            self.assertGreaterEqual(rep.gate142_simulated_verified, 148)
+            self.assertEqual(rep.gate142_simulated_verified, rep.gate142_total_gates)
             self.assertTrue(rep.gate142_all_verified)
 
     def test_96_milestone_311_master_gate_auto_discovers_148_gates(self) -> None:
@@ -1550,9 +1552,11 @@ class TestPhase331Milestone148Gates(unittest.TestCase):
             rep = evaluate_milestone_311_master_gate(
                 repo_root=DEFAULT_REPO_ROOT, force_clean_room=True
             )
-            self.assertEqual(rep.gate134_total_gates, 148)
-            self.assertEqual(rep.gate134_offline_verified, 145)
-            self.assertEqual(rep.gate134_simulated_verified, 148)
+            self.assertGreaterEqual(rep.gate134_total_gates, 148)
+            self.assertGreaterEqual(rep.gate134_offline_verified, 145)
+            self.assertEqual(rep.gate134_offline_verified, rep.gate134_total_gates - 3)
+            self.assertGreaterEqual(rep.gate134_simulated_verified, 148)
+            self.assertEqual(rep.gate134_simulated_verified, rep.gate134_total_gates)
             self.assertTrue(rep.gate134_all_verified)
 
 

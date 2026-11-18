@@ -1385,6 +1385,28 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-reco
   /usr/bin/python3 -B -m fx3_recovery verify-62pillar-recovery --force-clean-room --json
 ```
 
+## Phase 348（Pillar 63 / `63/63` 统一恢复总检里程碑）：Wave-61 `[FTP Transfer Func.]` `FTP`/`FTPES` 显式 TLS vs 零 `SFTP` / `9` 服务器槽位 / 休眠 `Transfer JPEG/HEIF Size` / `USB-LAN` 飞行模式旁路与 `Slot-1 AVF_INFO EROFS=30` 防火墙 / 白平衡 `Custom 1..3`、`Cine EI` 锁定与抗复位 `[Shutter AWB Lock]` / Movie `AF Transition Speed 1..7` & `AF Subj. Shift Sens. 1..5` 同等性 / App-Only `[Focus Map]` 辟谣 / 8 项抗复位 `[Marker Display]` 15 比例与 `[Peaking Display]` 4 色零 HDMI 隔离 vs FX6 `User Box`（`verify-63pillar-recovery` / `verify-pillar63-recovery` / `verify-pillar63-ftp-ftpes-customwb-afspeed-focusmap-marker-vault`）
+
+- **[`realhw_63pillar_ftp_ftpes_customwb_afspeed_focusmap_marker_vault_verifier.py`](fx3_recovery/realhw_63pillar_ftp_ftpes_customwb_afspeed_focusmap_marker_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-61）落地 **Phase 348 Pillar 63（`63/63`）** 并将全套恢复总检正式推进至 **`63/63`（`VERIFIED_63OF63_PILLAR_RECOVERY_MASTER`）**（`< 1.5s` 快速 CLI 预算、`< 4.0s` 标称、`< 6.0s` 并发上限，保持 `verify-22..62pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OVERALL_READY_FOR_HARDWARE_ATTACH = False`、`CROSS_MODEL_FLASH_AUTHORIZED = False`、`P348_AIRPLANE_MODE_FORCED_ON = True`、`P348_USBLAN_BENCH_LOCKED_OFF = True`、`P348_RF_PACKETS_TRANSMITTED = 0`、`P348_USBLAN_PACKETS_TRANSMITTED = 0`、`P348_HDMI_MARKER_PEAKING_LEAK_PIXELS = 0`、`P348_SLOT1_FORMAT_HARD_LOCKED = True`、`P348_SLOT1_VAULT_EROFS_EOPNOTSUPP_ENFORCED = True`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02`（14 项）与 `FX6 6.01`（3 项）共 **17 项** Wave-61 供体（`< 2.0s` 预算且显式防护 `work_root is None`），并在 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时安全回退至 `CLEAN_ROOM_SYNTHETIC`：
+  - **Sub-Pillar 63A（`[FTP Transfer Func.]` `FTP`/`FTPES` `9` 槽位 Passive-only、零 `SFTP`/休眠 `Transfer JPEG Size`、`USB-LAN` 飞行模式旁路、`Slot-1 AVF_INFO EROFS=30` 与 White Balance `Custom 1..3` / `Cine EI` / `Shockless WB` / `Shutter AWB Lock`）**：实证 `FX3 appFw.so` 对 `sftp`、`ftpes`、`passive_mode` 与 `Transfer JPEG Size` 均 `0` 命中（`EOPNOTSUPP=95`），支持 `Server 1..9`（抗 `[Camera Settings Reset]`、随 `[Reset Network Set.]`/`[Initialize]` 清除）、`FTP` 与 `FTPES`（`FTPS` Explicit TLS `SET_SERVER_SECURE_PROTOCOL_{OFF,ON}`）且仅限 Passive Mode、`Slot 1` 根目录 `cacert.pem`（`<= 1 MB`），对照 `FX6` `Server Settings1..3` + `Active/Passive` + `Slot B` `certification.pem` + `Auto Upload (Proxy): Chunk`；封堵 `[Airplane Mode] = On` 仍放行有线 `USB-LAN` FTP（`USB_ETHER`）的零射频旁路（台架强制双锁 `Airplane Mode = On` + `USB-LAN = Off`），并强制对 `save_ftp_transfer_list_to_media` / `CONTENT_INFO_FTP_TRANS_STAT_*` / `AVF_INFO`（`base 0x0a13`）写入 `Slot 1` 返回 `EROFS=30`；精确建模 White Balance `2500K..9900K`、`Custom 1..3`（不进 `CAMSET*.DAT`、`Log != Off`/`S-Log3`/`PPLUT1..4` 下 `Custom WB Error`）、`Cine EI`/`Cine EI Quick` 锁定 `Auto`/`Underwater Auto`、`Shockless WB`（`Off/1[def]/2/3` 直接色温/tint 微调旁路）与 Still-only **抗复位** `[Shutter AWB Lock]` vs `FX6` `WHT BAL PRST/A/B` + `Memory A..H` + `ATW Speed 1..5`。
+  - **Sub-Pillar 63B（Movie `AF Transition Speed 1..7` & `AF Subj. Shift Sens. 1..5` 同等性、`Ver. 6.00+` App-Only `[Focus Map]` 辟谣与 8 项抗复位 `[Marker Display]` 15 比例 + `[Peaking Display]` 4 色 Clean-HDMI 隔离）**：实证修复 `FX6` 认知偏差——`ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 均为 **`AF Transition Speed = 1..7`** 与 **`AF Subj. Shift Sensitivity = 1..5`**（`FX6 appFw.so` 对 `6`/`7` 为 `0` 命中），并检定 `[AF Assist]`（`SELP1650`/`SEL18200LE` 禁用）；证伪机内 `[Focus Map]`（`FX3 appFw.so` 零 `BKID_APP_USER_MENU_FOCUS_MAP`/`ASSIGNABLE_SWITCH_FOCUS_MAP`，机内 `EOPNOTSUPP=95`；仅 `Ver. 6.00+` 通过 *Monitor & Control* `Ver. 2.1.0+` 远程遥测提供且 `>= 150 fps` 如 `200/240fps` 锁定 vs `FX6` 原生机内 `<= 6 fps`/`>= 150 fps` 锁定）；强制 5 项 `[Marker Display]`（含 `Off` + **15 种** `Aspect Marker` 比例 `9:16..2.39:1` = `16` 态、在 `[Focus Magnifier]` 下自动隐藏）与 3 项 `[Peaking Display]`（`High/Mid/Low`、`Red/Yellow/Blue/White`）共 **8 项**全员抗 `[Camera Settings Reset]` 且 Clean-HDMI 输出 **`0 px`**，对照 `FX6` `Aspect Mask 0..15`、`User Box` 像素框（`Width 3..479`/`Height 3..269`/`H -476..+476`/`V -266..+266`）与 `B&W` 峰值颜色，叠加 Stage-B `/tmp` 隔离、`Backup.bin H0 == H3`（`16/16`）与 `Slot-1 EROFS=30`。
+  - **统一 `63/63` 恢复总检聚合器与 CLI（`evaluate_realhw_63pillar_recovery_master` / `evaluate_63pillar_recovery_master` / `verify-63pillar-recovery` / `verify-pillar63-recovery` / `verify-pillar63-ftp-ftpes-customwb-afspeed-focusmap-marker-vault`）**：并发聚合 `Pillars 1..62` + `Pillar 63`，自动对接 Milestone 311 / 324 最高支柱发现接口；[`tests/test_realhw_63pillar_ftp_ftpes_customwb_afspeed_focusmap_marker_vault_verifier.py`](tests/test_realhw_63pillar_ftp_ftpes_customwb_afspeed_focusmap_marker_vault_verifier.py) 提供 **`>= 100` 项**四模单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-pillar63-ftp-ftpes-customwb-afspeed-focusmap-marker-vault --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-pillar63-recovery --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-63pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-63pillar-recovery --force-clean-room --json
+```
+
+
 
 
 

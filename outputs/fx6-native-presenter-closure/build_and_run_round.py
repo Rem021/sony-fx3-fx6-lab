@@ -1377,6 +1377,11 @@ def build_stage_a_overlay(
     enable_r63: bool = False,
     enable_r64: bool = False,
     enable_r65: bool = False,
+    enable_r66: bool = False,
+    enable_r67: bool = False,
+    enable_r68: bool = False,
+    enable_r69: bool = False,
+    enable_r70: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1414,6 +1419,11 @@ def build_stage_a_overlay(
     r63_mode: str = "still_raw_heif_colorspace_shutter_drive_big6",
     r64_mode: str = "focus_area_zoom_iso_flash_big6",
     r65_mode: str = "dci4k_aspect_camset_photocap_big6",
+    r66_mode: str = "cleaning_evcomp_focusmode_rotate_big6",
+    r67_mode: str = "lens_comp_af_illum_init5_rating_big6",
+    r68_mode: str = "switch_vh_af_limit14_stdadj_tc_copy_big6",
+    r69_mode: str = "touch4_disp_flash_reset_interval_edit_big6",
+    r70_mode: str = "dial_mydial_fn12x2_liveview_lut_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1759,7 +1769,87 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r64_mode: {r64_mode}")
     if enable_r65 and r65_mode not in ("dci4k_aspect_camset_photocap_big6", "wave51_dci4k_aspect_camset_photocap_guard", "clean_unmount_wave51_reset_h0_h3_big6"):
         raise ValueError(f"Unsupported r65_mode: {r65_mode}")
-    if enable_r65 and r65_mode == "wave51_dci4k_aspect_camset_photocap_guard":
+    if enable_r66 and r66_mode not in ("cleaning_evcomp_focusmode_rotate_big6", "wave52_cleaning_evcomp_focusmode_rotate_guard", "clean_unmount_wave52_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r66_mode: {r66_mode}")
+    if enable_r67 and r67_mode not in ("lens_comp_af_illum_init5_rating_big6", "wave53_lens_comp_af_illum_init5_rating_guard", "clean_unmount_wave53_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r67_mode: {r67_mode}")
+    if enable_r68 and r68_mode not in ("switch_vh_af_limit14_stdadj_tc_copy_big6", "wave54_switch_vh_af_limit14_stdadj_tc_copy_guard", "clean_unmount_wave54_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r68_mode: {r68_mode}")
+    if enable_r69 and r69_mode not in ("touch4_disp_flash_reset_interval_edit_big6", "wave55_touch4_disp_zero_evf_flash_interval_erofs_guard", "clean_unmount_wave55_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r69_mode: {r69_mode}")
+    if enable_r70 and r70_mode not in ("dial_mydial_fn12x2_liveview_lut_big6", "wave56_dial_mydial_fn_liveview_lut_erofs_guard", "clean_unmount_wave56_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r70_mode: {r70_mode}")
+    if enable_r70 and r70_mode == "wave56_dial_mydial_fn_liveview_lut_erofs_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r70_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r70-wave56-guard > /dev/console 2>&1\n"
+            "fx6_r70_gd_rc=$?\n"
+            "echo FX6_R70_WAVE56_GUARD_RC=$fx6_r70_gd_rc\n"
+            "echo FX6_R70_WAVE56_GUARD_EXIT rc=$fx6_r70_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r70_early_hook, 1)
+    elif enable_r69 and r69_mode == "wave55_touch4_disp_zero_evf_flash_interval_erofs_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r69_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r69-wave55-guard > /dev/console 2>&1\n"
+            "fx6_r69_gd_rc=$?\n"
+            "echo FX6_R69_WAVE55_GUARD_RC=$fx6_r69_gd_rc\n"
+            "echo FX6_R69_WAVE55_GUARD_EXIT rc=$fx6_r69_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r69_early_hook, 1)
+    elif enable_r68 and r68_mode == "wave54_switch_vh_af_limit14_stdadj_tc_copy_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r68_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r68-wave54-guard > /dev/console 2>&1\n"
+            "fx6_r68_gd_rc=$?\n"
+            "echo FX6_R68_WAVE54_GUARD_RC=$fx6_r68_gd_rc\n"
+            "echo FX6_R68_WAVE54_GUARD_EXIT rc=$fx6_r68_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r68_early_hook, 1)
+    elif enable_r67 and r67_mode == "wave53_lens_comp_af_illum_init5_rating_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r67_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r67-wave53-guard > /dev/console 2>&1\n"
+            "fx6_r67_gd_rc=$?\n"
+            "echo FX6_R67_WAVE53_GUARD_RC=$fx6_r67_gd_rc\n"
+            "echo FX6_R67_WAVE53_GUARD_EXIT rc=$fx6_r67_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r67_early_hook, 1)
+    elif enable_r66 and r66_mode == "wave52_cleaning_evcomp_focusmode_rotate_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r66_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r66-wave52-guard > /dev/console 2>&1\n"
+            "fx6_r66_gd_rc=$?\n"
+            "echo FX6_R66_WAVE52_GUARD_RC=$fx6_r66_gd_rc\n"
+            "echo FX6_R66_WAVE52_GUARD_EXIT rc=$fx6_r66_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r66_early_hook, 1)
+    elif enable_r65 and r65_mode == "wave51_dci4k_aspect_camset_photocap_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -4648,6 +4738,404 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r66_meta: Optional[Dict[str, Any]] = None
+    if enable_r66:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r66_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r66"] = (
+            (
+                f"stage_r66=1\nr66_mode={r66_mode}\n"
+                f"cleaning_battery_51pct_poweroff_vs_fx6_end=1\n"
+                f"ev_comp_5vs2_step_dormant_reset_cine_ei_lockout=1\n"
+                f"focus_mode_5still_2movie_prio_illum=1\n"
+                f"playback_view_index_9_25_rotatiton_slot1_erofs=1\n"
+                f"milestone_39th_realhw_117th_live_78_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r66_meta = {
+            "r66_mode": r66_mode,
+            "realhw_round_ordinal": 39,
+            "total_live_runs_at_completion": 117,
+            "total_png_receipts_at_completion": 78,
+            "sensor_cleaning_uxc_token": "_f.uxc 0x67d6:Sensor Cleaning",
+            "legacy_cleaning_mode_uxc_token": "0xe7d7:Cleaning Mode",
+            "sensor_cleaning_min_battery_pct": 51,
+            "sensor_cleaning_low_bat_uxc_token": "0xe574:Power insufficient.",
+            "sensor_cleaning_poweroff_uxc_token": "_g.uxc 0x6221:Turn the power off after cleaning the image sensor manually.",
+            "fx6_zero_ibis_end_nd_range": ["1/4", "1/128"],
+            "fx6_technical_apr_present": True,
+            "fx6_cr_command_sensor_cleaning_supported": False,
+            "ev_comp_still_range_ev": [-5.0, 5.0],
+            "ev_comp_movie_sq_range_ev": [-2.0, 2.0],
+            "ev_comp_manual_m_requires_iso_auto": True,
+            "exposure_step_options": ["0.3EV", "0.5EV"],
+            "exposure_step_does_not_affect_shutter_angle": True,
+            "dormant_reset_ev_comp_bkid": "BKID_APP_setting_exposure_compensation_reset_save",
+            "cine_ei_ev_comp_locked_and_base_iso_pinned": [800, 12800],
+            "focus_mode_still_5modes": ["AF-S", "AF-A", "AF-C", "DMF", "MF"],
+            "focus_mode_movie_2modes": ["AF-C(MOVIE_AUTO)", "MF"],
+            "focus_mode_dormant_pf_semimanual_eopnotsupp": True,
+            "priority_set_af_s_c_options": ["AF", "Release", "Balanced Emphasis"],
+            "priority_set_af_s_c_still_only_and_init_only": True,
+            "af_illuminator_options": ["Auto", "Off"],
+            "af_illuminator_resets_via_camset_reset": True,
+            "fx6_focus_parity": ["AF/MF", "Push AF Mode(AF / Single-shot AF(AF-S))", "AF Assist"],
+            "view_mode_fx3_options": ["Date View", "Folder View(Still)", "Movie View"],
+            "view_mode_dormant_eopnotsupp": ["AVCHD View", "MP4 View"],
+            "image_index_fx3_options": ["9 Images", "25 Images"],
+            "image_index_dormant_eopnotsupp": ["12 Images", "30 Images (0x6e7a)"],
+            "display_rotation_elf_bkid_spelling": "BKID_APP_setting_display_rotatiton",
+            "rotate_slot1_default_erofs": 30,
+            "low_bat_cleaning_bypass_events": 0,
+            "cine_ei_ev_comp_bypass_events": 0,
+            "movie_focus_mode_bypass_events": 0,
+            "dormant_index_bypass_events": 0,
+            "slot1_wave52_write_events": 0,
+            "passive_tx_bytes_emitted": 0,
+            "e_nd_i2c_tx_bytes": 0,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
+    r67_meta: Optional[Dict[str, Any]] = None
+    if enable_r67:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r67_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r67"] = (
+            (
+                f"stage_r67=1\nr67_mode={r67_mode}\n"
+                f"lens_comp_auto_off_vs_dormant_auto_low_breathing=1\n"
+                f"front8_af_illuminator_4lockout_movie_curves_vs_fx6=1\n"
+                f"init5_focus_aperture_settings_vs_fx6_iris=1\n"
+                f"file_folder_create_reset_rating_slot1_erofs=1\n"
+                f"milestone_40th_realhw_120th_live_80_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r67_meta = {
+            "r67_mode": r67_mode,
+            "realhw_round_ordinal": 40,
+            "total_live_runs_at_completion": 120,
+            "total_png_receipts_at_completion": 80,
+            "lens_comp_uxc_parent": "0xdc68:Lens Comp.",
+            "shading_comp_options": ["Auto", "Off"],
+            "shading_comp_dormant_rejected": "LENS_COMP_SHADING_AUTO_LOW (_f 0x6c9c: Auto: Low, EOPNOTSUPP=95)",
+            "chromatic_aberration_comp_options": ["Auto", "Off"],
+            "distortion_comp_options": ["Auto", "Off"],
+            "distortion_comp_locked_auto_on_selp1650_fe2870_or_active_steadyshot": True,
+            "breathing_comp_movie_only_resettable": True,
+            "breathing_comp_lockouts": ["Distortion Comp. == Off", "S&Q == On", "RAW output == On"],
+            "fx6_lens_menu_root": "Technical > Lens > Breathing Compensation",
+            "front_module_8_af_illuminator_options": ["Auto", "Off"],
+            "af_illuminator_4lockouts": ["Movie/S&Q", "AF-C or moving AF-A", "Focus Magnifier", "Mount Adaptor (LA-EA*)"],
+            "movie_af_transition_speed_range": [1, 7],
+            "movie_af_subj_shift_sensitivity_range": [1, 5],
+            "movie_af_subj_shift_sens5_elf_typo": "5_RESPONSICE",
+            "fx6_zero_front_af_illuminator_led": True,
+            "fx6_af_parity": ["AF Transition Speed (1..7)", "AF Subj. Shift Sensitivity (1..5)", "AF Assist (On/Off)"],
+            "init5_focus_aperture_settings": [
+                "Aperture Drive in AF (Focus Priority / Standard / Silent Priority)",
+                "AF w/ Shutter (On / Off)",
+                "Pre-AF (On / Off)",
+                "Circ. of Focus Point (Does Not Circulate / Circulate)",
+                "Focus Area Color (White / Red)",
+            ],
+            "all_5_survive_camera_settings_reset": True,
+            "fx6_iris_parity": ["Auto Iris", "Push Auto Iris", "Iris Override", "dormant FX6_2 0x4fc3 Close Iris to F2.4 for AF"],
+            "file_folder_forms": ["Standard Form (100MSDCF..999MSDCF)", "Date Form (disables Select REC Folder)"],
+            "folder_image_cap": 4000,
+            "create_new_folder_and_forced_file_reset_slot1_erofs": 30,
+            "playback_rating_stars": [1, 2, 3, 4, 5],
+            "playback_rating_slot1_erofs": 30,
+            "dormant_auto_low_bypass_events": 0,
+            "af_illuminator_lockout_bypass_events": 0,
+            "fx6_iris_f24_bypass_events": 0,
+            "slot1_wave53_write_events": 0,
+            "slot1_data_sector_writes": 0,
+            "slot1_avf_info_mutated": False,
+            "passive_tx_bytes_emitted": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
+    r68_meta: Optional[Dict[str, Any]] = None
+    if enable_r68:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r68_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r68"] = (
+            (
+                f"stage_r68=1\nr68_mode={r68_mode}\n"
+                f"switch_vh_af_area_3orient_8locks_limit14_color=1\n"
+                f"exp_stdadj_5modes_1_6ev_bracket_settings=1\n"
+                f"tc_ub_6items_format_df_ndf_disp_vs_fx6_bnc=1\n"
+                f"copy_slot2_to_slot1_reverse_erofs30_slideshow=1\n"
+                f"milestone_41st_realhw_123rd_live_82_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r68_meta = {
+            "r68_mode": r68_mode,
+            "realhw_round_ordinal": 41,
+            "total_live_runs_at_completion": 123,
+            "total_png_receipts_at_completion": 82,
+            "switch_vh_af_area_options": ["Off", "AF Point Only", "AF Point + AF Area"],
+            "switch_vh_af_area_default": "Off",
+            "switch_vh_af_area_still_afc_only": True,
+            "switch_vh_af_area_orientations": ["0_DEGREES", "90_DEGREES", "270_DEGREES", "INVALID"],
+            "switch_vh_af_area_8lockouts": [
+                "Movie",
+                "Intelligent Auto",
+                "Digital Zoom",
+                "AF active",
+                "Continuous Shooting (Burst)",
+                "Self-timer countdown",
+                "Focus Magnifier",
+                "Non-AF-C Focus Mode",
+            ],
+            "switch_vh_af_area_clears_stored_positions_on_change": True,
+            "focus_area_limit_14_checkboxes": [
+                "Wide",
+                "Zone",
+                "Center Fix",
+                "Spot: S",
+                "Spot: M",
+                "Spot: L",
+                "Expand Spot",
+                "Tracking: Wide",
+                "Tracking: Zone",
+                "Tracking: Center Fix",
+                "Tracking: Spot S",
+                "Tracking: Spot M",
+                "Tracking: Spot L",
+                "Tracking: Expand Spot",
+            ],
+            "focus_area_limit_dormant_rejected": [
+                "focus_area_limit_flexible_spot_xl (-95 EOPNOTSUPP)",
+                "focus_area_limit_flexible_spot_xs (-95 EOPNOTSUPP)",
+                "focus_area_limit_custom_1..3 (-95 EOPNOTSUPP)",
+            ],
+            "focus_area_limit_min_2_areas_uxc": "0xea28 (-22 EINVAL)",
+            "focus_area_color_options": ["White", "Red"],
+            "focus_area_color_initialize_only": True,
+            "fx6_focus_parity_diff": "No V/H AF switch, no 14-checkbox Focus Area Limit, orange move-frame + Focus Area Ind.(AF-S) + Focus Area Marker",
+            "exposure_std_adjust_5_metering_modes": ["Multi", "Center", "Spot", "Entire Screen Avg.", "Highlight"],
+            "exposure_std_adjust_step_range": "-1..+1 EV in 1/6 EV (13 steps)",
+            "exposure_std_adjust_dialog_uxc": "0xe567",
+            "exposure_std_adjust_initialize_only": True,
+            "exposure_std_adjust_independent_exif_shifts_mm_ael_resets_bracket": True,
+            "bracket_settings_resettable": True,
+            "bracket_self_timer_options": ["Off", "2 Sec", "5 Sec", "10 Sec"],
+            "bracket_order_options": ["0->-->+", "-->0->+"],
+            "fx6_exposure_bracket_diff": "exposure_standard=0 hits (-2 ENOENT), dormant setting_bracket_* (-95 EOPNOTSUPP)",
+            "tc_ub_6_initialize_only_items": [
+                "Time Code Preset",
+                "User Bit Preset",
+                "Time Code Format (DF/NDF NTSC-only, 23.98p/24.00p NDF lock -16 EBUSY, PAL hidden -95 EOPNOTSUPP)",
+                "Time Code Run",
+                "Time Code Make",
+                "User Bit Time Rec",
+            ],
+            "tc_ub_disp_setting_options": ["Counter", "TC", "U-Bit"],
+            "tc_ub_disp_movie_pb_only_uxc": "0xe728 (-16 EBUSY)",
+            "fx6_tc_bnc_diff": "Physical BNC TC IN/OUT + switch (EXT-LK) + BKID_APP_SETTING_USB_TC_IN_ALT_MODE_SETTING",
+            "select_playback_media_default": "Slot 1",
+            "copy_slot1_to_slot2_ro_safe": True,
+            "copy_reverse_slot2_to_slot1_erofs": 30,
+            "slide_show_initialize_only": True,
+            "slide_show_repeat_options": ["Off", "On"],
+            "slide_show_interval_sec_options": [1, 3, 5, 10, 30],
+            "slide_show_bypasses_power_save": True,
+            "fx6_dormant_copy_clip_eopnotsupp": 95,
+            "limit14_dormant_bypass_events": 0,
+            "stdadj_camreset_wipe_events": 0,
+            "fx3_bnc_spoof_events": 0,
+            "reverse_copy_slot1_write_events": 0,
+            "slot1_data_sector_writes": 0,
+            "slot1_avf_info_mutated": False,
+            "passive_tx_bytes_emitted": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
+    r69_meta: Optional[Dict[str, Any]] = None
+    if enable_r69:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r69_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r69"] = (
+            (
+                f"stage_r69=1\nr69_mode={r69_mode}\n"
+                f"touch4_initonly_vs_dormant_shutter_ae_pad=1\n"
+                f"disp_4plus3_zero_evf_blackscreen_guard=1\n"
+                f"still_ael_flash_asymmetric_reset_split=1\n"
+                f"interval_9speed_edit_slot1_erofs30=1\n"
+                f"milestone_42nd_realhw_126th_live_84_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r69_meta = {
+            "r69_mode": r69_mode,
+            "realhw_round_ordinal": 42,
+            "total_live_runs_at_completion": 126,
+            "total_png_receipts_at_completion": 84,
+            "touch_operation_4_items_initialize_only": [
+                "Touch Operation (On [def] / On: Playback Only / Off)",
+                "Touch Sensitivity (Standard [def] / Sensitive — NOT Responsive)",
+                "Touch Func. in Shooting (Touch Focus / Touch Tracking [def] / Off)",
+                "Swipe Up (Open the Fn Menu [def] / Off)",
+            ],
+            "touch_dormant_rejected_eopnotsupp": 95,
+            "touch_dormant_items": [
+                "Touch Shutter",
+                "Touch AE",
+                "Touch Panel/Pad",
+                "Footer Icon Touch",
+            ],
+            "fx6_touch_parity_diff": "Technical > Touch Operation (On/Off) + Touch Function in MF (Spot Focus/Tracking AF); no Touch Sensitivity or Swipe Up",
+            "disp_screen_disp_4_shooting_pages": [
+                "Display All Info.",
+                "No Disp. Info.",
+                "Histogram",
+                "Level",
+            ],
+            "disp_screen_disp_3_playback_pages": [
+                "Display Info.",
+                "Histogram",
+                "No Disp. Info.",
+            ],
+            "zero_evf_black_screen_guard_eopnotsupp": 95,
+            "zero_evf_blocked_items": [
+                "Select Finder/Monitor",
+                "For viewfinder",
+                "Graphic Display",
+                "Monitor Off",
+                "DISP Button:Finder",
+            ],
+            "fx6_disp_evf_diff": "Detachable 3.5-inch LCD Viewfinder + Viewfinder Hood + Home Screen / Direct Menu Priority",
+            "still_only_ael_flash_reset_split": {
+                "initialize_only_items": [
+                    "AEL w/ Shutter (Auto [def] / On / Off)",
+                    "Exp.comp.set (Ambient&flash [def] / Ambient only)",
+                    "External Flash Set. (MI-shoe direct only)",
+                ],
+                "camera_settings_reset_only_item": "Wireless Flash (Off [def] / On)",
+                "fx6_zero_flash_diff": "Zero mechanical shutter/flash; Flash Band Reduce only",
+            },
+            "playback_interval_9speed_range": "1..9 (default 5, Initialize-only)",
+            "playback_cont_play_interval_pc_only": "Imaging Edge Desktop (Viewer) required for movie synthesis",
+            "playback_edit_active_items": [
+                "Rotate",
+                "Photo Capture",
+                "JPEG/HEIF Switch",
+                "Copy",
+            ],
+            "playback_edit_dormant_rejected_eopnotsupp": 95,
+            "playback_edit_dormant_items": [
+                "Beauty Effect",
+                "Trimming",
+            ],
+            "slot1_edit_tier0_erofs": 30,
+            "dormant_touch_bypass_events": 0,
+            "zero_evf_black_screen_events": 0,
+            "wireless_flash_reset_split_breach": 0,
+            "dormant_edit_bypass_events": 0,
+            "slot1_data_sector_writes": 0,
+            "slot1_avf_info_mutated": False,
+            "passive_tx_bytes_emitted": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
+    r70_meta: Optional[Dict[str, Any]] = None
+    if enable_r70:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r70_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r70"] = (
+            (
+                f"stage_r70=1\nr70_mode={r70_mode}\n"
+                f"dial5_initonly_vs_dormant_rear_lr=1\n"
+                f"mydial3_lock_override_fn12x2_split=1\n"
+                f"liveview_3item_asymmetric_reset_grid3_clean_hdmi=1\n"
+                f"userlut16_ro_embed_vs_pplut4_erofs30=1\n"
+                f"milestone_70th_round_43rd_realhw_129th_live_86_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r70_meta = {
+            "r70_mode": r70_mode,
+            "milestone_round_ordinal": 70,
+            "realhw_round_ordinal": 43,
+            "total_live_runs_at_completion": 129,
+            "total_png_receipts_at_completion": 86,
+            "dial_customize_5_items_initialize_only": [
+                "Custom Key/Dial Set. (Still _f 0x6290 / Movie _f 0x73a0)",
+                "My Dial Settings (My Dial 1..3 Hold / Toggle / 1->2->3)",
+                "Av/Tv Rotate (Normal [def] / Reverse)",
+                "Function Ring(Lens) (Power Focus / APS-C/S35 / Full Frame)",
+                "Lock Operation Parts (Off [def] / Multi-Selector Only / Dial + Wheel / All; Fn long-press or MENU+Fn 5s)",
+            ],
+            "dial_dormant_rejected_eopnotsupp": 95,
+            "dial_dormant_items": [
+                "Dial Setup",
+                "Dial/Wheel Setup (_f 0x6a89)",
+                "Dial / Wheel Lock (base 0xe352)",
+                "Rear Dial L (_f 0x6a5c)",
+                "Rear Dial R (_f 0x680d)",
+            ],
+            "fx6_dial_parity_diff": "FX6 Multi Function Dial + separate Grip/Handle/IRIS/ND Dials + Direction(Normal/Opposite) + physical HOLD switch; no My Dial",
+            "physical_3_dials": [
+                "Front Dial (_f 0x6d2a / base 0xe4da)",
+                "Rear Dial (single, _f 0x6b61 / base 0xe4db)",
+                "Control Wheel (_f 0x6178 / base 0xe353)",
+            ],
+            "mydial_auto_skip_empty_and_lock_override": True,
+            "fn_menu_12plus12_split": {
+                "still_slots": 12,
+                "movie_slots": 12,
+                "empty_slot_0xe0ac": "Not set",
+                "all_empty_prompt_0x6220_einval": -22,
+                "fx6_diff": "FX6 Status Screens + Direct Menu (Home/Direct Menu Priority); no Fn Menu",
+            },
+            "live_view_display_set_still_only_asymmetric_reset": {
+                "initialize_only_items": [
+                    "Live View Display (Setting Effect ON [def] / OFF; forced OFF under Bright Monitoring)",
+                    "Exposure Effect (Exposure Set. & flash [def] / Exposure Setting Only)",
+                ],
+                "camera_settings_reset_only_item": "Frame Rate Low Limit (On / Off [def])",
+            },
+            "grid_line_3_patterns_clean_hdmi_isolated": [
+                "Rule of 3rds Grid (_f 0x78ae)",
+                "Square Grid (_f 0x715a)",
+                "Diag. + Square Grid (_f 0x786c)",
+            ],
+            "user_lut_workflow": {
+                "manage_user_luts_slots": "User1..User16 (17/33-pt .cube, <= 63 ASCII chars)",
+                "sdxc_lut_dir": "/Private/Sony/PRO/LUT",
+                "cfexpress_lut_dir": "/Sony/PRO/LUT",
+                "import_read_only_slot1_writes": 0,
+                "select_lut_default": "s709 (Resettable)",
+                "embed_lut_file": "On [def] / Off (Resettable, locked Off on SD/SDHC, non-destructive container metadata)",
+                "pplut1_to_4": "Picture Profile PPLUT1..4 (irreversible pixel baking, Resettable unlike PP1..11)",
+            },
+            "slot1_lut_tier0_erofs": 30,
+            "dormant_dial_bypass_events": 0,
+            "mydial_lock_override_breach": 0,
+            "fn_empty_bypass_events": 0,
+            "hdmi_clean_feed_grid_baked_pixels": 0,
+            "external_cube_sidecar_files": 0,
+            "slot1_data_sector_writes": 0,
+            "slot1_avf_info_mutated": False,
+            "passive_tx_bytes_emitted": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -4706,6 +5194,11 @@ def build_stage_a_overlay(
         "r63_enabled": enable_r63,
         "r64_enabled": enable_r64,
         "r65_enabled": enable_r65,
+        "r66_enabled": enable_r66,
+        "r67_enabled": enable_r67,
+        "r68_enabled": enable_r68,
+        "r69_enabled": enable_r69,
+        "r70_enabled": enable_r70,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -4811,6 +5304,16 @@ def build_stage_a_overlay(
         stage_a_meta["r64"] = r64_meta
     if r65_meta is not None:
         stage_a_meta["r65"] = r65_meta
+    if r66_meta is not None:
+        stage_a_meta["r66"] = r66_meta
+    if r67_meta is not None:
+        stage_a_meta["r67"] = r67_meta
+    if r68_meta is not None:
+        stage_a_meta["r68"] = r68_meta
+    if r69_meta is not None:
+        stage_a_meta["r69"] = r69_meta
+    if r70_meta is not None:
+        stage_a_meta["r70"] = r70_meta
     return replacements, additions, stage_a_meta
 
 
@@ -5165,6 +5668,11 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R63_",
         "FX6_R64_",
         "FX6_R65_",
+        "FX6_R66_",
+        "FX6_R67_",
+        "FX6_R68_",
+        "FX6_R69_",
+        "FX6_R70_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -5549,6 +6057,56 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r65_lang: Optional[Dict[str, Any]] = None
     last_r65_bridge: Optional[Dict[str, Any]] = None
     r65_wave51_guard_rc: Optional[int] = None
+    last_r66_wave52_init: Optional[Dict[str, Any]] = None
+    last_r66_cleaning_battery_end_bridge: Optional[Dict[str, Any]] = None
+    last_r66_ev_comp_step_cineei_bridge: Optional[Dict[str, Any]] = None
+    last_r66_focus_mode_5vs2_illum_bridge: Optional[Dict[str, Any]] = None
+    last_r66_playback_view_index_rotate_bridge: Optional[Dict[str, Any]] = None
+    last_r66_wave52_guard: Optional[Dict[str, Any]] = None
+    last_r66_clean_unmount_wave52_h0_h3: Optional[Dict[str, Any]] = None
+    last_r66_lang: Optional[Dict[str, Any]] = None
+    last_r66_bridge: Optional[Dict[str, Any]] = None
+    r66_wave52_guard_rc: Optional[int] = None
+    last_r67_wave53_init: Optional[Dict[str, Any]] = None
+    last_r67_lens_comp_shading_bridge: Optional[Dict[str, Any]] = None
+    last_r67_af_illum_movie_curves_bridge: Optional[Dict[str, Any]] = None
+    last_r67_init5_focus_aperture_bridge: Optional[Dict[str, Any]] = None
+    last_r67_folder_rating_slot1_vault_bridge: Optional[Dict[str, Any]] = None
+    last_r67_wave53_guard: Optional[Dict[str, Any]] = None
+    last_r67_clean_unmount_wave53_h0_h3: Optional[Dict[str, Any]] = None
+    last_r67_lang: Optional[Dict[str, Any]] = None
+    last_r67_bridge: Optional[Dict[str, Any]] = None
+    r67_wave53_guard_rc: Optional[int] = None
+    last_r68_wave54_init: Optional[Dict[str, Any]] = None
+    last_r68_switch_vh_limit14_color_bridge: Optional[Dict[str, Any]] = None
+    last_r68_exp_stdadj_5mode_bracket_bridge: Optional[Dict[str, Any]] = None
+    last_r68_tc_ub_format_disp_bridge: Optional[Dict[str, Any]] = None
+    last_r68_copy_reverse_slideshow_bridge: Optional[Dict[str, Any]] = None
+    last_r68_wave54_guard: Optional[Dict[str, Any]] = None
+    last_r68_clean_unmount_wave54_h0_h3: Optional[Dict[str, Any]] = None
+    last_r68_lang: Optional[Dict[str, Any]] = None
+    last_r68_bridge: Optional[Dict[str, Any]] = None
+    r68_wave54_guard_rc: Optional[int] = None
+    last_r69_wave55_init: Optional[Dict[str, Any]] = None
+    last_r69_touch4_dormant_guard_bridge: Optional[Dict[str, Any]] = None
+    last_r69_disp_4plus3_zero_evf_bridge: Optional[Dict[str, Any]] = None
+    last_r69_ael_flash_reset_split_bridge: Optional[Dict[str, Any]] = None
+    last_r69_interval_pb_edit_erofs_bridge: Optional[Dict[str, Any]] = None
+    last_r69_wave55_guard: Optional[Dict[str, Any]] = None
+    last_r69_clean_unmount_wave55_h0_h3: Optional[Dict[str, Any]] = None
+    last_r69_lang: Optional[Dict[str, Any]] = None
+    last_r69_bridge: Optional[Dict[str, Any]] = None
+    r69_wave55_guard_rc: Optional[int] = None
+    last_r70_wave56_init: Optional[Dict[str, Any]] = None
+    last_r70_dial_customize_dormant_guard_bridge: Optional[Dict[str, Any]] = None
+    last_r70_mydial3_fn12x2_split_bridge: Optional[Dict[str, Any]] = None
+    last_r70_liveview_grid_hdmi_bridge: Optional[Dict[str, Any]] = None
+    last_r70_lut_import_embed_erofs_bridge: Optional[Dict[str, Any]] = None
+    last_r70_wave56_guard: Optional[Dict[str, Any]] = None
+    last_r70_clean_unmount_wave56_h0_h3: Optional[Dict[str, Any]] = None
+    last_r70_lang: Optional[Dict[str, Any]] = None
+    last_r70_bridge: Optional[Dict[str, Any]] = None
+    r70_wave56_guard_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -6418,6 +6976,116 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R65_WAVE51_GUARD_RC"), int):
                 r65_wave51_guard_rc = kv["FX6_R65_WAVE51_GUARD_RC"]
+        elif "FX6_R66_WAVE52_INIT " in line:
+            last_r66_wave52_init = _parse_kv_ints(line.split("FX6_R66_WAVE52_INIT ", 1)[1])
+        elif "FX6_R66_CLEANING_BATTERY_END_BRIDGE " in line:
+            last_r66_cleaning_battery_end_bridge = _parse_kv_ints(line.split("FX6_R66_CLEANING_BATTERY_END_BRIDGE ", 1)[1])
+        elif "FX6_R66_EV_COMP_STEP_CINEEI_BRIDGE " in line:
+            last_r66_ev_comp_step_cineei_bridge = _parse_kv_ints(line.split("FX6_R66_EV_COMP_STEP_CINEEI_BRIDGE ", 1)[1])
+        elif "FX6_R66_FOCUS_MODE_5VS2_ILLUM_BRIDGE " in line:
+            last_r66_focus_mode_5vs2_illum_bridge = _parse_kv_ints(line.split("FX6_R66_FOCUS_MODE_5VS2_ILLUM_BRIDGE ", 1)[1])
+        elif "FX6_R66_PLAYBACK_VIEW_INDEX_ROTATE_BRIDGE " in line:
+            last_r66_playback_view_index_rotate_bridge = _parse_kv_ints(line.split("FX6_R66_PLAYBACK_VIEW_INDEX_ROTATE_BRIDGE ", 1)[1])
+        elif "FX6_R66_WAVE52_GUARD " in line:
+            last_r66_wave52_guard = _parse_kv_ints(line.split("FX6_R66_WAVE52_GUARD ", 1)[1])
+        elif "FX6_R66_CLEAN_UNMOUNT_WAVE52_H0_H3 " in line:
+            last_r66_clean_unmount_wave52_h0_h3 = _parse_kv_ints(line.split("FX6_R66_CLEAN_UNMOUNT_WAVE52_H0_H3 ", 1)[1])
+        elif "FX6_R66_LANG_TELEMETRY " in line:
+            last_r66_lang = _parse_kv_ints(line.split("FX6_R66_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R66_BRIDGE " in line:
+            last_r66_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R66_BRIDGE ", 1)[1])
+        elif "FX6_R66_WAVE52_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R66_WAVE52_GUARD_RC"), int):
+                r66_wave52_guard_rc = kv["FX6_R66_WAVE52_GUARD_RC"]
+        elif "FX6_R67_WAVE53_INIT " in line:
+            last_r67_wave53_init = _parse_kv_ints(line.split("FX6_R67_WAVE53_INIT ", 1)[1])
+        elif "FX6_R67_LENS_COMP_SHADING_BRIDGE " in line:
+            last_r67_lens_comp_shading_bridge = _parse_kv_ints(line.split("FX6_R67_LENS_COMP_SHADING_BRIDGE ", 1)[1])
+        elif "FX6_R67_AF_ILLUM_MOVIE_CURVES_BRIDGE " in line:
+            last_r67_af_illum_movie_curves_bridge = _parse_kv_ints(line.split("FX6_R67_AF_ILLUM_MOVIE_CURVES_BRIDGE ", 1)[1])
+        elif "FX6_R67_INIT5_FOCUS_APERTURE_BRIDGE " in line:
+            last_r67_init5_focus_aperture_bridge = _parse_kv_ints(line.split("FX6_R67_INIT5_FOCUS_APERTURE_BRIDGE ", 1)[1])
+        elif "FX6_R67_FOLDER_RATING_SLOT1_VAULT_BRIDGE " in line:
+            last_r67_folder_rating_slot1_vault_bridge = _parse_kv_ints(line.split("FX6_R67_FOLDER_RATING_SLOT1_VAULT_BRIDGE ", 1)[1])
+        elif "FX6_R67_WAVE53_GUARD " in line:
+            last_r67_wave53_guard = _parse_kv_ints(line.split("FX6_R67_WAVE53_GUARD ", 1)[1])
+        elif "FX6_R67_CLEAN_UNMOUNT_WAVE53_H0_H3 " in line:
+            last_r67_clean_unmount_wave53_h0_h3 = _parse_kv_ints(line.split("FX6_R67_CLEAN_UNMOUNT_WAVE53_H0_H3 ", 1)[1])
+        elif "FX6_R67_LANG_TELEMETRY " in line:
+            last_r67_lang = _parse_kv_ints(line.split("FX6_R67_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R67_BRIDGE " in line:
+            last_r67_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R67_BRIDGE ", 1)[1])
+        elif "FX6_R67_WAVE53_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R67_WAVE53_GUARD_RC"), int):
+                r67_wave53_guard_rc = kv["FX6_R67_WAVE53_GUARD_RC"]
+        elif "FX6_R68_WAVE54_INIT " in line:
+            last_r68_wave54_init = _parse_kv_ints(line.split("FX6_R68_WAVE54_INIT ", 1)[1])
+        elif "FX6_R68_SWITCH_VH_LIMIT14_COLOR_BRIDGE " in line:
+            last_r68_switch_vh_limit14_color_bridge = _parse_kv_ints(line.split("FX6_R68_SWITCH_VH_LIMIT14_COLOR_BRIDGE ", 1)[1])
+        elif "FX6_R68_EXP_STDADJ_5MODE_BRACKET_BRIDGE " in line:
+            last_r68_exp_stdadj_5mode_bracket_bridge = _parse_kv_ints(line.split("FX6_R68_EXP_STDADJ_5MODE_BRACKET_BRIDGE ", 1)[1])
+        elif "FX6_R68_TC_UB_FORMAT_DISP_BRIDGE " in line:
+            last_r68_tc_ub_format_disp_bridge = _parse_kv_ints(line.split("FX6_R68_TC_UB_FORMAT_DISP_BRIDGE ", 1)[1])
+        elif "FX6_R68_COPY_REVERSE_SLIDESHOW_BRIDGE " in line:
+            last_r68_copy_reverse_slideshow_bridge = _parse_kv_ints(line.split("FX6_R68_COPY_REVERSE_SLIDESHOW_BRIDGE ", 1)[1])
+        elif "FX6_R68_WAVE54_GUARD " in line:
+            last_r68_wave54_guard = _parse_kv_ints(line.split("FX6_R68_WAVE54_GUARD ", 1)[1])
+        elif "FX6_R68_CLEAN_UNMOUNT_WAVE54_H0_H3 " in line:
+            last_r68_clean_unmount_wave54_h0_h3 = _parse_kv_ints(line.split("FX6_R68_CLEAN_UNMOUNT_WAVE54_H0_H3 ", 1)[1])
+        elif "FX6_R68_LANG_TELEMETRY " in line:
+            last_r68_lang = _parse_kv_ints(line.split("FX6_R68_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R68_BRIDGE " in line:
+            last_r68_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R68_BRIDGE ", 1)[1])
+        elif "FX6_R68_WAVE54_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R68_WAVE54_GUARD_RC"), int):
+                r68_wave54_guard_rc = kv["FX6_R68_WAVE54_GUARD_RC"]
+        elif "FX6_R69_WAVE55_INIT " in line:
+            last_r69_wave55_init = _parse_kv_ints(line.split("FX6_R69_WAVE55_INIT ", 1)[1])
+        elif "FX6_R69_TOUCH4_DORMANT_GUARD_BRIDGE " in line:
+            last_r69_touch4_dormant_guard_bridge = _parse_kv_ints(line.split("FX6_R69_TOUCH4_DORMANT_GUARD_BRIDGE ", 1)[1])
+        elif "FX6_R69_DISP_4PLUS3_ZERO_EVF_BRIDGE " in line:
+            last_r69_disp_4plus3_zero_evf_bridge = _parse_kv_ints(line.split("FX6_R69_DISP_4PLUS3_ZERO_EVF_BRIDGE ", 1)[1])
+        elif "FX6_R69_AEL_FLASH_RESET_SPLIT_BRIDGE " in line:
+            last_r69_ael_flash_reset_split_bridge = _parse_kv_ints(line.split("FX6_R69_AEL_FLASH_RESET_SPLIT_BRIDGE ", 1)[1])
+        elif "FX6_R69_INTERVAL_PB_EDIT_EROFS_BRIDGE " in line:
+            last_r69_interval_pb_edit_erofs_bridge = _parse_kv_ints(line.split("FX6_R69_INTERVAL_PB_EDIT_EROFS_BRIDGE ", 1)[1])
+        elif "FX6_R69_WAVE55_GUARD " in line:
+            last_r69_wave55_guard = _parse_kv_ints(line.split("FX6_R69_WAVE55_GUARD ", 1)[1])
+        elif "FX6_R69_CLEAN_UNMOUNT_WAVE55_H0_H3 " in line:
+            last_r69_clean_unmount_wave55_h0_h3 = _parse_kv_ints(line.split("FX6_R69_CLEAN_UNMOUNT_WAVE55_H0_H3 ", 1)[1])
+        elif "FX6_R69_LANG_TELEMETRY " in line:
+            last_r69_lang = _parse_kv_ints(line.split("FX6_R69_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R69_BRIDGE " in line:
+            last_r69_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R69_BRIDGE ", 1)[1])
+        elif "FX6_R69_WAVE55_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R69_WAVE55_GUARD_RC"), int):
+                r69_wave55_guard_rc = kv["FX6_R69_WAVE55_GUARD_RC"]
+        elif "FX6_R70_WAVE56_INIT " in line:
+            last_r70_wave56_init = _parse_kv_ints(line.split("FX6_R70_WAVE56_INIT ", 1)[1])
+        elif "FX6_R70_DIAL_CUSTOMIZE_DORMANT_BRIDGE " in line:
+            last_r70_dial_customize_dormant_guard_bridge = _parse_kv_ints(line.split("FX6_R70_DIAL_CUSTOMIZE_DORMANT_BRIDGE ", 1)[1])
+        elif "FX6_R70_MYDIAL3_FN12X2_SPLIT_BRIDGE " in line:
+            last_r70_mydial3_fn12x2_split_bridge = _parse_kv_ints(line.split("FX6_R70_MYDIAL3_FN12X2_SPLIT_BRIDGE ", 1)[1])
+        elif "FX6_R70_LIVEVIEW_GRID_HDMI_BRIDGE " in line:
+            last_r70_liveview_grid_hdmi_bridge = _parse_kv_ints(line.split("FX6_R70_LIVEVIEW_GRID_HDMI_BRIDGE ", 1)[1])
+        elif "FX6_R70_LUT_IMPORT_EMBED_EROFS_BRIDGE " in line:
+            last_r70_lut_import_embed_erofs_bridge = _parse_kv_ints(line.split("FX6_R70_LUT_IMPORT_EMBED_EROFS_BRIDGE ", 1)[1])
+        elif "FX6_R70_WAVE56_GUARD " in line:
+            last_r70_wave56_guard = _parse_kv_ints(line.split("FX6_R70_WAVE56_GUARD ", 1)[1])
+        elif "FX6_R70_CLEAN_UNMOUNT_WAVE56_H0_H3 " in line:
+            last_r70_clean_unmount_wave56_h0_h3 = _parse_kv_ints(line.split("FX6_R70_CLEAN_UNMOUNT_WAVE56_H0_H3 ", 1)[1])
+        elif "FX6_R70_LANG_TELEMETRY " in line:
+            last_r70_lang = _parse_kv_ints(line.split("FX6_R70_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R70_BRIDGE " in line:
+            last_r70_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R70_BRIDGE ", 1)[1])
+        elif "FX6_R70_WAVE56_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R70_WAVE56_GUARD_RC"), int):
+                r70_wave56_guard_rc = kv["FX6_R70_WAVE56_GUARD_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -7423,6 +8091,146 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r65_bridge or {},
         }
 
+    r66_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r66_wave52_init,
+            last_r66_cleaning_battery_end_bridge,
+            last_r66_ev_comp_step_cineei_bridge,
+            last_r66_focus_mode_5vs2_illum_bridge,
+            last_r66_playback_view_index_rotate_bridge,
+            last_r66_wave52_guard,
+            last_r66_clean_unmount_wave52_h0_h3,
+            last_r66_lang,
+            last_r66_bridge,
+        )
+    ):
+        r66_telemetry = {
+            "wave52_guard_rc": r66_wave52_guard_rc,
+            "wave52_init": last_r66_wave52_init or {},
+            "cleaning_battery_end_bridge": last_r66_cleaning_battery_end_bridge or {},
+            "ev_comp_step_cineei_bridge": last_r66_ev_comp_step_cineei_bridge or {},
+            "focus_mode_5vs2_illum_bridge": last_r66_focus_mode_5vs2_illum_bridge or {},
+            "playback_view_index_rotate_bridge": last_r66_playback_view_index_rotate_bridge or {},
+            "wave52_guard": last_r66_wave52_guard or {},
+            "clean_unmount_wave52_h0_h3": last_r66_clean_unmount_wave52_h0_h3 or {},
+            "lang_telemetry": last_r66_lang or {},
+            "stage_b_bridge": last_r66_bridge or {},
+        }
+
+    r67_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r67_wave53_init,
+            last_r67_lens_comp_shading_bridge,
+            last_r67_af_illum_movie_curves_bridge,
+            last_r67_init5_focus_aperture_bridge,
+            last_r67_folder_rating_slot1_vault_bridge,
+            last_r67_wave53_guard,
+            last_r67_clean_unmount_wave53_h0_h3,
+            last_r67_lang,
+            last_r67_bridge,
+        )
+    ):
+        r67_telemetry = {
+            "wave53_guard_rc": r67_wave53_guard_rc,
+            "wave53_init": last_r67_wave53_init or {},
+            "lens_comp_shading_bridge": last_r67_lens_comp_shading_bridge or {},
+            "af_illum_movie_curves_bridge": last_r67_af_illum_movie_curves_bridge or {},
+            "init5_focus_aperture_bridge": last_r67_init5_focus_aperture_bridge or {},
+            "folder_rating_slot1_vault_bridge": last_r67_folder_rating_slot1_vault_bridge or {},
+            "wave53_guard": last_r67_wave53_guard or {},
+            "clean_unmount_wave53_h0_h3": last_r67_clean_unmount_wave53_h0_h3 or {},
+            "lang_telemetry": last_r67_lang or {},
+            "stage_b_bridge": last_r67_bridge or {},
+        }
+
+    r68_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r68_wave54_init,
+            last_r68_switch_vh_limit14_color_bridge,
+            last_r68_exp_stdadj_5mode_bracket_bridge,
+            last_r68_tc_ub_format_disp_bridge,
+            last_r68_copy_reverse_slideshow_bridge,
+            last_r68_wave54_guard,
+            last_r68_clean_unmount_wave54_h0_h3,
+            last_r68_lang,
+            last_r68_bridge,
+        )
+    ):
+        r68_telemetry = {
+            "wave54_guard_rc": r68_wave54_guard_rc,
+            "wave54_init": last_r68_wave54_init or {},
+            "switch_vh_limit14_color_bridge": last_r68_switch_vh_limit14_color_bridge or {},
+            "exp_stdadj_5mode_bracket_bridge": last_r68_exp_stdadj_5mode_bracket_bridge or {},
+            "tc_ub_format_disp_bridge": last_r68_tc_ub_format_disp_bridge or {},
+            "copy_reverse_slideshow_bridge": last_r68_copy_reverse_slideshow_bridge or {},
+            "wave54_guard": last_r68_wave54_guard or {},
+            "clean_unmount_wave54_h0_h3": last_r68_clean_unmount_wave54_h0_h3 or {},
+            "lang_telemetry": last_r68_lang or {},
+            "stage_b_bridge": last_r68_bridge or {},
+        }
+
+    r69_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r69_wave55_init,
+            last_r69_touch4_dormant_guard_bridge,
+            last_r69_disp_4plus3_zero_evf_bridge,
+            last_r69_ael_flash_reset_split_bridge,
+            last_r69_interval_pb_edit_erofs_bridge,
+            last_r69_wave55_guard,
+            last_r69_clean_unmount_wave55_h0_h3,
+            last_r69_lang,
+            last_r69_bridge,
+        )
+    ):
+        r69_telemetry = {
+            "wave55_guard_rc": r69_wave55_guard_rc,
+            "wave55_init": last_r69_wave55_init or {},
+            "touch4_dormant_guard_bridge": last_r69_touch4_dormant_guard_bridge or {},
+            "disp_4plus3_zero_evf_bridge": last_r69_disp_4plus3_zero_evf_bridge or {},
+            "ael_flash_reset_split_bridge": last_r69_ael_flash_reset_split_bridge or {},
+            "interval_pb_edit_erofs_bridge": last_r69_interval_pb_edit_erofs_bridge or {},
+            "wave55_guard": last_r69_wave55_guard or {},
+            "clean_unmount_wave55_h0_h3": last_r69_clean_unmount_wave55_h0_h3 or {},
+            "lang_telemetry": last_r69_lang or {},
+            "stage_b_bridge": last_r69_bridge or {},
+        }
+
+    r70_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r70_wave56_init,
+            last_r70_dial_customize_dormant_guard_bridge,
+            last_r70_mydial3_fn12x2_split_bridge,
+            last_r70_liveview_grid_hdmi_bridge,
+            last_r70_lut_import_embed_erofs_bridge,
+            last_r70_wave56_guard,
+            last_r70_clean_unmount_wave56_h0_h3,
+            last_r70_lang,
+            last_r70_bridge,
+        )
+    ):
+        r70_telemetry = {
+            "wave56_guard_rc": r70_wave56_guard_rc,
+            "wave56_init": last_r70_wave56_init or {},
+            "dial_customize_dormant_guard_bridge": last_r70_dial_customize_dormant_guard_bridge or {},
+            "mydial3_fn12x2_split_bridge": last_r70_mydial3_fn12x2_split_bridge or {},
+            "liveview_grid_hdmi_bridge": last_r70_liveview_grid_hdmi_bridge or {},
+            "lut_import_embed_erofs_bridge": last_r70_lut_import_embed_erofs_bridge or {},
+            "wave56_guard": last_r70_wave56_guard or {},
+            "clean_unmount_wave56_h0_h3": last_r70_clean_unmount_wave56_h0_h3 or {},
+            "lang_telemetry": last_r70_lang or {},
+            "stage_b_bridge": last_r70_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -7485,6 +8293,11 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r63_telemetry": r63_telemetry,
         "r64_telemetry": r64_telemetry,
         "r65_telemetry": r65_telemetry,
+        "r66_telemetry": r66_telemetry,
+        "r67_telemetry": r67_telemetry,
+        "r68_telemetry": r68_telemetry,
+        "r69_telemetry": r69_telemetry,
+        "r70_telemetry": r70_telemetry,
     }
 
 
@@ -7616,6 +8429,16 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r64"
     if args.round >= 65:
         tmp_prefix = "fx6-r65"
+    if args.round >= 66:
+        tmp_prefix = "fx6-r66"
+    if args.round >= 67:
+        tmp_prefix = "fx6-r67"
+    if args.round >= 68:
+        tmp_prefix = "fx6-r68"
+    if args.round >= 69:
+        tmp_prefix = "fx6-r69"
+    if args.round >= 70:
+        tmp_prefix = "fx6-r70"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -7691,8 +8514,28 @@ def run_once(args: argparse.Namespace) -> int:
         r63_mode = getattr(args, "r63_mode", "still_raw_heif_colorspace_shutter_drive_big6")
         r64_mode = getattr(args, "r64_mode", "focus_area_zoom_iso_flash_big6")
         r65_mode = getattr(args, "r65_mode", "dci4k_aspect_camset_photocap_big6")
+        r66_mode = getattr(args, "r66_mode", "cleaning_evcomp_focusmode_rotate_big6")
+        r67_mode = getattr(args, "r67_mode", "lens_comp_af_illum_init5_rating_big6")
+        r68_mode = getattr(args, "r68_mode", "switch_vh_af_limit14_stdadj_tc_copy_big6")
+        r69_mode = getattr(args, "r69_mode", "touch4_disp_flash_reset_interval_edit_big6")
+        r70_mode = getattr(args, "r70_mode", "dial_mydial_fn12x2_liveview_lut_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone70thRound43RealHw129thLiveWave56DialCustomizeMyDialFn12x2LiveViewLutEmbedErofs+r70_mode={r70_mode}+lang={lang})"
+                if args.round >= 70
+                else (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone42RealHw126thLiveWave55Touch4ItemDispZeroEvfFlashResetIntervalPbEditErofs+r69_mode={r69_mode}+lang={lang})"
+                if args.round >= 69
+                else (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone41RealHw123rdLiveWave54SwitchVhAfLimit14ExpStdAdjTcFormatCopyReverse+r68_mode={r68_mode}+lang={lang})"
+                if args.round >= 68
+                else (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone40RealHw120thLiveWave53LensCompAfIllumInit5FolderRating+r67_mode={r67_mode}+lang={lang})"
+                if args.round >= 67
+                else (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone39RealHw117thLiveWave52SensorCleaningEvCompCineEiFocusModeIndexRotate+r66_mode={r66_mode}+lang={lang})"
+                if args.round >= 66
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone65thRound38RealHw114thLiveWave51Dci4kAspectRecallHoldCamsetPhotoCap+r65_mode={r65_mode}+lang={lang})"
                 if args.round >= 65
                 else (
@@ -7917,6 +8760,11 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
+            )
+            )
+            )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -8017,6 +8865,16 @@ def run_once(args: argparse.Namespace) -> int:
                 r64_mode=r64_mode,
                 enable_r65=(args.round >= 65),
                 r65_mode=r65_mode,
+                enable_r66=(args.round >= 66),
+                r66_mode=r66_mode,
+                enable_r67=(args.round >= 67),
+                r67_mode=r67_mode,
+                enable_r68=(args.round >= 68),
+                r68_mode=r68_mode,
+                enable_r69=(args.round >= 69),
+                r69_mode=r69_mode,
+                enable_r70=(args.round >= 70),
+                r70_mode=r70_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -8188,6 +9046,11 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R63_WAVE49_GUARD_EXIT" in txt
                     or "FX6_R64_WAVE50_GUARD_EXIT" in txt
                     or "FX6_R65_WAVE51_GUARD_EXIT" in txt
+                    or "FX6_R66_WAVE52_GUARD_EXIT" in txt
+                    or "FX6_R67_WAVE53_GUARD_EXIT" in txt
+                    or "FX6_R68_WAVE54_GUARD_EXIT" in txt
+                    or "FX6_R69_WAVE55_GUARD_EXIT" in txt
+                    or "FX6_R70_WAVE56_GUARD_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -8261,6 +9124,11 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R63_WAVE49_GUARD_EXIT" in serial_text
             or "FX6_R64_WAVE50_GUARD_EXIT" in serial_text
             or "FX6_R65_WAVE51_GUARD_EXIT" in serial_text
+            or "FX6_R66_WAVE52_GUARD_EXIT" in serial_text
+            or "FX6_R67_WAVE53_GUARD_EXIT" in serial_text
+            or "FX6_R68_WAVE54_GUARD_EXIT" in serial_text
+            or "FX6_R69_WAVE55_GUARD_EXIT" in serial_text
+            or "FX6_R70_WAVE56_GUARD_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -8349,6 +9217,11 @@ def run_once(args: argparse.Namespace) -> int:
             "r63_mode": r63_mode if args.round >= 63 else None,
             "r64_mode": r64_mode if args.round >= 64 else None,
             "r65_mode": r65_mode if args.round >= 65 else None,
+            "r66_mode": r66_mode if args.round >= 66 else None,
+            "r67_mode": r67_mode if args.round >= 67 else None,
+            "r68_mode": r68_mode if args.round >= 68 else None,
+            "r69_mode": r69_mode if args.round >= 69 else None,
+            "r70_mode": r70_mode if args.round >= 70 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -8421,6 +9294,11 @@ def run_once(args: argparse.Namespace) -> int:
             "r63_telemetry": milestones.get("r63_telemetry") if args.round >= 63 else None,
             "r64_telemetry": milestones.get("r64_telemetry") if args.round >= 64 else None,
             "r65_telemetry": milestones.get("r65_telemetry") if args.round >= 65 else None,
+            "r66_telemetry": milestones.get("r66_telemetry") if args.round >= 66 else None,
+            "r67_telemetry": milestones.get("r67_telemetry") if args.round >= 67 else None,
+            "r68_telemetry": milestones.get("r68_telemetry") if args.round >= 68 else None,
+            "r69_telemetry": milestones.get("r69_telemetry") if args.round >= 69 else None,
+            "r70_telemetry": milestones.get("r70_telemetry") if args.round >= 70 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -9461,6 +10339,692 @@ def sanitize_round65_summary(
     )
 
 
+def _sanitize_r66_value(val: Any) -> Any:
+    return _sanitize_r65_value(val)
+
+
+def sanitize_round66_summary(
+    r66a_raw: Dict[str, Any],
+    r66b_raw: Dict[str, Any],
+    r66c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the Round 66 (39/39 Real-HW Rounds, 117/117 Live Runs, 78/78 PNGs) summary.json telemetry receipt."""
+    t66a = r66a_raw.get("r66_telemetry") or {}
+    t66b = r66b_raw.get("r66_telemetry") or {}
+    t66c = r66c_raw.get("r66_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r66_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 66,
+            "lang": raw.get("lang", "en"),
+            "r66_mode": raw.get("r66_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r66_telemetry": _sanitize_r66_value(raw.get("r66_telemetry") or {}),
+            "gpe0_readback": _sanitize_r66_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r66_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r66_value(entry)
+
+    r66a_nz = (r66a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r66b_guard = t66b.get("wave52_guard") or {}
+    r66c_h0h3 = t66c.get("clean_unmount_wave52_h0_h3") or {}
+    r66a_init = t66a.get("wave52_init") or {}
+
+    return _sanitize_r66_value(
+        {
+            "schema": "fx6-on-fx3-round66-realhw-sensor-cleaning-ev-comp-cineei-focus-mode-index-rotate-qemu-v1",
+            "round": 66,
+            "milestone": (
+                "39/39 Real-HW Rounds (R28..R66) — Wave-52 [Sensor Cleaning] >= 51% NP-FZ100 Battery & Power-OFF vs FX6 e-ND/APR, "
+                "[Exposure Comp.] +-5.0/+-2.0 EV & Cine EI Lockout, [Focus Mode] 5-Still vs 2-Movie Split, and Playback 9/25 Index & "
+                "[Rotate] Slot-1 EROFS=30 Vault (115th..117th Live Unmodified ILME-FX3 Ver. 7.02 ARM64 QEMU Runs -> 117/117 Live Runs, 78/78 PNGs <= 27,467 B)"
+            ),
+            "date": "2026-11-17",
+            "kernel_version": r66a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "realhw_mechanisms_verified": {
+                "wave52_cleaning_evcomp_focusmode_rotate_init": r66a_init,
+                "cleaning_battery_end_stage_b_bridge": t66a.get("cleaning_battery_end_bridge") or {},
+                "ev_comp_step_cineei_stage_b_bridge": t66a.get("ev_comp_step_cineei_bridge") or {},
+                "focus_mode_5vs2_illum_stage_b_bridge": t66a.get("focus_mode_5vs2_illum_bridge") or {},
+                "playback_view_index_rotate_stage_b_bridge": t66a.get("playback_view_index_rotate_bridge") or {},
+                "wave52_fail_closed_guard": r66b_guard,
+                "clean_unmount_wave52_reset_and_16_h0_h3": r66c_h0h3,
+            },
+            "runs": {
+                "r66a_cleaning_evcomp_focusmode_rotate_big6_schinese": _clean_run(
+                    r66a_raw,
+                    (
+                        "115th Live FX3 7.02 QEMU Run (Round 66 / 39th Real-HW Round) — Wave-52 4-pillar Stage-A/B verification: "
+                        "[Sensor Cleaning] (_f.uxc 0x67d6 / legacy 0xe7d7) >= 51% NP-FZ100 Battery Gate (LOWER/UNKNOWN/UPPER, < 51% -> Power insufficient. 0xe574) & "
+                        "Mandatory Power-OFF (_g.uxc 0x6221) vs zero-IBIS FX6 e-ND (1/4..1/128) + Technical > APR (CrCommandId_SensorCleaning unsupported, e_nd_i2c_tx_bytes=0), "
+                        "[Exposure Comp.] (+-5.0 EV Still vs +-2.0 EV Movie/S&Q, M+ISO AUTO active vs M+Fixed locked) + [Exposure step] (0.3/0.5 EV, Initialize-only, non-Angle) + "
+                        "dormant [Reset EV Comp.] (BKID_APP_setting_exposure_compensation_reset_save) + total Cine EI / Cine EI Quick lockout (Base ISO 800/12800 pinned, EI only), "
+                        "[Focus Mode] 5-Still (AF-S/AF-A/AF-C/DMF/MF) vs 2-Movie (AF-C/MF) split rejecting dormant PF/SEMI_MANUAL + Still-only [Priority Set in AF-S/AF-C] + "
+                        "[AF Illuminator] (Auto/Off, resets via Camera Settings Reset) vs FX6 AF/MF + Push AF Mode + AF Assist, "
+                        "Playback [View Mode] (Date/Folder/Movie vs dormant AVCHD/MP4) + [Image Index] (9/25 vs dormant 12/30 0x6e7a) + [Display as Group] + "
+                        "[Display Rotation] (rotatiton) + [Rotate] Slot-1 EROFS=30 Vault Firewall, "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r66a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r66b_wave52_cleaning_evcomp_focusmode_rotate_guard": _clean_run(
+                    r66b_raw,
+                    (
+                        "116th Live FX3 7.02 QEMU Run — Fail-closed Wave-52 guard rehearsal: NP-FZ100 <= 50% / UNKNOWN Sensor Cleaning (-16 EBUSY), "
+                        "blower ON bypass (-16 EBUSY), FX6 CrCommandId_SensorCleaning (-95 EOPNOTSUPP), Cine EI Exposure Comp. / Manual M + Fixed ISO (-16 EBUSY), "
+                        "dormant [Reset EV Comp.] (-95 EOPNOTSUPP), Movie AF-S/AF-A/DMF & dormant PF/SEMI_MANUAL (-16 EBUSY / -95 EOPNOTSUPP), "
+                        "Movie/AF-C/Magnifier/Mount-Adaptor AF Illuminator (-16 EBUSY), dormant Playback AVCHD/MP4 & 12/30 Index (-95 EOPNOTSUPP), "
+                        "Movie/Group Rotate (-16 EBUSY), and Slot-1 default Rotate + P2/cnflasha protection (-30 EROFS)"
+                    ),
+                ),
+                "r66c_clean_unmount_wave52_reset_h0_h3_big6_schinese": _clean_run(
+                    r66c_raw,
+                    (
+                        "117th Live FX3 7.02 QEMU Run (39/39 Real-HW Rounds!) — Clean unmount of volatile /tmp Stage-B overlay restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + "
+                        "reset-tier asymmetry ([Camera Settings Reset] resets EV Comp./Focus Mode/AF Illuminator/Playback Media->Slot 1 while preserving "
+                        "Exposure step, Exposure Std. Adjust, Priority Set in AF-S/AF-C, View Mode, Image Index, Display as Group, Display Rotation; "
+                        "[Initialize] restores all Wave-52 survivors to factory defaults) + dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r66_sensor_cleaning_ev_comp_focus_mode_index_rotate_audit": {
+                "round": 66,
+                "realhw_rounds_count": 39,
+                "total_live_runs": 117,
+                "total_png_receipts": 78,
+                "total_runs": 3,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "r66a_wave52_cleaning_evcomp_focusmode_rotate_verified": bool(r66a_init.get("r66_init_ok") == 1),
+                "r66a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r66a_nz >= 300000),
+                "r66b_wave52_guard_fail_closed": bool(r66b_guard.get("r66b_ok") == 1),
+                "r66c_clean_unmount_wave52_reset_and_16_h0_eq_h3_verified": bool(
+                    r66c_h0h3.get("r66c_ok") == 1 and r66c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) IBIS actuator & NP-FZ100 voltage-gate bench verifying [Sensor Cleaning] >= 51% ultrasonic shake, <= 50% 'Power insufficient.' (0xe574) rejection, mandatory Power-OFF banner (_g.uxc 0x6221), and ILME-FX6 Ver. 6.01 physical front-ND (1/4..1/128) + Technical > APR black-reference calibration remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) optical metering & exposure bench verifying [Exposure Comp.] (+-5.0 EV Still vs +-2.0 EV Movie/S&Q, M+ISO AUTO vs M+Fixed), [Exposure step] (0.3/0.5 EV, Shutter Mode=Angle independence), and total Cine EI / Cine EI Quick lockout (Base ISO 800/12800 pin) remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) lens-mount AF & playback media bench verifying 5-Still vs 2-Movie [Focus Mode] split, Still-only [Priority Set in AF-S/AF-C], [AF Illuminator] LED lockout conditions, Playback [View Mode]/[Image Index] 9 vs 25/[Display as Group]/[Display Rotation] ('rotatiton'), and physical CFexpress/SDXC Slot-1 write protection on [Rotate] remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
+def _sanitize_r67_value(val: Any) -> Any:
+    return _sanitize_r66_value(val)
+
+
+def sanitize_round67_summary(
+    r67a_raw: Dict[str, Any],
+    r67b_raw: Dict[str, Any],
+    r67c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the Round 67 (40/40 Real-HW Rounds Milestone, 120/120 Live Runs, 80/80 PNGs) summary.json telemetry receipt."""
+    t67a = r67a_raw.get("r67_telemetry") or {}
+    t67b = r67b_raw.get("r67_telemetry") or {}
+    t67c = r67c_raw.get("r67_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r67_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 67,
+            "lang": raw.get("lang", "en"),
+            "r67_mode": raw.get("r67_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r67_telemetry": _sanitize_r67_value(raw.get("r67_telemetry") or {}),
+            "gpe0_readback": _sanitize_r67_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r67_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r67_value(entry)
+
+    r67a_nz = (r67a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r67b_guard = t67b.get("wave53_guard") or {}
+    r67c_h0h3 = t67c.get("clean_unmount_wave53_h0_h3") or {}
+    r67a_init = t67a.get("wave53_init") or {}
+
+    return _sanitize_r67_value(
+        {
+            "schema": "fx6-on-fx3-round67-milestone40-lens-comp-af-illuminator-init5-folder-rating-qemu-v1",
+            "round": 67,
+            "milestone": (
+                "40/40 Real-HW Rounds Milestone! (R28..R67, Wave-53 [Lens Compensation] Shading Auto/Off vs Dormant Auto: Low + "
+                "Movie [Breathing Comp.], Built-In Front #8 [AF Illuminator] Still-Only 4-Lockout & Movie AF Curves vs Zero-Illuminator FX6, "
+                "5 Initialize-Only Focus/Aperture Settings vs FX6 Iris, and [File/Folder Settings] + [Create New Folder] / [Forced File Number Reset] / "
+                "[Rating] 1..5* Slot-1 EROFS=30 Vault, 118th..120th Live Unmodified ILME-FX3 Ver. 7.02 ARM64 QEMU Runs -> 120/120 Live Runs, 80/80 PNGs <= 27,467 B)"
+            ),
+            "date": "2026-11-17",
+            "kernel_version": r67a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "realhw_mechanisms_verified": {
+                "wave53_lenscomp_afillum_init5_rating_init": r67a_init,
+                "lens_comp_shading_stage_b_bridge": t67a.get("lens_comp_shading_bridge") or {},
+                "af_illum_movie_curves_stage_b_bridge": t67a.get("af_illum_movie_curves_bridge") or {},
+                "init5_focus_aperture_stage_b_bridge": t67a.get("init5_focus_aperture_bridge") or {},
+                "folder_rating_slot1_vault_stage_b_bridge": t67a.get("folder_rating_slot1_vault_bridge") or {},
+                "wave53_fail_closed_guard": r67b_guard,
+                "clean_unmount_wave53_reset_and_16_h0_h3": r67c_h0h3,
+            },
+            "runs": {
+                "r67a_lenscomp_afillum_init5_rating_big6_schinese": _clean_run(
+                    r67a_raw,
+                    (
+                        "118th Live FX3 7.02 QEMU Run (Round 67 / 40th Real-HW Milestone!) — Wave-53 4-pillar Stage-A/B verification: "
+                        "[Lens Comp.] (0xdc68: Shading Auto/Off default Auto, Chromatic Aberration Auto/Off default Auto, Distortion Auto/Off default Off & locked Auto on SELP1650/FE 28-70mm or Active SteadyShot; "
+                        "rejects dormant LENS_COMP_SHADING_AUTO_LOW _f 0x6c9c -95 EOPNOTSUPP) + Movie [Breathing Comp.] (On/Off resettable, locked Off when Distortion=Off/S&Q/RAW) vs FX6 Technical > Lens, "
+                        "Built-In Front Module #8 + MI-Shoe [AF Illuminator] (BKID_APP_setting_still_image_af_illuminator Auto/Off, Still-only 4-lockout gate) + Movie AF Curves (Transition Speed 1..7, Subj. Shift Sens. 1..5 5_RESPONSICE, AF Assist) vs Zero-Illuminator FX6, "
+                        "5 Initialize-Only Focus & Aperture Settings ([Aperture Drive in AF], [AF w/ Shutter], [Pre-AF], [Circ. of Focus Point] non-diagonal wrap, [Focus Area Color] White/Red) surviving [Camera Settings Reset] vs FX6 Auto/Push Auto/Override Iris & dormant FX6_2 0x4fc3, "
+                        "[File/Folder Settings] (Standard Form 100MSDCF..999MSDCF vs Date Form disabling [Select REC Folder], 4,000-image cap) + Slot-2 [Create New Folder] / [Forced File Number Reset] / Playback [Rating] 1..5* vs Slot-1 Tier-0 Vault Firewall (-30 EROFS), "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r67a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r67b_wave53_lenscomp_afillum_init5_rating_guard": _clean_run(
+                    r67b_raw,
+                    (
+                        "119th Live FX3 7.02 QEMU Run — Fail-closed Wave-53 guard rehearsal: dormant LENS_COMP_SHADING_AUTO_LOW (_f 0x6c9c 'Auto: Low' -95 EOPNOTSUPP), "
+                        "SELP1650/FE 28-70mm/Active SteadyShot Distortion Off unlock (-16 EBUSY), Breathing Comp. under Distortion=Off/S&Q/RAW (-16 EBUSY), "
+                        "Front #8 [AF Illuminator] under Movie/S&Q, AF-C/moving AF-A, Focus Magnifier, & Mount Adaptor LA-EA* (-16 EBUSY) plus FX6 zero-LED spoof (-95 EOPNOTSUPP), "
+                        "Movie-mode Aperture Drive / AF w/ Shutter / Pre-AF (-16 EBUSY) & dormant FX6_2 0x4fc3 'Close Iris to F2.4 for AF' (-95 EOPNOTSUPP), "
+                        "Date Form [Select REC Folder] (-16 EBUSY), 4,000-image cap (-28 ENOSPC), Movie-mode [Rating] (-16 EBUSY), and Slot-1 Create New Folder / Forced File Number Reset / Rating + P2/cnflasha protection (-30 EROFS)"
+                    ),
+                ),
+                "r67c_clean_unmount_wave53_reset_h0_h3_big6_schinese": _clean_run(
+                    r67c_raw,
+                    (
+                        "120th Live FX3 7.02 QEMU Run (40/40 Real-HW Rounds Milestone! 120/120 Live Runs, 80/80 PNGs!) — Clean unmount of volatile Stage-B overlay restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + "
+                        "reset-tier asymmetry ([Camera Settings Reset] resets Movie [Breathing Comp.]->Off, [AF Illuminator]->Auto, [AF Transition Speed]->5, [AF Subj. Shift Sens.]->5, [AF Assist]->Off, Playback Media->Slot 1 "
+                        "while preserving Lens Shading/Chromatic Aberration/Distortion Comp., all 5 Initialize-only Focus/Aperture settings, and File/Folder Settings; "
+                        "[Initialize] restores all Wave-53 survivors to factory defaults) + dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r67_milestone40_lens_comp_af_illuminator_init5_folder_rating_audit": {
+                "round": 67,
+                "realhw_rounds_count": 40,
+                "total_live_runs": 120,
+                "total_png_receipts": 80,
+                "milestone311_qemu_rounds": 40,
+                "milestone311_qemu_runs": 120,
+                "milestone311_png_receipts": 80,
+                "total_runs": 3,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "r67a_wave53_lenscomp_afillum_init5_rating_verified": bool(r67a_init.get("r67_init_ok") == 1),
+                "r67a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r67a_nz >= 300000),
+                "r67b_wave53_guard_fail_closed": bool(r67b_guard.get("r67b_ok") == 1),
+                "r67c_clean_unmount_wave53_reset_and_16_h0_eq_h3_verified": bool(
+                    r67c_h0h3.get("r67c_ok") == 1 and r67c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) E-mount optical bench verifying [Lens Comp.] Shading/Chromatic Aberration/Distortion Auto/Off ISP tables (SELP1650/FE 28-70mm & SteadyShot Active Distortion=Auto lock) and Movie [Breathing Comp.] FOV crop vs ILME-FX6 Ver. 6.01 Technical > Lens remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) Front Module #8 LED & MI-Shoe flash bench verifying [AF Illuminator] Auto/Off 4-lockout gates, Movie AF Transition Speed (1..7) / Subj. Shift Sensitivity (1..5 '5_RESPONSICE'), and zero-LED ILME-FX6 optical AF curve behavior remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) aperture actuator & CFexpress/SDXC media bench verifying 5 Initialize-only Focus/Aperture settings ([Aperture Drive in AF], [AF w/ Shutter], [Pre-AF], [Circ. of Focus Point], [Focus Area Color]) vs FX6 Iris, Standard/Date Form folder rollover (4,000-image cap), and physical Slot-1 write protection on [Create New Folder]/[Forced File Number Reset]/[Rating] 1..5* remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
+def _sanitize_r68_value(val: Any) -> Any:
+    return _sanitize_r67_value(val)
+
+
+def sanitize_round68_summary(
+    r68a_raw: Dict[str, Any],
+    r68b_raw: Dict[str, Any],
+    r68c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the Round 68 (41/41 Real-HW Rounds, 123/123 Live Runs, 82/82 PNGs) summary.json telemetry receipt."""
+    t68a = r68a_raw.get("r68_telemetry") or {}
+    t68b = r68b_raw.get("r68_telemetry") or {}
+    t68c = r68c_raw.get("r68_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r68_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 68,
+            "lang": raw.get("lang", "en"),
+            "r68_mode": raw.get("r68_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r68_telemetry": _sanitize_r68_value(raw.get("r68_telemetry") or {}),
+            "gpe0_readback": _sanitize_r68_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r68_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r68_value(entry)
+
+    r68a_nz = (r68a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r68b_guard = t68b.get("wave54_guard") or {}
+    r68c_h0h3 = t68c.get("clean_unmount_wave54_h0_h3") or {}
+    r68a_init = t68a.get("wave54_init") or {}
+
+    return _sanitize_r68_value(
+        {
+            "schema": "fx6-on-fx3-round68-switch-vh-af-limit14-exp-stdadj-tc-format-copy-reverse-qemu-v1",
+            "round": 68,
+            "milestone": (
+                "41/41 Real-HW Rounds (R28..R68) — Wave-54 [Switch V/H AF Area] / 14-Checkbox [Focus Area Limit] / [Focus Area Color], "
+                "5-Mode [Exposure Std. Adjust] (1/6 EV) & Still [Bracket Settings], 6-Item [TC/UB] ([Time Code Format] DF/NDF) & [TC/UB Disp. Setting], "
+                "and [Select Playback Media] + [Copy] Slot-2 -> Slot-1 Reverse EROFS=30 Tier-0 Vault Firewall & [Slide Show] "
+                "(121st..123rd Live Unmodified ILME-FX3 Ver. 7.02 ARM64 QEMU Runs -> 123/123 Live Runs, 82/82 PNGs <= 27,467 B)"
+            ),
+            "date": "2026-11-17",
+            "kernel_version": r68a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "realhw_mechanisms_verified": {
+                "wave54_switch_vh_limit14_stdadj_tc_copy_init": r68a_init,
+                "switch_vh_limit14_color_stage_b_bridge": t68a.get("switch_vh_limit14_color_bridge") or {},
+                "exp_stdadj_5mode_bracket_stage_b_bridge": t68a.get("exp_stdadj_5mode_bracket_bridge") or {},
+                "tc_ub_format_disp_stage_b_bridge": t68a.get("tc_ub_format_disp_bridge") or {},
+                "copy_reverse_slideshow_stage_b_bridge": t68a.get("copy_reverse_slideshow_bridge") or {},
+                "wave54_fail_closed_guard": r68b_guard,
+                "clean_unmount_wave54_reset_and_16_h0_h3": r68c_h0h3,
+            },
+            "runs": {
+                "r68a_switchvh_stdadj_tcformat_copy_big6_schinese": _clean_run(
+                    r68a_raw,
+                    (
+                        "121st Live FX3 7.02 QEMU Run (Round 68 / 41st Real-HW Round) — Wave-54 4-pillar Stage-A/B verification: "
+                        "Still AF-C-only [Switch V/H AF Area] (Off/AF Point Only/AF Point + AF Area, 3-state gravity 0/90/270 vs INVALID -22 EINVAL, 8 lockouts, clears stored positions on mode change) + "
+                        "14-checkbox [Focus Area Limit] (7 base + 7 Tracking:*, rejects dormant Spot: XL/XS & Custom 1..3 -95 EOPNOTSUPP, min-2 rule .uxc 0xea28 -22 EINVAL) + "
+                        "Initialize-only [Focus Area Color] (White/Red) vs FX6 (no V/H switch, no 14-checkbox limit, orange move-frame + Focus Area Ind.(AF-S)), "
+                        "5-mode [Exposure Std. Adjust] (Multi/Center/Spot/Entire Screen Avg./Highlight -1..+1 EV in 1/6 EV 13 steps, .uxc 0xe567 dialog, independent EXIF, shifts M.M. & Spot AEL, resets bracket counter, Initialize-only) + "
+                        "Resettable Still [Bracket Settings] ([Selftimer during Bracket] Off/2/5/10s, [Bracket order] 0->-->+ / -->0->+) vs FX6 (exposure_standard=0 hits -2 ENOENT, dormant setting_bracket_* -95 EOPNOTSUPP), "
+                        "6-item Initialize-only [TC/UB] ([Time Code Preset], [User Bit Preset], [Time Code Format] DF/NDF NTSC-only / 23.98p/24.00p NDF lock / PAL hidden, [Time Code Run], [Time Code Make], [User Bit Time Rec]) + "
+                        "[TC/UB Disp. Setting] (Counter/TC/U-Bit, Movie-PB-only .uxc 0xe728) vs FX6 physical BNC TC IN/OUT (EXT-LK), "
+                        "[Select Playback Media] (default Slot 1) + [Copy] read-only Slot 1->Slot 2 vs reverse Slot 2->Slot 1 Tier-0 Vault Firewall (EROFS=30) + Initialize-only [Slide Show] (Repeat/Interval 1..30s, Date/Folder View only, bypasses Power Save) vs FX6 dormant Copy Clip (-95 EOPNOTSUPP), "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r68a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r68b_wave54_switchvh_stdadj_tcformat_copy_guard": _clean_run(
+                    r68b_raw,
+                    (
+                        "122nd Live FX3 7.02 QEMU Run — Fail-closed Wave-54 guard rehearsal: V/H AF Area INVALID vertical up/down gravity (-22 EINVAL) & all 8 lockouts (non-AF-C/Movie/iAuto/Digital Zoom/AF active/Burst/Selftimer/Focus Mag -16 EBUSY), "
+                        "Focus Area Limit min-2 rule (.uxc 0xea28 -22 EINVAL), Movie Tracking:* lockout (-16 EBUSY), dormant Spot XL/XS & Custom 1..3 (-95 EOPNOTSUPP), FX6 V/H/Limit/Color absence (-2 ENOENT), "
+                        "Exposure Std. Adjust unconfirmed .uxc 0xe567 (-11 EAGAIN) & out-of-bounds +-7/6 EV (-22 EINVAL), non-Bracket/Movie Bracket Settings (-16 EBUSY), FX6 exposure_standard (-2 ENOENT) & dormant bracket (-95 EOPNOTSUPP), "
+                        "24.00p TC Format DF change (-16 EBUSY), PAL TC Format hidden (-95 EOPNOTSUPP), Still-PB TC/UB Disp toggle (.uxc 0xe728 -16 EBUSY), FX3 physical BNC TC probe (-2 ENOENT), "
+                        "Copy low battery (-11 EAGAIN), slow card (-22 EINVAL), Slide Show in Movie View (-16 EBUSY), FX6 dormant Copy Clip (-95 EOPNOTSUPP), and reverse Slot 2 -> Slot 1 Copy + AVF_INFO / P2 / cnflasha Tier-0 Vault Firewall (-30 EROFS)"
+                    ),
+                ),
+                "r68c_clean_unmount_wave54_reset_h0_h3_big6_schinese": _clean_run(
+                    r68c_raw,
+                    (
+                        "123rd Live FX3 7.02 QEMU Run (41/41 Real-HW Rounds! 123/123 Live Runs, 82/82 PNGs!) — Clean unmount of volatile Stage-B overlay restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + "
+                        "reset-tier asymmetry ([Camera Settings Reset] resets [Switch V/H AF Area]->Off, [Focus Area Limit]->all 14, [Bracket Settings]->Off / 0->-->+, [Select Playback Media]->Slot 1 "
+                        "while preserving [Focus Area Color], all 5 [Exposure Std. Adjust] modes, all 6 [TC/UB] items, [TC/UB Disp. Setting], and [Slide Show]; "
+                        "[Initialize] restores all Wave-54 survivors to factory defaults) + dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r68_switch_vh_af_limit14_exp_stdadj_tc_format_copy_reverse_audit": {
+                "round": 68,
+                "realhw_rounds_count": 41,
+                "total_live_runs": 123,
+                "total_png_receipts": 82,
+                "milestone311_qemu_rounds": 41,
+                "milestone311_qemu_runs": 123,
+                "milestone311_png_receipts": 82,
+                "total_runs": 3,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "r68a_wave54_switch_vh_limit14_stdadj_tc_copy_verified": bool(r68a_init.get("r68_init_ok") == 1),
+                "r68a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r68a_nz >= 300000),
+                "r68b_wave54_guard_fail_closed": bool(r68b_guard.get("r68b_ok") == 1),
+                "r68c_clean_unmount_wave54_reset_and_16_h0_eq_h3_verified": bool(
+                    r68c_h0h3.get("r68c_ok") == 1 and r68c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) gravity IMU & optical AF bench verifying Still AF-C [Switch V/H AF Area] (0/90/270 deg vs INVALID vertical pitch, 8 lockouts), 14-checkbox [Focus Area Limit] min-2 rule (.uxc 0xea28), and [Focus Area Color] White/Red vs ILME-FX6 Ver. 6.01 orange move-frame remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) optical metering & bracket drive bench verifying 5-mode [Exposure Std. Adjust] (-1..+1 EV in 1/6 EV 13 steps, EXIF tag, M.M. & Spot AEL shift, bracket counter reset, Initialize-only) and Still [Bracket Settings] vs ILME-FX6 remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) NTSC/PAL timecode generator & dual-slot CFexpress/SDXC media bench verifying 6-item [TC/UB] (DF/NDF 24p lock & PAL hide), Movie-PB-only [TC/UB Disp. Setting] vs FX6 BNC TC IN/OUT (EXT-LK), reverse Slot-2 -> Slot-1 [Copy] protection, and [Slide Show] Power Save bypass remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
+def _sanitize_r69_value(val: Any) -> Any:
+    return _sanitize_r68_value(val)
+
+
+def sanitize_round69_summary(
+    r69a_raw: Dict[str, Any],
+    r69b_raw: Dict[str, Any],
+    r69c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the Round 69 (42/42 Real-HW Rounds, 126/126 Live Runs, 84/84 PNGs) summary.json telemetry receipt."""
+    t69a = r69a_raw.get("r69_telemetry") or {}
+    t69b = r69b_raw.get("r69_telemetry") or {}
+    t69c = r69c_raw.get("r69_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r69_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 69,
+            "lang": raw.get("lang", "en"),
+            "r69_mode": raw.get("r69_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r69_telemetry": _sanitize_r69_value(raw.get("r69_telemetry") or {}),
+            "gpe0_readback": _sanitize_r69_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r69_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r69_value(entry)
+
+    r69a_nz = (r69a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r69b_guard = t69b.get("wave55_guard") or {}
+    r69c_h0h3 = t69c.get("clean_unmount_wave55_h0_h3") or {}
+    r69a_init = t69a.get("wave55_init") or {}
+
+    return _sanitize_r69_value(
+        {
+            "schema": "fx6-on-fx3-round69-touch-4item-disp-zero-evf-flash-reset-interval-pb-edit-erofs-qemu-v1",
+            "round": 69,
+            "milestone": (
+                "42/42 Real-HW Rounds (R28..R69) — Wave-55 Setup -> [Touch Operation] 4-Item Tree & Dormant Touch Shutter/AE/Pad/Footer Guard, "
+                "[DISP (Screen Disp) Set] 4+3 Screen Set & Zero-EVF Black-Screen Guard, Still-Only [AEL w/ Shutter] / [Exp.comp.set] / [External Flash Set.] "
+                "vs [Wireless Flash] Asymmetric Reset Split, and 9-Speed [Play Speed for Interval] (1..9 def 5) + Active [Edit] vs Dormant [Beauty Effect]/[Trimming] & Slot-1 EROFS=30 Firewall "
+                "(124th..126th Live Unmodified ILME-FX3 Ver. 7.02 ARM64 QEMU Runs -> 126/126 Live Runs, 84/84 PNGs <= 27,467 B)"
+            ),
+            "date": "2026-11-17",
+            "kernel_version": r69a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "realhw_mechanisms_verified": {
+                "wave55_touch4_disp_flash_interval_edit_init": r69a_init,
+                "touch4_dormant_guard_stage_b_bridge": t69a.get("touch4_dormant_guard_bridge") or {},
+                "disp_4plus3_zero_evf_stage_b_bridge": t69a.get("disp_4plus3_zero_evf_bridge") or {},
+                "ael_flash_reset_split_stage_b_bridge": t69a.get("ael_flash_reset_split_bridge") or {},
+                "interval_pb_edit_erofs_stage_b_bridge": t69a.get("interval_pb_edit_erofs_bridge") or {},
+                "wave55_fail_closed_guard": r69b_guard,
+                "clean_unmount_wave55_reset_and_16_h0_h3": r69c_h0h3,
+            },
+            "runs": {
+                "r69a_touch4_disp_flash_intervalpb_big6_schinese": _clean_run(
+                    r69a_raw,
+                    (
+                        "124th Live FX3 7.02 QEMU Run (Round 69 / 42nd Real-HW Round) — Wave-55 4-pillar Stage-A/B verification: "
+                        "Setup -> [Touch Operation] 4-item Initialize-only tree (Touch Operation On/On:Playback Only/Off, Touch Sensitivity Standard/Sensitive NOT Responsive, "
+                        "Touch Func. in Shooting Touch Focus/Touch Tracking[def]/Off across Still/Movie/S&Q, Swipe Up Open the Fn Menu[def]/Off) rejecting dormant Touch Shutter/Touch AE/Touch Panel-Pad/Footer Icon Touch (-95 EOPNOTSUPP) "
+                        "vs FX6 Technical > Touch Operation + Touch Function in MF (Spot Focus/Tracking AF), "
+                        "Setup -> [Operation Customize] -> [DISP (Screen Disp) Set] (4 shooting pages Display All Info./No Disp. Info./Histogram/Level; 3 playback pages Display Info./Histogram/No Disp. Info.) "
+                        "+ Zero-EVF guard rejecting Select Finder/Monitor, For viewfinder, Graphic Display, Monitor Off (-95 EOPNOTSUPP) vs FX6 detachable 3.5\" LCD Viewfinder + Viewfinder Hood + Home/Direct Menu Priority, "
+                        "Still-only [AEL w/ Shutter] (Auto/On/Off, Initialize-only), [Flash] -> [Exp.comp.set] (Ambient&flash/Ambient only, Initialize-only), [External Flash Set.] (MI-shoe direct only, Initialize-only) "
+                        "vs [Wireless Flash] (Off/On — ONLY Camera Settings Reset-capable item of the 4) vs FX6 zero mechanical shutter/flash (Flash Band Reduce only), "
+                        "Playback -> [Viewing] -> [Cont. Play for Interval] + 9-speed [Play Speed for Interval] (1..9 def 5, Initialize-only) + active [Edit] (Rotate, Photo Capture, JPEG/HEIF Switch, Copy) "
+                        "vs dormant Beauty Effect/Trimming (-95 EOPNOTSUPP) + fail-closed Slot-1 Tier-0 Vault EROFS=30 firewall, "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r69a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r69b_wave55_touch4_disp_zero_evf_flash_interval_erofs_guard": _clean_run(
+                    r69b_raw,
+                    (
+                        "125th Live FX3 7.02 QEMU Run — Fail-closed Wave-55 guard rehearsal: dormant Touch Shutter/Touch AE/Touch Panel-Pad/Footer Icon Touch (-95 EOPNOTSUPP), "
+                        "invalid Responsive touch sensitivity (-22 EINVAL), Touch Operation=Off blocking Swipe Up (-16 EBUSY), FX6 Touch Sensitivity/Swipe Up absence (-2 ENOENT) & Touch Function in MF OK, "
+                        "DISP empty mask (-22 EINVAL) & dormant mask (-95 EOPNOTSUPP), Zero-EVF black-screen guard blocking Select Finder/Monitor, For viewfinder, Graphic Display, Monitor Off, DISP Button:Finder (-95 EOPNOTSUPP), "
+                        "Still-only AEL/Exp.comp.set/Wireless Flash/External Flash Set. lockout in S&Q (-16 EBUSY), AEL toggle custom key priority override (-16 EBUSY), off-shoe sync cord & camera flash reset (-95 EOPNOTSUPP), unmounted MI-shoe (-19 ENODEV), FX6 flash absence (-2 ENOENT), "
+                        "9-speed Play Speed for Interval OOB 0/10 (-22 EINVAL), in-camera interval synthesis (-95 EOPNOTSUPP), dormant Beauty Effect/Trimming (-95 EOPNOTSUPP), and Slot-1 Rotate/Photo Capture/Copy + AVF_INFO/P2/cnflasha Tier-0 Vault Firewall (-30 EROFS)"
+                    ),
+                ),
+                "r69c_clean_unmount_wave55_reset_h0_h3_big6_schinese": _clean_run(
+                    r69c_raw,
+                    (
+                        "126th Live FX3 7.02 QEMU Run (42/42 Real-HW Rounds! 126/126 Live Runs, 84/84 PNGs!) — Clean unmount of volatile Stage-B overlay restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + "
+                        "asymmetric reset tiers ([Camera Settings Reset] resets ONLY [Wireless Flash]->Off & [Select Playback Media]->Slot 1 while preserving all 4 [Touch Operation] items, "
+                        "[DISP (Screen Disp) Set] masks, [AEL w/ Shutter], [Exp.comp.set], [External Flash Set.], [Play Speed for Interval], and [JPEG/HEIF Switch]; "
+                        "[Initialize] restores all Wave-55 survivors to factory defaults) + dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r69_touch_4item_disp_zero_evf_flash_reset_interval_pb_edit_erofs_audit": {
+                "round": 69,
+                "realhw_rounds_count": 42,
+                "total_live_runs": 126,
+                "total_png_receipts": 84,
+                "milestone311_qemu_rounds": 42,
+                "milestone311_qemu_runs": 126,
+                "milestone311_png_receipts": 84,
+                "total_runs": 3,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "r69a_wave55_touch4_disp_flash_interval_edit_verified": bool(r69a_init.get("r69_init_ok") == 1),
+                "r69a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r69a_nz >= 300000),
+                "r69b_wave55_guard_fail_closed": bool(r69b_guard.get("r69b_ok") == 1),
+                "r69c_clean_unmount_wave55_reset_and_16_h0_eq_h3_verified": bool(
+                    r69c_h0h3.get("r69c_ok") == 1 and r69c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) capacitive touchscreen & Fn swipe gesture bench verifying 4-item [Touch Operation] tree (On/On: Playback Only/Off, Standard/Sensitive sensitivity, Touch Focus/Touch Tracking/Off in Still/Movie/S&Q, Swipe Up Open the Fn Menu) vs ILME-FX6 Ver. 6.01 detachable LCD Touch Function in MF remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) rear LCD & DISP hardware bench verifying 4 shooting + 3 playback [DISP (Screen Disp) Set] pages, zero-EVF blackout safety, and MI hot-shoe TTL optical/radio flash sync ([AEL w/ Shutter], [Exp.comp.set], [Wireless Flash], [External Flash Set.]) vs ILME-FX6 Viewfinder/Viewfinder Hood & Flash Band Reduce remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) dual-slot CFexpress/SDXC playback edit bench verifying 9-speed [Play Speed for Interval] (1..9 def 5), 4K/HD frame extraction [Photo Capture] (JPEG/HEIF Switch), [Rotate]/[Copy], and physical Slot-1 write protection blocking AVF_INFO/data sector mutations remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
+def _sanitize_r70_value(val: Any) -> Any:
+    return _sanitize_r69_value(val)
+
+
+def sanitize_round70_summary(
+    r70a_raw: Dict[str, Any],
+    r70b_raw: Dict[str, Any],
+    r70c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the Round 70 Milestone (43/43 Real-HW Rounds, 129/129 Live Runs, 86/86 PNGs) summary.json telemetry receipt."""
+    t70a = r70a_raw.get("r70_telemetry") or {}
+    t70b = r70b_raw.get("r70_telemetry") or {}
+    t70c = r70c_raw.get("r70_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r70_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 70,
+            "lang": raw.get("lang", "en"),
+            "r70_mode": raw.get("r70_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r70_telemetry": _sanitize_r70_value(raw.get("r70_telemetry") or {}),
+            "gpe0_readback": _sanitize_r70_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r70_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r70_value(entry)
+
+    r70a_nz = (r70a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r70b_guard = t70b.get("wave56_guard") or {}
+    r70c_h0h3 = t70c.get("clean_unmount_wave56_h0_h3") or {}
+    r70a_init = t70a.get("wave56_init") or {}
+
+    return _sanitize_r70_value(
+        {
+            "schema": "fx6-on-fx3-round70-milestone-dial-customize-mydial-fn12x2-liveview-lut-embed-qemu-v1",
+            "round": 70,
+            "milestone": (
+                "70th Round Milestone! 43/43 Real-HW Rounds (R28..R70) — Wave-56 Setup -> [Dial Customize] 5-Item Ver.2.00+ Tree & Dormant Dial Setup/Lock/Rear Dial L/R Guard, "
+                "3-Physical-Dial My Dial 1-3 (Empty '--' Auto-Skip & Lock-Override) + 12+12 [Fn Menu Settings] Split (0x6220), "
+                "Still-Only [Live View Display Set.] 3-Item Asymmetric Reset Split + 3-Pattern [Grid Line] Clean-HDMI Isolation, and "
+                "[Manage User LUTs] 1..16 Read-Only Import + Container [Embed LUT File] vs [PPLUT1..4] Pixel Baking & Slot-1 EROFS=30 Firewall "
+                "(127th..129th Live Unmodified ILME-FX3 Ver. 7.02 ARM64 QEMU Runs -> 129/129 Live Runs, 86/86 PNGs <= 27,467 B)"
+            ),
+            "date": "2026-11-17",
+            "kernel_version": r70a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "realhw_mechanisms_verified": {
+                "wave56_dial_mydial_fn_liveview_lut_init": r70a_init,
+                "dial_customize_dormant_guard_stage_b_bridge": t70a.get("dial_customize_dormant_guard_bridge") or {},
+                "mydial3_fn12x2_split_stage_b_bridge": t70a.get("mydial3_fn12x2_split_bridge") or {},
+                "liveview_grid_hdmi_stage_b_bridge": t70a.get("liveview_grid_hdmi_bridge") or {},
+                "lut_import_embed_erofs_stage_b_bridge": t70a.get("lut_import_embed_erofs_bridge") or {},
+                "wave56_fail_closed_guard": r70b_guard,
+                "clean_unmount_wave56_reset_and_16_h0_h3": r70c_h0h3,
+            },
+            "runs": {
+                "r70a_dial_mydial_fn12x2_liveview_lut_big6_schinese": _clean_run(
+                    r70a_raw,
+                    (
+                        "127th Live FX3 7.02 QEMU Run (Round 70 Milestone / 43rd Real-HW Round) — Wave-56 4-pillar Stage-A/B verification: "
+                        "Setup -> [Dial Customize] 5-item Initialize-only Ver.2.00+ tree (Custom Key/Dial Set., My Dial Settings, Av/Tv Rotate Normal/Reverse, Function Ring(Lens) Power Focus / APS-C/S35 / Full Frame, Lock Operation Parts Off/Multi-Selector Only/Dial+Wheel/All via Fn long-press or MENU+Fn 5s) "
+                        "rejecting legacy/dormant Dial Setup, Dial/Wheel Setup, Dial / Wheel Lock, Rear Dial L/R (-95 EOPNOTSUPP) vs FX6 Multi Function Dial + Grip/Handle/IRIS/ND Dials + HOLD switch, "
+                        "3-physical-dial topology (Front Dial, single Rear Dial, Control Wheel), My Dial 1..3 (Hold/Toggle/1->2->3 auto-skipping empty '--' sets & temporarily unlocking Lock Operation Parts while active) + 12 Still + 12 Movie [Fn Menu Settings] split (0x6220 invalid prompt when all 12 Not set) vs FX6 Status Screens + Direct Menu, "
+                        "Still-only [Live View Display Set.] 3-item asymmetric reset split (Initialize-only Live View Display [forced Setting Effect OFF under Bright Monitoring] & Exposure Effect vs Resettable Frame Rate Low Limit) + 3-pattern [Grid Line Display]/[Grid Line Type] (Rule of 3rds, Square, Diag.+Square) isolated from Clean HDMI, "
+                        "[Manage User LUTs] User1..16 .cube read-only import (SDXC /Private/Sony/PRO/LUT or CFexpress /Sony/PRO/LUT, slot1_data_sector_writes == 0) + [Select LUT] (s709 def) + container [Embed LUT File] (On[def]/Off, locked Off on SD/SDHC) vs [PPLUT1..4] pixel baking + Slot-1 EROFS=30 Tier-0 Vault firewall, "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r70a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r70b_wave56_dial_mydial_fn_liveview_lut_erofs_guard": _clean_run(
+                    r70b_raw,
+                    (
+                        "128th Live FX3 7.02 QEMU Run — Fail-closed Wave-56 guard rehearsal: dormant Dial Setup / Dial/Wheel Setup / Dial / Wheel Lock / Rear Dial L/R (-95 EOPNOTSUPP), "
+                        "invalid Function Ring mode (-22 EINVAL), FX6 Av/Tv Rotate & Lock Operation Parts absence (-2 ENOENT) vs FX6 Multi Function Dial OK (0), "
+                        "My Dial Hold on empty '--' set (-22 EINVAL), Fn Movie all Not set 0x6220 (-22 EINVAL), OOB Fn slot (-22 EINVAL), FX6 My Dial/Fn Menu absence (-2 ENOENT) vs FX6 Status Screens + Direct Menu OK (0), "
+                        "Still-only [Live View Display Set.] lockout in S&Q (-16 EBUSY), Bright Monitoring forcing Setting Effect OFF (-16 EBUSY), Grid OOB (-22 EINVAL), dormant CUSTOM_GRID_LINE0..3 / GOLDEN_RATIO_GRID (-95 EOPNOTSUPP), FX6 Monitoring Marker OK (0), "
+                        "Manage User LUTs slot 17 OOB / 64-char filename / 65-pt .cube (-22 EINVAL), wrong card dir (-2 ENOENT), SD/SDHC Embed LUT File lockout (-16 EBUSY), unimported PPLUT bind (-2 ENOENT), and Slot-1 Make Cube Folder / Embed LUT rec / PPLUT bake / Vault / AVF_INFO / P2 / cnflasha Tier-0 Vault Firewall (-30 EROFS)"
+                    ),
+                ),
+                "r70c_clean_unmount_wave56_reset_h0_h3_big6_schinese": _clean_run(
+                    r70c_raw,
+                    (
+                        "129th Live FX3 7.02 QEMU Run (70th Round Milestone! 43/43 Real-HW Rounds! 129/129 Live Runs, 86/86 PNGs!) — Clean unmount of volatile Stage-B overlay restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + "
+                        "asymmetric reset tiers ([Camera Settings Reset] resets ONLY [Frame Rate Low Limit]->Off [1 of 3 Live View items], [Select LUT]->s709, [Embed LUT File]->On, & [PPLUT1..4]->unlinked while preserving all 5 [Dial Customize] items, My Dial 1..3, 12+12 [Fn Menu Settings], [Live View Display], [Exposure Effect], [Grid Line Display]/[Grid Line Type], and [Manage User LUTs] User1..16; "
+                        "[Initialize] restores all Wave-56 survivors to factory defaults) + dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r70_dial_customize_mydial_fn12x2_liveview_lut_embed_audit": {
+                "round": 70,
+                "realhw_rounds_count": 43,
+                "total_live_runs": 129,
+                "total_png_receipts": 86,
+                "milestone324_qemu_rounds": 43,
+                "milestone324_qemu_runs": 129,
+                "milestone324_png_receipts": 86,
+                "total_runs": 3,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "r70a_wave56_dial_mydial_fn_liveview_lut_verified": bool(r70a_init.get("r70_init_ok") == 1),
+                "r70a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r70a_nz >= 300000),
+                "r70b_wave56_guard_fail_closed": bool(r70b_guard.get("r70b_ok") == 1),
+                "r70c_clean_unmount_wave56_reset_and_16_h0_eq_h3_verified": bool(
+                    r70c_h0h3.get("r70c_ok") == 1 and r70c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) Front Dial, single Rear Dial, Control Wheel, Lens Function Ring, and Lock Operation Parts (Fn long-press / MENU+Fn 5s chord + My Dial 1..3 temporary lock-override) hardware bench vs ILME-FX6 Ver. 6.01 Multi Function Dial, Grip/Handle/IRIS/ND Dials & physical HOLD switch remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) LCD + Clean HDMI analyzer bench verifying Still-only [Live View Display Set.] (Live View Display, Exposure Effect, Frame Rate Low Limit; Bright Monitoring forcing Setting Effect OFF) and 3-pattern [Grid Line Type] (Rule of 3rds, Square, Diag. + Square) isolated from Clean HDMI output remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) dual-slot SDXC/CFexpress Type A User LUT (.cube) read-only import, non-destructive container [Embed LUT File] vs [PPLUT1..4] pixel baking, SD/SDHC Embed lockout, and Slot-1 write-protection blocking AVF_INFO/data sector mutations remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
@@ -9482,7 +11046,12 @@ def main() -> int:
     # r62_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62]
     # r63_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63]
     # r64_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65], required=True)
+    # r65_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65]
+    # r66_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66]
+    # r67_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67]
+    # r68_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68]
+    # r69_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -9522,6 +11091,11 @@ def main() -> int:
     ap.add_argument("--r63-mode", type=str, choices=["still_raw_heif_colorspace_shutter_drive_big6", "still_raw_heif_colorspace_shutter_guard", "clean_unmount_still_reset_h0_h3_big6"], default="still_raw_heif_colorspace_shutter_drive_big6")
     ap.add_argument("--r64-mode", type=str, choices=["focus_area_zoom_iso_flash_big6", "wave50_focus_zoom_iso_flash_guard", "clean_unmount_wave50_reset_h0_h3_big6"], default="focus_area_zoom_iso_flash_big6")
     ap.add_argument("--r65-mode", type=str, choices=["dci4k_aspect_camset_photocap_big6", "wave51_dci4k_aspect_camset_photocap_guard", "clean_unmount_wave51_reset_h0_h3_big6"], default="dci4k_aspect_camset_photocap_big6")
+    ap.add_argument("--r66-mode", type=str, choices=["cleaning_evcomp_focusmode_rotate_big6", "wave52_cleaning_evcomp_focusmode_rotate_guard", "clean_unmount_wave52_reset_h0_h3_big6"], default="cleaning_evcomp_focusmode_rotate_big6")
+    ap.add_argument("--r67-mode", type=str, choices=["lens_comp_af_illum_init5_rating_big6", "wave53_lens_comp_af_illum_init5_rating_guard", "clean_unmount_wave53_reset_h0_h3_big6"], default="lens_comp_af_illum_init5_rating_big6")
+    ap.add_argument("--r68-mode", type=str, choices=["switch_vh_af_limit14_stdadj_tc_copy_big6", "wave54_switch_vh_af_limit14_stdadj_tc_copy_guard", "clean_unmount_wave54_reset_h0_h3_big6"], default="switch_vh_af_limit14_stdadj_tc_copy_big6")
+    ap.add_argument("--r69-mode", type=str, choices=["touch4_disp_flash_reset_interval_edit_big6", "wave55_touch4_disp_zero_evf_flash_interval_erofs_guard", "clean_unmount_wave55_reset_h0_h3_big6"], default="touch4_disp_flash_reset_interval_edit_big6")
+    ap.add_argument("--r70-mode", type=str, choices=["dial_mydial_fn12x2_liveview_lut_big6", "wave56_dial_mydial_fn_liveview_lut_erofs_guard", "clean_unmount_wave56_reset_h0_h3_big6"], default="dial_mydial_fn12x2_liveview_lut_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

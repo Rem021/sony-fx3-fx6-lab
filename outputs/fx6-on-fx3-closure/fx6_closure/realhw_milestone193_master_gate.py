@@ -608,7 +608,7 @@ class RealHwMilestone193MasterGateReport:
         return asdict(self)
 
     def to_deterministic_json(self, indent: int = 2) -> str:
-        return json.dumps(self.to_dict(), sort_keys=True, indent=indent, ensure_ascii=False) + "\n"
+        return json.dumps(_strip_nondeterministic_fields_193(self.to_dict()), sort_keys=True, indent=indent, ensure_ascii=False) + "\n"
 
 
 @dataclass(frozen=True)
@@ -632,10 +632,32 @@ class RealHwMilestone193VerifyResult:
 # ---------------------------------------------------------------------------
 
 
+def _strip_nondeterministic_fields_193(obj: Any) -> Any:
+    if isinstance(obj, Mapping):
+        out: Dict[str, Any] = {}
+        for k, v in obj.items():
+            ks = str(k)
+            if ks in (
+                "elapsed_seconds",
+                "elapsed_s",
+                "elapsed_ms",
+                "inspection_elapsed_ms",
+                "wall_seconds",
+                "audit_digest_sha256",
+            ) or ks.endswith(("_elapsed_ms", "_elapsed_s", "_elapsed_seconds")):
+                continue
+            out[ks] = _strip_nondeterministic_fields_193(v)
+        return out
+    if isinstance(obj, (list, tuple)):
+        return [_strip_nondeterministic_fields_193(x) for x in obj]
+    return obj
+
+
 def compute_milestone193_sha256(payload: Mapping[str, Any]) -> str:
     """Compute canonical SHA-256 over `RealHwMilestone193MasterGateReport` JSON."""
     body = copy.deepcopy(dict(payload))
     body.pop("milestone193_sha256", None)
+    body = _strip_nondeterministic_fields_193(body)
     canonical = json.dumps(body, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode(
         "utf-8"
     )

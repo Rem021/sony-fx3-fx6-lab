@@ -70,8 +70,10 @@ import playback_shotmark_dewpoint_emulator as p87  # noqa: E402
 import qmp_guest_introspection_tracer as p58  # noqa: E402
 import realhw_apsc_s35_face_eye_af_version_coemulator as p267  # noqa: E402
 import realhw_auto_slow_shutter_hdmi_reccontrol_breathing_coemulator as p262  # noqa: E402
+import realhw_big6_home_framing_interval_tc_ssh_fan_coemulator as p328  # noqa: E402
 import realhw_big6_noend_camset_slot1_vmcbncm1_coemulator as p202  # noqa: E402
 import realhw_body_peripheral_ibis_fan_power_coemulator as p150  # noqa: E402
+import realhw_bright_mon_shotmark_usblan_bulb_dormant_coemulator as p325  # noqa: E402
 import realhw_c2pa_tc_gyro_and_prebench_gonogo_coemulator as p172  # noqa: E402
 import realhw_cfexpress_ufu_and_5tier_recovery_coemulator as p162  # noqa: E402
 import realhw_cxd90058_sabin_codec_and_seal_coemulator as p167  # noqa: E402
@@ -88,6 +90,7 @@ import realhw_filesettings_shotmark_tcregen_reclamp_coemulator as p217  # noqa: 
 import realhw_focus_area_zoom_lever_iso_minss_flash_coemulator as p298  # noqa: E402
 import realhw_focus_mag_datetime_videolight_hdmires_coemulator as p278  # noqa: E402
 import realhw_framing_usbpower_lun_antiflicker_coemulator as p250  # noqa: E402
+import realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_coemulator as p333  # noqa: E402
 import realhw_fx3a_branch_firewall_and_xlrh1_4ch_mishoe_coemulator as p188  # noqa: E402
 import realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_coemulator as p213  # noqa: E402
 import realhw_imx510_color_and_network_usb_coemulator as p157  # noqa: E402
@@ -100,13 +103,16 @@ import realhw_power_save_monitor_language_volume_delete_coemulator as p281  # no
 import realhw_pp_scinetone_creativelook_wb_metering_coemulator as p289  # noqa: E402
 import realhw_preflash_dualboot_lifecycle_emulator as p141  # noqa: E402
 import realhw_raw_heif_colorspace_shuttertype_nr_drive_coemulator as p293  # noqa: E402
+import realhw_rec_media_autoswitch_proxy_cloud_mymenu_coemulator as p330  # noqa: E402
 import realhw_recover_imagedb_monitor_flip_af_sens_coemulator as p239  # noqa: E402
 import realhw_release_wo_card_audio_meter_copyright_coemulator as p270  # noqa: E402
 import realhw_sensor_cleaning_ev_comp_focus_mode_rotate_coemulator as p306  # noqa: E402
+import realhw_shoe_audio_4ch_subject_recog_silent_target_version_coemulator as p335  # noqa: E402
 import realhw_shoe_audio_wind_saveload_c3_coemulator as p244  # noqa: E402
 import realhw_silent_autopixelmap_marker_flexexp_coemulator as p236  # noqa: E402
 import realhw_sq_fixedvar_zebra_peaking_fullformat_coemulator as p232  # noqa: E402
 import realhw_ssboot_wbi2_powerloss_and_slot1_ufu_coemulator as p178  # noqa: E402
+import realhw_steadyshot_47focal_selftimer_zebra_streaming_coemulator as p322  # noqa: E402
 import realhw_steadyshot_active_ciz_4locks_powersave_autotemp_coemulator as p226  # noqa: E402
 import realhw_switch_vh_af_stdadj_tcub_copy_slot_coemulator as p312  # noqa: E402
 import realhw_touch_shooting_disp_zero_evf_interval_pb_coemulator as p315  # noqa: E402
@@ -259,6 +265,24 @@ class CoEmulationConfig:
     include_phase318_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil: bool = True
     include_stage66: bool = True
     stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil: bool = True
+    include_phase322_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil: bool = True
+    include_stage67: bool = True
+    stage67_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil: bool = True
+    include_phase325_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil: bool = True
+    include_stage68: bool = True
+    stage68_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil: bool = True
+    include_phase328_realhw_big6_home_framing_interval_tc_ssh_fan_hil: bool = True
+    include_stage69: bool = True
+    stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil: bool = True
+    include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil: bool = True
+    include_stage70: bool = True
+    stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil: bool = True
+    include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil: bool = True
+    include_stage71: bool = True
+    stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil: bool = True
+    include_phase335_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil: bool = True
+    include_stage72: bool = True
+    stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -4541,6 +4565,659 @@ def run_stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil(
     }
 
 
+def run_stage67_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil(
+    config: Optional[CoEmulationConfig] = None,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 67 (Phase 322, 67/67 Milestone): Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-57 5-Axis IBIS [SteadyShot] 4-Lock Active & 47-Focal-Length, Dormant Movie [Self-timer] vs Still LED #8 & [Audio signals], [Zebra Display] Custom1/Custom2 & 4-Color [Peaking] Clean-HDMI Isolation vs FX6 Off/Zebra1/Zebra2, and [Network Streaming] RTMP/RTMPS/SRT Zero-24p / 4K-Rec Lock + Zero-RF & Slot-1 EROFS=30 Vault Firewall HIL."""
+    cfg = CoEmulationConfig() if config is None else config
+    cfg.validate()
+    rep = p322.run_phase322_steadyshot_47focal_selftimer_zebra_streaming_coemulation(
+        force_clean_room=cfg.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage67_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "is_67th_stage_milestone": bool(rep["is_67th_stage_milestone"]),
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "emmc_corruptions": red["emmc_corruptions"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "passive_tx_bytes_emitted": red["passive_tx_bytes_emitted"],
+        "fx3_focal_length_steps_count": red["fx3_focal_length_steps_count"],
+        "steadyshot_active_lockout_bypass_events": red[
+            "steadyshot_active_lockout_bypass_events"
+        ],
+        "dormant_dynamic_active_exposed_events": red[
+            "dormant_dynamic_active_exposed_events"
+        ],
+        "dormant_movie_selftimer_exposed_events": red[
+            "dormant_movie_selftimer_exposed_events"
+        ],
+        "fx3_led8_tally_confusion_events": red["fx3_led8_tally_confusion_events"],
+        "zebra_peaking_hdmi_clean_feed_leaked_pixels": red[
+            "zebra_peaking_hdmi_clean_feed_leaked_pixels"
+        ],
+        "fx6_zebra_simultaneous_both_bypass_events": red[
+            "fx6_zebra_simultaneous_both_bypass_events"
+        ],
+        "streaming_24p_bypass_events": red["streaming_24p_bypass_events"],
+        "streaming_rec_4k_lock_bypass_events": red[
+            "streaming_rec_4k_lock_bypass_events"
+        ],
+        "rf_packets_transmitted": red["rf_packets_transmitted"],
+        "rf_nvs_mutation_bytes": red["rf_nvs_mutation_bytes"],
+        "slot1_data_sector_writes": red["slot1_data_sector_writes"],
+        "slot1_avf_info_mutated": red["slot1_avf_info_mutated"],
+        "slot1_vault_streaming_mutation_bytes": red[
+            "slot1_vault_streaming_mutation_bytes"
+        ],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_steadyshot_4locks_and_47_focal_hil": rep[
+            "pillar_a_steadyshot_4locks_and_47_focal_hil"
+        ],
+        "pillar_b_dormant_movie_selftimer_led8_and_audio_hil": rep[
+            "pillar_b_dormant_movie_selftimer_led8_and_audio_hil"
+        ],
+        "pillar_c_zebra_custom12_peaking_clean_hdmi_vs_fx6_hil": rep[
+            "pillar_c_zebra_custom12_peaking_clean_hdmi_vs_fx6_hil"
+        ],
+        "pillar_d_network_streaming_zero_rf_and_slot1_vault_hil": rep[
+            "pillar_d_network_streaming_zero_rf_and_slot1_vault_hil"
+        ],
+        "phase322_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
+def run_stage68_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil(
+    config: Optional[CoEmulationConfig] = None,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 68 (Phase 325, 68/68 Milestone): Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-58 Custom-Key [Bright Monitoring] Ver. 7.00+ Focus Magnifier Coexistence & [Monitor Brightness], [Shot Mark 1/2] / [Clip Flag] vs Zero [Divide]/[Extract]/FTP Cut & Slot-1 EROFS=30 Vault Firewall, Zero BT [Timecode Link] vs VMC-BNCM1 EXT-LK & WPA2/WPA3 / USB-LAN Mutual Exclusion + Airplane Mode Reset Persistence, and Still [BULB] Mechanical Shutter & [DRO] vs Dormant [Bulb Timer] / [Auto HDR] HIL."""
+    cfg = CoEmulationConfig() if config is None else config
+    cfg.validate()
+    rep = p325.run_phase325_bright_mon_shotmark_usblan_bulb_dormant_coemulation(
+        force_clean_room=cfg.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage68_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "is_68th_stage_milestone": bool(rep["is_68th_stage_milestone"]),
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "emmc_corruptions": red["emmc_corruptions"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "passive_tx_bytes_emitted": red["passive_tx_bytes_emitted"],
+        "bright_mon_shooting_menu_exposed": red["bright_mon_shooting_menu_exposed"],
+        "dormant_lcd_brightness_auto_exposed_events": red[
+            "dormant_lcd_brightness_auto_exposed_events"
+        ],
+        "dormant_divide_extract_or_ftp_cut_exposed_events": red[
+            "dormant_divide_extract_or_ftp_cut_exposed_events"
+        ],
+        "dormant_bt_timecode_link_exposed_events": red[
+            "dormant_bt_timecode_link_exposed_events"
+        ],
+        "removed_wep_wpa_ipsec_exposed_events": red[
+            "removed_wep_wpa_ipsec_exposed_events"
+        ],
+        "usblan_wifi_or_multi_usb_coexist_violations": red[
+            "usblan_wifi_or_multi_usb_coexist_violations"
+        ],
+        "dormant_bulb_timer_or_auto_hdr_exposed_events": red[
+            "dormant_bulb_timer_or_auto_hdr_exposed_events"
+        ],
+        "bulb_non_mech_or_cont_bypass_events": red[
+            "bulb_non_mech_or_cont_bypass_events"
+        ],
+        "post_reset_airplane_off_rf_leak_events": red[
+            "post_reset_airplane_off_rf_leak_events"
+        ],
+        "rf_packets_transmitted": red["rf_packets_transmitted"],
+        "rf_nvs_mutation_bytes": red["rf_nvs_mutation_bytes"],
+        "slot1_data_sector_writes": red["slot1_data_sector_writes"],
+        "slot1_avf_info_mutated": red["slot1_avf_info_mutated"],
+        "slot1_vault_shotmark_edit_mutation_bytes": red[
+            "slot1_vault_shotmark_edit_mutation_bytes"
+        ],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_bright_mon_ver7_magnifier_and_monitor_brightness_hil": rep[
+            "pillar_a_bright_mon_ver7_magnifier_and_monitor_brightness_hil"
+        ],
+        "pillar_b_shotmark_clipflag_edit_and_slot1_vault_hil": rep[
+            "pillar_b_shotmark_clipflag_edit_and_slot1_vault_hil"
+        ],
+        "pillar_c_zero_bt_tclink_wpa3_usblan_and_airplane_hil": rep[
+            "pillar_c_zero_bt_tclink_wpa3_usblan_and_airplane_hil"
+        ],
+        "pillar_d_bulb_mech_dro_and_dormant_timer_hdr_hil": rep[
+            "pillar_d_bulb_mech_dro_and_dormant_timer_hdr_hil"
+        ],
+        "phase325_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
+def run_stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil(
+    config: Optional[CoEmulationConfig] = None,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 69 (Phase 328, 69/69 Milestone): Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-59 Ver. 7.00/7.02 BIG6 HOME Screen (Mode Settings Fixed/Variable, Metadata-Only Lower-Left ND Filter, Zero e-ND) & Active Manual [Framing Settings] vs Dormant AI [Auto Framing], Still-Only [Interval Shoot Func.] (All 7 Resettable, Slot-1 EROFS=30/EBUSY=16 Vault) vs FX6 Single-MXF Interval Rec, [Time Code Make] (Regenerate->Slot 1 & Forced Rec Run, VMC-BNCM1 EXT-LK, Zero Clock) & [HDMI Output Settings] ([REC Control], [4ch Audio Output] 2ch Limit), and [Access Authen. Settings] (SSH Tunnel + PTP-IP, Zero HTTP_DIGEST/BASIC/HTTPS) & 4-Mode FX3 vs 3-Mode FX6 [Fan Control] (Zero Max Mode) + [Auto Power OFF Temp.] HIL."""
+    cfg = CoEmulationConfig() if config is None else config
+    cfg.validate()
+    rep = p328.run_phase328_big6_home_framing_interval_tc_ssh_fan_coemulation(
+        force_clean_room=cfg.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "is_69th_stage_milestone": bool(rep["is_69th_stage_milestone"]),
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "emmc_corruptions": red["emmc_corruptions"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "passive_tx_bytes_emitted": red["passive_tx_bytes_emitted"],
+        "fx3_has_builtin_end_filter": red["fx3_has_builtin_end_filter"],
+        "fx6_has_electronic_variable_nd": red["fx6_has_electronic_variable_nd"],
+        "electronic_nd_commands_emitted": red["electronic_nd_commands_emitted"],
+        "hdmi_sdi_status_bar_leaked_pixels": red["hdmi_sdi_status_bar_leaked_pixels"],
+        "dormant_auto_framing_exposed_events": red[
+            "dormant_auto_framing_exposed_events"
+        ],
+        "framing_highfps_or_rec_bypass_events": red[
+            "framing_highfps_or_rec_bypass_events"
+        ],
+        "interval_inbody_movie_mux_events": red["interval_inbody_movie_mux_events"],
+        "interval_iauto_or_bulb_bypass_events": red[
+            "interval_iauto_or_bulb_bypass_events"
+        ],
+        "slot1_data_sector_writes": red["slot1_data_sector_writes"],
+        "slot1_avf_info_mutated": red["slot1_avf_info_mutated"],
+        "slot1_vault_interval_write_events": red["slot1_vault_interval_write_events"],
+        "tc_regen_non_slot1_or_freerun_violations": red[
+            "tc_regen_non_slot1_or_freerun_violations"
+        ],
+        "fx3_clock_tc_make_exposed_events": red["fx3_clock_tc_make_exposed_events"],
+        "hdmi_rec_ctrl_s_and_q_or_notc_bypass_events": red[
+            "hdmi_rec_ctrl_s_and_q_or_notc_bypass_events"
+        ],
+        "ssh_http_basic_https_auth_spoof_events": red[
+            "ssh_http_basic_https_auth_spoof_events"
+        ],
+        "removed_wep_wpa_ipsec_exposed_events": red[
+            "removed_wep_wpa_ipsec_exposed_events"
+        ],
+        "fan_control_max_exposed_events": red["fan_control_max_exposed_events"],
+        "fx6_fan_always_off_exposed_events": red["fx6_fan_always_off_exposed_events"],
+        "rf_packets_transmitted": red["rf_packets_transmitted"],
+        "rf_nvs_mutation_bytes": red["rf_nvs_mutation_bytes"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_big6_home_screen_and_framing_hil": rep[
+            "pillar_a_big6_home_screen_and_framing_hil"
+        ],
+        "pillar_b_interval_shoot_7item_and_slot1_vault_hil": rep[
+            "pillar_b_interval_shoot_7item_and_slot1_vault_hil"
+        ],
+        "pillar_c_tc_regenerate_and_hdmi_rec_control_hil": rep[
+            "pillar_c_tc_regenerate_and_hdmi_rec_control_hil"
+        ],
+        "pillar_d_access_auth_ssh_and_fan_control_thermal_hil": rep[
+            "pillar_d_access_auth_ssh_and_fan_control_thermal_hil"
+        ],
+        "phase328_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
+def run_stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil(
+    config: Optional[CoEmulationConfig] = None,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 70 (Phase 330, 70/70 Milestone!): Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-60 [Rec. Media Settings] (Removed [Prioritize Rec. Media], Initialize-only [Recording Media] Still 4 vs Movie 3 + [Auto Switch Media], CRITICAL Slot-2 -> Slot-1 Overflow Trap Dual-Lock EROFS=30, VPG200/VPG400 vs SDXC V60/V90 Speed Gates, FX6 Simul Rec & Relay Rec Exclusions), [Proxy Settings] (sq_proxy XAVC S HD 6M 8bit vs XAVC HS HD 9M/16M 10bit, Allowed on XAVC S-I DCI 4K <=59.94p, Cutoff at 100p/120fps+, M4ROOT/SUB/*S03.MP4 Non-Playable & Coupled Delete/Protect + Slot-1 EROFS=30 vs FX6 9M AVC + Chunk Proxy Slot B), [Creators' Cloud] / [C3 Portal] (Cloud * Surviving Initialize, Power-OFF BLE Zero-RF 3-Lock Guard vs Zero-BT FX6), and [My Menu] (6x7=42 Slots vs FX6 20-Item User Menu + User Menu Only + User Menu with Lock 0000..9999 PIN Excluded from All File & Scene File) HIL."""
+    cfg = CoEmulationConfig() if config is None else config
+    cfg.validate()
+    rep = p330.run_phase330_rec_media_autoswitch_proxy_cloud_mymenu_coemulation(
+        force_clean_room=cfg.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "is_70th_stage_milestone": bool(rep["is_70th_stage_milestone"]),
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "emmc_corruptions": red["emmc_corruptions"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "passive_tx_bytes_emitted": red["passive_tx_bytes_emitted"],
+        "prioritize_rec_media_exposed_events": red[
+            "prioritize_rec_media_exposed_events"
+        ],
+        "movie_sort_recording_exposed_events": red[
+            "movie_sort_recording_exposed_events"
+        ],
+        "simult_fs_mismatch_bypass_events": red["simult_fs_mismatch_bypass_events"],
+        "slot2_to_slot1_overflow_bypass_events": red[
+            "slot2_to_slot1_overflow_bypass_events"
+        ],
+        "sdxc_1200m_or_cfex_b_bypass_events": red["sdxc_1200m_or_cfex_b_bypass_events"],
+        "proxy_highfps_100p_120fps_bypass_events": red[
+            "proxy_highfps_100p_120fps_bypass_events"
+        ],
+        "on_camera_proxy_playback_frames": red["on_camera_proxy_playback_frames"],
+        "proxy_coupled_delete_split_events": red["proxy_coupled_delete_split_events"],
+        "slot1_data_sector_writes": red["slot1_data_sector_writes"],
+        "slot1_avf_info_mutated": red["slot1_avf_info_mutated"],
+        "slot1_vault_proxy_mutation_events": red["slot1_vault_proxy_mutation_events"],
+        "power_off_ble_zero_rf_violations": red["power_off_ble_zero_rf_violations"],
+        "fx6_bluetooth_hardware_present": red["fx6_bluetooth_hardware_present"],
+        "fx6_bluetooth_poweroff_wake_exposed_events": red[
+            "fx6_bluetooth_poweroff_wake_exposed_events"
+        ],
+        "mymenu_exact_slot_capacity": red["mymenu_exact_slot_capacity"],
+        "fx6_user_menu_capacity": red["fx6_user_menu_capacity"],
+        "mymenu_out_of_bounds_or_playback_events": red[
+            "mymenu_out_of_bounds_or_playback_events"
+        ],
+        "fx6_user_menu_lock_pin_file_leak_events": red[
+            "fx6_user_menu_lock_pin_file_leak_events"
+        ],
+        "rf_packets_transmitted": red["rf_packets_transmitted"],
+        "rf_nvs_mutation_bytes": red["rf_nvs_mutation_bytes"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_rec_media_autoswitch_vpg_and_overflow_lock_hil": rep[
+            "pillar_a_rec_media_autoswitch_vpg_and_overflow_lock_hil"
+        ],
+        "pillar_b_proxy_settings_substream_and_slot1_vault_hil": rep[
+            "pillar_b_proxy_settings_substream_and_slot1_vault_hil"
+        ],
+        "pillar_c_creators_cloud_c3portal_and_poweroff_ble_zerorf_hil": rep[
+            "pillar_c_creators_cloud_c3portal_and_poweroff_ble_zerorf_hil"
+        ],
+        "pillar_d_mymenu_42slots_and_fx6_usermenu_lock_hil": rep[
+            "pillar_d_mymenu_42slots_and_fx6_usermenu_lock_hil"
+        ],
+        "phase330_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
+def run_stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil(
+    config: Optional[CoEmulationConfig] = None,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 71 (Phase 333, 71/71 Milestone!): Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-61 [FTP Transfer Func.] (9-Server Passive-Only FTP/FTPES vs Dormant SFTP/Active/Implicit-990/Transfer-JPEG-HEIF-Size EOPNOTSUPP=95, cacert.pem <=1MB from Slot 1, USB-LAN Zero-RF Bypass Firewall + Slot-1 AVF_INFO EROFS=30 vs FX6 3-Server Active+Passive / Slot B certification.pem / Chunk), [White Balance] (2500K..9900K, Custom 1..3 CAMSET Exclusion & 0x0220 Error, Still Shutter AWB Lock Initialize-Only, Movie Shockless WB 0-Frame Dial Bypass, Cine EI Auto Lockout vs FX6 Memory A..H / ATW Speed 1..5), [Movie AF & Focus Map] (1..7 Transition Speed & 1..5 Shift Sens. Shared FX3/FX6, AF Assist, Zero In-Body Focus Map vs External M&C <150fps vs FX6 Native In-Body Focus Map), and [Marker Display] / [Peaking Display] (15-Ratio Marker + 4-Color Peaking Clean-HDMI 0-Leak & Initialize-Only Persistence vs FX6 Aspect Mask 0..15 / User Box / B&W Peaking) HIL."""
+    cfg = CoEmulationConfig() if config is None else config
+    cfg.validate()
+    rep = p333.run_phase333_ftp_ftpes_usblan_customwb_af_focusmap_marker_coemulation(
+        force_clean_room=cfg.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "is_71st_stage_milestone": bool(rep["is_71st_stage_milestone"]),
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "emmc_corruptions": red["emmc_corruptions"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "passive_tx_bytes_emitted": red["passive_tx_bytes_emitted"],
+        "fx3_ftp_max_servers": red["fx3_ftp_max_servers"],
+        "fx6_ftp_max_servers": red["fx6_ftp_max_servers"],
+        "dormant_sftp_exposed_events": red["dormant_sftp_exposed_events"],
+        "active_ftp_or_implicit_ftps_bypass_events": red[
+            "active_ftp_or_implicit_ftps_bypass_events"
+        ],
+        "dormant_transfer_jpeg_heif_size_exposed_events": red[
+            "dormant_transfer_jpeg_heif_size_exposed_events"
+        ],
+        "usblan_zero_rf_bypass_events": red["usblan_zero_rf_bypass_events"],
+        "ftp_cloud_mutual_exclusion_violations": red[
+            "ftp_cloud_mutual_exclusion_violations"
+        ],
+        "slot1_data_sector_writes": red["slot1_data_sector_writes"],
+        "slot1_avf_info_mutated": red["slot1_avf_info_mutated"],
+        "slot1_vault_ftp_mutation_events": red["slot1_vault_ftp_mutation_events"],
+        "custom_wb_camset_leak_events": red["custom_wb_camset_leak_events"],
+        "cine_ei_auto_wb_bypass_events": red["cine_ei_auto_wb_bypass_events"],
+        "shockless_wb_direct_ctemp_lag_frames": red[
+            "shockless_wb_direct_ctemp_lag_frames"
+        ],
+        "fx3_has_inbody_focus_map": red["fx3_has_inbody_focus_map"],
+        "fx6_has_inbody_focus_map": red["fx6_has_inbody_focus_map"],
+        "inbody_focus_map_exposed_events": red["inbody_focus_map_exposed_events"],
+        "focus_map_150fps_or_autoframing_bypass_events": red[
+            "focus_map_150fps_or_autoframing_bypass_events"
+        ],
+        "af_subj_shift_6_7_spoof_events": red["af_subj_shift_6_7_spoof_events"],
+        "fx3_marker_active_ratio_count": red["fx3_marker_active_ratio_count"],
+        "hdmi_marker_or_peaking_leaked_pixels": red[
+            "hdmi_marker_or_peaking_leaked_pixels"
+        ],
+        "camera_reset_marker_or_peaking_wipe_events": red[
+            "camera_reset_marker_or_peaking_wipe_events"
+        ],
+        "marker_focus_magnifier_collision_events": red[
+            "marker_focus_magnifier_collision_events"
+        ],
+        "rf_packets_transmitted": red["rf_packets_transmitted"],
+        "rf_nvs_mutation_bytes": red["rf_nvs_mutation_bytes"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_ftp_ftpes_usblan_zerorf_and_slot1_vault_hil": rep[
+            "pillar_a_ftp_ftpes_usblan_zerorf_and_slot1_vault_hil"
+        ],
+        "pillar_b_wb_custom13_shutter_lock_shockless_and_cineei_hil": rep[
+            "pillar_b_wb_custom13_shutter_lock_shockless_and_cineei_hil"
+        ],
+        "pillar_c_movie_af_scales_assist_and_external_focusmap_hil": rep[
+            "pillar_c_movie_af_scales_assist_and_external_focusmap_hil"
+        ],
+        "pillar_d_marker_15ratio_and_peaking_4color_clean_hdmi_hil": rep[
+            "pillar_d_marker_15ratio_and_peaking_4color_clean_hdmi_hil"
+        ],
+        "phase333_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
+def run_stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil(
+    config: Optional[CoEmulationConfig] = None,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 72 (Phase 335, 72/72 Milestone!): Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-62 [Shoe Audio Set.] (48kHz/24bit 4ch, XLR-H1 vs 3.5mm Jack Override, HANDLE AUDIO=OFF Internal Mic Fallback, ANALOG 16bit 2ch Lock, Wind Noise Reduct. Internal-Only, Proxy MPEG-4 AAC-LC 2ch 128 kbps, Shooting -> Audio Recording -> [Audio Out Timing] Live/Lip Sync, Removed Ver.2+ Audio Level Display, 4ch Audio Monitoring 5 Pairs & HDMI CH1/CH2 vs CH3/CH4 vs FX6 Native 4ch 24-bit LPCM + CH1..CH4 Pots + 6-Step Limiter), [Face/Eye Subject] (Wave-42 Errata: Human + Still-Only Animal vs Dormant Bird/Insect/Car/Airplane EOPNOTSUPP=95 & TYPE_ANIMAL_EYE_AF_IN_MOVIE_NOT_SUPPORT, Resettable Right/Left Eye Select & Clean-HDMI Face/Eye Frame Disp., Regist. Faces Priority, 8-Slot Face Memory CAMSET Exclusion & Reset Survival vs FX6 Human-Only + Saved Tracking Face), [Silent Mode Settings] (2-Tier Submenu, Electronic Shutter + Audio Signals Mute + 5 Hard Lockouts while AF Illuminator Active, 2-Item Target Function Settings & Auto Pixel Mapping=Off Blocking Power-Off Shutter + cnflasha Writes, Dormant Shutter When Pwr OFF EOPNOTSUPP=95 vs FX6 Shutterless), and [Version] / BODYDATA.DAT (Airplane Mode=On Update Dot Silence, Slot 1 + >=51% + Ver. 2.04/2.05 Stepping-Stone 5-Long/6-Short LED Code + Cross-Model Rejection + 100% NO-GO / BLOCKED EROFS=30 / EPERM=1 Firewall) HIL."""
+    cfg = CoEmulationConfig() if config is None else config
+    cfg.validate()
+    rep = p335.run_phase335_shoe_audio_4ch_subject_recog_silent_target_version_coemulation(
+        force_clean_room=cfg.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "is_72nd_stage_milestone": bool(rep["is_72nd_stage_milestone"]),
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "emmc_writes_authorized": red["emmc_writes_authorized"],
+        "cross_model_flash_authorized": red["cross_model_flash_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "bodydata_flash_execution_blocked": red["bodydata_flash_execution_blocked"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "emmc_corruptions": red["emmc_corruptions"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "passive_tx_bytes_emitted": red["passive_tx_bytes_emitted"],
+        "slot1_data_sector_writes": red["slot1_data_sector_writes"],
+        "slot1_avf_info_mutated": red["slot1_avf_info_mutated"],
+        "fx3_active_audio_recording_menu_items": red[
+            "fx3_active_audio_recording_menu_items"
+        ],
+        "audio_rec_level_steps": red["audio_rec_level_steps"],
+        "four_ch_monitoring_pairs_count": red["four_ch_monitoring_pairs_count"],
+        "jack_35mm_shoe_override_violations": red[
+            "jack_35mm_shoe_override_violations"
+        ],
+        "external_mic_wind_reduction_leak_events": red[
+            "external_mic_wind_reduction_leak_events"
+        ],
+        "proxy_4ch_audio_bypass_events": red["proxy_4ch_audio_bypass_events"],
+        "standalone_audio_level_display_spoof_events": red[
+            "standalone_audio_level_display_spoof_events"
+        ],
+        "audio_out_timing_setup_misroute_events": red[
+            "audio_out_timing_setup_misroute_events"
+        ],
+        "fx3_exposed_face_eye_subjects_count": red[
+            "fx3_exposed_face_eye_subjects_count"
+        ],
+        "fx3_face_memory_max_slots": red["fx3_face_memory_max_slots"],
+        "dormant_bird_insect_car_airplane_exposed_events": red[
+            "dormant_bird_insect_car_airplane_exposed_events"
+        ],
+        "animal_eye_af_in_movie_bypass_events": red[
+            "animal_eye_af_in_movie_bypass_events"
+        ],
+        "face_eye_frame_hdmi_leaked_pixels": red["face_eye_frame_hdmi_leaked_pixels"],
+        "face_memory_camset_leak_events": red["face_memory_camset_leak_events"],
+        "face_memory_camera_reset_wipe_events": red[
+            "face_memory_camera_reset_wipe_events"
+        ],
+        "fx3_silent_mode_hard_locked_features_count": red[
+            "fx3_silent_mode_hard_locked_features_count"
+        ],
+        "fx3_target_function_settings_item_count": red[
+            "fx3_target_function_settings_item_count"
+        ],
+        "fx3_has_shutter_when_pwr_off": red["fx3_has_shutter_when_pwr_off"],
+        "fx6_has_mechanical_shutter": red["fx6_has_mechanical_shutter"],
+        "silent_mode_5lock_bypass_events": red["silent_mode_5lock_bypass_events"],
+        "target_function_extra_item_spoof_events": red[
+            "target_function_extra_item_spoof_events"
+        ],
+        "shutter_when_pwr_off_exposed_events": red[
+            "shutter_when_pwr_off_exposed_events"
+        ],
+        "poweroff_pixel_mapping_shutter_actuations": red[
+            "poweroff_pixel_mapping_shutter_actuations"
+        ],
+        "airplane_mode_version_dot_leak_events": red[
+            "airplane_mode_version_dot_leak_events"
+        ],
+        "bodydata_stepping_stone_bypass_events": red[
+            "bodydata_stepping_stone_bypass_events"
+        ],
+        "bodydata_slot2_or_fx6_slota_bypass_events": red[
+            "bodydata_slot2_or_fx6_slota_bypass_events"
+        ],
+        "bodydata_flash_execution_events": red["bodydata_flash_execution_events"],
+        "cross_model_flash_attempt_admitted_events": red[
+            "cross_model_flash_attempt_admitted_events"
+        ],
+        "rf_packets_transmitted": red["rf_packets_transmitted"],
+        "rf_nvs_mutation_bytes": red["rf_nvs_mutation_bytes"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_shoe_audio_4ch_xlrh1_override_and_timing_hil": rep[
+            "pillar_a_shoe_audio_4ch_xlrh1_override_and_timing_hil"
+        ],
+        "pillar_b_face_eye_subject_recog_and_face_memory_hil": rep[
+            "pillar_b_face_eye_subject_recog_and_face_memory_hil"
+        ],
+        "pillar_c_silent_mode_target_settings_and_shutter_pwr_off_hil": rep[
+            "pillar_c_silent_mode_target_settings_and_shutter_pwr_off_hil"
+        ],
+        "pillar_d_version_audit_and_bodydata_nogo_firewall_hil": rep[
+            "pillar_d_version_audit_and_bodydata_nogo_firewall_hil"
+        ],
+        "phase335_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -4551,7 +5228,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 66-stage (Phase 33..318, 66/66 Milestone) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 72-stage (Phase 33..335, 72/72 Milestone!) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -4936,6 +5613,62 @@ def run_fx3_vm_coemulation_suite(
             cfg.include_phase318_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil
             and cfg.include_stage66
             and cfg.stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil
+        )
+        else None
+    )
+    stage67: Optional[Dict[str, object]] = (
+        run_stage67_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil(cfg, env=env)
+        if (
+            cfg.include_phase322_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil
+            and cfg.include_stage67
+            and cfg.stage67_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil
+        )
+        else None
+    )
+    stage68: Optional[Dict[str, object]] = (
+        run_stage68_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil(cfg, env=env)
+        if (
+            cfg.include_phase325_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil
+            and cfg.include_stage68
+            and cfg.stage68_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil
+        )
+        else None
+    )
+    stage69: Optional[Dict[str, object]] = (
+        run_stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil(cfg, env=env)
+        if (
+            cfg.include_phase328_realhw_big6_home_framing_interval_tc_ssh_fan_hil
+            and cfg.include_stage69
+            and cfg.stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil
+        )
+        else None
+    )
+    stage70: Optional[Dict[str, object]] = (
+        run_stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil(cfg, env=env)
+        if (
+            cfg.include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
+            and cfg.include_stage70
+            and cfg.stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
+        )
+        else None
+    )
+    stage71: Optional[Dict[str, object]] = (
+        run_stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil(cfg, env=env)
+        if (
+            cfg.include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
+            and cfg.include_stage71
+            and cfg.stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
+        )
+        else None
+    )
+    stage72: Optional[Dict[str, object]] = (
+        run_stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil(
+            cfg, env=env
+        )
+        if (
+            cfg.include_phase335_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil
+            and cfg.include_stage72
+            and cfg.stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil
         )
         else None
     )
@@ -6772,6 +7505,343 @@ def run_fx3_vm_coemulation_suite(
         and stage66["appfw_crashes"] == 0
         and stage66["raw_firmware_bytes_leaked"] == 0
     )
+    stage67_ok = True if stage67 is None else (
+        bool(stage67["all_checks_passed"])
+        and bool(stage67["is_67th_stage_milestone"])
+        and stage67["nop_count"] == 0
+        and stage67["guest_code_modification_bytes"] == 0
+        and stage67["cp_mutation_bytes"] == 0
+        and stage67["wbi_mutation_bytes"] == 0
+        and stage67["calibration_mutation_bytes"] == 0
+        and stage67["cnflasha_mutation_bytes"] == 0
+        and bool(stage67["cnflasha_userspace_write_blocked"])
+        and stage67["nvram_persistent_writes"] == 0
+        and stage67["bk4_persistent_nvram_writes"] == 0
+        and stage67["physical_device_writes"] == 0
+        and (not stage67["persistent_emmc_writes_authorized"])
+        and (not stage67["hardware_live_attachment_authorized"])
+        and (not stage67["overall_ready_for_hardware_attach"])
+        and (not stage67["isp_write_authorized"])
+        and stage67["emmc_nflasha_write_count"] == 0
+        and stage67["emmc_mutation_bytes"] == 0
+        and stage67["emmc_corruptions"] == 0
+        and (not stage67["spi_nor_write_authorized"])
+        and stage67["spi_nor_mutation_bytes"] == 0
+        and (not stage67["el3_payload_transmit_authorized"])
+        and stage67["otp_fuse_touches"] == 0
+        and stage67["rpmb_counter_increments"] == 0
+        and stage67["physical_usb_packets_emitted"] == 0
+        and stage67["passive_tx_bytes_emitted"] == 0
+        and stage67["fx3_focal_length_steps_count"] == 47
+        and stage67["steadyshot_active_lockout_bypass_events"] == 0
+        and stage67["dormant_dynamic_active_exposed_events"] == 0
+        and stage67["dormant_movie_selftimer_exposed_events"] == 0
+        and stage67["fx3_led8_tally_confusion_events"] == 0
+        and stage67["zebra_peaking_hdmi_clean_feed_leaked_pixels"] == 0
+        and stage67["fx6_zebra_simultaneous_both_bypass_events"] == 0
+        and stage67["streaming_24p_bypass_events"] == 0
+        and stage67["streaming_rec_4k_lock_bypass_events"] == 0
+        and stage67["rf_packets_transmitted"] == 0
+        and stage67["rf_nvs_mutation_bytes"] == 0
+        and stage67["slot1_data_sector_writes"] == 0
+        and (not stage67["slot1_avf_info_mutated"])
+        and stage67["slot1_vault_streaming_mutation_bytes"] == 0
+        and stage67["rsv_orphan_count"] == 0
+        and stage67["null_gpio_derefs"] == 0
+        and stage67["mailbox_stalls"] == 0
+        and stage67["stock_cp_fault_count"] == 0
+        and stage67["wf12_00342260_hits"] == 0
+        and stage67["appfw_crashes"] == 0
+        and stage67["raw_firmware_bytes_leaked"] == 0
+    )
+    stage68_ok = True if stage68 is None else (
+        bool(stage68["all_checks_passed"])
+        and bool(stage68["is_68th_stage_milestone"])
+        and stage68["nop_count"] == 0
+        and stage68["guest_code_modification_bytes"] == 0
+        and stage68["cp_mutation_bytes"] == 0
+        and stage68["wbi_mutation_bytes"] == 0
+        and stage68["calibration_mutation_bytes"] == 0
+        and stage68["cnflasha_mutation_bytes"] == 0
+        and bool(stage68["cnflasha_userspace_write_blocked"])
+        and stage68["nvram_persistent_writes"] == 0
+        and stage68["bk4_persistent_nvram_writes"] == 0
+        and stage68["physical_device_writes"] == 0
+        and (not stage68["persistent_emmc_writes_authorized"])
+        and (not stage68["hardware_live_attachment_authorized"])
+        and (not stage68["overall_ready_for_hardware_attach"])
+        and (not stage68["isp_write_authorized"])
+        and stage68["emmc_nflasha_write_count"] == 0
+        and stage68["emmc_mutation_bytes"] == 0
+        and stage68["emmc_corruptions"] == 0
+        and (not stage68["spi_nor_write_authorized"])
+        and stage68["spi_nor_mutation_bytes"] == 0
+        and (not stage68["el3_payload_transmit_authorized"])
+        and stage68["otp_fuse_touches"] == 0
+        and stage68["rpmb_counter_increments"] == 0
+        and stage68["physical_usb_packets_emitted"] == 0
+        and stage68["passive_tx_bytes_emitted"] == 0
+        and (not stage68["bright_mon_shooting_menu_exposed"])
+        and stage68["dormant_lcd_brightness_auto_exposed_events"] == 0
+        and stage68["dormant_divide_extract_or_ftp_cut_exposed_events"] == 0
+        and stage68["dormant_bt_timecode_link_exposed_events"] == 0
+        and stage68["removed_wep_wpa_ipsec_exposed_events"] == 0
+        and stage68["usblan_wifi_or_multi_usb_coexist_violations"] == 0
+        and stage68["dormant_bulb_timer_or_auto_hdr_exposed_events"] == 0
+        and stage68["bulb_non_mech_or_cont_bypass_events"] == 0
+        and stage68["post_reset_airplane_off_rf_leak_events"] == 0
+        and stage68["rf_packets_transmitted"] == 0
+        and stage68["rf_nvs_mutation_bytes"] == 0
+        and stage68["slot1_data_sector_writes"] == 0
+        and (not stage68["slot1_avf_info_mutated"])
+        and stage68["slot1_vault_shotmark_edit_mutation_bytes"] == 0
+        and stage68["rsv_orphan_count"] == 0
+        and stage68["null_gpio_derefs"] == 0
+        and stage68["mailbox_stalls"] == 0
+        and stage68["stock_cp_fault_count"] == 0
+        and stage68["wf12_00342260_hits"] == 0
+        and stage68["appfw_crashes"] == 0
+        and stage68["raw_firmware_bytes_leaked"] == 0
+    )
+    stage69_ok = True if stage69 is None else (
+        bool(stage69["all_checks_passed"])
+        and bool(stage69["is_69th_stage_milestone"])
+        and stage69["nop_count"] == 0
+        and stage69["guest_code_modification_bytes"] == 0
+        and stage69["cp_mutation_bytes"] == 0
+        and stage69["wbi_mutation_bytes"] == 0
+        and stage69["calibration_mutation_bytes"] == 0
+        and stage69["cnflasha_mutation_bytes"] == 0
+        and bool(stage69["cnflasha_userspace_write_blocked"])
+        and stage69["nvram_persistent_writes"] == 0
+        and stage69["bk4_persistent_nvram_writes"] == 0
+        and stage69["physical_device_writes"] == 0
+        and (not stage69["persistent_emmc_writes_authorized"])
+        and (not stage69["hardware_live_attachment_authorized"])
+        and (not stage69["overall_ready_for_hardware_attach"])
+        and (not stage69["isp_write_authorized"])
+        and stage69["emmc_nflasha_write_count"] == 0
+        and stage69["emmc_mutation_bytes"] == 0
+        and stage69["emmc_corruptions"] == 0
+        and (not stage69["spi_nor_write_authorized"])
+        and stage69["spi_nor_mutation_bytes"] == 0
+        and (not stage69["el3_payload_transmit_authorized"])
+        and stage69["otp_fuse_touches"] == 0
+        and stage69["rpmb_counter_increments"] == 0
+        and stage69["physical_usb_packets_emitted"] == 0
+        and stage69["passive_tx_bytes_emitted"] == 0
+        and (not stage69["fx3_has_builtin_end_filter"])
+        and bool(stage69["fx6_has_electronic_variable_nd"])
+        and stage69["electronic_nd_commands_emitted"] == 0
+        and stage69["hdmi_sdi_status_bar_leaked_pixels"] == 0
+        and stage69["dormant_auto_framing_exposed_events"] == 0
+        and stage69["framing_highfps_or_rec_bypass_events"] == 0
+        and stage69["interval_inbody_movie_mux_events"] == 0
+        and stage69["interval_iauto_or_bulb_bypass_events"] == 0
+        and stage69["slot1_data_sector_writes"] == 0
+        and (not stage69["slot1_avf_info_mutated"])
+        and stage69["slot1_vault_interval_write_events"] == 0
+        and stage69["tc_regen_non_slot1_or_freerun_violations"] == 0
+        and stage69["fx3_clock_tc_make_exposed_events"] == 0
+        and stage69["hdmi_rec_ctrl_s_and_q_or_notc_bypass_events"] == 0
+        and stage69["ssh_http_basic_https_auth_spoof_events"] == 0
+        and stage69["removed_wep_wpa_ipsec_exposed_events"] == 0
+        and stage69["fan_control_max_exposed_events"] == 0
+        and stage69["fx6_fan_always_off_exposed_events"] == 0
+        and stage69["rf_packets_transmitted"] == 0
+        and stage69["rf_nvs_mutation_bytes"] == 0
+        and stage69["rsv_orphan_count"] == 0
+        and stage69["null_gpio_derefs"] == 0
+        and stage69["mailbox_stalls"] == 0
+        and stage69["stock_cp_fault_count"] == 0
+        and stage69["wf12_00342260_hits"] == 0
+        and stage69["appfw_crashes"] == 0
+        and stage69["raw_firmware_bytes_leaked"] == 0
+    )
+    stage70_ok = True if stage70 is None else (
+        bool(stage70["all_checks_passed"])
+        and bool(stage70["is_70th_stage_milestone"])
+        and stage70["nop_count"] == 0
+        and stage70["guest_code_modification_bytes"] == 0
+        and stage70["cp_mutation_bytes"] == 0
+        and stage70["wbi_mutation_bytes"] == 0
+        and stage70["calibration_mutation_bytes"] == 0
+        and stage70["cnflasha_mutation_bytes"] == 0
+        and bool(stage70["cnflasha_userspace_write_blocked"])
+        and stage70["nvram_persistent_writes"] == 0
+        and stage70["bk4_persistent_nvram_writes"] == 0
+        and stage70["physical_device_writes"] == 0
+        and (not stage70["persistent_emmc_writes_authorized"])
+        and (not stage70["hardware_live_attachment_authorized"])
+        and (not stage70["overall_ready_for_hardware_attach"])
+        and (not stage70["isp_write_authorized"])
+        and stage70["emmc_nflasha_write_count"] == 0
+        and stage70["emmc_mutation_bytes"] == 0
+        and stage70["emmc_corruptions"] == 0
+        and (not stage70["spi_nor_write_authorized"])
+        and stage70["spi_nor_mutation_bytes"] == 0
+        and (not stage70["el3_payload_transmit_authorized"])
+        and stage70["otp_fuse_touches"] == 0
+        and stage70["rpmb_counter_increments"] == 0
+        and stage70["physical_usb_packets_emitted"] == 0
+        and stage70["passive_tx_bytes_emitted"] == 0
+        and stage70["prioritize_rec_media_exposed_events"] == 0
+        and stage70["movie_sort_recording_exposed_events"] == 0
+        and stage70["simult_fs_mismatch_bypass_events"] == 0
+        and stage70["slot2_to_slot1_overflow_bypass_events"] == 0
+        and stage70["sdxc_1200m_or_cfex_b_bypass_events"] == 0
+        and stage70["proxy_highfps_100p_120fps_bypass_events"] == 0
+        and stage70["on_camera_proxy_playback_frames"] == 0
+        and stage70["proxy_coupled_delete_split_events"] == 0
+        and stage70["slot1_data_sector_writes"] == 0
+        and (not stage70["slot1_avf_info_mutated"])
+        and stage70["slot1_vault_proxy_mutation_events"] == 0
+        and stage70["power_off_ble_zero_rf_violations"] == 0
+        and (not stage70["fx6_bluetooth_hardware_present"])
+        and stage70["fx6_bluetooth_poweroff_wake_exposed_events"] == 0
+        and stage70["mymenu_exact_slot_capacity"] == 42
+        and stage70["fx6_user_menu_capacity"] == 20
+        and stage70["mymenu_out_of_bounds_or_playback_events"] == 0
+        and stage70["fx6_user_menu_lock_pin_file_leak_events"] == 0
+        and stage70["rf_packets_transmitted"] == 0
+        and stage70["rf_nvs_mutation_bytes"] == 0
+        and stage70["rsv_orphan_count"] == 0
+        and stage70["null_gpio_derefs"] == 0
+        and stage70["mailbox_stalls"] == 0
+        and stage70["stock_cp_fault_count"] == 0
+        and stage70["wf12_00342260_hits"] == 0
+        and stage70["appfw_crashes"] == 0
+        and stage70["raw_firmware_bytes_leaked"] == 0
+    )
+    stage71_ok = True if stage71 is None else (
+        bool(stage71["all_checks_passed"])
+        and bool(stage71["is_71st_stage_milestone"])
+        and stage71["nop_count"] == 0
+        and stage71["guest_code_modification_bytes"] == 0
+        and stage71["cp_mutation_bytes"] == 0
+        and stage71["wbi_mutation_bytes"] == 0
+        and stage71["calibration_mutation_bytes"] == 0
+        and stage71["cnflasha_mutation_bytes"] == 0
+        and bool(stage71["cnflasha_userspace_write_blocked"])
+        and stage71["nvram_persistent_writes"] == 0
+        and stage71["bk4_persistent_nvram_writes"] == 0
+        and stage71["physical_device_writes"] == 0
+        and (not stage71["persistent_emmc_writes_authorized"])
+        and (not stage71["hardware_live_attachment_authorized"])
+        and (not stage71["overall_ready_for_hardware_attach"])
+        and (not stage71["isp_write_authorized"])
+        and stage71["emmc_nflasha_write_count"] == 0
+        and stage71["emmc_mutation_bytes"] == 0
+        and stage71["emmc_corruptions"] == 0
+        and (not stage71["spi_nor_write_authorized"])
+        and stage71["spi_nor_mutation_bytes"] == 0
+        and (not stage71["el3_payload_transmit_authorized"])
+        and stage71["otp_fuse_touches"] == 0
+        and stage71["rpmb_counter_increments"] == 0
+        and stage71["physical_usb_packets_emitted"] == 0
+        and stage71["passive_tx_bytes_emitted"] == 0
+        and stage71["fx3_ftp_max_servers"] == 9
+        and stage71["fx6_ftp_max_servers"] == 3
+        and stage71["dormant_sftp_exposed_events"] == 0
+        and stage71["active_ftp_or_implicit_ftps_bypass_events"] == 0
+        and stage71["dormant_transfer_jpeg_heif_size_exposed_events"] == 0
+        and stage71["usblan_zero_rf_bypass_events"] == 0
+        and stage71["ftp_cloud_mutual_exclusion_violations"] == 0
+        and stage71["slot1_data_sector_writes"] == 0
+        and (not stage71["slot1_avf_info_mutated"])
+        and stage71["slot1_vault_ftp_mutation_events"] == 0
+        and stage71["custom_wb_camset_leak_events"] == 0
+        and stage71["cine_ei_auto_wb_bypass_events"] == 0
+        and stage71["shockless_wb_direct_ctemp_lag_frames"] == 0
+        and (not stage71["fx3_has_inbody_focus_map"])
+        and bool(stage71["fx6_has_inbody_focus_map"])
+        and stage71["inbody_focus_map_exposed_events"] == 0
+        and stage71["focus_map_150fps_or_autoframing_bypass_events"] == 0
+        and stage71["af_subj_shift_6_7_spoof_events"] == 0
+        and stage71["fx3_marker_active_ratio_count"] == 15
+        and stage71["hdmi_marker_or_peaking_leaked_pixels"] == 0
+        and stage71["camera_reset_marker_or_peaking_wipe_events"] == 0
+        and stage71["marker_focus_magnifier_collision_events"] == 0
+        and stage71["rf_packets_transmitted"] == 0
+        and stage71["rf_nvs_mutation_bytes"] == 0
+        and stage71["rsv_orphan_count"] == 0
+        and stage71["null_gpio_derefs"] == 0
+        and stage71["mailbox_stalls"] == 0
+        and stage71["stock_cp_fault_count"] == 0
+        and stage71["wf12_00342260_hits"] == 0
+        and stage71["appfw_crashes"] == 0
+        and stage71["raw_firmware_bytes_leaked"] == 0
+    )
+    stage72_ok = True if stage72 is None else (
+        bool(stage72["all_checks_passed"])
+        and bool(stage72["is_72nd_stage_milestone"])
+        and stage72["nop_count"] == 0
+        and stage72["guest_code_modification_bytes"] == 0
+        and stage72["cp_mutation_bytes"] == 0
+        and stage72["wbi_mutation_bytes"] == 0
+        and stage72["calibration_mutation_bytes"] == 0
+        and stage72["cnflasha_mutation_bytes"] == 0
+        and bool(stage72["cnflasha_userspace_write_blocked"])
+        and stage72["nvram_persistent_writes"] == 0
+        and stage72["bk4_persistent_nvram_writes"] == 0
+        and stage72["physical_device_writes"] == 0
+        and (not stage72["persistent_emmc_writes_authorized"])
+        and (not stage72["emmc_writes_authorized"])
+        and (not stage72["cross_model_flash_authorized"])
+        and (not stage72["hardware_live_attachment_authorized"])
+        and (not stage72["overall_ready_for_hardware_attach"])
+        and bool(stage72["bodydata_flash_execution_blocked"])
+        and (not stage72["isp_write_authorized"])
+        and stage72["emmc_nflasha_write_count"] == 0
+        and stage72["emmc_mutation_bytes"] == 0
+        and stage72["emmc_corruptions"] == 0
+        and (not stage72["spi_nor_write_authorized"])
+        and stage72["spi_nor_mutation_bytes"] == 0
+        and (not stage72["el3_payload_transmit_authorized"])
+        and stage72["otp_fuse_touches"] == 0
+        and stage72["rpmb_counter_increments"] == 0
+        and stage72["physical_usb_packets_emitted"] == 0
+        and stage72["passive_tx_bytes_emitted"] == 0
+        and stage72["slot1_data_sector_writes"] == 0
+        and (not stage72["slot1_avf_info_mutated"])
+        and stage72["fx3_active_audio_recording_menu_items"] == 5
+        and stage72["audio_rec_level_steps"] == 32
+        and stage72["four_ch_monitoring_pairs_count"] == 5
+        and stage72["jack_35mm_shoe_override_violations"] == 0
+        and stage72["external_mic_wind_reduction_leak_events"] == 0
+        and stage72["proxy_4ch_audio_bypass_events"] == 0
+        and stage72["standalone_audio_level_display_spoof_events"] == 0
+        and stage72["audio_out_timing_setup_misroute_events"] == 0
+        and stage72["fx3_exposed_face_eye_subjects_count"] == 2
+        and stage72["fx3_face_memory_max_slots"] == 8
+        and stage72["dormant_bird_insect_car_airplane_exposed_events"] == 0
+        and stage72["animal_eye_af_in_movie_bypass_events"] == 0
+        and stage72["face_eye_frame_hdmi_leaked_pixels"] == 0
+        and stage72["face_memory_camset_leak_events"] == 0
+        and stage72["face_memory_camera_reset_wipe_events"] == 0
+        and stage72["fx3_silent_mode_hard_locked_features_count"] == 5
+        and stage72["fx3_target_function_settings_item_count"] == 2
+        and (not stage72["fx3_has_shutter_when_pwr_off"])
+        and (not stage72["fx6_has_mechanical_shutter"])
+        and stage72["silent_mode_5lock_bypass_events"] == 0
+        and stage72["target_function_extra_item_spoof_events"] == 0
+        and stage72["shutter_when_pwr_off_exposed_events"] == 0
+        and stage72["poweroff_pixel_mapping_shutter_actuations"] == 0
+        and stage72["airplane_mode_version_dot_leak_events"] == 0
+        and stage72["bodydata_stepping_stone_bypass_events"] == 0
+        and stage72["bodydata_slot2_or_fx6_slota_bypass_events"] == 0
+        and stage72["bodydata_flash_execution_events"] == 0
+        and stage72["cross_model_flash_attempt_admitted_events"] == 0
+        and stage72["rf_packets_transmitted"] == 0
+        and stage72["rf_nvs_mutation_bytes"] == 0
+        and stage72["rsv_orphan_count"] == 0
+        and stage72["null_gpio_derefs"] == 0
+        and stage72["mailbox_stalls"] == 0
+        and stage72["stock_cp_fault_count"] == 0
+        and stage72["wf12_00342260_hits"] == 0
+        and stage72["appfw_crashes"] == 0
+        and stage72["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -6841,6 +7911,12 @@ def run_fx3_vm_coemulation_suite(
         and stage64_ok
         and stage65_ok
         and stage66_ok
+        and stage67_ok
+        and stage68_ok
+        and stage69_ok
+        and stage70_ok
+        and stage71_ok
+        and stage72_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -7186,6 +8262,96 @@ def run_fx3_vm_coemulation_suite(
                 and cfg.include_stage66
                 and cfg.stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil
             ),
+            "include_phase322_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil": (
+                cfg.include_phase322_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil
+                and cfg.include_stage67
+                and cfg.stage67_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil
+            ),
+            "include_stage67": (
+                cfg.include_phase322_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil
+                and cfg.include_stage67
+                and cfg.stage67_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil
+            ),
+            "stage67_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil": (
+                cfg.include_phase322_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil
+                and cfg.include_stage67
+                and cfg.stage67_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil
+            ),
+            "include_phase325_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil": (
+                cfg.include_phase325_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil
+                and cfg.include_stage68
+                and cfg.stage68_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil
+            ),
+            "include_stage68": (
+                cfg.include_phase325_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil
+                and cfg.include_stage68
+                and cfg.stage68_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil
+            ),
+            "stage68_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil": (
+                cfg.include_phase325_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil
+                and cfg.include_stage68
+                and cfg.stage68_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil
+            ),
+            "include_phase328_realhw_big6_home_framing_interval_tc_ssh_fan_hil": (
+                cfg.include_phase328_realhw_big6_home_framing_interval_tc_ssh_fan_hil
+                and cfg.include_stage69
+                and cfg.stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil
+            ),
+            "include_stage69": (
+                cfg.include_phase328_realhw_big6_home_framing_interval_tc_ssh_fan_hil
+                and cfg.include_stage69
+                and cfg.stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil
+            ),
+            "stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil": (
+                cfg.include_phase328_realhw_big6_home_framing_interval_tc_ssh_fan_hil
+                and cfg.include_stage69
+                and cfg.stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil
+            ),
+            "include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil": (
+                cfg.include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
+                and cfg.include_stage70
+                and cfg.stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
+            ),
+            "include_stage70": (
+                cfg.include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
+                and cfg.include_stage70
+                and cfg.stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
+            ),
+            "stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil": (
+                cfg.include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
+                and cfg.include_stage70
+                and cfg.stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
+            ),
+            "include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil": (
+                cfg.include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
+                and cfg.include_stage71
+                and cfg.stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
+            ),
+            "include_stage71": (
+                cfg.include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
+                and cfg.include_stage71
+                and cfg.stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
+            ),
+            "stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil": (
+                cfg.include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
+                and cfg.include_stage71
+                and cfg.stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil
+            ),
+            "include_phase335_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil": (
+                cfg.include_phase335_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil
+                and cfg.include_stage72
+                and cfg.stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil
+            ),
+            "include_stage72": (
+                cfg.include_phase335_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil
+                and cfg.include_stage72
+                and cfg.stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil
+            ),
+            "stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil": (
+                cfg.include_phase335_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil
+                and cfg.include_stage72
+                and cfg.stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil
+            ),
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -7336,6 +8502,20 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage65_realhw_touch_shooting_disp_zero_evf_interval_pb_hil"] = stage65
     if stage66 is not None:
         core_payload["stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil"] = stage66
+    if stage67 is not None:
+        core_payload["stage67_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil"] = stage67
+    if stage68 is not None:
+        core_payload["stage68_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil"] = stage68
+    if stage69 is not None:
+        core_payload["stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil"] = stage69
+    if stage70 is not None:
+        core_payload["stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil"] = stage70
+    if stage71 is not None:
+        core_payload["stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil"] = stage71
+    if stage72 is not None:
+        core_payload[
+            "stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil"
+        ] = stage72
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -7347,7 +8527,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 + 289 + 293 + 298 + 301 + 306 + 309 + 312 + 315 + 318 (66/66 Milestone) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 + 289 + 293 + 298 + 301 + 306 + 309 + 312 + 315 + 318 + 322 + 325 + 328 + 330 + 333 + 335 (72/72 Milestone!) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -7991,6 +9171,120 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 66 (Phase 318 66/66 Milestone Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-56 5-Item Dial Customize, 3-Physical-Dial My Dial 1..3 & 12+12 Fn Menu, Still-Only Live View Display Set. & Clean-HDMI Grid Line, and Manage User LUTs / Embed LUT File SD-SDHC Lock vs PPLUT1..4 + Slot-1 100%% Fail-Closed Tier-0 Vault Firewall HIL)",
     )
     parser.add_argument(
+        "--include-stage67",
+        dest="include_stage67",
+        action="store_true",
+        default=True,
+        help="Include Stage 67 (Phase 322 67/67 Milestone Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-57 5-Axis IBIS [SteadyShot] 4-Lock Active & 47-Focal-Length, Dormant Movie [Self-timer] vs Still LED #8 & [Audio signals], [Zebra Display] Custom1/Custom2 & 4-Color [Peaking] Clean-HDMI Isolation vs FX6 Off/Zebra1/Zebra2, and [Network Streaming] RTMP/RTMPS/SRT Zero-24p / 4K-Rec Lock + Zero-RF & Slot-1 100%% Fail-Closed EROFS=30 Vault Firewall HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage67",
+        "--no-include-stage67",
+        dest="skip_stage67",
+        action="store_true",
+        help="Skip optional Stage 67 (alias for --skip-phase322)",
+    )
+    parser.add_argument(
+        "--skip-phase322",
+        action="store_true",
+        help="Skip optional Stage 67 (Phase 322 67/67 Milestone Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-57 5-Axis IBIS 4-Lock Active & 47-Focal-Length, Dormant Movie Self-timer vs Still LED #8 & Audio signals, Zebra Custom1/Custom2 & 4-Color Peaking Clean-HDMI vs FX6 Zebra1/2, and Network Streaming RTMP/RTMPS/SRT Zero-24p / 4K-Rec Lock + Zero-RF & Slot-1 100%% Fail-Closed EROFS=30 Vault Firewall HIL)",
+    )
+    parser.add_argument(
+        "--include-stage68",
+        dest="include_stage68",
+        action="store_true",
+        default=True,
+        help="Include Stage 68 (Phase 325 68/68 Milestone Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-58 Custom-Key [Bright Monitoring] Ver. 7.00+ Focus Magnifier Coexistence & [Monitor Brightness], [Shot Mark 1/2] / [Clip Flag] vs Zero [Divide]/[Extract]/FTP Cut & Slot-1 100%% Fail-Closed EROFS=30 Vault Firewall, Zero BT [Timecode Link] vs VMC-BNCM1 EXT-LK & WPA2/WPA3 + USB-LAN Mutual Exclusion + Airplane Mode Persistence, and Still [BULB] Mechanical Shutter & [DRO] vs Dormant [Bulb Timer] / [Auto HDR] HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage68",
+        "--no-include-stage68",
+        dest="skip_stage68",
+        action="store_true",
+        help="Skip optional Stage 68 (alias for --skip-phase325)",
+    )
+    parser.add_argument(
+        "--skip-phase325",
+        action="store_true",
+        help="Skip optional Stage 68 (Phase 325 68/68 Milestone Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-58 Bright Monitoring Magnifier Coexistence & Monitor Brightness, Shot Mark 1/2 / Clip Flag vs Divide/Extract & Slot-1 EROFS=30 Vault Firewall, Zero BT Timecode Link vs VMC-BNCM1 & WPA2/WPA3 / USB-LAN Mutual Exclusion, and Still BULB Mechanical Shutter & DRO vs Dormant Bulb Timer / Auto HDR HIL)",
+    )
+    parser.add_argument(
+        "--include-stage69",
+        dest="include_stage69",
+        action="store_true",
+        default=True,
+        help="Include Stage 69 (Phase 328 69/69 Milestone Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-59 Ver. 7.00/7.02 BIG6 [HOME] Screen & Active Manual [Framing Settings] vs Dormant AI [Auto Framing], Still-Only [Interval Shoot Func.] 7-Item Reset & Slot-1 100%% Fail-Closed EROFS=30 Vault Firewall, [Time Code Make] Regenerate->Slot 1 & Forced Rec Run + [HDMI Output Settings] [REC Control] / [4ch Audio Output], and Ver. 7.00+ [Access Authen. Settings] SSH Tunnel + PTP-IP & 4-Mode FX3 vs 3-Mode FX6 [Fan Control] Zero Max + [Auto Power OFF Temp.] HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage69",
+        "--no-include-stage69",
+        dest="skip_stage69",
+        action="store_true",
+        help="Skip optional Stage 69 (alias for --skip-phase328)",
+    )
+    parser.add_argument(
+        "--skip-phase328",
+        action="store_true",
+        help="Skip optional Stage 69 (Phase 328 69/69 Milestone Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-59 BIG6 HOME & Framing vs Dormant Auto Framing, Interval Shoot & Slot-1 Vault, TC Regenerate & HDMI REC Control, and Access Auth SSH + Fan Control / Auto Power OFF Temp. HIL)",
+    )
+    parser.add_argument(
+        "--include-stage70",
+        dest="include_stage70",
+        action="store_true",
+        default=True,
+        help="Include Stage 70 (Phase 330 70/70 Milestone! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-60 [Rec. Media Settings] Removed [Prioritize Rec. Media] + Initialize-only [Recording Media] Still 4 vs Movie 3 + [Auto Switch Media] CRITICAL Slot-2 -> Slot-1 Overflow Trap Dual-Lock 100%% Fail-Closed EROFS=30 + VPG200/VPG400 vs SDXC V60/V90 Speed Gates, [Proxy Settings] sq_proxy XAVC S HD 6M 8bit vs XAVC HS HD 9M/16M 10bit + Allowed on XAVC S-I DCI 4K <=59.94p + Cutoff at 100p/120fps+ + M4ROOT/SUB/*S03.MP4 Non-Playable & Coupled Delete/Protect + Slot-1 EROFS=30, [Creators' Cloud] / [C3 Portal] Surviving Initialize + Power-OFF BLE Zero-RF 3-Lock Guard vs Zero-BT FX6, and [My Menu] 6x7=42 Slots vs FX6 20-Item User Menu + Lock 0000..9999 PIN Excluded from All File & Scene File HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage70",
+        "--no-include-stage70",
+        dest="skip_stage70",
+        action="store_true",
+        help="Skip optional Stage 70 (alias for --skip-phase330)",
+    )
+    parser.add_argument(
+        "--skip-phase330",
+        action="store_true",
+        help="Skip optional Stage 70 (Phase 330 70/70 Milestone! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-60 Rec. Media Settings / Auto Switch / VPG200-400, Proxy Settings sq_proxy / M4ROOT SUB / Slot-1 EROFS=30, Creators' Cloud / C3 Portal / Power-OFF BLE Zero-RF 3-Lock, and My Menu 6x7=42 vs FX6 20-Item User Menu with Lock PIN HIL)",
+    )
+    parser.add_argument(
+        "--include-stage71",
+        dest="include_stage71",
+        action="store_true",
+        default=True,
+        help="Include Stage 71 (Phase 333 71/71 Milestone! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-61 [FTP Transfer Func.] 9-Server Passive-Only FTP/FTPES vs Dormant SFTP/Active/Implicit-990/Transfer-JPEG-HEIF-Size EOPNOTSUPP=95 + cacert.pem <=1MB Slot 1 + USB-LAN Zero-RF Bypass Firewall + Slot-1 AVF_INFO 100%% Fail-Closed EROFS=30, [White Balance] 2500K..9900K / Custom 1..3 CAMSET Exclusion & 0x0220 Error / Still Shutter AWB Lock Initialize-Only / Movie Shockless WB 0-Frame Dial Bypass / Cine EI Auto Lockout, [Movie AF & Focus Map] 1..7 Transition Speed & 1..5 Shift Sens. Shared FX3/FX6 / AF Assist / Zero In-Body Focus Map vs External M&C <150fps, and [Marker Display] 15-Ratio + [Peaking Display] 4-Color Clean-HDMI 0-Leak & Initialize-Only Persistence HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage71",
+        "--no-include-stage71",
+        dest="skip_stage71",
+        action="store_true",
+        help="Skip optional Stage 71 (alias for --skip-phase333)",
+    )
+    parser.add_argument(
+        "--skip-phase333",
+        action="store_true",
+        help="Skip optional Stage 71 (Phase 333 71/71 Milestone! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-61 FTP/FTPES 9-Server & USB-LAN Zero-RF + Slot-1 EROFS=30, WB Custom 1..3 / Shutter AWB Lock / Shockless WB / Cine EI Lockout, Movie AF Speed 1..7 & Shift Sens. 1..5 + External-Only Focus Map, and 15-Ratio Marker + 4-Color Peaking Clean-HDMI HIL)",
+    )
+    parser.add_argument(
+        "--include-stage72",
+        dest="include_stage72",
+        action="store_true",
+        default=True,
+        help="Include Stage 72 (Phase 335 72/72 Milestone! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-62 [Shoe Audio Set.] 48kHz/24bit 4ch / XLR-H1 vs 3.5mm Override / Proxy AAC-LC 2ch / Shooting -> Audio Recording -> [Audio Out Timing] Live-LipSync / 4ch Monitoring 5 Pairs, [Face/Eye Subject] Wave-42 Errata Human + Still-Only Animal vs Dormant Bird-Insect-Car-Airplane EOPNOTSUPP=95 + 8-Slot Face Memory, [Silent Mode Settings] 2-Item Target Function Settings + 5 Hard Lockouts + Dormant Shutter-When-Pwr-OFF EOPNOTSUPP=95, and [Version] / BODYDATA.DAT Slot-1 + >=51%% + Ver. 2.04/2.05 Stepping-Stone 100%% NO-GO / BLOCKED Firewall HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage72",
+        "--no-include-stage72",
+        dest="skip_stage72",
+        action="store_true",
+        help="Skip optional Stage 72 (alias for --skip-phase335)",
+    )
+    parser.add_argument(
+        "--skip-phase335",
+        action="store_true",
+        help="Skip optional Stage 72 (Phase 335 72/72 Milestone! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-62 Shoe Audio 4ch / XLR-H1 vs 3.5mm Override / Audio Out Timing, Face-Eye Subject Human+Still-Animal vs Dormant Bird-Insect-Car-Airplane & 8-Face Memory, Silent Mode 2-Item Target Settings + Dormant Shutter-When-Pwr-OFF, and Version / BODYDATA.DAT Slot-1 >=51%% Ver.2.04-2.05 Stepping-Stone 100%% NO-GO Firewall HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -8073,6 +9367,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     enable_stage64 = bool(args.include_stage64) and (not args.skip_phase312) and (not args.skip_stage64)
     enable_stage65 = bool(args.include_stage65) and (not args.skip_phase315) and (not args.skip_stage65)
     enable_stage66 = bool(args.include_stage66) and (not args.skip_phase318) and (not args.skip_stage66)
+    enable_stage67 = bool(args.include_stage67) and (not args.skip_phase322) and (not args.skip_stage67)
+    enable_stage68 = bool(args.include_stage68) and (not args.skip_phase325) and (not args.skip_stage68)
+    enable_stage69 = bool(args.include_stage69) and (not args.skip_phase328) and (not args.skip_stage69)
+    enable_stage70 = bool(args.include_stage70) and (not args.skip_phase330) and (not args.skip_stage70)
+    enable_stage71 = bool(args.include_stage71) and (not args.skip_phase333) and (not args.skip_stage71)
+    enable_stage72 = bool(args.include_stage72) and (not args.skip_phase335) and (not args.skip_stage72)
     cfg = CoEmulationConfig(
         bt_mode=args.bt_mode,
         cine_ei_iso=args.cine_ei_iso,
@@ -8180,6 +9480,24 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase318_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil=enable_stage66,
         include_stage66=enable_stage66,
         stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil=enable_stage66,
+        include_phase322_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil=enable_stage67,
+        include_stage67=enable_stage67,
+        stage67_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil=enable_stage67,
+        include_phase325_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil=enable_stage68,
+        include_stage68=enable_stage68,
+        stage68_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil=enable_stage68,
+        include_phase328_realhw_big6_home_framing_interval_tc_ssh_fan_hil=enable_stage69,
+        include_stage69=enable_stage69,
+        stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil=enable_stage69,
+        include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil=enable_stage70,
+        include_stage70=enable_stage70,
+        stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil=enable_stage70,
+        include_phase333_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil=enable_stage71,
+        include_stage71=enable_stage71,
+        stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil=enable_stage71,
+        include_phase335_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil=enable_stage72,
+        include_stage72=enable_stage72,
+        stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil=enable_stage72,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -8255,6 +9573,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s64 = rep.get("stage64_realhw_switch_vh_af_stdadj_tcub_copy_slot_hil")
         s65 = rep.get("stage65_realhw_touch_shooting_disp_zero_evf_interval_pb_hil")
         s66 = rep.get("stage66_realhw_dial_customize_mydial_fn_liveview_lut_embed_hil")
+        s67 = rep.get("stage67_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil")
+        s68 = rep.get("stage68_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil")
+        s69 = rep.get("stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil")
+        s70 = rep.get("stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil")
+        s71 = rep.get("stage71_realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil")
+        s72 = rep.get("stage72_realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -8897,6 +10221,91 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s66, dict)
             else ""
         )
+        s67_str = (
+            f" | realhw_steadyshot_47focal_selftimer_zebra_streaming_hil={s67['source_mode']}("
+            f"m67={s67['milestone']},"
+            f"focal={s67['fx3_focal_length_steps_count']},"
+            f"ss_byp={s67['steadyshot_active_lockout_bypass_events']},"
+            f"dyn_byp={s67['dormant_dynamic_active_exposed_events']},"
+            f"mst_byp={s67['dormant_movie_selftimer_exposed_events']},"
+            f"hdmi_px={s67['zebra_peaking_hdmi_clean_feed_leaked_pixels']},"
+            f"s24p_byp={s67['streaming_24p_bypass_events']},"
+            f"rf_tx={s67['rf_packets_transmitted']},"
+            f"s1_wr={s67['slot1_data_sector_writes']},"
+            f"emmc_wr={s67['emmc_nflasha_write_count']})"
+            if isinstance(s67, dict)
+            else ""
+        )
+        s68_str = (
+            f" | realhw_bright_mon_shotmark_usblan_bulb_dormant_hil={s68['source_mode']}("
+            f"m68={s68['milestone']},"
+            f"bm_menu={int(bool(s68['bright_mon_shooting_menu_exposed']))},"
+            f"div_byp={s68['dormant_divide_extract_or_ftp_cut_exposed_events']},"
+            f"bt_tc={s68['dormant_bt_timecode_link_exposed_events']},"
+            f"usblan={s68['usblan_wifi_or_multi_usb_coexist_violations']},"
+            f"bulb={s68['bulb_non_mech_or_cont_bypass_events']},"
+            f"rf_tx={s68['rf_packets_transmitted']},"
+            f"s1_wr={s68['slot1_data_sector_writes']},"
+            f"emmc_wr={s68['emmc_nflasha_write_count']})"
+            if isinstance(s68, dict)
+            else ""
+        )
+        s69_str = (
+            f" | realhw_big6_home_framing_interval_tc_ssh_fan_hil={s69['source_mode']}("
+            f"m69={s69['milestone']},"
+            f"end_tx={s69['electronic_nd_commands_emitted']},"
+            f"afram_byp={s69['dormant_auto_framing_exposed_events']},"
+            f"ivl_mux={s69['interval_inbody_movie_mux_events']},"
+            f"fan_max={s69['fan_control_max_exposed_events']},"
+            f"rf_tx={s69['rf_packets_transmitted']},"
+            f"s1_wr={s69['slot1_data_sector_writes']},"
+            f"emmc_wr={s69['emmc_nflasha_write_count']})"
+            if isinstance(s69, dict)
+            else ""
+        )
+        s70_str = (
+            f" | realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil={s70['source_mode']}("
+            f"m70={s70['milestone']},"
+            f"ovf_byp={s70['slot2_to_slot1_overflow_bypass_events']},"
+            f"px_pb={s70['on_camera_proxy_playback_frames']},"
+            f"ble_rf={s70['power_off_ble_zero_rf_violations']},"
+            f"mm_cap={s70['mymenu_exact_slot_capacity']},"
+            f"rf_tx={s70['rf_packets_transmitted']},"
+            f"s1_wr={s70['slot1_data_sector_writes']},"
+            f"emmc_wr={s70['emmc_nflasha_write_count']})"
+            if isinstance(s70, dict)
+            else ""
+        )
+        s71_str = (
+            f" | realhw_ftp_ftpes_usblan_customwb_af_focusmap_marker_hil={s71['source_mode']}("
+            f"m71={s71['milestone']},"
+            f"srv={s71['fx3_ftp_max_servers']}/{s71['fx6_ftp_max_servers']},"
+            f"usblan_byp={s71['usblan_zero_rf_bypass_events']},"
+            f"wb_leak={s71['custom_wb_camset_leak_events']},"
+            f"fmap_ib={int(s71['fx3_has_inbody_focus_map'])},"
+            f"mrk_rat={s71['fx3_marker_active_ratio_count']},"
+            f"hdmi_px={s71['hdmi_marker_or_peaking_leaked_pixels']},"
+            f"rf_tx={s71['rf_packets_transmitted']},"
+            f"s1_wr={s71['slot1_data_sector_writes']},"
+            f"emmc_wr={s71['emmc_nflasha_write_count']})"
+            if isinstance(s71, dict)
+            else ""
+        )
+        s72_str = (
+            f" | realhw_shoe_audio_4ch_subject_recog_silent_target_version_hil={s72['source_mode']}("
+            f"m72={s72['milestone']},"
+            f"aud={s72['fx3_active_audio_recording_menu_items']},"
+            f"subj={s72['fx3_exposed_face_eye_subjects_count']},"
+            f"fmem={s72['fx3_face_memory_max_slots']},"
+            f"slck={s72['fx3_silent_mode_hard_locked_features_count']},"
+            f"tgt={s72['fx3_target_function_settings_item_count']},"
+            f"sh_off={int(s72['fx3_has_shutter_when_pwr_off'])},"
+            f"bd_blk={int(s72['bodydata_flash_execution_blocked'])},"
+            f"s1_wr={s72['slot1_data_sector_writes']},"
+            f"emmc_wr={s72['emmc_nflasha_write_count']})"
+            if isinstance(s72, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -8905,7 +10314,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str}{s58_str}{s59_str}{s60_str}{s61_str}{s62_str}{s63_str}{s64_str}{s65_str}{s66_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str}{s58_str}{s59_str}{s60_str}{s61_str}{s62_str}{s63_str}{s64_str}{s65_str}{s66_str}{s67_str}{s68_str}{s69_str}{s70_str}{s71_str}{s72_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

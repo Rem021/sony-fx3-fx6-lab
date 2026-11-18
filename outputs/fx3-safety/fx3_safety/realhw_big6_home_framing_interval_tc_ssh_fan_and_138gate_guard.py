@@ -1198,9 +1198,13 @@ def audit_phase313_donor_contracts(
     )
 
     if donor_specs_override is None:
-        anchor_path = resolved_work_root / specs["fx3_string_english_f_uxc"][1]
-        fx6_anchor = resolved_work_root / specs["fx6_string_english_2_uxc"][1]
-        if (not anchor_path.exists()) or (not fx6_anchor.exists()):
+        if resolved_work_root is None:
+            anchor_missing = True
+        else:
+            anchor_path = resolved_work_root / specs["fx3_string_english_f_uxc"][1]
+            fx6_anchor = resolved_work_root / specs["fx6_string_english_2_uxc"][1]
+            anchor_missing = (not anchor_path.exists()) or (not fx6_anchor.exists())
+        if anchor_missing:
             dt = time.perf_counter() - t0
             return Phase313DonorAuditResult(
                 valid=True,

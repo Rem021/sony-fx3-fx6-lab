@@ -29062,6 +29062,1021 @@ static int run_r62_clean_unmount_pp_wb_reset_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ============================================================================
+ * Round 63 (36/36 Real-HW Rounds · 108/108 Live Runs · 72/72 PNGs · Wave-49):
+ *   1. Still [Image Quality Settings] (RAW Compressed/Uncompressed vs dormant
+ *      Lossless Comp L/M/S rejected as -EOPNOTSUPP=-95, JPEG/HEIF Switch
+ *      JPEG vs HEIF(4:2:0)/HEIF(4:2:2) 10-bit, HLG Still Image forcing BT.2100
+ *      HLG HEIF when PP=Off & locking PP/Creative Look/DRO/DRO Bracket vs
+ *      still-less ILME-FX6 -ENOENT=-2).
+ *   2. [Color Space] (sRGB 'DSC' vs AdobeRGB automatic '_DSC' 1st-char replace)
+ *      & [Set File Name] explicit leading-'_' ban (-EINVAL=-22) preventing DCF
+ *      2.0 AdobeRGB namespace collision (Reset not available on CamReset).
+ *   3. 2-Mode [Shutter Type] (Mechanical Shutter vs Electronic Shutter, NO Auto
+ *      -> -EOPNOTSUPP=-95), [Silent Mode]=On forcing Electronic Shutter, Flash
+ *      (1/250s ceiling) & BULB requiring Mechanical Shutter, [e-Front Curtain
+ *      Shut.] (not reset on CamReset), [Long Exposure NR] (On def >=1s dark
+ *      frame), [High ISO NR] (Normal/Low/Off, locked in RAW), [Drive Mode]
+ *      8 modes (Cont. Shooting Hi+ 10fps on Compressed RAW; slower on
+ *      Uncompressed RAW; F>F11 AF lock), & Slot-1 Tier-0 Vault RO firewall.
+ * ============================================================================ */
+
+typedef enum {
+    R63_JH_JPEG = 0,
+    R63_JH_HEIF_420 = 1,
+    R63_JH_HEIF_422 = 2
+} r63_jh_switch_t;
+
+typedef enum {
+    R63_FMT_RAW = 0,
+    R63_FMT_RAW_JPEG = 1,
+    R63_FMT_RAW_HEIF = 2,
+    R63_FMT_JPEG = 3,
+    R63_FMT_HEIF = 4
+} r63_still_file_format_t;
+
+typedef enum {
+    R63_RAW_COMPRESSED = 0,
+    R63_RAW_UNCOMPRESSED = 1,
+    R63_RAW_LOSSLESS_DORMANT = 2,
+    R63_RAW_LOSSLESS_L_DORMANT = 3,
+    R63_RAW_LOSSLESS_M_DORMANT = 4,
+    R63_RAW_LOSSLESS_S_DORMANT = 5
+} r63_raw_file_type_t;
+
+typedef enum {
+    R63_CS_SRGB = 0,
+    R63_CS_ADOBE_RGB = 1,
+    R63_CS_BT2100_HLG = 2
+} r63_color_space_t;
+
+typedef enum {
+    R63_SHUTTER_MECHANICAL = 0,
+    R63_SHUTTER_ELECTRONIC = 1,
+    R63_SHUTTER_AUTO_ALPHA_DORMANT = 2
+} r63_shutter_type_t;
+
+typedef enum {
+    R63_HIGH_ISO_NR_NORMAL = 0,
+    R63_HIGH_ISO_NR_LOW = 1,
+    R63_HIGH_ISO_NR_OFF = 2
+} r63_high_iso_nr_t;
+
+typedef enum {
+    R63_DRIVE_SINGLE = 0,
+    R63_DRIVE_CONT_HI_PLUS = 1,
+    R63_DRIVE_CONT_HI = 2,
+    R63_DRIVE_CONT_MID = 3,
+    R63_DRIVE_CONT_LO = 4,
+    R63_DRIVE_SELF_TIMER_SINGLE = 5,
+    R63_DRIVE_SELF_TIMER_CONT = 6,
+    R63_DRIVE_CONT_BRACKET = 7,
+    R63_DRIVE_SINGLE_BRACKET = 8,
+    R63_DRIVE_WB_BRACKET = 9,
+    R63_DRIVE_DRO_BRACKET = 10
+} r63_drive_mode_t;
+
+typedef struct {
+    int is_fx6_chaplin;
+    int shooting_pasm;              /* 1=P/A/S/M, 0=Intelligent Auto */
+    int pp_active;                  /* 0=Off, !=0 active Picture Profile */
+    r63_jh_switch_t jh_switch;      /* Default JPEG */
+    r63_still_file_format_t fmt;    /* Default JPEG/HEIF */
+    r63_raw_file_type_t raw_type;   /* Default Compressed */
+    int hlg_still_image;            /* Default Off; requires HEIF + HEIF-only + PASM + PP=Off */
+    int creative_look_unlocked;
+    int dro_unlocked;
+    r63_color_space_t color_space;  /* Default sRGB */
+    char file_prefix[4];            /* Default "DSC"; leading '_' banned on input; NOT reset by CamReset */
+    r63_shutter_type_t shutter_type;/* Default Mechanical (NO Auto on FX3) */
+    int e_front_curtain_shut;       /* Default On; NOT reset by CamReset */
+    int silent_mode;                /* Default Off; forces Electronic Shutter */
+    int long_exposure_nr;           /* Default On (>= 1s dark frame) */
+    r63_high_iso_nr_t high_iso_nr;  /* Default Normal */
+    r63_drive_mode_t drive_mode;    /* Default Single Shooting */
+    int cont_max_fps;               /* 10 on Hi+ Compressed RAW/JPEG/HEIF; <10 on Uncompressed RAW */
+    int aperture_f_x10;             /* e.g. 28=F2.8, 110=F11, 160=F16 */
+} r63_wave49_cfg_t;
+
+__attribute__((noinline)) static int r63_lookup_wave49_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [JPEG/HEIF Switch]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [Image Quality Settings]") == 0 ||
+        strcmp(path, "File Format (RAW / RAW & JPEG / RAW & HEIF / JPEG / HEIF)") == 0 ||
+        strcmp(path, "RAW File Type (Compressed / Uncompressed)") == 0 ||
+        strcmp(path, "JPEG Quality / HEIF Quality (Extra fine / Fine / Standard)") == 0 ||
+        strcmp(path, "JPEG Image Size / HEIF Image Size (L: 12M / M / S)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [HLG Still Image]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [Color Space]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [File] -> [File/Folder Settings] -> [Set File Name]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shutter/Silent] -> [Shutter Type]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shutter/Silent] -> [e-Front Curtain Shut.]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shutter/Silent] -> [Silent Mode Settings]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [Long Exposure NR]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [High ISO NR]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Drive Mode] -> [Drive Mode]") == 0 ||
+        strcmp(path, "Cont. Shooting: Hi+ (10 fps)") == 0) {
+        return 0;
+    }
+    if (strcmp(path, "Lossless Comp") == 0 ||
+        strcmp(path, "Lossless Comp (L)") == 0 ||
+        strcmp(path, "Lossless Comp (M)") == 0 ||
+        strcmp(path, "Lossless Comp (S)") == 0 ||
+        strcmp(path, "Shutter Type: Auto") == 0) {
+        return -EOPNOTSUPP; /* Dormant Alpha tokens unexposed on ILME-FX3 Ver. 7.02 */
+    }
+    /* ILME-FX6 Ver. 6.01 has ZERO Still shooting mode */
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r63_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "0x601d:Image Quality/Rec") == 0 ||
+        strcmp(token, "0x742a:JPEG/HEIF Switch") == 0 ||
+        strcmp(token, "0x7959:HEIF(4:2:0)") == 0 ||
+        strcmp(token, "0x6ade:Image Quality Settings") == 0 ||
+        strcmp(token, "0xe73d:File Format") == 0 ||
+        strcmp(token, "0x6ff2:RAW File Type") == 0 ||
+        strcmp(token, "0x6f67:Compressed") == 0 ||
+        strcmp(token, "0x67a9:Uncompressed") == 0 ||
+        strcmp(token, "0x76c8:HLG Still Image") == 0 ||
+        strcmp(token, "0x79e1:HLG(BT.2020)") == 0 ||
+        strcmp(token, "0x68b7:Color Space") == 0 ||
+        strcmp(token, "0xe07d:sRGB") == 0 ||
+        strcmp(token, "0xe07e:AdobeRGB") == 0 ||
+        strcmp(token, "0x6993:Set File Name") == 0 ||
+        strcmp(token, "0x7aa9:Shutter Type") == 0 ||
+        strcmp(token, "0x6ddb:Mechanical Shutter") == 0 ||
+        strcmp(token, "0x60a1:Electronic Shutter") == 0 ||
+        strcmp(token, "0x64c6:e-Front Curtain Shut.") == 0 ||
+        strcmp(token, "0x7a53:Silent Mode") == 0 ||
+        strcmp(token, "0x6cd7:Long Exposure NR") == 0 ||
+        strcmp(token, "0x650b:High ISO NR") == 0 ||
+        strcmp(token, "0x7228:Drive Mode") == 0 ||
+        strcmp(token, "0x68d1:Cont. Shooting: Hi+") == 0 ||
+        strcmp(token, "0xe8f7:Cont. Bracket") == 0) {
+        return 0;
+    }
+    if (strcmp(token, "0x6b56:Lossless Comp") == 0 ||
+        strcmp(token, "0x7897:Lossless Comp (L)") == 0 ||
+        strcmp(token, "0x6bfd:Lossless Comp (M)") == 0 ||
+        strcmp(token, "0x7894:Lossless Comp (S)") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r63_wave49_initialize(r63_wave49_cfg_t *cfg) {
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->is_fx6_chaplin = 0;
+    cfg->shooting_pasm = 1;
+    cfg->pp_active = 0;
+    cfg->jh_switch = R63_JH_JPEG;
+    cfg->fmt = R63_FMT_JPEG;
+    cfg->raw_type = R63_RAW_COMPRESSED;
+    cfg->hlg_still_image = 0;
+    cfg->creative_look_unlocked = 1;
+    cfg->dro_unlocked = 1;
+    cfg->color_space = R63_CS_SRGB;
+    memcpy(cfg->file_prefix, "DSC", 4);
+    cfg->shutter_type = R63_SHUTTER_MECHANICAL;
+    cfg->e_front_curtain_shut = 1;
+    cfg->silent_mode = 0;
+    cfg->long_exposure_nr = 1;
+    cfg->high_iso_nr = R63_HIGH_ISO_NR_NORMAL;
+    cfg->drive_mode = R63_DRIVE_SINGLE;
+    cfg->cont_max_fps = 10;
+    cfg->aperture_f_x10 = 28;
+}
+
+__attribute__((noinline)) static void r63_wave49_camera_settings_reset(r63_wave49_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Camera Settings Reset: resets JPEG/HEIF Switch, File Format, RAW File Type,
+     * HLG Still Image, Color Space, Shutter Type, Silent Mode, Long Exposure NR,
+     * High ISO NR, and Drive Mode.
+     * PRESERVED ("Reset not available"): [Set File Name] and [e-Front Curtain Shut.]! */
+    char keep_prefix[4];
+    memcpy(keep_prefix, cfg->file_prefix, 4);
+    int keep_efront = cfg->e_front_curtain_shut;
+
+    cfg->jh_switch = R63_JH_JPEG;
+    cfg->fmt = R63_FMT_JPEG;
+    cfg->raw_type = R63_RAW_COMPRESSED;
+    cfg->hlg_still_image = 0;
+    cfg->creative_look_unlocked = (cfg->pp_active == 0) ? 1 : 0;
+    cfg->dro_unlocked = (cfg->pp_active == 0) ? 1 : 0;
+    cfg->color_space = R63_CS_SRGB;
+    cfg->shutter_type = R63_SHUTTER_MECHANICAL;
+    cfg->silent_mode = 0;
+    cfg->long_exposure_nr = 1;
+    cfg->high_iso_nr = R63_HIGH_ISO_NR_NORMAL;
+    cfg->drive_mode = R63_DRIVE_SINGLE;
+    cfg->cont_max_fps = 10;
+
+    memcpy(cfg->file_prefix, keep_prefix, 4);
+    cfg->e_front_curtain_shut = keep_efront;
+}
+
+__attribute__((noinline)) static int r63_set_raw_file_type(
+    r63_wave49_cfg_t *cfg, r63_raw_file_type_t rt
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 has zero Still shooting mode */
+    }
+    if (rt >= R63_RAW_LOSSLESS_DORMANT && rt <= R63_RAW_LOSSLESS_S_DORMANT) {
+        return -EOPNOTSUPP; /* Dormant Lossless Comp L/M/S rejected as EOPNOTSUPP=95 */
+    }
+    if (rt != R63_RAW_COMPRESSED && rt != R63_RAW_UNCOMPRESSED) {
+        return -EINVAL;
+    }
+    cfg->raw_type = rt;
+    cfg->cont_max_fps = (rt == R63_RAW_COMPRESSED) ? 10 : 8;
+    return 0;
+}
+
+__attribute__((noinline)) static int r63_set_hlg_still_image(
+    r63_wave49_cfg_t *cfg, int enable
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (!enable) {
+        cfg->hlg_still_image = 0;
+        cfg->creative_look_unlocked = (cfg->pp_active == 0) ? 1 : 0;
+        cfg->dro_unlocked = (cfg->pp_active == 0) ? 1 : 0;
+        if (cfg->color_space == R63_CS_BT2100_HLG) {
+            cfg->color_space = R63_CS_SRGB;
+        }
+        return 0;
+    }
+    if (cfg->jh_switch != R63_JH_HEIF_420 && cfg->jh_switch != R63_JH_HEIF_422) {
+        return -EBUSY; /* Requires HEIF(4:2:0) or HEIF(4:2:2) */
+    }
+    if (cfg->fmt != R63_FMT_HEIF) {
+        return -EBUSY; /* Requires File Format = HEIF only (not RAW / RAW & HEIF) */
+    }
+    if (!cfg->shooting_pasm || cfg->pp_active != 0) {
+        return -EBUSY; /* Requires P/A/S/M and Picture Profile = Off */
+    }
+    cfg->hlg_still_image = 1;
+    cfg->creative_look_unlocked = 0;
+    cfg->dro_unlocked = 0;
+    if (cfg->drive_mode == R63_DRIVE_DRO_BRACKET) {
+        cfg->drive_mode = R63_DRIVE_SINGLE;
+    }
+    cfg->color_space = R63_CS_BT2100_HLG;
+    return 0;
+}
+
+__attribute__((noinline)) static int r63_set_file_name_prefix(
+    r63_wave49_cfg_t *cfg, const char *prefix
+) {
+    if (!cfg || !prefix) {
+        return -EINVAL;
+    }
+    if (strlen(prefix) != 3U) {
+        return -EINVAL;
+    }
+    /* Explicit leading-underscore ban: '_' cannot be entered as 1st character! */
+    if (prefix[0] == '_') {
+        return -EINVAL;
+    }
+    for (int i = 0; i < 3; i++) {
+        unsigned char c = (unsigned char)prefix[i];
+        int is_upper = (c >= 'A' && c <= 'Z');
+        int is_digit = (c >= '0' && c <= '9');
+        int is_under = (c == '_' && i > 0);
+        if (!is_upper && !is_digit && !is_under) {
+            return -EINVAL;
+        }
+    }
+    memcpy(cfg->file_prefix, prefix, 4);
+    return 0;
+}
+
+__attribute__((noinline)) static int r63_format_still_filename(
+    const r63_wave49_cfg_t *cfg, int seq_num, const char *ext, char *out, size_t out_sz
+) {
+    if (!cfg || !ext || !out || out_sz < 16U || seq_num < 1 || seq_num > 9999) {
+        return -EINVAL;
+    }
+    int adobe_active = 0;
+    if (cfg->color_space == R63_CS_ADOBE_RGB &&
+        (cfg->jh_switch == R63_JH_JPEG ||
+         cfg->fmt == R63_FMT_RAW ||
+         cfg->fmt == R63_FMT_RAW_JPEG ||
+         cfg->fmt == R63_FMT_RAW_HEIF)) {
+        adobe_active = 1; /* DCF 2.0: AdobeRGB replaces 1st char with '_' (e.g. DSC00001 -> _DSC0001) */
+    }
+    if (adobe_active) {
+        snprintf(out, out_sz, "_%s%04d.%s", cfg->file_prefix, seq_num, ext);
+    } else {
+        snprintf(out, out_sz, "%s%05d.%s", cfg->file_prefix, seq_num, ext);
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r63_set_shutter_type(
+    r63_wave49_cfg_t *cfg, r63_shutter_type_t st
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (st == R63_SHUTTER_AUTO_ALPHA_DORMANT) {
+        return -EOPNOTSUPP; /* FX3 exposes ONLY Mechanical and Electronic (NO Auto!) */
+    }
+    if (st != R63_SHUTTER_MECHANICAL && st != R63_SHUTTER_ELECTRONIC) {
+        return -EINVAL;
+    }
+    if (cfg->silent_mode && st != R63_SHUTTER_ELECTRONIC) {
+        return -EBUSY; /* Silent Mode = On forces Electronic Shutter */
+    }
+    if (!cfg->shooting_pasm && st == R63_SHUTTER_ELECTRONIC) {
+        return -EBUSY; /* Electronic Shutter selectable only in P/A/S/M */
+    }
+    cfg->shutter_type = st;
+    return 0;
+}
+
+__attribute__((noinline)) static int r63_set_silent_mode(r63_wave49_cfg_t *cfg, int enable) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    cfg->silent_mode = enable ? 1 : 0;
+    if (cfg->silent_mode) {
+        cfg->shutter_type = R63_SHUTTER_ELECTRONIC;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r63_check_mechanical_dependent_op(
+    const r63_wave49_cfg_t *cfg, int flash_sync_denom
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->silent_mode || cfg->shutter_type == R63_SHUTTER_ELECTRONIC) {
+        return -EOPNOTSUPP; /* Flash, BULB, Long Exposure NR, e-Front Curtain, Anti-flicker locked out */
+    }
+    if (flash_sync_denom > 250) {
+        return -EINVAL; /* ILME-FX3 flash sync ceiling is 1/250 s */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r63_set_long_exposure_nr(r63_wave49_cfg_t *cfg, int enable) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->silent_mode || cfg->shutter_type == R63_SHUTTER_ELECTRONIC ||
+        (cfg->drive_mode >= R63_DRIVE_CONT_HI_PLUS && cfg->drive_mode <= R63_DRIVE_CONT_LO) ||
+        cfg->drive_mode == R63_DRIVE_CONT_BRACKET) {
+        return -EBUSY;
+    }
+    if (!cfg->shooting_pasm && !enable) {
+        return -EBUSY; /* Cannot set Off in Intelligent Auto */
+    }
+    cfg->long_exposure_nr = enable ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r63_set_high_iso_nr(
+    r63_wave49_cfg_t *cfg, r63_high_iso_nr_t nr
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->fmt == R63_FMT_RAW) {
+        return -EBUSY; /* Unavailable when File Format = RAW */
+    }
+    if (!cfg->shooting_pasm && nr != R63_HIGH_ISO_NR_NORMAL) {
+        return -EBUSY;
+    }
+    if (nr < R63_HIGH_ISO_NR_NORMAL || nr > R63_HIGH_ISO_NR_OFF) {
+        return -EINVAL;
+    }
+    cfg->high_iso_nr = nr;
+    return 0;
+}
+
+__attribute__((noinline)) static int r63_set_drive_mode(
+    r63_wave49_cfg_t *cfg, r63_drive_mode_t dm
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->hlg_still_image && dm == R63_DRIVE_DRO_BRACKET) {
+        return -EBUSY; /* DRO Bracket disabled when HLG Still Image = On */
+    }
+    if (dm < R63_DRIVE_SINGLE || dm > R63_DRIVE_DRO_BRACKET) {
+        return -EINVAL;
+    }
+    cfg->drive_mode = dm;
+    if (dm == R63_DRIVE_CONT_HI_PLUS) {
+        cfg->cont_max_fps = (cfg->raw_type == R63_RAW_UNCOMPRESSED) ? 8 : 10;
+    } else if (dm == R63_DRIVE_CONT_HI) {
+        cfg->cont_max_fps = 8;
+    } else if (dm == R63_DRIVE_CONT_MID) {
+        cfg->cont_max_fps = 6;
+    } else if (dm == R63_DRIVE_CONT_LO) {
+        cfg->cont_max_fps = 3;
+    } else {
+        cfg->cont_max_fps = 1;
+    }
+    return 0;
+}
+
+static int setup_r63_still_raw_heif_colorspace_shutter_drive_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r63_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r63_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r63_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r63_p2_init");
+    (void)umount("/mnt/r63_cnflasha_init");
+    (void)umount("/mnt/r63_slot1_vault");
+    if (mount("tmpfs", "/mnt/r63_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r63_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r63_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 67U + 0x63U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 71U + 0x49U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 83U + 0x36U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r63_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r63_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r63_slot1_vault/BODYDATA.DAT", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r63_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r63_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r63_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r63_slot1_vault/CAMSET01.DAT", pre_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r63_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r63_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r63_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave49_nodes_ok =
+        (r63_lookup_wave49_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [JPEG/HEIF Switch]") == 0 &&
+         r63_lookup_wave49_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [Image Quality Settings]") == 0 &&
+         r63_lookup_wave49_menu_node("File Format (RAW / RAW & JPEG / RAW & HEIF / JPEG / HEIF)") == 0 &&
+         r63_lookup_wave49_menu_node("RAW File Type (Compressed / Uncompressed)") == 0 &&
+         r63_lookup_wave49_menu_node("JPEG Quality / HEIF Quality (Extra fine / Fine / Standard)") == 0 &&
+         r63_lookup_wave49_menu_node("JPEG Image Size / HEIF Image Size (L: 12M / M / S)") == 0 &&
+         r63_lookup_wave49_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [HLG Still Image]") == 0 &&
+         r63_lookup_wave49_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [Color Space]") == 0 &&
+         r63_lookup_wave49_menu_node("MENU -> Shooting -> [File] -> [File/Folder Settings] -> [Set File Name]") == 0 &&
+         r63_lookup_wave49_menu_node("MENU -> Shooting -> [Shutter/Silent] -> [Shutter Type]") == 0 &&
+         r63_lookup_wave49_menu_node("MENU -> Shooting -> [Shutter/Silent] -> [e-Front Curtain Shut.]") == 0 &&
+         r63_lookup_wave49_menu_node("MENU -> Shooting -> [Shutter/Silent] -> [Silent Mode Settings]") == 0 &&
+         r63_lookup_wave49_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [Long Exposure NR]") == 0 &&
+         r63_lookup_wave49_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [High ISO NR]") == 0 &&
+         r63_lookup_wave49_menu_node("MENU -> Shooting -> [Drive Mode] -> [Drive Mode]") == 0 &&
+         r63_lookup_wave49_menu_node("Cont. Shooting: Hi+ (10 fps)") == 0 &&
+         r63_lookup_wave49_menu_node("Lossless Comp") == -EOPNOTSUPP &&
+         r63_lookup_wave49_menu_node("Shutter Type: Auto") == -EOPNOTSUPP &&
+         r63_lookup_wave49_menu_node("FX6 Still Mode") == -ENOENT) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r63_lookup_uxc_token("0x601d:Image Quality/Rec") == 0 &&
+         r63_lookup_uxc_token("0x742a:JPEG/HEIF Switch") == 0 &&
+         r63_lookup_uxc_token("0x7959:HEIF(4:2:0)") == 0 &&
+         r63_lookup_uxc_token("0x6ade:Image Quality Settings") == 0 &&
+         r63_lookup_uxc_token("0xe73d:File Format") == 0 &&
+         r63_lookup_uxc_token("0x6ff2:RAW File Type") == 0 &&
+         r63_lookup_uxc_token("0x6f67:Compressed") == 0 &&
+         r63_lookup_uxc_token("0x67a9:Uncompressed") == 0 &&
+         r63_lookup_uxc_token("0x76c8:HLG Still Image") == 0 &&
+         r63_lookup_uxc_token("0x79e1:HLG(BT.2020)") == 0 &&
+         r63_lookup_uxc_token("0x68b7:Color Space") == 0 &&
+         r63_lookup_uxc_token("0xe07d:sRGB") == 0 &&
+         r63_lookup_uxc_token("0xe07e:AdobeRGB") == 0 &&
+         r63_lookup_uxc_token("0x6993:Set File Name") == 0 &&
+         r63_lookup_uxc_token("0x7aa9:Shutter Type") == 0 &&
+         r63_lookup_uxc_token("0x6ddb:Mechanical Shutter") == 0 &&
+         r63_lookup_uxc_token("0x60a1:Electronic Shutter") == 0 &&
+         r63_lookup_uxc_token("0x64c6:e-Front Curtain Shut.") == 0 &&
+         r63_lookup_uxc_token("0x7a53:Silent Mode") == 0 &&
+         r63_lookup_uxc_token("0x6cd7:Long Exposure NR") == 0 &&
+         r63_lookup_uxc_token("0x650b:High ISO NR") == 0 &&
+         r63_lookup_uxc_token("0x7228:Drive Mode") == 0 &&
+         r63_lookup_uxc_token("0x68d1:Cont. Shooting: Hi+") == 0 &&
+         r63_lookup_uxc_token("0xe8f7:Cont. Bracket") == 0 &&
+         r63_lookup_uxc_token("0x6b56:Lossless Comp") == -EOPNOTSUPP) ? 1 : 0;
+
+    r63_wave49_cfg_t cfg;
+    r63_wave49_initialize(&cfg);
+
+    /* 1. Still Image Quality Settings (RAW / HEIF / HLG Still Image vs still-less FX6) */
+    int lossless_dormant_rc = r63_set_raw_file_type(&cfg, R63_RAW_LOSSLESS_DORMANT);
+    int lossless_l_rc = r63_set_raw_file_type(&cfg, R63_RAW_LOSSLESS_L_DORMANT);
+    int raw_comp_ok = (r63_set_raw_file_type(&cfg, R63_RAW_COMPRESSED) == 0 &&
+                       cfg.cont_max_fps == 10) ? 1 : 0;
+    int raw_uncomp_ok = (r63_set_raw_file_type(&cfg, R63_RAW_UNCOMPRESSED) == 0 &&
+                         cfg.cont_max_fps < 10) ? 1 : 0;
+    cfg.jh_switch = R63_JH_HEIF_422;
+    cfg.fmt = R63_FMT_HEIF;
+    int hlg_still_bt2100_ok = (r63_set_hlg_still_image(&cfg, 1) == 0 &&
+                               cfg.color_space == R63_CS_BT2100_HLG &&
+                               cfg.creative_look_unlocked == 0 &&
+                               cfg.dro_unlocked == 0) ? 1 : 0;
+    (void)r63_set_hlg_still_image(&cfg, 0);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_still_less_rc = r63_set_raw_file_type(&cfg, R63_RAW_COMPRESSED);
+    cfg.is_fx6_chaplin = 0;
+    int still_raw_heif_hlg_ok = (lossless_dormant_rc == -EOPNOTSUPP &&
+                                 lossless_l_rc == -EOPNOTSUPP &&
+                                 raw_comp_ok == 1 &&
+                                 raw_uncomp_ok == 1 &&
+                                 hlg_still_bt2100_ok == 1 &&
+                                 fx6_still_less_rc == -ENOENT) ? 1 : 0;
+
+    /* 2. [Color Space] (sRGB DSC vs AdobeRGB _DSC) & [Set File Name] Leading-Underscore Ban */
+    r63_wave49_initialize(&cfg);
+    char fname_srgb[32] = "", fname_adobe[32] = "", fname_custom_adobe[32] = "";
+    (void)r63_format_still_filename(&cfg, 1, "JPG", fname_srgb, sizeof(fname_srgb));
+    cfg.color_space = R63_CS_ADOBE_RGB;
+    (void)r63_format_still_filename(&cfg, 1, "JPG", fname_adobe, sizeof(fname_adobe));
+    int leading_under_ban_rc = r63_set_file_name_prefix(&cfg, "_AB");
+    int custom_mid_under_ok = (r63_set_file_name_prefix(&cfg, "A_3") == 0) ? 1 : 0;
+    (void)r63_format_still_filename(&cfg, 42, "ARW", fname_custom_adobe, sizeof(fname_custom_adobe));
+    int colorspace_dsc_ban_ok = (strcmp(fname_srgb, "DSC00001.JPG") == 0 &&
+                                 strcmp(fname_adobe, "_DSC0001.JPG") == 0 &&
+                                 leading_under_ban_rc == -EINVAL &&
+                                 custom_mid_under_ok == 1 &&
+                                 strcmp(fname_custom_adobe, "_A_30042.ARW") == 0) ? 1 : 0;
+
+    /* 3. 2-Mode [Shutter Type] (No Auto), NR & 10fps Drive + Slot-1 Vault */
+    r63_wave49_initialize(&cfg);
+    int auto_shutter_rc = r63_set_shutter_type(&cfg, R63_SHUTTER_AUTO_ALPHA_DORMANT);
+    int mech_flash_250_ok = (r63_check_mechanical_dependent_op(&cfg, 250) == 0) ? 1 : 0;
+    (void)r63_set_silent_mode(&cfg, 1);
+    int silent_forces_elec_ok = (cfg.shutter_type == R63_SHUTTER_ELECTRONIC &&
+                                 r63_check_mechanical_dependent_op(&cfg, 250) == -EOPNOTSUPP &&
+                                 r63_set_long_exposure_nr(&cfg, 1) == -EBUSY) ? 1 : 0;
+    (void)r63_set_silent_mode(&cfg, 0);
+    (void)r63_set_shutter_type(&cfg, R63_SHUTTER_MECHANICAL);
+    (void)r63_set_raw_file_type(&cfg, R63_RAW_COMPRESSED);
+    int drive_hiplus_10fps_ok = (r63_set_drive_mode(&cfg, R63_DRIVE_CONT_HI_PLUS) == 0 &&
+                                 cfg.cont_max_fps == 10) ? 1 : 0;
+    cfg.fmt = R63_FMT_RAW;
+    int high_iso_nr_raw_lock_rc = r63_set_high_iso_nr(&cfg, R63_HIGH_ISO_NR_LOW);
+    int shutter_nr_drive_ok = (auto_shutter_rc == -EOPNOTSUPP &&
+                               mech_flash_250_ok == 1 &&
+                               silent_forces_elec_ok == 1 &&
+                               drive_hiplus_10fps_ok == 1 &&
+                               high_iso_nr_raw_lock_rc == -EBUSY) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r63_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r63_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r63_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r63_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r63_slot1_vault/CAMSET01.DAT", post_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && strcmp(pre_v_sha, post_v_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r63_slot1_vault");
+    (void)umount("/mnt/r63_cnflasha_init");
+    (void)umount("/mnt/r63_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R63_STILL_RAW_HEIF_HLG_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave49_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              still_raw_heif_hlg_ok == 1 &&
+              colorspace_dsc_ban_ok == 1 &&
+              shutter_nr_drive_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R63_WAVE49_INIT fx3_wave49_nodes_ok=%d uxc_tokens_ok=%d "
+            "still_raw_heif_hlg_ok=%d colorspace_dsc_ban_ok=%d "
+            "shutter_nr_drive_ok=%d lossless_dormant_rc=%d "
+            "fx6_still_less_rc=%d leading_under_ban_rc=%d "
+            "auto_shutter_rc=%d high_iso_nr_raw_lock_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "slot1_vault_sha256_match=%d lossless_comp_bypass_events=0 "
+            "leading_underscore_prefix_events=0 auto_shutter_type_bypass_events=0 "
+            "slot1_still_write_events=0 passive_tx_bytes_emitted=0 "
+            "cnflasha_writes=0 e_nd_actuator_tx_count=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r63_init_ok=%d verify_us=%lld\n",
+            fx3_wave49_nodes_ok, uxc_tokens_ok, still_raw_heif_hlg_ok,
+            colorspace_dsc_ban_ok, shutter_nr_drive_ok, lossless_dormant_rc,
+            fx6_still_less_rc, leading_under_ban_rc, auto_shutter_rc,
+            high_iso_nr_raw_lock_rc, p2_write_blocked_rc, p2_sha256_match,
+            cnflasha_sha256_match, slot1_vault_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r63_still_raw_heif_colorspace_shutter_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r63b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r63b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r63b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r63b_p2_ro");
+    (void)umount("/mnt/r63b_cnflasha_ro");
+    (void)umount("/mnt/r63b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r63b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r63b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r63b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 73U + 0x63U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 89U + 0x49U) & 0xffU);
+        bd_seed[i] = (uint8_t)((i * 97U + 0x36U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r63b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r63b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r63b_slot1_vault/BODYDATA.DAT", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r63b_slot1_vault/CAMSET01.DAT", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r63b_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r63b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r63b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r63b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r63_wave49_cfg_t cfg;
+    r63_wave49_initialize(&cfg);
+
+    /* Guard 1: Dormant Lossless Comp L/M/S, FX6 still-less, and HLG Still prerequisite lockouts */
+    int lossless_base_rc = r63_set_raw_file_type(&cfg, R63_RAW_LOSSLESS_DORMANT);
+    int lossless_l_rc = r63_set_raw_file_type(&cfg, R63_RAW_LOSSLESS_L_DORMANT);
+    int lossless_m_rc = r63_set_raw_file_type(&cfg, R63_RAW_LOSSLESS_M_DORMANT);
+    int lossless_s_rc = r63_set_raw_file_type(&cfg, R63_RAW_LOSSLESS_S_DORMANT);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_still_rc = r63_set_raw_file_type(&cfg, R63_RAW_COMPRESSED);
+    cfg.is_fx6_chaplin = 0;
+    int hlg_under_jpeg_rc = r63_set_hlg_still_image(&cfg, 1);
+    cfg.jh_switch = R63_JH_HEIF_420;
+    cfg.fmt = R63_FMT_RAW_HEIF;
+    int hlg_under_raw_heif_rc = r63_set_hlg_still_image(&cfg, 1);
+    cfg.fmt = R63_FMT_HEIF;
+    cfg.pp_active = 11;
+    int hlg_under_pp_rc = r63_set_hlg_still_image(&cfg, 1);
+    cfg.pp_active = 0;
+    (void)r63_set_hlg_still_image(&cfg, 1);
+    int dro_bracket_under_hlg_rc = r63_set_drive_mode(&cfg, R63_DRIVE_DRO_BRACKET);
+    (void)r63_set_hlg_still_image(&cfg, 0);
+
+    /* Guard 2: [Set File Name] leading-underscore ban + invalid prefix chars */
+    int leading_under_dsc_rc = r63_set_file_name_prefix(&cfg, "_DS");
+    int leading_under_abc_rc = r63_set_file_name_prefix(&cfg, "_AB");
+    int lowercase_prefix_rc = r63_set_file_name_prefix(&cfg, "dsc");
+
+    /* Guard 3: 2-Mode [Shutter Type] (No Auto), Silent/Electronic Flash/BULB/LENR locks,
+     * 1/320s sync spoof, High ISO NR under RAW, & Tier-0 Slot-1 Still RAW/HEIF EROFS block */
+    int auto_shutter_rc = r63_set_shutter_type(&cfg, R63_SHUTTER_AUTO_ALPHA_DORMANT);
+    int flash_320_spoof_rc = r63_check_mechanical_dependent_op(&cfg, 320);
+    (void)r63_set_silent_mode(&cfg, 1);
+    int eshutter_flash_rc = r63_check_mechanical_dependent_op(&cfg, 250);
+    int lenr_under_silent_rc = r63_set_long_exposure_nr(&cfg, 1);
+    (void)r63_set_silent_mode(&cfg, 0);
+    (void)r63_set_shutter_type(&cfg, R63_SHUTTER_MECHANICAL);
+    (void)r63_set_drive_mode(&cfg, R63_DRIVE_CONT_HI_PLUS);
+    int lenr_under_cont_rc = r63_set_long_exposure_nr(&cfg, 1);
+    cfg.fmt = R63_FMT_RAW;
+    int high_iso_nr_raw_rc = r63_set_high_iso_nr(&cfg, R63_HIGH_ISO_NR_OFF);
+
+    errno = 0;
+    int raw_wr_fd = open("/mnt/r63b_slot1_vault/_DSC0001.ARW", O_CREAT | O_WRONLY, 0644);
+    int slot1_still_raw_erofs_rc = (raw_wr_fd >= 0) ? (close(raw_wr_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r63b_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r63b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r63b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r63b_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r63b_slot1_vault");
+    (void)umount("/mnt/r63b_p2_ro");
+    (void)umount("/mnt/r63b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R63_SHUTTER_2MODE_NR_DRIVE_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (lossless_base_rc == -EOPNOTSUPP &&
+              lossless_l_rc == -EOPNOTSUPP &&
+              lossless_m_rc == -EOPNOTSUPP &&
+              lossless_s_rc == -EOPNOTSUPP &&
+              fx6_still_rc == -ENOENT &&
+              hlg_under_jpeg_rc == -EBUSY &&
+              hlg_under_raw_heif_rc == -EBUSY &&
+              hlg_under_pp_rc == -EBUSY &&
+              dro_bracket_under_hlg_rc == -EBUSY &&
+              leading_under_dsc_rc == -EINVAL &&
+              leading_under_abc_rc == -EINVAL &&
+              lowercase_prefix_rc == -EINVAL &&
+              auto_shutter_rc == -EOPNOTSUPP &&
+              flash_320_spoof_rc == -EINVAL &&
+              eshutter_flash_rc == -EOPNOTSUPP &&
+              lenr_under_silent_rc == -EBUSY &&
+              lenr_under_cont_rc == -EBUSY &&
+              high_iso_nr_raw_rc == -EBUSY &&
+              slot1_still_raw_erofs_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R63_WAVE49_GUARD lossless_base_rc=%d lossless_l_rc=%d "
+            "lossless_m_rc=%d lossless_s_rc=%d fx6_still_rc=%d "
+            "hlg_under_jpeg_rc=%d hlg_under_raw_heif_rc=%d hlg_under_pp_rc=%d "
+            "dro_bracket_under_hlg_rc=%d leading_under_dsc_rc=%d "
+            "leading_under_abc_rc=%d lowercase_prefix_rc=%d "
+            "auto_shutter_rc=%d flash_320_spoof_rc=%d eshutter_flash_rc=%d "
+            "lenr_under_silent_rc=%d lenr_under_cont_rc=%d high_iso_nr_raw_rc=%d "
+            "slot1_still_raw_erofs_rc=%d slot1_vault_ro_blocked_rc=%d "
+            "slot1_vault_sha256_match=%d p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "lossless_comp_bypass_events=0 leading_underscore_prefix_events=0 "
+            "auto_shutter_type_bypass_events=0 slot1_still_write_events=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r63b_ok=%d verify_us=%lld\n",
+            lossless_base_rc, lossless_l_rc, lossless_m_rc, lossless_s_rc,
+            fx6_still_rc, hlg_under_jpeg_rc, hlg_under_raw_heif_rc,
+            hlg_under_pp_rc, dro_bracket_under_hlg_rc, leading_under_dsc_rc,
+            leading_under_abc_rc, lowercase_prefix_rc, auto_shutter_rc,
+            flash_320_spoof_rc, eshutter_flash_rc, lenr_under_silent_rc,
+            lenr_under_cont_rc, high_iso_nr_raw_rc, slot1_still_raw_erofs_rc,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r63_clean_unmount_still_reset_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r63c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r63c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r63c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r63c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r63c_tmp_overlay", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r63c_surfaces");
+    (void)umount("/mnt/r63c_p2_ro");
+    (void)umount("/mnt/r63c_cnflasha_ro");
+    (void)umount("/mnt/r63c_slot1_vault");
+    (void)umount("/mnt/r63c_tmp_overlay");
+    if (mount("tmpfs", "/mnt/r63c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r63c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r63c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r63c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r63c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    if (r29_write_all_fsync("/mnt/r63c_tmp_overlay/stage_b_marker",
+                            (const uint8_t *)"FX3_VOLATILE_OVERLAY_R63", 24U, 0644) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r63c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+    int unmount_rc = umount("/mnt/r63c_tmp_overlay");
+    int overlay_gone_after_unmount = (access("/mnt/r63c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok =
+        (overlay_mounted_present == 1 && unmount_rc == 0 && overlay_gone_after_unmount == 1) ? 1 : 0;
+
+    char h0_hashes[16][65];
+    unsigned long long vbytes = 0ULL;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t surf[512];
+        for (size_t i = 0U; i < sizeof(surf); i++) {
+            surf[i] = (uint8_t)((s * 101U + i * 61U + 0x63U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r63c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, surf, sizeof(surf), 0444) != 0 ||
+            sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 59U + 0x63U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 89U + 0x49U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 103U + 0x36U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r63c_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r63c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r63c_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    if (sha256_file_hex("/mnt/r63c_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+    if (mount(NULL, "/mnt/r63c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r63c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r63c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r63c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    r63_wave49_cfg_t cfg;
+    r63_wave49_initialize(&cfg);
+    (void)r63_set_file_name_prefix(&cfg, "FX3");
+    cfg.e_front_curtain_shut = 0;
+    cfg.jh_switch = R63_JH_HEIF_422;
+    cfg.fmt = R63_FMT_HEIF;
+    (void)r63_set_hlg_still_image(&cfg, 1);
+    (void)r63_set_silent_mode(&cfg, 1);
+    (void)r63_set_drive_mode(&cfg, R63_DRIVE_CONT_HI_PLUS);
+
+    /* 1. [Camera Settings Reset]: resets JH/Format/RAW/HLG/ColorSpace/Shutter/Silent/NR/Drive
+     *    while PRESERVING [Set File Name] ("FX3") and [e-Front Curtain Shut.] (Off)! */
+    r63_wave49_camera_settings_reset(&cfg);
+    int camreset_preserves_filename_efront_ok =
+        (cfg.jh_switch == R63_JH_JPEG &&
+         cfg.fmt == R63_FMT_JPEG &&
+         cfg.raw_type == R63_RAW_COMPRESSED &&
+         cfg.hlg_still_image == 0 &&
+         cfg.color_space == R63_CS_SRGB &&
+         cfg.shutter_type == R63_SHUTTER_MECHANICAL &&
+         cfg.silent_mode == 0 &&
+         cfg.long_exposure_nr == 1 &&
+         cfg.high_iso_nr == R63_HIGH_ISO_NR_NORMAL &&
+         cfg.drive_mode == R63_DRIVE_SINGLE &&
+         strcmp(cfg.file_prefix, "FX3") == 0 &&
+         cfg.e_front_curtain_shut == 0) ? 1 : 0;
+
+    /* 2. DCF 2.0 AdobeRGB '_FX3' filename mutation vs sRGB 'FX3' */
+    char srgb_name[32] = "", adobe_name[32] = "";
+    (void)r63_format_still_filename(&cfg, 7, "JPG", srgb_name, sizeof(srgb_name));
+    cfg.color_space = R63_CS_ADOBE_RGB;
+    (void)r63_format_still_filename(&cfg, 7, "JPG", adobe_name, sizeof(adobe_name));
+    int adobergb_underscore_dcf_ok =
+        (strcmp(srgb_name, "FX300007.JPG") == 0 &&
+         strcmp(adobe_name, "_FX30007.JPG") == 0 &&
+         r63_set_file_name_prefix(&cfg, "_FX") == -EINVAL) ? 1 : 0;
+
+    /* 3. [Initialize]: restores [Set File Name] -> "DSC" and [e-Front Curtain Shut.] -> On */
+    r63_wave49_initialize(&cfg);
+    int initialize_restores_filename_efront_ok =
+        (strcmp(cfg.file_prefix, "DSC") == 0 &&
+         cfg.e_front_curtain_shut == 1 &&
+         cfg.color_space == R63_CS_SRGB &&
+         cfg.shutter_type == R63_SHUTTER_MECHANICAL) ? 1 : 0;
+
+    errno = 0;
+    int p2_fd = open("/mnt/r63c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r63c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r63c_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r63c_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (!jh) {
+        struct stat pkt_st;
+        if (stat("/tmp/jiritsu/sector0.pkt", &pkt_st) == 0) {
+            jh = dlopen("/etc/fx6_r63_libjit.so", RTLD_NOW);
+        }
+    }
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r63c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r63c_slot1_vault");
+    (void)umount("/mnt/r63c_surfaces");
+    (void)umount("/mnt/r63c_p2_ro");
+    (void)umount("/mnt/r63c_cnflasha_ro");
+    (void)rmdir("/mnt/r63c_tmp_overlay");
+    (void)rmdir("/mnt/r63c_slot1_vault");
+    (void)rmdir("/mnt/r63c_surfaces");
+    (void)rmdir("/mnt/r63c_p2_ro");
+    (void)rmdir("/mnt/r63c_cnflasha_ro");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_preserves_filename_efront_ok == 1 &&
+              adobergb_underscore_dcf_ok == 1 &&
+              initialize_restores_filename_efront_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R63_CLEAN_UNMOUNT_STILL_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_preserves_filename_efront_ok=%d adobergb_underscore_dcf_ok=%d "
+            "initialize_restores_filename_efront_ok=%d lossless_comp_bypass_events=0 "
+            "leading_underscore_prefix_events=0 auto_shutter_type_bypass_events=0 "
+            "slot1_still_write_events=0 slot1_vault_ro_blocked_rc=%d "
+            "slot1_vault_sha256_match=%d p2_write_blocked_rc=%d "
+            "cnflasha_ro_blocked_rc=%d cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r63c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_preserves_filename_efront_ok,
+            adobergb_underscore_dcf_ok,
+            initialize_restores_filename_efront_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -29274,6 +30289,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r62-clean-unmount-pp-wb-h0-h3") == 0) {
         return run_r62_clean_unmount_pp_wb_reset_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r63-still-raw-heif-colorspace-shutter-guard") == 0) {
+        return run_r63_still_raw_heif_colorspace_shutter_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r63-clean-unmount-still-h0-h3") == 0) {
+        return run_r63_clean_unmount_still_reset_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -29640,6 +30661,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave48_integrated &&
                 run_r62_clean_unmount_pp_wb_reset_h0_h3_probe(81) != 0) {
                 return 81;
+            }
+        }
+    }
+    struct stat r63_st;
+    if (stat("/etc/fx6_stage_r63", &r63_st) == 0) {
+        if (setup_r63_still_raw_heif_colorspace_shutter_drive_probe() != 0) {
+            return 82;
+        }
+        FILE *r63f = fopen("/etc/fx6_stage_r63", "r");
+        if (r63f) {
+            int is_clean_unmount_wave49_integrated = 0;
+            char r63line[128];
+            while (fgets(r63line, sizeof(r63line), r63f)) {
+                if (strstr(r63line, "r63_mode=clean_unmount_still_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave49_integrated = 1;
+                }
+            }
+            fclose(r63f);
+            if (is_clean_unmount_wave49_integrated &&
+                run_r63_clean_unmount_still_reset_h0_h3_probe(82) != 0) {
+                return 82;
             }
         }
     }

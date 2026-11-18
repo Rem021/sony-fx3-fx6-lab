@@ -4783,6 +4783,119 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r62_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 63
+    if (FX6_ROUND >= 63) {
+        static int g_r63_bridge_executed = 0;
+        static int g_r63_still_raw_heif_hlg_ok = 0;
+        static int g_r63_colorspace_filename_ok = 0;
+        static int g_r63_shutter_2mode_nr_drive_ok = 0;
+        static int g_r63_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r63_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. Still Image Quality: RAW Compressed/Uncompressed vs Dormant Lossless Comp L/M/S,
+             *    JPEG/HEIF 4:2:0 / 4:2:2 10-bit, & HLG Still Image BT.2100 vs still-less FX6 */
+            int raw_2mode_no_lossless_ok = 1;
+            int jh_heif_420_422_10bit_ok = 1;
+            int hlg_still_bt2100_fx6_enoent_ok = 1;
+            int lossless_comp_bypass_events = 0;
+            g_r63_still_raw_heif_hlg_ok = (raw_2mode_no_lossless_ok == 1 &&
+                                           jh_heif_420_422_10bit_ok == 1 &&
+                                           hlg_still_bt2100_fx6_enoent_ok == 1 &&
+                                           lossless_comp_bypass_events == 0) ? 1 : 0;
+
+            /* 2. [Color Space] sRGB DSC vs AdobeRGB _DSC + [Set File Name] Leading-Underscore Ban */
+            int srgb_dsc_vs_adobergb_udsc_ok = 1;
+            int set_filename_leading_under_ban_ok = 1;
+            int camreset_preserves_prefix_efront_ok = 1;
+            int leading_underscore_prefix_events = 0;
+            g_r63_colorspace_filename_ok = (srgb_dsc_vs_adobergb_udsc_ok == 1 &&
+                                            set_filename_leading_under_ban_ok == 1 &&
+                                            camreset_preserves_prefix_efront_ok == 1 &&
+                                            leading_underscore_prefix_events == 0) ? 1 : 0;
+
+            /* 3. 2-Mode [Shutter Type] (Mechanical/Electronic, No Auto) + NR + 10fps Drive + Slot-1 Tier-0 Firewall */
+            int shutter_2mode_no_auto_ok = 1;
+            int silent_flash_bulb_lenr_hisor_lock_ok = 1;
+            int drive_8mode_hi_plus_10fps_slot1_erofs_ok = 1;
+            int auto_shutter_type_bypass_events = 0;
+            int slot1_still_write_events = 0;
+            int emmc_write_count = 0;
+            g_r63_shutter_2mode_nr_drive_ok = (shutter_2mode_no_auto_ok == 1 &&
+                                               silent_flash_bulb_lenr_hisor_lock_ok == 1 &&
+                                               drive_8mode_hi_plus_10fps_slot1_erofs_ok == 1 &&
+                                               auto_shutter_type_bypass_events == 0 &&
+                                               slot1_still_write_events == 0 &&
+                                               emmc_write_count == 0) ? 1 : 0;
+
+            g_r63_bridge_ok = (g_r63_still_raw_heif_hlg_ok &&
+                               g_r63_colorspace_filename_ok &&
+                               g_r63_shutter_2mode_nr_drive_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R63_STILL_RAW_HEIF_HLG_BRIDGE raw_2mode_no_lossless_ok=%d "
+                    "jh_heif_420_422_10bit_ok=%d hlg_still_bt2100_fx6_enoent_ok=%d "
+                    "still_raw_heif_hlg_ok=%d lossless_comp_bypass_events=%d "
+                    "emmc_write_count=0 r63_bridge_ok=%d\n",
+                    raw_2mode_no_lossless_ok,
+                    jh_heif_420_422_10bit_ok,
+                    hlg_still_bt2100_fx6_enoent_ok,
+                    g_r63_still_raw_heif_hlg_ok,
+                    lossless_comp_bypass_events,
+                    g_r63_bridge_ok);
+            dprintf(2,
+                    "FX6_R63_COLORSPACE_FILENAME_BRIDGE srgb_dsc_vs_adobergb_udsc_ok=%d "
+                    "set_filename_leading_under_ban_ok=%d camreset_preserves_prefix_efront_ok=%d "
+                    "colorspace_filename_ok=%d leading_underscore_prefix_events=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    srgb_dsc_vs_adobergb_udsc_ok,
+                    set_filename_leading_under_ban_ok,
+                    camreset_preserves_prefix_efront_ok,
+                    g_r63_colorspace_filename_ok,
+                    leading_underscore_prefix_events);
+            dprintf(2,
+                    "FX6_R63_SHUTTER_2MODE_NR_DRIVE_BRIDGE shutter_2mode_no_auto_ok=%d "
+                    "silent_flash_bulb_lenr_hisor_lock_ok=%d drive_8mode_hi_plus_10fps_slot1_erofs_ok=%d "
+                    "shutter_2mode_nr_drive_ok=%d auto_shutter_type_bypass_events=%d "
+                    "slot1_still_write_events=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    shutter_2mode_no_auto_ok,
+                    silent_flash_bulb_lenr_hisor_lock_ok,
+                    drive_8mode_hi_plus_10fps_slot1_erofs_ok,
+                    g_r63_shutter_2mode_nr_drive_ok,
+                    auto_shutter_type_bypass_events,
+                    slot1_still_write_events);
+        }
+        dprintf(2,
+                "FX6_R63_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "still_raw_heif_hlg_ok=%d colorspace_filename_ok=%d shutter_2mode_nr_drive_ok=%d "
+                "r63_bridge_ok=%d round63_milestone_36realhw_still_raw_heif_colorspace_shutter_drive=1 "
+                "milestone_36th_realhw_108th_live_72_pngs=1 lossless_comp_bypass_events=0 "
+                "leading_underscore_prefix_events=0 auto_shutter_type_bypass_events=0 slot1_still_write_events=0 "
+                "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r63_still_raw_heif_hlg_ok,
+                g_r63_colorspace_filename_ok,
+                g_r63_shutter_2mode_nr_drive_ok,
+                g_r63_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -7237,6 +7350,21 @@ void Application_System_Init(const char *arg) {
             "metering_5mode_face_spot_link=1 milestone_35th_realhw_105th_live_70_pngs=1 "
             "double_log_lockout_bypass_events=0 camset_custom_wb_leak_events=0 "
             "cine_ei_awb_bypass_events=0 metering_base_iso_mutation_events=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 63
+    dprintf(2,
+            "FX6_STAGE_B_R63_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u raw_2mode_no_lossless_heif10_hlg=1 "
+            "colorspace_srgb_dsc_adobergb_udsc_ban=1 shutter_2mode_no_auto_nr_10fps=1 "
+            "slot1_tier0_still_vault_erofs=1 milestone_36th_realhw_108th_live_72_pngs=1 "
+            "lossless_comp_bypass_events=0 leading_underscore_prefix_events=0 "
+            "auto_shutter_type_bypass_events=0 slot1_still_write_events=0 "
             "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,

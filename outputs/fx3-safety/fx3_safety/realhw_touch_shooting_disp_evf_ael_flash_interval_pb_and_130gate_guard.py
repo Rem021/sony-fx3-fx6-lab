@@ -1162,6 +1162,9 @@ def audit_phase299_donor_contracts(
     missing_paths: List[str] = []
     resolved_paths: Dict[str, Path] = {}
     for key, (_family, rel, _size, _sha, _tokens, _marker) in specs.items():
+        if resolved_work is None:
+            missing_paths.append(rel)
+            continue
         p = resolved_work / rel
         if not p.exists():
             missing_paths.append(rel)

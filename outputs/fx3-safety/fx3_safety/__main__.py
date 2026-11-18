@@ -237,6 +237,11 @@ from .realhw_rec_media_autoswitch_proxy_cloud_mymenu_and_140gate_guard import (
     evaluate_g139_rec_media_autoswitch_proxy_vault_guard,
     evaluate_g140_creators_cloud_zerorf_mymenu42_guard,
 )
+from .realhw_ftp_ftpes_customwb_af_focusmap_marker_and_142gate_guard import (
+    evaluate_142gate_preflight,
+    evaluate_g141_ftp_ftpes_avf_vault_and_customwb_cineei_guard,
+    evaluate_g142_movie_af_focusmap_marker_peaking_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -4462,6 +4467,95 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_140.add_argument("--json", action="store_true", help="Emit structured JSON report")
     p_140.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 170. verify-ftp-ftpes-avf-vault-customwb-guard
+    p_g141 = sub.add_parser(
+        "verify-ftp-ftpes-avf-vault-customwb-guard",
+        aliases=["verify-g141-ftp-ftpes-customwb"],
+        help="Verify Gate G141: FX3 9-slot FTP/FTPES (Passive-only, zero SFTP/Active/dormant Transfer JPEG/HEIF Size EOPNOTSUPP=95), Slot-1 AVF_INFO EROFS=30 Vault & O_RDONLY cacert.pem, Zero-RF USB-LAN bypass lock, and White Balance (Custom 1..3 Initialize-only, 0x0220 error, Cine EI Auto lockout, Shutter AWB Lock & Shockless WB vs FX6 ATW/Memory A..H)",
+    )
+    p_g141.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g141.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g141.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g141.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g141.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 171. verify-movie-af-focusmap-marker-peaking-guard
+    p_g142 = sub.add_parser(
+        "verify-movie-af-focusmap-marker-peaking-guard",
+        aliases=["verify-g142-movie-af-focusmap-marker"],
+        help="Verify Gate G142: Movie AF Transition Speed 1..7 & Subj. Shift Sens. 1..5 (BOTH FX3 & FX6, rejecting 6/7 EINVAL=22) + AF Assist, External Monitor & Control Focus Map (>=150fps block vs zero on-body FX3 menu EOPNOTSUPP=95), and Initialize-only 15-Aspect Marker (80%%/90%% Safety Zone) + 4-Color Peaking (never HDMI) vs FX6 User Box",
+    )
+    p_g142.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g142.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g142.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g142.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g142.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 172. verify-142-gates
+    p_142 = sub.add_parser(
+        "verify-142-gates",
+        help="Run Phase 319 Wave-61 Unified 142-Gate Master Safety Preflight Engine (G01..G142)",
+    )
+    p_142.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_142.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_142.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G142 gates can be rehearsed offline",
+    )
+    p_142.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_142.add_argument("--summary", action="store_true", help="Emit concise summary output")
 
     args = parser.parse_args(argv)
 
@@ -9574,6 +9668,170 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_140_gates_verified if args.dry_run_simulated else report.offline_137_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-ftp-ftpes-avf-vault-customwb-guard",
+        "verify-g141-ftp-ftpes-customwb",
+    ):
+        verdict, res = evaluate_g141_ftp_ftpes_avf_vault_and_customwb_cineei_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.ftp_ftpes_customwb_vault_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_ftp_function": guard["effective_ftp_function"],
+                    "ftp_server_slot": guard["ftp_server_slot"],
+                    "ftp_protocol": guard["ftp_protocol"],
+                    "ftp_transfer_mode": guard["ftp_transfer_mode"],
+                    "slot1_avf_info_firewall_blocked": guard["slot1_avf_info_firewall_blocked"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "effective_airplane_mode": guard["effective_airplane_mode"],
+                    "effective_usblan_tethering": guard["effective_usblan_tethering"],
+                    "zero_rf_and_usblan_isolated": guard["zero_rf_and_usblan_isolated"],
+                    "wired_usblan_ftp_packets": guard["wired_usblan_ftp_packets"],
+                    "effective_white_balance": guard["effective_white_balance"],
+                    "effective_shutter_awb_lock": guard["effective_shutter_awb_lock"],
+                    "effective_shockless_wb": guard["effective_shockless_wb"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.ftp_ftpes_customwb_vault_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} ftp={guard['effective_ftp_function']} "
+                f"slot={guard['ftp_server_slot']} proto={guard['ftp_protocol']} "
+                f"usblan={guard['effective_usblan_tethering']} "
+                f"zero_rf_usblan={guard['zero_rf_and_usblan_isolated']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"wb={guard['effective_white_balance']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-movie-af-focusmap-marker-peaking-guard",
+        "verify-g142-movie-af-focusmap-marker",
+    ):
+        verdict, res = evaluate_g142_movie_af_focusmap_marker_peaking_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.movie_af_focusmap_marker_peaking_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_af_transition_speed": guard["effective_af_transition_speed"],
+                    "effective_af_subj_shift_sensitivity": guard["effective_af_subj_shift_sensitivity"],
+                    "effective_af_assist": guard["effective_af_assist"],
+                    "fx3_onbody_focus_map_menu_present": guard["fx3_onbody_focus_map_menu_present"],
+                    "external_monitor_control_focus_map_active": guard["external_monitor_control_focus_map_active"],
+                    "effective_marker_display": guard["effective_marker_display"],
+                    "effective_aspect_marker": guard["effective_aspect_marker"],
+                    "exact_15_active_aspect_ratios_verified": guard["exact_15_active_aspect_ratios_verified"],
+                    "effective_peaking_display": guard["effective_peaking_display"],
+                    "effective_peaking_color": guard["effective_peaking_color"],
+                    "marker_hdmi_output": guard["marker_hdmi_output"],
+                    "peaking_hdmi_output": guard["peaking_hdmi_output"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.movie_af_focusmap_marker_peaking_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} af_speed={guard['effective_af_transition_speed']} "
+                f"af_sens={guard['effective_af_subj_shift_sensitivity']} "
+                f"af_assist={guard['effective_af_assist']} "
+                f"onbody_fm={guard['fx3_onbody_focus_map_menu_present']} "
+                f"aspect={guard['effective_aspect_marker']} "
+                f"peaking={guard['effective_peaking_color']} "
+                f"hdmi_marker={guard['marker_hdmi_output']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-142-gates":
+        report = evaluate_142gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "schema_version": report.schema_version,
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g141_status": report.g141_result["status"],
+                    "g142_status": report.g142_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/142 "
+                f"g141_to_g142_all_passed={report.g141_to_g142_all_passed} "
+                f"all_142_gates_verified={report.all_142_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_142_gates_verified if args.dry_run_simulated else report.offline_139_gates_verified
         return 0 if ok else 1
 
     return 2

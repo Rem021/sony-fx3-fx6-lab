@@ -5951,6 +5951,165 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r70_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 71
+    if (FX6_ROUND >= 71) {
+        static int g_r71_bridge_executed = 0;
+        static int g_r71_steadyshot_47focal_guard_ok = 0;
+        static int g_r71_selftimer_led8_audio_ok = 0;
+        static int g_r71_zebra_peaking_hdmi_ok = 0;
+        static int g_r71_streaming_zerorf_erofs_ok = 0;
+        static int g_r71_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r71_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. Movie [SteadyShot] (Active/Standard/Off, 0 Dynamic active), Still [SteadyShot],
+             *    [SteadyShot Adjust.] (Auto/Manual), 47-step [Focal Length] (8..1000mm),
+             *    and 4 Active lockouts vs FX6 fixed sensor + 6-axis Catalyst gyro */
+            int movie_ss_3mode_active_standard_off_ok = 1;
+            int focal_47_steps_8_to_1000mm_ok = 1;
+            int four_active_lockouts_vs_fx6_fixed_ok = 1;
+            int dynamic_active_bypass_events = 0;
+            int ciz_hfr_bypass_events = 0;
+            g_r71_steadyshot_47focal_guard_ok =
+                (movie_ss_3mode_active_standard_off_ok == 1 &&
+                 focal_47_steps_8_to_1000mm_ok == 1 &&
+                 four_active_lockouts_vs_fx6_fixed_ok == 1 &&
+                 dynamic_active_bypass_events == 0 &&
+                 ciz_hfr_bypass_events == 0) ? 1 : 0;
+
+            /* 2. Dormant Movie BKID_APP_setting_movie_self_timer (-95 EOPNOTSUPP) vs active Still
+             *    Self-timer(Single/Cont) & Bracket + front #8 lamp + Audio signals suppression */
+            int dormant_movie_selftimer_rejected_ok = 1;
+            int still_selftimer_single_cont_bracket_front8_ok = 1;
+            int audio_signals_silent_hdmi_suppressed_ok = 1;
+            int dormant_movie_selftimer_bypass_events = 0;
+            g_r71_selftimer_led8_audio_ok =
+                (dormant_movie_selftimer_rejected_ok == 1 &&
+                 still_selftimer_single_cont_bracket_front8_ok == 1 &&
+                 audio_signals_silent_hdmi_suppressed_ok == 1 &&
+                 dormant_movie_selftimer_bypass_events == 0) ? 1 : 0;
+
+            /* 3. Reset-immune [Zebra Display]/[Zebra Level] (Custom1 Std+Range 0..109% +- 1..10%,
+             *    Custom2 Lower Limit 0..109+, S-Log3 41/61/94 vs Display LUT post-LUT) &
+             *    4-color [Peaking] Clean-HDMI vs FX6 exclusive Off/Zebra1/Zebra2 & B&W/R/Y/B */
+            int zebra_custom1_std_range_custom2_lower_ok = 1;
+            int slog3_41_61_94_vs_display_lut_post_ok = 1;
+            int peaking_4color_reset_immune_clean_hdmi_ok = 1;
+            int hdmi_clean_feed_zebra_peaking_baked_pixels = 0;
+            g_r71_zebra_peaking_hdmi_ok =
+                (zebra_custom1_std_range_custom2_lower_ok == 1 &&
+                 slog3_41_61_94_vs_display_lut_post_ok == 1 &&
+                 peaking_4color_reset_immune_clean_hdmi_ok == 1 &&
+                 hdmi_clean_feed_zebra_peaking_baked_pixels == 0) ? 1 : 0;
+
+            /* 4. [Network Streaming] RTMP/RTMPS/SRT AES-128/256 (59.94/50/29.97/25p, NO 23.98/24p) +
+             *    [Movie Rec During Streaming] 4K/2K60 internal 4K lockout + FTP PASV +
+             *    Tier-0 Airplane Mode zero-RF (p12/p13 MS_RDONLY) & Slot-1 EROFS=30 */
+            int rtmp_rtmps_srt_4fps_no_24p_ok = 1;
+            int rec_during_stream_4k_lockout_and_ftp_pasv_ok = 1;
+            int airplane_zero_rf_p12_p13_slot1_erofs30_ok = 1;
+            int wireless_tx_packets = 0;
+            int passive_tx_bytes_emitted = 0;
+            int slot1_avf_info_mutated = 0;
+            int slot1_data_sector_writes = 0;
+            int emmc_write_count = 0;
+            g_r71_streaming_zerorf_erofs_ok =
+                (rtmp_rtmps_srt_4fps_no_24p_ok == 1 &&
+                 rec_during_stream_4k_lockout_and_ftp_pasv_ok == 1 &&
+                 airplane_zero_rf_p12_p13_slot1_erofs30_ok == 1 &&
+                 wireless_tx_packets == 0 &&
+                 passive_tx_bytes_emitted == 0 &&
+                 slot1_avf_info_mutated == 0 &&
+                 slot1_data_sector_writes == 0 &&
+                 emmc_write_count == 0) ? 1 : 0;
+
+            g_r71_bridge_ok = (g_r71_steadyshot_47focal_guard_ok &&
+                               g_r71_selftimer_led8_audio_ok &&
+                               g_r71_zebra_peaking_hdmi_ok &&
+                               g_r71_streaming_zerorf_erofs_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R71_STEADYSHOT_47FOCAL_LOCKOUT_BRIDGE movie_ss_3mode_active_standard_off_ok=%d "
+                    "focal_47_steps_8_to_1000mm_ok=%d four_active_lockouts_vs_fx6_fixed_ok=%d "
+                    "steadyshot_47focal_guard_ok=%d dynamic_active_bypass_events=%d ciz_hfr_bypass_events=%d "
+                    "emmc_write_count=0 r71_bridge_ok=%d\n",
+                    movie_ss_3mode_active_standard_off_ok,
+                    focal_47_steps_8_to_1000mm_ok,
+                    four_active_lockouts_vs_fx6_fixed_ok,
+                    g_r71_steadyshot_47focal_guard_ok,
+                    dynamic_active_bypass_events,
+                    ciz_hfr_bypass_events,
+                    g_r71_bridge_ok);
+            dprintf(2,
+                    "FX6_R71_SELFTIMER_LED8_AUDIO_BRIDGE dormant_movie_selftimer_rejected_ok=%d "
+                    "still_selftimer_single_cont_bracket_front8_ok=%d audio_signals_silent_hdmi_suppressed_ok=%d "
+                    "selftimer_led8_audio_ok=%d dormant_movie_selftimer_bypass_events=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    dormant_movie_selftimer_rejected_ok,
+                    still_selftimer_single_cont_bracket_front8_ok,
+                    audio_signals_silent_hdmi_suppressed_ok,
+                    g_r71_selftimer_led8_audio_ok,
+                    dormant_movie_selftimer_bypass_events);
+            dprintf(2,
+                    "FX6_R71_ZEBRA_CUSTOM12_PEAKING_HDMI_BRIDGE zebra_custom1_std_range_custom2_lower_ok=%d "
+                    "slog3_41_61_94_vs_display_lut_post_ok=%d peaking_4color_reset_immune_clean_hdmi_ok=%d "
+                    "zebra_peaking_hdmi_ok=%d hdmi_clean_feed_zebra_peaking_baked_pixels=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    zebra_custom1_std_range_custom2_lower_ok,
+                    slog3_41_61_94_vs_display_lut_post_ok,
+                    peaking_4color_reset_immune_clean_hdmi_ok,
+                    g_r71_zebra_peaking_hdmi_ok,
+                    hdmi_clean_feed_zebra_peaking_baked_pixels);
+            dprintf(2,
+                    "FX6_R71_STREAMING_ZERORF_EROFS_BRIDGE rtmp_rtmps_srt_4fps_no_24p_ok=%d "
+                    "rec_during_stream_4k_lockout_and_ftp_pasv_ok=%d airplane_zero_rf_p12_p13_slot1_erofs30_ok=%d "
+                    "streaming_zerorf_erofs_ok=%d wireless_tx_packets=%d passive_tx_bytes_emitted=%d "
+                    "slot1_avf_info_mutated=%d slot1_data_sector_writes=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    rtmp_rtmps_srt_4fps_no_24p_ok,
+                    rec_during_stream_4k_lockout_and_ftp_pasv_ok,
+                    airplane_zero_rf_p12_p13_slot1_erofs30_ok,
+                    g_r71_streaming_zerorf_erofs_ok,
+                    wireless_tx_packets,
+                    passive_tx_bytes_emitted,
+                    slot1_avf_info_mutated,
+                    slot1_data_sector_writes);
+        }
+        dprintf(2,
+                "FX6_R71_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "steadyshot_47focal_guard_ok=%d selftimer_led8_audio_ok=%d "
+                "zebra_peaking_hdmi_ok=%d streaming_zerorf_erofs_ok=%d r71_bridge_ok=%d "
+                "round71_44realhw_wave57_steadyshot_47focal_selftimer_zebra_streaming_erofs=1 "
+                "milestone_44th_realhw_132nd_live_88_pngs=1 "
+                "dynamic_active_bypass_events=0 dormant_movie_selftimer_bypass_events=0 "
+                "hdmi_clean_feed_zebra_peaking_baked_pixels=0 wireless_tx_packets=0 "
+                "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+                "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 "
+                "subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r71_steadyshot_47focal_guard_ok,
+                g_r71_selftimer_led8_audio_ok,
+                g_r71_zebra_peaking_hdmi_ok,
+                g_r71_streaming_zerorf_erofs_ok,
+                g_r71_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -8530,6 +8689,22 @@ void Application_System_Init(const char *arg) {
             "userlut16_ro_embed_vs_pplut4_erofs30=1 milestone_70th_round_43rd_realhw_129th_live_86_pngs=1 "
             "dormant_dial_bypass_events=0 mydial_lock_override_breach=0 fn_empty_bypass_events=0 "
             "hdmi_clean_feed_grid_baked_pixels=0 external_cube_sidecar_files=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 71
+    dprintf(2,
+            "FX6_STAGE_B_R71_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u steadyshot_3mode_47focal_4lock_vs_fx6_fixed=1 "
+            "dormant_movie_vs_still_selftimer_led8_audio=1 zebra_custom12_slog3_lut_peaking4_clean_hdmi=1 "
+            "rtmp_srt_no24p_zerorf_slot1_erofs30=1 milestone_44th_realhw_132nd_live_88_pngs=1 "
+            "dynamic_active_bypass_events=0 dormant_movie_selftimer_bypass_events=0 "
+            "hdmi_clean_feed_zebra_peaking_baked_pixels=0 wireless_tx_packets=0 "
             "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
             "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",

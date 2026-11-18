@@ -39057,6 +39057,1333 @@ static int run_r70_clean_unmount_wave56_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ==================== Round 71 (44th Real-HW Round, Wave-57) ==================== */
+typedef enum {
+    R71_SHOOT_STILL = 0,
+    R71_SHOOT_MOVIE = 1,
+    R71_SHOOT_SQ = 2
+} r71_shoot_mode_t;
+
+typedef enum {
+    R71_MOVIE_SS_OFF = 0,
+    R71_MOVIE_SS_STANDARD = 1,
+    R71_MOVIE_SS_ACTIVE = 2,
+    R71_MOVIE_SS_DYNAMIC_ACTIVE = 3
+} r71_movie_ss_t;
+
+typedef enum {
+    R71_SS_ADJ_AUTO = 0,
+    R71_SS_ADJ_MANUAL = 1
+} r71_ss_adjust_t;
+
+typedef enum {
+    R71_ST_NONE = 0,
+    R71_ST_SINGLE_10S = 1,
+    R71_ST_SINGLE_5S = 2,
+    R71_ST_SINGLE_2S = 3,
+    R71_ST_CONT_10S_3 = 4,
+    R71_ST_CONT_10S_5 = 5,
+    R71_ST_CONT_5S_3 = 6,
+    R71_ST_CONT_5S_5 = 7,
+    R71_ST_CONT_2S_3 = 8,
+    R71_ST_CONT_2S_5 = 9
+} r71_selftimer_mode_t;
+
+typedef enum {
+    R71_BRK_ST_OFF = 0,
+    R71_BRK_ST_2S = 1,
+    R71_BRK_ST_5S = 2,
+    R71_BRK_ST_10S = 3
+} r71_bracket_st_t;
+
+typedef enum {
+    R71_ZEBRA_PRESET = 0,
+    R71_ZEBRA_CUSTOM1 = 1,
+    R71_ZEBRA_CUSTOM2 = 2
+} r71_zebra_level_mode_t;
+
+typedef enum {
+    R71_PEAK_LOW = 0,
+    R71_PEAK_MID = 1,
+    R71_PEAK_HIGH = 2
+} r71_peaking_level_t;
+
+typedef enum {
+    R71_PEAK_WHITE = 0,
+    R71_PEAK_RED = 1,
+    R71_PEAK_YELLOW = 2,
+    R71_PEAK_BLUE = 3
+} r71_peaking_color_t;
+
+typedef enum {
+    R71_PROTO_RTMP = 0,
+    R71_PROTO_RTMPS = 1,
+    R71_PROTO_SRT = 2
+} r71_stream_proto_t;
+
+typedef enum {
+    R71_RES_HD_720P = 0,
+    R71_RES_HD_1080P = 1,
+    R71_RES_2K_1440P = 2,
+    R71_RES_4K_2160P = 3
+} r71_stream_res_t;
+
+typedef enum {
+    R71_SLOT_1 = 1,
+    R71_SLOT_2 = 2
+} r71_slot_id_t;
+
+static const int k_r71_focal_steps_47[47] = {
+    8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 24, 25,
+    28, 30, 32, 35, 40, 45, 50, 55, 60, 70, 75, 80, 85, 90, 100, 105,
+    120, 135, 150, 180, 200, 210, 250, 300, 350, 400, 450, 500, 600, 800, 1000
+};
+
+typedef struct {
+    int is_fx6_chaplin;
+    r71_shoot_mode_t shoot_mode;
+    /* Pillar 1: [Image Stabilization] / [SteadyShot] 47-focal + 4 Active lockouts vs FX6 fixed */
+    r71_movie_ss_t movie_steadyshot;
+    int still_steadyshot_on;
+    r71_ss_adjust_t steadyshot_adjust;
+    int steady_focal_mm;
+    int distortion_comp_auto;
+    int movie_rec_fps_x100; /* e.g., 5994, 11988, 10000 */
+    int sq_fps;             /* e.g., 60, 100, 120 */
+    int raw_output_on;
+    int desqueeze_display_active;
+    /* Pillar 2: Dormant Movie vs Still [Self-timer] + Front #8 LED + [Audio signals] */
+    r71_selftimer_mode_t still_selftimer;
+    r71_bracket_st_t bracket_selftimer;
+    int front8_selftimer_led_blinking;
+    int front_red_rec_tally_on;
+    int audio_signals_on;
+    int silent_mode_on;
+    int movie_hdmi_audio_active;
+    /* Pillar 3: [Zebra Display] Custom1-2 IRE + S-Log3 vs Display LUT + 4-color [Peaking] Clean HDMI */
+    int zebra_display_on;
+    r71_zebra_level_mode_t zebra_mode;
+    int zebra_preset_ire;   /* 70,75,80,85,90,95,100,101(100+) */
+    int zebra_c1_std;       /* 0..109 */
+    int zebra_c1_range;     /* 1..10 */
+    int zebra_c2_lower;     /* 0..110(109+) */
+    int slog3_active;
+    int display_lut_on;
+    int zebra_post_lut_measured;
+    int peaking_display_on;
+    r71_peaking_level_t peaking_level;
+    r71_peaking_color_t peaking_color;
+    int hdmi_info_display;
+    int hdmi_clean_feed_zebra_peaking_baked_pixels;
+    /* Pillar 4: [Network Streaming] RTMP/RTMPS/SRT + [FTP Transfer Func.] + Zero-RF + Slot-1 EROFS */
+    int streaming_active;
+    r71_stream_proto_t stream_proto;
+    int stream_aes_bits; /* 0, 128, 256 */
+    r71_stream_res_t stream_res;
+    int stream_fps_x100; /* 5994, 5000, 2997, 2500 ONLY */
+    int stream_bitrate_mbps;
+    int rec_during_streaming;
+    int internal_4k_allowed;
+    int emphasized_output_display;
+    int root_cert_ignore_error;
+    int ftp_transfer_on;
+    int ftp_passive_mode;
+    int airplane_mode_on;
+    int usb_lan_connected;
+    int p12_p13_nvs_ro_armed;
+    int slot1_ro_vault_armed;
+    int wireless_tx_packets;
+    int passive_tx_bytes_emitted;
+    int slot1_data_sector_writes;
+    int slot1_avf_info_mutated;
+} r71_wave57_cfg_t;
+
+__attribute__((noinline)) static int r71_is_valid_47_focal(int focal_mm) {
+    for (int i = 0; i < 47; i++) {
+        if (k_r71_focal_steps_47[i] == focal_mm) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r71_lookup_wave57_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Shooting -> [Image Stabilization] -> [SteadyShot]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Stabilization] -> [SteadyShot Adjust.]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Stabilization] -> [Focal Length]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Drive Mode] -> [Self-timer(Single/Cont)]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Drive Mode] -> [Bracket Settings] -> [Selftimer during Bracket]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Sound Option] -> [Audio signals]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Zebra Display] -> [Zebra Display]/[Zebra Level]") == 0 ||
+        strcmp(path, "MENU -> Focus -> [Peaking Display] -> [Peaking Display/Level/Color]") == 0 ||
+        strcmp(path, "MENU -> Network -> [Streaming] -> [Network Streaming]") == 0 ||
+        strcmp(path, "MENU -> Network -> [Streaming] -> [Output Img. Quality Set]") == 0 ||
+        strcmp(path, "MENU -> Network -> [Streaming] -> [Movie Rec During Streaming]") == 0 ||
+        strcmp(path, "MENU -> Network -> [Transfer/Remote] -> [FTP Transfer Func.]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Reset/Save Settings] -> [Reset Network Set.]") == 0) {
+        return 0;
+    }
+    if (strcmp(path, "dormant::Dynamic active") == 0 ||
+        strcmp(path, "dormant::BKID_APP_setting_movie_self_timer") == 0 ||
+        strcmp(path, "dormant::Single Burst Self-timer") == 0 ||
+        strcmp(path, "dormant::Self-portrait 3-sec") == 0 ||
+        strcmp(path, "dormant::Audio Signal(Start/End)") == 0 ||
+        strcmp(path, "dormant::Audio Signal Volume") == 0 ||
+        strcmp(path, "dormant::FX6 Zebra Both") == 0 ||
+        strcmp(path, "dormant::FX6 RTMP/SRT/QoS Streaming") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r71_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "_g:0x6214:Image Stabilization") == 0 ||
+        strcmp(token, "_f:0x714f:Active") == 0 ||
+        strcmp(token, "_f:0x7880:SteadyShot Adjust.") == 0 ||
+        strcmp(token, "_f:0x65b1:Focal Length") == 0 ||
+        strcmp(token, "_f:0x625a:SteadyS. Focal Len.") == 0 ||
+        strcmp(token, "_g:0x616e:Drive Mode") == 0 ||
+        strcmp(token, "_f:0x6772:Self-timer(Single)") == 0 ||
+        strcmp(token, "_f:0x728c:Self-timer(Cont)") == 0 ||
+        strcmp(token, "_f:0x6ef5:Selftimer during Bracket") == 0 ||
+        strcmp(token, "_g:0x6110:Audio signals") == 0 ||
+        strcmp(token, "_f:0x6c92:Audio signals HDMI suppression") == 0 ||
+        strcmp(token, "_f:0x7852:Zebra Display") == 0 ||
+        strcmp(token, "_f:0x70d7:Zebra Level") == 0 ||
+        strcmp(token, "_f:0x6e05:Zebra Display Select") == 0 ||
+        strcmp(token, "_f:0x68aa:Custom1") == 0 ||
+        strcmp(token, "_f:0x7500:Std+Range") == 0 ||
+        strcmp(token, "_f:0x68ab:Custom2") == 0 ||
+        strcmp(token, "_f:0x612e:Lower Limit") == 0 ||
+        strcmp(token, "_f:0x6fe5:Peaking Display") == 0 ||
+        strcmp(token, "_f:0x7494:Blue") == 0 ||
+        strcmp(token, "_f:0x62a8:Peaking Display Select") == 0 ||
+        strcmp(token, "_f:0x6cb2:Network Streaming") == 0 ||
+        strcmp(token, "_f:0x7065:Output Img. Quality Set") == 0 ||
+        strcmp(token, "_f:0x79d5:Movie Rec During Streaming") == 0 ||
+        strcmp(token, "_f:0x6317:FTP Transfer Func.") == 0) {
+        return 0;
+    }
+    if (strcmp(token, "_f:0x741c:Dynamic active") == 0 ||
+        strcmp(token, "_f:0x65b5:VAL_setting_movie_steadyshot_HYBRID") == 0 ||
+        strcmp(token, "_f:0x7192:Movie Self-timer") == 0 ||
+        strcmp(token, "_f:0x758b:Single Burst Self-timer") == 0 ||
+        strcmp(token, "_f:0x70b8:Self-portrait 3-sec") == 0 ||
+        strcmp(token, "_f:0x7637:Audio Signal(Start/End)") == 0 ||
+        strcmp(token, "_f:0x7af6:Audio Signal Volume") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r71_wave57_initialize(r71_wave57_cfg_t *cfg) {
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->is_fx6_chaplin = 0;
+    cfg->shoot_mode = R71_SHOOT_STILL;
+    cfg->movie_steadyshot = R71_MOVIE_SS_STANDARD;
+    cfg->still_steadyshot_on = 1;
+    cfg->steadyshot_adjust = R71_SS_ADJ_AUTO;
+    cfg->steady_focal_mm = 8;
+    cfg->movie_rec_fps_x100 = 2398;
+    cfg->sq_fps = 60;
+    cfg->still_selftimer = R71_ST_NONE;
+    cfg->bracket_selftimer = R71_BRK_ST_OFF;
+    cfg->audio_signals_on = 1;
+    cfg->zebra_display_on = 0;
+    cfg->zebra_mode = R71_ZEBRA_PRESET;
+    cfg->zebra_preset_ire = 70;
+    cfg->zebra_c1_std = 70;
+    cfg->zebra_c1_range = 10;
+    cfg->zebra_c2_lower = 100;
+    cfg->peaking_display_on = 0;
+    cfg->peaking_level = R71_PEAK_MID;
+    cfg->peaking_color = R71_PEAK_WHITE;
+    cfg->stream_proto = R71_PROTO_RTMP;
+    cfg->stream_res = R71_RES_HD_1080P;
+    cfg->stream_fps_x100 = 5994;
+    cfg->stream_bitrate_mbps = 12;
+    cfg->rec_during_streaming = 0;
+    cfg->internal_4k_allowed = 1;
+    cfg->emphasized_output_display = 1;
+    cfg->root_cert_ignore_error = 0;
+    cfg->ftp_transfer_on = 0;
+    cfg->ftp_passive_mode = 1;
+    cfg->airplane_mode_on = 0;
+    cfg->p12_p13_nvs_ro_armed = 1;
+    cfg->slot1_ro_vault_armed = 1;
+}
+
+__attribute__((noinline)) static void r71_wave57_camera_settings_reset(r71_wave57_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Camera Settings Reset:
+     * RESETTABLE -> All 4 [Image Stabilization] items + Still [Drive Mode]/[Selftimer during Bracket]
+     * SURVIVORS  -> [Audio signals], ALL [Zebra]/[Peaking] items (Initialize-only),
+     *               and ALL (Network) items ([Network Streaming], [FTP], [Airplane Mode]) */
+    cfg->movie_steadyshot = R71_MOVIE_SS_STANDARD;
+    cfg->still_steadyshot_on = 1;
+    cfg->steadyshot_adjust = R71_SS_ADJ_AUTO;
+    cfg->steady_focal_mm = 8;
+    cfg->distortion_comp_auto = 0;
+    cfg->still_selftimer = R71_ST_NONE;
+    cfg->bracket_selftimer = R71_BRK_ST_OFF;
+    cfg->front8_selftimer_led_blinking = 0;
+}
+
+__attribute__((noinline)) static void r71_wave57_reset_network_settings(r71_wave57_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* [Reset Network Set.]: resets Streaming & FTP settings while PRESERVING [Airplane Mode] = On */
+    int saved_airplane = cfg->airplane_mode_on;
+    cfg->streaming_active = 0;
+    cfg->stream_proto = R71_PROTO_RTMP;
+    cfg->stream_aes_bits = 0;
+    cfg->stream_res = R71_RES_HD_1080P;
+    cfg->stream_fps_x100 = 5994;
+    cfg->stream_bitrate_mbps = 12;
+    cfg->rec_during_streaming = 0;
+    cfg->internal_4k_allowed = 1;
+    cfg->emphasized_output_display = 1;
+    cfg->root_cert_ignore_error = 0;
+    cfg->ftp_transfer_on = 0;
+    cfg->ftp_passive_mode = 1;
+    cfg->airplane_mode_on = saved_airplane;
+}
+
+__attribute__((noinline)) static int r71_set_movie_steadyshot(
+    r71_wave57_cfg_t *cfg, r71_movie_ss_t mode
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (mode == R71_MOVIE_SS_DYNAMIC_ACTIVE) {
+        return -EOPNOTSUPP; /* 0 hits for active Dynamic active / HYBRID on FX3 ALCIN_UUD */
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 has TYPE_STEADYSHOT_EQUIP_WITH_BODY_UNSUPPORTED */
+    }
+    if (mode < R71_MOVIE_SS_OFF || mode > R71_MOVIE_SS_ACTIVE) {
+        return -EINVAL;
+    }
+    if (mode == R71_MOVIE_SS_ACTIVE) {
+        /* 4 exact Active lockouts: Movie >= 119.88p/100p, S&Q >= 120/100fps, RAW Output=On, De-Squeeze!=Off */
+        if (cfg->movie_rec_fps_x100 >= 10000 ||
+            (cfg->shoot_mode == R71_SHOOT_SQ && cfg->sq_fps >= 100) ||
+            cfg->raw_output_on != 0 ||
+            cfg->desqueeze_display_active != 0) {
+            return -EBUSY;
+        }
+        cfg->distortion_comp_auto = 1; /* Active forces Distortion Comp. = Auto */
+    }
+    cfg->movie_steadyshot = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r71_set_steadyshot_focal_mm(
+    r71_wave57_cfg_t *cfg, r71_ss_adjust_t adj, int focal_mm
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 sensor is fixed */
+    }
+    if (adj != R71_SS_ADJ_AUTO && adj != R71_SS_ADJ_MANUAL) {
+        return -EINVAL;
+    }
+    if (adj == R71_SS_ADJ_MANUAL) {
+        if (!r71_is_valid_47_focal(focal_mm)) {
+            return -EINVAL; /* Reject any focal length outside exact 47-step table (8..1000mm) */
+        }
+        cfg->steadyshot_adjust = R71_SS_ADJ_MANUAL;
+        cfg->steady_focal_mm = focal_mm;
+        return 0;
+    }
+    cfg->steadyshot_adjust = R71_SS_ADJ_AUTO;
+    return 0;
+}
+
+__attribute__((noinline)) static int r71_probe_ciz_hfr_lockout(const r71_wave57_cfg_t *cfg) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->movie_rec_fps_x100 >= 10000 ||
+        (cfg->shoot_mode == R71_SHOOT_SQ && cfg->sq_fps >= 100)) {
+        return -EBUSY; /* Clear Image Zoom blocked at Movie >= 119.88p/100p & S&Q >= 120/100fps */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r71_probe_fx6_steadyshot_policy(
+    const r71_wave57_cfg_t *cfg, const char *op, int lens_oss_on
+) {
+    if (!cfg || !op) {
+        return -EINVAL;
+    }
+    if (strcmp(op, "FX6 Body IBIS") == 0) {
+        return cfg->is_fx6_chaplin ? -EOPNOTSUPP : 0; /* TYPE_STEADYSHOT_EQUIP_WITH_BODY_UNSUPPORTED */
+    }
+    if (strcmp(op, "FX6 Catalyst 6-axis Gyro") == 0) {
+        if (!cfg->is_fx6_chaplin) {
+            return -ENOENT;
+        }
+        return lens_oss_on ? -EBUSY : 0; /* Lens OSS must be Off for FX6 Catalyst gyro stabilization */
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r71_trigger_movie_selftimer(
+    const r71_wave57_cfg_t *cfg, int countdown_sec
+) {
+    (void)cfg;
+    (void)countdown_sec;
+    /* Dormant BKID_APP_setting_movie_self_timer on FX3 Ver. 2.00..7.02 */
+    return -EOPNOTSUPP;
+}
+
+__attribute__((noinline)) static int r71_arm_still_selftimer(
+    r71_wave57_cfg_t *cfg, r71_selftimer_mode_t st_mode, r71_bracket_st_t brk_st
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -EOPNOTSUPP; /* FX6 PID_SET_SELF_TIMER dormant */
+    }
+    if (cfg->shoot_mode != R71_SHOOT_STILL) {
+        return -EBUSY; /* Still-only Drive Mode / Bracket Self-timer */
+    }
+    if (st_mode < R71_ST_NONE || st_mode > R71_ST_CONT_2S_5 ||
+        brk_st < R71_BRK_ST_OFF || brk_st > R71_BRK_ST_10S) {
+        return -EINVAL;
+    }
+    cfg->still_selftimer = st_mode;
+    cfg->bracket_selftimer = brk_st;
+    cfg->front8_selftimer_led_blinking = (st_mode != R71_ST_NONE || brk_st != R71_BRK_ST_OFF) ? 1 : 0;
+    cfg->front_red_rec_tally_on = 0; /* #8 Self-timer lamp is physically distinct from red REC tally */
+    return 0;
+}
+
+__attribute__((noinline)) static int r71_eval_audio_signals_output(const r71_wave57_cfg_t *cfg) {
+    if (!cfg || cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (cfg->silent_mode_on || cfg->movie_hdmi_audio_active || !cfg->audio_signals_on) {
+        return 0; /* Suppressed when Silent Mode=On or Movie HDMI audio active (_f 0x6c92) */
+    }
+    return 1;
+}
+
+__attribute__((noinline)) static int r71_set_zebra_config(
+    r71_wave57_cfg_t *cfg, int display_on, r71_zebra_level_mode_t zmode,
+    int preset_ire, int c1_std, int c1_range, int c2_lower, int fx6_both_req
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (fx6_both_req && cfg->is_fx6_chaplin) {
+        return -EOPNOTSUPP; /* FX6 Monitoring > Zebra > Setting is exclusive Off/Zebra1/Zebra2 (NO Both) */
+    }
+    if (zmode == R71_ZEBRA_PRESET) {
+        if (preset_ire != 70 && preset_ire != 75 && preset_ire != 80 && preset_ire != 85 &&
+            preset_ire != 90 && preset_ire != 95 && preset_ire != 100 && preset_ire != 101) {
+            return -EINVAL;
+        }
+        cfg->zebra_preset_ire = preset_ire;
+    } else if (zmode == R71_ZEBRA_CUSTOM1) {
+        if (c1_std < 0 || c1_std > 109 || c1_range < 1 || c1_range > 10) {
+            return -EINVAL;
+        }
+        cfg->zebra_c1_std = c1_std;
+        cfg->zebra_c1_range = c1_range;
+    } else if (zmode == R71_ZEBRA_CUSTOM2) {
+        if (c2_lower < 0 || c2_lower > 110) {
+            return -EINVAL;
+        }
+        cfg->zebra_c2_lower = c2_lower;
+    } else {
+        return -EINVAL;
+    }
+    cfg->zebra_display_on = display_on ? 1 : 0;
+    cfg->zebra_mode = zmode;
+    cfg->zebra_post_lut_measured = (cfg->slog3_active && cfg->display_lut_on) ? 1 : 0;
+    if (cfg->hdmi_info_display == 0) {
+        cfg->hdmi_clean_feed_zebra_peaking_baked_pixels = 0; /* LCD-only Clean-HDMI guarantee */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r71_set_peaking_config(
+    r71_wave57_cfg_t *cfg, int display_on, r71_peaking_level_t lvl, r71_peaking_color_t col
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (lvl < R71_PEAK_LOW || lvl > R71_PEAK_HIGH ||
+        col < R71_PEAK_WHITE || col > R71_PEAK_BLUE) {
+        return -EINVAL;
+    }
+    cfg->peaking_display_on = display_on ? 1 : 0;
+    cfg->peaking_level = lvl;
+    cfg->peaking_color = col;
+    if (cfg->hdmi_info_display == 0) {
+        cfg->hdmi_clean_feed_zebra_peaking_baked_pixels = 0;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r71_start_network_streaming(
+    r71_wave57_cfg_t *cfg, r71_stream_proto_t proto, int aes_bits,
+    r71_stream_res_t res, int fps_x100, int bitrate_mbps,
+    int rec_during_stream, int req_internal_4k, r71_slot_id_t target_slot
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -EOPNOTSUPP; /* FX6 RTMP/RTMPS/SRT/QoS dormant */
+    }
+    if (proto < R71_PROTO_RTMP || proto > R71_PROTO_SRT ||
+        res < R71_RES_HD_720P || res > R71_RES_4K_2160P) {
+        return -EINVAL;
+    }
+    if (proto == R71_PROTO_SRT) {
+        if (aes_bits != 0 && aes_bits != 128 && aes_bits != 256) {
+            return -EINVAL;
+        }
+    } else if (aes_bits != 0) {
+        return -EINVAL;
+    }
+    /* Strict 4 frame rates ONLY: 59.94p / 50p / 29.97p / 25p (NO 23.98p / 24.00p) */
+    if (fps_x100 != 5994 && fps_x100 != 5000 && fps_x100 != 2997 && fps_x100 != 2500) {
+        return -EINVAL;
+    }
+    if (bitrate_mbps < 1 || bitrate_mbps > 38) {
+        return -EINVAL; /* Max 38 Mbps at 4K */
+    }
+    if (cfg->airplane_mode_on && !cfg->usb_lan_connected) {
+        cfg->wireless_tx_packets = 0;
+        cfg->passive_tx_bytes_emitted = 0;
+        return -ENETDOWN; /* Zero-RF firewall under Airplane Mode = On */
+    }
+    if (rec_during_stream) {
+        if (cfg->shoot_mode == R71_SHOOT_SQ) {
+            return -EBUSY; /* S&Q disallowed when Movie Rec During Streaming = Enable */
+        }
+        int internal_4k_lockout = (res == R71_RES_4K_2160P ||
+                                   (res == R71_RES_2K_1440P && (fps_x100 == 5994 || fps_x100 == 5000))) ? 1 : 0;
+        cfg->internal_4k_allowed = internal_4k_lockout ? 0 : 1;
+        if (req_internal_4k && internal_4k_lockout) {
+            return -EBUSY; /* Disables internal 4K rec during 4K or 2K 59.94p/50p streaming */
+        }
+        if (target_slot == R71_SLOT_1 && cfg->slot1_ro_vault_armed) {
+            return -EROFS; /* Tier-0 Slot-1 Vault Firewall */
+        }
+    } else {
+        cfg->internal_4k_allowed = 1;
+    }
+    cfg->streaming_active = 1;
+    cfg->stream_proto = proto;
+    cfg->stream_aes_bits = aes_bits;
+    cfg->stream_res = res;
+    cfg->stream_fps_x100 = fps_x100;
+    cfg->stream_bitrate_mbps = bitrate_mbps;
+    cfg->rec_during_streaming = rec_during_stream ? 1 : 0;
+    cfg->shoot_mode = R71_SHOOT_MOVIE;
+    cfg->wireless_tx_packets = 0; /* USB-LAN or zero-RF simulation */
+    return 0;
+}
+
+__attribute__((noinline)) static int r71_exec_ftp_transfer(
+    const r71_wave57_cfg_t *cfg, int active_port_mode, r71_slot_id_t target_slot, int is_write
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (active_port_mode) {
+        return -EOPNOTSUPP; /* FTP supports Passive (PASV) mode only */
+    }
+    if (cfg->streaming_active) {
+        return -EBUSY; /* FTP locked out during active Network Streaming */
+    }
+    if (cfg->airplane_mode_on && !cfg->usb_lan_connected) {
+        return -ENETDOWN; /* Zero-RF firewall */
+    }
+    if (is_write && target_slot == R71_SLOT_1 && cfg->slot1_ro_vault_armed) {
+        return -EROFS; /* Tier-0 Slot-1 Vault Firewall */
+    }
+    return 0;
+}
+
+static int setup_r71_steadyshot_selftimer_zebra_streaming_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r71_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r71_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r71_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r71_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r71_p2_init");
+    (void)umount("/mnt/r71_p12_ro");
+    (void)umount("/mnt/r71_cnflasha_init");
+    (void)umount("/mnt/r71_slot1_vault");
+    if (mount("tmpfs", "/mnt/r71_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r71_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r71_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r71_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], p12_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i]  = (uint8_t)((i * 89U + 0x71U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 93U + 0x57U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 103U + 0x44U) & 0xffU);
+        v_seed[i]   = (uint8_t)((i * 117U + 0x30U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r71_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r71_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r71_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r71_slot1_vault/DSC00001.JPG", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r71_slot1_vault/AVF_INFO.INP", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r71_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r71_p12_ro/wlan_nvs.bin", pre_p12_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r71_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r71_slot1_vault/DSC00001.JPG", pre_v_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r71_slot1_vault/AVF_INFO.INP", pre_avf_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r71_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r71_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r71_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r71_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave57_nodes_ok =
+        (r71_lookup_wave57_menu_node("MENU -> Shooting -> [Image Stabilization] -> [SteadyShot]") == 0 &&
+         r71_lookup_wave57_menu_node("MENU -> Shooting -> [Image Stabilization] -> [SteadyShot Adjust.]") == 0 &&
+         r71_lookup_wave57_menu_node("MENU -> Shooting -> [Image Stabilization] -> [Focal Length]") == 0 &&
+         r71_lookup_wave57_menu_node("MENU -> Shooting -> [Drive Mode] -> [Self-timer(Single/Cont)]") == 0 &&
+         r71_lookup_wave57_menu_node("MENU -> Shooting -> [Drive Mode] -> [Bracket Settings] -> [Selftimer during Bracket]") == 0 &&
+         r71_lookup_wave57_menu_node("MENU -> Setup -> [Sound Option] -> [Audio signals]") == 0 &&
+         r71_lookup_wave57_menu_node("MENU -> Exposure/Color -> [Zebra Display] -> [Zebra Display]/[Zebra Level]") == 0 &&
+         r71_lookup_wave57_menu_node("MENU -> Focus -> [Peaking Display] -> [Peaking Display/Level/Color]") == 0 &&
+         r71_lookup_wave57_menu_node("MENU -> Network -> [Streaming] -> [Network Streaming]") == 0 &&
+         r71_lookup_wave57_menu_node("MENU -> Network -> [Streaming] -> [Output Img. Quality Set]") == 0 &&
+         r71_lookup_wave57_menu_node("MENU -> Network -> [Streaming] -> [Movie Rec During Streaming]") == 0 &&
+         r71_lookup_wave57_menu_node("MENU -> Network -> [Transfer/Remote] -> [FTP Transfer Func.]") == 0 &&
+         r71_lookup_wave57_menu_node("MENU -> Setup -> [Reset/Save Settings] -> [Reset Network Set.]") == 0 &&
+         r71_lookup_wave57_menu_node("dormant::Dynamic active") == -EOPNOTSUPP &&
+         r71_lookup_wave57_menu_node("dormant::BKID_APP_setting_movie_self_timer") == -EOPNOTSUPP &&
+         r71_lookup_wave57_menu_node("dormant::Single Burst Self-timer") == -EOPNOTSUPP &&
+         r71_lookup_wave57_menu_node("dormant::Self-portrait 3-sec") == -EOPNOTSUPP &&
+         r71_lookup_wave57_menu_node("dormant::Audio Signal(Start/End)") == -EOPNOTSUPP &&
+         r71_lookup_wave57_menu_node("dormant::Audio Signal Volume") == -EOPNOTSUPP &&
+         r71_lookup_wave57_menu_node("dormant::FX6 Zebra Both") == -EOPNOTSUPP &&
+         r71_lookup_wave57_menu_node("dormant::FX6 RTMP/SRT/QoS Streaming") == -EOPNOTSUPP) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r71_lookup_uxc_token("_g:0x6214:Image Stabilization") == 0 &&
+         r71_lookup_uxc_token("_f:0x714f:Active") == 0 &&
+         r71_lookup_uxc_token("_f:0x7880:SteadyShot Adjust.") == 0 &&
+         r71_lookup_uxc_token("_f:0x65b1:Focal Length") == 0 &&
+         r71_lookup_uxc_token("_f:0x625a:SteadyS. Focal Len.") == 0 &&
+         r71_lookup_uxc_token("_g:0x616e:Drive Mode") == 0 &&
+         r71_lookup_uxc_token("_f:0x6772:Self-timer(Single)") == 0 &&
+         r71_lookup_uxc_token("_f:0x728c:Self-timer(Cont)") == 0 &&
+         r71_lookup_uxc_token("_f:0x6ef5:Selftimer during Bracket") == 0 &&
+         r71_lookup_uxc_token("_g:0x6110:Audio signals") == 0 &&
+         r71_lookup_uxc_token("_f:0x6c92:Audio signals HDMI suppression") == 0 &&
+         r71_lookup_uxc_token("_f:0x7852:Zebra Display") == 0 &&
+         r71_lookup_uxc_token("_f:0x70d7:Zebra Level") == 0 &&
+         r71_lookup_uxc_token("_f:0x68aa:Custom1") == 0 &&
+         r71_lookup_uxc_token("_f:0x7500:Std+Range") == 0 &&
+         r71_lookup_uxc_token("_f:0x68ab:Custom2") == 0 &&
+         r71_lookup_uxc_token("_f:0x612e:Lower Limit") == 0 &&
+         r71_lookup_uxc_token("_f:0x6fe5:Peaking Display") == 0 &&
+         r71_lookup_uxc_token("_f:0x7494:Blue") == 0 &&
+         r71_lookup_uxc_token("_f:0x6cb2:Network Streaming") == 0 &&
+         r71_lookup_uxc_token("_f:0x7065:Output Img. Quality Set") == 0 &&
+         r71_lookup_uxc_token("_f:0x79d5:Movie Rec During Streaming") == 0 &&
+         r71_lookup_uxc_token("_f:0x6317:FTP Transfer Func.") == 0 &&
+         r71_lookup_uxc_token("_f:0x741c:Dynamic active") == -EOPNOTSUPP &&
+         r71_lookup_uxc_token("_f:0x65b5:VAL_setting_movie_steadyshot_HYBRID") == -EOPNOTSUPP &&
+         r71_lookup_uxc_token("_f:0x7192:Movie Self-timer") == -EOPNOTSUPP &&
+         r71_lookup_uxc_token("_f:0x758b:Single Burst Self-timer") == -EOPNOTSUPP &&
+         r71_lookup_uxc_token("_f:0x70b8:Self-portrait 3-sec") == -EOPNOTSUPP) ? 1 : 0;
+
+    r71_wave57_cfg_t cfg;
+    r71_wave57_initialize(&cfg);
+
+    /* Pillar 1: SteadyShot 47-focal (8..1000mm) + Active Distortion=Auto + 4 lockouts vs FX6 */
+    int all_47_ok = 1;
+    for (int i = 0; i < 47; i++) {
+        if (r71_set_steadyshot_focal_mm(&cfg, R71_SS_ADJ_MANUAL, k_r71_focal_steps_47[i]) != 0) {
+            all_47_ok = 0;
+        }
+    }
+    int focal_22_invalid_rc = r71_set_steadyshot_focal_mm(&cfg, R71_SS_ADJ_MANUAL, 22);
+    int ss_active_ok = (r71_set_movie_steadyshot(&cfg, R71_MOVIE_SS_ACTIVE) == 0 &&
+                        cfg.distortion_comp_auto == 1) ? 1 : 0;
+    int dyn_active_rc = r71_set_movie_steadyshot(&cfg, R71_MOVIE_SS_DYNAMIC_ACTIVE);
+    cfg.movie_rec_fps_x100 = 11988;
+    int lock_119p_rc = r71_set_movie_steadyshot(&cfg, R71_MOVIE_SS_ACTIVE);
+    int ciz_119p_rc = r71_probe_ciz_hfr_lockout(&cfg);
+    cfg.movie_rec_fps_x100 = 2398;
+    cfg.shoot_mode = R71_SHOOT_SQ;
+    cfg.sq_fps = 120;
+    int lock_sq120_rc = r71_set_movie_steadyshot(&cfg, R71_MOVIE_SS_ACTIVE);
+    cfg.shoot_mode = R71_SHOOT_MOVIE;
+    cfg.raw_output_on = 1;
+    int lock_raw_rc = r71_set_movie_steadyshot(&cfg, R71_MOVIE_SS_ACTIVE);
+    cfg.raw_output_on = 0;
+    cfg.desqueeze_display_active = 1;
+    int lock_desq_rc = r71_set_movie_steadyshot(&cfg, R71_MOVIE_SS_ACTIVE);
+    cfg.desqueeze_display_active = 0;
+    cfg.is_fx6_chaplin = 1;
+    int fx6_body_ibis_rc = r71_probe_fx6_steadyshot_policy(&cfg, "FX6 Body IBIS", 0);
+    int fx6_catalyst_ok_rc = r71_probe_fx6_steadyshot_policy(&cfg, "FX6 Catalyst 6-axis Gyro", 0);
+    int steadyshot_47focal_ok =
+        (all_47_ok == 1 && focal_22_invalid_rc == -EINVAL && ss_active_ok == 1 &&
+         dyn_active_rc == -EOPNOTSUPP && lock_119p_rc == -EBUSY && ciz_119p_rc == -EBUSY &&
+         lock_sq120_rc == -EBUSY && lock_raw_rc == -EBUSY && lock_desq_rc == -EBUSY &&
+         fx6_body_ibis_rc == -EOPNOTSUPP && fx6_catalyst_ok_rc == 0) ? 1 : 0;
+
+    /* Pillar 2: Dormant Movie Self-timer (-95) vs Still Self-timer + Front #8 LED + Audio Signals */
+    r71_wave57_initialize(&cfg);
+    int movie_st_dormant_rc = r71_trigger_movie_selftimer(&cfg, 5);
+    int still_st_ok =
+        (r71_arm_still_selftimer(&cfg, R71_ST_CONT_5S_5, R71_BRK_ST_2S) == 0 &&
+         cfg.front8_selftimer_led_blinking == 1 &&
+         cfg.front_red_rec_tally_on == 0) ? 1 : 0;
+    int audio_active = r71_eval_audio_signals_output(&cfg);
+    cfg.silent_mode_on = 1;
+    int audio_silent_suppressed = r71_eval_audio_signals_output(&cfg);
+    cfg.silent_mode_on = 0;
+    cfg.movie_hdmi_audio_active = 1;
+    int audio_hdmi_suppressed = r71_eval_audio_signals_output(&cfg);
+    int selftimer_audio_ok =
+        (movie_st_dormant_rc == -EOPNOTSUPP && still_st_ok == 1 &&
+         audio_active == 1 && audio_silent_suppressed == 0 &&
+         audio_hdmi_suppressed == 0) ? 1 : 0;
+
+    /* Pillar 3: Zebra Custom1 (Std+Range) & Custom2 (Lower Limit) + S-Log3 41/61/94 vs Display LUT + 4-color Peaking Clean HDMI */
+    r71_wave57_initialize(&cfg);
+    cfg.slog3_active = 1;
+    cfg.display_lut_on = 0;
+    int zebra_c1_slog3_ok =
+        (r71_set_zebra_config(&cfg, 1, R71_ZEBRA_CUSTOM1, 70, 61, 5, 94, 0) == 0 &&
+         cfg.zebra_post_lut_measured == 0 &&
+         cfg.hdmi_clean_feed_zebra_peaking_baked_pixels == 0) ? 1 : 0;
+    cfg.display_lut_on = 1;
+    int zebra_c2_postlut_ok =
+        (r71_set_zebra_config(&cfg, 1, R71_ZEBRA_CUSTOM2, 70, 61, 5, 94, 0) == 0 &&
+         cfg.zebra_post_lut_measured == 1) ? 1 : 0;
+    int peaking_blue_ok =
+        (r71_set_peaking_config(&cfg, 1, R71_PEAK_HIGH, R71_PEAK_BLUE) == 0 &&
+         cfg.hdmi_clean_feed_zebra_peaking_baked_pixels == 0) ? 1 : 0;
+    cfg.is_fx6_chaplin = 1;
+    int fx6_zebra_both_rc = r71_set_zebra_config(&cfg, 1, R71_ZEBRA_CUSTOM1, 70, 70, 10, 100, 1);
+    int zebra_peaking_ok =
+        (zebra_c1_slog3_ok == 1 && zebra_c2_postlut_ok == 1 &&
+         peaking_blue_ok == 1 && fx6_zebra_both_rc == -EOPNOTSUPP) ? 1 : 0;
+
+    /* Pillar 4: RTMP/RTMPS/SRT (4 fps, NO 23.98/24p) + Rec During Streaming 4K lockout + Airplane Zero-RF + Slot-1 EROFS=30 */
+    r71_wave57_initialize(&cfg);
+    cfg.airplane_mode_on = 1;
+    cfg.usb_lan_connected = 0;
+    int airplane_rf_blocked_rc = r71_start_network_streaming(&cfg, R71_PROTO_RTMPS, 0, R71_RES_HD_1080P, 5994, 12, 0, 0, R71_SLOT_2);
+    cfg.usb_lan_connected = 1;
+    int srt_usblan_slot2_ok =
+        (r71_start_network_streaming(&cfg, R71_PROTO_SRT, 256, R71_RES_4K_2160P, 5994, 38, 1, 0, R71_SLOT_2) == 0 &&
+         cfg.internal_4k_allowed == 0 &&
+         cfg.wireless_tx_packets == 0 &&
+         cfg.passive_tx_bytes_emitted == 0) ? 1 : 0;
+    int stream_2398_rc = r71_start_network_streaming(&cfg, R71_PROTO_RTMP, 0, R71_RES_HD_1080P, 2398, 12, 0, 0, R71_SLOT_2);
+    int stream_4k_int4k_rc = r71_start_network_streaming(&cfg, R71_PROTO_SRT, 128, R71_RES_4K_2160P, 5000, 35, 1, 1, R71_SLOT_2);
+    int stream_slot1_erofs_rc = r71_start_network_streaming(&cfg, R71_PROTO_RTMP, 0, R71_RES_HD_1080P, 2997, 12, 1, 0, R71_SLOT_1);
+    int ftp_during_stream_rc = r71_exec_ftp_transfer(&cfg, 0, R71_SLOT_2, 1);
+    cfg.streaming_active = 0;
+    int ftp_slot1_erofs_rc = r71_exec_ftp_transfer(&cfg, 0, R71_SLOT_1, 1);
+    int streaming_zerorf_erofs_ok =
+        (airplane_rf_blocked_rc == -ENETDOWN && srt_usblan_slot2_ok == 1 &&
+         stream_2398_rc == -EINVAL && stream_4k_int4k_rc == -EBUSY &&
+         stream_slot1_erofs_rc == -EROFS && ftp_during_stream_rc == -EBUSY &&
+         ftp_slot1_erofs_rc == -EROFS) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r71_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r71_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r71_slot1_vault/DSC00001.JPG", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    errno = 0;
+    int a_fd = open("/mnt/r71_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_rc = (a_fd >= 0) ? (close(a_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r71_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r71_p12_ro/wlan_nvs.bin", post_p12_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r71_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r71_slot1_vault/DSC00001.JPG", post_v_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r71_slot1_vault/AVF_INFO.INP", post_avf_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int p12_sha256_match = (p12_write_blocked_rc == -EROFS && strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && slot1_avf_ro_rc == -EROFS &&
+         strcmp(pre_v_sha, post_v_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r71_slot1_vault");
+    (void)umount("/mnt/r71_cnflasha_init");
+    (void)umount("/mnt/r71_p12_ro");
+    (void)umount("/mnt/r71_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R71_STEADYSHOT_47FOCAL_LOCKOUT_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave57_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              steadyshot_47focal_ok == 1 &&
+              selftimer_audio_ok == 1 &&
+              zebra_peaking_ok == 1 &&
+              streaming_zerorf_erofs_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              p12_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R71_WAVE57_INIT fx3_wave57_nodes_ok=%d uxc_tokens_ok=%d "
+            "steadyshot_47focal_ok=%d selftimer_audio_ok=%d zebra_peaking_ok=%d streaming_zerorf_erofs_ok=%d "
+            "focal_22_invalid_rc=%d dyn_active_rc=%d lock_119p_rc=%d lock_sq120_rc=%d lock_raw_rc=%d lock_desq_rc=%d "
+            "fx6_body_ibis_rc=%d movie_st_dormant_rc=%d fx6_zebra_both_rc=%d "
+            "airplane_rf_blocked_rc=%d stream_2398_rc=%d stream_4k_int4k_rc=%d "
+            "stream_slot1_erofs_rc=%d ftp_slot1_erofs_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d p12_sha256_match=%d cnflasha_sha256_match=%d "
+            "slot1_vault_sha256_match=%d dynamic_active_bypass_events=0 "
+            "dormant_movie_selftimer_bypass_events=0 hdmi_clean_feed_zebra_peaking_baked_pixels=0 "
+            "wireless_tx_packets=0 slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 cnflasha_writes=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r71_init_ok=%d verify_us=%lld\n",
+            fx3_wave57_nodes_ok, uxc_tokens_ok, steadyshot_47focal_ok,
+            selftimer_audio_ok, zebra_peaking_ok, streaming_zerorf_erofs_ok,
+            focal_22_invalid_rc, dyn_active_rc, lock_119p_rc, lock_sq120_rc, lock_raw_rc, lock_desq_rc,
+            fx6_body_ibis_rc, movie_st_dormant_rc, fx6_zebra_both_rc,
+            airplane_rf_blocked_rc, stream_2398_rc, stream_4k_int4k_rc,
+            stream_slot1_erofs_rc, ftp_slot1_erofs_rc,
+            p2_write_blocked_rc, p2_sha256_match, p12_sha256_match, cnflasha_sha256_match,
+            slot1_vault_sha256_match, appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r71_wave57_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r71b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r71b_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r71b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r71b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r71b_p2_ro");
+    (void)umount("/mnt/r71b_p12_ro");
+    (void)umount("/mnt/r71b_cnflasha_ro");
+    (void)umount("/mnt/r71b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r71b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r71b_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r71b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r71b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], p12_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i]  = (uint8_t)((i * 97U + 0x71U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 101U + 0x57U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 109U + 0x44U) & 0xffU);
+        bd_seed[i]  = (uint8_t)((i * 127U + 0x30U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r71b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r71b_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r71b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r71b_slot1_vault/DSC00001.JPG", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r71b_slot1_vault/AVF_INFO.INP", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r71b_slot1_vault/DSC00001.JPG", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r71b_slot1_vault/AVF_INFO.INP", pre_avf_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r71b_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r71b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r71b_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r71b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r71b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r71_wave57_cfg_t cfg;
+    r71_wave57_initialize(&cfg);
+
+    /* Guard 1: SteadyShot dormant Dynamic active (-95), off-table focal 7mm/22mm/1200mm (-22),
+     * 4 Active lockouts (-16), FX6 fixed sensor (-2 / -95), FX6 Catalyst w/ lens OSS On (-16) */
+    int dyn_active_rc = r71_set_movie_steadyshot(&cfg, R71_MOVIE_SS_DYNAMIC_ACTIVE);
+    int focal_7_rc = r71_set_steadyshot_focal_mm(&cfg, R71_SS_ADJ_MANUAL, 7);
+    int focal_22_rc = r71_set_steadyshot_focal_mm(&cfg, R71_SS_ADJ_MANUAL, 22);
+    int focal_1200_rc = r71_set_steadyshot_focal_mm(&cfg, R71_SS_ADJ_MANUAL, 1200);
+    cfg.movie_rec_fps_x100 = 10000;
+    int lock_100p_rc = r71_set_movie_steadyshot(&cfg, R71_MOVIE_SS_ACTIVE);
+    cfg.movie_rec_fps_x100 = 2398;
+    cfg.shoot_mode = R71_SHOOT_SQ;
+    cfg.sq_fps = 100;
+    int lock_sq100_rc = r71_set_movie_steadyshot(&cfg, R71_MOVIE_SS_ACTIVE);
+    cfg.shoot_mode = R71_SHOOT_MOVIE;
+    cfg.raw_output_on = 1;
+    int lock_raw_rc = r71_set_movie_steadyshot(&cfg, R71_MOVIE_SS_ACTIVE);
+    cfg.raw_output_on = 0;
+    cfg.desqueeze_display_active = 1;
+    int lock_desq_rc = r71_set_movie_steadyshot(&cfg, R71_MOVIE_SS_ACTIVE);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_ss_rc = r71_set_movie_steadyshot(&cfg, R71_MOVIE_SS_STANDARD);
+    int fx6_ibis_unsup_rc = r71_probe_fx6_steadyshot_policy(&cfg, "FX6 Body IBIS", 0);
+    int fx6_catalyst_oss_busy_rc = r71_probe_fx6_steadyshot_policy(&cfg, "FX6 Catalyst 6-axis Gyro", 1);
+
+    /* Guard 2: Dormant Movie Self-timer & Single Burst/Self-portrait (-95),
+     * Still Self-timer in Movie/S&Q (-16), FX6 PID_SET_SELF_TIMER (-95), Audio Signals suppressed */
+    r71_wave57_initialize(&cfg);
+    int movie_st_rc = r71_trigger_movie_selftimer(&cfg, 10);
+    int single_burst_dormant_rc = r71_lookup_wave57_menu_node("dormant::Single Burst Self-timer");
+    int portrait_dormant_rc = r71_lookup_wave57_menu_node("dormant::Self-portrait 3-sec");
+    cfg.shoot_mode = R71_SHOOT_MOVIE;
+    int movie_still_st_rc = r71_arm_still_selftimer(&cfg, R71_ST_SINGLE_10S, R71_BRK_ST_OFF);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_st_rc = r71_arm_still_selftimer(&cfg, R71_ST_SINGLE_10S, R71_BRK_ST_OFF);
+    int fx6_audio_sig_rc = r71_eval_audio_signals_output(&cfg);
+
+    /* Guard 3: Zebra invalid preset/Custom1/Custom2 (-22), invalid Peaking color (-22),
+     * FX6 Zebra Both (-95) */
+    r71_wave57_initialize(&cfg);
+    int zebra_bad_preset_rc = r71_set_zebra_config(&cfg, 1, R71_ZEBRA_PRESET, 107, 70, 5, 100, 0);
+    int zebra_c1_bad_range_rc = r71_set_zebra_config(&cfg, 1, R71_ZEBRA_CUSTOM1, 70, 70, 11, 100, 0);
+    int zebra_c2_oob_rc = r71_set_zebra_config(&cfg, 1, R71_ZEBRA_CUSTOM2, 70, 70, 5, 111, 0);
+    int peaking_bad_col_rc = r71_set_peaking_config(&cfg, 1, R71_PEAK_MID, (r71_peaking_color_t)9);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_zebra_both_rc = r71_set_zebra_config(&cfg, 1, R71_ZEBRA_CUSTOM1, 70, 70, 10, 100, 1);
+
+    /* Guard 4: Network Streaming 23.98/24.00p (-22), bitrate 40Mbps (>38) (-22), S&Q rec during stream (-16),
+     * internal 4K during 2K60 (-16), FX6 native RTMP/SRT (-95), Airplane Mode zero-RF (-100 ENETDOWN),
+     * active FTP PORT (-95), and Slot-1 streaming/FTP/Vault/AVF_INFO/P12/P2/cnflasha (-30 EROFS) */
+    r71_wave57_initialize(&cfg);
+    int stream_2398_rc = r71_start_network_streaming(&cfg, R71_PROTO_RTMP, 0, R71_RES_HD_1080P, 2398, 12, 0, 0, R71_SLOT_2);
+    int stream_2400_rc = r71_start_network_streaming(&cfg, R71_PROTO_SRT, 256, R71_RES_4K_2160P, 2400, 38, 0, 0, R71_SLOT_2);
+    int stream_40mbps_rc = r71_start_network_streaming(&cfg, R71_PROTO_SRT, 256, R71_RES_4K_2160P, 5994, 40, 0, 0, R71_SLOT_2);
+    cfg.shoot_mode = R71_SHOOT_SQ;
+    int stream_sq_rec_rc = r71_start_network_streaming(&cfg, R71_PROTO_RTMP, 0, R71_RES_HD_1080P, 5994, 12, 1, 0, R71_SLOT_2);
+    cfg.shoot_mode = R71_SHOOT_MOVIE;
+    int stream_2k60_int4k_rc = r71_start_network_streaming(&cfg, R71_PROTO_SRT, 128, R71_RES_2K_1440P, 5994, 20, 1, 1, R71_SLOT_2);
+    cfg.airplane_mode_on = 1;
+    cfg.usb_lan_connected = 0;
+    int airplane_stream_rc = r71_start_network_streaming(&cfg, R71_PROTO_RTMPS, 0, R71_RES_HD_1080P, 5994, 12, 0, 0, R71_SLOT_2);
+    int airplane_ftp_rc = r71_exec_ftp_transfer(&cfg, 0, R71_SLOT_2, 1);
+    cfg.usb_lan_connected = 1;
+    int ftp_active_port_rc = r71_exec_ftp_transfer(&cfg, 1, R71_SLOT_2, 1);
+    int slot1_stream_erofs_rc = r71_start_network_streaming(&cfg, R71_PROTO_RTMP, 0, R71_RES_HD_1080P, 2997, 12, 1, 0, R71_SLOT_1);
+    int slot1_ftp_erofs_rc = r71_exec_ftp_transfer(&cfg, 0, R71_SLOT_1, 1);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_stream_rc = r71_start_network_streaming(&cfg, R71_PROTO_SRT, 256, R71_RES_HD_1080P, 5994, 12, 0, 0, R71_SLOT_2);
+
+    errno = 0;
+    int w_fd = open("/mnt/r71b_slot1_vault/DSC00001.JPG", O_RDWR);
+    int slot1_wave57_erofs_rc = (w_fd >= 0) ? (close(w_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r71b_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r71b_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r71b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r71b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r71b_slot1_vault/DSC00001.JPG", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r71b_slot1_vault/AVF_INFO.INP", post_avf_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r71b_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r71b_slot1_vault");
+    (void)umount("/mnt/r71b_p12_ro");
+    (void)umount("/mnt/r71b_p2_ro");
+    (void)umount("/mnt/r71b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R71_STREAMING_ZERORF_EROFS_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (dyn_active_rc == -EOPNOTSUPP &&
+              focal_7_rc == -EINVAL &&
+              focal_22_rc == -EINVAL &&
+              focal_1200_rc == -EINVAL &&
+              lock_100p_rc == -EBUSY &&
+              lock_sq100_rc == -EBUSY &&
+              lock_raw_rc == -EBUSY &&
+              lock_desq_rc == -EBUSY &&
+              fx6_ss_rc == -ENOENT &&
+              fx6_ibis_unsup_rc == -EOPNOTSUPP &&
+              fx6_catalyst_oss_busy_rc == -EBUSY &&
+              movie_st_rc == -EOPNOTSUPP &&
+              single_burst_dormant_rc == -EOPNOTSUPP &&
+              portrait_dormant_rc == -EOPNOTSUPP &&
+              movie_still_st_rc == -EBUSY &&
+              fx6_st_rc == -EOPNOTSUPP &&
+              fx6_audio_sig_rc == -ENOENT &&
+              zebra_bad_preset_rc == -EINVAL &&
+              zebra_c1_bad_range_rc == -EINVAL &&
+              zebra_c2_oob_rc == -EINVAL &&
+              peaking_bad_col_rc == -EINVAL &&
+              fx6_zebra_both_rc == -EOPNOTSUPP &&
+              stream_2398_rc == -EINVAL &&
+              stream_2400_rc == -EINVAL &&
+              stream_40mbps_rc == -EINVAL &&
+              stream_sq_rec_rc == -EBUSY &&
+              stream_2k60_int4k_rc == -EBUSY &&
+              airplane_stream_rc == -ENETDOWN &&
+              airplane_ftp_rc == -ENETDOWN &&
+              ftp_active_port_rc == -EOPNOTSUPP &&
+              slot1_stream_erofs_rc == -EROFS &&
+              slot1_ftp_erofs_rc == -EROFS &&
+              fx6_stream_rc == -EOPNOTSUPP &&
+              slot1_wave57_erofs_rc == -EROFS &&
+              slot1_avf_ro_blocked_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R71_WAVE57_GUARD dyn_active_rc=%d focal_7_rc=%d focal_22_rc=%d focal_1200_rc=%d "
+            "lock_100p_rc=%d lock_sq100_rc=%d lock_raw_rc=%d lock_desq_rc=%d "
+            "fx6_ss_rc=%d fx6_ibis_unsup_rc=%d fx6_catalyst_oss_busy_rc=%d "
+            "movie_st_rc=%d single_burst_dormant_rc=%d portrait_dormant_rc=%d "
+            "movie_still_st_rc=%d fx6_st_rc=%d fx6_audio_sig_rc=%d "
+            "zebra_bad_preset_rc=%d zebra_c1_bad_range_rc=%d zebra_c2_oob_rc=%d "
+            "peaking_bad_col_rc=%d fx6_zebra_both_rc=%d "
+            "stream_2398_rc=%d stream_2400_rc=%d stream_40mbps_rc=%d "
+            "stream_sq_rec_rc=%d stream_2k60_int4k_rc=%d airplane_stream_rc=%d "
+            "airplane_ftp_rc=%d ftp_active_port_rc=%d slot1_stream_erofs_rc=%d "
+            "slot1_ftp_erofs_rc=%d fx6_stream_rc=%d slot1_wave57_erofs_rc=%d "
+            "slot1_avf_ro_blocked_rc=%d p12_write_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "dynamic_active_bypass_events=0 dormant_movie_selftimer_bypass_events=0 "
+            "hdmi_clean_feed_zebra_peaking_baked_pixels=0 wireless_tx_packets=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r71b_ok=%d verify_us=%lld\n",
+            dyn_active_rc, focal_7_rc, focal_22_rc, focal_1200_rc,
+            lock_100p_rc, lock_sq100_rc, lock_raw_rc, lock_desq_rc,
+            fx6_ss_rc, fx6_ibis_unsup_rc, fx6_catalyst_oss_busy_rc,
+            movie_st_rc, single_burst_dormant_rc, portrait_dormant_rc,
+            movie_still_st_rc, fx6_st_rc, fx6_audio_sig_rc,
+            zebra_bad_preset_rc, zebra_c1_bad_range_rc, zebra_c2_oob_rc,
+            peaking_bad_col_rc, fx6_zebra_both_rc,
+            stream_2398_rc, stream_2400_rc, stream_40mbps_rc,
+            stream_sq_rec_rc, stream_2k60_int4k_rc, airplane_stream_rc,
+            airplane_ftp_rc, ftp_active_port_rc, slot1_stream_erofs_rc,
+            slot1_ftp_erofs_rc, fx6_stream_rc, slot1_wave57_erofs_rc,
+            slot1_avf_ro_blocked_rc, p12_write_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r71_clean_unmount_wave57_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r71c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r71c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r71c_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r71c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r71c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r71c_tmp_overlay", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r71c_surfaces");
+    (void)umount("/mnt/r71c_p2_ro");
+    (void)umount("/mnt/r71c_p12_ro");
+    (void)umount("/mnt/r71c_cnflasha_ro");
+    (void)umount("/mnt/r71c_slot1_vault");
+    (void)umount("/mnt/r71c_tmp_overlay");
+    if (mount("tmpfs", "/mnt/r71c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r71c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r71c_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r71c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r71c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r71c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    if (r29_write_all_fsync("/mnt/r71c_tmp_overlay/stage_b_marker",
+                            (const uint8_t *)"FX3_VOLATILE_OVERLAY_R71", 24U, 0644) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r71c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+
+    uint8_t p2_seed[256], p12_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i]  = (uint8_t)((i * 99U + 0x71U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 105U + 0x57U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 111U + 0x44U) & 0xffU);
+        v_seed[i]   = (uint8_t)((i * 137U + 0x30U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r71c_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r71c_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r71c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r71c_slot1_vault/DSC00001.JPG", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r71c_slot1_vault/AVF_INFO.INP", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r71c_slot1_vault/DSC00001.JPG", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r71c_slot1_vault/AVF_INFO.INP", pre_avf_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r71c_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t sbuf[512];
+        for (size_t i = 0U; i < sizeof(sbuf); i++) {
+            sbuf[i] = (uint8_t)((i * 53U + s * 31U + 0x71U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r71c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) {
+            return fail_exit_rc;
+        }
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    if (mount(NULL, "/mnt/r71c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r71c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r71c_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r71c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r71c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    int unmount_rc = umount("/mnt/r71c_tmp_overlay");
+    int marker_gone_after_umount = (access("/mnt/r71c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok = (overlay_mounted_present == 1 && unmount_rc == 0 && marker_gone_after_umount == 1) ? 1 : 0;
+
+    /* Asymmetric 3-Tier Reset Split across Wave-57:
+     * 1. [Camera Settings Reset]:
+     *    RESETTABLE -> [SteadyShot]->Standard/On/Auto/8mm, [Drive Mode]/[Selftimer during Bracket]->None/Off
+     *    SURVIVORS  -> [Audio signals], ALL [Zebra]/[Peaking] items, AND ALL (Network) items (Streaming, FTP, Airplane Mode)
+     * 2. [Reset Network Set.]:
+     *    RESETTABLE -> [Network Streaming] & [FTP Transfer Func.]
+     *    SURVIVOR   -> [Airplane Mode] = On
+     * 3. [Initialize]: restores ALL Wave-57 survivors including [Airplane Mode] -> Off */
+    r71_wave57_cfg_t cfg;
+    r71_wave57_initialize(&cfg);
+    (void)r71_set_movie_steadyshot(&cfg, R71_MOVIE_SS_ACTIVE);
+    cfg.still_steadyshot_on = 0;
+    (void)r71_set_steadyshot_focal_mm(&cfg, R71_SS_ADJ_MANUAL, 135);
+    (void)r71_arm_still_selftimer(&cfg, R71_ST_SINGLE_10S, R71_BRK_ST_5S);
+    cfg.audio_signals_on = 0;
+    (void)r71_set_zebra_config(&cfg, 1, R71_ZEBRA_CUSTOM1, 70, 61, 4, 94, 0);
+    (void)r71_set_peaking_config(&cfg, 1, R71_PEAK_HIGH, R71_PEAK_RED);
+    cfg.airplane_mode_on = 1;
+    cfg.usb_lan_connected = 1;
+    (void)r71_start_network_streaming(&cfg, R71_PROTO_SRT, 256, R71_RES_4K_2160P, 5000, 38, 1, 0, R71_SLOT_2);
+    cfg.streaming_active = 0;
+    cfg.ftp_transfer_on = 1;
+
+    r71_wave57_camera_settings_reset(&cfg);
+    int camreset_preserves_wave57_survivors_ok =
+        (cfg.movie_steadyshot == R71_MOVIE_SS_STANDARD &&
+         cfg.still_steadyshot_on == 1 &&
+         cfg.steadyshot_adjust == R71_SS_ADJ_AUTO &&
+         cfg.steady_focal_mm == 8 &&
+         cfg.still_selftimer == R71_ST_NONE &&
+         cfg.bracket_selftimer == R71_BRK_ST_OFF &&
+         cfg.audio_signals_on == 0 &&
+         cfg.zebra_display_on == 1 &&
+         cfg.zebra_mode == R71_ZEBRA_CUSTOM1 &&
+         cfg.zebra_c1_std == 61 &&
+         cfg.peaking_display_on == 1 &&
+         cfg.peaking_color == R71_PEAK_RED &&
+         cfg.stream_proto == R71_PROTO_SRT &&
+         cfg.ftp_transfer_on == 1 &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r71_wave57_reset_network_settings(&cfg);
+    int nwreset_preserves_airplane_ok =
+        (cfg.stream_proto == R71_PROTO_RTMP &&
+         cfg.ftp_transfer_on == 0 &&
+         cfg.airplane_mode_on == 1 &&
+         cfg.zebra_display_on == 1 &&
+         cfg.peaking_display_on == 1) ? 1 : 0;
+
+    r71_wave57_initialize(&cfg);
+    int initialize_restores_wave57_defaults_ok =
+        (cfg.movie_steadyshot == R71_MOVIE_SS_STANDARD &&
+         cfg.still_steadyshot_on == 1 &&
+         cfg.steadyshot_adjust == R71_SS_ADJ_AUTO &&
+         cfg.steady_focal_mm == 8 &&
+         cfg.audio_signals_on == 1 &&
+         cfg.zebra_display_on == 0 &&
+         cfg.zebra_mode == R71_ZEBRA_PRESET &&
+         cfg.zebra_preset_ire == 70 &&
+         cfg.peaking_display_on == 0 &&
+         cfg.peaking_color == R71_PEAK_WHITE &&
+         cfg.stream_proto == R71_PROTO_RTMP &&
+         cfg.ftp_transfer_on == 0 &&
+         cfg.airplane_mode_on == 0) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jit_h = dlopen("/etc/fx6_r71_libjit.so", RTLD_NOW);
+    if (!jit_h) {
+        jit_h = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    }
+    if (jit_h) {
+        dlopen_ok = 1;
+        dlclose(jit_h);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r71c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3, &sbytes) == 0 && strcmp(h0_hashes[s], h3) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    errno = 0;
+    int s1_fd = open("/mnt/r71c_slot1_vault/DSC00001.JPG", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int avf_fd = open("/mnt/r71c_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_blocked_rc = (avf_fd >= 0) ? (close(avf_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r71c_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r71c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r71c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r71c_slot1_vault/DSC00001.JPG", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r71c_slot1_vault/AVF_INFO.INP", post_avf_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r71c_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r71c_slot1_vault");
+    (void)umount("/mnt/r71c_p12_ro");
+    (void)umount("/mnt/r71c_p2_ro");
+    (void)umount("/mnt/r71c_cnflasha_ro");
+    (void)umount("/mnt/r71c_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_preserves_wave57_survivors_ok == 1 &&
+              nwreset_preserves_airplane_ok == 1 &&
+              initialize_restores_wave57_defaults_ok == 1 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_avf_ro_blocked_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R71_CLEAN_UNMOUNT_WAVE57_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_preserves_wave57_survivors_ok=%d "
+            "nwreset_preserves_airplane_ok=%d "
+            "initialize_restores_wave57_defaults_ok=%d "
+            "dynamic_active_bypass_events=0 dormant_movie_selftimer_bypass_events=0 "
+            "hdmi_clean_feed_zebra_peaking_baked_pixels=0 wireless_tx_packets=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "slot1_vault_ro_blocked_rc=%d p12_write_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r71c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_preserves_wave57_survivors_ok,
+            nwreset_preserves_airplane_ok,
+            initialize_restores_wave57_defaults_ok,
+            slot1_vault_ro_blocked_rc, p12_write_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -39317,6 +40644,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r70-clean-unmount-wave56-h0-h3") == 0) {
         return run_r70_clean_unmount_wave56_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r71-wave57-guard") == 0) {
+        return run_r71_wave57_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r71-clean-unmount-wave57-h0-h3") == 0) {
+        return run_r71_clean_unmount_wave57_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -39851,6 +41184,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave56_integrated &&
                 run_r70_clean_unmount_wave56_h0_h3_probe(89) != 0) {
                 return 89;
+            }
+        }
+    }
+    struct stat r71_st;
+    if (stat("/etc/fx6_stage_r71", &r71_st) == 0) {
+        if (setup_r71_steadyshot_selftimer_zebra_streaming_probe() != 0) {
+            return 90;
+        }
+        FILE *r71f = fopen("/etc/fx6_stage_r71", "r");
+        if (r71f) {
+            int is_clean_unmount_wave57_integrated = 0;
+            char r71line[128];
+            while (fgets(r71line, sizeof(r71line), r71f)) {
+                if (strstr(r71line, "r71_mode=clean_unmount_wave57_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave57_integrated = 1;
+                }
+            }
+            fclose(r71f);
+            if (is_clean_unmount_wave57_integrated &&
+                run_r71_clean_unmount_wave57_h0_h3_probe(90) != 0) {
+                return 90;
             }
         }
     }

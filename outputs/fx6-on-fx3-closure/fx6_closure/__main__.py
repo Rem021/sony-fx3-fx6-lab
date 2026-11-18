@@ -5749,10 +5749,229 @@ def _cmd_preflight_drive_focusbracket_efcs_creativelook_pixelmap_monitor_recallh
     return 0 if ok else 2
 
 
+def _cmd_preflight_area_date_dst_grid_cleanhdmi_camset_mishoe_pb_magnify_wifi_5ghz_and_cec(
+    args: argparse.Namespace,
+) -> int:
+    from .realhw_area_date_dst_grid_cleanhdmi_camset_mishoe_pb_magnify_wifi_5ghz_and_cec_verifier import (
+        P341_AREA_GMT_THIRTY_ZONES,
+        P341_GO_NO_GO_AREA_DATE_DST_GRID_CLEANHDMI_CAMSET_MISHOE_PB_MAGNIFY_WIFI_5GHZ_AND_CEC_VERIFIED,
+        render_phase341_markdown,
+        run_area_date_dst_grid_cleanhdmi_camset_mishoe_pb_magnify_wifi_5ghz_and_cec_preflight,
+        verify_phase341_report,
+    )
+    from .realhw_card_insert_readiness_verifier import (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        TARGET_MODEL_ID_INT,
+        build_default_h0_baselines,
+    )
+
+    parsed_model_id = int(args.model_id, 0) if args.model_id else TARGET_MODEL_ID_INT
+    h0_a = None
+    h0_b = None
+    if (args.receipt_a is not None or args.receipt_b is not None) and args.body_serial and args.emmc_cid:
+        h0_a = build_default_h0_baselines(body_serial=args.body_serial, emmc_cid=args.emmc_cid)
+        h0_b = dict(h0_a)
+
+    exposed_zones = (
+        tuple(x.strip() for x in args.exposed_area_gmt_zones.split(",") if x.strip())
+        if args.exposed_area_gmt_zones is not None
+        else P341_AREA_GMT_THIRTY_ZONES
+    )
+
+    rep = run_area_date_dst_grid_cleanhdmi_camset_mishoe_pb_magnify_wifi_5ghz_and_cec_preflight(
+        simulate_bench_dry_run=args.simulate_bench_dry_run,
+        force_clean_room=True if args.force_clean_room else None,
+        fx6_lib_dir=args.fx6_lib_dir,
+        fx3_modules_dir=args.fx3_modules_dir,
+        body_model_id=parsed_model_id,
+        body_fw=args.body_fw,
+        sony_help_guide_id=args.sony_help_guide_id,
+        reset_action=args.reset_action,
+        shoot_mode=args.shoot_mode,
+        exposure_mode=args.exposure_mode,
+        # Group A
+        area_zone=args.area_zone,
+        exposed_area_gmt_zones=exposed_zones,
+        daylight_savings=args.daylight_savings,
+        date_format=args.date_format,
+        rtc_backup_charge_hours=args.rtc_backup_charge_hours,
+        rtc_initialized=args.rtc_initialized,
+        claimed_user_replaceable_cr2032_present=args.claimed_user_replaceable_cr2032_present,
+        rtc_discharge_without_24h_charge_claimed=args.rtc_discharge_without_24h_charge_claimed,
+        claimed_area_date_wiped_by_camera_reset=args.claimed_area_date_wiped_by_camera_reset,
+        claimed_fx6_has_standalone_dst_switch=args.claimed_fx6_has_standalone_dst_switch,
+        expect_area_date_uses_legacy_name_only=args.expect_area_date_uses_legacy_name_only,
+        grid_line_display=args.grid_line_display,
+        grid_line_type=args.grid_line_type,
+        hdmi_info_display=args.hdmi_info_display,
+        hdmi_raw_output=args.hdmi_raw_output,
+        rec_media_dur_hdmi_output=args.rec_media_dur_hdmi_output,
+        marker_display=args.marker_display,
+        center_marker=args.center_marker,
+        aspect_marker=args.aspect_marker,
+        safety_zone=args.safety_zone,
+        guideframe=args.guideframe,
+        focus_magnifier_active=args.focus_magnifier_active,
+        expect_marker_outputs_over_hdmi=args.expect_marker_outputs_over_hdmi,
+        expect_grid_passes_hdmi_when_info_off_or_raw=args.expect_grid_passes_hdmi_when_info_off_or_raw,
+        expect_marker_active_in_still_mode=args.expect_marker_active_in_still_mode,
+        expect_marker_visible_during_focus_magnifier=args.expect_marker_visible_during_focus_magnifier,
+        claimed_grid_or_marker_wiped_by_camera_reset=args.claimed_grid_or_marker_wiped_by_camera_reset,
+        claimed_fx6_has_3mode_static_grid_line_menu=args.claimed_fx6_has_3mode_static_grid_line_menu,
+        # Group B
+        camset_action=args.camset_action,
+        camset_slot=args.camset_slot,
+        camset_file_index=args.camset_file_index,
+        camset_media_type=args.camset_media_type,
+        camset_card_template=args.camset_card_template,
+        camset_fw_version=args.camset_fw_version,
+        claimed_camset_allows_slot2=args.claimed_camset_allows_slot2,
+        claimed_camset_uses_pro_camera_path=args.claimed_camset_uses_pro_camera_path,
+        claimed_camset_includes_excluded_items=args.claimed_camset_includes_excluded_items,
+        claimed_ftpset_shares_camset_dir=args.claimed_ftpset_shares_camset_dir,
+        campr_action=args.campr_action,
+        campr_slot=args.campr_slot,
+        memory_recall_media_slot=args.memory_recall_media_slot,
+        claimed_campr_includes_custom_key_or_program_shift=args.claimed_campr_includes_custom_key_or_program_shift,
+        ftpset_action=args.ftpset_action,
+        ftpset_slot=args.ftpset_slot,
+        claimed_fx6_reference_file_present=args.claimed_fx6_reference_file_present,
+        slot1_contains_tier0_dump=args.slot1_contains_tier0_dump,
+        slot1_data_sector_writes=args.slot1_data_sector_writes,
+        pc_sync_terminal_requested=args.pc_sync_terminal_requested,
+        claimed_fx3_sync_terminal_present=args.claimed_fx3_sync_terminal_present,
+        xlr_h1_attached=args.xlr_h1_attached,
+        hvl_lbpc_direct_mount_requested=args.hvl_lbpc_direct_mount_requested,
+        video_light_mode=args.video_light_mode,
+        mi_shoe_5v_draw_ma=args.mi_shoe_5v_draw_ma,
+        flash_mode=args.flash_mode,
+        flash_xsync_denominator=args.flash_xsync_denominator,
+        flash_trigger_voltage_v=args.flash_trigger_voltage_v,
+        claimed_fx6_video_light_has_auto_mode=args.claimed_fx6_video_light_has_auto_mode,
+        claimed_fx6_genlock_bnc_present=args.claimed_fx6_genlock_bnc_present,
+        fx6_genlock_requested=args.fx6_genlock_requested,
+        # Group C
+        playback_magnify_requested=args.playback_magnify_requested,
+        playback_media_kind=args.playback_media_kind,
+        enlarge_initial_mag=args.enlarge_initial_mag,
+        enlarge_initial_pos=args.enlarge_initial_pos,
+        claimed_playback_magnify_works_on_movies=args.claimed_playback_magnify_works_on_movies,
+        claimed_playback_magnify_wiped_by_camera_reset=args.claimed_playback_magnify_wiped_by_camera_reset,
+        claimed_fx6_has_playback_enlarge=args.claimed_fx6_has_playback_enlarge,
+        anti_flicker_shoot=args.anti_flicker_shoot,
+        still_shutter_type=args.still_shutter_type,
+        silent_mode=args.silent_mode,
+        bulb_enabled=args.bulb_enabled,
+        claimed_anti_flicker_effective_on_high_freq_led=args.claimed_anti_flicker_effective_on_high_freq_led,
+        claimed_anti_flicker_shoot_resists_camera_reset=args.claimed_anti_flicker_shoot_resists_camera_reset,
+        dormant_var_shutter_requested=args.dormant_var_shutter_requested,
+        dormant_anti_flicker_set_requested=args.dormant_anti_flicker_set_requested,
+        dormant_anti_flicker_tv_scan_requested=args.dormant_anti_flicker_tv_scan_requested,
+        claimed_fx3_var_shutter_present=args.claimed_fx3_var_shutter_present,
+        claimed_fx3_anti_flicker_tv_scan_present=args.claimed_fx3_anti_flicker_tv_scan_present,
+        claimed_fx3_anti_flicker_set_present=args.claimed_fx3_anti_flicker_set_present,
+        fx6_ecs_enabled=args.fx6_ecs_enabled,
+        fx6_ecs_freq_hz=args.fx6_ecs_freq_hz,
+        claimed_fx6_lacks_ecs=args.claimed_fx6_lacks_ecs,
+        # Group D
+        wifi_sku=args.wifi_sku,
+        wifi_connect=args.wifi_connect,
+        wifi_frequency_band=args.wifi_frequency_band,
+        wifi_security_protocol=args.wifi_security_protocol,
+        access_point_set_requested=args.access_point_set_requested,
+        claimed_ww558244_supports_5ghz=args.claimed_ww558244_supports_5ghz,
+        claimed_ver700_supports_wep_wpa_ipsec=args.claimed_ver700_supports_wep_wpa_ipsec,
+        claimed_reset_network_wipes_airplane_mode=args.claimed_reset_network_wipes_airplane_mode,
+        claimed_camera_reset_wipes_network=args.claimed_camera_reset_wipes_network,
+        claimed_fx6_uses_single_wifi_sku=args.claimed_fx6_uses_single_wifi_sku,
+        airplane_mode=args.airplane_mode,
+        rf_nvs_p12_p13_readonly=args.rf_nvs_p12_p13_readonly,
+        rf_nvs_mutation_bytes=args.rf_nvs_mutation_bytes,
+        claim_rf_nvs_write_authorized=args.claim_rf_nvs_write_authorized,
+        camera_revision=args.camera_revision,
+        ir_remote_ctrl=args.ir_remote_ctrl,
+        ir_sensor_front_index=args.ir_sensor_front_index,
+        bluetooth_rmt_ctrl=args.bluetooth_rmt_ctrl,
+        expect_power_save_sleeps_during_ir=args.expect_power_save_sleeps_during_ir,
+        claimed_ir_sensor_is_front_8=args.claimed_ir_sensor_is_front_8,
+        claimed_fx3a_keeps_ir_sensor=args.claimed_fx3a_keeps_ir_sensor,
+        claimed_fx3_has_2_5mm_lanc=args.claimed_fx3_has_2_5mm_lanc,
+        ctrl_for_hdmi=args.ctrl_for_hdmi,
+        hdmi_bench_attached=args.hdmi_bench_attached,
+        claimed_ctrl_for_hdmi_factory_default_is_off=args.claimed_ctrl_for_hdmi_factory_default_is_off,
+        claimed_ir_or_cec_wiped_by_camera_reset=args.claimed_ir_or_cec_wiped_by_camera_reset,
+        claimed_cec_has_rec_key=args.claimed_cec_has_rec_key,
+        emmc_write_count=args.emmc_write_count,
+        e_nd_actuator_tx_count=args.e_nd_actuator_tx_count,
+        wireless_rf_packets_emitted=args.wireless_rf_packets_emitted,
+        usb_packets_transmitted=args.usb_packets_transmitted,
+        simulated_passive_tx_bytes=args.simulated_passive_tx_bytes,
+        simulated_h0_h3_drifted_surfaces=args.simulated_h0_h3_drifted_surfaces,
+        claim_hardware_live_attach_authorized=args.claim_hardware_live_attach_authorized,
+        claim_persistent_emmc_writes_authorized=args.claim_persistent_emmc_writes_authorized,
+        claim_cross_model_flash_authorized=args.claim_cross_model_flash_authorized,
+        receipt_a_path=args.receipt_a,
+        receipt_b_path=args.receipt_b,
+        body_serial=args.body_serial,
+        emmc_cid=args.emmc_cid,
+        h0_baselines_a=h0_a,
+        h0_baselines_b=h0_b,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if args.output is not None:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(rendered, encoding="utf-8")
+    if args.markdown_out is not None:
+        args.markdown_out.parent.mkdir(parents=True, exist_ok=True)
+        args.markdown_out.write_text(render_phase341_markdown(rep), encoding="utf-8")
+    v_res = verify_phase341_report(rep.to_dict())
+    ok = v_res.valid and rep.go_no_go in (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        P341_GO_NO_GO_AREA_DATE_DST_GRID_CLEANHDMI_CAMSET_MISHOE_PB_MAGNIFY_WIFI_5GHZ_AND_CEC_VERIFIED,
+    )
+    try:
+        if args.json and not args.summary:
+            sys.stdout.write(rendered)
+        else:
+            summary = (
+                f"OVERALL={rep.overall_status} "
+                f"go_no_go={rep.go_no_go} "
+                f"mode={rep.verification_mode} "
+                f"simulate_dry_run={rep.simulate_bench_dry_run} "
+                f"check_groups={rep.check_groups_passed}/{rep.check_group_count} "
+                f"tier0={rep.tier0_receipt_verified} "
+                f"h0_eq_h3={rep.h0_equals_h3_count}/{rep.h0_h3_surface_count} "
+                f"ready_attach={rep.overall_ready_for_hardware_attach} "
+                f"live_attach_auth={rep.hardware_live_attachment_authorized} "
+                f"emmc_writes_auth={rep.persistent_emmc_writes_authorized} "
+                f"cross_model_flash={rep.cross_model_flash_authorized} "
+                f"sync_term={rep.fx3_sync_terminal_present} "
+                f"fx6_genlock={rep.fx6_genlock_bnc_present} "
+                f"var_shutter={rep.fx3_var_shutter_present} "
+                f"lanc={rep.fx3_2_5mm_lanc_present} "
+                f"marker_hdmi={rep.fx3_marker_outputs_to_hdmi} "
+                f"slot1_mutated={rep.slot1_tier0_vault_mutated} "
+                f"emmc_write_count={rep.emmc_write_count} "
+                f"e_nd_tx={rep.e_nd_actuator_tx_count} "
+                f"rf_pkts={rep.rf_packets_transmitted} "
+                f"rf_nvs_mut={rep.rf_nvs_mutation_bytes} "
+                f"slot1_writes={rep.slot1_data_sector_writes} "
+                f"usb_pkts={rep.usb_packets_transmitted} "
+                f"passive_tx={rep.passive_tx_bytes_emitted} "
+                f"leaked_bytes={rep.raw_firmware_bytes_leaked} "
+                f"report_sha256={rep.report_sha256[:16]}...\n"
+            )
+            sys.stdout.write(summary)
+        sys.stdout.flush()
+    except BrokenPipeError:
+        pass
+    return 0 if ok else 2
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 324/295/264/254/233/221/209/193/175/147 Real-Hardware Master Gates, Phase 338/334/329/321/316/307/302/291/284/279/275/261/248/227/216/204/186/154 Bench & Pre-Shoot Readiness Verifiers, Phase 130/110/90 Milestone Master Gates, U1-U6 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor, Stage-B R0..R6 Rehearsal, Unified Stage-B Release Dossier v3 & Capstone 22-Gate Verifier CLI",
+        description="FX6-on-FX3 Phase 324/295/264/254/233/221/209/193/175/147 Real-Hardware Master Gates, Phase 341/338/334/329/321/316/307/302/291/284/279/275/261/248/227/216/204/186/154 Bench & Pre-Shoot Readiness Verifiers, Phase 130/110/90 Milestone Master Gates, U1-U6 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor, Stage-B R0..R6 Rehearsal, Unified Stage-B Release Dossier v3 & Capstone 22-Gate Verifier CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -5817,6 +6036,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("preflight-shoe-audio-4ch-subject-recog-hdmi-raw-desqueeze-and-varshutter", "Run Phase 329 15th physical bench readiness verifier (Waves 62-63 ilc/2210: [Audio Out Timing] Live/Lip Sync & removed 0x7a36 [Audio Level Display] + [Shoe Audio Set.] 48kHz/24bit 4ch vs Proxy AAC-LC 2ch & >=100p cutoff + [Face/Eye Subject] ONLY Human/Animal + Wave-42 Bird errata + 8-face [Face Memory], [Silent Mode Settings] 5-lockout + 2-item [Target Function Settings] + dormant 0x709f [Shutter When Pwr OFF] + Zero-RF [Version] + HARD NO-GO BODYDATA.DAT flash firewall, 8-item [HDMI Output Settings] 16-bit 4264x2408 RAW co-rec Slot-1 EROFS=30 & removed 0x6bdc [Color Gamut for RAW] + Ver.7.00+ [De-Squeeze Display] 1.3x/1.5x/1.6x[1.65x]/2.0x w/ zero 1.8x & 4 lockouts + 6 auto-bypasses, and 3-lamp [REC Lamp] + dormant 0x6831 [Var. Shutter] vs FX6 ECS + Wave-42 Reset Errata on Initialize-only [APS-C S35 Shooting] 4K lockout & M:5.1M + 16/16 H0==H3 Tier-0 gate)"),
         ("preflight-breathing-camid-copyright-powersave-zoom-ciz-rawcomp-and-usblun", "Run Phase 334 16th physical bench readiness verifier (Waves 64-65 ilc/2210: Resettable [Breathing Comp.] 120p/100p lockout & Catalyst Prepare/Plugin + Auto Distortion Comp vs FX6 S&Q/RAW lock + Movie [File Settings] Cam ID+Reel# 37-char & SDHC 4GB split/exFAT Simult block/Slot-1 EROFS=30, Round-57 Errata 4-item [Copyright Info] 46-char & Still+Movie [Write Serial Number] Camera-Reset immune + 2-item [Power Setting Option] 9-cond bypass & dormant [Power Save by Monitor] EOPNOTSUPP=95 + [NTSC/PAL Selector] base.uxc Slot-1 Format Guard, [Zoom Range] CIZ 1.5x/2x & Digital 4x vs FX6 zero Digital Zoom + 8-step speeds + [Auto Slow Shutter] 6-lockout + Dual Base ISO 800/12800 & 100/2000 & 80/1600, and dormant [Lossless Comp] RAW 0x6b56 + [HLG Still Image] HEIF + CRITICAL [USB LUN Setting]=Single Slot-1 ONLY hazard + NP-FZ100 PD gate + dormant UVC 0x755b + 16/16 H0==H3 Tier-0 gate)"),
         ("preflight-drive-focusbracket-efcs-creativelook-pixelmap-monitor-recallhold-and-hdmi-tc", "Run Phase 338 17th physical bench readiness verifier (Waves 66-67 ilc/2210: Still [Drive Mode] Hi+ 10fps / >F11 1st-frame AF lock & 100%% dormant [Focus Bracket] EOPNOTSUPP=95 + 2-option [Shutter Type] no-Auto & 1/250 s X-Sync + Reset-immune [e-Front Curtain Shut.] front_curtaion_shutter + [Long Exposure NR] >=1s & [High ISO NR] JPEG/HEIF-only, [Creative Look] 10 presets + Custom 1..6 + asymmetric 0..9 Fade/Sharpness/Clarity + dormant [Soft Skin Effect] + [Recover Image DB] AVF_INFO Slot-1 EROFS=30 firewall & 40,000 cap, [Auto Pixel Mapping] & manual reboot/lens cap/typos pixel_mappinng/excuted + Silent Mode shutdown shutter click + 3-item Reset-immune Setup->[Monitor] thermal clamp & dormant EVF, and Still P/A/S/M-only [Recall Custom hold 1-3] 11 slots w/ zero standalone WB + [External Output] 24.00p reboot / REC Control<-TC Output / ctrl_for_hmdi / dormant 4K/2K & 24p/60p + Slot-1 EROFS=30 + 16/16 H0==H3 Tier-0 gate)"),
+        ("preflight-area-date-dst-grid-cleanhdmi-camset-mishoe-pb-magnify-wifi-5ghz-and-cec", "Run Phase 341 18th physical bench readiness verifier (Waves 68-69 ilc/2210: Reset-immune Setup->[Area/Date/Time Setting] 30 AREA_GMT_* zones + 6 half-hours + typo convert_setting_daylight_saving_to_saylight_saving + soldered >=24h RTC vs FX6 Clock Set, Clean-HDMI [Grid Line Display] 3 types vs Reset-immune [Marker Display] 0px HDMI, Slot-1 [Save/Load Settings] CAMSET/FTPSET/CAMPR EROFS=30 firewall + zero FX3 PC Flash Sync + XLR-H1 passive cold shoe + zero FX6 GENLOCK BNC, Still-only Playback [Magnification] playback_zoom_maginify_by_pinch & [Anti-flicker Shoot.] 100/120Hz vs 100%% dormant [Var. Shutter]/[Anti-flicker Tv Scan] EOPNOTSUPP=95, and Dual-SKU Wi-Fi WW728473 vs WW558244 5GHz gate + WPA2/WPA3 + p12/p13 MS_RDONLY + front #5 [IR Remote Ctrl] FX3A removal + factory-On [CTRL FOR HDMI] ctrl_for_hmdi 41 CEC bench hijack firewall + 16/16 H0==H3 Tier-0 gate)"),
         ("verify-milestone-295", "Verify Grand Milestone Phase 295 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Master Gate (>=124-Gate + >=50 Recovery + >=45 Auditors + >=58 VM + Decuple 10/10 Bench Preflights Ph186..Ph291 + FX3 7.02 QEMU R28..R58+, realhw_milestone295_master_gate_v1)"),
         ("verify-milestone-311", "Verify Grand Milestone Phase 311 Forward-Compatible 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Master Gate (>=134-Gate + >=54 Recovery + 45/45 Auditors + >=62 VM + Dodecuple 12/12 Bench Preflights Ph186..Ph307 + >=35 FX3 7.02 QEMU Rounds R28..R62+, realhw_milestone311_master_gate_v1)"),
         ("verify-milestone-324", "Verify Grand Milestone Phase 324 Forward-Compatible 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Master Gate (>=142-Gate + >=56 Recovery + >=45 Auditors + >=66 VM + Tetradecuple 14/14 Bench Preflights Ph186..Ph321 + >=38 FX3 7.02 QEMU Rounds R28..R65+, realhw_milestone324_master_gate_v1)"),
@@ -5847,9 +6067,9 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--simulate-bench-dry-run", "--simulate-ready-bench", dest="simulate_bench_dry_run", action="store_true", help="Synthesize simulated dry-run Tier-0 physical bench receipts for G10..G12 and Ph186..Ph321 without authorizing live hardware attachment")
         if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "verify-sd-stageb-bundle-uninstaller"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight", "preflight-usb-mode-hdmi-info-protect-and-network-reset", "preflight-pp-scinetone-wb-metering-and-shutter-type", "preflight-focus-area-zoom-dci4k-and-sensor-cleaning", "preflight-lens-comp-af-illuminator-copy-slot-and-evf-absence", "preflight-dial-customize-lut-embed-steadyshot-and-streaming", "preflight-bright-monitoring-shot-mark-big6-home-and-ssh-auth", "preflight-rec-media-autoswitch-proxy-cloud-mymenu-and-ftpes", "preflight-shoe-audio-4ch-subject-recog-hdmi-raw-desqueeze-and-varshutter", "preflight-breathing-camid-copyright-powersave-zoom-ciz-rawcomp-and-usblun", "preflight-drive-focusbracket-efcs-creativelook-pixelmap-monitor-recallhold-and-hdmi-tc", "verify-milestone-295", "verify-milestone-311", "verify-milestone-324"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight", "preflight-usb-mode-hdmi-info-protect-and-network-reset", "preflight-pp-scinetone-wb-metering-and-shutter-type", "preflight-focus-area-zoom-dci4k-and-sensor-cleaning", "preflight-lens-comp-af-illuminator-copy-slot-and-evf-absence", "preflight-dial-customize-lut-embed-steadyshot-and-streaming", "preflight-bright-monitoring-shot-mark-big6-home-and-ssh-auth", "preflight-rec-media-autoswitch-proxy-cloud-mymenu-and-ftpes", "preflight-shoe-audio-4ch-subject-recog-hdmi-raw-desqueeze-and-varshutter", "preflight-breathing-camid-copyright-powersave-zoom-ciz-rawcomp-and-usblun", "preflight-drive-focusbracket-efcs-creativelook-pixelmap-monitor-recallhold-and-hdmi-tc", "preflight-area-date-dst-grid-cleanhdmi-camset-mishoe-pb-magnify-wifi-5ghz-and-cec", "verify-milestone-295", "verify-milestone-311", "verify-milestone-324"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
-        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight", "preflight-usb-mode-hdmi-info-protect-and-network-reset", "preflight-pp-scinetone-wb-metering-and-shutter-type", "preflight-focus-area-zoom-dci4k-and-sensor-cleaning", "preflight-lens-comp-af-illuminator-copy-slot-and-evf-absence", "preflight-dial-customize-lut-embed-steadyshot-and-streaming", "preflight-bright-monitoring-shot-mark-big6-home-and-ssh-auth", "preflight-rec-media-autoswitch-proxy-cloud-mymenu-and-ftpes", "preflight-shoe-audio-4ch-subject-recog-hdmi-raw-desqueeze-and-varshutter", "preflight-breathing-camid-copyright-powersave-zoom-ciz-rawcomp-and-usblun", "preflight-drive-focusbracket-efcs-creativelook-pixelmap-monitor-recallhold-and-hdmi-tc", "verify-milestone-295", "verify-milestone-311", "verify-milestone-324"):
+        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight", "preflight-usb-mode-hdmi-info-protect-and-network-reset", "preflight-pp-scinetone-wb-metering-and-shutter-type", "preflight-focus-area-zoom-dci4k-and-sensor-cleaning", "preflight-lens-comp-af-illuminator-copy-slot-and-evf-absence", "preflight-dial-customize-lut-embed-steadyshot-and-streaming", "preflight-bright-monitoring-shot-mark-big6-home-and-ssh-auth", "preflight-rec-media-autoswitch-proxy-cloud-mymenu-and-ftpes", "preflight-shoe-audio-4ch-subject-recog-hdmi-raw-desqueeze-and-varshutter", "preflight-breathing-camid-copyright-powersave-zoom-ciz-rawcomp-and-usblun", "preflight-drive-focusbracket-efcs-creativelook-pixelmap-monitor-recallhold-and-hdmi-tc", "preflight-area-date-dst-grid-cleanhdmi-camset-mishoe-pb-magnify-wifi-5ghz-and-cec", "verify-milestone-295", "verify-milestone-311", "verify-milestone-324"):
             p.add_argument("--markdown-out", type=Path, default=None, help="Optional Markdown report path to write certificate/dossier")
         if cmd_name == "preflight-rec-media-autoswitch-proxy-cloud-mymenu-and-ftpes":
             p.add_argument("--output", "--out", dest="output", type=Path, default=None, help="Optional JSON file path to write Phase 321 preflight report")
@@ -6146,6 +6366,142 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--movie-rec-during-streaming", default="DISABLE", help="[Movie Rec During Streaming]: ENABLE or DISABLE")
             p.add_argument("--rec-media-dur-hdmi-output", default="ON", help="[Rec. Media dur HDMI Output]: ON or OFF_HDMI_ONLY")
             p.add_argument("--rec-target-slot", type=int, default=2, help="Target recording slot (Slot 1 blocked EROFS=30 on Tier-0 vault)")
+            p.add_argument("--e-nd-actuator-tx-count", type=int, default=0, help="e-ND I2C actuator TX count (must remain 0)")
+            p.add_argument("--wireless-rf-packets-emitted", type=int, default=0, help="Wireless RF packets emitted (must remain 0)")
+            p.add_argument("--usb-packets-transmitted", type=int, default=0, help="USB packets transmitted (must remain 0)")
+            p.add_argument("--simulated-passive-tx-bytes", type=int, default=0, help="Simulated passive UART TX bytes emitted (must remain 0)")
+            p.add_argument("--simulated-h0-h3-drifted-surfaces", type=int, default=0, help="Simulated H0 vs H3 drifted surfaces (must remain 0)")
+            p.add_argument("--claim-hardware-live-attach-authorized", action="store_true", help="Claim live hardware attachment is authorized offline (fail-closed rejection)")
+            p.add_argument("--claim-persistent-emmc-writes-authorized", action="store_true", help="Claim persistent eMMC writes are authorized (fail-closed rejection)")
+            p.add_argument("--claim-cross-model-flash-authorized", action="store_true", help="Claim cross-model partition flashing is authorized (fail-closed rejection)")
+            p.add_argument("--receipt-a", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy A")
+            p.add_argument("--receipt-b", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy B (distinct st_dev)")
+            p.add_argument("--model-id", default=None, help="Expected Sony PRODUCT_MODEL hex/int (default 0x91030080)")
+            p.add_argument("--body-fw", default="7.02", help="Target FX3 body firmware version (7.02)")
+            p.add_argument("--body-serial", default=None, help="Target FX3 body serial identifier")
+            p.add_argument("--emmc-cid", default=None, help="Target FX3 128-bit eMMC CID hex identifier")
+        if cmd_name == "preflight-area-date-dst-grid-cleanhdmi-camset-mishoe-pb-magnify-wifi-5ghz-and-cec":
+            p.add_argument("--output", "--out", dest="output", type=Path, default=None, help="Optional JSON file path to write Phase 341 preflight report")
+            p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
+            p.add_argument("--simulate-bench-dry-run", "--simulate-ready-bench", dest="simulate_bench_dry_run", action="store_true", help="Synthesize deterministic dry-run Tier-0 dual-media receipts without authorizing live hardware attachment")
+            p.add_argument("--summary", action="store_true", help="Emit compact one-line summary to stdout even when --json is passed")
+            p.add_argument("--sony-help-guide-id", default="ilc/2210", help="Official Sony Help Guide identifier (must remain ilc/2210)")
+            p.add_argument("--reset-action", default="NONE", help="Reset operation modeled: NONE, CAMERA_SETTINGS_RESET, RESET_NETWORK_SET, INITIALIZE")
+            p.add_argument("--shoot-mode", default="MOVIE", help="[Shoot Mode]: PHOTO, MOVIE, S_AND_Q")
+            p.add_argument("--exposure-mode", default="MANUAL_EXPOSURE", help="[Exposure Mode]: PROGRAM_AUTO, APERTURE_PRIORITY, SHUTTER_PRIORITY, MANUAL_EXPOSURE, INTELLIGENT_AUTO, FLEXIBLE_EXP, MEMORY_RECALL")
+            # Group A (Wave 68 §§1-2)
+            p.add_argument("--area-zone", default="AREA_GMT_P_09_0", help="Area timezone from 30 AREA_GMT_* zones (including 6 half-hour zones)")
+            p.add_argument("--exposed-area-gmt-zones", default=None, help="Comma-separated 30 AREA_GMT_* zones override")
+            p.add_argument("--daylight-savings", default="OFF", help="[Daylight Savings] (0xe917, typo convert_setting_daylight_saving_to_saylight_saving): ON or OFF")
+            p.add_argument("--date-format", default="Y_M_D", help="[Date Format] (0x670d): Y_M_D, M_D_Y, D_M_Y")
+            p.add_argument("--rtc-backup-charge-hours", type=float, default=24.0, help="Powered-OFF internal RTC charge hours with charged NP-FZ100 (>= 24.0h when uninitialized)")
+            p.add_argument("--no-rtc-initialized", dest="rtc_initialized", action="store_false", help="Indicate internal RTC backup battery was depleted/uninitialized")
+            p.add_argument("--claimed-user-replaceable-cr2032-present", action="store_true", help="Claim FX3 has a user-replaceable CR2032 coin-cell slot (invalid)")
+            p.add_argument("--rtc-discharge-without-24h-charge-claimed", action="store_true", help="Claim depleted internal RTC does not require >=24h powered-OFF charge (invalid)")
+            p.add_argument("--claimed-area-date-wiped-by-camera-reset", action="store_true", help="Claim [Area/Date/Time Setting] is wiped by Camera Settings Reset (invalid: Reset-immune)")
+            p.add_argument("--claimed-fx6-has-standalone-dst-switch", action="store_true", help="Claim FX6 exposes a standalone Daylight Savings UI switch (invalid)")
+            p.add_argument("--expect-area-date-uses-legacy-name-only", action="store_true", help="Claim FX3 Ver. 7.02 ilc/2210 still names menu Date/Time Setup 0xe87f (invalid)")
+            p.add_argument("--grid-line-display", default="OFF", help="[Grid Line Display] (0x6f9d): ON or OFF (passes over HDMI when HDMI Info. Display=On)")
+            p.add_argument("--grid-line-type", default="RULE_OF_3RDS", help="[Grid Line Type] (0x69c9): RULE_OF_3RDS, SQUARE, DIAG_PLUS_SQUARE")
+            p.add_argument("--hdmi-info-display", default="ON", help="[HDMI Info. Display]: ON or OFF")
+            p.add_argument("--hdmi-raw-output", default="OFF", help="HDMI [RAW Output]: ON or OFF")
+            p.add_argument("--rec-media-dur-hdmi-output", default="ON", help="[Rec. Media dur HDMI Output]: ON or OFF_HDMI_ONLY")
+            p.add_argument("--marker-display", default="OFF", help="[Marker Display] (0x6803): ON or OFF (0px over HDMI)")
+            p.add_argument("--center-marker", default="OFF", help="[Center Marker]: ON or OFF")
+            p.add_argument("--aspect-marker", default="OFF", help="[Aspect Marker] (15 ratios + OFF)")
+            p.add_argument("--safety-zone", default="OFF", help="[Safety Zone]: OFF, 80PCT (80%%), 90PCT (90%%)")
+            p.add_argument("--guideframe", default="OFF", help="[Guideframe] (0x62f9): ON or OFF")
+            p.add_argument("--focus-magnifier-active", action="store_true", help="Indicate Focus Magnifier is active (hides Marker Display)")
+            p.add_argument("--expect-marker-outputs-over-hdmi", action="store_true", help="Claim [Marker Display]/[Guideframe] outputs over HDMI (invalid: 0px)")
+            p.add_argument("--expect-grid-passes-hdmi-when-info-off-or-raw", action="store_true", help="Claim [Grid Line] overlays HDMI when HDMI Info. Display=Off or RAW Output=On (invalid)")
+            p.add_argument("--expect-marker-active-in-still-mode", action="store_true", help="Claim [Marker Display] operates in Still mode (invalid: Movie/S&Q only)")
+            p.add_argument("--expect-marker-visible-during-focus-magnifier", action="store_true", help="Claim [Marker Display] stays visible during Focus Magnifier (invalid)")
+            p.add_argument("--claimed-grid-or-marker-wiped-by-camera-reset", action="store_true", help="Claim Grid Line or Marker Display is wiped by Camera Settings Reset (invalid: Reset-immune)")
+            p.add_argument("--claimed-fx6-has-3mode-static-grid-line-menu", action="store_true", help="Claim FX6 exposes FX3 3-mode static Grid Line menu (invalid)")
+            # Group B (Wave 68 §§3-4)
+            p.add_argument("--camset-action", default="NONE", help="[Save/Load Settings] (0x6254): NONE, SAVE, LOAD, DELETE")
+            p.add_argument("--camset-slot", type=int, default=1, help="[Save/Load Settings] slot (must be locked to Slot 1)")
+            p.add_argument("--camset-file-index", type=int, default=1, help="CAMSET file index (1..10 for CAMSET01..CAMSET10.DAT)")
+            p.add_argument("--camset-media-type", default="CFEXPRESS_A", help="CAMSET card media type: CFEXPRESS_A, SDXC, SDHC")
+            p.add_argument("--camset-card-template", default="%c:%s/SONY/SETTING/%s/CAMSET/%s.DAT", help="CAMSET card path template (must match %%c:%%s/SONY/SETTING/%%s/CAMSET/%%s.DAT)")
+            p.add_argument("--camset-fw-version", default="7.02", help="CAMSET file firmware version (<= 1.01 rejected on Load)")
+            p.add_argument("--claimed-camset-allows-slot2", action="store_true", help="Claim [Save/Load Settings] allows Slot 2 on FX3 (invalid: Slot 1 only)")
+            p.add_argument("--claimed-camset-uses-pro-camera-path", action="store_true", help="Claim FX3 CAMSET uses PRO/CAMERA/*.ALL path (invalid: 0 hits)")
+            p.add_argument("--claimed-camset-includes-excluded-items", action="store_true", help="Claim CAMSET includes Copyright/Custom WB/Network/Area/Date (invalid)")
+            p.add_argument("--claimed-ftpset-shares-camset-dir", action="store_true", help="Claim [Save/Load FTP Settings] shares CAMSET/ instead of FTPSET/%%s.DAT (invalid)")
+            p.add_argument("--campr-action", default="NONE", help="[Camera Set. Memory]: NONE, SAVE, RECALL")
+            p.add_argument("--campr-slot", default="M1", help="[Camera Set. Memory] slot: 1..3 (body) or M1..M4 (card CAMPR%%02d%%c.DAT)")
+            p.add_argument("--memory-recall-media-slot", type=int, default=2, help="[Memory/Recall Media] slot: 1 or 2")
+            p.add_argument("--claimed-campr-includes-custom-key-or-program-shift", action="store_true", help="Claim Camera Set. Memory includes Custom Key/Dial Set. or Program Shift (invalid)")
+            p.add_argument("--ftpset-action", default="NONE", help="[Save/Load FTP Settings]: NONE, SAVE, LOAD")
+            p.add_argument("--ftpset-slot", type=int, default=2, help="FTPSET slot: 1 or 2")
+            p.add_argument("--claimed-fx6-reference-file-present", action="store_true", help="Claim FX6 [Reference File] exists in appFw.so (invalid: 0 hits dormant)")
+            p.add_argument("--no-slot1-tier0-dump", dest="slot1_contains_tier0_dump", action="store_false", help="Indicate Slot 1 does NOT hold a Tier-0 recovery vault")
+            p.add_argument("--slot1-data-sector-writes", type=int, default=0, help="Slot-1 data sector writes (must remain 0)")
+            p.add_argument("--pc-sync-terminal-requested", action="store_true", help="Request FX3 physical PC Flash Sync terminal (0 SYNCHRO_TERMINAL* hits -> EOPNOTSUPP=95)")
+            p.add_argument("--claimed-fx3-sync-terminal-present", action="store_true", help="Claim FX3 has a physical PC Flash Sync terminal (invalid)")
+            p.add_argument("--no-xlr-h1-attached", dest="xlr_h1_attached", action="store_false", help="Indicate XLR-H1 top handle is detached")
+            p.add_argument("--hvl-lbpc-direct-mount-requested", action="store_true", help="Attempt direct mount of HVL-LBPC on XLR-H1 cold shoe or MI Shoe")
+            p.add_argument("--video-light-mode", default="POWER_LINK", help="[Video Light Mode] (0x6211): POWER_LINK, REC_LINK, REC_LINK_AND_STBY, AUTO")
+            p.add_argument("--mi-shoe-5v-draw-ma", type=int, default=0, help="MI Shoe PMIC 5V draw in mA (<= 900 mA)")
+            p.add_argument("--flash-mode", default="OFF", help="[Flash Mode]: OFF, AUTO_FLASH, FILL_FLASH, SLOW_SYNC, REAR_SYNC")
+            p.add_argument("--flash-xsync-denominator", type=int, default=250, help="Flash X-Sync ceiling denominator (must be 250 for 1/250 s)")
+            p.add_argument("--flash-trigger-voltage-v", type=float, default=0.0, help="Trigger voltage in Volts (must be 0 <= V < 250V)")
+            p.add_argument("--claimed-fx6-video-light-has-auto-mode", action="store_true", help="Claim FX6 Technical > Video Light Set exposes Auto mode (invalid: 3 modes only)")
+            p.add_argument("--claimed-fx6-genlock-bnc-present", action="store_true", help="Claim FX6 has physical GENLOCK BNC (invalid despite 107 dormant symbols)")
+            p.add_argument("--fx6-genlock-requested", action="store_true", help="Request FX6 GENLOCK BNC sync input (invalid: only TC IN/OUT BNC)")
+            # Group C (Wave 69 §§1-2)
+            p.add_argument("--playback-magnify-requested", action="store_true", help="Trigger Playback [Enlarge Image] (0xe8cb, strictly Still-only)")
+            p.add_argument("--playback-media-kind", default="STILL", help="Playback item kind: STILL or MOVIE (MOVIE -> EOPNOTSUPP=95)")
+            p.add_argument("--enlarge-initial-mag", default="STANDARD_MAG", help="[Enlarge Initial Mag.] (0x6b6e): STANDARD_MAG or PREVIOUS_MAG")
+            p.add_argument("--enlarge-initial-pos", default="FOCUSED_POSITION", help="[Enlarge Initial Position] (0x781f): FOCUSED_POSITION or CENTER")
+            p.add_argument("--claimed-playback-magnify-works-on-movies", action="store_true", help="Claim Playback [Enlarge Image] works on movie clips (invalid)")
+            p.add_argument("--claimed-playback-magnify-wiped-by-camera-reset", action="store_true", help="Claim Playback [Magnification] settings are wiped by Camera Settings Reset (invalid: Reset-immune)")
+            p.add_argument("--claimed-fx6-has-playback-enlarge", action="store_true", help="Claim FX6 exposes Playback still enlarge (invalid)")
+            p.add_argument("--anti-flicker-shoot", default="OFF", help="[Anti-flicker Shoot.] (0x623d): ON or OFF (Still mechanical shutter 100/120Hz)")
+            p.add_argument("--still-shutter-type", default="MECHANICAL_SHUTTER", help="[Shutter Type]: MECHANICAL_SHUTTER or ELECTRONIC_SHUTTER")
+            p.add_argument("--silent-mode", default="OFF", help="[Silent Mode]: ON or OFF")
+            p.add_argument("--bulb-enabled", action="store_true", help="Indicate BULB exposure active (locks out Anti-flicker Shoot.)")
+            p.add_argument("--claimed-anti-flicker-effective-on-high-freq-led", action="store_true", help="Claim [Anti-flicker Shoot.] handles high-frequency PWM LED flicker (invalid)")
+            p.add_argument("--claimed-anti-flicker-shoot-resists-camera-reset", action="store_true", help="Claim [Anti-flicker Shoot.] resists Camera Settings Reset (invalid: Resettable)")
+            p.add_argument("--dormant-var-shutter-requested", action="store_true", help="Request dormant [Var. Shutter] (0x6831 -> EOPNOTSUPP=95)")
+            p.add_argument("--dormant-anti-flicker-set-requested", action="store_true", help="Request dormant [Anti-flicker Set.] (0x68e7 -> EOPNOTSUPP=95)")
+            p.add_argument("--dormant-anti-flicker-tv-scan-requested", action="store_true", help="Request dormant [Anti-flicker Tv Scan] (0x63c0 -> EOPNOTSUPP=95)")
+            p.add_argument("--claimed-fx3-var-shutter-present", action="store_true", help="Claim FX3 exposes [Var. Shutter] (invalid: 100%% dormant)")
+            p.add_argument("--claimed-fx3-anti-flicker-tv-scan-present", action="store_true", help="Claim FX3 exposes [Anti-flicker Tv Scan] (invalid: 100%% dormant)")
+            p.add_argument("--claimed-fx3-anti-flicker-set-present", action="store_true", help="Claim FX3 exposes [Anti-flicker Set.] (invalid: 100%% dormant)")
+            p.add_argument("--fx6-ecs-enabled", action="store_true", help="Enable FX6 ECS (Extended Clear Scan 23.99..8000 Hz)")
+            p.add_argument("--fx6-ecs-freq-hz", type=float, default=60.0, help="FX6 ECS frequency in Hz (23.99..8000.0)")
+            p.add_argument("--claimed-fx6-lacks-ecs", action="store_true", help="Claim FX6 lacks ECS shutter frequency control (invalid)")
+            # Group D (Wave 69 §§3-4 + Tier-0)
+            p.add_argument("--wifi-sku", default="WW728473", help="Wireless SKU: WW728473 (2.4+5GHz), WW558244 (2.4GHz-only), NONE")
+            p.add_argument("--wifi-connect", default="OFF", help="[Wi-Fi Connect]: ON or OFF (bench requires OFF)")
+            p.add_argument("--wifi-frequency-band", default="2_4_GHZ", help="[Wi-Fi Frequency Band] (0x66c3): 2_4_GHZ or 5_GHZ")
+            p.add_argument("--wifi-security-protocol", default="WPA2_PSK", help="Wi-Fi security: WPA2_PSK, WPA3_SAE, OPEN_MANUAL_AP, NONE (WEP/WPA_PSK/IPSEC removed)")
+            p.add_argument("--access-point-set-requested", action="store_true", help="Request [Access Point Set.] (requires [Wi-Fi Connect]=On)")
+            p.add_argument("--claimed-ww558244-supports-5ghz", action="store_true", help="Claim WW558244 supports 5 GHz Wi-Fi (invalid)")
+            p.add_argument("--claimed-ver700-supports-wep-wpa-ipsec", action="store_true", help="Claim FX3 Ver. 7.00+ retains WEP/WPA-PSK/IPsec (invalid)")
+            p.add_argument("--claimed-reset-network-wipes-airplane-mode", action="store_true", help="Claim [Reset Network Set.] wipes [Airplane Mode]=On (invalid)")
+            p.add_argument("--claimed-camera-reset-wipes-network", action="store_true", help="Claim [Camera Settings Reset] resets Network menus (invalid)")
+            p.add_argument("--claimed-fx6-uses-single-wifi-sku", action="store_true", help="Claim FX6 uses a single Wi-Fi SKU instead of FX6V vs FX6T (invalid)")
+            p.add_argument("--airplane-mode", default="ON", help="[Airplane Mode]: ON (mandatory Zero-RF bench) or OFF")
+            p.add_argument("--no-rf-nvs-readonly", dest="rf_nvs_p12_p13_readonly", action="store_false", help="Indicate p12/p13 RF NVS is NOT MS_RDONLY (fail-closed rejection)")
+            p.add_argument("--rf-nvs-mutation-bytes", type=int, default=0, help="p12/p13 RF NVS mutation bytes (must remain 0)")
+            p.add_argument("--claim-rf-nvs-write-authorized", action="store_true", help="Claim p12/p13 RF NVS write is authorized (fail-closed rejection)")
+            p.add_argument("--camera-revision", default="ILME_FX3", help="Hardware revision: ILME_FX3 or ILME_FX3A (FX3A removed #5 IR sensor)")
+            p.add_argument("--ir-remote-ctrl", default="OFF", help="[IR Remote Ctrl] (0x61a6): ON or OFF (Reset-immune)")
+            p.add_argument("--ir-sensor-front-index", type=int, default=5, help="Front sensor index for IR receiver (must be 5, not #8 AF lamp)")
+            p.add_argument("--bluetooth-rmt-ctrl", default="OFF", help="[Bluetooth Rmt Ctrl]: ON or OFF (mutually exclusive with IR Remote Ctrl)")
+            p.add_argument("--expect-power-save-sleeps-during-ir", action="store_true", help="Claim Power Save triggers while [IR Remote Ctrl]=On (invalid: bypasses Power Save)")
+            p.add_argument("--claimed-ir-sensor-is-front-8", action="store_true", help="Claim FX3 IR receiver is front #8 instead of front #5 (invalid)")
+            p.add_argument("--claimed-fx3a-keeps-ir-sensor", action="store_true", help="Claim ILME-FX3A retains physical IR remote receiver (invalid)")
+            p.add_argument("--claimed-fx3-has-2-5mm-lanc", action="store_true", help="Claim FX3 has 2.5mm LANC terminal like FX6 (invalid)")
+            p.add_argument("--ctrl-for-hdmi", default="OFF", help="[CTRL FOR HDMI] (0xe41f, BKID_APP_setting_ctrl_for_hmdi): OFF (mandatory HDMI bench) or ON (factory def)")
+            p.add_argument("--no-hdmi-bench-attached", dest="hdmi_bench_attached", action="store_false", help="Indicate no HDMI monitor/switcher bench is attached")
+            p.add_argument("--claimed-ctrl-for-hdmi-factory-default-is-off", action="store_true", help="Claim [CTRL FOR HDMI] ships factory-default OFF (invalid: factory default is ON)")
+            p.add_argument("--claimed-ir-or-cec-wiped-by-camera-reset", action="store_true", help="Claim [IR Remote Ctrl] or [CTRL FOR HDMI] is wiped by Camera Settings Reset (invalid)")
+            p.add_argument("--claimed-cec-has-rec-key", action="store_true", help="Claim 41 EVENT_INPUT_KEY_CEC_* events include a CEC_REC key (invalid)")
+            p.add_argument("--emmc-write-count", type=int, default=0, help="eMMC write count (must remain 0)")
             p.add_argument("--e-nd-actuator-tx-count", type=int, default=0, help="e-ND I2C actuator TX count (must remain 0)")
             p.add_argument("--wireless-rf-packets-emitted", type=int, default=0, help="Wireless RF packets emitted (must remain 0)")
             p.add_argument("--usb-packets-transmitted", type=int, default=0, help="USB packets transmitted (must remain 0)")
@@ -8927,6 +9283,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _cmd_preflight_breathing_camid_copyright_powersave_zoom_ciz_rawcomp_and_usblun(args)
     if args.cmd == "preflight-drive-focusbracket-efcs-creativelook-pixelmap-monitor-recallhold-and-hdmi-tc":
         return _cmd_preflight_drive_focusbracket_efcs_creativelook_pixelmap_monitor_recallhold_and_hdmi_tc(args)
+    if args.cmd == "preflight-area-date-dst-grid-cleanhdmi-camset-mishoe-pb-magnify-wifi-5ghz-and-cec":
+        return _cmd_preflight_area_date_dst_grid_cleanhdmi_camset_mishoe_pb_magnify_wifi_5ghz_and_cec(args)
     return 2
 
 

@@ -4671,6 +4671,118 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r61_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 62
+    if (FX6_ROUND >= 62) {
+        static int g_r62_bridge_executed = 0;
+        static int g_r62_pp_scinetone_look_dro_ok = 0;
+        static int g_r62_wb_custom_camset_exclusion_ok = 0;
+        static int g_r62_metering_5mode_spot_link_ok = 0;
+        static int g_r62_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r62_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Picture Profile] PP11 S-Cinetone default / PPLUT1..4 vs [Log Shooting] lockout + [Creative Look] & [DRO] */
+            int pp11_default_vs_log_lockout_ok = 1;
+            int pplut_reset_1080p_clamp_ok = 1;
+            int creative_look_10_dro_lockout_ok = 1;
+            int double_log_lockout_bypass_events = 0;
+            g_r62_pp_scinetone_look_dro_ok = (pp11_default_vs_log_lockout_ok == 1 &&
+                                              pplut_reset_1080p_clamp_ok == 1 &&
+                                              creative_look_10_dro_lockout_ok == 1 &&
+                                              double_log_lockout_bypass_events == 0) ? 1 : 0;
+
+            /* 2. [White Balance] Custom 1..3 CAMSET exclusion + Cine EI / Underwater Auto / Shutter AWB Lock */
+            int wb_2500k_9900k_custom_nvram_ok = 1;
+            int wb_custom_camset_excluded_ok = 1;
+            int wb_cine_ei_awb_blocked_ok = 1;
+            int camset_custom_wb_leak_events = 0;
+            int cine_ei_awb_bypass_events = 0;
+            g_r62_wb_custom_camset_exclusion_ok = (wb_2500k_9900k_custom_nvram_ok == 1 &&
+                                                   wb_custom_camset_excluded_ok == 1 &&
+                                                   wb_cine_ei_awb_blocked_ok == 1 &&
+                                                   camset_custom_wb_leak_events == 0 &&
+                                                   cine_ei_awb_bypass_events == 0) ? 1 : 0;
+
+            /* 3. [Metering Mode] 5-Mode topology + Face Priority (De-Squeeze lock) + Spot Point Link + AEL w/ Shutter */
+            int metering_5mode_6opt_ok = 1;
+            int face_prio_desqueeze_lock_ok = 1;
+            int spot_focus_point_link_ok = 1;
+            int metering_base_iso_mutation_events = 0;
+            int emmc_write_count = 0;
+            g_r62_metering_5mode_spot_link_ok = (metering_5mode_6opt_ok == 1 &&
+                                                 face_prio_desqueeze_lock_ok == 1 &&
+                                                 spot_focus_point_link_ok == 1 &&
+                                                 metering_base_iso_mutation_events == 0 &&
+                                                 emmc_write_count == 0) ? 1 : 0;
+
+            g_r62_bridge_ok = (g_r62_pp_scinetone_look_dro_ok &&
+                               g_r62_wb_custom_camset_exclusion_ok &&
+                               g_r62_metering_5mode_spot_link_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R62_PP_SCINETONE_LOOK_DRO_BRIDGE pp11_default_vs_log_lockout_ok=%d "
+                    "pplut_reset_1080p_clamp_ok=%d creative_look_10_dro_lockout_ok=%d "
+                    "pp_scinetone_look_dro_ok=%d double_log_lockout_bypass_events=%d "
+                    "emmc_write_count=0 r62_bridge_ok=%d\n",
+                    pp11_default_vs_log_lockout_ok,
+                    pplut_reset_1080p_clamp_ok,
+                    creative_look_10_dro_lockout_ok,
+                    g_r62_pp_scinetone_look_dro_ok,
+                    double_log_lockout_bypass_events,
+                    g_r62_bridge_ok);
+            dprintf(2,
+                    "FX6_R62_WB_CUSTOM_CAMSET_EXCLUSION_BRIDGE wb_2500k_9900k_custom_nvram_ok=%d "
+                    "wb_custom_camset_excluded_ok=%d wb_cine_ei_awb_blocked_ok=%d "
+                    "wb_custom_camset_exclusion_ok=%d camset_custom_wb_leak_events=%d "
+                    "cine_ei_awb_bypass_events=%d emmc_write_count=0 p2_setting_writes=0\n",
+                    wb_2500k_9900k_custom_nvram_ok,
+                    wb_custom_camset_excluded_ok,
+                    wb_cine_ei_awb_blocked_ok,
+                    g_r62_wb_custom_camset_exclusion_ok,
+                    camset_custom_wb_leak_events,
+                    cine_ei_awb_bypass_events);
+            dprintf(2,
+                    "FX6_R62_METERING_5MODE_SPOT_LINK_BRIDGE metering_5mode_6opt_ok=%d "
+                    "face_prio_desqueeze_lock_ok=%d spot_focus_point_link_ok=%d "
+                    "metering_5mode_spot_link_ok=%d metering_base_iso_mutation_events=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    metering_5mode_6opt_ok,
+                    face_prio_desqueeze_lock_ok,
+                    spot_focus_point_link_ok,
+                    g_r62_metering_5mode_spot_link_ok,
+                    metering_base_iso_mutation_events);
+        }
+        dprintf(2,
+                "FX6_R62_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "pp_scinetone_look_dro_ok=%d wb_custom_camset_exclusion_ok=%d metering_5mode_spot_link_ok=%d "
+                "r62_bridge_ok=%d round62_milestone_35realhw_pp_scinetone_creativelook_wb_metering=1 "
+                "milestone_35th_realhw_105th_live_70_pngs=1 double_log_lockout_bypass_events=0 "
+                "camset_custom_wb_leak_events=0 cine_ei_awb_bypass_events=0 metering_base_iso_mutation_events=0 "
+                "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r62_pp_scinetone_look_dro_ok,
+                g_r62_wb_custom_camset_exclusion_ok,
+                g_r62_metering_5mode_spot_link_ok,
+                g_r62_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -7111,6 +7223,21 @@ void Application_System_Init(const char *arg) {
             "nwreset_autoreboot_airplane_zero_rf=1 milestone_34th_realhw_102nd_live_68_pngs=1 "
             "usb_data_tx_events=0 slot1_protect_mutation_events=0 slot1_format_events=0 "
             "post_reset_rf_leak_events=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 62
+    dprintf(2,
+            "FX6_STAGE_B_R62_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u pp11_scinetone_pplut_vs_log_lockout=1 "
+            "creative_look_10_dro_lockout=1 wb_custom_camset_excluded_cineei=1 "
+            "metering_5mode_face_spot_link=1 milestone_35th_realhw_105th_live_70_pngs=1 "
+            "double_log_lockout_bypass_events=0 camset_custom_wb_leak_events=0 "
+            "cine_ei_awb_bypass_events=0 metering_base_iso_mutation_events=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),

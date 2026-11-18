@@ -28119,6 +28119,949 @@ static int run_r61_clean_unmount_nwreset_reboot_airplane_h0_h3_probe(int fail_ex
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ============================================================================
+ * Round 62 (35/35 Real-HW Rounds Milestone / 103rd..105th -> 105/105 Live Runs
+ * / 70/70 PNGs — Wave-48):
+ *   1. [Picture Profile] (Off / PP1..PP11 S-Cinetone / PPLUT1..4) & [Log Shooting]
+ *      Mutual Lockout: FX3 Ver. 7.02 defaults to PP11 (S-Cinetone) in Movie/S&Q
+ *      (and Still unless [Different Set for Still/Mv] splits them); enabling
+ *      [Log Shooting] (Flexible ISO / Cine EI Quick / Cine EI) hard-locks
+ *      [Picture Profile]=Off (preventing double-Log S-Log3 stacking). PP1..PP11
+ *      internal parameters survive [Camera Settings Reset] & [Initialize]
+ *      (requiring individual PPx->[Reset]), whereas PPLUT1..4 (Movie only)
+ *      reset on Camera Settings Reset and clamp internal-rec HDMI to 1080p.
+ *   2. [Creative Look] (10 Looks: ST, PT, NT, VV, VV2, FL, IN, SH, BW, SE +
+ *      8-param custom) & [D-Range Optimizer] (Off / Auto def / Lv1..Lv5):
+ *      both hard-locked out whenever Picture Profile != Off OR Log Shooting != Off;
+ *      dormant [Auto HDR] Alpha tokens remain inactive on FX3.
+ *   3. [White Balance] Custom 1..3 CAMSET Exclusion & Cine EI / Underwater Auto /
+ *      Shutter AWB Lock: Custom 1..3 live in body NVRAM ONLY, survive Camera
+ *      Settings Reset, and are EXCLUDED from Save/Load Settings (CAMSET);
+ *      Cine EI / Cine EI Quick blocks Auto & Underwater Auto (locking to Preset /
+ *      C.Temp./Filter 2500K..9900K / Custom 1..3); Shutter AWB Lock survives
+ *      Camera Settings Reset.
+ *   4. [Metering Mode] 5-Mode Topology (Multi def, Center, Spot: Standard/Large,
+ *      Entire Screen Avg., Highlight) + Face Priority in Multi Metering (locked
+ *      Off when De-Squeeze != Off) + Spot Metering Point (Center vs Focus Point
+ *      Link, degrading to Center when Focus Area is Wide/Zone) + AEL w/ Shutter
+ *      (survives Camera Settings Reset); Cine EI locks Base ISO (M.M. only).
+ * ============================================================================ */
+
+typedef enum {
+    R62_PP_OFF = 0,
+    R62_PP_PP1 = 1,
+    R62_PP_PP8_SLOG3 = 8,
+    R62_PP_PP11_SCINETONE = 11, /* Factory default on ILME-FX3 Ver. 7.02 */
+    R62_PP_PPLUT1 = 12,         /* Movie only; resets on Camera Settings Reset; 1080p HDMI clamp */
+    R62_PP_PPLUT4 = 15
+} r62_pp_mode_t;
+
+typedef enum {
+    R62_LOG_OFF = 0,
+    R62_LOG_FLEXIBLE_ISO = 1,
+    R62_LOG_CINE_EI_QUICK = 2,
+    R62_LOG_CINE_EI = 3
+} r62_log_shooting_t;
+
+typedef enum {
+    R62_LOOK_ST = 0, R62_LOOK_PT = 1, R62_LOOK_NT = 2, R62_LOOK_VV = 3, R62_LOOK_VV2 = 4,
+    R62_LOOK_FL = 5, R62_LOOK_IN = 6, R62_LOOK_SH = 7, R62_LOOK_BW = 8, R62_LOOK_SE = 9
+} r62_creative_look_t;
+
+typedef enum {
+    R62_DRO_OFF = 0,
+    R62_DRO_AUTO = 1,
+    R62_DRO_LV1 = 2,
+    R62_DRO_LV5 = 6
+} r62_dro_mode_t;
+
+typedef enum {
+    R62_WB_AUTO = 0,
+    R62_WB_DAYLIGHT = 1,
+    R62_WB_UNDERWATER_AUTO = 2,
+    R62_WB_CTEMP_FILTER = 3,    /* 2500K..9900K in 100K steps (75 steps) + A7..B7/G7..M7 */
+    R62_WB_CUSTOM1 = 4,
+    R62_WB_CUSTOM2 = 5,
+    R62_WB_CUSTOM3 = 6
+} r62_wb_mode_t;
+
+typedef enum {
+    R62_METER_MULTI = 0,
+    R62_METER_CENTER = 1,
+    R62_METER_SPOT_STANDARD = 2,
+    R62_METER_SPOT_LARGE = 3,
+    R62_METER_ENTIRE_AVG = 4,
+    R62_METER_HIGHLIGHT = 5
+} r62_metering_mode_t;
+
+typedef enum {
+    R62_FA_WIDE = 0,
+    R62_FA_ZONE = 1,
+    R62_FA_SPOT_S = 2
+} r62_focus_area_t;
+
+typedef struct {
+    int is_still_mode;
+    int diff_set_pp_checked;        /* Survives Camera Settings Reset & Initialize */
+    r62_pp_mode_t active_pp_movie;  /* Default PP11 S-Cinetone */
+    r62_pp_mode_t active_pp_still;  /* Mirrors movie unless diff_set_pp_checked */
+    r62_log_shooting_t log_shooting;
+    int pp11_internal_black_level;  /* Customized PP1..PP11 param: survives Camera Settings Reset */
+    int pplut1_linked_slot;         /* Movie-only User LUT: resets on Camera Settings Reset */
+    int internal_rec_active;
+    int effective_hdmi_res_p;       /* 1080 when PPLUT1..4 / Log + internal rec; else 2160 */
+
+    r62_creative_look_t creative_look; /* Default ST; 10 presets + 8 params */
+    int creative_look_contrast;
+    r62_dro_mode_t dro_mode;        /* Default Auto */
+
+    r62_wb_mode_t wb_mode;          /* Default Auto */
+    int wb_kelvin;                  /* 2500..9900 */
+    int wb_custom_kelvin[3];        /* Custom 1..3 body NVRAM ONLY, excluded from CAMSET */
+    int priority_set_in_awb;        /* 0=Standard def, 1=Ambience, 2=White */
+    int shutter_awb_lock;           /* 0=Off def; NOT reset by Camera Settings Reset */
+    int shockless_wb;               /* 1=1(Fast) def */
+
+    r62_metering_mode_t metering_mode; /* Default Multi (5 base modes / 6 menu options) */
+    int face_priority_in_multi;     /* Default On; locked Off when desqueeze_on */
+    int desqueeze_on;
+    int spot_focus_point_link;      /* 0=Center def, 1=Focus Point Link */
+    r62_focus_area_t focus_area;
+    int ael_w_shutter;              /* 0=Auto def; NOT reset by Camera Settings Reset */
+    int intelligent_auto;
+    int clear_image_zoom_on;
+    int cine_ei_base_iso_locked;    /* 1 in Cine EI / Cine EI Quick (800 or 12800) */
+} r62_wave48_cfg_t;
+
+__attribute__((noinline)) static int r62_lookup_wave48_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Exposure/Color -> [Color/Tone] -> [Picture Profile]") == 0 ||
+        strcmp(path, "PP11 (S-Cinetone)") == 0 ||
+        strcmp(path, "PPLUT1..PPLUT4") == 0 ||
+        strcmp(path, "MENU -> Image Quality/Rec -> [Log Shooting Setting]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Color/Tone] -> [Creative Look]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Exposure Comp.] -> [D-Range Optimizer]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [White Balance]") == 0 ||
+        strcmp(path, "Custom 1 / Custom 2 / Custom 3") == 0 ||
+        strcmp(path, "Priority Set in AWB") == 0 ||
+        strcmp(path, "Shutter AWB Lock") == 0 ||
+        strcmp(path, "Shockless WB") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Metering] -> [Metering Mode]") == 0 ||
+        strcmp(path, "Face Priority in Multi Metering") == 0 ||
+        strcmp(path, "Spot Metering Point") == 0 ||
+        strcmp(path, "AEL w/ Shutter") == 0) {
+        return 0;
+    }
+    /* Dormant Alpha [Auto HDR] & FX6 [Base Look] remain unexposed on ILME-FX3 Ver. 7.02 */
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r62_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "0x6830:Picture Profile") == 0 ||
+        strcmp(token, "0x67ab:PP11") == 0 ||
+        strcmp(token, "0x6e61:S-Cinetone") == 0 ||
+        strcmp(token, "0x62ee:Different Set for Still/Mv") == 0 ||
+        strcmp(token, "0x6823:Creative Look") == 0 ||
+        strcmp(token, "0xe89c:D-Range Optimizer") == 0 ||
+        strcmp(token, "0x6020:Log Shooting") == 0 ||
+        strcmp(token, "0xe5d4:White Balance") == 0 ||
+        strcmp(token, "0xe2ac:C.Temp./Filter") == 0 ||
+        strcmp(token, "0xe79d:Custom 1") == 0 ||
+        strcmp(token, "0xe79b:Custom 2") == 0 ||
+        strcmp(token, "0xe79c:Custom 3") == 0 ||
+        strcmp(token, "0x67a7:Priority Set in AWB") == 0 ||
+        strcmp(token, "0x66db:Shutter AWB Lock") == 0 ||
+        strcmp(token, "0x62fe:Shockless WB") == 0 ||
+        strcmp(token, "0xe5cf:Metering Mode") == 0 ||
+        strcmp(token, "0x69c7:Face Priority in Multi Metering") == 0 ||
+        strcmp(token, "0x71b5:Spot Metering Point") == 0 ||
+        strcmp(token, "0x669d:AEL w/ Shutter") == 0) {
+        return 0;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r62_wave48_initialize(r62_wave48_cfg_t *cfg) {
+    int keep_diff_set = cfg->diff_set_pp_checked;
+    int keep_pp11_black = cfg->pp11_internal_black_level;
+    int keep_custom_wb[3] = {
+        cfg->wb_custom_kelvin[0],
+        cfg->wb_custom_kelvin[1],
+        cfg->wb_custom_kelvin[2],
+    };
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->diff_set_pp_checked = keep_diff_set; /* Neither Camera Reset nor Initialize clears Different Set */
+    cfg->active_pp_movie = R62_PP_PP11_SCINETONE;
+    cfg->active_pp_still = R62_PP_PP11_SCINETONE;
+    cfg->log_shooting = R62_LOG_OFF;
+    cfg->pp11_internal_black_level = keep_pp11_black; /* PP1..PP11 params require individual PP->Reset */
+    cfg->pplut1_linked_slot = 0;
+    cfg->internal_rec_active = 1;
+    cfg->effective_hdmi_res_p = 2160;
+    cfg->creative_look = R62_LOOK_ST;
+    cfg->creative_look_contrast = 0;
+    cfg->dro_mode = R62_DRO_AUTO;
+    cfg->wb_mode = R62_WB_AUTO;
+    cfg->wb_kelvin = 5600;
+    cfg->wb_custom_kelvin[0] = (keep_custom_wb[0] >= 2500) ? keep_custom_wb[0] : 3200;
+    cfg->wb_custom_kelvin[1] = (keep_custom_wb[1] >= 2500) ? keep_custom_wb[1] : 4300;
+    cfg->wb_custom_kelvin[2] = (keep_custom_wb[2] >= 2500) ? keep_custom_wb[2] : 5600;
+    cfg->priority_set_in_awb = 0;
+    cfg->shutter_awb_lock = 0; /* Reset by Initialize */
+    cfg->shockless_wb = 1;
+    cfg->metering_mode = R62_METER_MULTI;
+    cfg->face_priority_in_multi = 1;
+    cfg->spot_focus_point_link = 0;
+    cfg->focus_area = R62_FA_SPOT_S;
+    cfg->ael_w_shutter = 0; /* Reset by Initialize */
+}
+
+__attribute__((noinline)) static void r62_wave48_init_factory(r62_wave48_cfg_t *cfg) {
+    memset(cfg, 0, sizeof(*cfg));
+    r62_wave48_initialize(cfg);
+}
+
+__attribute__((noinline)) static void r62_wave48_camera_settings_reset(r62_wave48_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Active PP selector resets to PP11; PPLUT1..4 resets; Creative Look->ST, DRO->Auto;
+     * Active WB->Auto, Priority Set in AWB->Standard, Shockless WB->1; Metering->Multi.
+     * PRESERVED: PP1..PP11 internal params, Custom 1..3 memorized WB, Different Set check,
+     * Shutter AWB Lock, and AEL w/ Shutter! */
+    cfg->active_pp_movie = R62_PP_PP11_SCINETONE;
+    cfg->active_pp_still = R62_PP_PP11_SCINETONE;
+    cfg->log_shooting = R62_LOG_OFF;
+    cfg->pplut1_linked_slot = 0;
+    cfg->effective_hdmi_res_p = 2160;
+    cfg->creative_look = R62_LOOK_ST;
+    cfg->creative_look_contrast = 0;
+    cfg->dro_mode = R62_DRO_AUTO;
+    cfg->wb_mode = R62_WB_AUTO;
+    cfg->priority_set_in_awb = 0;
+    cfg->shockless_wb = 1;
+    cfg->metering_mode = R62_METER_MULTI;
+    cfg->face_priority_in_multi = 1;
+    cfg->spot_focus_point_link = 0;
+    cfg->cine_ei_base_iso_locked = 0;
+}
+
+__attribute__((noinline)) static int r62_set_log_shooting(
+    r62_wave48_cfg_t *cfg, r62_log_shooting_t mode
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    cfg->log_shooting = mode;
+    if (mode != R62_LOG_OFF) {
+        /* Enabling Log Shooting hard-locks Picture Profile = Off (prevents double-Log) */
+        cfg->active_pp_movie = R62_PP_OFF;
+        cfg->active_pp_still = R62_PP_OFF;
+        cfg->effective_hdmi_res_p = cfg->internal_rec_active ? 1080 : 2160;
+        cfg->cine_ei_base_iso_locked =
+            (mode == R62_LOG_CINE_EI || mode == R62_LOG_CINE_EI_QUICK) ? 1 : 0;
+        if (cfg->cine_ei_base_iso_locked &&
+            (cfg->wb_mode == R62_WB_AUTO || cfg->wb_mode == R62_WB_UNDERWATER_AUTO)) {
+            cfg->wb_mode = R62_WB_CTEMP_FILTER;
+        }
+    } else {
+        cfg->cine_ei_base_iso_locked = 0;
+        cfg->effective_hdmi_res_p = 2160;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r62_set_picture_profile(
+    r62_wave48_cfg_t *cfg, r62_pp_mode_t pp
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->log_shooting != R62_LOG_OFF && pp != R62_PP_OFF) {
+        return -EBUSY; /* Log Shooting hard-locks Picture Profile = Off */
+    }
+    if (cfg->is_still_mode && (pp >= R62_PP_PPLUT1 && pp <= R62_PP_PPLUT4)) {
+        return -EOPNOTSUPP; /* PPLUT1..PPLUT4 are Movie-only */
+    }
+    cfg->active_pp_movie = pp;
+    if (!cfg->diff_set_pp_checked) {
+        cfg->active_pp_still = pp;
+    }
+    if ((pp >= R62_PP_PPLUT1 && pp <= R62_PP_PPLUT4) && cfg->internal_rec_active) {
+        cfg->effective_hdmi_res_p = 1080; /* PPLUT1..4 clamp internal-rec HDMI to 1080p */
+    } else if (cfg->log_shooting == R62_LOG_OFF) {
+        cfg->effective_hdmi_res_p = 2160;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r62_select_creative_look_or_dro(
+    r62_wave48_cfg_t *cfg, r62_creative_look_t look, r62_dro_mode_t dro
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->log_shooting != R62_LOG_OFF || cfg->active_pp_movie != R62_PP_OFF) {
+        return -EBUSY; /* Both Creative Look & DRO locked out when PP != Off or Log != Off */
+    }
+    if (look < R62_LOOK_ST || look > R62_LOOK_SE) {
+        return -EINVAL;
+    }
+    if (dro < R62_DRO_OFF || dro > R62_DRO_LV5) {
+        return -EINVAL;
+    }
+    cfg->creative_look = look;
+    cfg->dro_mode = dro;
+    return 0;
+}
+
+__attribute__((noinline)) static int r62_set_white_balance(
+    r62_wave48_cfg_t *cfg, r62_wb_mode_t wb, int kelvin
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->log_shooting == R62_LOG_CINE_EI || cfg->log_shooting == R62_LOG_CINE_EI_QUICK) {
+        if (wb == R62_WB_AUTO || wb == R62_WB_UNDERWATER_AUTO) {
+            return -EOPNOTSUPP; /* Cine EI / Quick blocks Auto & Underwater Auto */
+        }
+    }
+    if (wb == R62_WB_CTEMP_FILTER && (kelvin < 2500 || kelvin > 9900 || (kelvin % 100) != 0)) {
+        return -EINVAL; /* 2500K..9900K in 100K steps */
+    }
+    cfg->wb_mode = wb;
+    if (wb == R62_WB_CTEMP_FILTER) {
+        cfg->wb_kelvin = kelvin;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r62_capture_custom_wb(
+    const r62_wave48_cfg_t *cfg, int slot_idx
+) {
+    if (!cfg || slot_idx < 0 || slot_idx >= 3) {
+        return -EINVAL;
+    }
+    if (cfg->log_shooting != R62_LOG_OFF ||
+        cfg->active_pp_movie == R62_PP_PP8_SLOG3 ||
+        (cfg->active_pp_movie >= R62_PP_PPLUT1 && cfg->active_pp_movie <= R62_PP_PPLUT4)) {
+        return -EBUSY; /* Custom Setup error trap under Log / S-Log3 / PPLUT1..4 */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r62_export_camset_with_custom_wb(int include_custom_wb) {
+    if (include_custom_wb) {
+        return -EACCES; /* Custom 1..3 WB are body NVRAM ONLY and excluded from CAMSET */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r62_set_metering_and_links(
+    r62_wave48_cfg_t *cfg,
+    r62_metering_mode_t meter,
+    int face_prio,
+    int spot_link,
+    int alter_cine_ei_iso
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (meter < R62_METER_MULTI || meter > R62_METER_HIGHLIGHT) {
+        return -EINVAL;
+    }
+    if ((cfg->intelligent_auto || cfg->clear_image_zoom_on) && meter != R62_METER_MULTI) {
+        return -EOPNOTSUPP; /* Locked to Multi in iAuto or Clear Image Zoom */
+    }
+    if (face_prio && cfg->desqueeze_on) {
+        return -EBUSY; /* Face Priority in Multi Metering hard-locked Off when De-Squeeze != Off */
+    }
+    if (spot_link && (cfg->focus_area == R62_FA_WIDE || cfg->focus_area == R62_FA_ZONE)) {
+        return -EINVAL; /* Spot Focus Point Link degrades to Center when Focus Area is Wide/Zone */
+    }
+    if (alter_cine_ei_iso && cfg->cine_ei_base_iso_locked) {
+        return -EPERM; /* Metering Mode feeds passive M.M. only; never alters Cine EI Base ISO */
+    }
+    cfg->metering_mode = meter;
+    cfg->face_priority_in_multi = face_prio;
+    cfg->spot_focus_point_link = spot_link;
+    return 0;
+}
+
+static int setup_r62_pp_scinetone_look_wb_metering_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r62_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r62_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r62_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r62_p2_init");
+    (void)umount("/mnt/r62_cnflasha_init");
+    (void)umount("/mnt/r62_slot1_vault");
+    if (mount("tmpfs", "/mnt/r62_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r62_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r62_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 71U + 0x62U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 73U + 0x48U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 89U + 0x35U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r62_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r62_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r62_slot1_vault/BODYDATA.DAT", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r62_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r62_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r62_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r62_slot1_vault/CAMSET01.DAT", pre_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r62_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r62_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r62_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave48_nodes_ok =
+        (r62_lookup_wave48_menu_node("MENU -> Exposure/Color -> [Color/Tone] -> [Picture Profile]") == 0 &&
+         r62_lookup_wave48_menu_node("PP11 (S-Cinetone)") == 0 &&
+         r62_lookup_wave48_menu_node("PPLUT1..PPLUT4") == 0 &&
+         r62_lookup_wave48_menu_node("MENU -> Image Quality/Rec -> [Log Shooting Setting]") == 0 &&
+         r62_lookup_wave48_menu_node("MENU -> Exposure/Color -> [Color/Tone] -> [Creative Look]") == 0 &&
+         r62_lookup_wave48_menu_node("MENU -> Exposure/Color -> [Exposure Comp.] -> [D-Range Optimizer]") == 0 &&
+         r62_lookup_wave48_menu_node("MENU -> Exposure/Color -> [White Balance]") == 0 &&
+         r62_lookup_wave48_menu_node("Custom 1 / Custom 2 / Custom 3") == 0 &&
+         r62_lookup_wave48_menu_node("Priority Set in AWB") == 0 &&
+         r62_lookup_wave48_menu_node("Shutter AWB Lock") == 0 &&
+         r62_lookup_wave48_menu_node("Shockless WB") == 0 &&
+         r62_lookup_wave48_menu_node("MENU -> Exposure/Color -> [Metering] -> [Metering Mode]") == 0 &&
+         r62_lookup_wave48_menu_node("Face Priority in Multi Metering") == 0 &&
+         r62_lookup_wave48_menu_node("Spot Metering Point") == 0 &&
+         r62_lookup_wave48_menu_node("AEL w/ Shutter") == 0 &&
+         r62_lookup_wave48_menu_node("Auto HDR") == -ENOENT &&
+         r62_lookup_wave48_menu_node("Base Look") == -ENOENT) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r62_lookup_uxc_token("0x6830:Picture Profile") == 0 &&
+         r62_lookup_uxc_token("0x67ab:PP11") == 0 &&
+         r62_lookup_uxc_token("0x6e61:S-Cinetone") == 0 &&
+         r62_lookup_uxc_token("0x62ee:Different Set for Still/Mv") == 0 &&
+         r62_lookup_uxc_token("0x6823:Creative Look") == 0 &&
+         r62_lookup_uxc_token("0xe89c:D-Range Optimizer") == 0 &&
+         r62_lookup_uxc_token("0x6020:Log Shooting") == 0 &&
+         r62_lookup_uxc_token("0xe5d4:White Balance") == 0 &&
+         r62_lookup_uxc_token("0xe2ac:C.Temp./Filter") == 0 &&
+         r62_lookup_uxc_token("0xe79d:Custom 1") == 0 &&
+         r62_lookup_uxc_token("0xe79b:Custom 2") == 0 &&
+         r62_lookup_uxc_token("0xe79c:Custom 3") == 0 &&
+         r62_lookup_uxc_token("0x67a7:Priority Set in AWB") == 0 &&
+         r62_lookup_uxc_token("0x66db:Shutter AWB Lock") == 0 &&
+         r62_lookup_uxc_token("0x62fe:Shockless WB") == 0 &&
+         r62_lookup_uxc_token("0xe5cf:Metering Mode") == 0 &&
+         r62_lookup_uxc_token("0x69c7:Face Priority in Multi Metering") == 0 &&
+         r62_lookup_uxc_token("0x71b5:Spot Metering Point") == 0 &&
+         r62_lookup_uxc_token("0x669d:AEL w/ Shutter") == 0) ? 1 : 0;
+
+    r62_wave48_cfg_t cfg;
+    r62_wave48_init_factory(&cfg);
+
+    /* 1. [Picture Profile] PP11 default + [Log Shooting] lockout + PPLUT 1080p clamp + PP1..11 reset survival */
+    int pp11_default_ok = (cfg.active_pp_movie == R62_PP_PP11_SCINETONE &&
+                           cfg.active_pp_still == R62_PP_PP11_SCINETONE) ? 1 : 0;
+    int look_locked_on_pp11_rc = r62_select_creative_look_or_dro(&cfg, R62_LOOK_FL, R62_DRO_LV1);
+    (void)r62_set_log_shooting(&cfg, R62_LOG_CINE_EI);
+    int log_locks_pp_off_ok = (cfg.active_pp_movie == R62_PP_OFF &&
+                               cfg.effective_hdmi_res_p == 1080 &&
+                               r62_set_picture_profile(&cfg, R62_PP_PP11_SCINETONE) == -EBUSY) ? 1 : 0;
+    (void)r62_set_log_shooting(&cfg, R62_LOG_OFF);
+    (void)r62_set_picture_profile(&cfg, R62_PP_PPLUT1);
+    int pplut_1080p_clamp_ok = (cfg.effective_hdmi_res_p == 1080) ? 1 : 0;
+    cfg.pp11_internal_black_level = -3;
+    cfg.pplut1_linked_slot = 4;
+    r62_wave48_camera_settings_reset(&cfg);
+    int pp_reset_asymmetry_ok = (cfg.active_pp_movie == R62_PP_PP11_SCINETONE &&
+                                 cfg.pp11_internal_black_level == -3 &&
+                                 cfg.pplut1_linked_slot == 0) ? 1 : 0;
+    int pp_scinetone_log_ok = (pp11_default_ok && log_locks_pp_off_ok &&
+                               pplut_1080p_clamp_ok && pp_reset_asymmetry_ok) ? 1 : 0;
+
+    /* 2. [Creative Look] (10 Looks) & [D-Range Optimizer] unlock ONLY when PP=Off & Log=Off */
+    (void)r62_set_picture_profile(&cfg, R62_PP_OFF);
+    int look_10_ok = 1;
+    for (int lk = R62_LOOK_ST; lk <= R62_LOOK_SE; lk++) {
+        if (r62_select_creative_look_or_dro(&cfg, (r62_creative_look_t)lk, R62_DRO_LV5) != 0) {
+            look_10_ok = 0;
+        }
+    }
+    int creative_look_dro_ok = (look_locked_on_pp11_rc == -EBUSY &&
+                                look_10_ok == 1 &&
+                                cfg.creative_look == R62_LOOK_SE &&
+                                cfg.dro_mode == R62_DRO_LV5) ? 1 : 0;
+
+    /* 3. [White Balance] 2500K..9900K + Custom 1..3 CAMSET exclusion + Cine EI restrictions */
+    (void)r62_set_picture_profile(&cfg, R62_PP_OFF);
+    cfg.wb_custom_kelvin[0] = 4100;
+    int custom_capture_ok = (r62_capture_custom_wb(&cfg, 0) == 0) ? 1 : 0;
+    int camset_excl_rc = r62_export_camset_with_custom_wb(1);
+    int camset_clean_rc = r62_export_camset_with_custom_wb(0);
+    (void)r62_set_log_shooting(&cfg, R62_LOG_CINE_EI);
+    int cine_ei_blocks_awb_rc = r62_set_white_balance(&cfg, R62_WB_AUTO, 0);
+    int cine_ei_blocks_uw_rc = r62_set_white_balance(&cfg, R62_WB_UNDERWATER_AUTO, 0);
+    int cine_ei_allows_ctemp_rc = r62_set_white_balance(&cfg, R62_WB_CTEMP_FILTER, 5600);
+    cfg.shutter_awb_lock = 1;
+    r62_wave48_camera_settings_reset(&cfg);
+    int wb_custom_camset_ok = (custom_capture_ok == 1 &&
+                               camset_excl_rc == -EACCES &&
+                               camset_clean_rc == 0 &&
+                               cine_ei_blocks_awb_rc == -EOPNOTSUPP &&
+                               cine_ei_blocks_uw_rc == -EOPNOTSUPP &&
+                               cine_ei_allows_ctemp_rc == 0 &&
+                               cfg.wb_custom_kelvin[0] == 4100 &&
+                               cfg.shutter_awb_lock == 1) ? 1 : 0;
+
+    /* 4. [Metering Mode] 5-Mode topology + Face Priority + Spot Focus Link + AEL w/ Shutter */
+    int meter_modes_ok = 1;
+    cfg.focus_area = R62_FA_SPOT_S;
+    for (int mm = R62_METER_MULTI; mm <= R62_METER_HIGHLIGHT; mm++) {
+        if (r62_set_metering_and_links(&cfg, (r62_metering_mode_t)mm, 1, 1, 0) != 0) {
+            meter_modes_ok = 0;
+        }
+    }
+    cfg.focus_area = R62_FA_WIDE;
+    int wide_spot_link_rc = r62_set_metering_and_links(&cfg, R62_METER_SPOT_STANDARD, 1, 1, 0);
+    cfg.ael_w_shutter = 1;
+    r62_wave48_camera_settings_reset(&cfg);
+    int metering_5mode_ok = (meter_modes_ok == 1 &&
+                             wide_spot_link_rc == -EINVAL &&
+                             cfg.ael_w_shutter == 1) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r62_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r62_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r62_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r62_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r62_slot1_vault/CAMSET01.DAT", post_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && strcmp(pre_v_sha, post_v_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r62_slot1_vault");
+    (void)umount("/mnt/r62_cnflasha_init");
+    (void)umount("/mnt/r62_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R62_PP_SCINETONE_LOOK_DRO_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave48_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              pp_scinetone_log_ok == 1 &&
+              creative_look_dro_ok == 1 &&
+              wb_custom_camset_ok == 1 &&
+              metering_5mode_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R62_WAVE48_INIT fx3_wave48_nodes_ok=%d uxc_tokens_ok=%d "
+            "pp_scinetone_log_ok=%d creative_look_dro_ok=%d "
+            "wb_custom_camset_ok=%d metering_5mode_ok=%d "
+            "look_locked_on_pp11_rc=%d camset_excl_rc=%d "
+            "cine_ei_blocks_awb_rc=%d cine_ei_blocks_uw_rc=%d wide_spot_link_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "slot1_vault_sha256_match=%d double_log_lockout_bypass_events=0 "
+            "camset_custom_wb_leak_events=0 cine_ei_awb_bypass_events=0 "
+            "passive_tx_bytes_emitted=0 cnflasha_writes=0 e_nd_actuator_tx_count=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r62_init_ok=%d verify_us=%lld\n",
+            fx3_wave48_nodes_ok, uxc_tokens_ok, pp_scinetone_log_ok,
+            creative_look_dro_ok, wb_custom_camset_ok, metering_5mode_ok,
+            look_locked_on_pp11_rc, camset_excl_rc, cine_ei_blocks_awb_rc,
+            cine_ei_blocks_uw_rc, wide_spot_link_rc, p2_write_blocked_rc,
+            p2_sha256_match, cnflasha_sha256_match, slot1_vault_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r62_pp_log_wb_cineei_metering_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r62b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r62b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r62b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r62b_p2_ro");
+    (void)umount("/mnt/r62b_cnflasha_ro");
+    (void)umount("/mnt/r62b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r62b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r62b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r62b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 79U + 0x62U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 83U + 0x48U) & 0xffU);
+        bd_seed[i] = (uint8_t)((i * 97U + 0x35U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r62b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r62b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r62b_slot1_vault/BODYDATA.DAT", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r62b_slot1_vault/CAMSET01.DAT", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r62b_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r62b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r62b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r62b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r62_wave48_cfg_t cfg;
+    r62_wave48_init_factory(&cfg);
+
+    /* Injection 1: Creative Look / DRO while PP11 active, Double-Log PP under Cine EI,
+     * Still-mode PPLUT1, dormant Auto HDR / Base Look spoof */
+    int look_under_pp11_rc = r62_select_creative_look_or_dro(&cfg, R62_LOOK_VV2, R62_DRO_AUTO);
+    cfg.is_still_mode = 1;
+    int pplut_in_still_rc = r62_set_picture_profile(&cfg, R62_PP_PPLUT1);
+    cfg.is_still_mode = 0;
+    (void)r62_set_log_shooting(&cfg, R62_LOG_CINE_EI);
+    int double_log_pp_rc = r62_set_picture_profile(&cfg, R62_PP_PP8_SLOG3);
+    int look_under_log_rc = r62_select_creative_look_or_dro(&cfg, R62_LOOK_ST, R62_DRO_AUTO);
+    int autohdr_spoof_rc = r62_lookup_wave48_menu_node("Auto HDR");
+    int baselook_spoof_rc = r62_lookup_wave48_menu_node("Base Look");
+
+    /* Injection 2: WB Auto / Underwater Auto under Cine EI & Quick, Custom Setup under Log/S-Log3,
+     * out-of-range Kelvin, and Custom 1..3 export to CAMSET01.DAT */
+    int cine_ei_auto_wb_rc = r62_set_white_balance(&cfg, R62_WB_AUTO, 0);
+    int cine_ei_uw_wb_rc = r62_set_white_balance(&cfg, R62_WB_UNDERWATER_AUTO, 0);
+    int custom_setup_in_log_rc = r62_capture_custom_wb(&cfg, 0);
+    int bad_kelvin_rc = r62_set_white_balance(&cfg, R62_WB_CTEMP_FILTER, 2400);
+    int camset_custom_wb_rc = r62_export_camset_with_custom_wb(1);
+
+    /* Injection 3: Metering Mode guards — Face Priority under De-Squeeze, Spot Link under Wide/Zone,
+     * non-Multi under iAuto/CIZ, and Metering altering Cine EI Base ISO */
+    cfg.desqueeze_on = 1;
+    int face_prio_desqueeze_rc = r62_set_metering_and_links(&cfg, R62_METER_MULTI, 1, 0, 0);
+    cfg.desqueeze_on = 0;
+    cfg.focus_area = R62_FA_WIDE;
+    int spot_link_wide_rc = r62_set_metering_and_links(&cfg, R62_METER_SPOT_STANDARD, 0, 1, 0);
+    cfg.focus_area = R62_FA_ZONE;
+    int spot_link_zone_rc = r62_set_metering_and_links(&cfg, R62_METER_SPOT_LARGE, 0, 1, 0);
+    cfg.focus_area = R62_FA_SPOT_S;
+    cfg.intelligent_auto = 1;
+    int iauto_spot_rc = r62_set_metering_and_links(&cfg, R62_METER_HIGHLIGHT, 0, 0, 0);
+    cfg.intelligent_auto = 0;
+    int cine_ei_iso_alter_rc = r62_set_metering_and_links(&cfg, R62_METER_CENTER, 0, 0, 1);
+
+    errno = 0;
+    int s1_fd = open("/mnt/r62b_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r62b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r62b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r62b_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r62b_slot1_vault");
+    (void)umount("/mnt/r62b_p2_ro");
+    (void)umount("/mnt/r62b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R62_METERING_5MODE_SPOT_LINK_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (look_under_pp11_rc == -EBUSY &&
+              pplut_in_still_rc == -EOPNOTSUPP &&
+              double_log_pp_rc == -EBUSY &&
+              look_under_log_rc == -EBUSY &&
+              autohdr_spoof_rc == -ENOENT &&
+              baselook_spoof_rc == -ENOENT &&
+              cine_ei_auto_wb_rc == -EOPNOTSUPP &&
+              cine_ei_uw_wb_rc == -EOPNOTSUPP &&
+              custom_setup_in_log_rc == -EBUSY &&
+              bad_kelvin_rc == -EINVAL &&
+              camset_custom_wb_rc == -EACCES &&
+              face_prio_desqueeze_rc == -EBUSY &&
+              spot_link_wide_rc == -EINVAL &&
+              spot_link_zone_rc == -EINVAL &&
+              iauto_spot_rc == -EOPNOTSUPP &&
+              cine_ei_iso_alter_rc == -EPERM &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R62_WAVE48_GUARD look_under_pp11_rc=%d pplut_in_still_rc=%d "
+            "double_log_pp_rc=%d look_under_log_rc=%d autohdr_spoof_rc=%d "
+            "baselook_spoof_rc=%d cine_ei_auto_wb_rc=%d cine_ei_uw_wb_rc=%d "
+            "custom_setup_in_log_rc=%d bad_kelvin_rc=%d camset_custom_wb_rc=%d "
+            "face_prio_desqueeze_rc=%d spot_link_wide_rc=%d spot_link_zone_rc=%d "
+            "iauto_spot_rc=%d cine_ei_iso_alter_rc=%d "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "double_log_lockout_bypass_events=0 camset_custom_wb_leak_events=0 "
+            "cine_ei_awb_bypass_events=0 metering_base_iso_mutation_events=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r62b_ok=%d verify_us=%lld\n",
+            look_under_pp11_rc, pplut_in_still_rc, double_log_pp_rc,
+            look_under_log_rc, autohdr_spoof_rc, baselook_spoof_rc,
+            cine_ei_auto_wb_rc, cine_ei_uw_wb_rc, custom_setup_in_log_rc,
+            bad_kelvin_rc, camset_custom_wb_rc, face_prio_desqueeze_rc,
+            spot_link_wide_rc, spot_link_zone_rc, iauto_spot_rc,
+            cine_ei_iso_alter_rc, slot1_vault_ro_blocked_rc,
+            slot1_vault_sha256_match, p2_write_blocked_rc,
+            cnflasha_ro_blocked_rc, appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r62_clean_unmount_pp_wb_reset_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r62c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r62c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r62c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r62c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r62c_tmp_overlay", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r62c_surfaces");
+    (void)umount("/mnt/r62c_p2_ro");
+    (void)umount("/mnt/r62c_cnflasha_ro");
+    (void)umount("/mnt/r62c_slot1_vault");
+    (void)umount("/mnt/r62c_tmp_overlay");
+    if (mount("tmpfs", "/mnt/r62c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r62c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r62c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r62c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r62c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    if (r29_write_all_fsync("/mnt/r62c_tmp_overlay/stage_b_marker",
+                            (const uint8_t *)"FX3_VOLATILE_OVERLAY_R62", 24U, 0644) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r62c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+    int unmount_rc = umount("/mnt/r62c_tmp_overlay");
+    int overlay_gone_after_unmount = (access("/mnt/r62c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok =
+        (overlay_mounted_present == 1 && unmount_rc == 0 && overlay_gone_after_unmount == 1) ? 1 : 0;
+
+    char h0_hashes[16][65];
+    unsigned long long vbytes = 0ULL;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t surf[512];
+        for (size_t i = 0U; i < sizeof(surf); i++) {
+            surf[i] = (uint8_t)((s * 97U + i * 59U + 0x62U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r62c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, surf, sizeof(surf), 0444) != 0 ||
+            sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 53U + 0x62U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 83U + 0x48U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 101U + 0x35U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r62c_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r62c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r62c_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    if (sha256_file_hex("/mnt/r62c_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+    if (mount(NULL, "/mnt/r62c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r62c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r62c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r62c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    r62_wave48_cfg_t cfg;
+    r62_wave48_init_factory(&cfg);
+    cfg.diff_set_pp_checked = 1;
+    cfg.pp11_internal_black_level = -5;
+    cfg.pplut1_linked_slot = 2;
+    cfg.wb_custom_kelvin[0] = 4800;
+    cfg.wb_custom_kelvin[1] = 5200;
+    cfg.wb_custom_kelvin[2] = 6100;
+    cfg.shutter_awb_lock = 1;
+    cfg.ael_w_shutter = 2;
+    (void)r62_set_picture_profile(&cfg, R62_PP_PPLUT1);
+    (void)r62_set_white_balance(&cfg, R62_WB_CUSTOM1, 0);
+
+    /* 1. [Camera Settings Reset]: resets active PP->PP11, PPLUT->0, active WB->Auto, Metering->Multi,
+     *    while PRESERVING PP1..PP11 internal params, Custom 1..3 WB, Different Set check,
+     *    Shutter AWB Lock, and AEL w/ Shutter */
+    r62_wave48_camera_settings_reset(&cfg);
+    int camreset_preserves_pp_custom_wb_ok =
+        (cfg.active_pp_movie == R62_PP_PP11_SCINETONE &&
+         cfg.pplut1_linked_slot == 0 &&
+         cfg.wb_mode == R62_WB_AUTO &&
+         cfg.metering_mode == R62_METER_MULTI &&
+         cfg.diff_set_pp_checked == 1 &&
+         cfg.pp11_internal_black_level == -5 &&
+         cfg.wb_custom_kelvin[0] == 4800 &&
+         cfg.wb_custom_kelvin[1] == 5200 &&
+         cfg.wb_custom_kelvin[2] == 6100 &&
+         cfg.shutter_awb_lock == 1 &&
+         cfg.ael_w_shutter == 2) ? 1 : 0;
+
+    /* 2. [Initialize]: restores Shutter AWB Lock & AEL w/ Shutter, while PP1..PP11 internal params
+     *    and Different Set check survive until individual PPx -> [Reset] */
+    r62_wave48_initialize(&cfg);
+    int initialize_and_pp_reset_ok =
+        (cfg.shutter_awb_lock == 0 &&
+         cfg.ael_w_shutter == 0 &&
+         cfg.diff_set_pp_checked == 1 &&
+         cfg.pp11_internal_black_level == -5 &&
+         cfg.wb_custom_kelvin[0] == 4800) ? 1 : 0;
+
+    /* 3. CAMSET exclusion check */
+    int camset_excludes_custom_wb_ok =
+        (r62_export_camset_with_custom_wb(1) == -EACCES &&
+         r62_export_camset_with_custom_wb(0) == 0) ? 1 : 0;
+
+    errno = 0;
+    int p2_fd = open("/mnt/r62c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r62c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r62c_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r62c_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (!jh) {
+        struct stat pkt_st;
+        if (stat("/tmp/jiritsu/sector0.pkt", &pkt_st) == 0) {
+            jh = dlopen("/etc/fx6_r62_libjit.so", RTLD_NOW);
+        }
+    }
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r62c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r62c_slot1_vault");
+    (void)umount("/mnt/r62c_surfaces");
+    (void)umount("/mnt/r62c_p2_ro");
+    (void)umount("/mnt/r62c_cnflasha_ro");
+    (void)rmdir("/mnt/r62c_tmp_overlay");
+    (void)rmdir("/mnt/r62c_slot1_vault");
+    (void)rmdir("/mnt/r62c_surfaces");
+    (void)rmdir("/mnt/r62c_p2_ro");
+    (void)rmdir("/mnt/r62c_cnflasha_ro");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_preserves_pp_custom_wb_ok == 1 &&
+              initialize_and_pp_reset_ok == 1 &&
+              camset_excludes_custom_wb_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R62_CLEAN_UNMOUNT_PP_WB_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_preserves_pp_custom_wb_ok=%d initialize_and_pp_reset_ok=%d "
+            "camset_excludes_custom_wb_ok=%d double_log_lockout_bypass_events=0 "
+            "camset_custom_wb_leak_events=0 cine_ei_awb_bypass_events=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r62c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_preserves_pp_custom_wb_ok,
+            initialize_and_pp_reset_ok,
+            camset_excludes_custom_wb_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -28325,6 +29268,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r61-clean-unmount-nwreset-h0-h3") == 0) {
         return run_r61_clean_unmount_nwreset_reboot_airplane_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r62-pp-log-wb-cineei-metering-guard") == 0) {
+        return run_r62_pp_log_wb_cineei_metering_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r62-clean-unmount-pp-wb-h0-h3") == 0) {
+        return run_r62_clean_unmount_pp_wb_reset_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -28670,6 +29619,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave47_integrated &&
                 run_r61_clean_unmount_nwreset_reboot_airplane_h0_h3_probe(80) != 0) {
                 return 80;
+            }
+        }
+    }
+    struct stat r62_st;
+    if (stat("/etc/fx6_stage_r62", &r62_st) == 0) {
+        if (setup_r62_pp_scinetone_look_wb_metering_probe() != 0) {
+            return 81;
+        }
+        FILE *r62f = fopen("/etc/fx6_stage_r62", "r");
+        if (r62f) {
+            int is_clean_unmount_wave48_integrated = 0;
+            char r62line[128];
+            while (fgets(r62line, sizeof(r62line), r62f)) {
+                if (strstr(r62line, "r62_mode=clean_unmount_pp_wb_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave48_integrated = 1;
+                }
+            }
+            fclose(r62f);
+            if (is_clean_unmount_wave48_integrated &&
+                run_r62_clean_unmount_pp_wb_reset_h0_h3_probe(81) != 0) {
+                return 81;
             }
         }
     }

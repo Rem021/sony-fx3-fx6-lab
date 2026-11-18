@@ -2626,3 +2626,45 @@ FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTEC
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
+
+## Phase 350（Stage 77 — `77/77` Full-Board VM Co-Emulation Stages!）：Wave-67 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` `[Pixel Mapping]` / `[Auto Pixel Mapping]` 静音默认 & 休眠 `ABB`、`Setup -> [Monitor]` 3 项 vs 4 项休眠 EVF & `VF Setting`、仅限静态 `P/A/S/M` `[Recall Custom hold 1–3]`（11 槽零独立 WB）vs `Push AF/AGC/Iris`，以及 `[External Output]` HDMI TC/`REC Control` 与 `Slot 1` `EROFS=30` 防火墙 HIL
+
+[`realhw_pixelmap_apr_monitor_vfadjust_customhold_hdmi_reccontrol_coemulator.py`](realhw_pixelmap_apr_monitor_vfadjust_customhold_hdmi_reccontrol_coemulator.py)（Schema `phase350_realhw_pixelmap_apr_monitor_vfadjust_customhold_hdmi_reccontrol_coemulation_v1`）作为 **Stage 77（`77/77` Full-Board VM Co-Emulation Stages!）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase350` / `--skip-stage77` / `--no-include-stage77` 跳过，支持 `--include-stage77`），严格遵循 `os.O_RDONLY` + `<= 4096 B` 受界 `os.pread`、`physical_device_writes == 0`、`emmc_writes_authorized == False`、`cross_model_flash_authorized == False`、`slot1_data_sector_writes == 0`、`emmc_nflasha_write_count == 0` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 12 供体 `O_RDONLY` + 受界 `os.pread` 审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **12 份真实供体**（`6` 份 FX3 四语 `_f` / 基础 `.uxc` + `_g` `.uxc` + `2` 份 FX6 英文 `.uxc` + `FX3 appFw.so`、`FX3 BK4`、`FX6 appFw.so` + `libSaveLoadSettings.so`），并在无供体 CI 环境（`work_root is None`、`FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1`、`FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__` 或 `--clean-room`）无缝回退至 `CLEAN_ROOM_SYNTHETIC`（`raw_firmware_bytes_leaked == 0`）。
+2. **Sub-Model 77A — `[Pixel Mapping]` & `[Auto Pixel Mapping]` 静音快门默认行为 vs FX6 `APR` & 100% 休眠 `ABB`**：
+   - `Setup -> [Setup Option] -> [Auto Pixel Mapping]`（出厂默认 `On` / `Off`，抗 Reset，Initialize 还原 `On`）与手动 `[Pixel Mapping]`（`FUNC_execute_manual_pixel_mapping`、`SYSTEM_MODE_OPTION_MANUAL_PIXEL_MAPPING`、需盖镜头盖 `_g 0x63f1`、完成后自动重启、电池门控 `INFRA_NOTIFY_BATTERY_CHECK_FOR_PIXEL_MAPPING`）。
+   - `Shooting -> [Shutter/Silent] -> [Silent Mode Settings] -> [Target Function Settings] -> [Auto Pixel Mapping]` 默认 **`Off`**（`Not Target`，可 Reset），导致即便 `[Silent Mode] = On`，关机自动像素映射仍会通过 `vdf_set_shutter_mute_by_pixel_mapping` 触发机械快门声响，除非显式设 `On`。
+   - 校验两处 Sony 原厂 ELF 拼写错字：`BKID_APP_setting_notification_for_pixel_mappinng`（双 `n`）与 `BKID_APP_pixel_mapping_excuted_status`（`excuted`），并确认 `[Pixel Map. Notification]` 与 `[Shutter When Pwr OFF]` 在 FX3 Ver. 7.02 为 0 暴露项；对比 `ILME-FX6 Ver. 6.01` `Technical > APR > Execute / Cancel`（无内置机械快门 -> 需镜头盖+黑布全遮光，`PIXEL_MAPPING_RESULT_LIGHT_DETECTED` & `PIXEL_MAPPING_RESULT_INVALID_TEMPERATURE`）及零暴露 `ABB`（`auto_black_balance` 100% 休眠，返回 `EOPNOTSUPP=95`）。
+3. **Sub-Model 77B — `Setup -> [Monitor]`（3 项活跃，零 `[Finder/Monitor]`）& 4 项休眠 EVF 菜单 vs FX6 `VF Setting`**：
+   - FX3 组名严格为 **`Setup -> [Monitor]`**（非 `[Finder/Monitor]`），精确暴露 **3** 项且全部抗 `[Camera Settings Reset]`（仅 `[Initialize]` 还原）：`[Monitor Brightness]`（`Manual` `-2..+2` 默认 / `Sunny Weather`，受 `INFRA_NOTIFY_UPM_LCD_BRIGHTNESS_LIMIT` 电源热降亮控制）、`[Display Quality]`（`Standard` 默认 / `High`，高温时强制锁定 `Standard`）与 `[Monitor Flip Direction]`（`Auto` 默认 / `Horizontal Flip` / `180 Degree Flip` / `No Flip`）。
+   - 验证 FX3 `appFw.so` 内 **4** 项 EVF 菜单 100% 休眠（`Finder/Monitor Sel.`、`Viewfinder Bright.`、`Viewfinder Color Temp.`、`Finder Frame Rate`，`dormant_evf_menus_exposed_events == 0`，调用返回 `EOPNOTSUPP=95`）；对比 `ILME-FX6 Ver. 6.01` `Monitoring > VF Setting`（`Brightness` `1..15` 默认 `8`、`Color Mode` `Color/B&W`）及物理 `MIRROR` 拨钮与零 `VF Adjust > Backlight/Contrast/Chroma/Color Temp.` 辟谣。
+4. **Sub-Model 77C — 仅限静态 `P/A/S/M` `[Recall Custom hold 1–3]`（11 槽，零独立 WB）vs FX6 `Push AF / AGC / Auto Iris` & 休眠 `High/Low Key`**：
+   - FX3 `[Recall Custom hold 1–3]` 严格仅限 **Still `P/A/S/M`**（Movie / `S&Q` / `iAuto` 下拒绝并返回 `EOPNOTSUPP=95`），精确实装 **`11`** 个可勾选槽位（`is_checked_recall_custom_hold0..10`；抗 Reset，不含独立 `White Balance` 且 `Drive Mode` 排除 `Self-timer`），同步验证跨管线 `[AF On]`/`[Eye AF]` 与仅限 Still `AF-C` 的 `[Tracking On]`。
+   - 对比 `ILME-FX6 Ver. 6.01` 零 `Recall Custom hold 1–3`，提供 `Push AF` / `Push AF/Push MF` / `One Push AF`（手动对焦或 `De-Squeeze != Off(1.0x)` 时阻断）、`Push AGC`（`Cine EI` / `Cine EI Quick` 或 `Bokeh Control = On` 时阻断）、`Push Auto Iris`（镜头光圈 `MANUAL` 或 `Bokeh Control = On` 时阻断），以及 100% 休眠 `High/Low Key`（`FX6 ns2 0x4b25`，`0` 暴露）。
+5. **Sub-Model 77D — `Setup -> [External Output]` HDMI 矩阵、原厂错字 & Tier-0 `Slot 1` `EROFS=30` 防火墙 vs FX6 双路 `12G-SDI + HDMI`**：
+   - FX3 `[External Output]`（全项抗 Reset）：`[HDMI Resolution]`、`[HDMI Output Settings]`（`Rec. Media dur HDMI Output` 默认 `On` 且在 `S&Q` 锁死 `On`；`Log != Off` 或 `PP = PPLUT1..4` 且 `Rec. Media = On` 时 `Output Resolution` 降为 `1080`；`4K Output Set.(HDMI Only)` `24.00p` 切换强制重启 + 原厂错字 `PRM_HAITA_hdmi_4k_outpute_apsc_restriction`；`RAW Output`；`Time Code Output` 在 `S&Q` 禁用；`REC Control` 硬性前置 `Time Code Output = On`；`4ch Audio Output` `CH1/CH2` vs `CH3/CH4`）、`[HDMI Info. Display]` 与 `[CTRL FOR HDMI]`（原厂错字 `BKID_APP_setting_ctrl_for_hmdi`），以及 0 暴露休眠 `24p/60p Output` / `4K/2K Output`。
+   - **Tier-0 `Slot 1` `EROFS=30` 防火墙**：当 `Slot 1` 作为只读 Tier-0 恢复保险库挂载，且在 `Rec. Media dur HDMI Output = On`（含 `S&Q` 锁死）指向 `Slot 1` 触发 `[REC Control] = On` 录制时，VFS/块层 fail-closed 返回 `EROFS=30`（`slot1_data_sector_writes == 0`、`emmc_nflasha_write_count == 0`）；安全外录必须切换 `Off(HDMI Only)`（非 `S&Q`）或路由至可写 `Slot 2`。对比 `ILME-FX6 Ver. 6.01` `12G-SDI + HDMI`（`SDI/HDMI Remote I/F` vs `Parallel Rec`、`HDMI TC Out = On` 前置与 `RAW(HDMI)` `4240x2392` 迫使 `SDI` 降至 `1920x1080P/i`）。
+
+### Phase 350 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 350 Stage 77（77/77 Full-Board VM Co-Emulation Stages!）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_pixelmap_apr_monitor_vfadjust_customhold_hdmi_reccontrol_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_pixelmap_apr_monitor_vfadjust_customhold_hdmi_reccontrol_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_pixelmap_apr_monitor_vfadjust_customhold_hdmi_reccontrol_coemulator.py --self-test --json
+
+# 2. 全板 77 阶段（Stage 1..77, 77/77 Full-Board VM Co-Emulation Stages!）统一校验（支持 --include-stage77 与 --skip-phase350 / --skip-stage77 / --no-include-stage77）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage77 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONDWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 350 四模式 100 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_pixelmap_apr_monitor_vfadjust_customhold_hdmi_reccontrol_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_pixelmap_apr_monitor_vfadjust_customhold_hdmi_reccontrol_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_pixelmap_apr_monitor_vfadjust_customhold_hdmi_reccontrol_coemulator.py -v
+FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_pixelmap_apr_monitor_vfadjust_customhold_hdmi_reccontrol_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+

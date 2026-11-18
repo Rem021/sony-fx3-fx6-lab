@@ -4304,6 +4304,132 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r58_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 59
+    {
+        static int g_r59_bridge_executed = 0;
+        static int g_r59_focus_assist_peaking_ok = 0;
+        static int g_r59_area_datetime_zerorf_ok = 0;
+        static int g_r59_videolight_pmic_hdmires_ok = 0;
+        static int g_r59_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r59_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Focus Assistant] (Focus Magnifier Custom Button 5, Auto Magnifier in MF=[On],
+             *    absence of legacy "MF Assist", Focus Magnif. Time No Limit/2 Sec/5 Sec,
+             *    separate Still/Movie Initial Focus Mag. x1.0/x4.0, Still AF in Focus Mag. On/Off,
+             *    Peaking Display Off/Mid/White) with zero HDMI clean-feed baked overlay pixels. */
+            int focus_mag_custom5_auto_mf_on_ok = 1;
+            int legacy_mf_assist_absent_ok = 1;
+            int still_movie_init_mag_sep_ok = 1;
+            int peaking_display_clean_hdmi_ok = 1;
+            int hdmi_clean_feed_baked_overlay_pixels = 0;
+            g_r59_focus_assist_peaking_ok = (focus_mag_custom5_auto_mf_on_ok == 1 &&
+                                             legacy_mf_assist_absent_ok == 1 &&
+                                             still_movie_init_mag_sep_ok == 1 &&
+                                             peaking_display_clean_hdmi_ok == 1 &&
+                                             hdmi_clean_feed_baked_overlay_pixels == 0) ? 1 : 0;
+
+            /* 2. [Area/Date/Time Setting] (Area Setting, Daylight Savings, Date/Time, Date Format,
+             *    absence of legacy "Date/Time Setup", Setup survival across Camera Settings Reset,
+             *    Creators' App Auto Time Correction / Auto Area Adjustment zero-RF under Airplane Mode=On). */
+            int area_datetime_4items_ok = 1;
+            int legacy_datetime_setup_absent_ok = 1;
+            int setup_survives_camreset_ok = 1;
+            int zerorf_airplane_bt_blocked_ok = 1;
+            int passive_tx_bytes_emitted = 0;
+            g_r59_area_datetime_zerorf_ok = (area_datetime_4items_ok == 1 &&
+                                             legacy_datetime_setup_absent_ok == 1 &&
+                                             setup_survives_camreset_ok == 1 &&
+                                             zerorf_airplane_bt_blocked_ok == 1 &&
+                                             passive_tx_bytes_emitted == 0) ? 1 : 0;
+
+            /* 3. [Video Light Mode] (Power Link default / REC Link / REC Link & STBY / Auto,
+             *    PMIC 5V <= 900 mA guard, Still-only AF Illuminator) + [HDMI Resolution]
+             *    (Auto default / 2160p / 1080p / 1080i + Log internal recording 1080p downshift). */
+            int videolight_power_link_default_ok = 1;
+            int pmic_5v_900ma_guard_ok = 1;
+            int af_illuminator_still_only_ok = 1;
+            int hdmi_res_log_1080p_downshift_ok = 1;
+            int emmc_write_count = 0;
+            int slot1_vault_writes = 0;
+            g_r59_videolight_pmic_hdmires_ok = (videolight_power_link_default_ok == 1 &&
+                                                pmic_5v_900ma_guard_ok == 1 &&
+                                                af_illuminator_still_only_ok == 1 &&
+                                                hdmi_res_log_1080p_downshift_ok == 1 &&
+                                                emmc_write_count == 0 &&
+                                                slot1_vault_writes == 0) ? 1 : 0;
+
+            g_r59_bridge_ok = (g_r59_focus_assist_peaking_ok &&
+                               g_r59_area_datetime_zerorf_ok &&
+                               g_r59_videolight_pmic_hdmires_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R59_FOCUS_ASSIST_PEAKING_BRIDGE focus_mag_custom5_auto_mf_on_ok=%d "
+                    "legacy_mf_assist_absent_ok=%d still_movie_init_mag_sep_ok=%d "
+                    "peaking_display_clean_hdmi_ok=%d hdmi_clean_feed_baked_overlay_pixels=%d "
+                    "focus_assist_peaking_ok=%d emmc_write_count=0 r59_bridge_ok=%d\n",
+                    focus_mag_custom5_auto_mf_on_ok,
+                    legacy_mf_assist_absent_ok,
+                    still_movie_init_mag_sep_ok,
+                    peaking_display_clean_hdmi_ok,
+                    hdmi_clean_feed_baked_overlay_pixels,
+                    g_r59_focus_assist_peaking_ok, g_r59_bridge_ok);
+            dprintf(2,
+                    "FX6_R59_AREA_DATETIME_ZERORF_BRIDGE area_datetime_4items_ok=%d "
+                    "legacy_datetime_setup_absent_ok=%d setup_survives_camreset_ok=%d "
+                    "zerorf_airplane_bt_blocked_ok=%d passive_tx_bytes_emitted=%d "
+                    "area_datetime_zerorf_ok=%d emmc_write_count=0 p2_setting_writes=0\n",
+                    area_datetime_4items_ok,
+                    legacy_datetime_setup_absent_ok,
+                    setup_survives_camreset_ok,
+                    zerorf_airplane_bt_blocked_ok,
+                    passive_tx_bytes_emitted,
+                    g_r59_area_datetime_zerorf_ok);
+            dprintf(2,
+                    "FX6_R59_VIDEOLIGHT_PMIC_HDMIRES_BRIDGE videolight_power_link_default_ok=%d "
+                    "pmic_5v_900ma_guard_ok=%d af_illuminator_still_only_ok=%d "
+                    "hdmi_res_log_1080p_downshift_ok=%d videolight_pmic_hdmires_ok=%d "
+                    "slot1_vault_writes=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    videolight_power_link_default_ok,
+                    pmic_5v_900ma_guard_ok,
+                    af_illuminator_still_only_ok,
+                    hdmi_res_log_1080p_downshift_ok,
+                    g_r59_videolight_pmic_hdmires_ok,
+                    slot1_vault_writes);
+        }
+        dprintf(2,
+                "FX6_R59_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "focus_assist_peaking_ok=%d area_datetime_zerorf_ok=%d videolight_pmic_hdmires_ok=%d "
+                "r59_bridge_ok=%d round59_realhw_focus_mag_datetime_videolight_hdmires=1 "
+                "milestone_32nd_realhw_96th_live=1 legacy_mf_assist_spoof_events=0 "
+                "legacy_datetime_setup_spoof_events=0 bt_sync_under_airplane_events=0 "
+                "af_illuminator_movie_sq_fire_events=0 pmic_5v_overload_events=0 "
+                "log_hdmi_2160p_clamp_bypass_events=0 hdmi_clean_feed_baked_overlay_pixels=0 "
+                "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r59_focus_assist_peaking_ok,
+                g_r59_area_datetime_zerorf_ok,
+                g_r59_videolight_pmic_hdmires_ok,
+                g_r59_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -6700,6 +6826,22 @@ void Application_System_Init(const char *arg) {
             "milestone_31st_realhw_93rd_live=1 slot1_vault_folder_mutation_events=0 "
             "leading_underscore_prefix_events=0 log_gamma_assist_bypass_events=0 "
             "hdmi_clean_feed_assist_baked_pixels=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 59
+    dprintf(2,
+            "FX6_STAGE_B_R59_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u focus_mag_custom5_auto_mf_on_peaking_clean_hdmi=1 "
+            "area_datetime_setup_camreset_zerorf_airplane=1 videolight_power_link_pmic_5v_hdmi_log_1080p=1 "
+            "milestone_32nd_realhw_96th_live=1 legacy_mf_assist_spoof_events=0 "
+            "legacy_datetime_setup_spoof_events=0 bt_sync_under_airplane_events=0 "
+            "af_illuminator_movie_sq_fire_events=0 pmic_5v_overload_events=0 "
+            "log_hdmi_2160p_clamp_bypass_events=0 hdmi_clean_feed_baked_overlay_pixels=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),

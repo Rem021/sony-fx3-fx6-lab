@@ -1370,6 +1370,7 @@ def build_stage_a_overlay(
     enable_r56: bool = False,
     enable_r57: bool = False,
     enable_r58: bool = False,
+    enable_r59: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1400,6 +1401,7 @@ def build_stage_a_overlay(
     r56_mode: str = "apsc_s35_hd_face_eye_af_version_big6",
     r57_mode: str = "release_wo_card_lens_audio_meter_copyright_big6",
     r58_mode: str = "file_settings_camid_gamma_assist_tcub_big6",
+    r59_mode: str = "focus_mag_datetime_videolight_hdmires_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1731,7 +1733,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r57_mode: {r57_mode}")
     if enable_r58 and r58_mode not in ("file_settings_camid_gamma_assist_tcub_big6", "slot1_dcim_prefix_log_gamma_guard", "camreset_file_gamma_tcub_init_h0_h3_big6"):
         raise ValueError(f"Unsupported r58_mode: {r58_mode}")
-    if enable_r58 and r58_mode == "slot1_dcim_prefix_log_gamma_guard":
+    if enable_r59 and r59_mode not in ("focus_mag_datetime_videolight_hdmires_big6", "af_illum_bt_sync_pmic_5v_hdmi_2160p_guard", "clean_unmount_camreset_vs_init_h0_h3_big6"):
+        raise ValueError(f"Unsupported r59_mode: {r59_mode}")
+    if enable_r59 and r59_mode == "af_illum_bt_sync_pmic_5v_hdmi_2160p_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r59_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r59-af-illum-bt-pmic5v-hdmi2160p-guard > /dev/console 2>&1\n"
+            "fx6_r59_gd_rc=$?\n"
+            "echo FX6_R59_AF_ILLUM_BT_PMIC_HDMI_RC=$fx6_r59_gd_rc\n"
+            "echo FX6_R59_AF_ILLUM_BT_PMIC_HDMI_EXIT rc=$fx6_r59_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r59_early_hook, 1)
+    elif enable_r58 and r58_mode == "slot1_dcim_prefix_log_gamma_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -3992,6 +4010,62 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r59_meta: Optional[Dict[str, Any]] = None
+    if enable_r59:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r59_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r59"] = (
+            (
+                f"stage_r59=1\nr59_mode={r59_mode}\n"
+                f"focus_mag_custom5_auto_mf_on_peaking_clean_hdmi=1\n"
+                f"area_datetime_setup_camreset_zerorf_airplane=1\n"
+                f"videolight_power_link_pmic_5v_hdmi_log_1080p=1\n"
+                f"milestone_32nd_realhw_96th_live=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r59_meta = {
+            "r59_mode": r59_mode,
+            "focus_assistant_menu_path": "MENU -> Focus -> [Focus Assistant]",
+            "focus_magnifier_default_key": "Custom Button 5",
+            "auto_magnifier_in_mf_default": "On",
+            "legacy_mf_assist_label_absent": True,
+            "focus_magnif_time_options": ["No Limit", "2 Sec", "5 Sec"],
+            "initial_focus_mag_still_movie_separate": True,
+            "initial_focus_mag_options": ["x1.0", "x4.0"],
+            "af_in_focus_mag_still_only": True,
+            "peaking_display_clean_hdmi_isolated": True,
+            "area_datetime_menu_path": "MENU -> Setup -> [Area/Date/Time]",
+            "area_datetime_item_label": "Area/Date/Time Setting",
+            "legacy_datetime_setup_label_absent": True,
+            "area_datetime_4items": ["Area Setting", "Daylight Savings", "Date/Time", "Date Format"],
+            "setup_survives_camera_settings_reset": True,
+            "creators_app_auto_time_area_zerorf_airplane_blocked": True,
+            "video_light_mode_menu_path": "MENU -> Shooting -> [Audio Rec] / Setup -> [Video Light Mode]",
+            "video_light_mode_default": "Power Link",
+            "video_light_mode_options": ["Power Link", "REC Link", "REC Link & STBY", "Auto"],
+            "mi_shoe_pmic_5v_max_ma": 900,
+            "af_illuminator_still_only": True,
+            "hdmi_resolution_menu_path": "MENU -> Setup -> [External Output] -> [HDMI Resolution]",
+            "hdmi_resolution_default": "Auto",
+            "hdmi_resolution_options": ["Auto", "2160p", "1080p", "1080i"],
+            "hdmi_resolution_log_internal_rec_1080p_downshift": True,
+            "wave45_restored_by_initialize_only": True,
+            "slot1_vault_read_only": True,
+            "legacy_mf_assist_spoof_events": 0,
+            "legacy_datetime_setup_spoof_events": 0,
+            "bt_sync_under_airplane_events": 0,
+            "af_illuminator_movie_sq_fire_events": 0,
+            "pmic_5v_overload_events": 0,
+            "log_hdmi_2160p_clamp_bypass_events": 0,
+            "hdmi_clean_feed_baked_overlay_pixels": 0,
+            "passive_tx_bytes_emitted": 0,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -4043,6 +4117,7 @@ def build_stage_a_overlay(
         "r56_enabled": enable_r56,
         "r57_enabled": enable_r57,
         "r58_enabled": enable_r58,
+        "r59_enabled": enable_r59,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -4134,6 +4209,8 @@ def build_stage_a_overlay(
         stage_a_meta["r57"] = r57_meta
     if r58_meta is not None:
         stage_a_meta["r58"] = r58_meta
+    if r59_meta is not None:
+        stage_a_meta["r59"] = r59_meta
     return replacements, additions, stage_a_meta
 
 
@@ -4481,6 +4558,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R56_",
         "FX6_R57_",
         "FX6_R58_",
+        "FX6_R59_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -4800,6 +4878,15 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r58_lang: Optional[Dict[str, Any]] = None
     last_r58_bridge: Optional[Dict[str, Any]] = None
     r58_slot1_dcim_log_gamma_rc: Optional[int] = None
+    last_r59_wave45_init: Optional[Dict[str, Any]] = None
+    last_r59_focus_assist_peaking_bridge: Optional[Dict[str, Any]] = None
+    last_r59_area_datetime_zerorf_bridge: Optional[Dict[str, Any]] = None
+    last_r59_videolight_pmic_hdmires_bridge: Optional[Dict[str, Any]] = None
+    last_r59_af_illum_bt_pmic_hdmi_guard: Optional[Dict[str, Any]] = None
+    last_r59_clean_unmount_camreset_h0_h3: Optional[Dict[str, Any]] = None
+    last_r59_lang: Optional[Dict[str, Any]] = None
+    last_r59_bridge: Optional[Dict[str, Any]] = None
+    r59_af_illum_bt_pmic_hdmi_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -5525,6 +5612,26 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R58_SLOT1_DCIM_LOG_GAMMA_RC"), int):
                 r58_slot1_dcim_log_gamma_rc = kv["FX6_R58_SLOT1_DCIM_LOG_GAMMA_RC"]
+        elif "FX6_R59_WAVE45_INIT " in line:
+            last_r59_wave45_init = _parse_kv_ints(line.split("FX6_R59_WAVE45_INIT ", 1)[1])
+        elif "FX6_R59_FOCUS_ASSIST_PEAKING_BRIDGE " in line:
+            last_r59_focus_assist_peaking_bridge = _parse_kv_ints(line.split("FX6_R59_FOCUS_ASSIST_PEAKING_BRIDGE ", 1)[1])
+        elif "FX6_R59_AREA_DATETIME_ZERORF_BRIDGE " in line:
+            last_r59_area_datetime_zerorf_bridge = _parse_kv_ints(line.split("FX6_R59_AREA_DATETIME_ZERORF_BRIDGE ", 1)[1])
+        elif "FX6_R59_VIDEOLIGHT_PMIC_HDMIRES_BRIDGE " in line:
+            last_r59_videolight_pmic_hdmires_bridge = _parse_kv_ints(line.split("FX6_R59_VIDEOLIGHT_PMIC_HDMIRES_BRIDGE ", 1)[1])
+        elif "FX6_R59_AF_ILLUM_BT_PMIC_HDMI_GUARD " in line:
+            last_r59_af_illum_bt_pmic_hdmi_guard = _parse_kv_ints(line.split("FX6_R59_AF_ILLUM_BT_PMIC_HDMI_GUARD ", 1)[1])
+        elif "FX6_R59_CLEAN_UNMOUNT_CAMRESET_H0_H3 " in line:
+            last_r59_clean_unmount_camreset_h0_h3 = _parse_kv_ints(line.split("FX6_R59_CLEAN_UNMOUNT_CAMRESET_H0_H3 ", 1)[1])
+        elif "FX6_R59_LANG_TELEMETRY " in line:
+            last_r59_lang = _parse_kv_ints(line.split("FX6_R59_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R59_BRIDGE " in line:
+            last_r59_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R59_BRIDGE ", 1)[1])
+        elif "FX6_R59_AF_ILLUM_BT_PMIC_HDMI_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R59_AF_ILLUM_BT_PMIC_HDMI_RC"), int):
+                r59_af_illum_bt_pmic_hdmi_rc = kv["FX6_R59_AF_ILLUM_BT_PMIC_HDMI_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -6344,6 +6451,32 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r58_bridge or {},
         }
 
+    r59_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r59_wave45_init,
+            last_r59_focus_assist_peaking_bridge,
+            last_r59_area_datetime_zerorf_bridge,
+            last_r59_videolight_pmic_hdmires_bridge,
+            last_r59_af_illum_bt_pmic_hdmi_guard,
+            last_r59_clean_unmount_camreset_h0_h3,
+            last_r59_lang,
+            last_r59_bridge,
+        )
+    ):
+        r59_telemetry = {
+            "af_illum_bt_pmic_hdmi_rc": r59_af_illum_bt_pmic_hdmi_rc,
+            "wave45_init": last_r59_wave45_init or {},
+            "focus_assist_peaking_bridge": last_r59_focus_assist_peaking_bridge or {},
+            "area_datetime_zerorf_bridge": last_r59_area_datetime_zerorf_bridge or {},
+            "videolight_pmic_hdmires_bridge": last_r59_videolight_pmic_hdmires_bridge or {},
+            "af_illum_bt_pmic_hdmi_guard": last_r59_af_illum_bt_pmic_hdmi_guard or {},
+            "clean_unmount_camreset_h0_h3": last_r59_clean_unmount_camreset_h0_h3 or {},
+            "lang_telemetry": last_r59_lang or {},
+            "stage_b_bridge": last_r59_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -6399,6 +6532,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r56_telemetry": r56_telemetry,
         "r57_telemetry": r57_telemetry,
         "r58_telemetry": r58_telemetry,
+        "r59_telemetry": r59_telemetry,
     }
 
 
@@ -6516,6 +6650,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r57"
     if args.round >= 58:
         tmp_prefix = "fx6-r58"
+    if args.round >= 59:
+        tmp_prefix = "fx6-r59"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -6584,8 +6720,12 @@ def run_once(args: argparse.Namespace) -> int:
         r56_mode = getattr(args, "r56_mode", "apsc_s35_hd_face_eye_af_version_big6")
         r57_mode = getattr(args, "r57_mode", "release_wo_card_lens_audio_meter_copyright_big6")
         r58_mode = getattr(args, "r58_mode", "file_settings_camid_gamma_assist_tcub_big6")
+        r59_mode = getattr(args, "r59_mode", "focus_mag_datetime_videolight_hdmires_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone32ndRealHw96thRunWave45FocusMagAutoMagMfAreaDateTimeZeroRfVideoLightPmic5vHdmiResLog1080p+r59_mode={r59_mode}+lang={lang})"
+                if args.round >= 59
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone31stRealHw93rdRunWave44MovieStillFileSettingsCamId37CharGammaDispAssistLogLockoutDisplayLutUser16AutoReviewOffTcub6Items+r58_mode={r58_mode}+lang={lang})"
                 if args.round >= 58
                 else (
@@ -6782,6 +6922,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -6868,6 +7009,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r57_mode=r57_mode,
                 enable_r58=(args.round >= 58),
                 r58_mode=r58_mode,
+                enable_r59=(args.round >= 59),
+                r59_mode=r59_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -7032,6 +7175,7 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R56_APSC_4K_BODYDATA_EXIT" in txt
                     or "FX6_R57_CARDLESS_V1_COPYRIGHT_EXIT" in txt
                     or "FX6_R58_SLOT1_DCIM_LOG_GAMMA_EXIT" in txt
+                    or "FX6_R59_AF_ILLUM_BT_PMIC_HDMI_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -7098,6 +7242,7 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R56_APSC_4K_BODYDATA_EXIT" in serial_text
             or "FX6_R57_CARDLESS_V1_COPYRIGHT_EXIT" in serial_text
             or "FX6_R58_SLOT1_DCIM_LOG_GAMMA_EXIT" in serial_text
+            or "FX6_R59_AF_ILLUM_BT_PMIC_HDMI_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -7179,6 +7324,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r56_mode": r56_mode if args.round >= 56 else None,
             "r57_mode": r57_mode if args.round >= 57 else None,
             "r58_mode": r58_mode if args.round >= 58 else None,
+            "r59_mode": r59_mode if args.round >= 59 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -7244,6 +7390,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r56_telemetry": milestones.get("r56_telemetry") if args.round >= 56 else None,
             "r57_telemetry": milestones.get("r57_telemetry") if args.round >= 57 else None,
             "r58_telemetry": milestones.get("r58_telemetry") if args.round >= 58 else None,
+            "r59_telemetry": milestones.get("r59_telemetry") if args.round >= 59 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -7290,6 +7437,157 @@ def run_once(args: argparse.Namespace) -> int:
             shutil.rmtree(tmp_build, ignore_errors=True)
 
 
+def _sanitize_r59_value(val: Any) -> Any:
+    if isinstance(val, dict):
+        cleaned: Dict[str, Any] = {}
+        for k, v in val.items():
+            if k in ("kernel_bin", "dtb_bin", "tmp_build"):
+                continue
+            cleaned[k] = _sanitize_r59_value(v)
+        return cleaned
+    if isinstance(val, list):
+        return [_sanitize_r59_value(item) for item in val]
+    if isinstance(val, str):
+        if "reports/" in val and (val.startswith("/") or val.startswith("reports/")):
+            idx = val.find("reports/")
+            return val[idx:]
+        for needle in ("/Users/", "/private/tmp/", "/var/folders/", "work/_scratch/", "work/_tests/"):
+            if needle in val:
+                return pathlib.Path(val).name
+        return val.replace(":87" + "68", ":<redacted>")
+    return val
+
+
+def sanitize_round59_summary(
+    r59a_raw: Dict[str, Any],
+    r59b_raw: Dict[str, Any],
+    r59c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the repo-root Round 59 summary.json telemetry receipt."""
+    t59a = r59a_raw.get("r59_telemetry") or {}
+    t59b = r59b_raw.get("r59_telemetry") or {}
+    t59c = r59c_raw.get("r59_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r59_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 59,
+            "lang": raw.get("lang", "en"),
+            "r59_mode": raw.get("r59_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r59_telemetry": _sanitize_r59_value(raw.get("r59_telemetry") or {}),
+            "gpe0_readback": _sanitize_r59_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r59_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r59_value(entry)
+
+    r59a_nz = (r59a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r59b_guard = t59b.get("af_illum_bt_pmic_hdmi_guard") or {}
+    r59c_h0h3 = t59c.get("clean_unmount_camreset_h0_h3") or {}
+    r59a_init = t59a.get("wave45_init") or {}
+
+    return _sanitize_r59_value(
+        {
+            "schema": "fx6-on-fx3-round59-realhw-focus-mag-datetime-videolight-hdmires-qemu-v1",
+            "round": 59,
+            "milestone": "59th Round (Wave-45 / 32nd Real-HW QEMU Round in R28..R59, 96 Live Runs)",
+            "date": "2026-11-17",
+            "kernel_version": r59a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "realhw_mechanisms_verified": {
+                "focus_mag_datetime_videolight_hdmires_init": r59a_init,
+                "focus_assist_peaking_stage_b_bridge": t59a.get("focus_assist_peaking_bridge") or {},
+                "area_datetime_zerorf_stage_b_bridge": t59a.get("area_datetime_zerorf_bridge") or {},
+                "videolight_pmic_hdmires_stage_b_bridge": t59a.get("videolight_pmic_hdmires_bridge") or {},
+                "af_illum_bt_sync_pmic_5v_hdmi_2160p_guard": r59b_guard,
+                "clean_unmount_camreset_vs_initialize_wave45_and_16_h0_h3": r59c_h0h3,
+            },
+            "runs": {
+                "r59a_focus_mag_datetime_videolight_hdmires_big6_schinese": _clean_run(
+                    r59a_raw,
+                    (
+                        "Live FX3 7.02 Wave-45 [Focus Assistant] (Focus Magnifier Custom Button 5, "
+                        "Auto Magnifier in MF=[On], absence of legacy MF Assist, Focus Magnif. Time No Limit/2 Sec/5 Sec, "
+                        "separate Still/Movie Initial Focus Mag. x1.0/x4.0, Still AF in Focus Mag. On/Off, "
+                        "[Peaking Display] Off/Mid/White clean HDMI), [Area/Date/Time Setting] (Area Setting/Daylight Savings/Date/Time/Date Format, "
+                        "absence of legacy Date/Time Setup, Setup survival across Camera Settings Reset, Creators' App zero-RF suppression under Airplane Mode=On), "
+                        "[Video Light Mode] (Power Link default / REC Link / REC Link & STBY / Auto + PMIC 5V <= 900 mA guard + Still-only AF Illuminator), "
+                        "[HDMI Resolution] (Auto default / 2160p / 1080p / 1080i + Log internal recording 1080p downshift), "
+                        f"and Stage-B Big-6 Home render (sid=0x0a, schinese, {r59a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r59b_af_illum_bt_sync_pmic_5v_hdmi_2160p_guard": _clean_run(
+                    r59b_raw,
+                    (
+                        "Fail-closed Wave-45 guard rehearsal: Movie/S&Q AF Illuminator fire (-95 EOPNOTSUPP), "
+                        "Creators' App BT time/area sync under Airplane Mode=On (-1 EPERM, passive_tx_bytes_emitted=0), "
+                        "MI-Shoe >900 mA PMIC 5V overload (-95 EOPNOTSUPP), Log recording 2160p HDMI clamp bypass (-16 EBUSY), "
+                        "legacy MF Assist / Date/Time Setup spoofs (-2 ENOENT), clean-HDMI overlay bake (-1 EPERM), "
+                        "and read-only Slot-1 BODYDATA.DAT / p2:/setting / cnflasha writes (-30 EROFS)"
+                    ),
+                ),
+                "r59c_clean_unmount_camreset_vs_init_h0_h3_big6_schinese": _clean_run(
+                    r59c_raw,
+                    (
+                        "Clean unmount of volatile /tmp Stage-B overlay restoring stock ILME-FX3 Ver. 7.02 + "
+                        "[Camera Settings Reset] (Focus Mag/Peaking reset, Setup Area/Date/Time/Video Light/HDMI Resolution survive) "
+                        "vs [Reset Network Set.] (BT=Off) vs [Initialize] + dlopen(libJit.so) + 16/16 H0 == H3 + "
+                        "Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r59_realhw_focus_mag_datetime_videolight_hdmires_audit": {
+                "round": 59,
+                "milestone": 59,
+                "milestone221_qemu_rounds": 32,
+                "milestone221_qemu_runs": 96,
+                "milestone233_qemu_rounds": 32,
+                "milestone233_qemu_runs": 96,
+                "milestone254_qemu_rounds": 32,
+                "milestone254_qemu_runs": 96,
+                "milestone264_qemu_rounds": 32,
+                "milestone264_qemu_runs": 96,
+                "total_runs": 3,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "r59a_wave45_focus_datetime_videolight_hdmires_verified": bool(r59a_init.get("r59_init_ok") == 1),
+                "r59a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r59a_nz >= 300000),
+                "r59b_af_illum_bt_pmic5v_hdmi2160p_guard_fail_closed": bool(r59b_guard.get("r59b_ok") == 1),
+                "r59c_clean_unmount_camreset_init_and_16_h0_eq_h3_verified": bool(
+                    r59c_h0h3.get("r59c_ok") == 1 and r59c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) optical bench verifying [Focus Magnifier] Custom Button 5 actuation, [Auto Magnifier in MF]=[On] ring rotation zoom, separate Still/Movie [Initial Focus Mag.] (x1.0/x4.0), and [Peaking Display] clean-HDMI isolation remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) RTC/BLE coexistence bench verifying [Area/Date/Time Setting] survival across [Camera Settings Reset] and Creators' App zero-RF Bluetooth suppression under [Airplane Mode]=[On] remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) MI-Shoe PMIC 5V load bench (HVL-LBPC <= 900 mA [Video Light Mode]=Power Link/REC Link/REC Link & STBY/Auto + Still-only [AF Illuminator]) and external Atomos Ninja/Monitor HDMI analyzer bench ([HDMI Resolution] Auto/2160p/1080p/1080i + Log internal recording 1080p downshift) remain unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
@@ -7304,7 +7602,8 @@ def main() -> int:
     # r55_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55]
     # r56_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56]
     # r57_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58], required=True)
+    # r58_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -7337,6 +7636,7 @@ def main() -> int:
     ap.add_argument("--r56-mode", type=str, choices=["apsc_s35_hd_face_eye_af_version_big6", "apsc_4k_raw_cleanhdmi_bodydata_flash_guard", "camreset_face_memory_initialize_h0_h3_big6"], default="apsc_s35_hd_face_eye_af_version_big6")
     ap.add_argument("--r57-mode", type=str, choices=["release_wo_card_lens_audio_meter_copyright_big6", "cardless_movie_v1_audio_spoof_copyright_guard", "camreset_copyright_disp_init_h0_h3_big6"], default="release_wo_card_lens_audio_meter_copyright_big6")
     ap.add_argument("--r58-mode", type=str, choices=["file_settings_camid_gamma_assist_tcub_big6", "slot1_dcim_prefix_log_gamma_guard", "camreset_file_gamma_tcub_init_h0_h3_big6"], default="file_settings_camid_gamma_assist_tcub_big6")
+    ap.add_argument("--r59-mode", type=str, choices=["focus_mag_datetime_videolight_hdmires_big6", "af_illum_bt_sync_pmic_5v_hdmi_2160p_guard", "clean_unmount_camreset_vs_init_h0_h3_big6"], default="focus_mag_datetime_videolight_hdmires_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

@@ -1298,6 +1298,28 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-reco
   /usr/bin/python3 -B -m fx3_recovery verify-58pillar-recovery --force-clean-room --json
 ```
 
+## Phase 332（Pillar 59 / `59/59` 统一恢复总检里程碑）：Wave-57 `SteadyShot` 5 轴 IBIS 47 档焦距与 4 重锁死 / 休眠电影自拍 vs 静态自拍 `#8` 灯与提示音 / `Zebra Custom1-2` IRE 与 4 色峰值 Clean-HDMI 隔离 / `RTMP/RTMPS/SRT` 推流零射频与 `Slot-1` 金库防火墙（`verify-59pillar-recovery` / `verify-pillar59-recovery` / `verify-pillar59-steadyshot-47focal-selftimer-zebra-streaming-vault`）
+
+- **[`realhw_59pillar_steadyshot_47focal_selftimer_zebra_streaming_vault_verifier.py`](fx3_recovery/realhw_59pillar_steadyshot_47focal_selftimer_zebra_streaming_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-57）落地 **Phase 332 Pillar 59（`59/59`）** 并将全套恢复总检推进至 **`59/59`（`VERIFIED_59OF59_PILLAR_RECOVERY_MASTER`）**（`< 1.5s` 快速 CLI 预算、`< 4.0s` 标称、`< 6.0s` 并发上限，保持 `verify-22..58pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OVERALL_READY_FOR_HARDWARE_ATTACH = False`、`CROSS_MODEL_FLASH_AUTHORIZED = False`、`P332_AIRPLANE_MODE_FORCED_ON = True`、`P332_RF_PACKETS_TRANSMITTED = 0`、`P332_SLOT1_FORMAT_HARD_LOCKED = True`、`P332_SLOT1_VAULT_EROFS_EOPNOTSUPP_ENFORCED = True`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` 与 `FX6 6.01` 共 **17 项** Wave-57 供体（`< 0.20s`，CI 下 `< 0.50s` 且显式防护 `work_root is None` 以避免无供体 Ubuntu CI 触发 `NoneType / str` 异常），并在 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时安全回退至 `CLEAN_ROOM_SYNTHETIC`：
+  - **Sub-Pillar 59A（`SteadyShot` 47 档焦距与 4 重锁死 + 休眠电影自拍 vs 静态自拍 `#8` 灯/提示音 + FX6 无机身防抖边界）**：锁定 `Shooting -> [Image Stabilization]` 4 项（Movie `Active/Standard[default]/Off`、Still `On[default]/Off`、`SteadyShot Adjust.` `Auto[default]/Manual`、精确 **47 档** `Focal Length` `8..1000mm` 默认 `8mm`，全部 Resettable）；`Active` 约 `1.104x` 裁切、强制 `Distortion Comp. = Auto` 并在 **4 条件**（`Movie >= 100p/119.88p`、`S&Q >= 100/120fps`、`HDMI RAW = On`、`De-Squeeze != Off`）锁死；休眠 `Dynamic active`（`_f 0x741c`）严格返回 `EOPNOTSUPP=95`；FX6 无机身 IBIS（`TYPE_STEADYSHOT_EQUIP_WITH_BODY_UNSUPPORTED`）。锁定电影 `[Self-timer]`（`BKID_APP_setting_movie_self_timer` / `Rec Start delay`）休眠（`EOPNOTSUPP=95`）vs 静态 `[Drive Mode]` 6 种连续自拍组合、`#8` 前灯与 `Initialize` 专属 `[Audio signals]`（`Silent Mode = On` 或电影 HDMI 音频时静音），及 FX6 `Picture Cache Rec` / `Interval Rec` 边界。
+  - **Sub-Pillar 59B（`Zebra Custom1/2` IRE、`4 色 Peaking` Clean-HDMI 隔离与 `RTMP/RTMPS/SRT` 推流零射频 / `Slot-1 EROFS=30` 金库防火墙）**：锁定 `Initialize` 专属 `[Zebra Display]` 与 `[Zebra Level]`（`70..100+`、`Custom1` `Std+Range 0..109 ± 1..10%`、`Custom2` `Lower Limit 0..109+`，`Display LUT = On` 时测 LUT 后信号）及 4 色 `[Peaking Display]`（`Red/Yellow/Blue/White[def]`，Clean-HDMI 隔离），对照 FX6 互斥 `Off / Zebra1 / Zebra2`（非 `Both`）与 `B&W/Red/Yellow/Blue`。锁定 `Network -> [Streaming] -> [Network Streaming]`（`RTMP`/`RTMPS`/`SRT`、`59.94/50/29.97/25p` 禁止 `23.98p/24p`、`[Movie Rec During Streaming]` 4K 锁死与 `Reset Network Set.` 保留 `Airplane Mode = On`），强制零射频（`rf_packets_transmitted == 0`）与 `Slot-1` Tier-0 恢复金库 `EROFS=30` 防火墙 + `Backup.bin H0 == H3`（`16/16`）。
+  - **统一 `59/59` 恢复总检聚合器与 CLI（`evaluate_realhw_59pillar_recovery_master` / `evaluate_59pillar_recovery_master` / `verify-59pillar-recovery` / `verify-pillar59-recovery` / `verify-pillar59-steadyshot-47focal-selftimer-zebra-streaming-vault`）**：
+    - 并发调用 `evaluate_realhw_58pillar_recovery_master`（`Pillars 1..58`）+ **Pillar 59**（`run_pillar59_standalone_suite`），在 `< 1.5s` 内汇总产出 **`59/59`（`VERIFIED_59OF59_PILLAR_RECOVERY_MASTER`）** 并自动接入 Milestone 311 / 324 最高支柱发现接口；[`tests/test_realhw_59pillar_steadyshot_47focal_selftimer_zebra_streaming_vault_verifier.py`](tests/test_realhw_59pillar_steadyshot_47focal_selftimer_zebra_streaming_vault_verifier.py) 提供 **>= 90 项**四模单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-pillar59-steadyshot-47focal-selftimer-zebra-streaming-vault --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-pillar59-recovery --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-59pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-59pillar-recovery --force-clean-room --json
+```
+
 
 
 

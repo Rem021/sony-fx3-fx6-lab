@@ -205,6 +205,12 @@ from .realhw_58pillar_dial_customize_mydial_fn12x2_liveview_lut_embed_vault_veri
     verify_58pillar_recovery_suite,
     verify_dial_customize_mydial_fn12x2_liveview_lut_embed_and_vault,
 )
+from .realhw_59pillar_steadyshot_47focal_selftimer_zebra_streaming_vault_verifier import (
+    P332_ENV_CLEAN_ROOM_TEST,
+    run_pillar59_standalone_suite,
+    verify_59pillar_recovery_suite,
+    verify_steadyshot_47focal_selftimer_zebra_streaming_and_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -646,6 +652,18 @@ def main():
     p326_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p326_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p326_master.add_argument('--out', help='optional exclusive new output directory for 58pillar-recovery-master-report.json')
+    p332_p59 = sub.add_parser('verify-pillar59-steadyshot-47focal-selftimer-zebra-streaming-vault', help='Phase 332 Pillar 59 Wave-57 SteadyShot 5-Axis IBIS 47-step Focal Length (8..1000mm) & 4 Active Lockouts vs dormant Dynamic active (EOPNOTSUPP=95) & FX6 zero IBIS, dormant Movie Self-timer vs Still Self-timer #8 LED & Initialize-only Audio signals vs FX6 Picture Cache/Interval Rec, Initialize-only Zebra Custom1-2 IRE (Std+Range 0..109 +/- 1..10%% / Lower Limit 0..109+) + 4-color Peaking Clean-HDMI isolation vs FX6 Off/Zebra1/Zebra2+B&W, and Network Streaming RTMP/RTMPS/SRT (59.94/50/29.97/25p only, no 23.98p/24p, Movie Rec During Streaming 4K lockout, Reset Network Set. preserving Airplane Mode=On) Zero-RF & Slot-1 Tier-0 EROFS=30 Vault Firewall verifier')
+    p332_p59.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p332_p59.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p332_p59.add_argument('--out', help='optional exclusive new output directory for pillar59-steadyshot-47focal-selftimer-zebra-streaming-vault-report.json')
+    p332_p59_alias = sub.add_parser('verify-pillar59-recovery', help='Phase 332 Pillar 59 standalone verifier alias (Wave-57 SteadyShot 47-Focal / Self-Timer / Zebra Custom1-2 / Peaking / RTMP-RTMPS-SRT Streaming Zero-RF & Slot-1 EROFS=30 Vault Firewall)')
+    p332_p59_alias.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p332_p59_alias.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p332_p59_alias.add_argument('--out', help='optional exclusive new output directory for pillar59-steadyshot-47focal-selftimer-zebra-streaming-vault-report.json')
+    p332_master = sub.add_parser('verify-59pillar-recovery', help='Phase 332 (59/59 Recovery Pillars) unified 59/59 real-hardware recovery master aggregator (Pillars 1..58 + Pillar 59)')
+    p332_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p332_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p332_master.add_argument('--out', help='optional exclusive new output directory for 59pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -4101,6 +4119,109 @@ def main():
                     f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_58pillar_sha256={report.master_58pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command in (
+            'verify-pillar59-steadyshot-47focal-selftimer-zebra-streaming-vault',
+            'verify-pillar59-recovery',
+        ):
+            report = run_pillar59_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(
+                    args.out,
+                    {'pillar59-steadyshot-47focal-selftimer-zebra-streaming-vault-report.json': encode(result)},
+                )
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_59a={report.pillar_59a_steadyshot_47focal_selftimer_vault.scenarios_passed}/{report.pillar_59a_steadyshot_47focal_selftimer_vault.scenarios_total} "
+                    f"pillar_59b={report.pillar_59b_zebra_peaking_streaming_vault.scenarios_passed}/{report.pillar_59b_zebra_peaking_streaming_vault.scenarios_total} "
+                    f"steadyshot_47focal_or_lockout_drift_events={report.steadyshot_47focal_or_lockout_drift_events} "
+                    f"selftimer_dormant_or_led8_audio_drift_events={report.selftimer_dormant_or_led8_audio_drift_events} "
+                    f"fx6_ibis_or_selftimer_spoof_events={report.fx6_ibis_or_selftimer_spoof_events} "
+                    f"zebra_custom_ire_or_peaking_clean_hdmi_drift_events={report.zebra_custom_ire_or_peaking_clean_hdmi_drift_events} "
+                    f"streaming_24p_rec_or_network_reset_drift_events={report.streaming_24p_rec_or_network_reset_drift_events} "
+                    f"zero_rf_or_slot1_vault_bypass_events={report.zero_rf_or_slot1_vault_bypass_events} "
+                    f"rf_packets_transmitted={report.rf_packets_transmitted} "
+                    f"rf_nvs_mutation_bytes={report.rf_nvs_mutation_bytes} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_streaming_or_ftp_mutation_bytes={report.slot1_streaming_or_ftp_mutation_bytes} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_eopnotsupp_enforced={report.slot1_vault_erofs_eopnotsupp_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-59pillar-recovery':
+            report = verify_59pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'59pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_1_5s_fast_cli_budget={report.under_1_5s_fast_cli_budget} "
+                    f"under_2_5s_fast_cli_budget={report.under_2_5s_fast_cli_budget} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar59_a={report.pillar59_a_steadyshot_47focal_selftimer_vault.scenarios_passed}/{report.pillar59_a_steadyshot_47focal_selftimer_vault.scenarios_total} "
+                    f"pillar59_b={report.pillar59_b_zebra_peaking_streaming_vault.scenarios_passed}/{report.pillar59_b_zebra_peaking_streaming_vault.scenarios_total} "
+                    f"steadyshot_47focal_or_lockout_drift_events={report.steadyshot_47focal_or_lockout_drift_events} "
+                    f"selftimer_dormant_or_led8_audio_drift_events={report.selftimer_dormant_or_led8_audio_drift_events} "
+                    f"fx6_ibis_or_selftimer_spoof_events={report.fx6_ibis_or_selftimer_spoof_events} "
+                    f"zebra_custom_ire_or_peaking_clean_hdmi_drift_events={report.zebra_custom_ire_or_peaking_clean_hdmi_drift_events} "
+                    f"streaming_24p_rec_or_network_reset_drift_events={report.streaming_24p_rec_or_network_reset_drift_events} "
+                    f"zero_rf_or_slot1_vault_bypass_events={report.zero_rf_or_slot1_vault_bypass_events} "
+                    f"rf_packets_transmitted={report.rf_packets_transmitted} "
+                    f"rf_nvs_mutation_bytes={report.rf_nvs_mutation_bytes} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_streaming_or_ftp_mutation_bytes={report.slot1_streaming_or_ftp_mutation_bytes} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_eopnotsupp_enforced={report.slot1_vault_erofs_eopnotsupp_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_59pillar_sha256={report.master_59pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

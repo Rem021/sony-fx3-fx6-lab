@@ -232,6 +232,11 @@ from .realhw_big6_home_framing_interval_tc_ssh_fan_and_138gate_guard import (
     evaluate_g137_big6_home_framing_interval_vault_guard,
     evaluate_g138_tc_make_hdmi_rec_ssh_authen_fan_guard,
 )
+from .realhw_rec_media_autoswitch_proxy_cloud_mymenu_and_140gate_guard import (
+    evaluate_140gate_preflight,
+    evaluate_g139_rec_media_autoswitch_proxy_vault_guard,
+    evaluate_g140_creators_cloud_zerorf_mymenu42_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -4368,6 +4373,95 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_138.add_argument("--json", action="store_true", help="Emit structured JSON report")
     p_138.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 167. verify-rec-media-autoswitch-proxy-vault-guard
+    p_g139 = sub.add_parser(
+        "verify-rec-media-autoswitch-proxy-vault-guard",
+        aliases=["verify-g139-rec-media-autoswitch-proxy"],
+        help="Verify Gate G139: Split [Recording Media] (Still/Movie) vs dormant [Prioritize Rec. Media] (EOPNOTSUPP=95), [Auto Switch Media] Slot-2->Slot-1 overflow EROFS=30 Tier-0 Vault Firewall, V60/V90/CFexpress VPG200/VPG400 speed gates (Type B ENODEV=19), and [Proxy Settings] M4ROOT/SUB Vault Firewall vs FX6 Simul Rec / Chunk Proxy",
+    )
+    p_g139.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g139.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g139.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g139.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g139.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 168. verify-creators-cloud-zerorf-mymenu42-guard
+    p_g140 = sub.add_parser(
+        "verify-creators-cloud-zerorf-mymenu42-guard",
+        aliases=["verify-g140-creators-cloud-zerorf-mymenu"],
+        help="Verify Gate G140: [Creators' Cloud]/[C3 Portal] Initialize-persistence & FTP exclusion, [Cnct. while Power OFF] BLE Zero-RF firewall (Airplane=On AND Cnct. while Power OFF=Off) vs Bluetooth-less FX6, and exact 42-slot [My Menu] (6x7, rejecting >=42 & Playback tab EINVAL=22) vs 20-item FX6 User Menu with Lock",
+    )
+    p_g140.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g140.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g140.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g140.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g140.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 169. verify-140-gates
+    p_140 = sub.add_parser(
+        "verify-140-gates",
+        help="Run Phase 317 Wave-60 Grand Milestone Unified 140-Gate Master Safety Preflight Engine (G01..G140)",
+    )
+    p_140.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_140.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_140.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G140 gates can be rehearsed offline",
+    )
+    p_140.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_140.add_argument("--summary", action="store_true", help="Emit concise summary output")
 
     args = parser.parse_args(argv)
 
@@ -9320,6 +9414,166 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_138_gates_verified if args.dry_run_simulated else report.offline_135_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-rec-media-autoswitch-proxy-vault-guard",
+        "verify-g139-rec-media-autoswitch-proxy",
+    ):
+        verdict, res = evaluate_g139_rec_media_autoswitch_proxy_vault_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.rec_media_autoswitch_proxy_vault_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_recording_media": guard["effective_recording_media"],
+                    "effective_auto_switch_media": guard["effective_auto_switch_media"],
+                    "auto_switch_survived_cam_reset": guard["auto_switch_survived_cam_reset"],
+                    "slot1_vault_firewall_blocked": guard["slot1_vault_firewall_blocked"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "media_card_type": guard["media_card_type"],
+                    "effective_proxy_recording": guard["effective_proxy_recording"],
+                    "proxy_file_format": guard["proxy_file_format"],
+                    "proxy_record_setting": guard["proxy_record_setting"],
+                    "proxy_sub_dir_path": guard["proxy_sub_dir_path"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.rec_media_autoswitch_proxy_vault_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} rec_media={guard['effective_recording_media']} "
+                f"auto_switch={guard['effective_auto_switch_media']} "
+                f"card={guard['media_card_type']} "
+                f"proxy={guard['effective_proxy_recording']} "
+                f"proxy_fmt={guard['proxy_file_format']}/{guard['proxy_record_setting']} "
+                f"slot1_vault={guard['slot_1_contains_tier0_vault']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-creators-cloud-zerorf-mymenu42-guard",
+        "verify-g140-creators-cloud-zerorf-mymenu",
+    ):
+        verdict, res = evaluate_g140_creators_cloud_zerorf_mymenu42_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.creators_cloud_zerorf_mymenu42_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_cloud_connection": guard["effective_cloud_connection"],
+                    "effective_airplane_mode": guard["effective_airplane_mode"],
+                    "effective_cnct_while_power_off": guard["effective_cnct_while_power_off"],
+                    "ble_power_off_energized": guard["ble_power_off_energized"],
+                    "zero_rf_enforced": guard["zero_rf_enforced"],
+                    "rf_packets_transmitted": guard["rf_packets_transmitted"],
+                    "mymenu_exact_slots": guard["mymenu_exact_slots"],
+                    "fx6_user_menu_max_items": guard["fx6_user_menu_max_items"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.creators_cloud_zerorf_mymenu42_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} cloud={guard['effective_cloud_connection']} "
+                f"airplane={guard['effective_airplane_mode']} "
+                f"cnct_power_off={guard['effective_cnct_while_power_off']} "
+                f"ble_energized={guard['ble_power_off_energized']} "
+                f"zero_rf={guard['zero_rf_enforced']} "
+                f"rf_pkts={guard['rf_packets_transmitted']} "
+                f"mymenu_slots={guard['mymenu_exact_slots']} "
+                f"fx6_user_menu={guard['fx6_user_menu_max_items']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-140-gates":
+        report = evaluate_140gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "schema_version": report.schema_version,
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g139_status": report.g139_result["status"],
+                    "g140_status": report.g140_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/140 "
+                f"g139_to_g140_all_passed={report.g139_to_g140_all_passed} "
+                f"all_140_gates_verified={report.all_140_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_140_gates_verified if args.dry_run_simulated else report.offline_137_gates_verified
         return 0 if ok else 1
 
     return 2

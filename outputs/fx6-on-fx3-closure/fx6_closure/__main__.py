@@ -2605,6 +2605,30 @@ def _cmd_verify_milestone_295(
     )
 
 
+def _cmd_verify_milestone_311(
+    repo_root: Path,
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    force_clean_room: bool,
+    simulate_bench_dry_run: bool,
+    json_output: bool,
+    markdown_out: Optional[Path],
+    output_path: Optional[Path],
+) -> int:
+    from .realhw_milestone311_master_gate import verify_milestone_311_cli
+
+    return verify_milestone_311_cli(
+        repo_root=repo_root,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        force_clean_room=True if force_clean_room else None,
+        simulate_bench_dry_run=simulate_bench_dry_run,
+        json_output=json_output,
+        markdown_out=markdown_out,
+        output_path=output_path,
+    )
+
+
 def _cmd_preflight_diffset_customkey_autoslow_and_apsc(
     fx6_lib_dir: Path,
     fx3_modules_dir: Path,
@@ -4409,6 +4433,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("preflight-lens-comp-af-illuminator-copy-slot-and-evf-absence", "Run Phase 302 11th physical bench readiness verifier (Waves 53-55 ilc/2210: 2-option Shading Auto/Off vs dormant 0x6c9c Auto:Low EOPNOTSUPP=95 + built-in FX3 AF illuminator LED #8 vs FX6 absence + 5 Initialize-only AF params + Slot-1 Folder/Rating EROFS=30 firewall, Switch V/H AF Area Still AF-C + 14-item Focus Area Limit + 5-mode Exposure Std. Adjust + TC Format NDF/PAL + CRITICAL Playback [Copy] Slot 2->1 Tier-0 reverse-write EROFS=30 firewall, 3-mode Touch Func. in Shooting + 4-mode Monitor DISP & CRITICAL Zero-EVF Black-Screen Lockout Firewall + Still AEL/Wireless Flash + Interval Play Speed 1..9 & dormant Edit trap rejection, and 16/16 H0==H3 Tier-0 gate)"),
         ("preflight-dial-customize-lut-embed-steadyshot-and-streaming", "Run Phase 307 12th physical bench readiness verifier (Waves 56-57 ilc/2210: 5-item [Dial Customize] & 3-dial truth vs dormant Rear Dial L/R 0x6a5c/0x680d + My Dial Lock override + 12+12 Fn Menu split, 3-item [Live View Display Set.] & clean-HDMI [Grid Line], O_RDONLY [Manage User LUTs] vs [Embed LUT File] SDHC lock 0x61a0 vs PPLUT1..4 + Slot-1 EROFS=30 firewall, 4-lock Movie [SteadyShot]=Active vs dormant Dynamic active 0x741c + 47-entry Focal Length & IBIS-less FX6 split, dormant Movie Self-timer 0x7192 rejection + LED #8/Audio signals, Custom 1/2 Zebra 0..109%% +-1..10%% + 4-color Peaking, and CRITICAL Zero-RF [Airplane Mode]=On + Slot-1 [Network Streaming]/[FTP] EROFS=30 firewall + 16/16 H0==H3 Tier-0 gate)"),
         ("verify-milestone-295", "Verify Grand Milestone Phase 295 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Master Gate (>=124-Gate + >=50 Recovery + >=45 Auditors + >=58 VM + Decuple 10/10 Bench Preflights Ph186..Ph291 + FX3 7.02 QEMU R28..R58+, realhw_milestone295_master_gate_v1)"),
+        ("verify-milestone-311", "Verify Grand Milestone Phase 311 Forward-Compatible 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Master Gate (>=134-Gate + >=54 Recovery + 45/45 Auditors + >=62 VM + Dodecuple 12/12 Bench Preflights Ph186..Ph307 + >=35 FX3 7.02 QEMU Rounds R28..R62+, realhw_milestone311_master_gate_v1)"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         if cmd_name not in ("verify-post-trial", "verify-realhw-jiritsu-tier0"):
@@ -4419,7 +4444,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--fx6-bin-dir", type=Path, default=DEFAULT_FX6_DONOR_BIN_DIR)
         if cmd_name in ("dry-run-candidate", "run-rollback-drill"):
             p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
-        if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet", "build-stage-b-readiness-packet", "run-stage-b-lifecycle-drill", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "verify-milestone-175", "verify-milestone-193", "verify-milestone-209", "verify-milestone-221", "verify-milestone-233", "verify-milestone-254", "verify-milestone-264", "verify-milestone-295"):
+        if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet", "build-stage-b-readiness-packet", "run-stage-b-lifecycle-drill", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "verify-milestone-175", "verify-milestone-193", "verify-milestone-209", "verify-milestone-221", "verify-milestone-233", "verify-milestone-254", "verify-milestone-264", "verify-milestone-295", "verify-milestone-311"):
             p.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
         if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard", "verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175"):
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write audit report")
@@ -4427,14 +4452,16 @@ def main(argv: Optional[List[str]] = None) -> int:
         if cmd_name in ("verify-milestone-193", "verify-milestone-209", "verify-milestone-221", "verify-milestone-233"):
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write Milestone master report")
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force clean-room synthetic offline verification mode")
-        if cmd_name in ("verify-milestone-254", "verify-milestone-264", "verify-milestone-295"):
+        if cmd_name in ("verify-milestone-254", "verify-milestone-264", "verify-milestone-295", "verify-milestone-311"):
             p.add_argument("--output", "--out", dest="output", type=Path, default=None, help="Optional JSON file path to write Milestone master report")
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force clean-room synthetic offline verification mode")
+        if cmd_name == "verify-milestone-311":
+            p.add_argument("--simulate-bench-dry-run", "--simulate-ready-bench", dest="simulate_bench_dry_run", action="store_true", help="Synthesize simulated dry-run Tier-0 physical bench receipts for G10..G12 and Ph186..Ph307 without authorizing live hardware attachment")
         if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "verify-sd-stageb-bundle-uninstaller"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight", "preflight-usb-mode-hdmi-info-protect-and-network-reset", "preflight-pp-scinetone-wb-metering-and-shutter-type", "preflight-focus-area-zoom-dci4k-and-sensor-cleaning", "preflight-lens-comp-af-illuminator-copy-slot-and-evf-absence", "preflight-dial-customize-lut-embed-steadyshot-and-streaming", "verify-milestone-295"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight", "preflight-usb-mode-hdmi-info-protect-and-network-reset", "preflight-pp-scinetone-wb-metering-and-shutter-type", "preflight-focus-area-zoom-dci4k-and-sensor-cleaning", "preflight-lens-comp-af-illuminator-copy-slot-and-evf-absence", "preflight-dial-customize-lut-embed-steadyshot-and-streaming", "verify-milestone-295", "verify-milestone-311"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
-        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight", "preflight-usb-mode-hdmi-info-protect-and-network-reset", "preflight-pp-scinetone-wb-metering-and-shutter-type", "preflight-focus-area-zoom-dci4k-and-sensor-cleaning", "preflight-lens-comp-af-illuminator-copy-slot-and-evf-absence", "preflight-dial-customize-lut-embed-steadyshot-and-streaming", "verify-milestone-295"):
+        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight", "preflight-usb-mode-hdmi-info-protect-and-network-reset", "preflight-pp-scinetone-wb-metering-and-shutter-type", "preflight-focus-area-zoom-dci4k-and-sensor-cleaning", "preflight-lens-comp-af-illuminator-copy-slot-and-evf-absence", "preflight-dial-customize-lut-embed-steadyshot-and-streaming", "verify-milestone-295", "verify-milestone-311"):
             p.add_argument("--markdown-out", type=Path, default=None, help="Optional Markdown report path to write certificate/dossier")
         if cmd_name == "preflight-dial-customize-lut-embed-steadyshot-and-streaming":
             p.add_argument("--output", "--out", dest="output", type=Path, default=None, help="Optional JSON file path to write Phase 307 preflight report")
@@ -5970,6 +5997,17 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.fx6_lib_dir,
             args.fx3_modules_dir,
             args.force_clean_room,
+            args.json,
+            args.markdown_out,
+            args.output,
+        )
+    if args.cmd == "verify-milestone-311":
+        return _cmd_verify_milestone_311(
+            args.repo_root,
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.force_clean_room,
+            args.simulate_bench_dry_run,
             args.json,
             args.markdown_out,
             args.output,

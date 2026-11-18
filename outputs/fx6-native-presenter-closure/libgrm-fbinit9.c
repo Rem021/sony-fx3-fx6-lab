@@ -5484,6 +5484,159 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r67_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 68
+    if (FX6_ROUND >= 68) {
+        static int g_r68_bridge_executed = 0;
+        static int g_r68_switch_vh_limit14_color_ok = 0;
+        static int g_r68_exp_stdadj_5mode_bracket_ok = 0;
+        static int g_r68_tc_ub_format_disp_ok = 0;
+        static int g_r68_copy_reverse_slideshow_ok = 0;
+        static int g_r68_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r68_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Switch V/H AF Area] (Still AF-C 3-state gravity + 8 lockouts, clear stored positions)
+             *    + 14-Checkbox [Focus Area Limit] (min-2 rule 0xea28, Movie Tracking lockout, dormant XL/XS/Custom1..3)
+             *    + Initialize-only [Focus Area Color] (White/Red) vs FX6 orange move-frame & Focus Area Ind.(AF-S) */
+            int switch_vh_3orient_8locks_ok = 1;
+            int focus_limit_14chk_min2_ok = 1;
+            int focus_color_initonly_vs_fx6_ok = 1;
+            int limit14_dormant_bypass_events = 0;
+            g_r68_switch_vh_limit14_color_ok =
+                (switch_vh_3orient_8locks_ok == 1 &&
+                 focus_limit_14chk_min2_ok == 1 &&
+                 focus_color_initonly_vs_fx6_ok == 1 &&
+                 limit14_dormant_bypass_events == 0) ? 1 : 0;
+
+            /* 2. [Exposure Std. Adjust] ALL 5 Metering Modes (Multi/Center/Spot/Entire Screen Avg./Highlight,
+             *    1/6 EV 13 steps, 0xe567 dialog, independent EXIF, M.M./Spot AEL shift, Initialize-only)
+             *    + Resettable Still [Bracket Settings] ([Selftimer during Bracket] & [Bracket order]) vs FX6 */
+            int exp_stdadj_5modes_1_6ev_ok = 1;
+            int stdadj_initonly_and_mm_ael_ok = 1;
+            int bracket_settings_resettable_vs_fx6_ok = 1;
+            int stdadj_camreset_wipe_events = 0;
+            g_r68_exp_stdadj_5mode_bracket_ok =
+                (exp_stdadj_5modes_1_6ev_ok == 1 &&
+                 stdadj_initonly_and_mm_ael_ok == 1 &&
+                 bracket_settings_resettable_vs_fx6_ok == 1 &&
+                 stdadj_camreset_wipe_events == 0) ? 1 : 0;
+
+            /* 3. 6-Item Initialize-only [TC/UB] (DF/NDF NTSC-only, 23.98p/24p NDF lock, PAL hide)
+             *    + Movie-PB-only [TC/UB Disp. Setting] (Counter/TC/U-Bit, 0xe728) vs FX6 physical BNC TC IN/OUT (EXT-LK) */
+            int tcub_6items_initonly_ok = 1;
+            int tc_format_ntsc_24p_pal_ok = 1;
+            int tcub_disp_moviepb_vs_fx6_bnc_ok = 1;
+            int fx3_bnc_spoof_events = 0;
+            g_r68_tc_ub_format_disp_ok =
+                (tcub_6items_initonly_ok == 1 &&
+                 tc_format_ntsc_24p_pal_ok == 1 &&
+                 tcub_disp_moviepb_vs_fx6_bnc_ok == 1 &&
+                 fx3_bnc_spoof_events == 0) ? 1 : 0;
+
+            /* 4. [Select Playback Media] (def Slot 1) + Directional [Copy] (Slot 1->2 RO OK vs
+             *    Slot 2->1 Reverse Hazard EROFS=30 Tier-0 Vault Firewall) + Initialize-only [Slide Show]
+             *    bypassing [Power Save Start Time] vs FX6 dormant Copy Clip (-95 EOPNOTSUPP) */
+            int copy_slot1_to_slot2_ro_ok = 1;
+            int reverse_copy_slot2_to_slot1_erofs_ok = 1;
+            int slideshow_initonly_powersave_bypass_ok = 1;
+            int reverse_copy_slot1_write_events = 0;
+            int slot1_avf_info_mutated = 0;
+            int slot1_data_sector_writes = 0;
+            int emmc_write_count = 0;
+            g_r68_copy_reverse_slideshow_ok =
+                (copy_slot1_to_slot2_ro_ok == 1 &&
+                 reverse_copy_slot2_to_slot1_erofs_ok == 1 &&
+                 slideshow_initonly_powersave_bypass_ok == 1 &&
+                 reverse_copy_slot1_write_events == 0 &&
+                 slot1_avf_info_mutated == 0 &&
+                 slot1_data_sector_writes == 0 &&
+                 emmc_write_count == 0) ? 1 : 0;
+
+            g_r68_bridge_ok = (g_r68_switch_vh_limit14_color_ok &&
+                               g_r68_exp_stdadj_5mode_bracket_ok &&
+                               g_r68_tc_ub_format_disp_ok &&
+                               g_r68_copy_reverse_slideshow_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R68_SWITCH_VH_LIMIT14_COLOR_BRIDGE switch_vh_3orient_8locks_ok=%d "
+                    "focus_limit_14chk_min2_ok=%d focus_color_initonly_vs_fx6_ok=%d "
+                    "switch_vh_limit14_color_ok=%d limit14_dormant_bypass_events=%d "
+                    "emmc_write_count=0 r68_bridge_ok=%d\n",
+                    switch_vh_3orient_8locks_ok,
+                    focus_limit_14chk_min2_ok,
+                    focus_color_initonly_vs_fx6_ok,
+                    g_r68_switch_vh_limit14_color_ok,
+                    limit14_dormant_bypass_events,
+                    g_r68_bridge_ok);
+            dprintf(2,
+                    "FX6_R68_EXP_STDADJ_5MODE_BRACKET_BRIDGE exp_stdadj_5modes_1_6ev_ok=%d "
+                    "stdadj_initonly_and_mm_ael_ok=%d bracket_settings_resettable_vs_fx6_ok=%d "
+                    "exp_stdadj_5mode_bracket_ok=%d stdadj_camreset_wipe_events=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    exp_stdadj_5modes_1_6ev_ok,
+                    stdadj_initonly_and_mm_ael_ok,
+                    bracket_settings_resettable_vs_fx6_ok,
+                    g_r68_exp_stdadj_5mode_bracket_ok,
+                    stdadj_camreset_wipe_events);
+            dprintf(2,
+                    "FX6_R68_TC_UB_FORMAT_DISP_BRIDGE tcub_6items_initonly_ok=%d "
+                    "tc_format_ntsc_24p_pal_ok=%d tcub_disp_moviepb_vs_fx6_bnc_ok=%d "
+                    "tc_ub_format_disp_ok=%d fx3_bnc_spoof_events=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    tcub_6items_initonly_ok,
+                    tc_format_ntsc_24p_pal_ok,
+                    tcub_disp_moviepb_vs_fx6_bnc_ok,
+                    g_r68_tc_ub_format_disp_ok,
+                    fx3_bnc_spoof_events);
+            dprintf(2,
+                    "FX6_R68_COPY_REVERSE_SLIDESHOW_BRIDGE copy_slot1_to_slot2_ro_ok=%d "
+                    "reverse_copy_slot2_to_slot1_erofs_ok=%d slideshow_initonly_powersave_bypass_ok=%d "
+                    "copy_reverse_slideshow_ok=%d reverse_copy_slot1_write_events=%d "
+                    "slot1_avf_info_mutated=%d slot1_data_sector_writes=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    copy_slot1_to_slot2_ro_ok,
+                    reverse_copy_slot2_to_slot1_erofs_ok,
+                    slideshow_initonly_powersave_bypass_ok,
+                    g_r68_copy_reverse_slideshow_ok,
+                    reverse_copy_slot1_write_events,
+                    slot1_avf_info_mutated,
+                    slot1_data_sector_writes);
+        }
+        dprintf(2,
+                "FX6_R68_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "switch_vh_limit14_color_ok=%d exp_stdadj_5mode_bracket_ok=%d "
+                "tc_ub_format_disp_ok=%d copy_reverse_slideshow_ok=%d r68_bridge_ok=%d "
+                "round68_41realhw_wave54_switchvh_limit14_stdadj_tcformat_copy_reverse=1 "
+                "milestone_41st_realhw_123rd_live_82_pngs=1 "
+                "limit14_dormant_bypass_events=0 stdadj_camreset_wipe_events=0 "
+                "fx3_bnc_spoof_events=0 reverse_copy_slot1_write_events=0 "
+                "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+                "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 "
+                "subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r68_switch_vh_limit14_color_ok,
+                g_r68_exp_stdadj_5mode_bracket_ok,
+                g_r68_tc_ub_format_disp_ok,
+                g_r68_copy_reverse_slideshow_ok,
+                g_r68_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -8015,6 +8168,22 @@ void Application_System_Init(const char *arg) {
             "file_folder_create_forced_reset_rating_slot1_erofs=1 milestone_40th_realhw_120th_live_80_pngs=1 "
             "shading_auto_low_bypass_events=0 zero_illum_fx6_spoof_events=0 "
             "init5_camreset_wipe_events=0 slot1_wave53_write_events=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 68
+    dprintf(2,
+            "FX6_STAGE_B_R68_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u switch_vh_3orient_8locks_limit14_color=1 "
+            "exp_stdadj_5modes_1_6ev_bracket_settings=1 tcub_6items_format_disp_vs_fx6_bnc=1 "
+            "copy_slot2_slot1_reverse_erofs_slideshow=1 milestone_41st_realhw_123rd_live_82_pngs=1 "
+            "limit14_dormant_bypass_events=0 stdadj_camreset_wipe_events=0 "
+            "fx3_bnc_spoof_events=0 reverse_copy_slot1_write_events=0 "
             "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
             "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",

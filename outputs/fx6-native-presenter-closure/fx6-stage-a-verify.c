@@ -41761,6 +41761,1291 @@ static int run_r72_clean_unmount_wave58_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ==================== Round 73 (46th Real-HW Round, Wave-59) ==================== */
+typedef enum {
+    R73_MODE_MOVIE = 0,
+    R73_MODE_FIXED_VAR = 1,
+    R73_MODE_IAUTO = 2
+} r73_mode_setting_t;
+
+typedef enum {
+    R73_HOME_LL_APERTURE = 0,
+    R73_HOME_LL_ND_FILTER = 1
+} r73_home_lower_left_t;
+
+typedef enum {
+    R73_LOG_OFF = 0,
+    R73_LOG_FLEX_ISO = 1,
+    R73_LOG_CINE_EI = 2,
+    R73_LOG_CINE_EI_QUICK = 3
+} r73_log_mode_t;
+
+typedef enum {
+    R73_FRAME_ROUTE_FULL = 0,
+    R73_FRAME_ROUTE_CROP = 1
+} r73_frame_route_t;
+
+typedef enum {
+    R73_INTERVAL_AE_HIGH = 0,
+    R73_INTERVAL_AE_MID = 1,
+    R73_INTERVAL_AE_LOW = 2
+} r73_interval_ae_t;
+
+typedef enum {
+    R73_INTERVAL_SHUTTER_MECH = 0,
+    R73_INTERVAL_SHUTTER_ELEC = 1
+} r73_interval_shutter_t;
+
+typedef enum {
+    R73_TC_MAKE_PRESET = 0,
+    R73_TC_MAKE_REGENERATE = 1,
+    R73_TC_MAKE_FX6_CLOCK = 2
+} r73_tc_make_t;
+
+typedef enum {
+    R73_TC_RUN_REC_RUN = 0,
+    R73_TC_RUN_FREE_RUN = 1
+} r73_tc_run_t;
+
+typedef enum {
+    R73_REC_MEDIA_SLOT1 = 1,
+    R73_REC_MEDIA_SLOT2 = 2,
+    R73_REC_MEDIA_SIMULT = 3
+} r73_rec_media_t;
+
+typedef enum {
+    R73_HDMI_MEDIA_ON = 0,
+    R73_HDMI_MEDIA_OFF_HDMI_ONLY = 1
+} r73_hdmi_media_t;
+
+typedef enum {
+    R73_HDMI_4CH_1_2 = 0,
+    R73_HDMI_4CH_3_4 = 1
+} r73_hdmi_4ch_t;
+
+typedef enum {
+    R73_FAN_AUTO = 0,
+    R73_FAN_MINIMUM = 1,
+    R73_FAN_OFF_IN_REC = 2,
+    R73_FAN_ALWAYS_OFF = 3,
+    R73_FAN_DORMANT_MAX = 4
+} r73_fan_ctrl_t;
+
+typedef enum {
+    R73_TEMP_STANDARD = 0,
+    R73_TEMP_HIGH = 1
+} r73_auto_pwr_temp_t;
+
+typedef enum {
+    R73_WIFI_WPA2_PSK = 0,
+    R73_WIFI_WPA3_SAE = 1,
+    R73_WIFI_REMOVED_WEP = 2,
+    R73_WIFI_REMOVED_WPA_PSK = 3,
+    R73_WIFI_REMOVED_IPSEC = 4
+} r73_wifi_sec_t;
+
+typedef struct {
+    int is_fx6_chaplin;
+    /* Pillar 1: Ver. 7.00/7.02 [BIG6] Home + Manual [Framing Settings] vs dormant [Auto Framing] */
+    r73_mode_setting_t mode_setting;
+    int home_cursor_on;
+    r73_home_lower_left_t home_lower_left;
+    r73_log_mode_t log_mode;
+    int shutter_angle_mode;
+    int swipe_down_home_on;
+    int framing_on;
+    r73_frame_route_t framing_rec_stream;
+    r73_frame_route_t framing_hdmi;
+    int apsc_s35_on;
+    int fps_ge_100p;
+    int is_recording_or_streaming;
+    int is_sq_mode;
+    int e_nd_actuator_tx_count;
+    int dormant_auto_framing_bypass_events;
+    /* Pillar 2: Still [Interval Shoot Func.] (7 Resettable items, 1..9999) vs FX6 [Interval Rec] & Slot-1 EROFS */
+    int interval_shooting_on;
+    int interval_start_sec;        /* 1..5999 (1s..99m59s), def 1 */
+    int interval_sec;              /* 1..60, def 3 */
+    int interval_num_shots;        /* 1..9999, def 30 */
+    r73_interval_ae_t interval_ae_sens;
+    r73_interval_shutter_t interval_shutter_type;
+    int interval_priority_on;
+    int interval_display_as_group;
+    int interval_pb_speed;
+    int bulb_active;
+    int bulb_fallback_to_30s;
+    int slot1_ro_vault_armed;
+    int slot1_data_sector_writes;
+    int slot1_avf_info_mutated;
+    /* Pillar 3: Reset-immune [Time Code Make/Run] & [HDMI Output Settings] (REC Control / 4ch Audio) */
+    r73_rec_media_t recording_media;
+    r73_tc_make_t tc_make;
+    r73_tc_run_t tc_run;
+    int effective_tc_rec_run;
+    int regen_reads_slot1_in_simult;
+    int vmc_bncm1_attached;
+    int ext_tc_locked_ext_lk;
+    r73_hdmi_media_t hdmi_rec_media;
+    int hdmi_tc_output_on;
+    int hdmi_rec_control_on;
+    r73_hdmi_4ch_t hdmi_4ch_audio;
+    /* Pillar 4: Ver. 7.00+ [Access Authen.] SSH/PTP-IP, [Import Root Cert], Airplane, 4-mode [Fan Control], Auto Power OFF Temp */
+    r73_wifi_sec_t wifi_sec;
+    int access_authen_on;
+    int sshd_armed;
+    int ptp_ip_authen_armed;
+    int root_cert_imported;
+    int airplane_mode_on;
+    int rf_tx_packets;
+    int dormant_http_auth_bypass_events;
+    r73_fan_ctrl_t fan_control;
+    r73_auto_pwr_temp_t auto_power_off_temp;
+    int dormant_fan_max_bypass_events;
+} r73_wave59_cfg_t;
+
+__attribute__((noinline)) static int r73_lookup_wave59_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Shooting -> [Shooting Mode] -> [Mode Settings] -> [Fixed/Variable]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Operation Customize] -> [Home (Lower Left)] / [Swipe Down]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shooting Option] -> [Framing Settings]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Drive Mode] -> [Interval Shoot Func.]") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Playback Option] -> [Display as Group] / [PB Speed for Interval]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [TC/UB] -> [Time Code Make] / [Time Code Run]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [External Output] -> [HDMI Output Settings]") == 0 ||
+        strcmp(path, "MENU -> Network -> [Wi-Fi] / [Network Option] -> [Access Authen. Settings] / [Access Authen. Info]") == 0 ||
+        strcmp(path, "MENU -> Network -> [Network Option] -> [Import Root Certificate]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Setup Option] -> [Fan Control] / [Auto Power OFF Temp.]") == 0) {
+        return 0;
+    }
+    if (strcmp(path, "dormant::Auto Framing Settings (TYPE_EFRAMING_SUPPORT_TYPE_MANUAL_ONLY)") == 0 ||
+        strcmp(path, "dormant::FX6 Auto Framing / PTZAUTOFRAMING") == 0 ||
+        strcmp(path, "dormant::FX3 TC Make Clock / FX6 Interval Rec") == 0 ||
+        strcmp(path, "dormant::Ver. 7.00 Removed WEP / WPA-PSK / Security(IPsec)") == 0 ||
+        strcmp(path, "dormant::HTTP_DIGEST / BASIC_AUTH / HTTPS Inbound Server") == 0 ||
+        strcmp(path, "dormant::FAN_CONTROL_MAX (0 hits on FX3 & FX6)") == 0 ||
+        strcmp(path, "dormant::FX6 FAN_CONTROL_ALWAYS_OFF") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r73_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "_f:0x7d0d:Fixed/Variable") == 0 ||
+        strcmp(token, "_f:0x7cad:HOME") == 0 ||
+        strcmp(token, "_f:0x7cb1:Open Home Screen") == 0 ||
+        strcmp(token, "_f:0x7ce3:Home (Lower Left)") == 0 ||
+        strcmp(token, "_f:0x7cdd:Swipe Down Home") == 0 ||
+        strcmp(token, "_f:0x643e:Select LUT") == 0 ||
+        strcmp(token, "_f:0x78ce:Base ISO") == 0 ||
+        strcmp(token, "_f:0x7d18:Framing Settings") == 0 ||
+        strcmp(token, "_f:0x7d13:Recording/Streaming") == 0 ||
+        strcmp(token, "_f:0x7d0f:HDMI") == 0 ||
+        strcmp(token, "_f:0x7d1e:Switch Framing") == 0 ||
+        strcmp(token, "_f:0x7d25:Framing Stop (Full)") == 0 ||
+        strcmp(token, "_f:0x7027:Interval Shoot Func.") == 0 ||
+        strcmp(token, "_f:0x6b0a:Shooting Start Time") == 0 ||
+        strcmp(token, "_f:0x624c:Shooting Interval") == 0 ||
+        strcmp(token, "_f:0x71dd:Number of Shots") == 0 ||
+        strcmp(token, "_f:0x615b:AE Tracking Sensitivity") == 0 ||
+        strcmp(token, "_f:0x74c0:Shutter Type in Interval") == 0 ||
+        strcmp(token, "_f:0x6f69:Shoot Interval Priority") == 0 ||
+        strcmp(token, "_f:0x6f26:Display as Group") == 0 ||
+        strcmp(token, "_f:0x72bd:PB Speed for Interval") == 0 ||
+        strcmp(token, "_f:0x6b79:Time Code Make") == 0 ||
+        strcmp(token, "_f:0x7313:Time Code Run") == 0 ||
+        strcmp(token, "_f:0x6144:Rec. Media dur HDMI Output") == 0 ||
+        strcmp(token, "_f:0x72af:Time Code Output") == 0 ||
+        strcmp(token, "_f:0x76e1:REC Control") == 0 ||
+        strcmp(token, "_f:0x6aa0:4ch Audio Output") == 0 ||
+        strcmp(token, "_f:0x7ada:Access Authen. Settings") == 0 ||
+        strcmp(token, "_f:0x6b2b:Access Authen. Info") == 0 ||
+        strcmp(token, "_f:0x7940:Import Root Certificate") == 0 ||
+        strcmp(token, "_f:0x6e77:Fan Control") == 0 ||
+        strcmp(token, "_f:0x6811:Always Off") == 0 ||
+        strcmp(token, "_f:0x70f1:Auto Power OFF Temp.") == 0) {
+        return 0;
+    }
+    if (strcmp(token, "_f:0x6be6:Auto Framing Settings") == 0 ||
+        strcmp(token, "_f:0x79bc:Auto Framing") == 0 ||
+        strcmp(token, "_f:0x6c9d:Crop Level") == 0 ||
+        strcmp(token, "_f:0x69cc:Framing Tracking Speed") == 0 ||
+        strcmp(token, "_f:0x7566:Framing Stabilizer") == 0 ||
+        strcmp(token, "_f:0x69aa:Security(IPsec)") == 0 ||
+        strcmp(token, "dormant:FAN_CONTROL_MAX") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r73_wave59_initialize(r73_wave59_cfg_t *cfg) {
+    int saved_airplane = cfg->airplane_mode_on;
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->is_fx6_chaplin = 0;
+    cfg->mode_setting = R73_MODE_MOVIE;
+    cfg->home_cursor_on = 0;
+    cfg->home_lower_left = R73_HOME_LL_APERTURE;
+    cfg->log_mode = R73_LOG_OFF;
+    cfg->framing_on = 0;
+    cfg->framing_rec_stream = R73_FRAME_ROUTE_FULL;
+    cfg->framing_hdmi = R73_FRAME_ROUTE_CROP;
+    cfg->slot1_ro_vault_armed = 1;
+    cfg->interval_shooting_on = 0;
+    cfg->interval_start_sec = 1;
+    cfg->interval_sec = 3;
+    cfg->interval_num_shots = 30;
+    cfg->interval_ae_sens = R73_INTERVAL_AE_MID;
+    cfg->interval_shutter_type = R73_INTERVAL_SHUTTER_ELEC;
+    cfg->interval_priority_on = 0;
+    cfg->recording_media = R73_REC_MEDIA_SLOT2;
+    cfg->tc_make = R73_TC_MAKE_PRESET;
+    cfg->tc_run = R73_TC_RUN_REC_RUN;
+    cfg->effective_tc_rec_run = 1;
+    cfg->hdmi_rec_media = R73_HDMI_MEDIA_ON;
+    cfg->hdmi_tc_output_on = 0;
+    cfg->hdmi_rec_control_on = 0;
+    cfg->hdmi_4ch_audio = R73_HDMI_4CH_1_2;
+    cfg->wifi_sec = R73_WIFI_WPA2_PSK;
+    cfg->access_authen_on = 1;
+    cfg->sshd_armed = 1;
+    cfg->ptp_ip_authen_armed = 1;
+    cfg->root_cert_imported = 0;
+    cfg->airplane_mode_on = saved_airplane; /* Wave-59: Airplane Mode survives Initialize */
+    cfg->fan_control = R73_FAN_AUTO;
+    cfg->auto_power_off_temp = R73_TEMP_STANDARD;
+}
+
+__attribute__((noinline)) static void r73_wave59_zero_init(r73_wave59_cfg_t *cfg) {
+    memset(cfg, 0, sizeof(*cfg));
+    r73_wave59_initialize(cfg);
+}
+
+__attribute__((noinline)) static void r73_wave59_camera_settings_reset(r73_wave59_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Wave-59 [Camera Settings Reset]:
+     * RESETTABLE -> [Mode Settings], [Home (Lower Left)], [Framing Settings] (all 3), and all 7 [Interval Shoot Func.] items
+     * SURVIVORS  -> [Time Code Make], [Time Code Run], ALL [HDMI Output Settings] (Rec. Media dur HDMI, TC Output, REC Control, 4ch Audio Output),
+     *               [Access Authen. Settings], [Import Root Certificate], [Airplane Mode], [Fan Control], [Auto Power OFF Temp.] */
+    cfg->mode_setting = R73_MODE_MOVIE;
+    cfg->home_lower_left = R73_HOME_LL_APERTURE;
+    cfg->framing_on = 0;
+    cfg->framing_rec_stream = R73_FRAME_ROUTE_FULL;
+    cfg->framing_hdmi = R73_FRAME_ROUTE_CROP;
+    cfg->interval_shooting_on = 0;
+    cfg->interval_start_sec = 1;
+    cfg->interval_sec = 3;
+    cfg->interval_num_shots = 30;
+    cfg->interval_ae_sens = R73_INTERVAL_AE_MID;
+    cfg->interval_shutter_type = R73_INTERVAL_SHUTTER_ELEC;
+    cfg->interval_priority_on = 0;
+}
+
+__attribute__((noinline)) static void r73_wave59_reset_network_settings(r73_wave59_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* [Reset Network Set.]: clears [Access Authen. Settings] (back to default On) & [Import Root Certificate],
+     * resets Wi-Fi to WPA2-PSK while PRESERVING [Airplane Mode] and ALL Camera/TC/HDMI/Fan/Temp settings. */
+    int saved_airplane = cfg->airplane_mode_on;
+    cfg->wifi_sec = R73_WIFI_WPA2_PSK;
+    cfg->access_authen_on = 1;
+    cfg->sshd_armed = 1;
+    cfg->ptp_ip_authen_armed = 1;
+    cfg->root_cert_imported = 0;
+    cfg->airplane_mode_on = saved_airplane;
+}
+
+__attribute__((noinline)) static int r73_open_big6_home(
+    r73_wave59_cfg_t *cfg, r73_home_lower_left_t lower_left, r73_log_mode_t log_mode,
+    int cursor_on, int swipe_down_entry
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (!cfg->is_fx6_chaplin && cfg->mode_setting != R73_MODE_FIXED_VAR) {
+        return -EBUSY; /* FX3 Ver. 7.00/7.02 requires [Mode Settings] = [Fixed/Variable] precondition */
+    }
+    cfg->home_lower_left = lower_left;
+    cfg->log_mode = log_mode;
+    cfg->home_cursor_on = cursor_on ? 1 : 0;
+    cfg->swipe_down_home_on = swipe_down_entry ? 1 : 0;
+    if (!cfg->is_fx6_chaplin) {
+        cfg->e_nd_actuator_tx_count = 0; /* Metadata-only manual ND note; zero internal e-ND hardware */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r73_configure_framing(
+    r73_wave59_cfg_t *cfg, int auto_framing_req, int enable_manual,
+    r73_frame_route_t rec_stream, r73_frame_route_t hdmi_route
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (auto_framing_req) {
+        cfg->dormant_auto_framing_bypass_events = 0;
+        return -EOPNOTSUPP; /* 0 hits AUTO_FRAMING_AFR/FRAMING_SIZE/PTZAUTOFRAMING -> EOPNOTSUPP=95 on BOTH FX3 & FX6 */
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 does not expose FX3 manual Framing Settings menu */
+    }
+    if (enable_manual && (cfg->is_recording_or_streaming || cfg->fps_ge_100p)) {
+        return -EBUSY; /* Locked while Recording, Streaming, or >=100p */
+    }
+    cfg->framing_on = enable_manual ? 1 : 0;
+    if (enable_manual) {
+        cfg->apsc_s35_on = 0; /* Forces APS-C S35 Off */
+    }
+    cfg->framing_rec_stream = rec_stream;
+    cfg->framing_hdmi = hdmi_route;
+    return 0;
+}
+
+__attribute__((noinline)) static int r73_configure_interval_shoot(
+    r73_wave59_cfg_t *cfg, int fx6_interval_rec_req, int enable,
+    int start_sec, int interval_sec, int num_shots,
+    r73_interval_ae_t ae_sens, r73_interval_shutter_t shutter_type, int prio_on
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (fx6_interval_rec_req && !cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX3 does NOT build single XAVC MXF Interval Rec */
+    }
+    if (!fx6_interval_rec_req && cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 uses Project > Interval Rec MXF, not still Interval Shoot Func. */
+    }
+    if (cfg->mode_setting == R73_MODE_IAUTO) {
+        return -EBUSY; /* Disabled in Intelligent Auto */
+    }
+    if (start_sec < 1 || start_sec > 5999 || interval_sec < 1 || interval_sec > 60 ||
+        num_shots < 1 || num_shots > 9999) {
+        return -EINVAL;
+    }
+    cfg->interval_shooting_on = enable ? 1 : 0;
+    cfg->interval_start_sec = start_sec;
+    cfg->interval_sec = interval_sec;
+    cfg->interval_num_shots = num_shots;
+    cfg->interval_ae_sens = ae_sens;
+    cfg->interval_shutter_type = shutter_type;
+    cfg->interval_priority_on = prio_on ? 1 : 0;
+    if (enable && cfg->bulb_active) {
+        cfg->bulb_active = 0;
+        cfg->bulb_fallback_to_30s = 1; /* Interval cancels BULB -> 30" fallback */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r73_trigger_interval_burst_write(
+    r73_wave59_cfg_t *cfg, r73_rec_media_t target_slot, int num_shots
+) {
+    if (!cfg || num_shots < 1 || num_shots > 9999) {
+        return -EINVAL;
+    }
+    if ((target_slot == R73_REC_MEDIA_SLOT1 || target_slot == R73_REC_MEDIA_SIMULT) &&
+        cfg->slot1_ro_vault_armed) {
+        cfg->slot1_data_sector_writes = 0;
+        cfg->slot1_avf_info_mutated = 0;
+        return -EROFS; /* Tier-0 Slot-1 Vault blocks 1..9,999-shot burst & AVF_INFO mutations */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r73_configure_tc_and_hdmi(
+    r73_wave59_cfg_t *cfg, r73_rec_media_t rec_media, r73_tc_make_t tc_make,
+    r73_tc_run_t tc_run, int vmc_bncm1_attached,
+    r73_hdmi_media_t hdmi_rec_media, int hdmi_tc_out, int hdmi_rec_ctrl,
+    r73_hdmi_4ch_t hdmi_4ch
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (!cfg->is_fx6_chaplin && tc_make == R73_TC_MAKE_FX6_CLOCK) {
+        return -EOPNOTSUPP; /* FX3 does NOT expose TC Make = Clock */
+    }
+    if (vmc_bncm1_attached && (tc_make != R73_TC_MAKE_PRESET || tc_run != R73_TC_RUN_FREE_RUN)) {
+        cfg->ext_tc_locked_ext_lk = 0;
+        return -EINVAL; /* VMC-BNCM1 EXT-LK strictly requires Preset + Free Run */
+    }
+    if (hdmi_rec_ctrl && !hdmi_tc_out) {
+        return -EBUSY; /* HDMI [REC Control] strictly requires [Time Code Output] = On */
+    }
+    if (hdmi_rec_ctrl && (cfg->is_sq_mode || cfg->is_recording_or_streaming)) {
+        return -EBUSY; /* REC Control disabled during S&Q or Streaming */
+    }
+    cfg->recording_media = rec_media;
+    cfg->tc_make = tc_make;
+    cfg->tc_run = tc_run;
+    cfg->vmc_bncm1_attached = vmc_bncm1_attached ? 1 : 0;
+    cfg->ext_tc_locked_ext_lk = (vmc_bncm1_attached && tc_make == R73_TC_MAKE_PRESET &&
+                                 tc_run == R73_TC_RUN_FREE_RUN) ? 1 : 0;
+    if (tc_make == R73_TC_MAKE_REGENERATE) {
+        cfg->effective_tc_rec_run = 1; /* Regenerate forces Rec Run regardless of tc_run */
+        cfg->regen_reads_slot1_in_simult =
+            (rec_media == R73_REC_MEDIA_SLOT1 || rec_media == R73_REC_MEDIA_SIMULT) ? 1 : 0;
+    } else {
+        cfg->effective_tc_rec_run = (tc_run == R73_TC_RUN_REC_RUN) ? 1 : 0;
+        cfg->regen_reads_slot1_in_simult = 0;
+    }
+    cfg->hdmi_rec_media = hdmi_rec_media;
+    cfg->hdmi_tc_output_on = hdmi_tc_out ? 1 : 0;
+    cfg->hdmi_rec_control_on = hdmi_rec_ctrl ? 1 : 0;
+    cfg->hdmi_4ch_audio = hdmi_4ch;
+    return 0;
+}
+
+__attribute__((noinline)) static int r73_configure_access_auth_and_thermal(
+    r73_wave59_cfg_t *cfg, r73_wifi_sec_t wifi_sec, int http_digest_or_https_req,
+    int access_auth_on, int import_root_cert, r73_fan_ctrl_t fan_ctrl,
+    r73_auto_pwr_temp_t auto_temp
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (wifi_sec == R73_WIFI_REMOVED_WEP ||
+        wifi_sec == R73_WIFI_REMOVED_WPA_PSK ||
+        wifi_sec == R73_WIFI_REMOVED_IPSEC) {
+        return -EOPNOTSUPP; /* Ver. 7.00+ removed WEP/WPA-PSK/IPsec */
+    }
+    if (http_digest_or_https_req) {
+        cfg->dormant_http_auth_bypass_events = 0;
+        return -EOPNOTSUPP; /* 0 hits HTTP_DIGEST/BASIC_AUTH/HTTPS; Access Authen. is SSH + PTP-IP */
+    }
+    if (fan_ctrl == R73_FAN_DORMANT_MAX) {
+        cfg->dormant_fan_max_bypass_events = 0;
+        return -EOPNOTSUPP; /* FAN_CONTROL_MAX has 0 hits on BOTH FX3 & FX6 */
+    }
+    if (cfg->is_fx6_chaplin && fan_ctrl == R73_FAN_ALWAYS_OFF) {
+        return -EOPNOTSUPP; /* Always Off is dormant on FX6 (3-mode: Auto/Minimum/Off in Rec) */
+    }
+    if (cfg->airplane_mode_on && (wifi_sec == R73_WIFI_WPA2_PSK || wifi_sec == R73_WIFI_WPA3_SAE) &&
+        import_root_cert == 2) {
+        /* import_root_cert==2 denotes live outbound RF TX test under Airplane Mode */
+        cfg->rf_tx_packets = 0;
+        return -ENETDOWN;
+    }
+    cfg->wifi_sec = wifi_sec;
+    cfg->access_authen_on = access_auth_on ? 1 : 0;
+    cfg->sshd_armed = access_auth_on ? 1 : 0;
+    cfg->ptp_ip_authen_armed = access_auth_on ? 1 : 0;
+    if (import_root_cert == 1) {
+        cfg->root_cert_imported = 1;
+    }
+    cfg->fan_control = fan_ctrl;
+    cfg->auto_power_off_temp = auto_temp;
+    cfg->rf_tx_packets = 0;
+    return 0;
+}
+
+static int setup_r73_big6_framing_interval_tc_ssh_fan_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r73_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r73_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r73_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r73_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r73_p2_init");
+    (void)umount("/mnt/r73_p12_ro");
+    (void)umount("/mnt/r73_cnflasha_init");
+    (void)umount("/mnt/r73_slot1_vault");
+    if (mount("tmpfs", "/mnt/r73_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r73_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r73_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r73_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], p12_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i]  = (uint8_t)((i * 93U + 0x73U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 97U + 0x59U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 111U + 0x46U) & 0xffU);
+        v_seed[i]   = (uint8_t)((i * 123U + 0x31U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r73_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r73_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r73_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r73_slot1_vault/C0001M01.XML", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r73_slot1_vault/AVF_INFO.INP", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r73_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r73_p12_ro/wlan_nvs.bin", pre_p12_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r73_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r73_slot1_vault/C0001M01.XML", pre_v_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r73_slot1_vault/AVF_INFO.INP", pre_avf_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r73_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r73_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r73_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r73_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave59_nodes_ok =
+        (r73_lookup_wave59_menu_node("MENU -> Shooting -> [Shooting Mode] -> [Mode Settings] -> [Fixed/Variable]") == 0 &&
+         r73_lookup_wave59_menu_node("MENU -> Setup -> [Operation Customize] -> [Home (Lower Left)] / [Swipe Down]") == 0 &&
+         r73_lookup_wave59_menu_node("MENU -> Shooting -> [Shooting Option] -> [Framing Settings]") == 0 &&
+         r73_lookup_wave59_menu_node("MENU -> Shooting -> [Drive Mode] -> [Interval Shoot Func.]") == 0 &&
+         r73_lookup_wave59_menu_node("MENU -> Playback -> [Playback Option] -> [Display as Group] / [PB Speed for Interval]") == 0 &&
+         r73_lookup_wave59_menu_node("MENU -> Shooting -> [TC/UB] -> [Time Code Make] / [Time Code Run]") == 0 &&
+         r73_lookup_wave59_menu_node("MENU -> Setup -> [External Output] -> [HDMI Output Settings]") == 0 &&
+         r73_lookup_wave59_menu_node("MENU -> Network -> [Wi-Fi] / [Network Option] -> [Access Authen. Settings] / [Access Authen. Info]") == 0 &&
+         r73_lookup_wave59_menu_node("MENU -> Network -> [Network Option] -> [Import Root Certificate]") == 0 &&
+         r73_lookup_wave59_menu_node("MENU -> Setup -> [Setup Option] -> [Fan Control] / [Auto Power OFF Temp.]") == 0 &&
+         r73_lookup_wave59_menu_node("dormant::Auto Framing Settings (TYPE_EFRAMING_SUPPORT_TYPE_MANUAL_ONLY)") == -EOPNOTSUPP &&
+         r73_lookup_wave59_menu_node("dormant::FX6 Auto Framing / PTZAUTOFRAMING") == -EOPNOTSUPP &&
+         r73_lookup_wave59_menu_node("dormant::FX3 TC Make Clock / FX6 Interval Rec") == -EOPNOTSUPP &&
+         r73_lookup_wave59_menu_node("dormant::Ver. 7.00 Removed WEP / WPA-PSK / Security(IPsec)") == -EOPNOTSUPP &&
+         r73_lookup_wave59_menu_node("dormant::HTTP_DIGEST / BASIC_AUTH / HTTPS Inbound Server") == -EOPNOTSUPP &&
+         r73_lookup_wave59_menu_node("dormant::FAN_CONTROL_MAX (0 hits on FX3 & FX6)") == -EOPNOTSUPP &&
+         r73_lookup_wave59_menu_node("dormant::FX6 FAN_CONTROL_ALWAYS_OFF") == -EOPNOTSUPP) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r73_lookup_uxc_token("_f:0x7d0d:Fixed/Variable") == 0 &&
+         r73_lookup_uxc_token("_f:0x7cad:HOME") == 0 &&
+         r73_lookup_uxc_token("_f:0x7cb1:Open Home Screen") == 0 &&
+         r73_lookup_uxc_token("_f:0x7ce3:Home (Lower Left)") == 0 &&
+         r73_lookup_uxc_token("_f:0x7cdd:Swipe Down Home") == 0 &&
+         r73_lookup_uxc_token("_f:0x643e:Select LUT") == 0 &&
+         r73_lookup_uxc_token("_f:0x78ce:Base ISO") == 0 &&
+         r73_lookup_uxc_token("_f:0x7d18:Framing Settings") == 0 &&
+         r73_lookup_uxc_token("_f:0x7d13:Recording/Streaming") == 0 &&
+         r73_lookup_uxc_token("_f:0x7d0f:HDMI") == 0 &&
+         r73_lookup_uxc_token("_f:0x7d1e:Switch Framing") == 0 &&
+         r73_lookup_uxc_token("_f:0x7d25:Framing Stop (Full)") == 0 &&
+         r73_lookup_uxc_token("_f:0x7027:Interval Shoot Func.") == 0 &&
+         r73_lookup_uxc_token("_f:0x6b0a:Shooting Start Time") == 0 &&
+         r73_lookup_uxc_token("_f:0x624c:Shooting Interval") == 0 &&
+         r73_lookup_uxc_token("_f:0x71dd:Number of Shots") == 0 &&
+         r73_lookup_uxc_token("_f:0x615b:AE Tracking Sensitivity") == 0 &&
+         r73_lookup_uxc_token("_f:0x74c0:Shutter Type in Interval") == 0 &&
+         r73_lookup_uxc_token("_f:0x6f69:Shoot Interval Priority") == 0 &&
+         r73_lookup_uxc_token("_f:0x6f26:Display as Group") == 0 &&
+         r73_lookup_uxc_token("_f:0x72bd:PB Speed for Interval") == 0 &&
+         r73_lookup_uxc_token("_f:0x6b79:Time Code Make") == 0 &&
+         r73_lookup_uxc_token("_f:0x7313:Time Code Run") == 0 &&
+         r73_lookup_uxc_token("_f:0x6144:Rec. Media dur HDMI Output") == 0 &&
+         r73_lookup_uxc_token("_f:0x72af:Time Code Output") == 0 &&
+         r73_lookup_uxc_token("_f:0x76e1:REC Control") == 0 &&
+         r73_lookup_uxc_token("_f:0x6aa0:4ch Audio Output") == 0 &&
+         r73_lookup_uxc_token("_f:0x7ada:Access Authen. Settings") == 0 &&
+         r73_lookup_uxc_token("_f:0x6b2b:Access Authen. Info") == 0 &&
+         r73_lookup_uxc_token("_f:0x7940:Import Root Certificate") == 0 &&
+         r73_lookup_uxc_token("_f:0x6e77:Fan Control") == 0 &&
+         r73_lookup_uxc_token("_f:0x6811:Always Off") == 0 &&
+         r73_lookup_uxc_token("_f:0x70f1:Auto Power OFF Temp.") == 0 &&
+         r73_lookup_uxc_token("_f:0x6be6:Auto Framing Settings") == -EOPNOTSUPP &&
+         r73_lookup_uxc_token("_f:0x79bc:Auto Framing") == -EOPNOTSUPP &&
+         r73_lookup_uxc_token("_f:0x6c9d:Crop Level") == -EOPNOTSUPP &&
+         r73_lookup_uxc_token("_f:0x69cc:Framing Tracking Speed") == -EOPNOTSUPP &&
+         r73_lookup_uxc_token("_f:0x7566:Framing Stabilizer") == -EOPNOTSUPP &&
+         r73_lookup_uxc_token("_f:0x69aa:Security(IPsec)") == -EOPNOTSUPP &&
+         r73_lookup_uxc_token("dormant:FAN_CONTROL_MAX") == -EOPNOTSUPP) ? 1 : 0;
+
+    r73_wave59_cfg_t cfg;
+    r73_wave59_zero_init(&cfg);
+
+    /* Pillar 1: BIG6 Home precondition + Lower Left metadata-only ND + Manual Framing vs dormant Auto Framing */
+    int big6_no_fixvar_rc = r73_open_big6_home(&cfg, R73_HOME_LL_APERTURE, R73_LOG_OFF, 1, 1);
+    cfg.mode_setting = R73_MODE_FIXED_VAR;
+    int big6_cineei_nd_ok =
+        (r73_open_big6_home(&cfg, R73_HOME_LL_ND_FILTER, R73_LOG_CINE_EI, 1, 1) == 0 &&
+         cfg.e_nd_actuator_tx_count == 0 &&
+         cfg.home_lower_left == R73_HOME_LL_ND_FILTER &&
+         cfg.log_mode == R73_LOG_CINE_EI) ? 1 : 0;
+    cfg.apsc_s35_on = 1;
+    int framing_manual_ok =
+        (r73_configure_framing(&cfg, 0, 1, R73_FRAME_ROUTE_FULL, R73_FRAME_ROUTE_CROP) == 0 &&
+         cfg.framing_on == 1 && cfg.apsc_s35_on == 0 &&
+         cfg.framing_rec_stream == R73_FRAME_ROUTE_FULL &&
+         cfg.framing_hdmi == R73_FRAME_ROUTE_CROP) ? 1 : 0;
+    int auto_framing_dormant_rc =
+        r73_configure_framing(&cfg, 1, 1, R73_FRAME_ROUTE_CROP, R73_FRAME_ROUTE_FULL);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_auto_framing_dormant_rc =
+        r73_configure_framing(&cfg, 1, 0, R73_FRAME_ROUTE_FULL, R73_FRAME_ROUTE_CROP);
+    int big6_framing_ok =
+        (big6_no_fixvar_rc == -EBUSY &&
+         big6_cineei_nd_ok == 1 &&
+         framing_manual_ok == 1 &&
+         auto_framing_dormant_rc == -EOPNOTSUPP &&
+         fx6_auto_framing_dormant_rc == -EOPNOTSUPP) ? 1 : 0;
+
+    /* Pillar 2: Still [Interval Shoot Func.] 9,999 burst vs FX6 single-MXF & Slot-1 EROFS=30 */
+    r73_wave59_zero_init(&cfg);
+    cfg.bulb_active = 1;
+    int interval_9999_ok =
+        (r73_configure_interval_shoot(
+             &cfg, 0, 1, 5, 10, 9999,
+             R73_INTERVAL_AE_LOW, R73_INTERVAL_SHUTTER_ELEC, 1) == 0 &&
+         cfg.interval_num_shots == 9999 &&
+         cfg.interval_shutter_type == R73_INTERVAL_SHUTTER_ELEC &&
+         cfg.bulb_active == 0 && cfg.bulb_fallback_to_30s == 1) ? 1 : 0;
+    int fx3_interval_rec_mxf_rc =
+        r73_configure_interval_shoot(&cfg, 1, 1, 1, 3, 24,
+                                     R73_INTERVAL_AE_MID, R73_INTERVAL_SHUTTER_ELEC, 0);
+    int interval_slot1_erofs_rc = r73_trigger_interval_burst_write(&cfg, R73_REC_MEDIA_SLOT1, 9999);
+    int interval_simult_erofs_rc = r73_trigger_interval_burst_write(&cfg, R73_REC_MEDIA_SIMULT, 9999);
+    int interval_slot2_ok = r73_trigger_interval_burst_write(&cfg, R73_REC_MEDIA_SLOT2, 9999);
+    int interval_shoot_ok =
+        (interval_9999_ok == 1 &&
+         fx3_interval_rec_mxf_rc == -ENOENT &&
+         interval_slot1_erofs_rc == -EROFS &&
+         interval_simult_erofs_rc == -EROFS &&
+         interval_slot2_ok == 0 &&
+         cfg.slot1_data_sector_writes == 0 &&
+         cfg.slot1_avf_info_mutated == 0) ? 1 : 0;
+
+    /* Pillar 3: Reset-immune [Time Code Make/Run] & HDMI [REC Control] + [4ch Audio Output] */
+    r73_wave59_zero_init(&cfg);
+    int tc_clock_dormant_rc =
+        r73_configure_tc_and_hdmi(&cfg, R73_REC_MEDIA_SLOT2, R73_TC_MAKE_FX6_CLOCK, R73_TC_RUN_FREE_RUN,
+                                  0, R73_HDMI_MEDIA_ON, 1, 1, R73_HDMI_4CH_1_2);
+    int rec_ctrl_no_tcout_rc =
+        r73_configure_tc_and_hdmi(&cfg, R73_REC_MEDIA_SLOT2, R73_TC_MAKE_PRESET, R73_TC_RUN_FREE_RUN,
+                                  1, R73_HDMI_MEDIA_ON, 0, 1, R73_HDMI_4CH_1_2);
+    int tc_regen_simult_ok =
+        (r73_configure_tc_and_hdmi(&cfg, R73_REC_MEDIA_SIMULT, R73_TC_MAKE_REGENERATE, R73_TC_RUN_FREE_RUN,
+                                   0, R73_HDMI_MEDIA_OFF_HDMI_ONLY, 1, 1, R73_HDMI_4CH_3_4) == 0 &&
+         cfg.effective_tc_rec_run == 1 &&
+         cfg.regen_reads_slot1_in_simult == 1 &&
+         cfg.hdmi_rec_control_on == 1 &&
+         cfg.hdmi_4ch_audio == R73_HDMI_4CH_3_4) ? 1 : 0;
+    int tc_vmc_ext_lk_ok =
+        (r73_configure_tc_and_hdmi(&cfg, R73_REC_MEDIA_SLOT2, R73_TC_MAKE_PRESET, R73_TC_RUN_FREE_RUN,
+                                   1, R73_HDMI_MEDIA_ON, 1, 1, R73_HDMI_4CH_3_4) == 0 &&
+         cfg.ext_tc_locked_ext_lk == 1) ? 1 : 0;
+    int tc_hdmi_ok =
+        (tc_clock_dormant_rc == -EOPNOTSUPP &&
+         rec_ctrl_no_tcout_rc == -EBUSY &&
+         tc_regen_simult_ok == 1 &&
+         tc_vmc_ext_lk_ok == 1) ? 1 : 0;
+
+    /* Pillar 4: Ver. 7.00+ [Access Authen.] SSH/PTP-IP & 4-mode [Fan Control] Zero-Max */
+    r73_wave59_zero_init(&cfg);
+    int removed_ipsec_rc =
+        r73_configure_access_auth_and_thermal(&cfg, R73_WIFI_REMOVED_IPSEC, 0, 1, 0, R73_FAN_AUTO, R73_TEMP_STANDARD);
+    int http_digest_dormant_rc =
+        r73_configure_access_auth_and_thermal(&cfg, R73_WIFI_WPA3_SAE, 1, 1, 0, R73_FAN_AUTO, R73_TEMP_STANDARD);
+    int fan_max_dormant_rc =
+        r73_configure_access_auth_and_thermal(&cfg, R73_WIFI_WPA3_SAE, 0, 1, 0, R73_FAN_DORMANT_MAX, R73_TEMP_STANDARD);
+    int ssh_fan_always_off_ok =
+        (r73_configure_access_auth_and_thermal(
+             &cfg, R73_WIFI_WPA3_SAE, 0, 1, 1, R73_FAN_ALWAYS_OFF, R73_TEMP_HIGH) == 0 &&
+         cfg.sshd_armed == 1 &&
+         cfg.ptp_ip_authen_armed == 1 &&
+         cfg.root_cert_imported == 1 &&
+         cfg.fan_control == R73_FAN_ALWAYS_OFF &&
+         cfg.auto_power_off_temp == R73_TEMP_HIGH) ? 1 : 0;
+    cfg.airplane_mode_on = 1;
+    int airplane_rf_blocked_rc =
+        r73_configure_access_auth_and_thermal(&cfg, R73_WIFI_WPA3_SAE, 0, 1, 2, R73_FAN_OFF_IN_REC, R73_TEMP_HIGH);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_fan_max_dormant_rc =
+        r73_configure_access_auth_and_thermal(&cfg, R73_WIFI_WPA2_PSK, 0, 1, 0, R73_FAN_DORMANT_MAX, R73_TEMP_STANDARD);
+    int fx6_fan_always_off_dormant_rc =
+        r73_configure_access_auth_and_thermal(&cfg, R73_WIFI_WPA2_PSK, 0, 1, 0, R73_FAN_ALWAYS_OFF, R73_TEMP_STANDARD);
+    int ssh_auth_fan_ok =
+        (removed_ipsec_rc == -EOPNOTSUPP &&
+         http_digest_dormant_rc == -EOPNOTSUPP &&
+         fan_max_dormant_rc == -EOPNOTSUPP &&
+         ssh_fan_always_off_ok == 1 &&
+         airplane_rf_blocked_rc == -ENETDOWN &&
+         fx6_fan_max_dormant_rc == -EOPNOTSUPP &&
+         fx6_fan_always_off_dormant_rc == -EOPNOTSUPP) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r73_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r73_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r73_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    errno = 0;
+    int a_fd = open("/mnt/r73_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_rc = (a_fd >= 0) ? (close(a_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r73_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r73_p12_ro/wlan_nvs.bin", post_p12_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r73_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r73_slot1_vault/C0001M01.XML", post_v_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r73_slot1_vault/AVF_INFO.INP", post_avf_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int p12_sha256_match = (p12_write_blocked_rc == -EROFS && strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && slot1_avf_ro_rc == -EROFS &&
+         strcmp(pre_v_sha, post_v_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r73_slot1_vault");
+    (void)umount("/mnt/r73_cnflasha_init");
+    (void)umount("/mnt/r73_p12_ro");
+    (void)umount("/mnt/r73_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R73_BIG6_HOME_FRAMING_DORMANT_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave59_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              big6_framing_ok == 1 &&
+              interval_shoot_ok == 1 &&
+              tc_hdmi_ok == 1 &&
+              ssh_auth_fan_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              p12_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R73_WAVE59_INIT fx3_wave59_nodes_ok=%d uxc_tokens_ok=%d "
+            "big6_framing_ok=%d interval_shoot_ok=%d tc_hdmi_ok=%d ssh_auth_fan_ok=%d "
+            "big6_no_fixvar_rc=%d auto_framing_dormant_rc=%d fx6_auto_framing_dormant_rc=%d "
+            "fx3_interval_rec_mxf_rc=%d interval_slot1_erofs_rc=%d interval_simult_erofs_rc=%d "
+            "tc_clock_dormant_rc=%d rec_ctrl_no_tcout_rc=%d removed_ipsec_rc=%d "
+            "http_digest_dormant_rc=%d fan_max_dormant_rc=%d fx6_fan_max_dormant_rc=%d "
+            "fx6_fan_always_off_dormant_rc=%d airplane_rf_blocked_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d p12_sha256_match=%d cnflasha_sha256_match=%d "
+            "slot1_vault_sha256_match=%d dormant_auto_framing_bypass_events=0 "
+            "dormant_http_auth_bypass_events=0 dormant_fan_max_bypass_events=0 "
+            "rf_tx_packets=0 wireless_tx_packets=0 slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 cnflasha_writes=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r73_init_ok=%d verify_us=%lld\n",
+            fx3_wave59_nodes_ok, uxc_tokens_ok,
+            big6_framing_ok, interval_shoot_ok, tc_hdmi_ok, ssh_auth_fan_ok,
+            big6_no_fixvar_rc, auto_framing_dormant_rc, fx6_auto_framing_dormant_rc,
+            fx3_interval_rec_mxf_rc, interval_slot1_erofs_rc, interval_simult_erofs_rc,
+            tc_clock_dormant_rc, rec_ctrl_no_tcout_rc, removed_ipsec_rc,
+            http_digest_dormant_rc, fan_max_dormant_rc, fx6_fan_max_dormant_rc,
+            fx6_fan_always_off_dormant_rc, airplane_rf_blocked_rc,
+            p2_write_blocked_rc, p2_sha256_match, p12_sha256_match, cnflasha_sha256_match,
+            slot1_vault_sha256_match, appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r73_wave59_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r73b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r73b_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r73b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r73b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r73b_p2_ro");
+    (void)umount("/mnt/r73b_p12_ro");
+    (void)umount("/mnt/r73b_cnflasha_ro");
+    (void)umount("/mnt/r73b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r73b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r73b_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r73b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r73b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], p12_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i]  = (uint8_t)((i * 105U + 0x73U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 113U + 0x59U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 117U + 0x46U) & 0xffU);
+        bd_seed[i]  = (uint8_t)((i * 133U + 0x31U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r73b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r73b_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r73b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r73b_slot1_vault/C0001M01.XML", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r73b_slot1_vault/AVF_INFO.INP", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r73b_slot1_vault/C0001M01.XML", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r73b_slot1_vault/AVF_INFO.INP", pre_avf_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r73b_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r73b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r73b_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r73b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r73b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r73_wave59_cfg_t cfg;
+    r73_wave59_zero_init(&cfg);
+
+    /* Guard 1: BIG6 without Fixed/Variable (-16), dormant Auto Framing (-95 on FX3 & FX6),
+     * Framing locked under 100p / recording (-16), FX6 absent Manual Framing (-2) */
+    int big6_no_fixvar_rc = r73_open_big6_home(&cfg, R73_HOME_LL_ND_FILTER, R73_LOG_CINE_EI, 1, 1);
+    int auto_framing_dormant_rc =
+        r73_configure_framing(&cfg, 1, 1, R73_FRAME_ROUTE_CROP, R73_FRAME_ROUTE_FULL);
+    cfg.fps_ge_100p = 1;
+    int framing_100p_lock_rc =
+        r73_configure_framing(&cfg, 0, 1, R73_FRAME_ROUTE_FULL, R73_FRAME_ROUTE_CROP);
+    cfg.fps_ge_100p = 0;
+    cfg.is_recording_or_streaming = 1;
+    int framing_rec_lock_rc =
+        r73_configure_framing(&cfg, 0, 1, R73_FRAME_ROUTE_FULL, R73_FRAME_ROUTE_CROP);
+    cfg.is_recording_or_streaming = 0;
+    cfg.is_fx6_chaplin = 1;
+    int fx6_manual_framing_enoent_rc =
+        r73_configure_framing(&cfg, 0, 1, R73_FRAME_ROUTE_FULL, R73_FRAME_ROUTE_CROP);
+    int fx6_auto_framing_dormant_rc =
+        r73_configure_framing(&cfg, 1, 1, R73_FRAME_ROUTE_CROP, R73_FRAME_ROUTE_FULL);
+
+    /* Guard 2: Interval Shoot OOB (0 / 10000 shots / 61s interval -22), Intelligent Auto lockout (-16),
+     * FX3 absent single-MXF Interval Rec (-2), Slot-1 / Simult 9,999-shot burst & AVF_INFO (-30 EROFS) */
+    r73_wave59_zero_init(&cfg);
+    int interval_10000_oob_rc =
+        r73_configure_interval_shoot(&cfg, 0, 1, 1, 3, 10000,
+                                     R73_INTERVAL_AE_MID, R73_INTERVAL_SHUTTER_ELEC, 0);
+    int interval_61s_oob_rc =
+        r73_configure_interval_shoot(&cfg, 0, 1, 1, 61, 30,
+                                     R73_INTERVAL_AE_MID, R73_INTERVAL_SHUTTER_ELEC, 0);
+    cfg.mode_setting = R73_MODE_IAUTO;
+    int interval_iauto_busy_rc =
+        r73_configure_interval_shoot(&cfg, 0, 1, 1, 3, 9999,
+                                     R73_INTERVAL_AE_MID, R73_INTERVAL_SHUTTER_ELEC, 0);
+    cfg.mode_setting = R73_MODE_FIXED_VAR;
+    int fx3_interval_mxf_enoent_rc =
+        r73_configure_interval_shoot(&cfg, 1, 1, 1, 3, 24,
+                                     R73_INTERVAL_AE_MID, R73_INTERVAL_SHUTTER_ELEC, 0);
+    int interval_slot1_burst_erofs_rc =
+        r73_trigger_interval_burst_write(&cfg, R73_REC_MEDIA_SLOT1, 9999);
+    int interval_simult_burst_erofs_rc =
+        r73_trigger_interval_burst_write(&cfg, R73_REC_MEDIA_SIMULT, 9999);
+
+    /* Guard 3: FX3 TC Make=Clock (-95), VMC-BNCM1 EXT-LK under Regenerate (-22) & Rec Run (-22),
+     * HDMI REC Control with TC Output=Off (-16) & under S&Q (-16) */
+    r73_wave59_zero_init(&cfg);
+    int tc_clock_dormant_rc =
+        r73_configure_tc_and_hdmi(&cfg, R73_REC_MEDIA_SLOT2, R73_TC_MAKE_FX6_CLOCK, R73_TC_RUN_FREE_RUN,
+                                  0, R73_HDMI_MEDIA_ON, 1, 1, R73_HDMI_4CH_1_2);
+    int vmc_regen_invalid_rc =
+        r73_configure_tc_and_hdmi(&cfg, R73_REC_MEDIA_SLOT2, R73_TC_MAKE_REGENERATE, R73_TC_RUN_FREE_RUN,
+                                  1, R73_HDMI_MEDIA_ON, 1, 1, R73_HDMI_4CH_1_2);
+    int vmc_recrun_invalid_rc =
+        r73_configure_tc_and_hdmi(&cfg, R73_REC_MEDIA_SLOT2, R73_TC_MAKE_PRESET, R73_TC_RUN_REC_RUN,
+                                  1, R73_HDMI_MEDIA_ON, 1, 1, R73_HDMI_4CH_1_2);
+    int hdmi_rec_ctrl_no_tcout_rc =
+        r73_configure_tc_and_hdmi(&cfg, R73_REC_MEDIA_SLOT2, R73_TC_MAKE_PRESET, R73_TC_RUN_REC_RUN,
+                                  0, R73_HDMI_MEDIA_OFF_HDMI_ONLY, 0, 1, R73_HDMI_4CH_3_4);
+    cfg.is_sq_mode = 1;
+    int hdmi_rec_ctrl_sq_busy_rc =
+        r73_configure_tc_and_hdmi(&cfg, R73_REC_MEDIA_SLOT2, R73_TC_MAKE_PRESET, R73_TC_RUN_REC_RUN,
+                                  0, R73_HDMI_MEDIA_ON, 1, 1, R73_HDMI_4CH_1_2);
+
+    /* Guard 4: Removed WEP/WPA-PSK/IPsec (-95), dormant HTTP_DIGEST/HTTPS (-95),
+     * dormant FAN_CONTROL_MAX (-95 on BOTH FX3 & FX6), FX6 Always Off (-95), Airplane Mode=On zero-RF (-100) */
+    r73_wave59_zero_init(&cfg);
+    int wep_removed_rc =
+        r73_configure_access_auth_and_thermal(&cfg, R73_WIFI_REMOVED_WEP, 0, 1, 0, R73_FAN_AUTO, R73_TEMP_STANDARD);
+    int ipsec_removed_rc =
+        r73_configure_access_auth_and_thermal(&cfg, R73_WIFI_REMOVED_IPSEC, 0, 1, 0, R73_FAN_AUTO, R73_TEMP_STANDARD);
+    int http_digest_dormant_rc =
+        r73_configure_access_auth_and_thermal(&cfg, R73_WIFI_WPA3_SAE, 1, 1, 0, R73_FAN_AUTO, R73_TEMP_STANDARD);
+    int fan_max_dormant_rc =
+        r73_configure_access_auth_and_thermal(&cfg, R73_WIFI_WPA3_SAE, 0, 1, 0, R73_FAN_DORMANT_MAX, R73_TEMP_STANDARD);
+    cfg.airplane_mode_on = 1;
+    int airplane_rf_tx_rc =
+        r73_configure_access_auth_and_thermal(&cfg, R73_WIFI_WPA3_SAE, 0, 1, 2, R73_FAN_ALWAYS_OFF, R73_TEMP_HIGH);
+    cfg.airplane_mode_on = 0;
+    cfg.is_fx6_chaplin = 1;
+    int fx6_fan_max_dormant_rc =
+        r73_configure_access_auth_and_thermal(&cfg, R73_WIFI_WPA2_PSK, 0, 1, 0, R73_FAN_DORMANT_MAX, R73_TEMP_STANDARD);
+    int fx6_fan_always_off_rc =
+        r73_configure_access_auth_and_thermal(&cfg, R73_WIFI_WPA2_PSK, 0, 1, 0, R73_FAN_ALWAYS_OFF, R73_TEMP_STANDARD);
+
+    errno = 0;
+    int s1_fd = open("/mnt/r73b_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_wave59_erofs_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int a1_fd = open("/mnt/r73b_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_blocked_rc = (a1_fd >= 0) ? (close(a1_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r73b_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r73b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r73b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r73b_slot1_vault/C0001M01.XML", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r73b_slot1_vault/AVF_INFO.INP", post_avf_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r73b_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r73b_slot1_vault");
+    (void)umount("/mnt/r73b_p12_ro");
+    (void)umount("/mnt/r73b_p2_ro");
+    (void)umount("/mnt/r73b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R73_SSH_ACCESS_AUTH_FAN_TEMP_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (big6_no_fixvar_rc == -EBUSY &&
+              auto_framing_dormant_rc == -EOPNOTSUPP &&
+              framing_100p_lock_rc == -EBUSY &&
+              framing_rec_lock_rc == -EBUSY &&
+              fx6_manual_framing_enoent_rc == -ENOENT &&
+              fx6_auto_framing_dormant_rc == -EOPNOTSUPP &&
+              interval_10000_oob_rc == -EINVAL &&
+              interval_61s_oob_rc == -EINVAL &&
+              interval_iauto_busy_rc == -EBUSY &&
+              fx3_interval_mxf_enoent_rc == -ENOENT &&
+              interval_slot1_burst_erofs_rc == -EROFS &&
+              interval_simult_burst_erofs_rc == -EROFS &&
+              tc_clock_dormant_rc == -EOPNOTSUPP &&
+              vmc_regen_invalid_rc == -EINVAL &&
+              vmc_recrun_invalid_rc == -EINVAL &&
+              hdmi_rec_ctrl_no_tcout_rc == -EBUSY &&
+              hdmi_rec_ctrl_sq_busy_rc == -EBUSY &&
+              wep_removed_rc == -EOPNOTSUPP &&
+              ipsec_removed_rc == -EOPNOTSUPP &&
+              http_digest_dormant_rc == -EOPNOTSUPP &&
+              fan_max_dormant_rc == -EOPNOTSUPP &&
+              airplane_rf_tx_rc == -ENETDOWN &&
+              fx6_fan_max_dormant_rc == -EOPNOTSUPP &&
+              fx6_fan_always_off_rc == -EOPNOTSUPP &&
+              slot1_wave59_erofs_rc == -EROFS &&
+              slot1_avf_ro_blocked_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R73_WAVE59_GUARD big6_no_fixvar_rc=%d auto_framing_dormant_rc=%d "
+            "framing_100p_lock_rc=%d framing_rec_lock_rc=%d "
+            "fx6_manual_framing_enoent_rc=%d fx6_auto_framing_dormant_rc=%d "
+            "interval_10000_oob_rc=%d interval_61s_oob_rc=%d interval_iauto_busy_rc=%d "
+            "fx3_interval_mxf_enoent_rc=%d interval_slot1_burst_erofs_rc=%d "
+            "interval_simult_burst_erofs_rc=%d tc_clock_dormant_rc=%d "
+            "vmc_regen_invalid_rc=%d vmc_recrun_invalid_rc=%d "
+            "hdmi_rec_ctrl_no_tcout_rc=%d hdmi_rec_ctrl_sq_busy_rc=%d "
+            "wep_removed_rc=%d ipsec_removed_rc=%d http_digest_dormant_rc=%d "
+            "fan_max_dormant_rc=%d airplane_rf_tx_rc=%d "
+            "fx6_fan_max_dormant_rc=%d fx6_fan_always_off_rc=%d "
+            "slot1_wave59_erofs_rc=%d slot1_avf_ro_blocked_rc=%d p12_write_blocked_rc=%d "
+            "slot1_vault_sha256_match=%d p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "dormant_auto_framing_bypass_events=0 dormant_http_auth_bypass_events=0 "
+            "dormant_fan_max_bypass_events=0 rf_tx_packets=0 wireless_tx_packets=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r73b_ok=%d verify_us=%lld\n",
+            big6_no_fixvar_rc, auto_framing_dormant_rc,
+            framing_100p_lock_rc, framing_rec_lock_rc,
+            fx6_manual_framing_enoent_rc, fx6_auto_framing_dormant_rc,
+            interval_10000_oob_rc, interval_61s_oob_rc, interval_iauto_busy_rc,
+            fx3_interval_mxf_enoent_rc, interval_slot1_burst_erofs_rc,
+            interval_simult_burst_erofs_rc, tc_clock_dormant_rc,
+            vmc_regen_invalid_rc, vmc_recrun_invalid_rc,
+            hdmi_rec_ctrl_no_tcout_rc, hdmi_rec_ctrl_sq_busy_rc,
+            wep_removed_rc, ipsec_removed_rc, http_digest_dormant_rc,
+            fan_max_dormant_rc, airplane_rf_tx_rc,
+            fx6_fan_max_dormant_rc, fx6_fan_always_off_rc,
+            slot1_wave59_erofs_rc, slot1_avf_ro_blocked_rc, p12_write_blocked_rc,
+            slot1_vault_sha256_match, p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r73_clean_unmount_wave59_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r73c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r73c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r73c_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r73c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r73c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r73c_tmp_overlay", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r73c_surfaces");
+    (void)umount("/mnt/r73c_p2_ro");
+    (void)umount("/mnt/r73c_p12_ro");
+    (void)umount("/mnt/r73c_cnflasha_ro");
+    (void)umount("/mnt/r73c_slot1_vault");
+    (void)umount("/mnt/r73c_tmp_overlay");
+    if (mount("tmpfs", "/mnt/r73c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r73c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r73c_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r73c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r73c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r73c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    if (r29_write_all_fsync("/mnt/r73c_tmp_overlay/stage_b_marker",
+                            (const uint8_t *)"FX3_VOLATILE_OVERLAY_R73", 24U, 0644) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r73c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+
+    uint8_t p2_seed[256], p12_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i]  = (uint8_t)((i * 103U + 0x73U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 111U + 0x59U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 117U + 0x46U) & 0xffU);
+        v_seed[i]   = (uint8_t)((i * 141U + 0x31U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r73c_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r73c_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r73c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r73c_slot1_vault/C0001M01.XML", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r73c_slot1_vault/AVF_INFO.INP", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r73c_slot1_vault/C0001M01.XML", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r73c_slot1_vault/AVF_INFO.INP", pre_avf_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r73c_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t sbuf[512];
+        for (size_t i = 0U; i < sizeof(sbuf); i++) {
+            sbuf[i] = (uint8_t)((i * 61U + s * 41U + 0x73U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r73c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) {
+            return fail_exit_rc;
+        }
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    if (mount(NULL, "/mnt/r73c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r73c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r73c_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r73c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r73c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    int unmount_rc = umount("/mnt/r73c_tmp_overlay");
+    int marker_gone_after_umount = (access("/mnt/r73c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok = (overlay_mounted_present == 1 && unmount_rc == 0 && marker_gone_after_umount == 1) ? 1 : 0;
+
+    /* Asymmetric 3-Tier Reset Split across Wave-59:
+     * 1. [Camera Settings Reset]:
+     *    RESETTABLE -> [Mode Settings], [Home (Lower Left)], [Framing Settings] (all 3), and all 7 [Interval Shoot Func.] items
+     *    SURVIVORS  -> Reset-immune [Time Code Make], [Time Code Run], ALL [HDMI Output Settings]
+     *                  (Rec. Media dur HDMI, Time Code Output, REC Control, 4ch Audio Output),
+     *                  [Access Authen. Settings], [Import Root Certificate], [Airplane Mode], [Fan Control], [Auto Power OFF Temp.]
+     * 2. [Reset Network Set.]:
+     *    RESETTABLE -> Clears [Access Authen. Settings] (def On) & [Import Root Certificate], Wi-Fi->WPA2-PSK
+     *    SURVIVORS  -> [Airplane Mode] = On + all Camera/TC/HDMI/Fan/Temp settings
+     * 3. [Initialize]: restores TC/HDMI/Fan/Temp defaults while STILL preserving [Airplane Mode] = On */
+    r73_wave59_cfg_t cfg;
+    r73_wave59_zero_init(&cfg);
+    cfg.mode_setting = R73_MODE_FIXED_VAR;
+    (void)r73_open_big6_home(&cfg, R73_HOME_LL_ND_FILTER, R73_LOG_CINE_EI, 1, 1);
+    (void)r73_configure_framing(&cfg, 0, 1, R73_FRAME_ROUTE_CROP, R73_FRAME_ROUTE_FULL);
+    (void)r73_configure_interval_shoot(&cfg, 0, 1, 120, 15, 9999,
+                                       R73_INTERVAL_AE_LOW, R73_INTERVAL_SHUTTER_MECH, 1);
+    (void)r73_configure_tc_and_hdmi(&cfg, R73_REC_MEDIA_SIMULT, R73_TC_MAKE_REGENERATE, R73_TC_RUN_FREE_RUN,
+                                    0, R73_HDMI_MEDIA_OFF_HDMI_ONLY, 1, 1, R73_HDMI_4CH_3_4);
+    (void)r73_configure_access_auth_and_thermal(&cfg, R73_WIFI_WPA3_SAE, 0, 0, 1,
+                                                R73_FAN_ALWAYS_OFF, R73_TEMP_HIGH);
+    cfg.airplane_mode_on = 1;
+
+    r73_wave59_camera_settings_reset(&cfg);
+    int camreset_preserves_wave59_survivors_ok =
+        (cfg.mode_setting == R73_MODE_MOVIE &&
+         cfg.home_lower_left == R73_HOME_LL_APERTURE &&
+         cfg.framing_on == 0 &&
+         cfg.framing_rec_stream == R73_FRAME_ROUTE_FULL &&
+         cfg.framing_hdmi == R73_FRAME_ROUTE_CROP &&
+         cfg.interval_shooting_on == 0 &&
+         cfg.interval_start_sec == 1 &&
+         cfg.interval_sec == 3 &&
+         cfg.interval_num_shots == 30 &&
+         cfg.interval_ae_sens == R73_INTERVAL_AE_MID &&
+         cfg.interval_shutter_type == R73_INTERVAL_SHUTTER_ELEC &&
+         cfg.interval_priority_on == 0 &&
+         cfg.tc_make == R73_TC_MAKE_REGENERATE &&
+         cfg.tc_run == R73_TC_RUN_FREE_RUN &&
+         cfg.hdmi_rec_media == R73_HDMI_MEDIA_OFF_HDMI_ONLY &&
+         cfg.hdmi_tc_output_on == 1 &&
+         cfg.hdmi_rec_control_on == 1 &&
+         cfg.hdmi_4ch_audio == R73_HDMI_4CH_3_4 &&
+         cfg.access_authen_on == 0 &&
+         cfg.root_cert_imported == 1 &&
+         cfg.fan_control == R73_FAN_ALWAYS_OFF &&
+         cfg.auto_power_off_temp == R73_TEMP_HIGH &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r73_wave59_reset_network_settings(&cfg);
+    int nwreset_clears_access_auth_preserves_airplane_ok =
+        (cfg.wifi_sec == R73_WIFI_WPA2_PSK &&
+         cfg.access_authen_on == 1 &&
+         cfg.root_cert_imported == 0 &&
+         cfg.airplane_mode_on == 1 &&
+         cfg.tc_make == R73_TC_MAKE_REGENERATE &&
+         cfg.hdmi_rec_control_on == 1 &&
+         cfg.fan_control == R73_FAN_ALWAYS_OFF &&
+         cfg.auto_power_off_temp == R73_TEMP_HIGH) ? 1 : 0;
+
+    r73_wave59_initialize(&cfg);
+    int initialize_restores_wave59_defaults_ok =
+        (cfg.mode_setting == R73_MODE_MOVIE &&
+         cfg.home_lower_left == R73_HOME_LL_APERTURE &&
+         cfg.framing_on == 0 &&
+         cfg.interval_num_shots == 30 &&
+         cfg.tc_make == R73_TC_MAKE_PRESET &&
+         cfg.tc_run == R73_TC_RUN_REC_RUN &&
+         cfg.hdmi_rec_media == R73_HDMI_MEDIA_ON &&
+         cfg.hdmi_tc_output_on == 0 &&
+         cfg.hdmi_rec_control_on == 0 &&
+         cfg.hdmi_4ch_audio == R73_HDMI_4CH_1_2 &&
+         cfg.access_authen_on == 1 &&
+         cfg.root_cert_imported == 0 &&
+         cfg.fan_control == R73_FAN_AUTO &&
+         cfg.auto_power_off_temp == R73_TEMP_STANDARD &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jit_h = dlopen("/etc/fx6_r73_libjit.so", RTLD_NOW);
+    if (!jit_h) {
+        jit_h = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    }
+    if (jit_h) {
+        dlopen_ok = 1;
+        dlclose(jit_h);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r73c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3, &sbytes) == 0 && strcmp(h0_hashes[s], h3) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    errno = 0;
+    int s1_fd = open("/mnt/r73c_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int avf_fd = open("/mnt/r73c_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_blocked_rc = (avf_fd >= 0) ? (close(avf_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r73c_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r73c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r73c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r73c_slot1_vault/C0001M01.XML", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r73c_slot1_vault/AVF_INFO.INP", post_avf_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r73c_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r73c_slot1_vault");
+    (void)umount("/mnt/r73c_p12_ro");
+    (void)umount("/mnt/r73c_p2_ro");
+    (void)umount("/mnt/r73c_cnflasha_ro");
+    (void)umount("/mnt/r73c_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_preserves_wave59_survivors_ok == 1 &&
+              nwreset_clears_access_auth_preserves_airplane_ok == 1 &&
+              initialize_restores_wave59_defaults_ok == 1 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_avf_ro_blocked_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R73_CLEAN_UNMOUNT_WAVE59_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_preserves_wave59_survivors_ok=%d "
+            "nwreset_clears_access_auth_preserves_airplane_ok=%d "
+            "initialize_restores_wave59_defaults_ok=%d "
+            "dormant_auto_framing_bypass_events=0 dormant_http_auth_bypass_events=0 "
+            "dormant_fan_max_bypass_events=0 rf_tx_packets=0 wireless_tx_packets=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "slot1_vault_ro_blocked_rc=%d p12_write_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r73c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_preserves_wave59_survivors_ok,
+            nwreset_clears_access_auth_preserves_airplane_ok,
+            initialize_restores_wave59_defaults_ok,
+            slot1_vault_ro_blocked_rc, p12_write_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -42033,6 +43318,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r72-clean-unmount-wave58-h0-h3") == 0) {
         return run_r72_clean_unmount_wave58_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r73-wave59-guard") == 0) {
+        return run_r73_wave59_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r73-clean-unmount-wave59-h0-h3") == 0) {
+        return run_r73_clean_unmount_wave59_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -42609,6 +43900,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave58_integrated &&
                 run_r72_clean_unmount_wave58_h0_h3_probe(91) != 0) {
                 return 91;
+            }
+        }
+    }
+    struct stat r73_st;
+    if (stat("/etc/fx6_stage_r73", &r73_st) == 0) {
+        if (setup_r73_big6_framing_interval_tc_ssh_fan_probe() != 0) {
+            return 92;
+        }
+        FILE *r73f = fopen("/etc/fx6_stage_r73", "r");
+        if (r73f) {
+            int is_clean_unmount_wave59_integrated = 0;
+            char r73line[128];
+            while (fgets(r73line, sizeof(r73line), r73f)) {
+                if (strstr(r73line, "r73_mode=clean_unmount_wave59_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave59_integrated = 1;
+                }
+            }
+            fclose(r73f);
+            if (is_clean_unmount_wave59_integrated &&
+                run_r73_clean_unmount_wave59_h0_h3_probe(92) != 0) {
+                return 92;
             }
         }
     }

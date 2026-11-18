@@ -2858,3 +2858,39 @@ FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTEC
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
 ```
+
+## Phase 367（Stage 83 — `83/83` Full-Board VM Co-Emulation Stages!）：Wave-73 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` `[Lock Operation Parts]` & `MENU+Fn` 5s 全局锁 vs FX6 双物理 `HOLD` & 4 位 `User Menu with Lock`、`[Shockless WB]` / `[Priority Set in AWB]` / Still 独占 `[Shutter AWB Lock]` & Movie `AWB Lock` vs FX6 `WHT BAL` / `ATW Speed 1..5`、`[Focus Assistant]` 4 子项分裂与休眠 `[Focus Ring Rotate]` `0`-Enum 辟谣 vs FX6 `AF Assist` / `PUSH AUTO` / Ver. 6.0 `HDMI Focus Mag x2/x4`，以及 Playback `[Delete]`/`[Delete confirm.]`/`[Protect]` Proxy 绑定与 `[Recover Image DB]` `AVF_INFO` Tier-0 `Slot 1 EROFS=30` 防火墙 HIL
+
+[`realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_coemulator.py`](realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_coemulator.py)（Schema `phase367_realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_coemulation_v1`）作为 **Stage 83（`83/83` Full-Board VM Co-Emulation Stages!）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase367` / `--skip-stage83` / `--no-include-stage83` 跳过，支持 `--include-stage83`），严格遵循 `os.O_RDONLY` + `<= 4096 B` 受界 `os.pread`、`ready_for_live_camera_attach == False`、`physical_device_writes == 0`、`emmc_writes_authorized == False`、`slot1_data_sector_writes == 0`、`rf_tx_packets == 0`、`emmc_nflasha_write_count == 0` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 18 供体 `O_RDONLY` + 受界 `os.pread` 审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` **18 份真实供体**（`14` 份紧凑供体：`4` 语言 FX3 `_f`/基础/`_g` `.uxc` + FX6 `string_english.uxc`/`string_english_2.uxc`；以及 `4` 份受界窗口供体：`FX3 appFw.so`、`FX3 libmpr.so`、`FX3-CX95900_ALLLANG-Backup.bin`、`FX6 appFw.so`），在无供体环境（`work_root=None` / `FX3_CLEAN_ROOM_TEST=1` / `FX3_FX6_FORCE_CLEAN_ROOM=1` / `FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__`）无缝回退 `CLEAN_ROOM_SYNTHETIC`（`raw_firmware_bytes_leaked == 0`）。
+2. **Sub-Model 83A — `Setup -> [Dial Customize] -> [Lock Operation Parts]` 4 项 `Fn` 长按 + `MENU+Fn` 5s 全局锁 vs FX6 双物理 `HOLD` & 4 位 `User Menu with Lock`**：
+   - 纠偏精确菜单路径为 `Setup -> [Dial Customize] -> [Lock Operation Parts]`（`Off` 默认 / `Multi-Selector Only` / `Dial + Wheel` / `All`，抗 `[Camera Settings Reset]` `Not available`）；`Fn` 长按弹出 `"Locked."`（`[AF Area Registration] = On` 时强制置 `Off`，`My Dial 1..3` 召回期间临时解锁）；`MENU + Fn` 5s 全局锁锁定除 `SHUTTER` 外的全部按键/拨盘/拨轮，LCD 触控仍由独立 `[Touch Operation]` 管控，拒绝休眠 Alpha `UIBIZ_SLIKEY_LOCK`（`EOPNOTSUPP=95`）。对比 FX6 `2` 个物理 `HOLD` 开关（`HOLD Switch Setting`：`with Rec Button` / `with Hand Grip Remote` / `Handle HOLD Switch`）与 `User Menu Only` / 4 位数字 `0000..9999` `User Menu with Lock`。
+3. **Sub-Model 83B — `[Shockless WB]`（`Off/1/2/3`）、`[Priority Set in AWB]`、Still 独占抗复位 `[Shutter AWB Lock]` & Movie `AWB Lock` vs FX6 `WHT BAL` / `ATW Speed 1..5`**：
+   - FX3 `Exposure/Color -> [White Balance]`：`[Shockless WB]`（`Off` / `1 (Fast)` 默认 / `2` / `3 (Slow)`，仅 Movie/`S&Q`，`Can be reset`，不影响 AWB 自动跟踪速度）、`[Priority Set in AWB]`（`Standard` 默认 / `Ambience` / `White`，`Can be reset`，`Cine EI` 禁用）、Still 独占且**抗 `[Camera Settings Reset]`** 的 **`[Shutter AWB Lock]`**（`Shutter Half Press` / `Cont. Shooting` / `Off` 默认，拒绝 Movie `EBUSY=16`）；Movie 下 AWB 锁定依赖 Custom Key `[AWB Lock Hold]` / `[AWB Lock Toggle]`。对比 FX6 物理三段 `WHT BAL`（`B/A/PRESET`）拨杆、`ATW Speed 1..5`、`Shockless White Off/1/2/3` 及内部 `Warm Cool` 转换器。
+4. **Sub-Model 83C — 抗复位 `[Focus Assistant]` 4 子项、Still `x1.0/x2.1 -> x4.1` vs Movie `x1.0/x4.0` 分裂与休眠 `[Focus Ring Rotate]` `0`-Enum 辟谣 vs FX6 `AF Assist` / `PUSH AUTO` / Ver. 6.0 `HDMI Focus Mag x2/x4`**：
+   - FX3 `Shooting -> [Focus] -> [Focus Assistant]` 全部 4 项（`[Auto Magnifier in MF]` Still-only、`[Focus Magnif. Time]` `2 Sec`/`5 Sec`/`No Limit` 默认、`[Initial Focus Mag.]` Still FF `x1.0`/`x2.1 -> x4.1` & APS-C `x1.0`/`x1.5 -> x3.0` & Movie/`S&Q` `x1.0`/`x4.0`、`[AF in Focus Mag.]` Still-only）在 Ver. 2.00..7.02 均抗 `[Camera Settings Reset]`；实证 `[Focus Ring Rotate]`（`_f 0x7b28`）在 `FX3 appFw.so` 中 `0` 个枚举（`EOPNOTSUPP=95`）。对比 FX6 `FOCUS_RING_ROTATE_*`、`AF Assist`、物理 `PUSH AUTO`、VF `x3/x6` 与 Ver. 6.0 `HDMI Focus Mag x2/x4`。
+5. **Sub-Model 83D — Playback `[Delete]` 5 模式 / `[Delete confirm.]` `"Cancel" first` / `[Protect]` 7 模式 Proxy 绑定与 `[Recover Image DB]` `AVF_INFO` Tier-0 `Slot 1 EROFS=30` 防火墙 vs FX6 `Update Media` / `Restore Media`**：
+   - FX3 抗常规 Reset 的 Playback `[Delete]`（5 项批量模式）、`[Delete confirm.]`（默认 `"Cancel" first`）、`[Protect]`（精确 7 项、零 `"Cancel All Images"` `EOPNOTSUPP=95`、原片与 `*S03.MP4` Proxy 原子共生、`[Copy]` 剥离保护）、只读 `[Display Media Info.]`（`40,000` 上限 / `9999` 实时显示）与双免疫 `[Recover Image DB]`（`/AVF_INFO/AVIN0001.{INP,BNP,INT}`）；卡插入自动弹窗 `"Recover? / Create?"` 若未阻断将篡改 `AVF_INFO`，由 Tier-0 `Slot 1 EROFS=30` 硬拦截（`slot1_data_sector_writes == 0`、`slot1_avf_info_mutated == False`）。对比 FX6 `TC/Media -> Update Media`、`Restore Media(A)/(B)` 物理 WP 校验及 `Thumbnail > Clip > Lock/Unlock Clip`。
+
+### Phase 367 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 367 Stage 83（83/83 Full-Board VM Co-Emulation Stages!）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_coemulator.py --self-test --json
+
+# 2. 全板 83 阶段（Stage 1..83, 83/83 Full-Board VM Co-Emulation Stages!）统一校验（支持 --include-stage83 与 --skip-phase367 / --skip-stage83 / --no-include-stage83）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage83 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 367 四模式 100 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_coemulator.py -v
+FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
+```

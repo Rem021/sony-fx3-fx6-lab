@@ -1861,3 +1861,38 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unit
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
+
+## Phase 285 Stage 57（57/57）— 真实硬件 Wave-47：`[USB Connection Mode]` 4 模式 vs 休眠 `NOUVC` `[USB Streaming]` 分裂 & 数据物理隔离 USB PD、`[HDMI Info. Display]` 关屏/干净输出 & `1080` Log/`PPLUT` 钳位 vs `4K` `RAW`/`HDMI Only` 自动清屏覆写、`[Protect]` 4 范围 vs `[Format]` 抹除（`Slot-1` 双层硬件 SD `WP` + 防火墙）& `[Reset Network Set.]` 自动重启后复设 `[Airplane Mode] = [On]` 协同仿真台架
+
+[`realhw_usb_mode_hdmi_info_protect_network_reset_coemulator.py`](realhw_usb_mode_hdmi_info_protect_network_reset_coemulator.py) 作为 **Phase 285 Stage 57（`57/57`，Schema `realhw_usb_mode_hdmi_info_protect_network_reset_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase285_realhw_usb_mode_hdmi_info_protect_network_reset_hil=True` / `include_stage57=True` / `stage57_realhw_usb_mode_hdmi_info_protect_network_reset_hil=True`，支持显式 `--include-stage57` 以及通过 `--skip-phase285` / `--skip-stage57` / `--no-include-stage57` 跳过），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`emmc_corruptions == 0`、`nop_count == 0`、`guest_code_modification_bytes == 0`、**`fx3_ui_exposes_native_usb_streaming == False`**、**`usb_f_uvc_insmod_at_fx3_boot == False`**、`fx3_native_uvc_spoof_events == 0`、`tier0_usb_data_enumeration_violations == 0`、`physical_usb_packets_emitted == 0`、`hdmi_osd_or_clamp_bypass_events == 0`、`hdmi_clean_feed_override_violations == 0`、`slot1_vault_format_or_delete_events == 0`、**`slot1_format_hard_locked == True`**、`post_reset_airplane_off_rf_leak_events == 0`、`passive_tx_bytes_emitted == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模 13 供体 `O_RDONLY` 字节与 SHA-256 精确锚定审计（`LOCAL_DONOR_O_RDONLY` `< 0.2s` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 严格通过 `os.O_RDONLY` 核验 FX3 `Ver. 7.02` 与 FX6 `Ver. 6.01` 的 **13 份真实供体**（精确锁定字节数、完整 64 位 SHA-256 / 4096B 头部哈希及有界窗口）：FX3 `string_*_f.uxc` 4 语言全集（`en_f=373,820 B`、`sc_f=322,652 B`、`tc_f=324,148 B`、`ja_f=447,840 B`）、FX3 `string_english.uxc`（`165,740 B`）、FX3 `string_english_g.uxc`（`69,600 B`）、FX3 与 FX6 `usb_f_uvc.ko`（双机型同为 `78,840 B`）、FX6 `string_english.uxc`（`118,208 B`）与 `string_english_2.uxc`（`118,676 B`），以及 `FX3 appFw.so`（`79,015,712 B`：`BKID_APP_setting_usb_connection_method`、`USB_CONNECTION_METHOD_MASS_STRAGE`、`USB_CONNECTION_USB_STREAMING`、`BKID_APP_setting_hdmi_info_display`、`CAUTION_ID_FACTOR_HDMI_INFO_DISPLAY_ON`、`FUNC_protect_*`、`MR_MEMORY_ERROR_CARD_WRITE_PROTECT_SLOT1`、`FUNC_reset_network_settings`、`BKID_APP_is_shutdown_factor_network_reset`）、`FX3 BK4`（`2,229,740 B`）与 `FX6 appFw.so`（`50,520,424 B`：`BKID_APP_SETTING_USB_STREAMING_PROCAM`、`BKID_APP_SETTING_HDMI_INFO_DISPLAY`、`BKID_APP_SETTING_SDI_OUTPUT_DISPLAY`、`BKID_APP_IS_SHUTDOWN_FACTOR_NETWORK_RESET`）；支持 `FX3_CLEAN_ROOM_TEST=1` 与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双环境变量触发确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 57A — `[USB Connection Mode]` 4 模式 vs 休眠 `NOUVC` `[USB Streaming]` 分裂与数据隔离 USB PD HIL**：
+   - 精确建模 `ILME-FX3 Ver. 7.02` `(Setup) -> [USB] -> [USB Connection Mode]`（`_f.uxc` `0x69a2`）仅暴露 **4 模式**：`Sel. When Connect`（`0x7738` 出厂默认）、`MassStorage(MSC)`（`0x6c54`，`054C:0DA1`，内部标记 `USB_CONNECTION_METHOD_MASS_STRAGE`）、`MTP`（`0xe24b`，Slot 1）、`Remote Shoot (PC Remote)`（`0x60aa`/`0x7c6f`）；以 `EOPNOTSUPP = 95` 硬拒绝任何 FX3 原生 `[USB Streaming]` UVC/UAC 伪造切态，并与同供体 `ILME-FX6` `ProCam` UVC（`BKID_APP_SETTING_USB_STREAMING_PROCAM`，`usb_f_uvc.ko` `78,840 B`）形成清晰对比。
+   - 同步建模 `[USB LUN Setting]`（`Multi` `0xe631` 默认 `2 LUN` vs `Single` `0x776d` `1 LUN`）、`[USB Power Supply]`（`On` `0x721e` 默认，仅限 Type-C 端口且须装入 `NP-FZ100` 电池）、`(Setup)` 跨 `[Camera Settings Reset]` 存活特性（仅 `[Initialize]` 恢复出厂），以及气隙 Tier-0 台架规则：**仅在 `D+/D-` 与 SuperSpeed 数据线物理切断（仅保留 `VBUS/CC` USB PD 供电）时放行**。
+3. **Sub-Model 57B — `[HDMI Info. Display]` 关屏 vs 干净输出、`1080` Log/`PPLUT` 钳位与 `4K` `RAW`/`HDMI Only` 自动清屏覆写 HIL**：
+   - 协同仿真 `[HDMI Info. Display]`（`On` `0xe07c` 默认输出 OSD + 黑屏关闭机背 LCD 与触控对焦 `CAUTION_ID_FACTOR_HDMI_INFO_DISPLAY_ON`；`Off` `0xe297` 输出纯洁外录 HDMI 并保持 LCD/触控激活）；当机内录制（`Rec. Media dur HDMI Output = On`）叠合 `Log Shooting != Off` 或 `PPLUT1..4` 时强制将 HDMI 钳位至 `1080`（强绕过返回 `EOPNOTSUPP = 95`）；而当 `Off(HDMI Only)`（`0x6573`）或 `RAW Output = On`（`0x6e97`，`4264x2408`）激活时输出 `4K` 并**自动强制 `[HDMI Info. Display] = [Off]`**（`S&Q` 锁定 `Rec. Media = On` 与 `RAW Output = Off`），且验证 `(Setup)` 跨 `[Camera Settings Reset]` 存活与 `[Framing Settings (HDMI)]` 复位例外。
+4. **Sub-Model 57C & Redlines — `[Protect]` 4 范围 vs `[Format]` 抹除（`Slot-1` 双层硬件 SD `WP` + 防火墙）与 `[Reset Network Set.]` 自动重启 + 复设 `[Airplane Mode] = [On]` HIL**：
+   - 完整建模 `ILME-FX3` 全部 4 项 `[Protect]` 范围（`Single`/`Multiple Img.` `0xe2ca`、`All in this Folder` `0x6848`、`All with this date` `0x69f7`、`All Images in This Group` `0xe826`）在 `Slot 2` 虚机草稿区对 `[Delete]`/`[Delete pressing twice]` 返回 `EROFS = 30`，同时证明 **`[Format]`（`0xe449`/`0xe414`）会直接抹除受保护文件及 `M1..M4` 存储卡设置** —— 从而强制在 `Slot 1` 恢复保险库激活**双层防护**：硬件 SD `WP` 物理锁开关（`MR_MEMORY_ERROR_CARD_WRITE_PROTECT_SLOT1`）+ 软件硬锁（`slot1_format_hard_locked == True`，`EROFS = 30`，`slot1_vault_format_or_delete_events == 0`）。
+   - 协同仿真 `[Reset Network Set.]`（`FUNC_reset_network_settings`、`SETTING_RESET_NW`、`0x60d3`/`0x65d3`）清空 12 域 `(Network)` 凭据、完整保留 `(Shooting)`/`(Setup)`/`(Playback)` 与 `CAMSET`、触发强制自动重启（`BKID_APP_is_shutdown_factor_network_reset`）并将 `[Airplane Mode]` 复位至 `Off`，强迫台架规则要求**重启后立即复设 `[Airplane Mode] = [On]`（`0x6df9`）**以恢复零射频气隙姿态（否则 `EACCES = 13` 阻断，零泄漏），同时锁死全部 `16` 项硬件安全红线探针。
+
+### Phase 285 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 285 Stage 57（57/57）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_usb_mode_hdmi_info_protect_network_reset_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_usb_mode_hdmi_info_protect_network_reset_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_usb_mode_hdmi_info_protect_network_reset_coemulator.py --self-test --json
+
+# 2. 全板 57 阶段（Stage 1..57, 57/57）统一校验（支持 --include-stage57 与 --skip-phase285 / --skip-stage57）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage57 --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 285 三模式 76 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_usb_mode_hdmi_info_protect_network_reset_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_usb_mode_hdmi_info_protect_network_reset_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_usb_mode_hdmi_info_protect_network_reset_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```

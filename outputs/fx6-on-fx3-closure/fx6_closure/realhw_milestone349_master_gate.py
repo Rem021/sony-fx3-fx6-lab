@@ -138,6 +138,7 @@ from .realhw_milestone324_master_gate import (
     _138GATE_EXTRA_FAULT_FIELDS,
     _140GATE_EXTRA_FAULT_FIELDS,
     _142GATE_EXTRA_FAULT_FIELDS,
+    _NEGATIVE_AUDIT_BOOL_KEYS as _M324_NEGATIVE_AUDIT_BOOL_KEYS,
     AGENT_AUTO_FLASH_BLOCKED,
     CALIBRATION_MUTATION_BYTES,
     CNFLASHA_USERSPACE_WRITE_BLOCKED,
@@ -484,7 +485,7 @@ _RECOVERY_MASTER_FN_RE = re.compile(r"^evaluate_realhw_(\d+)pillar_recovery_mast
 _VM_STAGE_KEY_RE = re.compile(r"^stage(\d+)_")
 _ROUND_DIR_RE = re.compile(r"-round(\d+)-")
 _RAW_BYTES_REPR_RE = re.compile(r"(?<![0-9A-Za-z_/.-])b['\"]")
-_NEGATIVE_AUDIT_BOOL_KEYS = frozenset(
+_NEGATIVE_AUDIT_BOOL_KEYS: frozenset[str] = _M324_NEGATIVE_AUDIT_BOOL_KEYS | frozenset(
     {
         "fx3_has_builtin_evf",
         "fx3_has_eye_sensor",
@@ -492,11 +493,21 @@ _NEGATIVE_AUDIT_BOOL_KEYS = frozenset(
         "fx3_has_var_shutter",
         "fx3_has_builtin_end_filter",
         "fx3_has_bt_timecode_link",
+        "fx3_bird_eye_af_present",
+        "fx3_shutter_when_pwr_off_present",
+        "fx3_focus_bracket_present",
+        "fx3_shutter_type_auto_present",
+        "fx3_soft_skin_effect_present",
+        "fx3_finder_monitor_group_present",
+        "fx3_sync_terminal_present",
         "fx6_has_ibis",
         "fx6_has_builtin_evf",
         "fx6_has_still_flash_stack",
         "fx6_has_still_pipeline_present",
         "fx6_mechanical_shutter_present",
+        "fx6_soft_skin_effect_present",
+        "fx6_abb_menu_present",
+        "fx6_genlock_bnc_present",
         "hardware_live_attachment_authorized",
         "persistent_emmc_writes_authorized",
         "cross_model_flash_authorized",

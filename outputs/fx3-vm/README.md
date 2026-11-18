@@ -2668,3 +2668,44 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 353（Stage 78 — `78/78` Full-Board VM Co-Emulation Stages!）：Wave-68 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` `Setup -> [Area/Date]` 30 时区 / `saylight_saving` 错字 / 24h 内置电池、`[Grid Line Display]` HDMI 透传 vs `[Marker Display]` 零 HDMI 隔离、`[Save/Load Settings]` `CAMSET01..10.DAT` `Slot 1` `EROFS=30` & `libSaveLoadSettings.so` vs `1..3`/`M1..M4` & FX6 `All File`，以及零 `Sync Terminal` / `XLR-H1` MI 热靴互斥 & FX6 零 `GENLOCK` HIL
+
+[`realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_coemulator.py`](realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_coemulator.py)（Schema `phase353_realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_coemulation_v1`）作为 **Stage 78（`78/78` Full-Board VM Co-Emulation Stages!）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase353` / `--skip-stage78` / `--no-include-stage78` 跳过，支持 `--include-stage78`），严格遵循 `os.O_RDONLY` + `<= 4096 B` 受界 `os.pread`、`physical_device_writes == 0`、`emmc_writes_authorized == False`、`cross_model_flash_authorized == False`、`slot1_data_sector_writes == 0`、`emmc_nflasha_write_count == 0` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 12 供体 `O_RDONLY` + 受界 `os.pread` 审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **12 份真实供体**（`6` 份 FX3 四语 `_f` / 基础 / `_g` `.uxc` + `libSaveLoadSettings.so` `18,760 B` + `2` 份 FX6 英文 `.uxc` + `FX3 appFw.so`、`FX3 BK4`、`FX6 appFw.so`），并在无供体 CI 环境（`work_root is None`、`FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1`、`FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__` 或 `--clean-room`）无缝回退至 `CLEAN_ROOM_SYNTHETIC`（`raw_firmware_bytes_leaked == 0`）。
+2. **Sub-Model 78A — `Setup -> [Area/Date] -> [Area/Date/Time Setting]` 30 GMT 时区、`saylight_saving`/`sever` 拼写错字 & 24h 可充 RTC vs FX6 `Clock Set`**：
+   - FX3 `[Area/Date/Time Setting]`（`Not available` 抗 `[Camera Settings Reset]`，仅 `[Initialize]` 还原并重新触发 `37dlg_rec203_initial_setting_controller` 开机向导）：`[Area Setting]` **30** 个 `AREA_GMT_*` 时区（`GMT -11:00..+12:00`，含 **6** 个半小时偏移）；`[Daylight Savings]` `Off` 默认 / `On`（校验 Sony ELF 拼写错字 `convert_setting_daylight_saving_to_saylight_saving`）；`[Date/Time]`（校验 `BKID_APP_setting_auto_sync_sever_date_time` `sever` 错字）；`[Date Format]` **3** 档 `Y-M-D` / `M-D-Y` / `D-M-Y`。
+   - 机身焊接式可充内部 RTC 备用电池（无用户可换 CR2032 槽；关机 `OFF` 插入 `NP-FZ100` 充电 `>= 24 hours`；辟谣 `ilc/2210` 并不存在 `"3 months"` 续航文案）；对比 `ILME-FX6 Ver. 6.01` `Maintenance > Clock Set`（`UTC -12:00..+14:00` `30-min` 步进、`YYMMDD/MMDDYY/DDMMYY` + `12h/24h`、**零**独立 DST 开关且 `summer_time_name_dst` 休眠、耗尽硬锁 `Clock Set` 或报 `Backup Battery End`）。
+3. **Sub-Model 78B — 全管线 `[Grid Line Display]` HDMI 透传 vs 电影专属 `[Marker Display] -> [Guideframe]` 零 HDMI 隔离**：
+   - `[Grid Line Display/Type]`（`Off`/`On`、`Rule of 3rds Grid` 默认 / `Square Grid` / `Diag. + Square Grid`；统一覆盖 Still/Movie/`S&Q`，旧 `BKID_APP_deleted_setting_grid_line_{display,type}_movie` 退役）与 Movie/`S&Q` 专属 `[Marker Display]`（`Center Marker`、`15` 比例 `Aspect Marker`、`Safety Zone`、`[Guideframe]`；`[Focus Magnifier]` 下临时隐藏）**全员抗 Reset（`Not available`，仅 `[Initialize]` 还原）**。
+   - **相反的 HDMI 路由律**：`[Marker Display]`（含 `Guideframe`）100% 仅显示于机内屏（即使 `[HDMI Info. Display] = On` 也输出 **`0` 像素**至 HDMI），而 `[Grid Line Display]` 在 `[HDMI Info. Display] = On` 且 `Rec. Media = On` 时**透传至 HDMI**（仅在 Clean-Feed `HDMI Info. Display = Off`、`Off(HDMI Only)` 或 `RAW Output = On` 下剥离）；对比 FX6 `Monitoring > Marker`（`Center Marker 1..4/Off`，休眠 `GUIDE_FRAME_*_GRID`）。
+4. **Sub-Model 78C — `[Save/Load Settings]` `CAMSET01..10.DAT`（`Slot 1` 锁定、`libSaveLoadSettings.so`、排除清单、`EROFS=30`）vs `Camera Set. Memory` `1..3` / `M1..M4` & FX6 `Project > All File`**：
+   - FX3 `Setup -> [Reset/Save Settings] -> [Save/Load Settings]`（`libSaveLoadSettings.so` `18,760 B`，`MR` 模式下禁用，Load 后自动重启）：存储介质严格锁定 **`Slot 1`**（`Slot 2` 不可用），卡上最多 `10` 个 `CAMSET01..10.DAT` 文件（`%c:%s/SONY/SETTING/%s/CAMSET/%s.DAT`，FX3 `0` `PRO/CAMERA` 命中）+ `60` 个 Cloud 云端槽位；明确排除 `IPTC`、`Copyright Info`、`External Flash Set.`、`Custom WB 1..3`、`Face Memory`、全部 Network/FTP（`FTPSET/%s.DAT` 独立）/Auth/IPsec、`Language` 与 `Area/Date/Time`。
+   - 独立区分 `Shooting -> [Shooting Mode] -> [Camera Set. Memory]`：机身 NVRAM `1..3`（随 `CAMSET*.DAT` 打包）vs 存储卡 `M1..M4`（`CAMPR%02d%c.DAT`，通过 `[Memory/Recall Media]` 可选 `Slot 1` 或 `Slot 2`），以及对比 FX6 `Project > All File`（`Media(B)` 最多 `64` 个 `.ALL` 文件位于 `SONY/PRO/CAMERA`）、`Scene File`（`.SCN`）与 100% 休眠 `Reference File`（`0` ELF 命中）。**Tier-0 `Slot 1` `EROFS=30` 防火墙**：指向只读 Tier-0 `Slot 1` 的 `[Save]`/`[Delete]` fail-closed 返回 `EROFS=30`（`slot1_data_sector_writes == 0`、`emmc_nflasha_write_count == 0`）。
+5. **Sub-Model 78D — 零物理 `Sync Terminal` 辟谣 & `XLR-H1` vs `HVL-LBPC` `[Video Light Mode]` MI 热靴物理互斥 vs FX6 `TC IN/OUT` & 零 `GENLOCK`**：
+   - FX3 **无**物理 PC 闪光同步端子（`FX3 appFw.so` `SYNCHRO_TERMINAL*` 命中数为 `0`；`Flash Sync Spd. Prty.` 休眠、`ilc/2210` `0` 暴露）。
+   - 仅限静态的 MI 热靴 `[External Flash Set.]`（`1/250 s` 最大 X-Sync、`< 250 V` 高压/反极性保护、抗 Reset 且被 `CAMSET*.DAT` 排除）与 4 档 `[Video Light Mode]`（`Power Link` 默认 / `REC Link` / `REC Link&STBY` / `Auto`），受限于 **`XLR-H1`** 独占物理电连接 MI 热靴（手柄上方双接口仅为无电冷靴；PMIC `5V <= 900 mA` 过流护栏）；对比 FX6 3 档 `Video Light Set`（零 `Auto`）、可切换 `TC IN/OUT` BNC，以及 **无**物理 `GENLOCK IN / REF OUT` BNC（`FX6 appFw.so` 中 `107` 处 `GENLOCK` 符号为 PXW-FX9 遗留休眠代码）。
+
+### Phase 353 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 353 Stage 78（78/78 Full-Board VM Co-Emulation Stages!）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_coemulator.py --self-test --json
+
+# 2. 全板 78 阶段（Stage 1..78, 78/78 Full-Board VM Co-Emulation Stages!）统一校验（支持 --include-stage78 与 --skip-phase353 / --skip-stage78 / --no-include-stage78）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage78 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 353 四模式 100 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_coemulator.py -v
+FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+
+

@@ -101,6 +101,7 @@ import realhw_silent_autopixelmap_marker_flexexp_coemulator as p236  # noqa: E40
 import realhw_sq_fixedvar_zebra_peaking_fullformat_coemulator as p232  # noqa: E402
 import realhw_ssboot_wbi2_powerloss_and_slot1_ufu_coemulator as p178  # noqa: E402
 import realhw_steadyshot_active_ciz_4locks_powersave_autotemp_coemulator as p226  # noqa: E402
+import realhw_usb_mode_hdmi_info_protect_network_reset_coemulator as p285  # noqa: E402
 import soft_gpe_and_bt_rom_emulator as p29  # noqa: E402
 import tc_genlock_lens_paint_emulator as p67  # noqa: E402
 import touch_af_ciz_assignable_emulator as p78  # noqa: E402
@@ -219,6 +220,9 @@ class CoEmulationConfig:
     include_phase281_realhw_power_save_monitor_language_volume_delete_hil: bool = True
     include_stage56: bool = True
     stage56_realhw_power_save_monitor_language_volume_delete_hil: bool = True
+    include_phase285_realhw_usb_mode_hdmi_info_protect_network_reset_hil: bool = True
+    include_stage57: bool = True
+    stage57_realhw_usb_mode_hdmi_info_protect_network_reset_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -3642,6 +3646,89 @@ def run_stage56_realhw_power_save_monitor_language_volume_delete_hil(
     }
 
 
+def run_stage57_realhw_usb_mode_hdmi_info_protect_network_reset_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 57 (Phase 285, 57/57): Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-47 USB Connection Mode 4-Mode / Dormant NOUVC Split & Data-Isolated PD HIL, HDMI Info. Display LCD-Blanking vs Clean-Feed & 1080 Log/PPLUT Clamp vs 4K RAW/HDMI-Only Override, and Protect 4-Scopes vs Format Wipe (Slot-1 Dual-Layer SD WP) & Reset Network Set. Auto-Reboot + Post-Reboot Airplane Mode On HIL."""
+    config.validate()
+    rep = p285.run_phase285_realhw_usb_mode_hdmi_info_protect_network_reset_hil(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage57_realhw_usb_mode_hdmi_info_protect_network_reset_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "emmc_corruptions": red["emmc_corruptions"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "fx3_ui_exposes_native_usb_streaming": red[
+            "fx3_ui_exposes_native_usb_streaming"
+        ],
+        "usb_f_uvc_insmod_at_fx3_boot": red["usb_f_uvc_insmod_at_fx3_boot"],
+        "fx3_native_uvc_spoof_events": red["fx3_native_uvc_spoof_events"],
+        "tier0_usb_data_enumeration_violations": red[
+            "tier0_usb_data_enumeration_violations"
+        ],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "hdmi_osd_or_clamp_bypass_events": red["hdmi_osd_or_clamp_bypass_events"],
+        "hdmi_clean_feed_override_violations": red[
+            "hdmi_clean_feed_override_violations"
+        ],
+        "slot1_vault_format_or_delete_events": red[
+            "slot1_vault_format_or_delete_events"
+        ],
+        "slot1_format_hard_locked": red["slot1_format_hard_locked"],
+        "post_reset_airplane_off_rf_leak_events": red[
+            "post_reset_airplane_off_rf_leak_events"
+        ],
+        "passive_tx_bytes_emitted": red["passive_tx_bytes_emitted"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_usb_connection_mode_nouvc_pd_hil": rep[
+            "pillar_a_usb_connection_mode_nouvc_pd_hil"
+        ],
+        "pillar_b_hdmi_info_display_cleanfeed_override_hil": rep[
+            "pillar_b_hdmi_info_display_cleanfeed_override_hil"
+        ],
+        "pillar_c_d_protect_format_network_reset_and_redlines": rep[
+            "pillar_c_d_protect_format_network_reset_and_redlines"
+        ],
+        "phase285_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -3652,7 +3739,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 56-stage (Phase 33..281, 56/56) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 57-stage (Phase 33..285, 57/57) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -3947,6 +4034,15 @@ def run_fx3_vm_coemulation_suite(
             cfg.include_phase281_realhw_power_save_monitor_language_volume_delete_hil
             and cfg.include_stage56
             and cfg.stage56_realhw_power_save_monitor_language_volume_delete_hil
+        )
+        else None
+    )
+    stage57: Optional[Dict[str, object]] = (
+        run_stage57_realhw_usb_mode_hdmi_info_protect_network_reset_hil(cfg, env=env)
+        if (
+            cfg.include_phase285_realhw_usb_mode_hdmi_info_protect_network_reset_hil
+            and cfg.include_stage57
+            and cfg.stage57_realhw_usb_mode_hdmi_info_protect_network_reset_hil
         )
         else None
     )
@@ -5338,6 +5434,49 @@ def run_fx3_vm_coemulation_suite(
         and stage56["appfw_crashes"] == 0
         and stage56["raw_firmware_bytes_leaked"] == 0
     )
+    stage57_ok = True if stage57 is None else (
+        bool(stage57["all_checks_passed"])
+        and stage57["nop_count"] == 0
+        and stage57["guest_code_modification_bytes"] == 0
+        and stage57["cp_mutation_bytes"] == 0
+        and stage57["wbi_mutation_bytes"] == 0
+        and stage57["calibration_mutation_bytes"] == 0
+        and stage57["cnflasha_mutation_bytes"] == 0
+        and bool(stage57["cnflasha_userspace_write_blocked"])
+        and stage57["nvram_persistent_writes"] == 0
+        and stage57["bk4_persistent_nvram_writes"] == 0
+        and stage57["physical_device_writes"] == 0
+        and (not stage57["persistent_emmc_writes_authorized"])
+        and (not stage57["hardware_live_attachment_authorized"])
+        and (not stage57["overall_ready_for_hardware_attach"])
+        and (not stage57["isp_write_authorized"])
+        and stage57["emmc_nflasha_write_count"] == 0
+        and stage57["emmc_mutation_bytes"] == 0
+        and stage57["emmc_corruptions"] == 0
+        and (not stage57["spi_nor_write_authorized"])
+        and stage57["spi_nor_mutation_bytes"] == 0
+        and (not stage57["el3_payload_transmit_authorized"])
+        and stage57["otp_fuse_touches"] == 0
+        and stage57["rpmb_counter_increments"] == 0
+        and (not stage57["fx3_ui_exposes_native_usb_streaming"])
+        and (not stage57["usb_f_uvc_insmod_at_fx3_boot"])
+        and stage57["fx3_native_uvc_spoof_events"] == 0
+        and stage57["tier0_usb_data_enumeration_violations"] == 0
+        and stage57["physical_usb_packets_emitted"] == 0
+        and stage57["hdmi_osd_or_clamp_bypass_events"] == 0
+        and stage57["hdmi_clean_feed_override_violations"] == 0
+        and stage57["slot1_vault_format_or_delete_events"] == 0
+        and bool(stage57["slot1_format_hard_locked"])
+        and stage57["post_reset_airplane_off_rf_leak_events"] == 0
+        and stage57["passive_tx_bytes_emitted"] == 0
+        and stage57["rsv_orphan_count"] == 0
+        and stage57["null_gpio_derefs"] == 0
+        and stage57["mailbox_stalls"] == 0
+        and stage57["stock_cp_fault_count"] == 0
+        and stage57["wf12_00342260_hits"] == 0
+        and stage57["appfw_crashes"] == 0
+        and stage57["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -5397,6 +5536,7 @@ def run_fx3_vm_coemulation_suite(
         and stage54_ok
         and stage55_ok
         and stage56_ok
+        and stage57_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -5592,6 +5732,21 @@ def run_fx3_vm_coemulation_suite(
                 and cfg.include_stage56
                 and cfg.stage56_realhw_power_save_monitor_language_volume_delete_hil
             ),
+            "include_phase285_realhw_usb_mode_hdmi_info_protect_network_reset_hil": (
+                cfg.include_phase285_realhw_usb_mode_hdmi_info_protect_network_reset_hil
+                and cfg.include_stage57
+                and cfg.stage57_realhw_usb_mode_hdmi_info_protect_network_reset_hil
+            ),
+            "include_stage57": (
+                cfg.include_phase285_realhw_usb_mode_hdmi_info_protect_network_reset_hil
+                and cfg.include_stage57
+                and cfg.stage57_realhw_usb_mode_hdmi_info_protect_network_reset_hil
+            ),
+            "stage57_realhw_usb_mode_hdmi_info_protect_network_reset_hil": (
+                cfg.include_phase285_realhw_usb_mode_hdmi_info_protect_network_reset_hil
+                and cfg.include_stage57
+                and cfg.stage57_realhw_usb_mode_hdmi_info_protect_network_reset_hil
+            ),
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -5722,6 +5877,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage55_realhw_focus_mag_datetime_videolight_hdmires_hil"] = stage55
     if stage56 is not None:
         core_payload["stage56_realhw_power_save_monitor_language_volume_delete_hil"] = stage56
+    if stage57 is not None:
+        core_payload["stage57_realhw_usb_mode_hdmi_info_protect_network_reset_hil"] = stage57
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -5733,7 +5890,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 (56/56) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 (57/57) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -6187,6 +6344,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 56 (Phase 281 56/56 Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-46 Power Save by Monitor Reality Split & 9-Deactivation HIL, Language BK_LANG 0x02cf019c 34-vs-29 & Stage-B 4-Language Parity, and Volume Settings 0..15 / 4ch Audio Monitoring 5 Routes / Delete confirm. Cancel first + Slot-1 Vault Guard HIL)",
     )
     parser.add_argument(
+        "--include-stage57",
+        dest="include_stage57",
+        action="store_true",
+        default=True,
+        help="Include Stage 57 (Phase 285 57/57 Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-47 USB Connection Mode 4-Mode vs Dormant NOUVC Split & Data-Isolated PD HIL, HDMI Info. Display LCD-Blanking vs Clean-Feed & 1080 Log/PPLUT Clamp vs 4K RAW/HDMI-Only Override, and Protect 4-Scopes vs Format Wipe Slot-1 SD WP & Reset Network Set. Auto-Reboot + Post-Reboot Airplane Mode On HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage57",
+        "--no-include-stage57",
+        dest="skip_stage57",
+        action="store_true",
+        help="Skip optional Stage 57 (alias for --skip-phase285)",
+    )
+    parser.add_argument(
+        "--skip-phase285",
+        action="store_true",
+        help="Skip optional Stage 57 (Phase 285 57/57 Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-47 USB Connection Mode / HDMI Info. Display / Protect vs Format & Reset Network Set. HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -6259,6 +6435,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     enable_stage54 = bool(args.include_stage54) and (not args.skip_phase274) and (not args.skip_stage54)
     enable_stage55 = bool(args.include_stage55) and (not args.skip_phase278) and (not args.skip_stage55)
     enable_stage56 = bool(args.include_stage56) and (not args.skip_phase281) and (not args.skip_stage56)
+    enable_stage57 = bool(args.include_stage57) and (not args.skip_phase285) and (not args.skip_stage57)
     cfg = CoEmulationConfig(
         bt_mode=args.bt_mode,
         cine_ei_iso=args.cine_ei_iso,
@@ -6336,6 +6513,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase281_realhw_power_save_monitor_language_volume_delete_hil=enable_stage56,
         include_stage56=enable_stage56,
         stage56_realhw_power_save_monitor_language_volume_delete_hil=enable_stage56,
+        include_phase285_realhw_usb_mode_hdmi_info_protect_network_reset_hil=enable_stage57,
+        include_stage57=enable_stage57,
+        stage57_realhw_usb_mode_hdmi_info_protect_network_reset_hil=enable_stage57,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -6401,6 +6581,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s54 = rep.get("stage54_realhw_file_settings_gamma_assist_tcub_hil")
         s55 = rep.get("stage55_realhw_focus_mag_datetime_videolight_hdmires_hil")
         s56 = rep.get("stage56_realhw_power_save_monitor_language_volume_delete_hil")
+        s57 = rep.get("stage57_realhw_usb_mode_hdmi_info_protect_network_reset_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -6908,6 +7089,18 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s56, dict)
             else ""
         )
+        s57_str = (
+            f" | realhw_usb_mode_hdmi_info_protect_network_reset_hil={s57['source_mode']}("
+            f"uvc_ui={int(s57['fx3_ui_exposes_native_usb_streaming'])},"
+            f"uvc_spf={s57['fx3_native_uvc_spoof_events']},"
+            f"usbenum={s57['tier0_usb_data_enumeration_violations']},"
+            f"hdmibyp={s57['hdmi_osd_or_clamp_bypass_events']},"
+            f"s1fmt={s57['slot1_vault_format_or_delete_events']},"
+            f"rfleak={s57['post_reset_airplane_off_rf_leak_events']},"
+            f"emmc_wr={s57['emmc_nflasha_write_count']})"
+            if isinstance(s57, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -6916,7 +7109,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

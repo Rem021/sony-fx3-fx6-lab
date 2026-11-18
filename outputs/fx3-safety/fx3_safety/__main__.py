@@ -197,6 +197,11 @@ from .realhw_sensor_cleaning_ev_comp_focus_mode_playback_rotate_and_124gate_guar
     evaluate_g123_sensor_cleaning_and_ev_comp_guard,
     evaluate_g124_focus_mode_and_playback_rotate_guard,
 )
+from .realhw_lens_comp_af_illuminator_aperture_drive_folder_rating_and_126gate_guard import (
+    evaluate_126gate_preflight,
+    evaluate_g125_lens_comp_and_af_illuminator_guard,
+    evaluate_g126_aperture_drive_and_folder_rating_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -3710,6 +3715,95 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_124.add_argument("--json", action="store_true", help="Emit structured JSON report")
     p_124.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 146. verify-lens-comp-and-af-illuminator-guard
+    p_g125 = sub.add_parser(
+        "verify-lens-comp-and-af-illuminator-guard",
+        aliases=["verify-g125-lens-comp-af-illuminator"],
+        help="Verify Gate G125: [Lens Compensation] (Shading/CA/Distortion Auto/Off vs Dormant Auto: Low, E-Mount/SteadyShot Active Lock, FX6 Technical > Lens) + Movie [AF Transition Speed]/[AF Subj. Shift Sensitivity]/[AF Assist] & [AF Illuminator] Front LED Hardware Reality Split",
+    )
+    p_g125.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g125.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g125.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g125.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g125.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 147. verify-aperture-drive-and-folder-rating-guard
+    p_g126 = sub.add_parser(
+        "verify-aperture-drive-and-folder-rating-guard",
+        aliases=["verify-g126-aperture-drive-folder-rating"],
+        help="Verify Gate G126: Still [Aperture Drive in AF]/[AF w/ Shutter]/[Pre-AF]/[Circ. of Focus Point]/[Focus Area Color] (Initialize-Only Survival vs FX6 Iris) + [File/Folder Settings] & Playback [Rating] Slot-1 Tier-0 Vault EROFS/EOPNOTSUPP Write Firewall",
+    )
+    p_g126.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g126.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g126.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g126.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g126.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 148. verify-126-gates
+    p_126 = sub.add_parser(
+        "verify-126-gates",
+        help="Run Phase 294 Unified 126-Gate Master Safety Preflight Engine (G01..G126)",
+    )
+    p_126.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_126.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_126.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G126 gates can be rehearsed offline",
+    )
+    p_126.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_126.add_argument("--summary", action="store_true", help="Emit concise summary output")
 
     args = parser.parse_args(argv)
 
@@ -7594,6 +7688,156 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_124_gates_verified if args.dry_run_simulated else report.offline_121_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-lens-comp-and-af-illuminator-guard",
+        "verify-g125-lens-comp-af-illuminator",
+    ):
+        verdict, res = evaluate_g125_lens_comp_and_af_illuminator_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_shading_comp": res.lens_comp_af_illuminator_guard["effective_shading_comp"],
+                    "effective_ca_comp": res.lens_comp_af_illuminator_guard["effective_ca_comp"],
+                    "effective_distortion_comp": res.lens_comp_af_illuminator_guard["effective_distortion_comp"],
+                    "af_transition_speed": res.lens_comp_af_illuminator_guard["af_transition_speed"],
+                    "af_subj_shift_sens": res.lens_comp_af_illuminator_guard["af_subj_shift_sens"],
+                    "af_assist_setting": res.lens_comp_af_illuminator_guard["af_assist_setting"],
+                    "fx3_has_built_in_af_illuminator_led": res.lens_comp_af_illuminator_guard["fx3_has_built_in_af_illuminator_led"],
+                    "fx6_has_built_in_af_illuminator_led": res.lens_comp_af_illuminator_guard["fx6_has_built_in_af_illuminator_led"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.lens_comp_af_illuminator_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} lens_comp=(shading={guard['effective_shading_comp']},"
+                f"ca={guard['effective_ca_comp']},dist={guard['effective_distortion_comp']},"
+                f"breath={guard['effective_breathing_comp']}) "
+                f"af=(trans={guard['af_transition_speed']},shift={guard['af_subj_shift_sens']},"
+                f"assist={guard['af_assist_setting']},fx3_led={guard['fx3_has_built_in_af_illuminator_led']},"
+                f"fx6_led={guard['fx6_has_built_in_af_illuminator_led']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-aperture-drive-and-folder-rating-guard",
+        "verify-g126-aperture-drive-folder-rating",
+    ):
+        verdict, res = evaluate_g126_aperture_drive_and_folder_rating_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_aperture_drive_in_af": res.aperture_drive_folder_rating_guard["effective_aperture_drive_in_af"],
+                    "effective_af_w_shutter": res.aperture_drive_folder_rating_guard["effective_af_w_shutter"],
+                    "effective_pre_af": res.aperture_drive_folder_rating_guard["effective_pre_af"],
+                    "effective_circ_of_focus_point": res.aperture_drive_folder_rating_guard["effective_circ_of_focus_point"],
+                    "effective_focus_area_color": res.aperture_drive_folder_rating_guard["effective_focus_area_color"],
+                    "effective_folder_name_form": res.aperture_drive_folder_rating_guard["effective_folder_name_form"],
+                    "slot_1_contains_tier0_vault": res.aperture_drive_folder_rating_guard["slot_1_contains_tier0_vault"],
+                    "slot1_metadata_sector_writes": res.aperture_drive_folder_rating_guard["slot1_metadata_sector_writes"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.aperture_drive_folder_rating_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} focus=(ap={guard['effective_aperture_drive_in_af']},"
+                f"shutter={guard['effective_af_w_shutter']},pre_af={guard['effective_pre_af']},"
+                f"circ={guard['effective_circ_of_focus_point']},color={guard['effective_focus_area_color']}) "
+                f"folder=(form={guard['effective_folder_name_form']},slot1_vault={guard['slot_1_contains_tier0_vault']},"
+                f"s1_writes={guard['slot1_metadata_sector_writes']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-126-gates":
+        report = evaluate_126gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g125_status": report.g125_result["status"],
+                    "g126_status": report.g126_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/126 "
+                f"g125_to_g126_all_passed={report.g125_to_g126_all_passed} "
+                f"all_126_gates_verified={report.all_126_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_126_gates_verified if args.dry_run_simulated else report.offline_123_gates_verified
         return 0 if ok else 1
 
     return 2

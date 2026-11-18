@@ -1959,5 +1959,33 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   python3 -B -m fx3_safety verify-144-gates [--clean-room] [--simulate-bench-dry-run] [--summary] [--json]
 ```
 
+---
+
+## 73. Phase 327 (Task H394, Wave-63, `146/146` Safety Gates!): `[HDMI Output Settings]` 8-Item `Initialize`-Only & `RAW Output` + `Rec. Media = On` `Slot-1` Co-Rec Vault + `5`-State `[De-Squeeze Display]` (`Gate G145`), `[REC Lamp]`/`[Emphasized REC Display]`/`[Remain Shoot Display]`/`[Auto Review]` & Dormant `[Var. Shutter]` vs `[Anti-flicker Shoot.]` + **Wave-42 `[APS-C S35 Shooting]` Reset Errata** (`Gate G146`), and Unified `146`-Gate Master Preflight (`realhw_hdmi_raw_desqueeze_reclamp_varshutter_apsc_and_146gate_guard.py`)
+
+`realhw_hdmi_raw_desqueeze_reclamp_varshutter_apsc_and_146gate_guard.py` (`schema_version = "realhw_146gate_preflight_v1"`) delegates `G01..G144` directly to `evaluate_144gate_preflight()` (preserving `100%` backward compatibility across `verify-58-gates` through `verify-144-gates`) and adds Wave-63 real-hardware safety gates **`G145`** and **`G146`** into the unified **`146`-Gate Master Safety Preflight (`G01..G146` / `run_146_gate_preflight` / `evaluate_146gate_preflight`)**, auto-wired into `verify-milestone-311` / `verify-milestone-295` while hard-locking `EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`, `SPI_NOR_WRITE_AUTHORIZED = False`, `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`, `CROSS_MODEL_FLASH_AUTHORIZED = False`, `HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`, `USB_PACKETS_TRANSMITTED = 0`, `RAW_FIRMWARE_BYTES_LEAKED = 0`, and `overall_ready_for_hardware_attach = False`:
+
+1. **`[HDMI Output Settings]` 8-Item `Initialize`-Only, `RAW Output` `Slot-1` Co-Rec Vault & `5`-State `[De-Squeeze Display]` (`verify_hdmi_raw_co_rec_vault_and_desqueeze_4ratio_guard`, Gate `G145`)**:
+   - Performs a fast `< 0.20s` `os.open(..., os.O_RDONLY)` + targeted `os.pread` local donor audit across `11` Wave-63 donor artifacts (`FX3 appFw.so` `79,015,712 B` 20 slices, 4-language `_f.uxc`, `string_english.uxc`, `string_english_g.uxc`, `FX3-CX95900_ALLLANG-Backup.bin`, `FX6 appFw.so` `50,520,424 B` 12 slices, and `FX6 string_english.uxc` / `string_english_2.uxc`, `raw_firmware_bytes_leaked == 0`) with explicit `work_root is None` clean-room fallback for donorless Ubuntu CI.
+   - Enforces `Setup -> [External Output] -> [HDMI Output Settings]` exact `8` `Initialize`-only items (`[Rec. Media dur HDMI Output]` `On`/`Off(HDMI Only)` locked `On` in `S&Q`, `[Output Resolution]` forced `1080p` under Log/`PPLUT1..4` when `Rec. Media = On` & `RAW = Off`, `[4K Output Set.(HDMI Only)]` `10-bit`-only `59.94p..24.00p` with `24.00p` reboot gate & dormant `24.00p 8bit` `_f 0x748a -> EOPNOTSUPP=95`, `[RAW Output]` `4264x2408` 16-bit linear requiring `Movie` + `Log != Off`, `[RAW Output Setting]`, `[Time Code Output]`, `[REC Control]` requiring `Time Code Output = On`, `[4ch Audio Output]` `CH1/CH2` or `CH3/CH4`), rejects removed Ver. `2.00..7.02` `[Color Gamut for RAW Output]` (`_f 0x6bdc -> EOPNOTSUPP=95`), enforces `EROFS=30` on `Slot-1` Tier-0 Vault under `RAW Output = On` + `Rec. Media = On` internal XAVC+Proxy co-recording vs zero-card-write bypass when `Off(HDMI Only)`, models `HDMI Info. Display = On` FX3 built-in LCD blanking, and rejects `ILME-FX6` cross-model features (`12G-SDI RAW`, `Parallel Rec`, SDI De-Squeeze).
+   - Enforces `Setup -> [Display Option] -> [De-Squeeze Display]` Ver. `7.00/7.02` `5`-state `Initialize`-only set (`Off`, `1.3x`, `1.5x`, `1.6x` [executing `1.65x` `VAL_DE_SQUEEZE_DISP_1_65X`], `2.0x`), rejecting absent `1.8x` (`EOPNOTSUPP=95`), enforcing `4` forced lockouts (`Manual Focus`, `Wide`, `SteadyShot = Off`, `Face Priority in Multi Metering = Off`), `6` auto-bypass conditions, coexistence with `Focus Magnifier`/`Bright Monitoring`, and zero internal file baking (`desqueeze_baked_into_file == False`) across `576` matrix states.
+2. **`[REC Lamp]`, `[Emphasized REC Display]`, `[Remain Shoot Display]`, `[Auto Review]`, Dormant `[Var. Shutter]` vs `[Anti-flicker Shoot.]`, and Wave-42 `[APS-C S35 Shooting]` Reset Errata (`verify_reclamp_emph_remain_autoreview_and_dormant_varshutter_apsc_guard`, Gate `G146`)**:
+   - Enforces `[REC Lamp]` (`Setup -> [Setup Option]`, `Initialize`-only, 3 physical lamps via `All On` / `Only Front Off` / `All Off`, independent of `[Silent Mode] = On`, rejecting dormant `[Tally Light]` & `REC_LAMP_LIGHT_UP_ONLY_ONE -> EOPNOTSUPP=95` and FX6 `Front/Rear/G/Y Tally`), resettable `[Emphasized REC Display]` (Movie/`S&Q` red border, Clean HDMI suppressed), active `Initialize`-only `[Remain Shoot Display]` (`Not Displayed`/`Always Display`/`Shoot-Only Display`), and Still-only `Initialize`-only `[Auto Review]` (`Off`/`2 Sec`/`5 Sec`/`10 Sec`, disabled in `Interval Shoot`).
+   - Rejects dormant `[Var. Shutter]` (`high_res_ss` `_f 0x6831`, `Anti-flicker Set.` `0x68e7`, `Anti-flicker Tv Scan` `_g 0x60a8 -> EOPNOTSUPP=95`) and FX6 `ECS` while gating resettable Still mechanical-shutter-only `[Anti-flicker Shoot.]` (`100/120Hz`, disabled under Movie/`S&Q`/BULB/Electronic Shutter/`[Silent Mode] = On`).
+   - Enforces **Wave-42 Reset Errata** on `[APS-C S35 Shooting]` (`Auto`/`On`/`Off`): **`Initialize`-only / NOT resettable by `[Camera Settings Reset]`**, clamping ALL 4K/DCI 4K/`S&Q` 4K/`4K Output Set.(HDMI Only)`/`RAW Output` formats to `HD 1920x1080 <= 120p` (blocking `200/240fps` `S&Q`) and Still `L: 12M -> M: 5.1M (2768x1848)` across `648` matrix states.
+3. **Unified `146`-Gate Master Preflight (`evaluate_146gate_preflight` / `verify-146-gates`)**:
+   - **Offline default mode**: `143/146` gates pass (`VERIFIED_143_OF_146_AWAITING_PHYSICAL_TIER0`, `overall_ready_for_hardware_attach = False`).
+   - **`--simulate-bench-dry-run` rehearsal mode**: `146/146` simulation gates pass (`VERIFIED_ALL_146_GATES_DRY_RUN_SIMULATED_BACKUP`, `all_146_gates_verified = True`, `dry_run_rehearsal_only = True`) while all hardware write/live-attach redlines remain `False`, `cross_model_flash_authorized == False`, and `usb_packets_transmitted == 0`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-hdmi-raw-desqueeze-guard [--clean-room] [--summary] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-reclamp-varshutter-apsc-guard [--clean-room] [--summary] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-146-gates [--clean-room] [--simulate-bench-dry-run] [--summary] [--json]
+```
+
+
 
 

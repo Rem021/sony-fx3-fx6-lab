@@ -1970,3 +1970,39 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest disco
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 298 Stage 60（60/60 VM 阶段里程碑！）— 真实硬件 Wave-50：`[Focus Area]` 14 区 Still-vs-Movie 追踪与 `[AF Area Registration]`、机身 `W/T` `[Zoom Lever Speed]` vs 无摇杆 `XLR-H1`、`[ISO Range Limit]` / Still-Only `[ISO AUTO Min. SS]` vs `Cine EI` 与 `[Flash Mode]` 机械快门门控 vs `[Video Light Mode]` `PMIC 5V <= 900 mA` 协同仿真台架
+
+[`realhw_focus_area_zoom_lever_iso_minss_flash_coemulator.py`](realhw_focus_area_zoom_lever_iso_minss_flash_coemulator.py) 作为 **Phase 298 Stage 60（`60/60` 里程碑，Schema `realhw_focus_area_zoom_lever_iso_minss_flash_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase298_realhw_focus_area_zoom_lever_iso_minss_flash_hil=True` / `include_stage60=True` / `stage60_realhw_focus_area_zoom_lever_iso_minss_flash_hil=True`，支持显式 `--include-stage60` 以及 `--skip-phase298` / `--skip-stage60` / `--no-include-stage60` 跳过），在严格锁定 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`emmc_nflasha_write_count == 0`、`emmc_corruptions == 0`、`nop_count == 0`、`guest_code_modification_bytes == 0`、`physical_usb_packets_emitted == 0`、`still_only_tracking_exposed_in_movie_events == 0`、`af_area_reg_lock_op_parts_conflict_events == 0`、`xlr_h1_phantom_zoom_or_hold_events == 0`、`cine_ei_iso_range_or_minss_bypass_events == 0`、`flash_non_mech_or_movie_bypass_events == 0`、`mishoe_pmic_5v_900ma_overcurrent_events == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大闭环：
+
+1. **高速双模 11 供体 `O_RDONLY` 字节与 SHA-256 精确锚定审计（`LOCAL_DONOR_O_RDONLY` `< 0.2s` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 通过受界 `os.O_RDONLY`（`<= 4096 B`）核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **11 份真实供体**：FX3 `string_*_f.uxc` 4 语种全集（`en_f=373,820 B`、`sc_f=322,652 B`、`tc_f=324,148 B`、`ja_f=447,840 B`）、FX3 `string_english.uxc`（`165,740 B`）、FX3 `string_english_g.uxc`（`69,600 B`）、FX6 `string_english.uxc`（`118,208 B`）与 `string_english_2.uxc`（`118,676 B`），以及 `FX3 appFw.so`（`79,015,712 B`）、`FX3 BK4`（`2,229,740 B`）与 `FX6 appFw.so`（`50,520,424 B`）；支持 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 与 CLI `--clean-room` 切换至确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 60A — `[Focus Area]` 14 区层次（7 个通用 vs 7 个 Still-Only `Tracking:`）、`[AF Area Registration]`（强制 `Lock Operation Parts = Off` 耦合）与 `[Focus Area Limit]`（`>= 2` 下限）**：
+   - 精确建模 `ILME-FX3 Ver. 7.02` 跨越 Still + Movie + `S&Q` 的 7 项通用对焦区域（`Wide`、`Zone`、`Center Fix`、`Spot: S/M/L`、`Expand Spot`）与 **仅限静态照片（Still-only）** 的 7 项 `Tracking:` 区域（`Tracking: Wide / Zone / Center Fix / Spot S/M/L / Expand Spot`）——在 Movie/`S&Q` 中请求任意 `Tracking:` 区域会被硬件门控拦截并返回 `EOPNOTSUPP = 95`（Movie/`S&Q` 主体追踪使用 `Touch Tracking`），对照 `ILME-FX6` 仅暴露电影机精简树（`Wide / Zone / Flexible Spot`）。
+   - 建模 `[AF Area Registration]`（`Off / On`，跨 `Camera Settings Reset` 存活，在 Movie/`S&Q`/`iAuto` 禁用）开启时强制将 `[Lock Operation Parts]` 解除为 `Off`，并建模 `[Focus Area Limit]` 至少保留 `>= 2` 项启用区域（少于 2 项返回 `EINVAL = 22`）。
+3. **Sub-Model 60B — 机身 `W/T` `[Zoom Lever Speed]`（`1st=3 / 2nd=8` STBY/REC）、`[Custom Key Z. Speed]`、`[Remote Zoom Speed]`（`Variable / Fixed 1..8`）与无摇杆 `XLR-H1` 实证辟谣**：
+   - 精确建模与辟谣：`ILME-FX3` 的 `XLR-H1` 手柄仅为音频接口手柄，**无任何变焦摇杆、无录制键、无 `ZOOM HOLD` 开关**（在 FX3 上注入任意手柄变焦或手柄 Hold 指令均被拦截并计零越权、`EOPNOTSUPP = 95`），对照 `ILME-FX6` Smart Handle 暴露 `Handle Zoom`（`Off / Low / High / Variable 1..8`）+ `Handle HOLD Switch`；`0..99` 为 `Zoom Position Display` 刻度而非速度档位。
+   - 建模 FX3 机身 `W/T` 两段式比例翘板 `[Zoom Lever Speed]`（`1st Zoom Spd.` `1..8` 默认 `3`、`2nd Zoom Spd.` `1..8` 默认 `8`，独立 `STBY` & `REC` 寄存器）、`[Custom Key Z. Speed]`（`1..8` 默认 `3`，STBY/REC）与 `[Remote Zoom Speed]`（`Speed Type: Variable / Fixed`、`Fixed Speed 1..8` STBY/REC），以及 `Zoom Range` 在 `RAW` 与 `119.88p`/`100p` 下的非光学变焦互斥锁定。
+4. **Sub-Model 60C & Redlines — `[ISO Range Limit]` & Still-Only `[ISO AUTO Min. SS]` vs `Cine EI` Base ISO `800 / 12800` 硬锁 + `[Flash Mode]` 机械快门静态门控 vs `[Video Light Mode]` `PMIC 5V <= 900 mA` 保护**：
+   - 建模 `[ISO Range Limit]`（`Min/Max` 限幅同时钳制手动 ISO 与 `ISO AUTO`）以及 **Still-only** `[ISO AUTO Min. SS]`（`Slower / Slow / Standard / Fast / Faster` 或 `1/8000..30"`，仅在 `P/A` 或 `M + ISO AUTO` 生效，Movie/`S&Q` 拒绝 `EOPNOTSUPP = 95`），二者在 Movie `Cine EI` / `Cine EI Quick` 下均被 Base ISO `800 / 12800` 硬锁并拒绝写入（`EOPNOTSUPP = 95`）。
+   - 建模 `[Flash Mode]`（`Flash Off / Autoflash / Fill-flash [默认] / Slow Sync. / Rear Sync.`，`1/250 s` 全画幅闪光同步）**严格门控至 `EXPOSURE_MODE_STILL` + `Mechanical Shutter` + `Silent Mode = Off`**（Movie/`S&Q`、电子快门或静音模式均返回 `EOPNOTSUPP = 95`），而 `[Video Light Mode]`（`Power Link` 默认 / `REC Link` / `REC Link & STBY` / `Auto`）贯穿 Still + Movie + `S&Q` 并受 `MI-Shoe PMIC 5V <= 900 mA` 电流限幅保护，同步锁定全套 16 项硬件红线（含 `emmc_nflasha_write_count == 0`、`raw_firmware_bytes_leaked == 0`）。
+
+### Phase 298 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 298 Stage 60（60/60 里程碑！）自检
+PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_focus_area_zoom_lever_iso_minss_flash_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_focus_area_zoom_lever_iso_minss_flash_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_focus_area_zoom_lever_iso_minss_flash_coemulator.py --self-test --json
+
+# 2. 全板 60 阶段（Stage 1..60, 60/60 里程碑！）统一校验（支持 --include-stage60 与 --skip-phase298 / --skip-stage60 / --no-include-stage60）
+PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage60 --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 298 三模式 >=76 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_focus_area_zoom_lever_iso_minss_flash_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_focus_area_zoom_lever_iso_minss_flash_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_focus_area_zoom_lever_iso_minss_flash_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+

@@ -202,6 +202,11 @@ from .realhw_lens_comp_af_illuminator_aperture_drive_folder_rating_and_126gate_g
     evaluate_g125_lens_comp_and_af_illuminator_guard,
     evaluate_g126_aperture_drive_and_folder_rating_guard,
 )
+from .realhw_switch_vh_af_stdadj_bracket_tcub_copy_slot_and_128gate_guard import (
+    evaluate_128gate_preflight,
+    evaluate_g127_switch_vh_af_and_exposure_stdadj_guard,
+    evaluate_g128_tcub_format_and_playback_copy_slot_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -3804,6 +3809,95 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_126.add_argument("--json", action="store_true", help="Emit structured JSON report")
     p_126.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 149. verify-switch-vh-af-and-exposure-stdadj-guard
+    p_g127 = sub.add_parser(
+        "verify-switch-vh-af-and-exposure-stdadj-guard",
+        aliases=["verify-g127-switch-vh-af-exposure-stdadj"],
+        help="Verify Gate G127: [Switch V/H AF Area] (Still AF-C 0/90/270 deg vs INVALID pitch & 8 lockouts) + [Focus Area Limit] (14 checkboxes vs dormant XL/XS/Custom1..3, >=2 min) + [Exposure Std. Adjust] (5 metering modes @ 1/6 EV, Initialize-only) & Still [Bracket Settings]",
+    )
+    p_g127.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g127.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g127.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g127.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g127.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 150. verify-tcub-format-and-playback-copy-slot-guard
+    p_g128 = sub.add_parser(
+        "verify-tcub-format-and-playback-copy-slot-guard",
+        aliases=["verify-g128-tcub-playback-copy-slot"],
+        help="Verify Gate G128: [TC/UB] 6-item & [TC/UB Disp. Setting] (Initialize-only), [Time Code Format] (NTSC 23.98p/24p NDF lock & PAL hide), & Playback [Copy] Directional Asymmetry Firewall (Slot 2 -> Slot 1 Tier-0 Vault) + [Slide Show] Sleep Bypass",
+    )
+    p_g128.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g128.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g128.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g128.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g128.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 151. verify-128-gates
+    p_128 = sub.add_parser(
+        "verify-128-gates",
+        help="Run Phase 297 Milestone Unified 128-Gate Master Safety Preflight Engine (G01..G128)",
+    )
+    p_128.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_128.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_128.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G128 gates can be rehearsed offline",
+    )
+    p_128.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_128.add_argument("--summary", action="store_true", help="Emit concise summary output")
 
     args = parser.parse_args(argv)
 
@@ -7838,6 +7932,152 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_126_gates_verified if args.dry_run_simulated else report.offline_123_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-switch-vh-af-and-exposure-stdadj-guard",
+        "verify-g127-switch-vh-af-exposure-stdadj",
+    ):
+        verdict, res = evaluate_g127_switch_vh_af_and_exposure_stdadj_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_switch_vh_af_area": res.switch_vh_af_exposure_stdadj_guard["effective_switch_vh_af_area"],
+                    "enabled_focus_area_limit_count": res.switch_vh_af_exposure_stdadj_guard["enabled_focus_area_limit_count"],
+                    "exposure_std_adjust_metering_mode_count": res.switch_vh_af_exposure_stdadj_guard["exposure_std_adjust_metering_mode_count"],
+                    "exposure_std_adjust_survived_cam_reset": res.switch_vh_af_exposure_stdadj_guard["exposure_std_adjust_survived_cam_reset"],
+                    "effective_bracket_selftimer": res.switch_vh_af_exposure_stdadj_guard["effective_bracket_selftimer"],
+                    "effective_bracket_order": res.switch_vh_af_exposure_stdadj_guard["effective_bracket_order"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.switch_vh_af_exposure_stdadj_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} vh={guard['effective_switch_vh_af_area']} "
+                f"limit_n={guard['enabled_focus_area_limit_count']} "
+                f"std_modes={guard['exposure_std_adjust_metering_mode_count']} "
+                f"std_survived={guard['exposure_std_adjust_survived_cam_reset']} "
+                f"bracket=({guard['effective_bracket_selftimer']},{guard['effective_bracket_order']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-tcub-format-and-playback-copy-slot-guard",
+        "verify-g128-tcub-playback-copy-slot",
+    ):
+        verdict, res = evaluate_g128_tcub_format_and_playback_copy_slot_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_tc_format": res.tcub_playback_copy_slot_guard["effective_tc_format"],
+                    "effective_tcub_disp_setting": res.tcub_playback_copy_slot_guard["effective_tcub_disp_setting"],
+                    "tcub_6_items_survived_cam_reset": res.tcub_playback_copy_slot_guard["tcub_6_items_survived_cam_reset"],
+                    "copy_direction_label": res.tcub_playback_copy_slot_guard["copy_direction_label"],
+                    "slot_1_contains_tier0_vault": res.tcub_playback_copy_slot_guard["slot_1_contains_tier0_vault"],
+                    "slot1_data_sector_writes": res.tcub_playback_copy_slot_guard["slot1_data_sector_writes"],
+                    "effective_slide_show_interval": res.tcub_playback_copy_slot_guard["effective_slide_show_interval"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.tcub_playback_copy_slot_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} tcub=(fmt={guard['effective_tc_format']},"
+                f"disp={guard['effective_tcub_disp_setting']},survived={guard['tcub_6_items_survived_cam_reset']}) "
+                f"copy=(dir={guard['copy_direction_label']},slot1_vault={guard['slot_1_contains_tier0_vault']},"
+                f"s1_writes={guard['slot1_data_sector_writes']}) "
+                f"slideshow=(int={guard['effective_slide_show_interval']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-128-gates":
+        report = evaluate_128gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g127_status": report.g127_result["status"],
+                    "g128_status": report.g128_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/128 "
+                f"g127_to_g128_all_passed={report.g127_to_g128_all_passed} "
+                f"all_128_gates_verified={report.all_128_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_128_gates_verified if args.dry_run_simulated else report.offline_125_gates_verified
         return 0 if ok else 1
 
     return 2

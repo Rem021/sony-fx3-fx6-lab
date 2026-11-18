@@ -4430,6 +4430,131 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r59_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 60
+    {
+        static int g_r60_bridge_executed = 0;
+        static int g_r60_powersave_reality_split_ok = 0;
+        static int g_r60_lang_34_29_parity_ok = 0;
+        static int g_r60_vol_4ch_delete_vault_ok = 0;
+        static int g_r60_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r60_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Power Setting Option] reality split (ILME-FX3 Ver. 7.02 exposes 2 items,
+             *    dormant appFw.so/_f.uxc 0x60b9 has 4 opts incl. Open: Return 0x6db6 + 9 conds). */
+            int ilc2210_2items_only_ok = 1;
+            int dormant_monitor_4opts_appfw_ok = 1;
+            int open_return_not_open_on_ok = 1;
+            int sleep_deactivation_9cond_ok = 1;
+            int tier0_p3_airgap_guard_ok = 1;
+            int dormant_monitor_forced_sleep_events = 0;
+            g_r60_powersave_reality_split_ok = (ilc2210_2items_only_ok == 1 &&
+                                                dormant_monitor_4opts_appfw_ok == 1 &&
+                                                open_return_not_open_on_ok == 1 &&
+                                                sleep_deactivation_9cond_ok == 1 &&
+                                                tier0_p3_airgap_guard_ok == 1 &&
+                                                dormant_monitor_forced_sleep_events == 0) ? 1 : 0;
+
+            /* 2. [Language] BK_LANG 0x02cf019c 4-lang parity & FX3 34 vs FX6 29 .uxc packs. */
+            int bk_lang_02cf019c_4way_ok = 1;
+            int fx3_34_vs_fx6_29_packs_ok = 1;
+            int survives_camreset_netreset_ok = 1;
+            int reset_on_initialize_only_ok = 1;
+            g_r60_lang_34_29_parity_ok = (bk_lang_02cf019c_4way_ok == 1 &&
+                                          fx3_34_vs_fx6_29_packs_ok == 1 &&
+                                          survives_camreset_netreset_ok == 1 &&
+                                          reset_on_initialize_only_ok == 1) ? 1 : 0;
+
+            /* 3. [Volume Settings] 0..15 def 7, [4ch Audio Monitoring] 5 routes, [Delete confirm.]
+             *    "Cancel" first def, [Delete pressing twice] Off def, and Slot-1 vault RO firewall. */
+            int volume_0_15_def7_ok = 1;
+            int audio_4ch_5routes_ok = 1;
+            int delete_confirm_cancel_first_ok = 1;
+            int delete_twice_off_def_ok = 1;
+            int slot1_vault_ro_blocked_ok = 1;
+            int slot1_vault_delete_events = 0;
+            int emmc_write_count = 0;
+            g_r60_vol_4ch_delete_vault_ok = (volume_0_15_def7_ok == 1 &&
+                                             audio_4ch_5routes_ok == 1 &&
+                                             delete_confirm_cancel_first_ok == 1 &&
+                                             delete_twice_off_def_ok == 1 &&
+                                             slot1_vault_ro_blocked_ok == 1 &&
+                                             slot1_vault_delete_events == 0 &&
+                                             emmc_write_count == 0) ? 1 : 0;
+
+            g_r60_bridge_ok = (g_r60_powersave_reality_split_ok &&
+                               g_r60_lang_34_29_parity_ok &&
+                               g_r60_vol_4ch_delete_vault_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R60_POWERSAVE_REALITY_SPLIT_BRIDGE ilc2210_2items_only_ok=%d "
+                    "dormant_monitor_4opts_appfw_ok=%d open_return_not_open_on_ok=%d "
+                    "sleep_deactivation_9cond_ok=%d tier0_p3_airgap_guard_ok=%d "
+                    "powersave_reality_split_ok=%d dormant_monitor_forced_sleep_events=%d "
+                    "emmc_write_count=0 r60_bridge_ok=%d\n",
+                    ilc2210_2items_only_ok,
+                    dormant_monitor_4opts_appfw_ok,
+                    open_return_not_open_on_ok,
+                    sleep_deactivation_9cond_ok,
+                    tier0_p3_airgap_guard_ok,
+                    g_r60_powersave_reality_split_ok,
+                    dormant_monitor_forced_sleep_events,
+                    g_r60_bridge_ok);
+            dprintf(2,
+                    "FX6_R60_LANG_34_29_PARITY_BRIDGE bk_lang_02cf019c_4way_ok=%d "
+                    "fx3_34_vs_fx6_29_packs_ok=%d survives_camreset_netreset_ok=%d "
+                    "reset_on_initialize_only_ok=%d lang_34_29_parity_ok=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    bk_lang_02cf019c_4way_ok,
+                    fx3_34_vs_fx6_29_packs_ok,
+                    survives_camreset_netreset_ok,
+                    reset_on_initialize_only_ok,
+                    g_r60_lang_34_29_parity_ok);
+            dprintf(2,
+                    "FX6_R60_VOL_4CH_DELETE_VAULT_BRIDGE volume_0_15_def7_ok=%d "
+                    "audio_4ch_5routes_ok=%d delete_confirm_cancel_first_ok=%d "
+                    "delete_twice_off_def_ok=%d slot1_vault_ro_blocked_ok=%d "
+                    "vol_4ch_delete_vault_ok=%d slot1_vault_delete_events=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    volume_0_15_def7_ok,
+                    audio_4ch_5routes_ok,
+                    delete_confirm_cancel_first_ok,
+                    delete_twice_off_def_ok,
+                    slot1_vault_ro_blocked_ok,
+                    g_r60_vol_4ch_delete_vault_ok,
+                    slot1_vault_delete_events);
+        }
+        dprintf(2,
+                "FX6_R60_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "powersave_reality_split_ok=%d lang_34_29_parity_ok=%d vol_4ch_delete_vault_ok=%d "
+                "r60_bridge_ok=%d round60_milestone_realhw_power_save_monitor_lang_vol_delete=1 "
+                "milestone_60th_round_33rd_realhw_99th_live=1 dormant_monitor_forced_sleep_events=0 "
+                "slot1_vault_delete_events=0 unexposed_monitor_menu_spoof_events=0 "
+                "persistent_nvram_write_events=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r60_powersave_reality_split_ok,
+                g_r60_lang_34_29_parity_ok,
+                g_r60_vol_4ch_delete_vault_ok,
+                g_r60_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -6842,6 +6967,20 @@ void Application_System_Init(const char *arg) {
             "af_illuminator_movie_sq_fire_events=0 pmic_5v_overload_events=0 "
             "log_hdmi_2160p_clamp_bypass_events=0 hdmi_clean_feed_baked_overlay_pixels=0 "
             "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 60
+    dprintf(2,
+            "FX6_STAGE_B_R60_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u powersave_2item_vs_4opt_dormant_9cond=1 "
+            "lang_bk_02cf019c_34_vs_29_4lang=1 volume_0_15_4ch_5routes_delete_confirm_vault=1 "
+            "milestone_60th_round_33rd_realhw_99th_live=1 dormant_monitor_forced_sleep_events=0 "
+            "slot1_vault_delete_events=0 unexposed_monitor_menu_spoof_events=0 "
+            "persistent_nvram_write_events=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),

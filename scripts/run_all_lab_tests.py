@@ -26,6 +26,7 @@ import sys
 sys.dont_write_bytecode = True
 
 import argparse
+import concurrent.futures
 import json
 import os
 import re
@@ -352,27 +353,60 @@ def run_all_lab_verifications(
     *,
     clean_only: bool = False,
     stream_progress: bool = False,
+    jobs: int = 1,
 ) -> UnifiedLabRunReport:
-    """Run all five lab unittest suites, BYOF manifest check, and clean-room binary/pyc hygiene audit."""
+    """Run all seven lab unittest suites, BYOF manifest check, and clean-room binary/pyc hygiene audit."""
     overall_t0 = time.monotonic()
     suite_results: List[SuiteExecutionResult] = []
+    effective_jobs = max(1, min(len(LAB_SUITES), int(jobs)))
 
     if not clean_only:
-        for idx, spec in enumerate(LAB_SUITES, start=1):
+        if effective_jobs <= 1:
+            for idx, spec in enumerate(LAB_SUITES, start=1):
+                if stream_progress:
+                    sys.stdout.write(f"[{idx}/{len(LAB_SUITES)}] Running {spec.display_name} ...\n")
+                    sys.stdout.flush()
+                res = run_single_suite(spec, repo_root=repo_root)
+                suite_results.append(res)
+                if stream_progress:
+                    status_str = "PASS" if res.passed else "FAIL"
+                    sys.stdout.write(
+                        f"    -> {status_str}: {res.tests_ran} tests (skipped={res.tests_skipped}) "
+                        f"in {res.elapsed_seconds:.2f}s ({res.summary_line})\n"
+                    )
+                    if not res.passed and res.failure_output:
+                        sys.stdout.write(f"    --- Failure output ({res.display_name}) ---\n{res.failure_output}\n")
+                    sys.stdout.flush()
+        else:
             if stream_progress:
-                sys.stdout.write(f"[{idx}/{len(LAB_SUITES)}] Running {spec.display_name} ...\n")
-                sys.stdout.flush()
-            res = run_single_suite(spec, repo_root=repo_root)
-            suite_results.append(res)
-            if stream_progress:
-                status_str = "PASS" if res.passed else "FAIL"
                 sys.stdout.write(
-                    f"    -> {status_str}: {res.tests_ran} tests (skipped={res.tests_skipped}) "
-                    f"in {res.elapsed_seconds:.2f}s ({res.summary_line})\n"
+                    f"[parallel] Launching {len(LAB_SUITES)} suites across {effective_jobs} worker processes ...\n"
                 )
-                if not res.passed and res.failure_output:
-                    sys.stdout.write(f"    --- Failure output ({res.display_name}) ---\n{res.failure_output}\n")
                 sys.stdout.flush()
+            ordered_results: Dict[int, SuiteExecutionResult] = {}
+            with concurrent.futures.ThreadPoolExecutor(max_workers=effective_jobs) as pool:
+                future_to_idx = {
+                    pool.submit(run_single_suite, spec, repo_root): idx
+                    for idx, spec in enumerate(LAB_SUITES, start=1)
+                }
+                for fut in concurrent.futures.as_completed(future_to_idx):
+                    idx = future_to_idx[fut]
+                    spec = LAB_SUITES[idx - 1]
+                    res = fut.result()
+                    ordered_results[idx] = res
+                    if stream_progress:
+                        status_str = "PASS" if res.passed else "FAIL"
+                        sys.stdout.write(
+                            f"[{idx}/{len(LAB_SUITES)}] {spec.display_name} -> {status_str}: "
+                            f"{res.tests_ran} tests (skipped={res.tests_skipped}) "
+                            f"in {res.elapsed_seconds:.2f}s ({res.summary_line})\n"
+                        )
+                        if not res.passed and res.failure_output:
+                            sys.stdout.write(
+                                f"    --- Failure output ({res.display_name}) ---\n{res.failure_output}\n"
+                            )
+                        sys.stdout.flush()
+            suite_results = [ordered_results[idx] for idx in range(1, len(LAB_SUITES) + 1)]
 
         byof_summary = run_byof_manifest_audit(repo_root=repo_root)
         if stream_progress:
@@ -427,6 +461,18 @@ def run_all_lab_verifications(
     )
 
 
+def _resolve_default_jobs() -> int:
+    raw = os.environ.get("FX3_LAB_TEST_JOBS", "").strip()
+    if raw:
+        try:
+            val = int(raw)
+            if val > 0:
+                return min(len(LAB_SUITES), val)
+        except ValueError:
+            pass
+    return 1
+
+
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="run_all_lab_tests.py",
@@ -443,12 +489,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         action="store_true",
         help="Run only the tracked-tree clean-room binary/pyc hygiene audit",
     )
+    parser.add_argument(
+        "-j",
+        "--jobs",
+        type=int,
+        default=_resolve_default_jobs(),
+        help="Number of independent unittest suites to run concurrently (0 = auto CPU count)",
+    )
     args = parser.parse_args(argv)
+    resolved_jobs = (
+        min(len(LAB_SUITES), max(1, os.cpu_count() or 1))
+        if args.jobs == 0
+        else max(1, min(len(LAB_SUITES), args.jobs))
+    )
 
     rep = run_all_lab_verifications(
         repo_root=REPO_ROOT,
         clean_only=args.clean_only,
         stream_progress=not args.emit_json,
+        jobs=resolved_jobs,
     )
 
     if args.emit_json:

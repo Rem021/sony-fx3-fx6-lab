@@ -2006,3 +2006,40 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest disco
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 301 Stage 61（61/61 VM 阶段里程碑！）— 真实硬件 Wave-51：`[XAVC S-I DCI 4K]` + `24.00p` 重启隔离与 Slot-1 Tier-0 Vault 防护、Still `[Aspect Ratio]` vs Movie/S&Q 格式锁定、`[Reg. Custom Shoot Set]` 11 项保持复选框与 `/SONY/SETTING/%s/` `M1..M4`/`CAMSET` 路径隔离，及 `[Photo Capture]` DCI 4K 锁定与 Slot-1 Vault 阻断协同仿真台架
+
+[`realhw_dci4k_aspect_custom_hold_camset_photo_capture_coemulator.py`](realhw_dci4k_aspect_custom_hold_camset_photo_capture_coemulator.py) 作为 **Phase 301 Stage 61（`61/61` 里程碑，Schema `realhw_dci4k_aspect_custom_hold_camset_photo_capture_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase301_realhw_dci4k_aspect_custom_hold_camset_photo_capture_hil=True` / `include_stage61=True` / `stage61_realhw_dci4k_aspect_custom_hold_camset_photo_capture_hil=True`，支持显式 `--include-stage61` 以及 `--skip-phase301` / `--skip-stage61` / `--no-include-stage61` 跳过），在严格锁定 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`emmc_nflasha_write_count == 0`、`emmc_corruptions == 0`、`nop_count == 0`、`guest_code_modification_bytes == 0`、`physical_usb_packets_emitted == 0`、`dci4k_120p_or_longgop_bypass_events == 0`、`reboot_24_00p_slot1_vault_reinit_events == 0`、`movie_still_aspect_override_events == 0`、`custom_hold_invalid_or_cineei_bypass_events == 0`、**`fx3_pro_camera_path_exposed == False`**、`fx6_cross_model_camset_import_events == 0`、`slot1_vault_camset_or_campr_mutation_bytes == 0`、`dci4k_photo_capture_bypass_events == 0`、`slot1_vault_photo_capture_mutation_bytes == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大闭环：
+
+1. **高速双模 11 供体 `O_RDONLY` 字节与 SHA-256 精确锚定审计（`LOCAL_DONOR_O_RDONLY` `< 0.05s` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 通过受界 `os.O_RDONLY`（`<= 4096 B`）核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **11 份真实供体**：FX3 `string_*_f.uxc` 4 语种全集（`en_f=373,820 B`、`sc_f=322,652 B`、`tc_f=324,148 B`、`ja_f=447,840 B`）、FX3 `string_english.uxc`（`165,740 B`）、FX3 `string_english_g.uxc`（`69,600 B`）、FX6 `string_english.uxc`（`118,208 B`）与 `string_english_2.uxc`（`118,676 B`），以及 `FX3 appFw.so`（`79,015,712 B`）、`FX3 BK4`（`2,229,740 B`）与 `FX6 appFw.so`（`50,520,424 B`）；支持 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 与 CLI `--clean-room` 切换至确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 61A — `[XAVC S-I DCI 4K]`（4096×2160 17:9）与 `24.00p` 重启隔离防火墙 + Still `[Aspect Ratio]` vs Movie/S&Q 格式锁定**：
+   - 精确建模 `ILME-FX3 Ver. 3.00+/7.02` 暴露的 `[XAVC S-I DCI 4K]`（4096×2160 `17:9` All-Intra 4:2:2 10-bit：`59.94p@600Mbps`、`50p@500Mbps`、`29.97p@300Mbps`、`25p@250Mbps`、`24.00p@240Mbps`、`23.98p@240Mbps`；**无 100p/120p -> `EOPNOTSUPP=95`**；`S&Q` 仅限 `1..48fps`）；Long-GOP `[XAVC HS 4K]`/`[XAVC S 4K]` 与 `[XAVC S-I 4K]` 维持 3840×2160 `16:9` UHD 且不支持 `24.00p`（HDMI RAW 输出维持 4264×2408 `16:9`）。
+   - 切换 `NTSC/PAL` 或进出真 `24.00p` 必须触发重启周期并启用 `24.00p` 回放隔离，严禁对未认证卡或 Slot-1 Tier-0 Recovery Vault 执行任何卡重初始化/格式化（fail-closed `EROFS=30`）；对比 `ILME-FX6` 原生 MXF `XAVC-I DCI 4K` 支持高达 `59.94p / 100p / 120p S&Q`。
+   - 建模 Still 模式 `[Aspect Ratio]` 4 种长宽比（`3:2 / 4:3 / 16:9 / 1:1`，含 `RAW` 保留完整 `3:2` 像素并附带裁剪元数据、`APS-C S35` `L->M` 降档及 `Camera Settings Reset -> 3:2`），而 Movie/`S&Q` 画面宽高比严格由 File Format 决定（`17:9` DCI 4K 或 `16:9` UHD/HD）并拒绝 Still 长宽比修改（`EPERM=1`）。
+3. **Sub-Model 61B — `[Reg. Custom Shoot Set]` 11 项保持复选框（`Recall Custom hold 1..3`）与 `/SONY/SETTING/%s/` `M1..M4` / `CAMSET` 路径隔离**：
+   - 建模全部 **11 项实机复选框**（`is_checked_recall_custom_hold0..10`：`Shooting Mode`、`Aperture`、`Shutter Speed`、`Drive Mode`、`Exposure Comp.`、`ISO`、`Metering Mode`、`White Balance`、`Picture Profile`、`Focus Mode`、`Focus Area` + `AF On` 开关）对应 `BKID_APP_shoot_set_registration_*_available`、`Recall Custom hold 1..3` 按下生效 / 松开恢复基线、ISO/DRO Bracket 保持期间强制 `HLG Still Image = Off`、越界序号（非 `1..3`）及 `Self-timer` 拒绝（`EINVAL=22`）、`Cine EI / Cine EI Quick` 屏蔽 `Exposure Comp.` 保持并拦截显式绕过（`EOPNOTSUPP=95`），以及 `Camera Settings Reset` 保留 vs `Initialize` 清空生命周期。
+   - 建模 FX3 `M1..M4`（`%c:%s/SONY/SETTING/%s/CAMPR%02d%c.DAT`）与 `Save/Load Settings`（`%c:%s/SONY/SETTING/%s/CAMSET/CAMSET01..10.DAT`，SDXC 带 `/PRIVATE` 前缀、CFexpress 无 `/PRIVATE`），**零暴露** FX6 专用的 `PRIVATE/SONY/PRO/CAMERA/` 路径（`fx3_pro_camera_path_exposed == False`），拦截跨机型 FX6 CAMSET/All-File 导入（`EINVAL=22 / EPERM=1`），并在写入目标为 Slot-1 Tier-0 Vault 时强制 fail-closed（`EROFS=30 / EBUSY=16`）。
+4. **Sub-Model 61C & Redlines — `[Photo Capture]`（`8.3M` / `2.1M`）DCI 4K 锁定与 Slot-1 Tier-0 Vault 防护 + Still-Only `[Enlarge Image]`**：
+   - 建模播放模式 `[Photo Capture]` 从 UHD/HD 电影或 `S&Q` 片段抽取 `8.3M`（3840×2160 `16:9`）或 `2.1M`（1920×1080 `16:9`）静态图（支持 `[JPEG/HEIF Switch]`：`JPEG / HEIF(4:2:0) / HEIF(4:2:2)`），对 `[XAVC S-I DCI 4K]` 片段严格锁定（`_g.uxc 0x60ce -> EOPNOTSUPP=95`），写目标为 Slot-1 Tier-0 Vault 或写保护卡时 fail-closed `EROFS=30`；同步建模 Still-only `[Enlarge Image]` + `[Enlarge Initial Mag.]` + `[Enlarge Initial Position]`，并锁定全套 16 项硬件红线。
+
+### Phase 301 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 301 Stage 61（61/61 里程碑！）自检
+PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_dci4k_aspect_custom_hold_camset_photo_capture_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_dci4k_aspect_custom_hold_camset_photo_capture_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_dci4k_aspect_custom_hold_camset_photo_capture_coemulator.py --self-test --json
+
+# 2. 全板 61 阶段（Stage 1..61, 61/61 里程碑！）统一校验（支持 --include-stage61 与 --skip-phase301 / --skip-stage61 / --no-include-stage61）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage61 --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 301 三模式 84 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_dci4k_aspect_custom_hold_camset_photo_capture_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_dci4k_aspect_custom_hold_camset_photo_capture_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_dci4k_aspect_custom_hold_camset_photo_capture_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+
+

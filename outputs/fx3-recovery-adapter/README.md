@@ -1088,6 +1088,28 @@ FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-
   python3 -B -m fx3_recovery verify-48pillar-recovery --clean-room --json
 ```
 
+## Phase 282 — 真机主线 Part 37（Pillar 49 / `49/49` 统一恢复总检）：`[USB Connection Mode]` 4 模式与休眠 `NOUVC` 拆离、数据隔离 `USB PD` 供电护栏、`[HDMI Info. Display]` LCD 熄屏/`1080` 钳位与 `4K` 洁净回传、`[Protect]` vs `[Format]` `Slot-1` 双层 WP+防火墙及 `[Reset Network Set.]` 自动重启 + 重置后 `[Airplane Mode]=On` 零射频序列（`verify-49pillar-recovery` / `verify-usb-mode-hdmi-info-protect-network-reset-vault`）
+
+- **[`realhw_49pillar_usb_mode_hdmi_info_protect_network_reset_vault_verifier.py`](fx3_recovery/realhw_49pillar_usb_mode_hdmi_info_protect_network_reset_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-47）落地 **Phase 282 Pillar 49（`49/49`）** 并将全套恢复总检推进至 **`49/49`（`VERIFIED_49OF49_PILLAR_RECOVERY_MASTER`）**（`< 2.0s` CLI 快速预算、`< 4.0s` 标称、`< 6.0s` 并发上限，保持 `verify-22..48pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`P282_SLOT1_FORMAT_HARD_LOCKED = True`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` 与 `FX6 6.01` 共 **18 项** 供体（`< 0.15s`，CI 下放宽至 `< 0.50s`），并支持 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动切换 `CLEAN_ROOM_SYNTHETIC` 洁净室模式：
+  - **支柱 49A — `[USB Connection Mode]` 4 模式 vs 休眠 `NOUVC` `[USB Streaming]`、数据隔离 `USB PD` 供电护栏与 `[HDMI Info. Display]` LCD 熄屏 / `1080` 钳位 vs `4K` 洁净回传（`6/6`）**：
+    - `P49A1`..`P49A6`：精确核验原厂 `ILME-FX3 Ver. 7.02` `(Setup) -> [USB] -> [USB Connection Mode]`（`BKID_APP_setting_usb_connection_method`，`_f.uxc` `0x69a2`）仅暴露 **4 项**（`Sel. When Connect` `0x7738` 默认、`MassStorage(MSC)` `0x6c54` / `054C:0DA1` / `USB_CONNECTION_METHOD_MASS_STRAGE`、`MTP` `0xe24b`、`Remote Shoot (PC Remote)` `0x60aa`），而 `usb_f_uvc.ko`（`78,840 B`）与 `_f.uxc` `0x7399` `[USB Streaming]` 处于 `NOUVC` 休眠隔离状态；在气隙 Tier-0 备份/回滚期间严禁 `MSC`、`MTP`、`Remote Shoot`、`USB-LAN` 主机数据枚举，仅当物理隔离 `D+/D-` 与 SuperSpeed 数据线且插入 `NP-FZ100` 电池并使用 `USB Type-C`（非 `Multi/Micro USB`）时允许 `[USB Power Supply] = [On]`（`0x721e`；`[USB LUN Setting]` `Multi` 默认 `0xe631` / `Single` `0x776d`）；当外部 HDMI 录制/分析仪接入且处于操作员引导的机内 LCD 菜单恢复流程时强制 `[HDMI Info. Display] = [Off]`（`0xe297`），杜绝 `On`（`0xe07c` / `CAUTION_ID_FACTOR_HDMI_INFO_DISPLAY_ON`）导致机内 LCD 黑屏盲操；核验 `1080p` 内录 Log/`PPLUT` 钳位与 `4K` `Off(HDMI Only)`（`0x6573`）/`RAW Output`（`0x6e97`）自动洁净回传覆盖，并验证 `(Setup)` 跨 `[Camera Settings Reset]` 完整留存（仅 `[Initialize]` 复位并可重放 `Slot-1` `CAMSET01.DAT`）。
+  - **支柱 49B — `[Protect]` 4 范围 vs `[Format]` 抹除（`Slot-1` 双层硬件 SD `WP` + 防火墙强制）与 `[Reset Network Set.]` 自动重启 + 重置后 `[Airplane Mode] = [On]` 零射频序列（`6/6`）**：
+    - `P49B1`..`P49B6`：精确校验 `ILME-FX3` 全 4 项 `[Protect]` 范围（`Single`/`Multiple Img.` `0xe2ca`、`All in this Folder` `0x6848`、`All with this date` `0x69f7`、`All Images in This Group` `0xe826`）仅阻止 `[Delete]` / `[Delete pressing twice]`，但 **`[Format]`（`0xe449` / `0xe414`）会直接抹除已保护文件与卡内 `M1..M4` 设置**，因此 `Slot 1`（`CAMSET`/`BODYDATA.DAT` 恢复金库）必须同时具备物理 SD `WP` 锁定（`MR_MEMORY_ERROR_CARD_WRITE_PROTECT_SLOT1`）与 `slot1_format_hard_locked == True` 双层防护（驳回仅靠软件 `[Protect]` 的伪金库姿态）；同时验证 `[Reset Network Set.]`（`FUNC_reset_network_settings` / `SETTING_RESET_NW` / `_f.uxc` `0x60d3` & `0x65d3`）仅清空 `(Network)` 凭证、保留 `(Shooting)`/`(Setup)`/`(Playback)`/`CAMSET`、触发强制自动重启（`BKID_APP_is_shutdown_factor_network_reset`）并把 `[Airplane Mode]` 复归 `Off`，必须在重启完成且重新置位 `[Airplane Mode] = [On]`（`0x6df9`）后方可通过零射频恢复认证。
+  - **统一 `49/49` 恢复总检聚合器与 CLI（`evaluate_realhw_49pillar_recovery_master` / `evaluate_49pillar_recovery_master` / `verify-49pillar-recovery` / `verify-usb-mode-hdmi-info-protect-network-reset-vault`）**：
+    - 并发调用 `evaluate_realhw_48pillar_recovery_master`（`Pillars 1..48`）+ **Pillar 49**（`run_pillar49_standalone_suite`），汇总产出 **`49/49`**（`VERIFIED_49OF49_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_49pillar_usb_mode_hdmi_info_protect_network_reset_vault_verifier.py`](tests/test_realhw_49pillar_usb_mode_hdmi_info_protect_network_reset_vault_verifier.py) 提供 `>= 72` 项双模快速单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-usb-mode-hdmi-info-protect-network-reset-vault --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-49pillar-recovery --json
+
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-49pillar-recovery --clean-room --json
+```
+
+
 
 
 

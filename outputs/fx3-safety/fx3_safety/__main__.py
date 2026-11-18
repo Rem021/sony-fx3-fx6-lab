@@ -187,6 +187,11 @@ from .realhw_focus_area_zoom_lever_iso_minss_flash_and_120gate_guard import (
     evaluate_g119_focus_area_and_zoom_lever_guard,
     evaluate_g120_iso_minss_and_flash_guard,
 )
+from .realhw_dci4k_aspect_custom_hold_camset_photo_capture_and_122gate_guard import (
+    evaluate_122gate_preflight,
+    evaluate_g121_dci4k_and_aspect_ratio_guard,
+    evaluate_g122_custom_hold_camset_photo_capture_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -3525,6 +3530,92 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G120 gates can be rehearsed offline",
     )
     p_120.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 140. verify-dci4k-and-aspect-ratio-guard
+    p_g121 = sub.add_parser(
+        "verify-dci4k-and-aspect-ratio-guard",
+        aliases=["verify-g121-dci4k-aspect-ratio"],
+        help="Verify Gate G121: XAVC S-I DCI 4K (4096x2160 17:9 All-Intra + Reboot-Gated 24.00p, S&Q 1..48 fps) vs Long-GOP UHD 3840x2160 Boundary, 4264x2408 Type-A HDMI RAW, & Still [Aspect Ratio] (3:2/4:3/16:9/1:1)",
+    )
+    p_g121.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g121.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g121.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g121.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 141. verify-custom-hold-camset-photo-capture-guard
+    p_g122 = sub.add_parser(
+        "verify-custom-hold-camset-photo-capture-guard",
+        aliases=["verify-g122-custom-hold-camset-photo-capture"],
+        help="Verify Gate G122: [Reg. Custom Shoot Set] (11 Checkboxes, Still P/A/S/M) vs [Camera Set. Memory] (1..3 + M1..M4 %%c:%%s/SONY/SETTING/%%s/CAMPR%%02d%%c.DAT vs FX6 s/SONY/PRO/CAMERA/), Playback [Photo Capture] (DCI 4K Lockout + Slot-1 Firewall), & [Enlarge Initial Mag./Position]",
+    )
+    p_g122.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g122.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g122.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g122.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 142. verify-122-gates
+    p_122 = sub.add_parser(
+        "verify-122-gates",
+        help="Run Phase 288 Unified 122-Gate Master Safety Preflight Engine (G01..G122)",
+    )
+    p_122.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_122.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_122.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G122 gates can be rehearsed offline",
+    )
+    p_122.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -7161,6 +7252,109 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_120_gates_verified if args.dry_run_simulated else report.offline_117_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-dci4k-and-aspect-ratio-guard",
+        "verify-g121-dci4k-aspect-ratio",
+    ):
+        verdict, res = evaluate_g121_dci4k_and_aspect_ratio_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.dci4k_aspect_ratio_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} fmt={guard['effective_file_format']}"
+                f"({guard['movie_dimensions'][0]}x{guard['movie_dimensions'][1]}@"
+                f"{guard['rec_frame_rate']},sq={guard['sq_fps']}fps,"
+                f"24p_quar={guard['playback_24_00p_quarantine_enforced']}) "
+                f"hdmi_raw=4264x2408(en={guard['hdmi_raw_output_enabled']},log={guard['log_shooting']}) "
+                f"aspect={guard['effective_still_aspect_ratio']}({guard['effective_still_image_size']}="
+                f"{guard['still_aspect_megapixel_label']},arw_full_3_2={guard['arw_retains_full_3_2_pixels']}) "
+                f"fx6_still_aspect={guard['fx6_still_aspect_supported']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-custom-hold-camset-photo-capture-guard",
+        "verify-g122-custom-hold-camset-photo-capture",
+    ):
+        verdict, res = evaluate_g122_custom_hold_camset_photo_capture_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.custom_hold_camset_photo_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} hold_keys={len(guard['exact_11_custom_hold_keys'])} "
+                f"camset_path=/SONY/SETTING/(fx6_pro_rej={guard['fx6_pro_camera_path_rejected']},"
+                f"slot1_fmt_prot={guard['format_slot_1_protected']}) "
+                f"photo_cap={guard['effective_photo_capture_file_type']}"
+                f"({guard['photo_capture_output_mp_label']},dci4k_blk={guard['photo_capture_dci4k_locked']},"
+                f"slot1_blk={guard['photo_capture_slot1_write_blocked']}) "
+                f"enlarge=({guard['effective_enlarge_initial_mag']},{guard['effective_enlarge_initial_position']}) "
+                f"fx6_photo={guard['fx6_photo_capture_supported']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-122-gates":
+        report = evaluate_122gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/122 "
+                f"g121_to_g122_all_passed={report.g121_to_g122_all_passed} "
+                f"all_122_gates_verified={report.all_122_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_122_gates_verified if args.dry_run_simulated else report.offline_119_gates_verified
         return 0 if ok else 1
 
     return 2

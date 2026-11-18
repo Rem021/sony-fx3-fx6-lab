@@ -216,6 +216,8 @@ def _donors_available_here() -> bool:
     from fx3_safety.thermal_pwm_and_power_guard import resolve_donor_thermal_power_paths
 
     work_root = resolve_donor_thermal_power_paths(repo_root=DEFAULT_REPO_ROOT).work_root
+    if work_root is None:
+        return False
     for spec in PINNED_PHASE317_DONOR_SPECS.values():
         if not (work_root / spec[1]).exists():
             return False

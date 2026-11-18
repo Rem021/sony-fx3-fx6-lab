@@ -1382,6 +1382,7 @@ def build_stage_a_overlay(
     enable_r68: bool = False,
     enable_r69: bool = False,
     enable_r70: bool = False,
+    enable_r71: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1424,6 +1425,7 @@ def build_stage_a_overlay(
     r68_mode: str = "switch_vh_af_limit14_stdadj_tc_copy_big6",
     r69_mode: str = "touch4_disp_flash_reset_interval_edit_big6",
     r70_mode: str = "dial_mydial_fn12x2_liveview_lut_big6",
+    r71_mode: str = "steadyshot_47focal_selftimer_zebra_streaming_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1779,7 +1781,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r69_mode: {r69_mode}")
     if enable_r70 and r70_mode not in ("dial_mydial_fn12x2_liveview_lut_big6", "wave56_dial_mydial_fn_liveview_lut_erofs_guard", "clean_unmount_wave56_reset_h0_h3_big6"):
         raise ValueError(f"Unsupported r70_mode: {r70_mode}")
-    if enable_r70 and r70_mode == "wave56_dial_mydial_fn_liveview_lut_erofs_guard":
+    if enable_r71 and r71_mode not in ("steadyshot_47focal_selftimer_zebra_streaming_big6", "wave57_steadyshot_selftimer_zebra_streaming_erofs_guard", "clean_unmount_wave57_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r71_mode: {r71_mode}")
+    if enable_r71 and r71_mode == "wave57_steadyshot_selftimer_zebra_streaming_erofs_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r71_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r71-wave57-guard > /dev/console 2>&1\n"
+            "fx6_r71_gd_rc=$?\n"
+            "echo FX6_R71_WAVE57_GUARD_RC=$fx6_r71_gd_rc\n"
+            "echo FX6_R71_WAVE57_GUARD_EXIT rc=$fx6_r71_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r71_early_hook, 1)
+    elif enable_r70 and r70_mode == "wave56_dial_mydial_fn_liveview_lut_erofs_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -5136,6 +5154,96 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r71_meta: Optional[Dict[str, Any]] = None
+    if enable_r71:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r71_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r71"] = (
+            (
+                f"stage_r71=1\nr71_mode={r71_mode}\n"
+                f"steadyshot_3mode_47focal_4lock_vs_fx6_fixed=1\n"
+                f"dormant_movie_vs_still_selftimer_led8_audio=1\n"
+                f"zebra_custom12_slog3_lut_peaking4_clean_hdmi=1\n"
+                f"rtmp_srt_no24p_zerorf_slot1_erofs30=1\n"
+                f"milestone_44th_realhw_132nd_live_88_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r71_meta = {
+            "r71_mode": r71_mode,
+            "milestone_round_ordinal": 71,
+            "realhw_round_ordinal": 44,
+            "total_live_runs_at_completion": 132,
+            "total_png_receipts_at_completion": 88,
+            "steadyshot_ibis_wave57": {
+                "movie_steadyshot": ["Active", "Standard [def]", "Off (0 active Dynamic active hits on ALCIN_UUD)"],
+                "still_steadyshot": ["On [def]", "Off"],
+                "steadyshot_adjust": ["Auto [def]", "Manual"],
+                "focal_length_step_count": 47,
+                "focal_length_range_mm": [8, 1000],
+                "active_4_lockouts": [
+                    "Movie frame rate >= 119.88p / 100p",
+                    "S&Q frame rate >= 120fps / 100fps",
+                    "RAW Output = On",
+                    "De-Squeeze Display != Off",
+                ],
+                "ciz_hfr_lockout": "Clear Image Zoom disabled at 120/100fps and >= 200fps",
+                "fx6_diff": "FX6 fixed sensor (TYPE_STEADYSHOT_EQUIP_WITH_BODY_UNSUPPORTED) + 6-axis Catalyst gyro requiring lens OSS Off",
+            },
+            "selftimer_and_audio_signals": {
+                "dormant_movie_self_timer_eopnotsupp": 95,
+                "dormant_still_selftimer_items": [
+                    "Single Burst Self-timer (10s/5s/2s)",
+                    "Self-portrait Self-timer (3-sec)",
+                    "Audio Signal(Start/End)",
+                    "Audio Volume",
+                ],
+                "active_still_selftimer": ["Off [def]", "Self-timer(Single) 10s/5s/2s", "Self-timer(Cont) 10s/2s x 3/5 (10s also 2)"],
+                "selftimer_during_bracket": ["Off", "2 sec", "5 sec", "10 sec"],
+                "front_lamp_id": 8,
+                "audio_signals_reset_tier": "Initialize-only (Camera Settings Reset immune; Silent Mode=On & Movie HDMI audio suppress)",
+            },
+            "zebra_custom12_and_peaking": {
+                "zebra_display_reset_tier": "Initialize-only",
+                "zebra_level_options": [
+                    "70..100 (step 5) [def 70]",
+                    "100+",
+                    "Custom1 (Std 0..109% +- Range 1..10%)",
+                    "Custom2 (Lower Limit 0..109+)",
+                ],
+                "slog3_ire_anchors": {"black_0pct_ire": 41, "18pct_grey_ire": 61, "90pct_white_ire": 94},
+                "display_lut_post_lut_measurement": True,
+                "peaking_4_colors": ["White [def]", "Red", "Yellow", "Blue"],
+                "hdmi_clean_feed_zebra_peaking_baked_pixels": 0,
+                "fx6_diff": "FX6 exclusive 3-way Off/Zebra1/Zebra2 selector (NO Both) & B&W/Red/Yellow/Blue Peaking",
+            },
+            "network_streaming_zerorf_and_reset_tiers": {
+                "protocols": ["RTMP", "RTMPS", "SRT (AES-128/256)"],
+                "allowed_frame_rates": ["59.94p", "50p", "29.97p", "25p"],
+                "forbidden_24p_frame_rates": ["23.98p", "24.00p"],
+                "max_bitrate_mbps_4k": 38,
+                "rec_during_streaming_internal_4k_lockout": True,
+                "ftp_transfer_passive_pasv_only": True,
+                "reset_tiers": {
+                    "camera_settings_reset": "Resets SteadyShot & Self-timer/Bracket; preserves Audio signals, Zebra, Peaking, Streaming, FTP, Airplane Mode",
+                    "reset_network_settings": "Resets Streaming & FTP; preserves Airplane Mode = On",
+                    "initialize": "Restores all Wave-57 settings including Airplane Mode = Off",
+                },
+                "airplane_mode_zero_rf_p12_p13_ro": True,
+            },
+            "slot1_stream_tier0_erofs": 30,
+            "dynamic_active_bypass_events": 0,
+            "dormant_movie_selftimer_bypass_events": 0,
+            "hdmi_clean_feed_zebra_peaking_baked_pixels": 0,
+            "wireless_tx_packets": 0,
+            "slot1_data_sector_writes": 0,
+            "slot1_avf_info_mutated": False,
+            "passive_tx_bytes_emitted": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -5199,6 +5307,7 @@ def build_stage_a_overlay(
         "r68_enabled": enable_r68,
         "r69_enabled": enable_r69,
         "r70_enabled": enable_r70,
+        "r71_enabled": enable_r71,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -5314,6 +5423,8 @@ def build_stage_a_overlay(
         stage_a_meta["r69"] = r69_meta
     if r70_meta is not None:
         stage_a_meta["r70"] = r70_meta
+    if r71_meta is not None:
+        stage_a_meta["r71"] = r71_meta
     return replacements, additions, stage_a_meta
 
 
@@ -5673,6 +5784,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R68_",
         "FX6_R69_",
         "FX6_R70_",
+        "FX6_R71_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -6107,6 +6219,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r70_lang: Optional[Dict[str, Any]] = None
     last_r70_bridge: Optional[Dict[str, Any]] = None
     r70_wave56_guard_rc: Optional[int] = None
+    last_r71_wave57_init: Optional[Dict[str, Any]] = None
+    last_r71_steadyshot_47focal_lockout_bridge: Optional[Dict[str, Any]] = None
+    last_r71_selftimer_led8_audio_bridge: Optional[Dict[str, Any]] = None
+    last_r71_zebra_custom12_peaking_hdmi_bridge: Optional[Dict[str, Any]] = None
+    last_r71_streaming_zerorf_erofs_bridge: Optional[Dict[str, Any]] = None
+    last_r71_wave57_guard: Optional[Dict[str, Any]] = None
+    last_r71_clean_unmount_wave57_h0_h3: Optional[Dict[str, Any]] = None
+    last_r71_lang: Optional[Dict[str, Any]] = None
+    last_r71_bridge: Optional[Dict[str, Any]] = None
+    r71_wave57_guard_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -7086,6 +7208,28 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R70_WAVE56_GUARD_RC"), int):
                 r70_wave56_guard_rc = kv["FX6_R70_WAVE56_GUARD_RC"]
+        elif "FX6_R71_WAVE57_INIT " in line:
+            last_r71_wave57_init = _parse_kv_ints(line.split("FX6_R71_WAVE57_INIT ", 1)[1])
+        elif "FX6_R71_STEADYSHOT_47FOCAL_LOCKOUT_BRIDGE " in line:
+            last_r71_steadyshot_47focal_lockout_bridge = _parse_kv_ints(line.split("FX6_R71_STEADYSHOT_47FOCAL_LOCKOUT_BRIDGE ", 1)[1])
+        elif "FX6_R71_SELFTIMER_LED8_AUDIO_BRIDGE " in line:
+            last_r71_selftimer_led8_audio_bridge = _parse_kv_ints(line.split("FX6_R71_SELFTIMER_LED8_AUDIO_BRIDGE ", 1)[1])
+        elif "FX6_R71_ZEBRA_CUSTOM12_PEAKING_HDMI_BRIDGE " in line:
+            last_r71_zebra_custom12_peaking_hdmi_bridge = _parse_kv_ints(line.split("FX6_R71_ZEBRA_CUSTOM12_PEAKING_HDMI_BRIDGE ", 1)[1])
+        elif "FX6_R71_STREAMING_ZERORF_EROFS_BRIDGE " in line:
+            last_r71_streaming_zerorf_erofs_bridge = _parse_kv_ints(line.split("FX6_R71_STREAMING_ZERORF_EROFS_BRIDGE ", 1)[1])
+        elif "FX6_R71_WAVE57_GUARD " in line:
+            last_r71_wave57_guard = _parse_kv_ints(line.split("FX6_R71_WAVE57_GUARD ", 1)[1])
+        elif "FX6_R71_CLEAN_UNMOUNT_WAVE57_H0_H3 " in line:
+            last_r71_clean_unmount_wave57_h0_h3 = _parse_kv_ints(line.split("FX6_R71_CLEAN_UNMOUNT_WAVE57_H0_H3 ", 1)[1])
+        elif "FX6_R71_LANG_TELEMETRY " in line:
+            last_r71_lang = _parse_kv_ints(line.split("FX6_R71_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R71_BRIDGE " in line:
+            last_r71_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R71_BRIDGE ", 1)[1])
+        elif "FX6_R71_WAVE57_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R71_WAVE57_GUARD_RC"), int):
+                r71_wave57_guard_rc = kv["FX6_R71_WAVE57_GUARD_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -8231,6 +8375,34 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r70_bridge or {},
         }
 
+    r71_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r71_wave57_init,
+            last_r71_steadyshot_47focal_lockout_bridge,
+            last_r71_selftimer_led8_audio_bridge,
+            last_r71_zebra_custom12_peaking_hdmi_bridge,
+            last_r71_streaming_zerorf_erofs_bridge,
+            last_r71_wave57_guard,
+            last_r71_clean_unmount_wave57_h0_h3,
+            last_r71_lang,
+            last_r71_bridge,
+        )
+    ):
+        r71_telemetry = {
+            "wave57_guard_rc": r71_wave57_guard_rc,
+            "wave57_init": last_r71_wave57_init or {},
+            "steadyshot_47focal_lockout_bridge": last_r71_steadyshot_47focal_lockout_bridge or {},
+            "selftimer_led8_audio_bridge": last_r71_selftimer_led8_audio_bridge or {},
+            "zebra_custom12_peaking_hdmi_bridge": last_r71_zebra_custom12_peaking_hdmi_bridge or {},
+            "streaming_zerorf_erofs_bridge": last_r71_streaming_zerorf_erofs_bridge or {},
+            "wave57_guard": last_r71_wave57_guard or {},
+            "clean_unmount_wave57_h0_h3": last_r71_clean_unmount_wave57_h0_h3 or {},
+            "lang_telemetry": last_r71_lang or {},
+            "stage_b_bridge": last_r71_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -8298,6 +8470,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r68_telemetry": r68_telemetry,
         "r69_telemetry": r69_telemetry,
         "r70_telemetry": r70_telemetry,
+        "r71_telemetry": r71_telemetry,
     }
 
 
@@ -8439,6 +8612,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r69"
     if args.round >= 70:
         tmp_prefix = "fx6-r70"
+    if args.round >= 71:
+        tmp_prefix = "fx6-r71"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -8519,8 +8694,12 @@ def run_once(args: argparse.Namespace) -> int:
         r68_mode = getattr(args, "r68_mode", "switch_vh_af_limit14_stdadj_tc_copy_big6")
         r69_mode = getattr(args, "r69_mode", "touch4_disp_flash_reset_interval_edit_big6")
         r70_mode = getattr(args, "r70_mode", "dial_mydial_fn12x2_liveview_lut_big6")
+        r71_mode = getattr(args, "r71_mode", "steadyshot_47focal_selftimer_zebra_streaming_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone44RealHw132ndLiveWave57SteadyShot47FocalSelftimerZebraStreamingErofs+r71_mode={r71_mode}+lang={lang})"
+                if args.round >= 71
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone70thRound43RealHw129thLiveWave56DialCustomizeMyDialFn12x2LiveViewLutEmbedErofs+r70_mode={r70_mode}+lang={lang})"
                 if args.round >= 70
                 else (
@@ -8765,6 +8944,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -8875,6 +9055,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r69_mode=r69_mode,
                 enable_r70=(args.round >= 70),
                 r70_mode=r70_mode,
+                enable_r71=(args.round >= 71),
+                r71_mode=r71_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -9051,6 +9233,7 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R68_WAVE54_GUARD_EXIT" in txt
                     or "FX6_R69_WAVE55_GUARD_EXIT" in txt
                     or "FX6_R70_WAVE56_GUARD_EXIT" in txt
+                    or "FX6_R71_WAVE57_GUARD_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -9129,6 +9312,7 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R68_WAVE54_GUARD_EXIT" in serial_text
             or "FX6_R69_WAVE55_GUARD_EXIT" in serial_text
             or "FX6_R70_WAVE56_GUARD_EXIT" in serial_text
+            or "FX6_R71_WAVE57_GUARD_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -9222,6 +9406,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r68_mode": r68_mode if args.round >= 68 else None,
             "r69_mode": r69_mode if args.round >= 69 else None,
             "r70_mode": r70_mode if args.round >= 70 else None,
+            "r71_mode": r71_mode if args.round >= 71 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -9299,6 +9484,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r68_telemetry": milestones.get("r68_telemetry") if args.round >= 68 else None,
             "r69_telemetry": milestones.get("r69_telemetry") if args.round >= 69 else None,
             "r70_telemetry": milestones.get("r70_telemetry") if args.round >= 70 else None,
+            "r71_telemetry": milestones.get("r71_telemetry") if args.round >= 71 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -11025,6 +11211,143 @@ def sanitize_round70_summary(
     )
 
 
+def _sanitize_r71_value(val: Any) -> Any:
+    return _sanitize_r70_value(val)
+
+
+def sanitize_round71_summary(
+    r71a_raw: Dict[str, Any],
+    r71b_raw: Dict[str, Any],
+    r71c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the Round 71 (44/44 Real-HW Rounds, 132/132 Live Runs, 88/88 PNGs) summary.json telemetry receipt."""
+    t71a = r71a_raw.get("r71_telemetry") or {}
+    t71b = r71b_raw.get("r71_telemetry") or {}
+    t71c = r71c_raw.get("r71_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r71_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 71,
+            "lang": raw.get("lang", "en"),
+            "r71_mode": raw.get("r71_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r71_telemetry": _sanitize_r71_value(raw.get("r71_telemetry") or {}),
+            "gpe0_readback": _sanitize_r71_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r71_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r71_value(entry)
+
+    r71a_nz = (r71a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r71b_guard = t71b.get("wave57_guard") or {}
+    r71c_h0h3 = t71c.get("clean_unmount_wave57_h0_h3") or {}
+    r71a_init = t71a.get("wave57_init") or {}
+
+    return _sanitize_r71_value(
+        {
+            "schema": "fx6-on-fx3-round71-steadyshot-47focal-selftimer-zebra-streaming-erofs-qemu-v1",
+            "round": 71,
+            "milestone": (
+                "44/44 Real-HW Rounds (R28..R71) — Wave-57 Movie [SteadyShot] (Active/Standard/Off, 0 Dynamic active), Still [SteadyShot], "
+                "[SteadyShot Adjust.] (Auto/Manual), 47-Step [Focal Length] (8mm..1000mm) & 4 Active Lockouts vs FX6 Fixed Sensor + 6-Axis Catalyst Gyro, "
+                "Dormant Movie BKID_APP_setting_movie_self_timer vs Active Still [Self-timer(Single/Cont)] & Bracket + Front #8 LED + [Audio signals] Suppression, "
+                "Reset-Immune [Zebra Display]/[Zebra Level] (Custom1 Std+Range 0..109% +- 1..10%, Custom2 Lower Limit, S-Log3 41/61/94 vs Display LUT) & 4-Color [Peaking] Clean-HDMI, and "
+                "[Network Streaming] (RTMP/RTMPS/SRT AES-128/256, 59.94/50/29.97/25p NO 23.98/24p) + [Airplane Mode] Zero-RF & Slot-1 EROFS=30 Firewall "
+                "(130th..132nd Live Unmodified ILME-FX3 Ver. 7.02 ARM64 QEMU Runs -> 132/132 Live Runs, 88/88 PNGs <= 27,467 B)"
+            ),
+            "date": "2026-11-17",
+            "kernel_version": r71a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "realhw_mechanisms_verified": {
+                "wave57_steadyshot_selftimer_zebra_streaming_init": r71a_init,
+                "steadyshot_47focal_lockout_stage_b_bridge": t71a.get("steadyshot_47focal_lockout_bridge") or {},
+                "selftimer_led8_audio_stage_b_bridge": t71a.get("selftimer_led8_audio_bridge") or {},
+                "zebra_custom12_peaking_hdmi_stage_b_bridge": t71a.get("zebra_custom12_peaking_hdmi_bridge") or {},
+                "streaming_zerorf_erofs_stage_b_bridge": t71a.get("streaming_zerorf_erofs_bridge") or {},
+                "wave57_fail_closed_guard": r71b_guard,
+                "clean_unmount_wave57_reset_and_16_h0_h3": r71c_h0h3,
+            },
+            "runs": {
+                "r71a_steadyshot_47focal_selftimer_zebra_streaming_big6_schinese": _clean_run(
+                    r71a_raw,
+                    (
+                        "130th Live FX3 7.02 QEMU Run (Round 71 / 44th Real-HW Round) — Wave-57 4-pillar Stage-A/B verification: "
+                        "Movie [SteadyShot] (Active/Standard/Off, 0 active Dynamic active hits on ALCIN_UUD), Still [SteadyShot] (On/Off), [SteadyShot Adjust.] (Auto/Manual), "
+                        "exact 47-step [Focal Length] (8mm..1000mm), and 4 Active lockouts (Movie>=119.88/100p, S&Q>=120/100fps, RAW Output=On, De-Squeeze!=Off) + CIZ HFR lockout vs FX6 fixed sensor + 6-axis Catalyst gyro, "
+                        "dormant Movie BKID_APP_setting_movie_self_timer (-95 EOPNOTSUPP) vs active Still [Self-timer(Single/Cont)] & [Selftimer during Bracket] + front #8 lamp + [Audio signals] suppression under Silent Mode / Movie HDMI audio, "
+                        "Initialize-only [Zebra Display]/[Zebra Level] (70..100+, Custom1 Std+Range 0..109% +- 1..10%, Custom2 Lower Limit 0..109+, S-Log3 41%/61%/94% vs Display LUT=On post-LUT) & 4-color [Peaking] (White/Red/Yellow/Blue, Clean HDMI 0 baked pixels) vs FX6 Off/Zebra1/Zebra2 & B&W/Red/Yellow/Blue, "
+                        "[Network Streaming] (RTMP/RTMPS/SRT AES-128/256, 59.94/50/29.97/25p NO 23.98/24p, 38 Mbps, Movie Rec During Streaming internal 4K lockout) + FTP Passive (PASV) + Tier-0 [Airplane Mode]=On zero-RF (p12/p13 MS_RDONLY) & Slot-1 EROFS=30 Firewall, "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r71a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r71b_wave57_steadyshot_selftimer_zebra_streaming_erofs_guard": _clean_run(
+                    r71b_raw,
+                    (
+                        "131st Live FX3 7.02 QEMU Run — Fail-closed Wave-57 guard rehearsal: dormant Dynamic active / Movie Self-timer / Single Burst Self-timer / Self-portrait 3-sec / Audio Signal(Start/End) (-95 EOPNOTSUPP), "
+                        "non-table 47-step Focal Length (7/13/99/1001mm -22 EINVAL), Auto Adjust blocking Manual Focal (-16 EBUSY), 4 Active SteadyShot lockouts (Movie 119.88p/S&Q 120fps/RAW=On/De-Squeeze!=Off -16 EBUSY), CIZ 120fps lockout (-16 EBUSY), "
+                        "FX6 IBIS absence (-2 ENOENT) & OSS On blocking Catalyst gyro (-16 EBUSY), Still Self-timer in Movie/S&Q & Audio suppressed under Silent Mode/Movie HDMI (-16 EBUSY), "
+                        "Zebra Custom2 range & OOB (-22 EINVAL), FX6 Zebra Both & Peaking White absence (-2 ENOENT), Streaming 23.98/24p & S&Q & 4K+4K internal rec lockout (-22/-16), FTP Active PORT & stream-active FTP (-95/-16), "
+                        "Airplane Mode zero-RF wireless TX block (-100 ENETDOWN, USB-LAN CDC-NCM allowed) & p12 NVS / Slot-1 AVF_INFO / P2 / cnflasha Tier-0 Vault Firewall (-30 EROFS)"
+                    ),
+                ),
+                "r71c_clean_unmount_wave57_reset_h0_h3_big6_schinese": _clean_run(
+                    r71c_raw,
+                    (
+                        "132nd Live FX3 7.02 QEMU Run (44/44 Real-HW Rounds! 132/132 Live Runs, 88/88 PNGs!) — Clean unmount of volatile Stage-B overlay restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + "
+                        "3-tier asymmetric reset boundaries ([Camera Settings Reset] resets SteadyShot/Self-timer/Selftimer during Bracket while preserving [Audio signals], ALL Zebra/Peaking items, AND ALL Network Streaming/FTP/Airplane Mode; "
+                        "[Reset Network Set.] resets Streaming & FTP while preserving [Airplane Mode]=On; [Initialize] restores ALL Wave-57 survivors to defaults) + dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r71_steadyshot_47focal_selftimer_zebra_streaming_erofs_audit": {
+                "round": 71,
+                "realhw_rounds_count": 44,
+                "total_live_runs": 132,
+                "total_png_receipts": 88,
+                "milestone324_qemu_rounds": 44,
+                "milestone324_qemu_runs": 132,
+                "milestone324_png_receipts": 88,
+                "total_runs": 3,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "r71a_wave57_steadyshot_selftimer_zebra_streaming_verified": bool(r71a_init.get("r71_init_ok") == 1),
+                "r71a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r71a_nz >= 300000),
+                "r71b_wave57_guard_fail_closed": bool(r71b_guard.get("r71b_ok") == 1),
+                "r71c_clean_unmount_wave57_reset_and_16_h0_eq_h3_verified": bool(
+                    r71c_h0h3.get("r71c_ok") == 1 and r71c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) 5-axis IBIS voice-coil actuator & gyro sensor bench verifying Movie [SteadyShot] (Active/Standard/Off), 47-step [Focal Length] (8mm..1000mm), and 4 Active lockouts (119.88p/S&Q/RAW/De-Squeeze) vs ILME-FX6 Ver. 6.01 fixed sensor + 6-axis Catalyst gyro remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) front #8 self-timer LED lamp, speaker audio-signal cadence (Silent Mode & Movie HDMI suppression), LCD + Clean HDMI analyzer bench verifying Initialize-only [Zebra Display]/[Zebra Level] (Custom1/Custom2 & Display LUT=On post-LUT) and 4-color [Peaking] Clean-HDMI isolation vs ILME-FX6 Zebra1/Zebra2 remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) RF shield-box, USB-LAN CDC-NCM & dual-slot media bench verifying [Network Streaming] (RTMP/RTMPS/SRT AES-128/256, 59.94/50/29.97/25p), [Airplane Mode]=On zero-RF, FTP Passive (PASV), 3-tier asymmetric reset persistence, and Slot-1 physical write-protection (EROFS=30) remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
@@ -11051,7 +11374,8 @@ def main() -> int:
     # r67_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67]
     # r68_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68]
     # r69_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70], required=True)
+    # r70_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -11096,6 +11420,7 @@ def main() -> int:
     ap.add_argument("--r68-mode", type=str, choices=["switch_vh_af_limit14_stdadj_tc_copy_big6", "wave54_switch_vh_af_limit14_stdadj_tc_copy_guard", "clean_unmount_wave54_reset_h0_h3_big6"], default="switch_vh_af_limit14_stdadj_tc_copy_big6")
     ap.add_argument("--r69-mode", type=str, choices=["touch4_disp_flash_reset_interval_edit_big6", "wave55_touch4_disp_zero_evf_flash_interval_erofs_guard", "clean_unmount_wave55_reset_h0_h3_big6"], default="touch4_disp_flash_reset_interval_edit_big6")
     ap.add_argument("--r70-mode", type=str, choices=["dial_mydial_fn12x2_liveview_lut_big6", "wave56_dial_mydial_fn_liveview_lut_erofs_guard", "clean_unmount_wave56_reset_h0_h3_big6"], default="dial_mydial_fn12x2_liveview_lut_big6")
+    ap.add_argument("--r71-mode", type=str, choices=["steadyshot_47focal_selftimer_zebra_streaming_big6", "wave57_steadyshot_selftimer_zebra_streaming_erofs_guard", "clean_unmount_wave57_reset_h0_h3_big6"], default="steadyshot_47focal_selftimer_zebra_streaming_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

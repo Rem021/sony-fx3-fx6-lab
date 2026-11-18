@@ -247,6 +247,12 @@ from .realhw_65pillar_hdmi_raw_desqueeze_reclamp_varshutter_apsc_vault_verifier 
     verify_65pillar_recovery_suite,
     verify_hdmi_raw_desqueeze_rec_lamp_varshutter_apsc_and_vault,
 )
+from .realhw_66pillar_breathing_camid_reel_copyright46_powersave_ntscpal_vault_verifier import (
+    P361_ENV_CLEAN_ROOM_TEST,
+    run_pillar66_standalone_suite,
+    verify_66pillar_recovery_suite,
+    verify_breathing_camid_reel_copyright46_powersave_ntscpal_and_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -808,6 +814,27 @@ def main():
     p355_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p355_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p355_master.add_argument('--out', help='optional exclusive new output directory for 65pillar-recovery-master-report.json')
+    p361_p66 = sub.add_parser(
+        'verify-pillar66-breathing-camid-reel-copyright46-powersave-ntscpal-vault',
+        help='Phase 361 Pillar 66 (Wave-64 Breathing Comp. 120p/S&Q>=100/RAW/Catalyst Prepare + Distortion Auto vs FX6 3-lock; Movie File Settings Cam ID+Reel# C999->D001 YYMMDD vs YYYYMMDD 37-char Title SDHC 4GB vs FX6 DIADEM_PRO; Round 57 Erratum 46-char Copyright Info ALL Reset-resistant + active Still+Movie Write Serial Number + CAMSET*.DAT PII exclusion; Power Setting Option 9-bypass + dormant Power Save by Monitor; and NTSC/PAL Selector reboot/cross-region/Slot 1 EROFS=30 format-prompt vault)',
+    )
+    p361_p66.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p361_p66.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p361_p66.add_argument('--out', help='optional exclusive new output directory for pillar66-breathing-camid-reel-copyright46-powersave-ntscpal-vault-report.json')
+    p361_p66_alias = sub.add_parser(
+        'verify-pillar66-recovery',
+        help='Alias for verify-pillar66-breathing-camid-reel-copyright46-powersave-ntscpal-vault (Phase 361 Pillar 66 standalone 12-scenario suite)',
+    )
+    p361_p66_alias.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p361_p66_alias.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p361_p66_alias.add_argument('--out', help='optional exclusive new output directory for pillar66-breathing-camid-reel-copyright46-powersave-ntscpal-vault-report.json')
+    p361_master = sub.add_parser(
+        'verify-66pillar-recovery',
+        help='Phase 361 (66/66 Milestone) unified 66/66 real-hardware recovery master aggregator (Pillars 1..65 + Pillar 66)',
+    )
+    p361_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p361_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p361_master.add_argument('--out', help='optional exclusive new output directory for 66pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -5002,6 +5029,117 @@ def main():
                     f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_65pillar_sha256={report.master_65pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command in (
+            'verify-pillar66-breathing-camid-reel-copyright46-powersave-ntscpal-vault',
+            'verify-pillar66-recovery',
+        ):
+            report = run_pillar66_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(
+                    args.out,
+                    {'pillar66-breathing-camid-reel-copyright46-powersave-ntscpal-vault-report.json': encode(result)},
+                )
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_66a={report.pillar_66a_breathing_camid_reel_sdhc_vault.scenarios_passed}/{report.pillar_66a_breathing_camid_reel_sdhc_vault.scenarios_total} "
+                    f"pillar_66b={report.pillar_66b_copyright46_powersave_ntscpal_vault.scenarios_passed}/{report.pillar_66b_copyright46_powersave_ntscpal_vault.scenarios_total} "
+                    f"breathing_comp_lockout_or_catalyst_drift_events={report.breathing_comp_lockout_or_catalyst_drift_events} "
+                    f"file_settings_camid_reel_or_sdhc_drift_events={report.file_settings_camid_reel_or_sdhc_drift_events} "
+                    f"copyright_46ch_reset_erratum_or_serial_drift_events={report.copyright_46ch_reset_erratum_or_serial_drift_events} "
+                    f"camset_copyright_pii_leak_events={report.camset_copyright_pii_leak_events} "
+                    f"camset_copyright_pii_leaked_bytes={report.camset_copyright_pii_leaked_bytes} "
+                    f"powersave_9cond_or_dormant_monitor_drift_events={report.powersave_9cond_or_dormant_monitor_drift_events} "
+                    f"dormant_power_save_by_monitor_exposed_events={report.dormant_power_save_by_monitor_exposed_events} "
+                    f"ntsc_pal_reboot_or_slot1_format_drift_events={report.ntsc_pal_reboot_or_slot1_format_drift_events} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"rf_packets_transmitted={report.rf_packets_transmitted} "
+                    f"rf_nvs_mutation_bytes={report.rf_nvs_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_eopnotsupp_enforced={report.slot1_vault_erofs_eopnotsupp_enforced} "
+                    f"slot1_vault_erofs_ebusy_enforced={report.slot1_vault_erofs_ebusy_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-66pillar-recovery':
+            report = verify_66pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'66pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_1_5s_fast_cli_budget={report.under_1_5s_fast_cli_budget} "
+                    f"under_2_5s_fast_cli_budget={report.under_2_5s_fast_cli_budget} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar66_a={report.pillar66_a_breathing_camid_reel_sdhc_vault.scenarios_passed}/{report.pillar66_a_breathing_camid_reel_sdhc_vault.scenarios_total} "
+                    f"pillar66_b={report.pillar66_b_copyright46_powersave_ntscpal_vault.scenarios_passed}/{report.pillar66_b_copyright46_powersave_ntscpal_vault.scenarios_total} "
+                    f"breathing_comp_lockout_or_catalyst_drift_events={report.breathing_comp_lockout_or_catalyst_drift_events} "
+                    f"file_settings_camid_reel_or_sdhc_drift_events={report.file_settings_camid_reel_or_sdhc_drift_events} "
+                    f"copyright_46ch_reset_erratum_or_serial_drift_events={report.copyright_46ch_reset_erratum_or_serial_drift_events} "
+                    f"camset_copyright_pii_leak_events={report.camset_copyright_pii_leak_events} "
+                    f"camset_copyright_pii_leaked_bytes={report.camset_copyright_pii_leaked_bytes} "
+                    f"powersave_9cond_or_dormant_monitor_drift_events={report.powersave_9cond_or_dormant_monitor_drift_events} "
+                    f"dormant_power_save_by_monitor_exposed_events={report.dormant_power_save_by_monitor_exposed_events} "
+                    f"ntsc_pal_reboot_or_slot1_format_drift_events={report.ntsc_pal_reboot_or_slot1_format_drift_events} "
+                    f"round57_erratum_copyright_resettable={report.round57_erratum_copyright_resettable} "
+                    f"write_serial_still_and_movie_active={report.write_serial_still_and_movie_active} "
+                    f"fx3_has_power_save_by_monitor={report.fx3_has_power_save_by_monitor} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"rf_packets_transmitted={report.rf_packets_transmitted} "
+                    f"rf_nvs_mutation_bytes={report.rf_nvs_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_eopnotsupp_enforced={report.slot1_vault_erofs_eopnotsupp_enforced} "
+                    f"slot1_vault_erofs_ebusy_enforced={report.slot1_vault_erofs_ebusy_enforced} "
+                    f"bodydata_placement_or_flash_authorized={report.bodydata_placement_or_flash_authorized} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_66pillar_sha256={report.master_66pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

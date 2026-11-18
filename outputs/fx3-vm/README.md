@@ -2583,3 +2583,46 @@ FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTEC
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
+
+## Phase 346（Stage 76 — `76/76` Full-Board VM Co-Emulation Stages!）：Wave-66 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` `[Drive Mode]` `10 fps` & 休眠 `[Focus Bracket]` 辟谣、`[Shutter Type]` 2 档零 `Auto` / `1/250 s` X-Sync / 抗 Reset `[e-Front Curtain Shut.]`（`curtaion`）& `[Long Exposure NR]`/`[High ISO NR]`、`10` 预设+`6` 自定义 `[Creative Look]` `8` 参 `0..9` & `PP`/`Log` 覆盖 vs 休眠 `[Soft Skin Effect]`，以及 `[Delete]`/`[Protect]`/`[Recover Image DB]` `AVF_INFO` Tier-0 `Slot 1` `EROFS=30` 防火墙 HIL
+
+[`realhw_drive_focusbracket_shutter_efcs_creativelook_recoverdb_coemulator.py`](realhw_drive_focusbracket_shutter_efcs_creativelook_recoverdb_coemulator.py)（Schema `phase346_realhw_drive_focusbracket_shutter_efcs_creativelook_recoverdb_coemulation_v1`）作为 **Stage 76（`76/76` Full-Board VM Co-Emulation Stages!）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase346` / `--skip-stage76` / `--no-include-stage76` 跳过，支持 `--include-stage76`），严格遵循 `os.O_RDONLY` + `<= 4096 B` 受界 `os.pread`、`physical_device_writes == 0`、`emmc_writes_authorized == False`、`cross_model_flash_authorized == False`、`slot1_data_sector_writes == 0`、`slot1_avf_info_mutated == False`、`emmc_nflasha_write_count == 0` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 11 供体 `O_RDONLY` + 受界 `os.pread` 审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **11 份真实供体**（`5` 份 FX3 四语 `_f` / 基础 `.uxc` + `libSaveLoadSettings.so` `18,760 B` + `2` 份 FX6 英文 `.uxc` + `FX3 appFw.so`、`FX3 BK4`、`FX6 appFw.so` 3 份大镜像），并在无供体 CI 环境（`work_root is None`、`FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1`、`FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__` 或 `--clean-room`）无缝回退至 `CLEAN_ROOM_SYNTHETIC`（`raw_firmware_bytes_leaked == 0`）。
+2. **Sub-Model 76A — `Shooting -> [Drive Mode]` `10 fps` 连拍/包围矩阵 & 100% 休眠 `[Focus Bracket]` 辟谣**：
+   - 活跃 Still `[Drive Mode]`（`_f 0x7228`，全部 `Can be reset`，在 Movie/`S&Q` 禁用）：`Single Shooting`（默认）、`Cont. Shooting`（`Hi+` 约 `10 fps` 非实时取景 / `Hi` 约 `8 fps` / `Mid` 约 `6 fps` / `Lo` 约 `3 fps`；`> F11` 在 `Hi+/Hi/Mid` 锁焦于首张；`Uncompressed RAW` 或 Flash 降速）、`Self-timer(Single)`（`10/5/2 Sec`）、`Self-timer(Cont)`（`10/5/2 Sec x 3/5 Img.` 6 档；休眠 `10 Img.` 拒绝对等返回 `EOPNOTSUPP=95`）、`Cont. Bracket` & `Single Bracket`（`0.3/0.5/0.7/1.0 EV x 3/5/9 Img.`、`2.0/3.0 EV x 3/5 Img.`，`iAuto` 下禁用）、`WB bracket`（`Lo ±10 MK-1` / `Hi ±20 MK-1` x 3）、`DRO Bracket`（`Lo Lv 1,2,3` / `Hi Lv 1,3,5`；`[HLG Still Image] = On` 时禁用）、`[Bracket Settings]`（`0->-->+` 默认 / `-->0->+`）及 `[Interval Shoot Func.]`（独立 `Shutter Type in Interval = Electronic Shutter` 默认）。
+   - **100% 休眠 `[Focus Bracket]` 辟谣**：拒绝 `[Focus Bracket]`（`DRIVE_MODE_FOCUS_BRACKET`，`ilc/2210` `0` 命中，且纯电影机 `ILME-FX6` 零 Still `[Drive Mode]`）并返回 `EOPNOTSUPP=95`。
+3. **Sub-Model 76B — `[Shutter Type]` 2 档零 `Auto`、单一 `1/250 s` X-Sync、抗 Reset `[e-Front Curtain Shut.]`（`curtaion` 错字）& `[Long Exposure NR]` / `[High ISO NR]`**：
+   - `[Shutter Type]`（`BKID_APP_setting_still_shutter_type`，`Can be reset`）严格仅暴露 **2** 档（`Mechanical Shutter` 默认 / `Electronic Shutter`）——拒绝休眠 `Auto`（`EOPNOTSUPP=95`）；选择 `Electronic Shutter`（或 `[Silent Mode] = On`）强制锁死 **5** 项功能：`Flash`、`[Long Exposure NR]`、`[e-Front Curtain Shut.]`、`BULB` 与 `[Anti-flicker Shoot.]`。
+   - 闪光同步 X-Sync **在 Full-Frame 与 APS-C 下严格同为 `1/250 s`**（`ilc/2210` 中 `1/320 s` 为 `0` 命中，拒绝对等返回 `EOPNOTSUPP=95`）。
+   - `[e-Front Curtain Shut.]`（`BKID_APP_setting_front_curtaion_shutter` Sony 内部错字 `curtaion`）：`On` 默认 / `Off`，**抗 `[Camera Settings Reset]`**（`Not available`，仅 `[Initialize]` 还原），发射高快门散景切边与 Minolta/第三方转接阴影提示。
+   - `[Long Exposure NR]`（`On` 默认 / `Off`，`Can be reset`，`>= 1 s` 等时暗帧减除，在 Electronic/Silent/Cont./Cont.Bracket 下锁死，`iAuto` 下强制 `On`）与 `[High ISO NR]`（`Normal` 默认 / `Low` / `Off`，`Can be reset`，拒绝休眠 `HIGH` `EOPNOTSUPP=95`，纯 `RAW` 禁用且永不篡改 `.ARW`），对比 `ILME-FX6` 无机械快门 `Shooting > Noise Suppression`（`Off/Low/Mid/High`）与 `Technical > APR > Execute`。
+4. **Sub-Model 76C — `[Creative Look]` `10` 预设 + `6` 自定义 + `8` 参 `0..9` 边界、`PP`/`Log` 覆盖 & 100% 休眠 `[Soft Skin Effect]`**：
+   - `[Creative Look]`（`Can be reset`）：`10` 个内置预设（`ST` 默认、`PT`、`NT`、`VV`、`VV2`、`FL`、`IN`、`SH`、`BW`、`SE`）+ `Custom Look 1..6`（`look{0..15}` 独立 `Still` 与 `Movie` 存储），精确建模 **8** 项参数边界：`-9..+9`（`Contrast`、`Highlights`、`Shadows`、`Saturation`）、**`0..9`**（`Fade`、`Sharpness`、`Clarity` —— 非 `-9..+9`！）及 **`1..5`**（`Sharpness Range` / ELF `fineness`）。
+   - 参数与管线锁死：`BW`/`SE` 锁定 `Saturation`；Movie/`S&Q` 锁定 `Sharpness Range`；`iAuto`、`[Picture Profile] != Off`、`[Log Shooting] != Off` 或 `[HLG Still Image] = On` 覆盖锁定 `[Creative Look]`（`[-]`）。
+   - **100% 休眠 `[Soft Skin Effect]` 辟谣**：`ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` **均不支持**（`0` 命中于 `ilc/2210` 且 Sony Camera Remote SDK 标记 `-`），调用均返回 `EOPNOTSUPP=95`，对比 `FX6` `Paint/Look > Base Look` + `Scene File` + `Detail`/`Matrix`。
+5. **Sub-Model 76D — `Playback -> [Delete]` / `[Protect]` & `[Recover Image DB]` `AVF_INFO` Tier-0 `Slot 1` `EROFS=30` 防火墙**：
+   - `[Delete]`（`All Other Than This Img.`、`All Images in This Group`、`Multiple Img.`、`All in this Folder`、`All with this date`）、`[Delete confirm.]`（`"Cancel" first` 默认 / `"Delete" first`）、`[Delete pressing twice]`（`Off` 默认 / `On` 二次按键无确认直删隐患！）与 `[Protect]`（主文件与 `*S03.MP4` Proxy 同步删除/保护，`[Copy]` 不复制保护属性；Playback 全项抗 Reset）。
+   - `[Recover Image DB]`（`SYSTEM_MODE_OPTION_RECOVER_DB`，抗 Reset 且抗 Initialize，重写 `AVF_INFO` 并清除 FTP 传输状态，受电池 `>= 20%` 门控）vs 只读 `[Display Media Info.]`（单卡 `40,000` 张上限、`NOT_DISPLAYNG` 错字、`0` 写入）：对任何靶向 `Slot 1` 的 `[Delete]`/`[Protect]`/`[Recover Image DB]` 强制执行 fail-closed Tier-0 `Slot 1` `EROFS=30` 拦截（`slot1_data_sector_writes == 0`，`slot1_avf_info_mutated == False`），对比 `ILME-FX6` `Lock/Unlock Clip` + `Restore Media(A)/(B)`（`ng_write_protected`）。
+
+### Phase 346 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 346 Stage 76（76/76 Full-Board VM Co-Emulation Stages!）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_drive_focusbracket_shutter_efcs_creativelook_recoverdb_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_drive_focusbracket_shutter_efcs_creativelook_recoverdb_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_drive_focusbracket_shutter_efcs_creativelook_recoverdb_coemulator.py --self-test --json
+
+# 2. 全板 76 阶段（Stage 1..76, 76/76 Full-Board VM Co-Emulation Stages!）统一校验（支持 --include-stage76 与 --skip-phase346 / --skip-stage76 / --no-include-stage76）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage76 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 346 四模式 96 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_drive_focusbracket_shutter_efcs_creativelook_recoverdb_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_drive_focusbracket_shutter_efcs_creativelook_recoverdb_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_drive_focusbracket_shutter_efcs_creativelook_recoverdb_coemulator.py -v
+FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_drive_focusbracket_shutter_efcs_creativelook_recoverdb_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```

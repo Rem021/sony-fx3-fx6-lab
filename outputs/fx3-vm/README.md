@@ -2042,4 +2042,37 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 306 Stage 62（62/62 VM 阶段里程碑！）— 真实硬件 Wave-52：`[Sensor Cleaning]` >= 51% 电量门槛与强制断电 vs FX6 e-ND + APR、`[Exposure Comp.]` ±5.0/±2.0 EV + `[Cine EI]` 全锁定、`[Focus Mode]` Still 5 档 vs Movie/S&Q 2 档分离与优先设置，以及回放 `[View Mode]` / 9·25 `[Image Index]` / `[Display as Group]` / `[Rotate]` Slot-1 Tier-0 Vault 防火墙协同仿真台架
+
+[`realhw_sensor_cleaning_ev_comp_focus_mode_rotate_coemulator.py`](realhw_sensor_cleaning_ev_comp_focus_mode_rotate_coemulator.py) 作为 **Phase 306 Stage 62（`62/62` 里程碑，Schema `realhw_sensor_cleaning_ev_comp_focus_mode_rotate_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase306_realhw_sensor_cleaning_ev_comp_focus_mode_rotate_hil=True` / `include_stage62=True` / `stage62_realhw_sensor_cleaning_ev_comp_focus_mode_rotate_hil=True`，支持显式 `--include-stage62` 以及 `--skip-phase306` / `--skip-stage62` / `--no-include-stage62` 跳过），在严格锁定 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`emmc_nflasha_write_count == 0`、`emmc_corruptions == 0`、`nop_count == 0`、`guest_code_modification_bytes == 0`、`physical_usb_packets_emitted == 0`、`sensor_cleaning_low_battery_bypass_events == 0`、`sensor_cleaning_mandatory_poweroff_bypass_events == 0`、`fx6_ibis_sensor_shake_spoof_events == 0`、**`fx3_has_builtin_end_filter == False`**、**`fx6_has_ibis_sensor_shake == False`**、**`cine_ei_exp_comp_enabled == False`**、`ev_comp_cine_ei_or_mode_bypass_events == 0`、`movie_sq_invalid_focus_mode_bypass_events == 0`、`dormant_12_30_image_index_exposed_events == 0`、`slot1_vault_rotate_mutation_bytes == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大闭环：
+
+1. **高速双模 11 供体 `O_RDONLY` 字节与 SHA-256 精确锚定审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 通过受界 `os.O_RDONLY`（`<= 4096 B`）核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **11 份真实供体**：FX3 `string_*_f.uxc` 4 语种全集（`en_f=373,820 B`、`sc_f=322,652 B`、`tc_f=324,148 B`、`ja_f=447,840 B`）、FX3 `string_english.uxc`（`165,740 B`）、FX3 `string_english_g.uxc`（`69,600 B`）、FX6 `string_english.uxc`（`118,208 B`）与 `string_english_2.uxc`（`118,676 B`），以及 `FX3 appFw.so`（`79,015,712 B`）、`FX3 BK4`（`2,229,740 B`）与 `FX6 appFw.so`（`50,520,424 B`）；支持 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 与 CLI `--clean-room` 切换至确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 62A — `[Sensor Cleaning]` >= 51% NP-FZ100 电量门槛与强制物理断电 vs 无 IBIS `FX6` e-ND + APR**：
+   - 精确建模 `ILME-FX3 Ver. 2.00+/7.02` `[Sensor Cleaning]`（`_f.uxc 0x67d6`，旧版 `.uxc 0xe7d7` `Cleaning Mode`）：严格校验 `NP-FZ100 >= 51%` 电量（`<= 50%` 直接以 `.uxc 0xe574 Power insufficient.` 拒绝 -> `EACCES=13`；旧版 `Ver. 1.x` 拦截 `<= 2` 格并放行 `>= 3` 格），触发 5 轴 IBIS 传感器超声抖动与居中（`MODEL_CLEANING_MODE_COMP`），并强制锁定至物理电源开关 `OFF`（`_g.uxc 0x6221` `"Turn the power off after cleaning"`），在完成断电周期前阻断拆镜头或恢复拍摄（`EBUSY=16`）；对比无 5 轴 IBIS 抖动的 `ILME-FX6`（`fx6_has_ibis_sensor_shake == False` -> 超声抖动请求拒绝 `EOPNOTSUPP=95`），其前置光学 e-ND（`CLEAR`, `1/4..1/128`）与 `Technical > APR`（`MODEL_APR_EXECUTE_COMP`）正常运行，而 FX3 无内置 e-ND（`fx3_has_builtin_end_filter == False`）。
+3. **Sub-Model 62B — `[Exposure Comp.]` Still ±5.0 EV / Movie & S&Q ±2.0 EV + `[Cine EI]` 全锁定**：
+   - Still `P/A/S` 与 `M + ISO AUTO` 开放 `-5.0..+5.0 EV`（实时 EV 标尺显示 `-3.0..+3.0 EV`），Movie 与 `S&Q` 严格钳位 `-2.0..+2.0 EV`；`iAuto` 与固定 ISO 手动 `M` 档禁用（`M` 档**仅**在 `ISO AUTO` 时激活）；`[Log Shooting] = Cine EI / Cine EI Quick` 下 **100% 锁定**（`cine_ei_exp_comp_enabled == False` -> `EOPNOTSUPP=95`，改由 Base ISO `800`/`12800` + `[Exposure Index]` `±2.0 EV` 控制监看），而 `Flexible ISO` 保留 `±2.0 EV` 曝光补偿；`[Camera Settings Reset]` 将曝光补偿归零 `+0.0` 但保留 `Initialize-only` 的 `[Exposure step]`（`0.3EV` / `0.5EV`）；拦截休眠 Alpha `[Reset EV Comp.]`、Ver. 1 `[Dial Ev Comp]` 及 FX6 跨机型 5EV 曝光补偿（`EOPNOTSUPP=95`）。
+4. **Sub-Model 62C & 62D — `[Focus Mode]` 5/2 模式分裂与优先设置 + 回放 `[View Mode]` / `9·25` `[Image Index]` / `[Display as Group]` / `[Rotate]` Slot-1 Tier-0 Vault 防火墙**：
+   - Still 开放全部 5 档（`AF-S / AF-A / AF-C / DMF / MF`，默认 `AF-A` 随 `Camera Settings Reset` 复位；拦截休眠 `PF / SEMI_MANUAL`），Movie & `S&Q` 严格钳位为 **2 档**（`AF-C` `MOVIE_AUTO` 与 `MF`，拒绝 `AF-S/AF-A/DMF` -> `EOPNOTSUPP=95`）；`[Priority Set in AF-S]` / `[Priority Set in AF-C]`（`AF / Release / Balanced Emphasis`）与 Movie `AF-C` `[AF Assist]` 均属 `Initialize-only`（跨 `Camera Settings Reset` 留存），`[AF Illuminator]` 仅限 Still `AF-S/AF-A/DMF`。
+   - 回放 `[View Mode]`（`Date View / Folder View(Still) / Movie View / AVCHD View / XAVC S View`，拒绝休眠 `Folder View(MP4)`）、精确 **`9 Images / 25 Images`** `[Image Index]`（严格拒绝休眠 `12 Images / 30 Images`）、`[Display as Group]` 与 `[Display Rotation]` 均跨 `Camera Settings Reset` 留存；**关键 Vault 防火墙**：Playback `[Rotate]`（`FUNC_rotate_content`）会改写卡上 EXIF 朝向 / `AVF_INFO` 数据库 -> 当 `Slot 1` 挂载 Tier-0 Recovery Vault、卡写保护或后台传输激活时强制 fail-closed（`EROFS=30` / `EBUSY=16`，`slot1_vault_rotate_mutation_bytes == 0`），仅允许在虚拟 `Slot 2` 对静态图执行零物理写入 `90°` CCW 旋转。
+
+### Phase 306 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 306 Stage 62（62/62 里程碑！）自检
+PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_sensor_cleaning_ev_comp_focus_mode_rotate_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_sensor_cleaning_ev_comp_focus_mode_rotate_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_sensor_cleaning_ev_comp_focus_mode_rotate_coemulator.py --self-test --json
+
+# 2. 全板 62 阶段（Stage 1..62, 62/62 里程碑！）统一校验（支持 --include-stage62 与 --skip-phase306 / --skip-stage62 / --no-include-stage62）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage62 --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 306 三模式 88 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_sensor_cleaning_ev_comp_focus_mode_rotate_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_sensor_cleaning_ev_comp_focus_mode_rotate_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_sensor_cleaning_ev_comp_focus_mode_rotate_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
 

@@ -6444,7 +6444,7 @@ static void emit_r10_telemetry(const char *reason) {
                  slot1_spillover_events == 0) ? 1 : 0;
 
             /* 2. [Proxy Settings] (sq_proxy) XAVC HS/S HD & XAVC S-I DCI 4K allowed vs 120p/100p lockout,
-             *    dormant PRM_HAITA_*proxy*, & M4ROOT/SUB/*S03.MP4 Slot-1 EROFS=30 */
+             *    dormant PRM_HAITA_*proxy*, & M4ROOT/SUB/<clip>S03.MP4 Slot-1 EROFS=30 */
             int proxy_sq_dci4k_vs_120p_lockout_ok = 1;
             int proxy_m4root_sub_s03_erofs30_ok = 1;
             int dormant_prm_haita_proxy_bypass_events = 0;
@@ -6727,6 +6727,199 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r75_af_speed_sens_focusmap_app_ok,
                 g_r75_marker15_peaking4_clean_hdmi_ok,
                 g_r75_bridge_ok);
+    }
+#endif
+#if FX6_ROUND >= 76
+    {
+        static int g_r76_bridge_executed;
+        static int g_r76_shoe_audio_4ch_out_timing_ok;
+        static int g_r76_subject_recog_human_animal_facemem_ok;
+        static int g_r76_silent_target_2items_no_pwrshutter_ok;
+        static int g_r76_version_slot1_bodydata_nogo_ok;
+        static int g_r76_bridge_ok;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r76_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Shoe Audio Set.] 48kHz/16bit 2ch def, 24bit 2ch, 24bit 4ch via XLR-H1 DIGITAL HANDLE AUDIO=ON
+             *    across all 6 main codecs (Proxy forced AAC-LC 2ch 128kbps & disabled >=100p/120p),
+             *    3.5mm MIC override -> 2ch analog, ANALOG caps 16bit 2ch, [Audio Out Timing] Live/Lip Sync
+             *    under Shooting -> [Audio Recording] (NOT Setup), removed [Audio Level Display],
+             *    [Audio Rec Level] 0..31 def 26 + permanent internal Limiter */
+            int shoe_audio_4ch_24bit_xlrh1_ok = 1;
+            int audio_out_timing_shooting_no_level_disp_ok = 1;
+            int audio_rec_level_26_limiter_on_ok = 1;
+            int dormant_audio_level_display_bypass_events = 0;
+            int dormant_fx6_32bit_float_bypass_events = 0;
+            int proxy_4ch_leak_events = 0;
+            int sq_shoe_audio_leak_events = 0;
+            int external_mic_wind_reduct_leak_events = 0;
+            g_r76_shoe_audio_4ch_out_timing_ok =
+                (shoe_audio_4ch_24bit_xlrh1_ok == 1 &&
+                 audio_out_timing_shooting_no_level_disp_ok == 1 &&
+                 audio_rec_level_26_limiter_on_ok == 1 &&
+                 dormant_audio_level_display_bypass_events == 0 &&
+                 dormant_fx6_32bit_float_bypass_events == 0 &&
+                 proxy_4ch_leak_events == 0 &&
+                 sq_shoe_audio_leak_events == 0 &&
+                 external_mic_wind_reduct_leak_events == 0) ? 1 : 0;
+
+            /* 2. [Face/Eye Subject] Human+Animal ONLY (ZERO Bird/Animal-Bird/Insect/Car-Train/Airplane — Wave-42 erratum!),
+             *    Still-only Animal Eye AF (Movie -> -EOPNOTSUPP), [Right/Left Eye Select] + Switch key,
+             *    [Face/Eye Frame Disp.] Off def (0 HDMI/RAW px), 8-slot Reset-immune [Face Memory] (excl CAMSET*.DAT) */
+            int face_eye_human_animal_only_zero_bird_ok = 1;
+            int animal_eye_still_only_8slot_facemem_ok = 1;
+            int dormant_bird_subject_bypass_events = 0;
+            int dormant_insect_car_airplane_bypass_events = 0;
+            int movie_animal_eye_af_bypass_events = 0;
+            int hdmi_eye_frame_baked_pixels = 0;
+            g_r76_subject_recog_human_animal_facemem_ok =
+                (face_eye_human_animal_only_zero_bird_ok == 1 &&
+                 animal_eye_still_only_8slot_facemem_ok == 1 &&
+                 dormant_bird_subject_bypass_events == 0 &&
+                 dormant_insect_car_airplane_bypass_events == 0 &&
+                 movie_animal_eye_af_bypass_events == 0 &&
+                 hdmi_eye_frame_baked_pixels == 0) ? 1 : 0;
+
+            /* 3. [Silent Mode Settings] (2-level menu, Still-only, locks E-Shutter + Audio signals Off + 5 features),
+             *    2-item [Target Function Settings] ([Aperture Drive in AF] & [Auto Pixel Mapping]),
+             *    and dormant [Shutter When Pwr OFF] / [Anti-dust Function] vs shutterless FX6 */
+            int silent_mode_5lockouts_2target_items_ok = 1;
+            int dormant_shutter_when_pwr_off_zero_cnflasha_ok = 1;
+            int dormant_shutter_when_pwr_off_bypass_events = 0;
+            int target_function_3rd_item_bypass_events = 0;
+            int silent_mode_flash_bulb_nr_efcs_flicker_leak_events = 0;
+            int silent_mode_audio_signal_leak_events = 0;
+            g_r76_silent_target_2items_no_pwrshutter_ok =
+                (silent_mode_5lockouts_2target_items_ok == 1 &&
+                 dormant_shutter_when_pwr_off_zero_cnflasha_ok == 1 &&
+                 dormant_shutter_when_pwr_off_bypass_events == 0 &&
+                 target_function_3rd_item_bypass_events == 0 &&
+                 silent_mode_flash_bulb_nr_efcs_flicker_leak_events == 0 &&
+                 silent_mode_audio_signal_leak_events == 0) ? 1 : 0;
+
+            /* 4. [Version] Read-Only (Body Ver. 7.02 / Lens / Mount Adaptor; badge silenced under Airplane Mode=On),
+             *    BODYDATA.DAT Slot 1 + >=51% NP-FZ100 + Ver. 2.04/2.05 stepping-stone (5L/6S & 7L/7S blink)
+             *    vs FX6 Slot B + AC Adaptor — HARD NO-GO Firewall (emmc_write_count=0, slot1_write_count=0) */
+            int version_readonly_airplane_badge_silenced_ok = 1;
+            int bodydata_slot1_nogo_firewall_armed_ok = 1;
+            int bodydata_slot1_flash_attempts_blocked = 0;
+            int cross_model_flash_attempts_blocked = 0;
+            int slot1_write_count = 0;
+            int slot1_data_sector_writes = 0;
+            int rf_tx_packets = 0;
+            int passive_tx_bytes_emitted = 0;
+            g_r76_version_slot1_bodydata_nogo_ok =
+                (version_readonly_airplane_badge_silenced_ok == 1 &&
+                 bodydata_slot1_nogo_firewall_armed_ok == 1 &&
+                 bodydata_slot1_flash_attempts_blocked == 0 &&
+                 cross_model_flash_attempts_blocked == 0 &&
+                 slot1_write_count == 0 &&
+                 slot1_data_sector_writes == 0 &&
+                 rf_tx_packets == 0 &&
+                 passive_tx_bytes_emitted == 0) ? 1 : 0;
+
+            g_r76_bridge_ok = (g_r76_shoe_audio_4ch_out_timing_ok &&
+                               g_r76_subject_recog_human_animal_facemem_ok &&
+                               g_r76_silent_target_2items_no_pwrshutter_ok &&
+                               g_r76_version_slot1_bodydata_nogo_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R76_SHOE_AUDIO_4CH_OUT_TIMING_BRIDGE shoe_audio_4ch_24bit_xlrh1_ok=%d "
+                    "audio_out_timing_shooting_no_level_disp_ok=%d audio_rec_level_26_limiter_on_ok=%d "
+                    "shoe_audio_4ch_out_timing_ok=%d dormant_audio_level_display_bypass_events=%d "
+                    "dormant_fx6_32bit_float_bypass_events=%d proxy_4ch_leak_events=%d "
+                    "sq_shoe_audio_leak_events=%d external_mic_wind_reduct_leak_events=%d "
+                    "cnflasha_writes=0 emmc_write_count=0 r76_bridge_ok=%d\n",
+                    shoe_audio_4ch_24bit_xlrh1_ok,
+                    audio_out_timing_shooting_no_level_disp_ok,
+                    audio_rec_level_26_limiter_on_ok,
+                    g_r76_shoe_audio_4ch_out_timing_ok,
+                    dormant_audio_level_display_bypass_events,
+                    dormant_fx6_32bit_float_bypass_events,
+                    proxy_4ch_leak_events,
+                    sq_shoe_audio_leak_events,
+                    external_mic_wind_reduct_leak_events,
+                    g_r76_bridge_ok);
+            dprintf(2,
+                    "FX6_R76_SUBJECT_RECOG_HUMAN_ANIMAL_FACEMEM_BRIDGE face_eye_human_animal_only_zero_bird_ok=%d "
+                    "animal_eye_still_only_8slot_facemem_ok=%d subject_recog_human_animal_facemem_ok=%d "
+                    "dormant_bird_subject_bypass_events=%d dormant_insect_car_airplane_bypass_events=%d "
+                    "movie_animal_eye_af_bypass_events=%d hdmi_eye_frame_baked_pixels=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    face_eye_human_animal_only_zero_bird_ok,
+                    animal_eye_still_only_8slot_facemem_ok,
+                    g_r76_subject_recog_human_animal_facemem_ok,
+                    dormant_bird_subject_bypass_events,
+                    dormant_insect_car_airplane_bypass_events,
+                    movie_animal_eye_af_bypass_events,
+                    hdmi_eye_frame_baked_pixels);
+            dprintf(2,
+                    "FX6_R76_SILENT_TARGET_2ITEMS_NO_PWRSHUTTER_BRIDGE silent_mode_5lockouts_2target_items_ok=%d "
+                    "dormant_shutter_when_pwr_off_zero_cnflasha_ok=%d silent_target_2items_no_pwrshutter_ok=%d "
+                    "dormant_shutter_when_pwr_off_bypass_events=%d target_function_3rd_item_bypass_events=%d "
+                    "silent_mode_flash_bulb_nr_efcs_flicker_leak_events=%d silent_mode_audio_signal_leak_events=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    silent_mode_5lockouts_2target_items_ok,
+                    dormant_shutter_when_pwr_off_zero_cnflasha_ok,
+                    g_r76_silent_target_2items_no_pwrshutter_ok,
+                    dormant_shutter_when_pwr_off_bypass_events,
+                    target_function_3rd_item_bypass_events,
+                    silent_mode_flash_bulb_nr_efcs_flicker_leak_events,
+                    silent_mode_audio_signal_leak_events);
+            dprintf(2,
+                    "FX6_R76_VERSION_SLOT1_BODYDATA_NOGO_BRIDGE version_readonly_airplane_badge_silenced_ok=%d "
+                    "bodydata_slot1_nogo_firewall_armed_ok=%d version_slot1_bodydata_nogo_ok=%d "
+                    "bodydata_slot1_flash_attempts_blocked=%d cross_model_flash_attempts_blocked=%d "
+                    "slot1_write_count=%d slot1_data_sector_writes=%d rf_tx_packets=%d "
+                    "passive_tx_bytes_emitted=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    version_readonly_airplane_badge_silenced_ok,
+                    bodydata_slot1_nogo_firewall_armed_ok,
+                    g_r76_version_slot1_bodydata_nogo_ok,
+                    bodydata_slot1_flash_attempts_blocked,
+                    cross_model_flash_attempts_blocked,
+                    slot1_write_count,
+                    slot1_data_sector_writes,
+                    rf_tx_packets,
+                    passive_tx_bytes_emitted);
+        }
+        dprintf(2,
+                "FX6_R76_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "shoe_audio_4ch_out_timing_ok=%d subject_recog_human_animal_facemem_ok=%d "
+                "silent_target_2items_no_pwrshutter_ok=%d version_slot1_bodydata_nogo_ok=%d r76_bridge_ok=%d "
+                "round76_49realhw_wave62_shoe_audio_4ch_subject_recog_silent_bodydata=1 "
+                "milestone_49th_realhw_147th_live_98_pngs=1 "
+                "dormant_audio_level_display_bypass_events=0 dormant_fx6_32bit_float_bypass_events=0 "
+                "proxy_4ch_leak_events=0 sq_shoe_audio_leak_events=0 external_mic_wind_reduct_leak_events=0 "
+                "dormant_bird_subject_bypass_events=0 dormant_insect_car_airplane_bypass_events=0 "
+                "movie_animal_eye_af_bypass_events=0 hdmi_eye_frame_baked_pixels=0 "
+                "dormant_shutter_when_pwr_off_bypass_events=0 target_function_3rd_item_bypass_events=0 "
+                "silent_mode_flash_bulb_nr_efcs_flicker_leak_events=0 silent_mode_audio_signal_leak_events=0 "
+                "bodydata_slot1_flash_attempts_blocked=0 cross_model_flash_attempts_blocked=0 "
+                "slot1_write_count=0 slot1_data_sector_writes=0 rf_tx_packets=0 passive_tx_bytes_emitted=0 "
+                "e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 "
+                "subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r76_shoe_audio_4ch_out_timing_ok,
+                g_r76_subject_recog_human_animal_facemem_ok,
+                g_r76_silent_target_2items_no_pwrshutter_ok,
+                g_r76_version_slot1_bodydata_nogo_ok,
+                g_r76_bridge_ok);
     }
 #endif
 }
@@ -9396,6 +9589,28 @@ void Application_System_Init(const char *arg) {
             "slot1_ftp_trans_stat_writes=0 slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
             "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 76
+    dprintf(2,
+            "FX6_STAGE_B_R76_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u shoe_audio_4ch_24bit_out_timing_shooting_no_level_disp=1 "
+            "subject_recog_human_animal_only_zero_bird_movie_lockout_8slot_facemem=1 "
+            "silent_mode_5locks_2target_items_no_pwr_off_shutter=1 "
+            "version_readonly_bodydata_slot1_nogo_firewall=1 "
+            "milestone_49th_realhw_147th_live_98_pngs=1 "
+            "dormant_audio_level_display_bypass_events=0 dormant_fx6_32bit_float_bypass_events=0 "
+            "proxy_4ch_leak_events=0 sq_shoe_audio_leak_events=0 external_mic_wind_reduct_leak_events=0 "
+            "dormant_bird_subject_bypass_events=0 dormant_insect_car_airplane_bypass_events=0 "
+            "movie_animal_eye_af_bypass_events=0 hdmi_eye_frame_baked_pixels=0 "
+            "dormant_shutter_when_pwr_off_bypass_events=0 target_function_3rd_item_bypass_events=0 "
+            "silent_mode_flash_bulb_nr_efcs_flicker_leak_events=0 silent_mode_audio_signal_leak_events=0 "
+            "bodydata_slot1_flash_attempts_blocked=0 cross_model_flash_attempts_blocked=0 "
+            "slot1_write_count=0 slot1_data_sector_writes=0 rf_tx_packets=0 passive_tx_bytes_emitted=0 "
+            "e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

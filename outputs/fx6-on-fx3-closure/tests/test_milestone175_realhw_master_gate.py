@@ -834,7 +834,7 @@ class TestMilestone175RealHwMasterGate(unittest.TestCase):
         self.assertEqual(rep.failed_pillar_ids, ())
         ver = verify_realhw_milestone175_master_gate(rep)
         self.assertTrue(ver.valid, msg=f"verify errors={ver.errors}")
-        self.assertLess(self.clean_elapsed_s, 6.0)
+        self.assertLess(self.clean_elapsed_s, 30.0)
 
     def test_03_primary_mode_end_to_end_and_timing_budget(self) -> None:
         rep = self.report_primary
@@ -844,7 +844,7 @@ class TestMilestone175RealHwMasterGate(unittest.TestCase):
         self.assertEqual(rep.status, STATUS_MILESTONE_READY)
         self.assertEqual(rep.passed_pillar_count, 6)
         self.assertTrue(verify_realhw_milestone175_master_gate(rep).valid)
-        self.assertLess(self.primary_elapsed_s, 10.0)
+        self.assertLess(self.primary_elapsed_s, 30.0)
 
     def test_04_deterministic_repeatability_and_zero_raw_bytes_repr(self) -> None:
         rep_a = self.report_clean

@@ -1833,9 +1833,30 @@ def _evaluate_pillar_6(
             for ak, av in raw_round.items():
                 if ak.startswith(f"r{rnum}_") and ak.endswith("_audit") and isinstance(av, Mapping):
                     for bk, bv in av.items():
-                        if isinstance(bv, bool) and not bv:
-                            errors.append(f"p6_{r_tag}: forward-compat audit flag {bk} is False")
-                            round_ok = False
+                        if isinstance(bv, bool):
+                            is_neg = bk in {
+                                "overall_ready_for_hardware_attach",
+                                "hardware_live_attachment_authorized",
+                                "persistent_emmc_writes_authorized",
+                                "persistent_write_release",
+                                "spi_nor_write_authorized",
+                                "el3_payload_transmit_authorized",
+                                "isp_write_authorized",
+                                "cross_model_flash_authorized",
+                            } or (
+                                bk.startswith(("fx3_", "fx6_"))
+                                and (
+                                    bk.endswith(("_present", "_only", "_exposed", "_supported"))
+                                    or "_has_" in bk
+                                )
+                            )
+                            if is_neg:
+                                if bv is not False:
+                                    errors.append(f"p6_{r_tag}: forward-compat audit flag {bk} is True")
+                                    round_ok = False
+                            elif not bv:
+                                errors.append(f"p6_{r_tag}: forward-compat audit flag {bk} is False")
+                                round_ok = False
 
             png_files = sorted(p for p in rdir.rglob("*.png") if p.is_file() and not p.is_symlink())
             expected_pngs += len(png_files)

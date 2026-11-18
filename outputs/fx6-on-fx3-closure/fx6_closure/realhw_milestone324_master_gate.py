@@ -2142,7 +2142,14 @@ def _evaluate_pillar_6(
                 if ak.startswith(f"r{rnum}_") and ak.endswith("_audit") and isinstance(av, Mapping):
                     for bk, bv in av.items():
                         if isinstance(bv, bool):
-                            if bk in _NEGATIVE_AUDIT_BOOL_KEYS:
+                            is_neg = bk in _NEGATIVE_AUDIT_BOOL_KEYS or (
+                                bk.startswith(("fx3_", "fx6_"))
+                                and (
+                                    bk.endswith(("_present", "_only", "_exposed", "_supported"))
+                                    or "_has_" in bk
+                                )
+                            )
+                            if is_neg:
                                 if bv is not False:
                                     errors.append(f"p6_{r_tag}: forward-compat audit flag {bk} is True")
                                     round_ok = False

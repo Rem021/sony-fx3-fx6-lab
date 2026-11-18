@@ -26,6 +26,7 @@ import sys
 sys.dont_write_bytecode = True
 
 import argparse
+import concurrent.futures
 import json
 import os
 import re
@@ -347,32 +348,88 @@ def run_byof_manifest_audit(repo_root: Path = REPO_ROOT) -> ByofManifestAuditSum
     )
 
 
+def _select_lab_suites(suites: Optional[Sequence[str]] = None) -> Tuple[LabSuiteSpec, ...]:
+    if not suites:
+        return LAB_SUITES
+    wanted = [s.strip() for s in suites if s and s.strip()]
+    if not wanted:
+        return LAB_SUITES
+    by_id = {spec.suite_id: spec for spec in LAB_SUITES}
+    unknown = [s for s in wanted if s not in by_id]
+    if unknown:
+        raise ValueError(
+            f"Unknown suite_id(s) {unknown}; valid suite_ids: {sorted(by_id.keys())}"
+        )
+    seen = set()
+    selected: List[LabSuiteSpec] = []
+    for s in wanted:
+        if s not in seen:
+            seen.add(s)
+            selected.append(by_id[s])
+    return tuple(selected)
+
+
 def run_all_lab_verifications(
     repo_root: Path = REPO_ROOT,
     *,
     clean_only: bool = False,
     stream_progress: bool = False,
+    jobs: int = 1,
+    suites: Optional[Sequence[str]] = None,
 ) -> UnifiedLabRunReport:
-    """Run all five lab unittest suites, BYOF manifest check, and clean-room binary/pyc hygiene audit."""
+    """Run lab unittest suites (all seven by default, or a selected shard), BYOF manifest check, and hygiene audit."""
     overall_t0 = time.monotonic()
     suite_results: List[SuiteExecutionResult] = []
+    target_suites = _select_lab_suites(suites)
+    effective_jobs = max(1, min(len(target_suites), int(jobs)))
 
     if not clean_only:
-        for idx, spec in enumerate(LAB_SUITES, start=1):
+        if effective_jobs <= 1:
+            for idx, spec in enumerate(target_suites, start=1):
+                if stream_progress:
+                    sys.stdout.write(f"[{idx}/{len(target_suites)}] Running {spec.display_name} ...\n")
+                    sys.stdout.flush()
+                res = run_single_suite(spec, repo_root=repo_root)
+                suite_results.append(res)
+                if stream_progress:
+                    status_str = "PASS" if res.passed else "FAIL"
+                    sys.stdout.write(
+                        f"    -> {status_str}: {res.tests_ran} tests (skipped={res.tests_skipped}) "
+                        f"in {res.elapsed_seconds:.2f}s ({res.summary_line})\n"
+                    )
+                    if not res.passed and res.failure_output:
+                        sys.stdout.write(f"    --- Failure output ({res.display_name}) ---\n{res.failure_output}\n")
+                    sys.stdout.flush()
+        else:
             if stream_progress:
-                sys.stdout.write(f"[{idx}/{len(LAB_SUITES)}] Running {spec.display_name} ...\n")
-                sys.stdout.flush()
-            res = run_single_suite(spec, repo_root=repo_root)
-            suite_results.append(res)
-            if stream_progress:
-                status_str = "PASS" if res.passed else "FAIL"
                 sys.stdout.write(
-                    f"    -> {status_str}: {res.tests_ran} tests (skipped={res.tests_skipped}) "
-                    f"in {res.elapsed_seconds:.2f}s ({res.summary_line})\n"
+                    f"[parallel] Launching {len(target_suites)} suites across {effective_jobs} worker processes ...\n"
                 )
-                if not res.passed and res.failure_output:
-                    sys.stdout.write(f"    --- Failure output ({res.display_name}) ---\n{res.failure_output}\n")
                 sys.stdout.flush()
+            ordered_results: Dict[int, SuiteExecutionResult] = {}
+            with concurrent.futures.ThreadPoolExecutor(max_workers=effective_jobs) as pool:
+                future_to_idx = {
+                    pool.submit(run_single_suite, spec, repo_root): idx
+                    for idx, spec in enumerate(target_suites, start=1)
+                }
+                for fut in concurrent.futures.as_completed(future_to_idx):
+                    idx = future_to_idx[fut]
+                    spec = target_suites[idx - 1]
+                    res = fut.result()
+                    ordered_results[idx] = res
+                    if stream_progress:
+                        status_str = "PASS" if res.passed else "FAIL"
+                        sys.stdout.write(
+                            f"[{idx}/{len(target_suites)}] {spec.display_name} -> {status_str}: "
+                            f"{res.tests_ran} tests (skipped={res.tests_skipped}) "
+                            f"in {res.elapsed_seconds:.2f}s ({res.summary_line})\n"
+                        )
+                        if not res.passed and res.failure_output:
+                            sys.stdout.write(
+                                f"    --- Failure output ({spec.display_name}) ---\n{res.failure_output}\n"
+                            )
+                        sys.stdout.flush()
+            suite_results = [ordered_results[idx] for idx in range(1, len(target_suites) + 1)]
 
         byof_summary = run_byof_manifest_audit(repo_root=repo_root)
         if stream_progress:
@@ -427,6 +484,26 @@ def run_all_lab_verifications(
     )
 
 
+def _resolve_default_jobs() -> int:
+    raw = os.environ.get("FX3_LAB_TEST_JOBS", "").strip()
+    if raw:
+        try:
+            val = int(raw)
+            if val > 0:
+                return min(len(LAB_SUITES), val)
+        except ValueError:
+            pass
+    return 1
+
+
+def _resolve_default_suites() -> Optional[Tuple[str, ...]]:
+    raw = os.environ.get("FX3_LAB_SUITES", "").strip()
+    if not raw:
+        return None
+    parts = tuple(p.strip() for p in raw.split(",") if p.strip())
+    return parts or None
+
+
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="run_all_lab_tests.py",
@@ -443,12 +520,37 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         action="store_true",
         help="Run only the tracked-tree clean-room binary/pyc hygiene audit",
     )
+    parser.add_argument(
+        "-j",
+        "--jobs",
+        type=int,
+        default=_resolve_default_jobs(),
+        help="Number of independent unittest suites to run concurrently (0 = auto CPU count)",
+    )
+    parser.add_argument(
+        "--suites",
+        type=str,
+        default=None,
+        help="Comma-separated suite_id shard filter (defaults to FX3_LAB_SUITES env var or all 7 suites)",
+    )
     args = parser.parse_args(argv)
+    resolved_suites = (
+        tuple(p.strip() for p in args.suites.split(",") if p.strip())
+        if args.suites
+        else _resolve_default_suites()
+    )
+    resolved_jobs = (
+        min(len(LAB_SUITES), max(1, os.cpu_count() or 1))
+        if args.jobs == 0
+        else max(1, min(len(LAB_SUITES), args.jobs))
+    )
 
     rep = run_all_lab_verifications(
         repo_root=REPO_ROOT,
         clean_only=args.clean_only,
         stream_progress=not args.emit_json,
+        jobs=resolved_jobs,
+        suites=resolved_suites,
     )
 
     if args.emit_json:

@@ -16,15 +16,37 @@ env:
 
 jobs:
   clean-room-verify:
-    name: Clean-Room Suite (${{ matrix.os }})
+    name: Clean-Room Suite (${{ matrix.os }} / ${{ matrix.shard_name }})
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
+        include:
+          - os: ubuntu-latest
+            shard_name: recovery-safety
+            suites: "fx3_recovery_adapter,fx3_safety"
+            run_cli_gates: "false"
+          - os: ubuntu-latest
+            shard_name: closure-gates
+            suites: "fx6_on_fx3_closure"
+            run_cli_gates: "true"
+          - os: ubuntu-latest
+            shard_name: presenter-vm-fw
+            suites: "fx3_vm_trial,fx6_native_presenter_closure,fx3_vm,fx3_firmware_lab"
+            run_cli_gates: "false"
+          - os: macos-latest
+            shard_name: recovery-safety
+            suites: "fx3_recovery_adapter,fx3_safety"
+            run_cli_gates: "false"
+          - os: macos-latest
+            shard_name: closure-gates
+            suites: "fx6_on_fx3_closure"
+            run_cli_gates: "true"
+          - os: macos-latest
+            shard_name: presenter-vm-fw
+            suites: "fx3_vm_trial,fx6_native_presenter_closure,fx3_vm,fx3_firmware_lab"
+            run_cli_gates: "false"
 
     steps:
       - name: Checkout repository
@@ -55,11 +77,12 @@ jobs:
         run: |
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-byof
 
-      - name: Run 7-suite donorless clean-room verification (12,043 tests across synthetic + Unicorn + POSIX sh)
+      - name: Run shard clean-room verification (${{ matrix.suites }}, uncontended single-suite CPU)
         run: |
-          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make test
+          FX3_FX6_FORCE_CLEAN_ROOM=1 FX3_LAB_TEST_JOBS=1 FX3_LAB_SUITES="${{ matrix.suites }}" PYTHON="$(command -v python3)" make test
 
-      - name: Run Stage-B, Firmware-Lab (45 Auditors) & 52-Stage Co-Emulation CLI checks
+      - name: Run Stage-B, Firmware-Lab (45 Auditors) & 81-Stage Co-Emulation CLI checks
+        if: matrix.run_cli_gates == 'true'
         run: |
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-peripheral-ux > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-ap-cp-imaging > /dev/null
@@ -69,7 +92,8 @@ jobs:
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-firmware-lab > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-coemulation > /dev/null
 
-      - name: Run Safety Preflights (up to 108-Gate), 45-Pillar Recovery, Post-Trial & Milestone 90..264 Master Gates
+      - name: Run Safety Preflights (up to 156-Gate), 66-Pillar Recovery, Post-Trial & Milestone 90..349 Master Gates
+        if: matrix.run_cli_gates == 'true'
         run: |
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-20-gates > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-24-gates > /dev/null
@@ -79,6 +103,8 @@ jobs:
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH="outputs/fx3-safety" "$(command -v python3)" -B -m fx3_safety verify-124-gates --force-clean-room --simulate-bench-dry-run > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH="outputs/fx3-safety" "$(command -v python3)" -B -m fx3_safety verify-134-gates --force-clean-room --simulate-bench-dry-run > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH="outputs/fx3-safety" "$(command -v python3)" -B -m fx3_safety verify-142-gates --force-clean-room --simulate-bench-dry-run > /dev/null
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH="outputs/fx3-safety" "$(command -v python3)" -B -m fx3_safety verify-154-gates --force-clean-room --simulate-bench-dry-run > /dev/null
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH="outputs/fx3-safety" "$(command -v python3)" -B -m fx3_safety verify-156-gates --force-clean-room --simulate-bench-dry-run > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-rp2040-fixture > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-init2-escape > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-tier0-backup > /dev/null
@@ -89,6 +115,8 @@ jobs:
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH="outputs/fx3-recovery-adapter" "$(command -v python3)" -B -m fx3_recovery verify-50pillar-recovery --clean-room > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH="outputs/fx3-recovery-adapter" "$(command -v python3)" -B -m fx3_recovery verify-54pillar-recovery --clean-room > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH="outputs/fx3-recovery-adapter" "$(command -v python3)" -B -m fx3_recovery verify-56pillar-recovery --clean-room > /dev/null
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH="outputs/fx3-recovery-adapter" "$(command -v python3)" -B -m fx3_recovery verify-65pillar-recovery --clean-room > /dev/null
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH="outputs/fx3-recovery-adapter" "$(command -v python3)" -B -m fx3_recovery verify-66pillar-recovery --clean-room > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-post-trial-audit > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-milestone-90 > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-milestone-110 > /dev/null
@@ -97,8 +125,10 @@ jobs:
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" "$(command -v python3)" -B -m fx6_closure verify-milestone-295 --force-clean-room > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" "$(command -v python3)" -B -m fx6_closure verify-milestone-311 --force-clean-room > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" "$(command -v python3)" -B -m fx6_closure verify-milestone-324 --force-clean-room > /dev/null
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" "$(command -v python3)" -B -m fx6_closure verify-milestone-349 --force-clean-room > /dev/null
 
       - name: Run Stage-A & Stage-B H0->H1->H2 zero-mutation lifecycle drills
+        if: matrix.run_cli_gates == 'true'
         run: |
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make lifecycle-drill > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make stage-b-lifecycle-drill > /dev/null

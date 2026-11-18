@@ -252,6 +252,31 @@ from .realhw_hdmi_raw_desqueeze_reclamp_varshutter_apsc_and_146gate_guard import
     evaluate_g145_hdmi_raw_co_rec_vault_and_desqueeze_4ratio_guard,
     evaluate_g146_reclamp_emph_remain_autoreview_and_dormant_varshutter_apsc_guard,
 )
+from .realhw_breathing_camid_copyright_powersave_ntscpal_and_148gate_guard import (
+    evaluate_148gate_preflight,
+    evaluate_g147_breathing_comp_120p_catalyst_and_camid_reel_sdhc_vault_guard,
+    evaluate_g148_copyright_46ch_serial_errata_and_powersave_ntscpal_vault_guard,
+)
+from .realhw_zoom_ciz_autoslow_iso_arw_rawcomp_usblun_uvc_and_150gate_guard import (
+    evaluate_150gate_preflight,
+    evaluate_g149_zoom_ciz_digital_8step_speed_reset_split_and_autoslow_dual_base_iso_guard,
+    evaluate_g150_still_arw_dormant_lossless_hlg_photo_and_usb_lun_single_slot1_npfz100_uvc_firewall,
+)
+from .realhw_drive_focusbracket_shutter_efcs_creativelook_recoverdb_and_152gate_guard import (
+    evaluate_152gate_preflight,
+    evaluate_g151_drive_focusbracket_shutter_efcs_nr_guard,
+    evaluate_g152_creative_look_soft_skin_delete_protect_recoverdb_guard,
+)
+from .realhw_pixelmap_apr_monitor_vfadjust_customhold_hdmi_reccontrol_and_154gate_guard import (
+    evaluate_154gate_preflight,
+    evaluate_g153_pixelmap_apr_monitor_vfadjust_guard,
+    evaluate_g154_recall_custom_hold_hdmi_reccontrol_vault_guard,
+)
+from .realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_and_156gate_guard import (
+    evaluate_156gate_preflight,
+    evaluate_g155_areadate_dst_grid_cleanhdmi_guard,
+    evaluate_g156_saveload_camset_mishoe_genlock_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -4744,6 +4769,451 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_146.add_argument("--json", action="store_true", help="Emit structured JSON report")
     p_146.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 179. verify-breathing-camid-reel-sdhc-guard
+    p_g147 = sub.add_parser(
+        "verify-breathing-camid-reel-sdhc-guard",
+        aliases=["verify-g147-breathing-camid-reel", "verify-g147"],
+        help="Verify Gate G147: Resettable [Breathing Comp.] Wave-41 120p/S&Q>=100fps/Macro-TC/HDMI-RAW/Catalyst-Prepare errata & Initialize-only [File Settings] ([File Number], [File Name Format], SDHC FAT32 Standard-only & 4GB split, [Cam ID + Reel#] C999->D001, 37-char [Title], Slot-1 EROFS=30)",
+    )
+    p_g147.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g147.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g147.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g147.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g147.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 180. verify-copyright-powersave-ntscpal-guard
+    p_g148 = sub.add_parser(
+        "verify-copyright-powersave-ntscpal-guard",
+        aliases=["verify-g148-copyright-powersave-ntscpal", "verify-g148"],
+        help="Verify Gate G148: Round-57 Reset Errata on [Copyright Info] (46-char ASCII, CAMSET excluded) + active Still+Movie [Write Serial Number], 2-item [Power Setting Option] (9 bypasses, Auto Power OFF Temp., dormant [Power Save by Monitor] EOPNOTSUPP=95), and [NTSC/PAL Selector] reboot + Slot-1 Format/SD-Erase/TRIM EROFS=30",
+    )
+    p_g148.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g148.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g148.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g148.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g148.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 181. verify-148-gates
+    p_148 = sub.add_parser(
+        "verify-148-gates",
+        help="Run Phase 331 (Task H400, Wave-64) Unified 148-Gate Master Safety Preflight Engine (G01..G148)",
+    )
+    p_148.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_148.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_148.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G148 gates can be rehearsed offline",
+    )
+    p_148.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_148.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 182. verify-zoom-ciz-autoslow-baseiso-guard
+    p_g149 = sub.add_parser(
+        "verify-zoom-ciz-autoslow-baseiso-guard",
+        aliases=["verify-g149-zoom-ciz-autoslow-baseiso", "verify-g149"],
+        help="Verify Gate G149: Reset-immune [Zoom Range] & [Zoom Ring Rotate] vs Resettable 8-step [Zoom Lever Speed]/[Custom Key Z. Speed]/[Remote Zoom Speed] + pre-entry/active lockouts, Movie-only [Auto Slow Shutter] 7-cond locks, Reset-immune [ISO Range Limit], Still-only [ISO AUTO Min. SS], and Dual Base ISO (Cine EI 800/12800 vs 20x per-Gamma auto)",
+    )
+    p_g149.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g149.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g149.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g149.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g149.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 183. verify-still-arw-hlg-usblun-uvc-guard
+    p_g150 = sub.add_parser(
+        "verify-still-arw-hlg-usblun-uvc-guard",
+        aliases=["verify-g150-still-arw-hlg-usblun-uvc", "verify-g150"],
+        help="Verify Gate G150: Still [RAW File Type] Compressed/Uncompressed vs 100%% dormant Lossless Comp (EOPNOTSUPP=95), [HLG Still Image] BT.2100 + ISO 100/125, [Sort Recording] Slot-1 EROFS=30, [USB LUN Setting]=Single Slot-1 exposure trap & host-MSC firewall, NP-FZ100 PD boot gate vs DC-C1, and Dual FX3/FX6 native UVC myth-busting (EOPNOTSUPP=95)",
+    )
+    p_g150.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g150.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g150.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g150.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g150.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 184. verify-150-gates
+    p_150 = sub.add_parser(
+        "verify-150-gates",
+        help="Run Phase 347 (Task H432, Wave-65) Unified 150-Gate Milestone Master Safety Preflight Engine (G01..G150)",
+    )
+    p_150.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_150.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_150.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G150 gates can be rehearsed offline",
+    )
+    p_150.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_150.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 185. verify-drive-focusbracket-shutter-efcs-nr-guard
+    p_g151 = sub.add_parser(
+        "verify-drive-focusbracket-shutter-efcs-nr-guard",
+        aliases=["verify-g151-drive-shutter-efcs-nr", "verify-g151"],
+        help="Verify Gate G151: Still-only [Drive Mode] 10 fps Hi+ / >F11 AF lock / Uncompressed RAW & Flash drop vs 0-exposed dormant [Focus Bracket] (EOPNOTSUPP=95), 2-option [Shutter Type] zero-Auto + 1/250 s X-Sync + Reset-immune [e-Front Curtain Shut.] (curtaion) + [Long Exposure NR] (>=1s) + [High ISO NR] vs FX6 APR",
+    )
+    p_g151.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g151.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g151.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g151.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g151.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 186. verify-creative-look-soft-skin-delete-protect-recoverdb-guard
+    p_g152 = sub.add_parser(
+        "verify-creative-look-soft-skin-delete-protect-recoverdb-guard",
+        aliases=["verify-g152-creativelook-delete-recoverdb", "verify-g152"],
+        help="Verify Gate G152: [Creative Look] 10+6 slots / 0..9 asymmetric Fade-Sharpness-Clarity bounds + PP/Log/HLG [-] lock vs 100%% dormant [Soft Skin Effect] on FX3 & FX6 (EOPNOTSUPP=95), Playback [Delete]/[Protect]/[Display Media Info.]/[Recover Image DB] + Tier-0 Slot-1 EROFS=30 Firewall",
+    )
+    p_g152.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g152.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g152.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g152.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g152.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 187. verify-152-gates
+    p_152 = sub.add_parser(
+        "verify-152-gates",
+        help="Run Phase 351 (Task H439, Wave-66) Unified 152-Gate Milestone Master Safety Preflight Engine (G01..G152)",
+    )
+    p_152.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_152.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_152.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G152 gates can be rehearsed offline",
+    )
+    p_152.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_152.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 188. verify-pixelmap-apr-monitor-vfadjust-guard
+    p_g153 = sub.add_parser(
+        "verify-pixelmap-apr-monitor-vfadjust-guard",
+        aliases=["verify-g153-pixelmap-apr-monitor", "verify-g153"],
+        help="Verify Gate G153: [Pixel Mapping] / Dual [Auto Pixel Mapping] Reset Split (Setup Init-only vs Silent Target Resettable) & Sony Typos vs FX6 APR + Dormant ABB (EOPNOTSUPP=95), Setup -> [Monitor] 3 Init-only Items vs Zero [Finder/Monitor] & 4 Dormant EVF Symbols vs FX6 VF Setting/VF Adjust",
+    )
+    p_g153.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g153.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g153.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g153.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g153.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 189. verify-recall-custom-hold-hdmi-reccontrol-guard
+    p_g154 = sub.add_parser(
+        "verify-recall-custom-hold-hdmi-reccontrol-guard",
+        aliases=["verify-g154-customhold-hdmi-reccontrol", "verify-g154"],
+        help="Verify Gate G154: Still-only P/A/S/M [Recall Custom hold 1..3] Exact 11 Params with Zero Standalone WB vs FX6 Push AF/AGC/Iris & Dormant High/Low Key, plus Setup -> [External Output] HDMI Rec. Media = On Slot-1 EROFS=30 Vault, REC Control TC Output=On Prerequisite, and ctrl_for_hmdi Typo",
+    )
+    p_g154.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g154.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g154.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g154.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g154.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 190. verify-154-gates
+    p_154 = sub.add_parser(
+        "verify-154-gates",
+        help="Run Phase 356 (Task H446, Wave-67) Unified 154-Gate Milestone Master Safety Preflight Engine (G01..G154)",
+    )
+    p_154.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_154.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_154.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G154 gates can be rehearsed offline",
+    )
+    p_154.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_154.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 191. verify-areadate-grid-cleanhdmi-guard
+    p_g155 = sub.add_parser(
+        "verify-areadate-grid-cleanhdmi-guard",
+        aliases=["verify-g155-areadate-grid-cleanhdmi", "verify-g155"],
+        help="Verify Gate G155: Area/Date/Time Setting 30 GMT Zones (saylight_saving Typo & 24h Soldered RTC vs FX6 Clock Set) plus Grid Line Display HDMI Pass-Through vs Marker Display (80%%/90%% Safety Zone, 15 Ratios) Zero-HDMI & 5-Item Reset-Resistance Firewall",
+    )
+    p_g155.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g155.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g155.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g155.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g155.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 192. verify-saveload-camset-mishoe-genlock-guard
+    p_g156 = sub.add_parser(
+        "verify-saveload-camset-mishoe-genlock-guard",
+        aliases=["verify-g156-saveload-camset-mishoe", "verify-g156"],
+        help="Verify Gate G156: [Save/Load Settings] Slot 1 EROFS=30 %%c:%%s/SONY/SETTING/%%s/CAMSET/%%s.DAT (CAMSET%%02d / FTPSET%%02d / CAMPR%%02d%%c.DAT, libSaveLoadSettings.so, Zero PRO/CAMERA) vs FX6 All File, plus Zero Sync Terminal + XLR-H1 vs HVL-LBPC MI-Shoe Exclusion & PMIC 5V <= 900mA vs FX6 Zero GENLOCK Firewall",
+    )
+    p_g156.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g156.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g156.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g156.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g156.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 193. verify-156-gates
+    p_156 = sub.add_parser(
+        "verify-156-gates",
+        help="Run Phase 359 (Task H451, Wave-68) Unified 156-Gate Milestone Master Safety Preflight Engine (G01..G156)",
+    )
+    p_156.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_156.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_156.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G156 gates can be rehearsed offline",
+    )
+    p_156.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_156.add_argument("--summary", action="store_true", help="Emit concise summary output")
 
     args = parser.parse_args(argv)
 
@@ -10335,6 +10805,794 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_146_gates_verified if args.dry_run_simulated else report.offline_143_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-breathing-camid-reel-sdhc-guard",
+        "verify-g147-breathing-camid-reel",
+        "verify-g147",
+    ):
+        verdict, res = evaluate_g147_breathing_comp_120p_catalyst_and_camid_reel_sdhc_vault_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.breathing_camid_reel_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_breathing_comp": guard["effective_breathing_comp"],
+                    "breathing_comp_resettable_by_camset_reset": guard["breathing_comp_resettable_by_camset_reset"],
+                    "effective_file_number_mode": guard["effective_file_number_mode"],
+                    "effective_file_name_format": guard["effective_file_name_format"],
+                    "effective_camera_id": guard["effective_camera_id"],
+                    "effective_reel_number": guard["effective_reel_number"],
+                    "effective_title_name": guard["effective_title_name"],
+                    "sample_output_clip_stem": guard["sample_output_clip_stem"],
+                    "sdhc_standard_format_locked": guard["sdhc_standard_format_locked"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.breathing_camid_reel_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} breathing={guard['effective_breathing_comp']} "
+                f"fmt={guard['effective_file_name_format']} "
+                f"stem={guard['sample_output_clip_stem']} "
+                f"sdhc_lock={guard['sdhc_standard_format_locked']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-copyright-powersave-ntscpal-guard",
+        "verify-g148-copyright-powersave-ntscpal",
+        "verify-g148",
+    ):
+        verdict, res = evaluate_g148_copyright_46ch_serial_errata_and_powersave_ntscpal_vault_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.copyright_powersave_ntscpal_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_write_copyright_info": guard["effective_write_copyright_info"],
+                    "effective_write_serial_number": guard["effective_write_serial_number"],
+                    "copyright_and_serial_resettable_by_camset_reset": guard["copyright_and_serial_resettable_by_camset_reset"],
+                    "copyright_excluded_from_camset_dat": guard["copyright_excluded_from_camset_dat"],
+                    "exact_2_power_setting_items_verified": guard["exact_2_power_setting_items_verified"],
+                    "effective_power_save_start_time": guard["effective_power_save_start_time"],
+                    "effective_auto_power_off_temp": guard["effective_auto_power_off_temp"],
+                    "effective_video_system": guard["effective_video_system"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.copyright_powersave_ntscpal_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} write_copy={guard['effective_write_copyright_info']} "
+                f"write_serial={guard['effective_write_serial_number']} "
+                f"ps={guard['effective_power_save_start_time']} "
+                f"temp={guard['effective_auto_power_off_temp']} "
+                f"vsys={guard['effective_video_system']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-148-gates":
+        report = evaluate_148gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "schema_version": report.schema_version,
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g147_status": report.g147_result["status"],
+                    "g148_status": report.g148_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/148 "
+                f"g147_to_g148_all_passed={report.g147_to_g148_all_passed} "
+                f"all_148_gates_verified={report.all_148_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_148_gates_verified if args.dry_run_simulated else report.offline_145_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-zoom-ciz-autoslow-baseiso-guard",
+        "verify-g149-zoom-ciz-autoslow-baseiso",
+        "verify-g149",
+    ):
+        verdict, res = evaluate_g149_zoom_ciz_digital_8step_speed_reset_split_and_autoslow_dual_base_iso_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.zoom_ciz_autoslow_baseiso_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_zoom_range": guard["effective_zoom_range"],
+                    "effective_max_zoom_scale": guard["effective_max_zoom_scale"],
+                    "zoom_range_and_ring_resettable_by_camset_reset": guard["zoom_range_and_ring_resettable_by_camset_reset"],
+                    "zoom_speeds_resettable_by_camset_reset": guard["zoom_speeds_resettable_by_camset_reset"],
+                    "effective_auto_slow_shutter": guard["effective_auto_slow_shutter"],
+                    "effective_low_base_iso": guard["effective_low_base_iso"],
+                    "effective_high_base_iso": guard["effective_high_base_iso"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.zoom_ciz_autoslow_baseiso_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} zoom_range={guard['effective_zoom_range']} "
+                f"scale={guard['effective_max_zoom_scale']} "
+                f"autoslow={guard['effective_auto_slow_shutter']} "
+                f"base_iso={guard['effective_low_base_iso']}/{guard['effective_high_base_iso']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-still-arw-hlg-usblun-uvc-guard",
+        "verify-g150-still-arw-hlg-usblun-uvc",
+        "verify-g150",
+    ):
+        verdict, res = evaluate_g150_still_arw_dormant_lossless_hlg_photo_and_usb_lun_single_slot1_npfz100_uvc_firewall(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.still_arw_hlg_usblun_uvc_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_raw_file_type": guard["effective_raw_file_type"],
+                    "dormant_lossless_raw_rejected": guard["dormant_lossless_raw_rejected"],
+                    "effective_hlg_still_image": guard["effective_hlg_still_image"],
+                    "effective_usb_lun_setting": guard["effective_usb_lun_setting"],
+                    "np_fz100_pd_boot_gate_satisfied": guard["np_fz100_pd_boot_gate_satisfied"],
+                    "dormant_native_uvc_streaming_rejected": guard["dormant_native_uvc_streaming_rejected"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.still_arw_hlg_usblun_uvc_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} raw={guard['effective_raw_file_type']} "
+                f"hlg={guard['effective_hlg_still_image']} "
+                f"lun={guard['effective_usb_lun_setting']} "
+                f"pd_ok={guard['np_fz100_pd_boot_gate_satisfied']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-150-gates":
+        report = evaluate_150gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "schema_version": report.schema_version,
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g149_status": report.g149_result["status"],
+                    "g150_status": report.g150_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/150 "
+                f"g149_to_g150_all_passed={report.g149_to_g150_all_passed} "
+                f"all_150_gates_verified={report.all_150_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_150_gates_verified if args.dry_run_simulated else report.offline_147_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-drive-focusbracket-shutter-efcs-nr-guard",
+        "verify-g151-drive-shutter-efcs-nr",
+        "verify-g151",
+    ):
+        verdict, res = evaluate_g151_drive_focusbracket_shutter_efcs_nr_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.drive_focusbracket_shutter_efcs_nr_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_drive_mode": guard["effective_drive_mode"],
+                    "effective_max_fps": guard["effective_max_fps"],
+                    "dormant_focus_bracket_rejected": guard["dormant_focus_bracket_rejected"],
+                    "effective_shutter_type": guard["effective_shutter_type"],
+                    "dormant_shutter_auto_rejected": guard["dormant_shutter_auto_rejected"],
+                    "effective_flash_xsync_ceiling": guard["effective_flash_xsync_ceiling"],
+                    "effective_efcs": guard["effective_efcs"],
+                    "efcs_resettable_by_camset_reset": guard["efcs_resettable_by_camset_reset"],
+                    "effective_long_exposure_nr": guard["effective_long_exposure_nr"],
+                    "effective_high_iso_nr": guard["effective_high_iso_nr"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.drive_focusbracket_shutter_efcs_nr_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} drive={guard['effective_drive_mode']} "
+                f"fps={guard['effective_max_fps']} "
+                f"shutter={guard['effective_shutter_type']} "
+                f"xsync={guard['effective_flash_xsync_ceiling']} "
+                f"efcs={guard['effective_efcs']} "
+                f"long_nr={guard['effective_long_exposure_nr']} "
+                f"high_iso_nr={guard['effective_high_iso_nr']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-creative-look-soft-skin-delete-protect-recoverdb-guard",
+        "verify-g152-creativelook-delete-recoverdb",
+        "verify-g152",
+    ):
+        verdict, res = evaluate_g152_creative_look_soft_skin_delete_protect_recoverdb_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.creative_look_delete_protect_recoverdb_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_creative_look": guard["effective_creative_look"],
+                    "dormant_soft_skin_rejected": guard["dormant_soft_skin_rejected"],
+                    "effective_delete_confirm": guard["effective_delete_confirm"],
+                    "effective_delete_pressing_twice": guard["effective_delete_pressing_twice"],
+                    "slot1_tier0_vault_firewall_blocked": guard["slot1_tier0_vault_firewall_blocked"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "emmc_nflasha_write_count": guard["emmc_nflasha_write_count"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.creative_look_delete_protect_recoverdb_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} look={guard['effective_creative_look']} "
+                f"del_confirm={guard['effective_delete_confirm']} "
+                f"del_twice={guard['effective_delete_pressing_twice']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-152-gates":
+        report = evaluate_152gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "schema_version": report.schema_version,
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g151_status": report.g151_result["status"],
+                    "g152_status": report.g152_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/152 "
+                f"g151_to_g152_all_passed={report.g151_to_g152_all_passed} "
+                f"all_152_gates_verified={report.all_152_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_152_gates_verified if args.dry_run_simulated else report.offline_149_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-pixelmap-apr-monitor-vfadjust-guard",
+        "verify-g153-pixelmap-apr-monitor",
+        "verify-g153",
+    ):
+        verdict, res = evaluate_g153_pixelmap_apr_monitor_vfadjust_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.pixelmap_apr_monitor_vfadjust_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_auto_pixel_mapping_setup": guard["effective_auto_pixel_mapping_setup"],
+                    "effective_auto_pixel_mapping_silent": guard["effective_auto_pixel_mapping_silent"],
+                    "effective_monitor_brightness_mode": guard["effective_monitor_brightness_mode"],
+                    "effective_display_quality": guard["effective_display_quality"],
+                    "effective_monitor_flip_direction": guard["effective_monitor_flip_direction"],
+                    "dormant_evf_exposed_items_fx3": guard["dormant_evf_exposed_items_fx3"],
+                    "fx3_finder_monitor_group_present": guard["fx3_finder_monitor_group_present"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.pixelmap_apr_monitor_vfadjust_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} setup_apm={guard['effective_auto_pixel_mapping_setup']} "
+                f"silent_apm={guard['effective_auto_pixel_mapping_silent']} "
+                f"dq={guard['effective_display_quality']} "
+                f"flip={guard['effective_monitor_flip_direction']} "
+                f"dormant_evf={guard['dormant_evf_exposed_items_fx3']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-recall-custom-hold-hdmi-reccontrol-guard",
+        "verify-g154-customhold-hdmi-reccontrol",
+        "verify-g154",
+    ):
+        verdict, res = evaluate_g154_recall_custom_hold_hdmi_reccontrol_vault_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.recall_custom_hold_hdmi_reccontrol_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "recall_custom_hold_available": guard["recall_custom_hold_available"],
+                    "recall_custom_hold_standalone_wb_present": guard["recall_custom_hold_standalone_wb_present"],
+                    "effective_rec_media_dur_hdmi_output": guard["effective_rec_media_dur_hdmi_output"],
+                    "effective_time_code_output": guard["effective_time_code_output"],
+                    "effective_rec_control": guard["effective_rec_control"],
+                    "slot1_tier0_vault_firewall_blocked": guard["slot1_tier0_vault_firewall_blocked"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "emmc_nflasha_write_count": guard["emmc_nflasha_write_count"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.recall_custom_hold_hdmi_reccontrol_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} hold_avail={guard['recall_custom_hold_available']} "
+                f"rec_media={guard['effective_rec_media_dur_hdmi_output']} "
+                f"tc_out={guard['effective_time_code_output']} "
+                f"rec_ctrl={guard['effective_rec_control']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-154-gates":
+        report = evaluate_154gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "schema_version": report.schema_version,
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g153_status": report.g153_result["status"],
+                    "g154_status": report.g154_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/154 "
+                f"g153_to_g154_all_passed={report.g153_to_g154_all_passed} "
+                f"all_154_gates_verified={report.all_154_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_154_gates_verified if args.dry_run_simulated else report.offline_151_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-areadate-grid-cleanhdmi-guard",
+        "verify-g155-areadate-grid-cleanhdmi",
+        "verify-g155",
+    ):
+        verdict, res = evaluate_g155_areadate_dst_grid_cleanhdmi_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.areadate_grid_cleanhdmi_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "area_gmt_zones_count": guard["area_gmt_zones_count"],
+                    "rtc_battery_charged": guard["rtc_battery_charged"],
+                    "grid_rendered_on_hdmi": guard["grid_rendered_on_hdmi"],
+                    "marker_rendered_on_hdmi": guard["marker_rendered_on_hdmi"],
+                    "hdmi_marker_injected_pixels": guard["hdmi_marker_injected_pixels"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.areadate_grid_cleanhdmi_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} zones={guard['area_gmt_zones_count']} "
+                f"rtc={guard['rtc_battery_charged']} "
+                f"grid_hdmi={guard['grid_rendered_on_hdmi']} "
+                f"marker_hdmi={guard['marker_rendered_on_hdmi']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-saveload-camset-mishoe-genlock-guard",
+        "verify-g156-saveload-camset-mishoe",
+        "verify-g156",
+    ):
+        verdict, res = evaluate_g156_saveload_camset_mishoe_genlock_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.saveload_camset_mishoe_genlock_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_operation": guard["effective_operation"],
+                    "effective_target_media": guard["effective_target_media"],
+                    "slot1_tier0_vault_firewall_blocked": guard["slot1_tier0_vault_firewall_blocked"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "emmc_nflasha_write_count": guard["emmc_nflasha_write_count"],
+                    "fx3_physical_sync_terminal_present": guard["fx3_physical_sync_terminal_present"],
+                    "mishoe_xlr_h1_exclusion_triggered": guard["mishoe_xlr_h1_exclusion_triggered"],
+                    "fx6_physical_genlock_bnc_present": guard["fx6_physical_genlock_bnc_present"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.saveload_camset_mishoe_genlock_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} op={guard['effective_operation']} "
+                f"media={guard['effective_target_media']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"sync={guard['fx3_physical_sync_terminal_present']} "
+                f"xlr_excl={guard['mishoe_xlr_h1_exclusion_triggered']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-156-gates":
+        report = evaluate_156gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "schema_version": report.schema_version,
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g155_status": report.g155_result["status"],
+                    "g156_status": report.g156_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/156 "
+                f"g155_to_g156_all_passed={report.g155_to_g156_all_passed} "
+                f"all_156_gates_verified={report.all_156_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_156_gates_verified if args.dry_run_simulated else report.offline_153_gates_verified
         return 0 if ok else 1
 
     return 2

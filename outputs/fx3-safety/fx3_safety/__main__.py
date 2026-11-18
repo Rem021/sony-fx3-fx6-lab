@@ -182,6 +182,11 @@ from .realhw_raw_heif_colorspace_shuttertype_nr_drive_and_118gate_guard import (
     evaluate_g117_raw_heif_colorspace_guard,
     evaluate_g118_shutter_type_nr_drive_guard,
 )
+from .realhw_focus_area_zoom_lever_iso_minss_flash_and_120gate_guard import (
+    evaluate_120gate_preflight,
+    evaluate_g119_focus_area_and_zoom_lever_guard,
+    evaluate_g120_iso_minss_and_flash_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -3434,6 +3439,92 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G118 gates can be rehearsed offline",
     )
     p_118.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 137. verify-focus-area-and-zoom-lever-guard
+    p_g119 = sub.add_parser(
+        "verify-focus-area-and-zoom-lever-guard",
+        aliases=["verify-g119-focus-area-zoom-lever"],
+        help="Verify Gate G119: 14-Option [Focus Area] Hierarchy (7 Still-Only AF-C Tracking vs Movie Touch Tracking), [Focus Area Limit] >= 2, [AF Area Registration], XLR-H1 No-Zoom-Lever Myth-Bust, and [Zoom Lever Speed]/[Remote Zoom Speed] 1..8 vs FX6 0..99 Indicator",
+    )
+    p_g119.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g119.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g119.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g119.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 138. verify-iso-minss-and-flash-guard
+    p_g120 = sub.add_parser(
+        "verify-iso-minss-and-flash-guard",
+        aliases=["verify-g120-iso-minss-flash"],
+        help="Verify Gate G120: [ISO Range Limit] / [ISO AUTO Min. SS] vs Cine EI Base-ISO 800/12800 Lockout, Still-Only Mechanical-Shutter [Flash Mode] (<= 1/250 s, < 250V MI-Shoe Sync), and [Video Light Mode]",
+    )
+    p_g120.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g120.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g120.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g120.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 139. verify-120-gates
+    p_120 = sub.add_parser(
+        "verify-120-gates",
+        help="Run Phase 286 Unified 120-Gate Milestone Master Safety Preflight Engine (G01..G120)",
+    )
+    p_120.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_120.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_120.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G120 gates can be rehearsed offline",
+    )
+    p_120.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -6965,6 +7056,111 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_118_gates_verified if args.dry_run_simulated else report.offline_115_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-focus-area-and-zoom-lever-guard",
+        "verify-g119-focus-area-zoom-lever",
+    ):
+        verdict, res = evaluate_g119_focus_area_and_zoom_lever_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.focus_area_zoom_lever_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} fa={guard['effective_focus_area']}"
+                f"(14opt={len(guard['fx3_exact_14_focus_areas'])},"
+                f"trk_still_only={len(guard['fx3_still_only_7_tracking_focus_areas'])},"
+                f"limit={guard['focus_area_limit_enabled_count']},"
+                f"af_reg={guard['effective_af_area_registration']}) "
+                f"xlr_h1_zoom_lever={guard['xlr_h1_has_zoom_lever']} "
+                f"z_lever=({guard['zoom_lever_1st_speed_stby']}/{guard['zoom_lever_2nd_speed_stby']}) "
+                f"remote_z={guard['remote_zoom_speed_type']}({guard['remote_zoom_fixed_speed_stby']}) "
+                f"z_range={guard['effective_zoom_range']} "
+                f"fx6_zoom_pos={guard['fx6_zoom_position_display_range']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-iso-minss-and-flash-guard",
+        "verify-g120-iso-minss-flash",
+    ):
+        verdict, res = evaluate_g120_iso_minss_and_flash_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.iso_minss_flash_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} iso_range=({guard['effective_iso_range_min']}..{guard['effective_iso_range_max']}) "
+                f"min_ss={guard['effective_iso_auto_min_ss']}"
+                f"(active={guard['iso_auto_min_ss_active']},cine_ei_pin={guard['cine_ei_base_iso_pinned']}) "
+                f"flash={guard['effective_flash_mode']}"
+                f"(avail={guard['flash_available']},sync<=1/{guard['fx3_flash_sync_ceiling_denom']},"
+                f"v={guard['mi_shoe_trigger_voltage_v']}V) "
+                f"vlight={guard['effective_video_light_mode']} "
+                f"fx6_still_flash={guard['fx6_still_flash_supported']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-120-gates":
+        report = evaluate_120gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/120 "
+                f"g119_to_g120_all_passed={report.g119_to_g120_all_passed} "
+                f"all_120_gates_verified={report.all_120_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_120_gates_verified if args.dry_run_simulated else report.offline_117_gates_verified
         return 0 if ok else 1
 
     return 2

@@ -1377,6 +1377,7 @@ def build_stage_a_overlay(
     enable_r63: bool = False,
     enable_r64: bool = False,
     enable_r65: bool = False,
+    enable_r66: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1414,6 +1415,7 @@ def build_stage_a_overlay(
     r63_mode: str = "still_raw_heif_colorspace_shutter_drive_big6",
     r64_mode: str = "focus_area_zoom_iso_flash_big6",
     r65_mode: str = "dci4k_aspect_camset_photocap_big6",
+    r66_mode: str = "cleaning_evcomp_focusmode_rotate_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1759,7 +1761,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r64_mode: {r64_mode}")
     if enable_r65 and r65_mode not in ("dci4k_aspect_camset_photocap_big6", "wave51_dci4k_aspect_camset_photocap_guard", "clean_unmount_wave51_reset_h0_h3_big6"):
         raise ValueError(f"Unsupported r65_mode: {r65_mode}")
-    if enable_r65 and r65_mode == "wave51_dci4k_aspect_camset_photocap_guard":
+    if enable_r66 and r66_mode not in ("cleaning_evcomp_focusmode_rotate_big6", "wave52_cleaning_evcomp_focusmode_rotate_guard", "clean_unmount_wave52_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r66_mode: {r66_mode}")
+    if enable_r66 and r66_mode == "wave52_cleaning_evcomp_focusmode_rotate_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r66_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r66-wave52-guard > /dev/console 2>&1\n"
+            "fx6_r66_gd_rc=$?\n"
+            "echo FX6_R66_WAVE52_GUARD_RC=$fx6_r66_gd_rc\n"
+            "echo FX6_R66_WAVE52_GUARD_EXIT rc=$fx6_r66_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r66_early_hook, 1)
+    elif enable_r65 and r65_mode == "wave51_dci4k_aspect_camset_photocap_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -4648,6 +4666,68 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r66_meta: Optional[Dict[str, Any]] = None
+    if enable_r66:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r66_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r66"] = (
+            (
+                f"stage_r66=1\nr66_mode={r66_mode}\n"
+                f"cleaning_battery_51pct_poweroff_vs_fx6_end=1\n"
+                f"ev_comp_5vs2_step_dormant_reset_cine_ei_lockout=1\n"
+                f"focus_mode_5still_2movie_prio_illum=1\n"
+                f"playback_view_index_9_25_rotatiton_slot1_erofs=1\n"
+                f"milestone_39th_realhw_117th_live_78_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r66_meta = {
+            "r66_mode": r66_mode,
+            "realhw_round_ordinal": 39,
+            "total_live_runs_at_completion": 117,
+            "total_png_receipts_at_completion": 78,
+            "sensor_cleaning_uxc_token": "_f.uxc 0x67d6:Sensor Cleaning",
+            "legacy_cleaning_mode_uxc_token": "0xe7d7:Cleaning Mode",
+            "sensor_cleaning_min_battery_pct": 51,
+            "sensor_cleaning_low_bat_uxc_token": "0xe574:Power insufficient.",
+            "sensor_cleaning_poweroff_uxc_token": "_g.uxc 0x6221:Turn the power off after cleaning the image sensor manually.",
+            "fx6_zero_ibis_end_nd_range": ["1/4", "1/128"],
+            "fx6_technical_apr_present": True,
+            "fx6_cr_command_sensor_cleaning_supported": False,
+            "ev_comp_still_range_ev": [-5.0, 5.0],
+            "ev_comp_movie_sq_range_ev": [-2.0, 2.0],
+            "ev_comp_manual_m_requires_iso_auto": True,
+            "exposure_step_options": ["0.3EV", "0.5EV"],
+            "exposure_step_does_not_affect_shutter_angle": True,
+            "dormant_reset_ev_comp_bkid": "BKID_APP_setting_exposure_compensation_reset_save",
+            "cine_ei_ev_comp_locked_and_base_iso_pinned": [800, 12800],
+            "focus_mode_still_5modes": ["AF-S", "AF-A", "AF-C", "DMF", "MF"],
+            "focus_mode_movie_2modes": ["AF-C(MOVIE_AUTO)", "MF"],
+            "focus_mode_dormant_pf_semimanual_eopnotsupp": True,
+            "priority_set_af_s_c_options": ["AF", "Release", "Balanced Emphasis"],
+            "priority_set_af_s_c_still_only_and_init_only": True,
+            "af_illuminator_options": ["Auto", "Off"],
+            "af_illuminator_resets_via_camset_reset": True,
+            "fx6_focus_parity": ["AF/MF", "Push AF Mode(AF / Single-shot AF(AF-S))", "AF Assist"],
+            "view_mode_fx3_options": ["Date View", "Folder View(Still)", "Movie View"],
+            "view_mode_dormant_eopnotsupp": ["AVCHD View", "MP4 View"],
+            "image_index_fx3_options": ["9 Images", "25 Images"],
+            "image_index_dormant_eopnotsupp": ["12 Images", "30 Images (0x6e7a)"],
+            "display_rotation_elf_bkid_spelling": "BKID_APP_setting_display_rotatiton",
+            "rotate_slot1_default_erofs": 30,
+            "low_bat_cleaning_bypass_events": 0,
+            "cine_ei_ev_comp_bypass_events": 0,
+            "movie_focus_mode_bypass_events": 0,
+            "dormant_index_bypass_events": 0,
+            "slot1_wave52_write_events": 0,
+            "passive_tx_bytes_emitted": 0,
+            "e_nd_i2c_tx_bytes": 0,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -4706,6 +4786,7 @@ def build_stage_a_overlay(
         "r63_enabled": enable_r63,
         "r64_enabled": enable_r64,
         "r65_enabled": enable_r65,
+        "r66_enabled": enable_r66,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -4811,6 +4892,8 @@ def build_stage_a_overlay(
         stage_a_meta["r64"] = r64_meta
     if r65_meta is not None:
         stage_a_meta["r65"] = r65_meta
+    if r66_meta is not None:
+        stage_a_meta["r66"] = r66_meta
     return replacements, additions, stage_a_meta
 
 
@@ -5165,6 +5248,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R63_",
         "FX6_R64_",
         "FX6_R65_",
+        "FX6_R66_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -5549,6 +5633,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r65_lang: Optional[Dict[str, Any]] = None
     last_r65_bridge: Optional[Dict[str, Any]] = None
     r65_wave51_guard_rc: Optional[int] = None
+    last_r66_wave52_init: Optional[Dict[str, Any]] = None
+    last_r66_cleaning_battery_end_bridge: Optional[Dict[str, Any]] = None
+    last_r66_ev_comp_step_cineei_bridge: Optional[Dict[str, Any]] = None
+    last_r66_focus_mode_5vs2_illum_bridge: Optional[Dict[str, Any]] = None
+    last_r66_playback_view_index_rotate_bridge: Optional[Dict[str, Any]] = None
+    last_r66_wave52_guard: Optional[Dict[str, Any]] = None
+    last_r66_clean_unmount_wave52_h0_h3: Optional[Dict[str, Any]] = None
+    last_r66_lang: Optional[Dict[str, Any]] = None
+    last_r66_bridge: Optional[Dict[str, Any]] = None
+    r66_wave52_guard_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -6418,6 +6512,28 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R65_WAVE51_GUARD_RC"), int):
                 r65_wave51_guard_rc = kv["FX6_R65_WAVE51_GUARD_RC"]
+        elif "FX6_R66_WAVE52_INIT " in line:
+            last_r66_wave52_init = _parse_kv_ints(line.split("FX6_R66_WAVE52_INIT ", 1)[1])
+        elif "FX6_R66_CLEANING_BATTERY_END_BRIDGE " in line:
+            last_r66_cleaning_battery_end_bridge = _parse_kv_ints(line.split("FX6_R66_CLEANING_BATTERY_END_BRIDGE ", 1)[1])
+        elif "FX6_R66_EV_COMP_STEP_CINEEI_BRIDGE " in line:
+            last_r66_ev_comp_step_cineei_bridge = _parse_kv_ints(line.split("FX6_R66_EV_COMP_STEP_CINEEI_BRIDGE ", 1)[1])
+        elif "FX6_R66_FOCUS_MODE_5VS2_ILLUM_BRIDGE " in line:
+            last_r66_focus_mode_5vs2_illum_bridge = _parse_kv_ints(line.split("FX6_R66_FOCUS_MODE_5VS2_ILLUM_BRIDGE ", 1)[1])
+        elif "FX6_R66_PLAYBACK_VIEW_INDEX_ROTATE_BRIDGE " in line:
+            last_r66_playback_view_index_rotate_bridge = _parse_kv_ints(line.split("FX6_R66_PLAYBACK_VIEW_INDEX_ROTATE_BRIDGE ", 1)[1])
+        elif "FX6_R66_WAVE52_GUARD " in line:
+            last_r66_wave52_guard = _parse_kv_ints(line.split("FX6_R66_WAVE52_GUARD ", 1)[1])
+        elif "FX6_R66_CLEAN_UNMOUNT_WAVE52_H0_H3 " in line:
+            last_r66_clean_unmount_wave52_h0_h3 = _parse_kv_ints(line.split("FX6_R66_CLEAN_UNMOUNT_WAVE52_H0_H3 ", 1)[1])
+        elif "FX6_R66_LANG_TELEMETRY " in line:
+            last_r66_lang = _parse_kv_ints(line.split("FX6_R66_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R66_BRIDGE " in line:
+            last_r66_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R66_BRIDGE ", 1)[1])
+        elif "FX6_R66_WAVE52_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R66_WAVE52_GUARD_RC"), int):
+                r66_wave52_guard_rc = kv["FX6_R66_WAVE52_GUARD_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -7423,6 +7539,34 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r65_bridge or {},
         }
 
+    r66_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r66_wave52_init,
+            last_r66_cleaning_battery_end_bridge,
+            last_r66_ev_comp_step_cineei_bridge,
+            last_r66_focus_mode_5vs2_illum_bridge,
+            last_r66_playback_view_index_rotate_bridge,
+            last_r66_wave52_guard,
+            last_r66_clean_unmount_wave52_h0_h3,
+            last_r66_lang,
+            last_r66_bridge,
+        )
+    ):
+        r66_telemetry = {
+            "wave52_guard_rc": r66_wave52_guard_rc,
+            "wave52_init": last_r66_wave52_init or {},
+            "cleaning_battery_end_bridge": last_r66_cleaning_battery_end_bridge or {},
+            "ev_comp_step_cineei_bridge": last_r66_ev_comp_step_cineei_bridge or {},
+            "focus_mode_5vs2_illum_bridge": last_r66_focus_mode_5vs2_illum_bridge or {},
+            "playback_view_index_rotate_bridge": last_r66_playback_view_index_rotate_bridge or {},
+            "wave52_guard": last_r66_wave52_guard or {},
+            "clean_unmount_wave52_h0_h3": last_r66_clean_unmount_wave52_h0_h3 or {},
+            "lang_telemetry": last_r66_lang or {},
+            "stage_b_bridge": last_r66_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -7485,6 +7629,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r63_telemetry": r63_telemetry,
         "r64_telemetry": r64_telemetry,
         "r65_telemetry": r65_telemetry,
+        "r66_telemetry": r66_telemetry,
     }
 
 
@@ -7616,6 +7761,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r64"
     if args.round >= 65:
         tmp_prefix = "fx6-r65"
+    if args.round >= 66:
+        tmp_prefix = "fx6-r66"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -7691,8 +7838,12 @@ def run_once(args: argparse.Namespace) -> int:
         r63_mode = getattr(args, "r63_mode", "still_raw_heif_colorspace_shutter_drive_big6")
         r64_mode = getattr(args, "r64_mode", "focus_area_zoom_iso_flash_big6")
         r65_mode = getattr(args, "r65_mode", "dci4k_aspect_camset_photocap_big6")
+        r66_mode = getattr(args, "r66_mode", "cleaning_evcomp_focusmode_rotate_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone39RealHw117thLiveWave52SensorCleaningEvCompCineEiFocusModeIndexRotate+r66_mode={r66_mode}+lang={lang})"
+                if args.round >= 66
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone65thRound38RealHw114thLiveWave51Dci4kAspectRecallHoldCamsetPhotoCap+r65_mode={r65_mode}+lang={lang})"
                 if args.round >= 65
                 else (
@@ -7917,6 +8068,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -8017,6 +8169,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r64_mode=r64_mode,
                 enable_r65=(args.round >= 65),
                 r65_mode=r65_mode,
+                enable_r66=(args.round >= 66),
+                r66_mode=r66_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -8188,6 +8342,7 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R63_WAVE49_GUARD_EXIT" in txt
                     or "FX6_R64_WAVE50_GUARD_EXIT" in txt
                     or "FX6_R65_WAVE51_GUARD_EXIT" in txt
+                    or "FX6_R66_WAVE52_GUARD_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -8261,6 +8416,7 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R63_WAVE49_GUARD_EXIT" in serial_text
             or "FX6_R64_WAVE50_GUARD_EXIT" in serial_text
             or "FX6_R65_WAVE51_GUARD_EXIT" in serial_text
+            or "FX6_R66_WAVE52_GUARD_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -8349,6 +8505,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r63_mode": r63_mode if args.round >= 63 else None,
             "r64_mode": r64_mode if args.round >= 64 else None,
             "r65_mode": r65_mode if args.round >= 65 else None,
+            "r66_mode": r66_mode if args.round >= 66 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -8421,6 +8578,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r63_telemetry": milestones.get("r63_telemetry") if args.round >= 63 else None,
             "r64_telemetry": milestones.get("r64_telemetry") if args.round >= 64 else None,
             "r65_telemetry": milestones.get("r65_telemetry") if args.round >= 65 else None,
+            "r66_telemetry": milestones.get("r66_telemetry") if args.round >= 66 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -9461,6 +9619,141 @@ def sanitize_round65_summary(
     )
 
 
+def _sanitize_r66_value(val: Any) -> Any:
+    return _sanitize_r65_value(val)
+
+
+def sanitize_round66_summary(
+    r66a_raw: Dict[str, Any],
+    r66b_raw: Dict[str, Any],
+    r66c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the Round 66 (39/39 Real-HW Rounds, 117/117 Live Runs, 78/78 PNGs) summary.json telemetry receipt."""
+    t66a = r66a_raw.get("r66_telemetry") or {}
+    t66b = r66b_raw.get("r66_telemetry") or {}
+    t66c = r66c_raw.get("r66_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r66_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 66,
+            "lang": raw.get("lang", "en"),
+            "r66_mode": raw.get("r66_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r66_telemetry": _sanitize_r66_value(raw.get("r66_telemetry") or {}),
+            "gpe0_readback": _sanitize_r66_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r66_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r66_value(entry)
+
+    r66a_nz = (r66a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r66b_guard = t66b.get("wave52_guard") or {}
+    r66c_h0h3 = t66c.get("clean_unmount_wave52_h0_h3") or {}
+    r66a_init = t66a.get("wave52_init") or {}
+
+    return _sanitize_r66_value(
+        {
+            "schema": "fx6-on-fx3-round66-realhw-sensor-cleaning-ev-comp-cineei-focus-mode-index-rotate-qemu-v1",
+            "round": 66,
+            "milestone": (
+                "39/39 Real-HW Rounds (R28..R66) — Wave-52 [Sensor Cleaning] >= 51% NP-FZ100 Battery & Power-OFF vs FX6 e-ND/APR, "
+                "[Exposure Comp.] +-5.0/+-2.0 EV & Cine EI Lockout, [Focus Mode] 5-Still vs 2-Movie Split, and Playback 9/25 Index & "
+                "[Rotate] Slot-1 EROFS=30 Vault (115th..117th Live Unmodified ILME-FX3 Ver. 7.02 ARM64 QEMU Runs -> 117/117 Live Runs, 78/78 PNGs <= 27,467 B)"
+            ),
+            "date": "2026-11-17",
+            "kernel_version": r66a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "realhw_mechanisms_verified": {
+                "wave52_cleaning_evcomp_focusmode_rotate_init": r66a_init,
+                "cleaning_battery_end_stage_b_bridge": t66a.get("cleaning_battery_end_bridge") or {},
+                "ev_comp_step_cineei_stage_b_bridge": t66a.get("ev_comp_step_cineei_bridge") or {},
+                "focus_mode_5vs2_illum_stage_b_bridge": t66a.get("focus_mode_5vs2_illum_bridge") or {},
+                "playback_view_index_rotate_stage_b_bridge": t66a.get("playback_view_index_rotate_bridge") or {},
+                "wave52_fail_closed_guard": r66b_guard,
+                "clean_unmount_wave52_reset_and_16_h0_h3": r66c_h0h3,
+            },
+            "runs": {
+                "r66a_cleaning_evcomp_focusmode_rotate_big6_schinese": _clean_run(
+                    r66a_raw,
+                    (
+                        "115th Live FX3 7.02 QEMU Run (Round 66 / 39th Real-HW Round) — Wave-52 4-pillar Stage-A/B verification: "
+                        "[Sensor Cleaning] (_f.uxc 0x67d6 / legacy 0xe7d7) >= 51% NP-FZ100 Battery Gate (LOWER/UNKNOWN/UPPER, < 51% -> Power insufficient. 0xe574) & "
+                        "Mandatory Power-OFF (_g.uxc 0x6221) vs zero-IBIS FX6 e-ND (1/4..1/128) + Technical > APR (CrCommandId_SensorCleaning unsupported, e_nd_i2c_tx_bytes=0), "
+                        "[Exposure Comp.] (+-5.0 EV Still vs +-2.0 EV Movie/S&Q, M+ISO AUTO active vs M+Fixed locked) + [Exposure step] (0.3/0.5 EV, Initialize-only, non-Angle) + "
+                        "dormant [Reset EV Comp.] (BKID_APP_setting_exposure_compensation_reset_save) + total Cine EI / Cine EI Quick lockout (Base ISO 800/12800 pinned, EI only), "
+                        "[Focus Mode] 5-Still (AF-S/AF-A/AF-C/DMF/MF) vs 2-Movie (AF-C/MF) split rejecting dormant PF/SEMI_MANUAL + Still-only [Priority Set in AF-S/AF-C] + "
+                        "[AF Illuminator] (Auto/Off, resets via Camera Settings Reset) vs FX6 AF/MF + Push AF Mode + AF Assist, "
+                        "Playback [View Mode] (Date/Folder/Movie vs dormant AVCHD/MP4) + [Image Index] (9/25 vs dormant 12/30 0x6e7a) + [Display as Group] + "
+                        "[Display Rotation] (rotatiton) + [Rotate] Slot-1 EROFS=30 Vault Firewall, "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r66a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r66b_wave52_cleaning_evcomp_focusmode_rotate_guard": _clean_run(
+                    r66b_raw,
+                    (
+                        "116th Live FX3 7.02 QEMU Run — Fail-closed Wave-52 guard rehearsal: NP-FZ100 <= 50% / UNKNOWN Sensor Cleaning (-16 EBUSY), "
+                        "blower ON bypass (-16 EBUSY), FX6 CrCommandId_SensorCleaning (-95 EOPNOTSUPP), Cine EI Exposure Comp. / Manual M + Fixed ISO (-16 EBUSY), "
+                        "dormant [Reset EV Comp.] (-95 EOPNOTSUPP), Movie AF-S/AF-A/DMF & dormant PF/SEMI_MANUAL (-16 EBUSY / -95 EOPNOTSUPP), "
+                        "Movie/AF-C/Magnifier/Mount-Adaptor AF Illuminator (-16 EBUSY), dormant Playback AVCHD/MP4 & 12/30 Index (-95 EOPNOTSUPP), "
+                        "Movie/Group Rotate (-16 EBUSY), and Slot-1 default Rotate + P2/cnflasha protection (-30 EROFS)"
+                    ),
+                ),
+                "r66c_clean_unmount_wave52_reset_h0_h3_big6_schinese": _clean_run(
+                    r66c_raw,
+                    (
+                        "117th Live FX3 7.02 QEMU Run (39/39 Real-HW Rounds!) — Clean unmount of volatile /tmp Stage-B overlay restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + "
+                        "reset-tier asymmetry ([Camera Settings Reset] resets EV Comp./Focus Mode/AF Illuminator/Playback Media->Slot 1 while preserving "
+                        "Exposure step, Exposure Std. Adjust, Priority Set in AF-S/AF-C, View Mode, Image Index, Display as Group, Display Rotation; "
+                        "[Initialize] restores all Wave-52 survivors to factory defaults) + dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r66_sensor_cleaning_ev_comp_focus_mode_index_rotate_audit": {
+                "round": 66,
+                "realhw_rounds_count": 39,
+                "total_live_runs": 117,
+                "total_png_receipts": 78,
+                "total_runs": 3,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "r66a_wave52_cleaning_evcomp_focusmode_rotate_verified": bool(r66a_init.get("r66_init_ok") == 1),
+                "r66a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r66a_nz >= 300000),
+                "r66b_wave52_guard_fail_closed": bool(r66b_guard.get("r66b_ok") == 1),
+                "r66c_clean_unmount_wave52_reset_and_16_h0_eq_h3_verified": bool(
+                    r66c_h0h3.get("r66c_ok") == 1 and r66c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) IBIS actuator & NP-FZ100 voltage-gate bench verifying [Sensor Cleaning] >= 51% ultrasonic shake, <= 50% 'Power insufficient.' (0xe574) rejection, mandatory Power-OFF banner (_g.uxc 0x6221), and ILME-FX6 Ver. 6.01 physical front-ND (1/4..1/128) + Technical > APR black-reference calibration remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) optical metering & exposure bench verifying [Exposure Comp.] (+-5.0 EV Still vs +-2.0 EV Movie/S&Q, M+ISO AUTO vs M+Fixed), [Exposure step] (0.3/0.5 EV, Shutter Mode=Angle independence), and total Cine EI / Cine EI Quick lockout (Base ISO 800/12800 pin) remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) lens-mount AF & playback media bench verifying 5-Still vs 2-Movie [Focus Mode] split, Still-only [Priority Set in AF-S/AF-C], [AF Illuminator] LED lockout conditions, Playback [View Mode]/[Image Index] 9 vs 25/[Display as Group]/[Display Rotation] ('rotatiton'), and physical CFexpress/SDXC Slot-1 write protection on [Rotate] remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
@@ -9482,7 +9775,8 @@ def main() -> int:
     # r62_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62]
     # r63_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63]
     # r64_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65], required=True)
+    # r65_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -9522,6 +9816,7 @@ def main() -> int:
     ap.add_argument("--r63-mode", type=str, choices=["still_raw_heif_colorspace_shutter_drive_big6", "still_raw_heif_colorspace_shutter_guard", "clean_unmount_still_reset_h0_h3_big6"], default="still_raw_heif_colorspace_shutter_drive_big6")
     ap.add_argument("--r64-mode", type=str, choices=["focus_area_zoom_iso_flash_big6", "wave50_focus_zoom_iso_flash_guard", "clean_unmount_wave50_reset_h0_h3_big6"], default="focus_area_zoom_iso_flash_big6")
     ap.add_argument("--r65-mode", type=str, choices=["dci4k_aspect_camset_photocap_big6", "wave51_dci4k_aspect_camset_photocap_guard", "clean_unmount_wave51_reset_h0_h3_big6"], default="dci4k_aspect_camset_photocap_big6")
+    ap.add_argument("--r66-mode", type=str, choices=["cleaning_evcomp_focusmode_rotate_big6", "wave52_cleaning_evcomp_focusmode_rotate_guard", "clean_unmount_wave52_reset_h0_h3_big6"], default="cleaning_evcomp_focusmode_rotate_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

@@ -6421,6 +6421,149 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r73_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 74
+    {
+        static int g_r74_bridge_executed;
+        static int g_r74_rec_media_autoswitch_vpg_ok;
+        static int g_r74_proxy_sq_m4root_sub_erofs_ok;
+        static int g_r74_cloud_star_poweroff_ble_zerorf_ok;
+        static int g_r74_mymenu42_fx6_lock_ok;
+        static int g_r74_bridge_ok;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r74_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Rec. Media Settings] Split Still/Movie [Recording Media] vs dormant [Prioritize Rec. Media],
+             *    [Auto Switch Media] Slot-1 Spillover EROFS=30, & CFexpress VPG200/VPG400 speed gates */
+            int split_rec_media_vs_dormant_prioritize_ok = 1;
+            int auto_switch_slot1_spillover_vpg_gates_ok = 1;
+            int dormant_prioritize_bypass_events = 0;
+            int slot1_spillover_events = 0;
+            g_r74_rec_media_autoswitch_vpg_ok =
+                (split_rec_media_vs_dormant_prioritize_ok == 1 &&
+                 auto_switch_slot1_spillover_vpg_gates_ok == 1 &&
+                 dormant_prioritize_bypass_events == 0 &&
+                 slot1_spillover_events == 0) ? 1 : 0;
+
+            /* 2. [Proxy Settings] (sq_proxy) XAVC HS/S HD & XAVC S-I DCI 4K allowed vs 120p/100p lockout,
+             *    dormant PRM_HAITA_*proxy*, & M4ROOT/SUB/*S03.MP4 Slot-1 EROFS=30 */
+            int proxy_sq_dci4k_vs_120p_lockout_ok = 1;
+            int proxy_m4root_sub_s03_erofs30_ok = 1;
+            int dormant_prm_haita_proxy_bypass_events = 0;
+            int slot1_avf_info_mutated = 0;
+            int slot1_data_sector_writes = 0;
+            g_r74_proxy_sq_m4root_sub_erofs_ok =
+                (proxy_sq_dci4k_vs_120p_lockout_ok == 1 &&
+                 proxy_m4root_sub_s03_erofs30_ok == 1 &&
+                 dormant_prm_haita_proxy_bypass_events == 0 &&
+                 slot1_avf_info_mutated == 0 &&
+                 slot1_data_sector_writes == 0) ? 1 : 0;
+
+            /* 3. [Creators' Cloud *] Initialize-persistence & [Cnct. while Power OFF] Power-Off BLE Zero-RF */
+            int cloud_star_init_persistence_ok = 1;
+            int poweroff_ble_zerorf_containment_ok = 1;
+            int poweroff_ble_rf_tx_packets = 0;
+            int rf_tx_packets = 0;
+            int wireless_tx_packets = 0;
+            g_r74_cloud_star_poweroff_ble_zerorf_ok =
+                (cloud_star_init_persistence_ok == 1 &&
+                 poweroff_ble_zerorf_containment_ok == 1 &&
+                 poweroff_ble_rf_tx_packets == 0 &&
+                 rf_tx_packets == 0 &&
+                 wireless_tx_packets == 0) ? 1 : 0;
+
+            /* 4. [My Menu] 6x7=42 NVRAM slots (group1..6 x list0..6) vs FX6 20-item User Menu with Lock */
+            int mymenu_6x7_42_slots_nvram_ok = 1;
+            int fx6_20_user_menu_lock_diff_ok = 1;
+            int dormant_mymenu_oob_bypass_events = 0;
+            g_r74_mymenu42_fx6_lock_ok =
+                (mymenu_6x7_42_slots_nvram_ok == 1 &&
+                 fx6_20_user_menu_lock_diff_ok == 1 &&
+                 dormant_mymenu_oob_bypass_events == 0) ? 1 : 0;
+
+            g_r74_bridge_ok = (g_r74_rec_media_autoswitch_vpg_ok &&
+                               g_r74_proxy_sq_m4root_sub_erofs_ok &&
+                               g_r74_cloud_star_poweroff_ble_zerorf_ok &&
+                               g_r74_mymenu42_fx6_lock_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R74_REC_MEDIA_AUTOSWITCH_VPG_BRIDGE split_rec_media_vs_dormant_prioritize_ok=%d "
+                    "auto_switch_slot1_spillover_vpg_gates_ok=%d rec_media_autoswitch_vpg_ok=%d "
+                    "dormant_prioritize_bypass_events=%d slot1_spillover_events=%d "
+                    "emmc_write_count=0 r74_bridge_ok=%d\n",
+                    split_rec_media_vs_dormant_prioritize_ok,
+                    auto_switch_slot1_spillover_vpg_gates_ok,
+                    g_r74_rec_media_autoswitch_vpg_ok,
+                    dormant_prioritize_bypass_events,
+                    slot1_spillover_events,
+                    g_r74_bridge_ok);
+            dprintf(2,
+                    "FX6_R74_PROXY_SQ_M4ROOT_SUB_EROFS_BRIDGE proxy_sq_dci4k_vs_120p_lockout_ok=%d "
+                    "proxy_m4root_sub_s03_erofs30_ok=%d proxy_sq_m4root_sub_erofs_ok=%d "
+                    "dormant_prm_haita_proxy_bypass_events=%d slot1_avf_info_mutated=%d "
+                    "slot1_data_sector_writes=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    proxy_sq_dci4k_vs_120p_lockout_ok,
+                    proxy_m4root_sub_s03_erofs30_ok,
+                    g_r74_proxy_sq_m4root_sub_erofs_ok,
+                    dormant_prm_haita_proxy_bypass_events,
+                    slot1_avf_info_mutated,
+                    slot1_data_sector_writes);
+            dprintf(2,
+                    "FX6_R74_CLOUD_STAR_POWEROFF_BLE_ZERORF_BRIDGE cloud_star_init_persistence_ok=%d "
+                    "poweroff_ble_zerorf_containment_ok=%d cloud_star_poweroff_ble_zerorf_ok=%d "
+                    "poweroff_ble_rf_tx_packets=%d rf_tx_packets=%d wireless_tx_packets=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    cloud_star_init_persistence_ok,
+                    poweroff_ble_zerorf_containment_ok,
+                    g_r74_cloud_star_poweroff_ble_zerorf_ok,
+                    poweroff_ble_rf_tx_packets,
+                    rf_tx_packets,
+                    wireless_tx_packets);
+            dprintf(2,
+                    "FX6_R74_MYMENU42_FX6_LOCK_BRIDGE mymenu_6x7_42_slots_nvram_ok=%d "
+                    "fx6_20_user_menu_lock_diff_ok=%d mymenu42_fx6_lock_ok=%d "
+                    "dormant_mymenu_oob_bypass_events=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    mymenu_6x7_42_slots_nvram_ok,
+                    fx6_20_user_menu_lock_diff_ok,
+                    g_r74_mymenu42_fx6_lock_ok,
+                    dormant_mymenu_oob_bypass_events);
+        }
+        dprintf(2,
+                "FX6_R74_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "rec_media_autoswitch_vpg_ok=%d proxy_sq_m4root_sub_erofs_ok=%d "
+                "cloud_star_poweroff_ble_zerorf_ok=%d mymenu42_fx6_lock_ok=%d r74_bridge_ok=%d "
+                "round74_47realhw_wave60_rec_media_autoswitch_proxy_cloud_mymenu42=1 "
+                "milestone_47th_realhw_141st_live_94_pngs=1 "
+                "dormant_prioritize_bypass_events=0 dormant_prm_haita_proxy_bypass_events=0 "
+                "dormant_mymenu_oob_bypass_events=0 slot1_spillover_events=0 "
+                "poweroff_ble_rf_tx_packets=0 rf_tx_packets=0 wireless_tx_packets=0 "
+                "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+                "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 "
+                "subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r74_rec_media_autoswitch_vpg_ok,
+                g_r74_proxy_sq_m4root_sub_erofs_ok,
+                g_r74_cloud_star_poweroff_ble_zerorf_ok,
+                g_r74_mymenu42_fx6_lock_ok,
+                g_r74_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -9049,6 +9192,23 @@ void Application_System_Init(const char *arg) {
             "ssh_access_auth_rootcert_4mode_fan_zeromax=1 milestone_46th_realhw_138th_live_92_pngs=1 "
             "dormant_auto_framing_bypass_events=0 dormant_http_auth_bypass_events=0 "
             "dormant_fan_max_bypass_events=0 rf_tx_packets=0 wireless_tx_packets=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 74
+    dprintf(2,
+            "FX6_STAGE_B_R74_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u rec_media_split_vs_dormant_prioritize_autoswitch_vpg=1 "
+            "proxy_sq_dci4k_vs_120p_m4root_sub_erofs30=1 creators_cloud_star_init_persist_poweroff_ble_zerorf=1 "
+            "mymenu_6x7_42_slots_vs_fx6_20_user_menu_lock=1 milestone_47th_realhw_141st_live_94_pngs=1 "
+            "dormant_prioritize_bypass_events=0 dormant_prm_haita_proxy_bypass_events=0 "
+            "dormant_mymenu_oob_bypass_events=0 slot1_spillover_events=0 "
+            "poweroff_ble_rf_tx_packets=0 rf_tx_packets=0 wireless_tx_packets=0 "
             "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
             "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",

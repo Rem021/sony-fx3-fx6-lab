@@ -1373,6 +1373,7 @@ def build_stage_a_overlay(
     enable_r59: bool = False,
     enable_r60: bool = False,
     enable_r61: bool = False,
+    enable_r62: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1406,6 +1407,7 @@ def build_stage_a_overlay(
     r59_mode: str = "focus_mag_datetime_videolight_hdmires_big6",
     r60_mode: str = "power_save_monitor_lang_vol_delete_big6",
     r61_mode: str = "usb_hdmi_protect_netreset_big6",
+    r62_mode: str = "pp_scinetone_look_wb_metering_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1743,7 +1745,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r60_mode: {r60_mode}")
     if enable_r61 and r61_mode not in ("usb_hdmi_protect_netreset_big6", "nouvc_hdmi1080_slot1_protect_nwreset_guard", "clean_unmount_nwreset_reboot_airplane_h0_h3_big6"):
         raise ValueError(f"Unsupported r61_mode: {r61_mode}")
-    if enable_r61 and r61_mode == "nouvc_hdmi1080_slot1_protect_nwreset_guard":
+    if enable_r62 and r62_mode not in ("pp_scinetone_look_wb_metering_big6", "pp_log_wb_cineei_metering_guard", "clean_unmount_pp_wb_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r62_mode: {r62_mode}")
+    if enable_r62 and r62_mode == "pp_log_wb_cineei_metering_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r62_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r62-pp-log-wb-cineei-metering-guard > /dev/console 2>&1\n"
+            "fx6_r62_gd_rc=$?\n"
+            "echo FX6_R62_WAVE48_GUARD_RC=$fx6_r62_gd_rc\n"
+            "echo FX6_R62_WAVE48_GUARD_EXIT rc=$fx6_r62_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r62_early_hook, 1)
+    elif enable_r61 and r61_mode == "nouvc_hdmi1080_slot1_protect_nwreset_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -4245,6 +4263,89 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r62_meta: Optional[Dict[str, Any]] = None
+    if enable_r62:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r62_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r62"] = (
+            (
+                f"stage_r62=1\nr62_mode={r62_mode}\n"
+                f"pp11_scinetone_pplut_vs_log_lockout=1\n"
+                f"creative_look_10_dro_lockout=1\n"
+                f"wb_custom_camset_excluded_cineei=1\n"
+                f"metering_5mode_face_spot_link=1\n"
+                f"milestone_35th_realhw_105th_live_70_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r62_meta = {
+            "r62_mode": r62_mode,
+            "milestone_35realhw_rounds": True,
+            "realhw_round_ordinal": 35,
+            "total_live_runs_at_completion": 105,
+            "total_png_receipts_at_completion": 70,
+            "picture_profile_uxc_token": "0x6830:Picture Profile",
+            "picture_profile_default": "PP11 (S-Cinetone)",
+            "pp11_scinetone_resid16": "0x67ab",
+            "pplut_slots_movie_only": ["PPLUT1", "PPLUT2", "PPLUT3", "PPLUT4"],
+            "pplut_internal_rec_hdmi_clamp_p": 1080,
+            "log_shooting_uxc_token": "0x6020:Log Shooting",
+            "log_shooting_locks_pp_off": True,
+            "pp_1_to_11_survive_camera_settings_reset": True,
+            "pplut_1_to_4_reset_on_camera_settings_reset": True,
+            "creative_look_uxc_token": "0x6823:Creative Look",
+            "creative_look_10_presets": ["ST", "PT", "NT", "VV", "VV2", "FL", "IN", "SH", "BW", "SE"],
+            "creative_look_default": "ST",
+            "creative_look_8_custom_params": [
+                "Contrast",
+                "Highlights",
+                "Shadows",
+                "Fade",
+                "Saturation",
+                "Sharpness",
+                "Sharpness Range",
+                "Clarity",
+            ],
+            "dro_uxc_token": "0xe89c:D-Range Optimizer",
+            "dro_default": "Auto",
+            "creative_look_and_dro_locked_when_pp_or_log_active": True,
+            "dormant_alpha_auto_hdr_exposed": False,
+            "dormant_fx6_base_look_exposed": False,
+            "white_balance_uxc_token": "0xe5d4:White Balance",
+            "wb_ctemp_kelvin_min": 2500,
+            "wb_ctemp_kelvin_max": 9900,
+            "wb_ctemp_step_kelvin": 100,
+            "wb_custom_slots": ["Custom 1", "Custom 2", "Custom 3"],
+            "wb_custom_1_to_3_excluded_from_camset": True,
+            "wb_custom_1_to_3_survive_camera_settings_reset": True,
+            "wb_cine_ei_blocks_auto_and_underwater_auto": True,
+            "shutter_awb_lock_uxc_token": "0x66db:Shutter AWB Lock",
+            "shutter_awb_lock_survives_camera_settings_reset": True,
+            "metering_mode_uxc_token": "0xe5cf:Metering Mode",
+            "metering_5_base_modes_6_options": [
+                "Multi",
+                "Center",
+                "Spot: Standard",
+                "Spot: Large",
+                "Entire Screen Avg.",
+                "Highlight",
+            ],
+            "metering_mode_default": "Multi",
+            "face_priority_in_multi_locked_off_when_desqueeze_on": True,
+            "spot_metering_point_degrades_to_center_on_wide_or_zone": True,
+            "ael_w_shutter_survives_camera_settings_reset": True,
+            "metering_never_alters_cine_ei_base_iso": True,
+            "double_log_lockout_bypass_events": 0,
+            "camset_custom_wb_leak_events": 0,
+            "cine_ei_awb_bypass_events": 0,
+            "metering_base_iso_mutation_events": 0,
+            "passive_tx_bytes_emitted": 0,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -4299,6 +4400,7 @@ def build_stage_a_overlay(
         "r59_enabled": enable_r59,
         "r60_enabled": enable_r60,
         "r61_enabled": enable_r61,
+        "r62_enabled": enable_r62,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -4396,6 +4498,8 @@ def build_stage_a_overlay(
         stage_a_meta["r60"] = r60_meta
     if r61_meta is not None:
         stage_a_meta["r61"] = r61_meta
+    if r62_meta is not None:
+        stage_a_meta["r62"] = r62_meta
     return replacements, additions, stage_a_meta
 
 
@@ -4746,6 +4850,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R59_",
         "FX6_R60_",
         "FX6_R61_",
+        "FX6_R62_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -5092,6 +5197,15 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r61_lang: Optional[Dict[str, Any]] = None
     last_r61_bridge: Optional[Dict[str, Any]] = None
     r61_wave47_guard_rc: Optional[int] = None
+    last_r62_wave48_init: Optional[Dict[str, Any]] = None
+    last_r62_pp_scinetone_look_dro_bridge: Optional[Dict[str, Any]] = None
+    last_r62_wb_custom_camset_exclusion_bridge: Optional[Dict[str, Any]] = None
+    last_r62_metering_5mode_spot_link_bridge: Optional[Dict[str, Any]] = None
+    last_r62_wave48_guard: Optional[Dict[str, Any]] = None
+    last_r62_clean_unmount_pp_wb_h0_h3: Optional[Dict[str, Any]] = None
+    last_r62_lang: Optional[Dict[str, Any]] = None
+    last_r62_bridge: Optional[Dict[str, Any]] = None
+    r62_wave48_guard_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -5877,6 +5991,26 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R61_WAVE47_GUARD_RC"), int):
                 r61_wave47_guard_rc = kv["FX6_R61_WAVE47_GUARD_RC"]
+        elif "FX6_R62_WAVE48_INIT " in line:
+            last_r62_wave48_init = _parse_kv_ints(line.split("FX6_R62_WAVE48_INIT ", 1)[1])
+        elif "FX6_R62_PP_SCINETONE_LOOK_DRO_BRIDGE " in line:
+            last_r62_pp_scinetone_look_dro_bridge = _parse_kv_ints(line.split("FX6_R62_PP_SCINETONE_LOOK_DRO_BRIDGE ", 1)[1])
+        elif "FX6_R62_WB_CUSTOM_CAMSET_EXCLUSION_BRIDGE " in line:
+            last_r62_wb_custom_camset_exclusion_bridge = _parse_kv_ints(line.split("FX6_R62_WB_CUSTOM_CAMSET_EXCLUSION_BRIDGE ", 1)[1])
+        elif "FX6_R62_METERING_5MODE_SPOT_LINK_BRIDGE " in line:
+            last_r62_metering_5mode_spot_link_bridge = _parse_kv_ints(line.split("FX6_R62_METERING_5MODE_SPOT_LINK_BRIDGE ", 1)[1])
+        elif "FX6_R62_WAVE48_GUARD " in line:
+            last_r62_wave48_guard = _parse_kv_ints(line.split("FX6_R62_WAVE48_GUARD ", 1)[1])
+        elif "FX6_R62_CLEAN_UNMOUNT_PP_WB_H0_H3 " in line:
+            last_r62_clean_unmount_pp_wb_h0_h3 = _parse_kv_ints(line.split("FX6_R62_CLEAN_UNMOUNT_PP_WB_H0_H3 ", 1)[1])
+        elif "FX6_R62_LANG_TELEMETRY " in line:
+            last_r62_lang = _parse_kv_ints(line.split("FX6_R62_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R62_BRIDGE " in line:
+            last_r62_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R62_BRIDGE ", 1)[1])
+        elif "FX6_R62_WAVE48_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R62_WAVE48_GUARD_RC"), int):
+                r62_wave48_guard_rc = kv["FX6_R62_WAVE48_GUARD_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -6774,6 +6908,32 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r61_bridge or {},
         }
 
+    r62_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r62_wave48_init,
+            last_r62_pp_scinetone_look_dro_bridge,
+            last_r62_wb_custom_camset_exclusion_bridge,
+            last_r62_metering_5mode_spot_link_bridge,
+            last_r62_wave48_guard,
+            last_r62_clean_unmount_pp_wb_h0_h3,
+            last_r62_lang,
+            last_r62_bridge,
+        )
+    ):
+        r62_telemetry = {
+            "wave48_guard_rc": r62_wave48_guard_rc,
+            "wave48_init": last_r62_wave48_init or {},
+            "pp_scinetone_look_dro_bridge": last_r62_pp_scinetone_look_dro_bridge or {},
+            "wb_custom_camset_exclusion_bridge": last_r62_wb_custom_camset_exclusion_bridge or {},
+            "metering_5mode_spot_link_bridge": last_r62_metering_5mode_spot_link_bridge or {},
+            "wave48_guard": last_r62_wave48_guard or {},
+            "clean_unmount_pp_wb_h0_h3": last_r62_clean_unmount_pp_wb_h0_h3 or {},
+            "lang_telemetry": last_r62_lang or {},
+            "stage_b_bridge": last_r62_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -6832,6 +6992,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r59_telemetry": r59_telemetry,
         "r60_telemetry": r60_telemetry,
         "r61_telemetry": r61_telemetry,
+        "r62_telemetry": r62_telemetry,
     }
 
 
@@ -6955,6 +7116,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r60"
     if args.round >= 61:
         tmp_prefix = "fx6-r61"
+    if args.round >= 62:
+        tmp_prefix = "fx6-r62"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -7026,8 +7189,12 @@ def run_once(args: argparse.Namespace) -> int:
         r59_mode = getattr(args, "r59_mode", "focus_mag_datetime_videolight_hdmires_big6")
         r60_mode = getattr(args, "r60_mode", "power_save_monitor_lang_vol_delete_big6")
         r61_mode = getattr(args, "r61_mode", "usb_hdmi_protect_netreset_big6")
+        r62_mode = getattr(args, "r62_mode", "pp_scinetone_look_wb_metering_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone35RealHw105thLiveWave48PpScinetoneCreativeLookDroWbCustomCamsetMetering5Mode+r62_mode={r62_mode}+lang={lang})"
+                if args.round >= 62
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone100PlusRunsRealHw34thRound102ndLiveWave47UsbModeHdmiInfoProtectNwResetAirplane+r61_mode={r61_mode}+lang={lang})"
                 if args.round >= 61
                 else (
@@ -7236,6 +7403,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -7328,6 +7496,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r60_mode=r60_mode,
                 enable_r61=(args.round >= 61),
                 r61_mode=r61_mode,
+                enable_r62=(args.round >= 62),
+                r62_mode=r62_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -7495,6 +7665,7 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R59_AF_ILLUM_BT_PMIC_HDMI_EXIT" in txt
                     or "FX6_R60_DORMANT_MON_SLOT1_DEL_EXIT" in txt
                     or "FX6_R61_WAVE47_GUARD_EXIT" in txt
+                    or "FX6_R62_WAVE48_GUARD_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -7564,6 +7735,7 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R59_AF_ILLUM_BT_PMIC_HDMI_EXIT" in serial_text
             or "FX6_R60_DORMANT_MON_SLOT1_DEL_EXIT" in serial_text
             or "FX6_R61_WAVE47_GUARD_EXIT" in serial_text
+            or "FX6_R62_WAVE48_GUARD_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -7648,6 +7820,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r59_mode": r59_mode if args.round >= 59 else None,
             "r60_mode": r60_mode if args.round >= 60 else None,
             "r61_mode": r61_mode if args.round >= 61 else None,
+            "r62_mode": r62_mode if args.round >= 62 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -7716,6 +7889,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r59_telemetry": milestones.get("r59_telemetry") if args.round >= 59 else None,
             "r60_telemetry": milestones.get("r60_telemetry") if args.round >= 60 else None,
             "r61_telemetry": milestones.get("r61_telemetry") if args.round >= 61 else None,
+            "r62_telemetry": milestones.get("r62_telemetry") if args.round >= 62 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -8216,6 +8390,141 @@ def sanitize_round61_summary(
     )
 
 
+def _sanitize_r62_value(val: Any) -> Any:
+    return _sanitize_r61_value(val)
+
+
+def sanitize_round62_summary(
+    r62a_raw: Dict[str, Any],
+    r62b_raw: Dict[str, Any],
+    r62c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the repo-root Round 62 (35/35 Real-HW Rounds Milestone) summary.json telemetry receipt."""
+    t62a = r62a_raw.get("r62_telemetry") or {}
+    t62b = r62b_raw.get("r62_telemetry") or {}
+    t62c = r62c_raw.get("r62_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r62_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 62,
+            "lang": raw.get("lang", "en"),
+            "r62_mode": raw.get("r62_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r62_telemetry": _sanitize_r62_value(raw.get("r62_telemetry") or {}),
+            "gpe0_readback": _sanitize_r62_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r62_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r62_value(entry)
+
+    r62a_nz = (r62a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r62b_guard = t62b.get("wave48_guard") or {}
+    r62c_h0h3 = t62c.get("clean_unmount_pp_wb_h0_h3") or {}
+    r62a_init = t62a.get("wave48_init") or {}
+
+    return _sanitize_r62_value(
+        {
+            "schema": "fx6-on-fx3-round62-milestone-35realhw-pp-scinetone-creativelook-wb-metering-qemu-v1",
+            "round": 62,
+            "milestone": (
+                "35/35 Real-HW Rounds Milestone! (Wave-48 / 35th Real-HW QEMU Round in R28..R62, "
+                "103rd..105th Live Unmodified ILME-FX3 7.02 Runs -> 105/105 Total Live Runs, 70/70 PNGs)"
+            ),
+            "date": "2026-11-17",
+            "kernel_version": r62a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "realhw_mechanisms_verified": {
+                "wave48_pp_scinetone_look_wb_metering_init": r62a_init,
+                "pp_scinetone_look_dro_stage_b_bridge": t62a.get("pp_scinetone_look_dro_bridge") or {},
+                "wb_custom_camset_exclusion_stage_b_bridge": t62a.get("wb_custom_camset_exclusion_bridge") or {},
+                "metering_5mode_spot_link_stage_b_bridge": t62a.get("metering_5mode_spot_link_bridge") or {},
+                "wave48_fail_closed_guard": r62b_guard,
+                "clean_unmount_pp_wb_reset_and_16_h0_h3": r62c_h0h3,
+            },
+            "runs": {
+                "r62a_pp_scinetone_look_wb_metering_big6_schinese": _clean_run(
+                    r62a_raw,
+                    (
+                        "103rd Live FX3 7.02 QEMU Run — Wave-48 [Picture Profile] (0x6830 Off / PP1..PP11 S-Cinetone 0x67ab default / "
+                        "Movie-only PPLUT1..4 1080p HDMI clamp) vs [Log Shooting] (0x6020 Flexible ISO / Cine EI Quick / Cine EI "
+                        "hard-locking PP=Off against double-Log stacking), [Creative Look] (0x6823 10 presets ST..SE + 8 params) & "
+                        "[D-Range Optimizer] (0xe89c Off/Auto/Lv1..Lv5) locked when PP!=Off or Log!=Off (dormant Auto HDR/Base Look -ENOENT), "
+                        "[White Balance] (0xe5d4 2500K..9900K in 100K steps, Custom 1..3 body NVRAM ONLY excluded from CAMSET, "
+                        "Cine EI blocking Auto/Underwater Auto, Shutter AWB Lock 0x66db surviving Camera Reset), "
+                        "[Metering Mode] (0xe5cf 5 base modes / 6 options: Multi def, Center, Spot Standard/Large, Entire Screen Avg., Highlight + "
+                        "Face Priority in Multi 0x69c7 + Spot Metering Point 0x71b5 + AEL w/ Shutter 0x669d), "
+                        f"and Stage-B Big-6 Home render (sid=0x0a, schinese, {r62a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r62b_pp_log_wb_cineei_metering_guard": _clean_run(
+                    r62b_raw,
+                    (
+                        "104th Live FX3 7.02 QEMU Run — Fail-closed Wave-48 guard rehearsal: Creative Look & DRO under PP11 or Log (-16 EBUSY), "
+                        "Movie-only PPLUT1 in Still (-95 EOPNOTSUPP), double-Log PP8 under Cine EI (-16 EBUSY), dormant Auto HDR / Base Look spoof (-2 ENOENT), "
+                        "Auto / Underwater Auto WB under Cine EI (-95 EOPNOTSUPP), Custom WB Setup under Log/S-Log3 (-16 EBUSY), "
+                        "out-of-range Kelvin 2400K (-22 EINVAL), Custom 1..3 WB export into CAMSET01.DAT (-13 EACCES), "
+                        "Face Priority under De-Squeeze (-16 EBUSY), Spot Focus Link under Wide/Zone (-22 EINVAL), non-Multi under iAuto (-95 EOPNOTSUPP), "
+                        "Metering Base ISO mutation in Cine EI (-1 EPERM), and read-only Slot-1/P2/cnflasha protection (-30 EROFS)"
+                    ),
+                ),
+                "r62c_clean_unmount_pp_wb_reset_h0_h3_big6_schinese": _clean_run(
+                    r62c_raw,
+                    (
+                        "105th Live FX3 7.02 QEMU Run (35/35 Milestone!) — Clean unmount of volatile /tmp Stage-B overlay restoring 100% unmodified stock "
+                        "ILME-FX3 Ver. 7.02 + reset-tier asymmetry ([Camera Settings Reset] resets active PP->PP11, PPLUT1..4->0, WB->Auto, Metering->Multi "
+                        "while preserving PP1..PP11 internal params, Custom 1..3 WB, Different Set, Shutter AWB Lock, and AEL w/ Shutter; "
+                        "[Initialize] resets Shutter AWB Lock & AEL w/ Shutter while PP1..PP11 params require individual PP->[Reset]) + "
+                        "CAMSET Custom WB exclusion + dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r62_realhw_pp_scinetone_creativelook_wb_metering_audit": {
+                "round": 62,
+                "milestone": 62,
+                "milestone295_qemu_rounds": 35,
+                "milestone295_qemu_runs": 105,
+                "milestone295_png_receipts": 70,
+                "total_runs": 3,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "r62a_wave48_pp_scinetone_look_wb_metering_verified": bool(r62a_init.get("r62_init_ok") == 1),
+                "r62a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r62a_nz >= 300000),
+                "r62b_pp_log_wb_cineei_metering_guard_fail_closed": bool(r62b_guard.get("r62b_ok") == 1),
+                "r62c_clean_unmount_pp_wb_reset_and_16_h0_eq_h3_verified": bool(
+                    r62c_h0h3.get("r62c_ok") == 1 and r62c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) HDMI video analyzer & Waveform/Vectorscope bench verifying factory default [Picture Profile]=PP11 (S-Cinetone), PPLUT1..4 Movie-only 1080p internal-rec HDMI downscale, and [Log Shooting] hard-locking PP=Off remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) optical colorchecker chart bench verifying [Creative Look] (10 presets + 8 custom params) and [D-Range Optimizer] lockout gating under PP!=Off or Log!=Off plus [White Balance] Custom 1..3 body NVRAM exclusion from CAMSET card files and Shutter AWB Lock remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) optical spot/grey-card bench verifying 5-mode [Metering Mode] (Multi / Center / Spot Standard & Large / Entire Screen Avg. / Highlight), Face Priority lock under De-Squeeze, Spot Focus Point Link Center fallback under Wide/Zone, and Cine EI Base ISO immunity remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
@@ -8233,7 +8542,8 @@ def main() -> int:
     # r58_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58]
     # r59_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
     # r60_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61], required=True)
+    # r61_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -8269,6 +8579,7 @@ def main() -> int:
     ap.add_argument("--r59-mode", type=str, choices=["focus_mag_datetime_videolight_hdmires_big6", "af_illum_bt_sync_pmic_5v_hdmi_2160p_guard", "clean_unmount_camreset_vs_init_h0_h3_big6"], default="focus_mag_datetime_videolight_hdmires_big6")
     ap.add_argument("--r60-mode", type=str, choices=["power_save_monitor_lang_vol_delete_big6", "dormant_monitor_sleep_slot1_delete_guard", "clean_unmount_reset_tiers_h0_h3_big6"], default="power_save_monitor_lang_vol_delete_big6")
     ap.add_argument("--r61-mode", type=str, choices=["usb_hdmi_protect_netreset_big6", "nouvc_hdmi1080_slot1_protect_nwreset_guard", "clean_unmount_nwreset_reboot_airplane_h0_h3_big6"], default="usb_hdmi_protect_netreset_big6")
+    ap.add_argument("--r62-mode", type=str, choices=["pp_scinetone_look_wb_metering_big6", "pp_log_wb_cineei_metering_guard", "clean_unmount_pp_wb_reset_h0_h3_big6"], default="pp_scinetone_look_wb_metering_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

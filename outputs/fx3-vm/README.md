@@ -2346,4 +2346,44 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 330（Stage 70 — `70/70` VM HIL Stages Milestone!）：Wave-60 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` `[Rec. Media Settings]`（废弃 `[Prioritize Rec. Media]`、`[Recording Media]` / `[Auto Switch Media]` 与 `Slot-2 -> Slot-1` 溢出双锁 + `VPG200/VPG400` 门禁）、`[Proxy Settings]`（`sq_proxy`、允许 `XAVC S-I DCI 4K`、`100p/120fps+` 截断、`M4ROOT/SUB/*S03.MP4` 与 `Slot-1` `EROFS=30`）、`[Creators' Cloud]` / `[C3 Portal]`（穿越 `[Initialize]` 与 Power-OFF BLE 零射频三锁卫兵）及 `[My Menu]`（`6×7=42` 槽位 vs `FX6` 20 项 `User Menu` 与 PIN 锁机）HIL
+
+[`realhw_rec_media_autoswitch_proxy_cloud_mymenu_coemulator.py`](realhw_rec_media_autoswitch_proxy_cloud_mymenu_coemulator.py)（Schema `realhw_rec_media_autoswitch_proxy_cloud_mymenu_coemulator_v1`）作为 **Stage 70（`70/70` VM HIL Stages Milestone!）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase330` / `--skip-stage70` / `--no-include-stage70` 跳过，支持 `--include-stage70`），严格遵循 `os.O_RDONLY` + `<= 4096 B` 受界 `os.pread`、`physical_device_writes == 0`、`rf_packets_transmitted == 0`、`slot1_data_sector_writes == 0`、`slot1_avf_info_mutated == False` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 19 供体 `O_RDONLY` + 受界 `os.pread` 审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **19 份真实供体**（`14` 份四语/英文 `.uxc` + `libInfraAirplaneMode.so` + `libInfraBluetooth.so` + `FX3 appFw.so`、`FX3 BK4`、`FX6 appFw.so` 3 份大镜像），冷读 `< 0.20s`，并在无供体 CI 环境下（`work_root is None`、`FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或 `--clean-room`）零 `NoneType / str` 异常地无缝回退至 `CLEAN_ROOM_SYNTHETIC`。
+2. **Sub-Model 70A — `[Rec. Media Settings]`、`VPG200/VPG400` 门禁 & CRITICAL `Slot-2 -> Slot-1` 溢出双锁**：
+   - 确认 Ver. 2.00..7.02 已移除独立 `[Prioritize Rec. Media]`（`_f 0x719e` 休眠、`appFw.so` `prioritize` `0` 命中 -> `EOPNOTSUPP=95`）；建模 `Initialize`-only `[Recording Media]`（Still `4` 档 `Slot 1`/`Slot 2`/`Simult. Recording`/`Sort Recording` vs Movie `3` 档**无 Movie `Sort Recording`**，`Simult. Recording` 强制 `exFAT == exFAT` / `FAT32 == FAT32` 一致 `EINVAL=22`）+ `Initialize`-only `[Auto Switch Media]`（`Off` 默认 / `On` `BKID_APP_setting_relay_rec`）；
+   - **CRITICAL `Slot-2 -> Slot-1` 溢出陷阱双锁**：因 `[Auto Switch Media]` 免疫 `[Camera Settings Reset]`，当 `Recording Media = Slot 2` 时必须强制 `Auto Switch Media = Off` + `Slot-1` Tier-0 Vault 内核/UIPC fail-closed 返回 `EROFS=30`（`slot1_data_sector_writes == 0`）；并覆盖 `VPG200/VPG400` vs `SDXC V60/V90` 速率门禁（S&Q `XAVC S-I 4K 1200 Mbps` & `HD 240/200fps 890 Mbps` 强制 `CFexpress Type A VPG200+`，对比 `ILME-FX6` `Simul Rec` + 独立 `Slot A/B` `Rec Button Set` + `Relay Rec` 互斥 LAN/Streaming/Proxy/Chunk）。
+3. **Sub-Model 70B — `[Proxy Settings]`（`sq_proxy`）、允许 `XAVC S-I DCI 4K` 与 `M4ROOT/SUB/*S03.MP4` + `Slot-1` `EROFS=30`**：
+   - `Shooting -> [Image Quality/Rec] -> [Proxy Settings]`（`sq_proxy`：`[Proxy Recording]` 支持 Reset；`XAVC S HD` `1280x720 6M 8bit` 默认 vs `XAVC HS HD` `1920x1080 9M/16M 10bit`）；**允许 `XAVC S-I DCI 4K`（`<= 59.94p/50p`，受 VPG200/400 卡速门禁约束）** 并严格于 `100p/119.88p/120fps+` 截断；
+   - `/PRIVATE/M4ROOT/SUB/*S03.MP4`（SDXC）vs `/M4ROOT/SUB/*S03.MP4`（CFexpress）**机内不可回放**且与母片连带删除/保护，并对 `Slot-1` Proxy 子流与连带删改强制 `Tier-0 Vault EROFS=30` 防火墙（对比 `ILME-FX6` `1920x1080 9Mbps AVC` + `Chunk` Proxy `30s/1min/2min` 写 `Slot B`）。
+4. **Sub-Model 70C — `[Creators' Cloud]` / `[C3 Portal]`（穿越 `[Initialize]`）& CRITICAL Power-OFF BLE 零射频三锁卫兵**：
+   - `Cloud Connection *` 与 `Cloud Information *` 带有 `*` 标记，**同时穿越 `[Camera Settings Reset]` 与 `[Initialize]`**（仅手动注销清除；Ver. 4.00+ `[C3 Portal]`、Ver. 7.00+ `Clip Flag OK/NG/KEEP` 筛选、与 FTP 互斥 `EBUSY=16`）；
+   - **CRITICAL Power-OFF BLE 零射频三锁卫兵**：`[Cnct. while Power OFF]`（`_f 0x6ab3`）在物理拨动开关拨至 `OFF` 后仍维持 `UIBIZ_KEY_BLUETOOTH_LOWENERGY_POWER` 通电监听；零射频模式必须严格同时锁定 `Airplane Mode = On` + `Cnct. while Power OFF = Off` + `Bluetooth = Off`（`rf_packets_transmitted == 0`），对比零蓝牙硬件的 `ILME-FX6`。
+5. **Sub-Model 70D — 精确 `6 × 7 = 42` 槽位 `[My Menu]` vs `ILME-FX6` `20` 项 `User Menu` & `User Menu with Lock`**：
+   - 建模 FX3 精确 **`6 pages × 7 items = 42` `[My Menu]` 槽位**（`BKID_APP_mymenu_group{1..6}_setting_list{0..6}`；`group0`/`group7`/`list7` 返回 `EINVAL=22`、`(Playback)` 返回 `EOPNOTSUPP=95`、穿越 `[Camera Settings Reset]`、仅 `[Delete All]` 或 `[Initialize]` 清空），对比 `ILME-FX6` `20` 项 `User Menu` + `User Menu Only` + 租赁行 **`User Menu with Lock`（`0000..9999` 4 位 PIN，不随 `All File` 与 `Scene File` 导出）**。
+
+### Phase 330 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 330 Stage 70（70/70 里程碑！）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_rec_media_autoswitch_proxy_cloud_mymenu_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_rec_media_autoswitch_proxy_cloud_mymenu_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_rec_media_autoswitch_proxy_cloud_mymenu_coemulator.py --self-test --json
+
+# 2. 全板 70 阶段（Stage 1..70, 70/70 里程碑！）统一校验（支持 --include-stage70 与 --skip-phase330 / --skip-stage70 / --no-include-stage70）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage70 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 330 四模式 96 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_rec_media_autoswitch_proxy_cloud_mymenu_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_rec_media_autoswitch_proxy_cloud_mymenu_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_rec_media_autoswitch_proxy_cloud_mymenu_coemulator.py -v
+FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_rec_media_autoswitch_proxy_cloud_mymenu_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+
+
 

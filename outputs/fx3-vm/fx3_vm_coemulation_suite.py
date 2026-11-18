@@ -102,6 +102,7 @@ import realhw_power_save_monitor_language_volume_delete_coemulator as p281  # no
 import realhw_pp_scinetone_creativelook_wb_metering_coemulator as p289  # noqa: E402
 import realhw_preflash_dualboot_lifecycle_emulator as p141  # noqa: E402
 import realhw_raw_heif_colorspace_shuttertype_nr_drive_coemulator as p293  # noqa: E402
+import realhw_rec_media_autoswitch_proxy_cloud_mymenu_coemulator as p330  # noqa: E402
 import realhw_recover_imagedb_monitor_flip_af_sens_coemulator as p239  # noqa: E402
 import realhw_release_wo_card_audio_meter_copyright_coemulator as p270  # noqa: E402
 import realhw_sensor_cleaning_ev_comp_focus_mode_rotate_coemulator as p306  # noqa: E402
@@ -271,6 +272,9 @@ class CoEmulationConfig:
     include_phase328_realhw_big6_home_framing_interval_tc_ssh_fan_hil: bool = True
     include_stage69: bool = True
     stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil: bool = True
+    include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil: bool = True
+    include_stage70: bool = True
+    stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -4854,6 +4858,109 @@ def run_stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil(
     }
 
 
+def run_stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil(
+    config: Optional[CoEmulationConfig] = None,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 70 (Phase 330, 70/70 Milestone!): Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-60 [Rec. Media Settings] (Removed [Prioritize Rec. Media], Initialize-only [Recording Media] Still 4 vs Movie 3 + [Auto Switch Media], CRITICAL Slot-2 -> Slot-1 Overflow Trap Dual-Lock EROFS=30, VPG200/VPG400 vs SDXC V60/V90 Speed Gates, FX6 Simul Rec & Relay Rec Exclusions), [Proxy Settings] (sq_proxy XAVC S HD 6M 8bit vs XAVC HS HD 9M/16M 10bit, Allowed on XAVC S-I DCI 4K <=59.94p, Cutoff at 100p/120fps+, M4ROOT/SUB/*S03.MP4 Non-Playable & Coupled Delete/Protect + Slot-1 EROFS=30 vs FX6 9M AVC + Chunk Proxy Slot B), [Creators' Cloud] / [C3 Portal] (Cloud * Surviving Initialize, Power-OFF BLE Zero-RF 3-Lock Guard vs Zero-BT FX6), and [My Menu] (6x7=42 Slots vs FX6 20-Item User Menu + User Menu Only + User Menu with Lock 0000..9999 PIN Excluded from All File & Scene File) HIL."""
+    cfg = CoEmulationConfig() if config is None else config
+    cfg.validate()
+    rep = p330.run_phase330_rec_media_autoswitch_proxy_cloud_mymenu_coemulation(
+        force_clean_room=cfg.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "is_70th_stage_milestone": bool(rep["is_70th_stage_milestone"]),
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "emmc_corruptions": red["emmc_corruptions"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "passive_tx_bytes_emitted": red["passive_tx_bytes_emitted"],
+        "prioritize_rec_media_exposed_events": red[
+            "prioritize_rec_media_exposed_events"
+        ],
+        "movie_sort_recording_exposed_events": red[
+            "movie_sort_recording_exposed_events"
+        ],
+        "simult_fs_mismatch_bypass_events": red["simult_fs_mismatch_bypass_events"],
+        "slot2_to_slot1_overflow_bypass_events": red[
+            "slot2_to_slot1_overflow_bypass_events"
+        ],
+        "sdxc_1200m_or_cfex_b_bypass_events": red["sdxc_1200m_or_cfex_b_bypass_events"],
+        "proxy_highfps_100p_120fps_bypass_events": red[
+            "proxy_highfps_100p_120fps_bypass_events"
+        ],
+        "on_camera_proxy_playback_frames": red["on_camera_proxy_playback_frames"],
+        "proxy_coupled_delete_split_events": red["proxy_coupled_delete_split_events"],
+        "slot1_data_sector_writes": red["slot1_data_sector_writes"],
+        "slot1_avf_info_mutated": red["slot1_avf_info_mutated"],
+        "slot1_vault_proxy_mutation_events": red["slot1_vault_proxy_mutation_events"],
+        "power_off_ble_zero_rf_violations": red["power_off_ble_zero_rf_violations"],
+        "fx6_bluetooth_hardware_present": red["fx6_bluetooth_hardware_present"],
+        "fx6_bluetooth_poweroff_wake_exposed_events": red[
+            "fx6_bluetooth_poweroff_wake_exposed_events"
+        ],
+        "mymenu_exact_slot_capacity": red["mymenu_exact_slot_capacity"],
+        "fx6_user_menu_capacity": red["fx6_user_menu_capacity"],
+        "mymenu_out_of_bounds_or_playback_events": red[
+            "mymenu_out_of_bounds_or_playback_events"
+        ],
+        "fx6_user_menu_lock_pin_file_leak_events": red[
+            "fx6_user_menu_lock_pin_file_leak_events"
+        ],
+        "rf_packets_transmitted": red["rf_packets_transmitted"],
+        "rf_nvs_mutation_bytes": red["rf_nvs_mutation_bytes"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_rec_media_autoswitch_vpg_and_overflow_lock_hil": rep[
+            "pillar_a_rec_media_autoswitch_vpg_and_overflow_lock_hil"
+        ],
+        "pillar_b_proxy_settings_substream_and_slot1_vault_hil": rep[
+            "pillar_b_proxy_settings_substream_and_slot1_vault_hil"
+        ],
+        "pillar_c_creators_cloud_c3portal_and_poweroff_ble_zerorf_hil": rep[
+            "pillar_c_creators_cloud_c3portal_and_poweroff_ble_zerorf_hil"
+        ],
+        "pillar_d_mymenu_42slots_and_fx6_usermenu_lock_hil": rep[
+            "pillar_d_mymenu_42slots_and_fx6_usermenu_lock_hil"
+        ],
+        "phase330_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -4864,7 +4971,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 69-stage (Phase 33..328, 69/69 Milestone) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 70-stage (Phase 33..330, 70/70 Milestone!) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -5276,6 +5383,15 @@ def run_fx3_vm_coemulation_suite(
             cfg.include_phase328_realhw_big6_home_framing_interval_tc_ssh_fan_hil
             and cfg.include_stage69
             and cfg.stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil
+        )
+        else None
+    )
+    stage70: Optional[Dict[str, object]] = (
+        run_stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil(cfg, env=env)
+        if (
+            cfg.include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
+            and cfg.include_stage70
+            and cfg.stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
         )
         else None
     )
@@ -7265,6 +7381,61 @@ def run_fx3_vm_coemulation_suite(
         and stage69["appfw_crashes"] == 0
         and stage69["raw_firmware_bytes_leaked"] == 0
     )
+    stage70_ok = True if stage70 is None else (
+        bool(stage70["all_checks_passed"])
+        and bool(stage70["is_70th_stage_milestone"])
+        and stage70["nop_count"] == 0
+        and stage70["guest_code_modification_bytes"] == 0
+        and stage70["cp_mutation_bytes"] == 0
+        and stage70["wbi_mutation_bytes"] == 0
+        and stage70["calibration_mutation_bytes"] == 0
+        and stage70["cnflasha_mutation_bytes"] == 0
+        and bool(stage70["cnflasha_userspace_write_blocked"])
+        and stage70["nvram_persistent_writes"] == 0
+        and stage70["bk4_persistent_nvram_writes"] == 0
+        and stage70["physical_device_writes"] == 0
+        and (not stage70["persistent_emmc_writes_authorized"])
+        and (not stage70["hardware_live_attachment_authorized"])
+        and (not stage70["overall_ready_for_hardware_attach"])
+        and (not stage70["isp_write_authorized"])
+        and stage70["emmc_nflasha_write_count"] == 0
+        and stage70["emmc_mutation_bytes"] == 0
+        and stage70["emmc_corruptions"] == 0
+        and (not stage70["spi_nor_write_authorized"])
+        and stage70["spi_nor_mutation_bytes"] == 0
+        and (not stage70["el3_payload_transmit_authorized"])
+        and stage70["otp_fuse_touches"] == 0
+        and stage70["rpmb_counter_increments"] == 0
+        and stage70["physical_usb_packets_emitted"] == 0
+        and stage70["passive_tx_bytes_emitted"] == 0
+        and stage70["prioritize_rec_media_exposed_events"] == 0
+        and stage70["movie_sort_recording_exposed_events"] == 0
+        and stage70["simult_fs_mismatch_bypass_events"] == 0
+        and stage70["slot2_to_slot1_overflow_bypass_events"] == 0
+        and stage70["sdxc_1200m_or_cfex_b_bypass_events"] == 0
+        and stage70["proxy_highfps_100p_120fps_bypass_events"] == 0
+        and stage70["on_camera_proxy_playback_frames"] == 0
+        and stage70["proxy_coupled_delete_split_events"] == 0
+        and stage70["slot1_data_sector_writes"] == 0
+        and (not stage70["slot1_avf_info_mutated"])
+        and stage70["slot1_vault_proxy_mutation_events"] == 0
+        and stage70["power_off_ble_zero_rf_violations"] == 0
+        and (not stage70["fx6_bluetooth_hardware_present"])
+        and stage70["fx6_bluetooth_poweroff_wake_exposed_events"] == 0
+        and stage70["mymenu_exact_slot_capacity"] == 42
+        and stage70["fx6_user_menu_capacity"] == 20
+        and stage70["mymenu_out_of_bounds_or_playback_events"] == 0
+        and stage70["fx6_user_menu_lock_pin_file_leak_events"] == 0
+        and stage70["rf_packets_transmitted"] == 0
+        and stage70["rf_nvs_mutation_bytes"] == 0
+        and stage70["rsv_orphan_count"] == 0
+        and stage70["null_gpio_derefs"] == 0
+        and stage70["mailbox_stalls"] == 0
+        and stage70["stock_cp_fault_count"] == 0
+        and stage70["wf12_00342260_hits"] == 0
+        and stage70["appfw_crashes"] == 0
+        and stage70["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -7337,6 +7508,7 @@ def run_fx3_vm_coemulation_suite(
         and stage67_ok
         and stage68_ok
         and stage69_ok
+        and stage70_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -7727,6 +7899,21 @@ def run_fx3_vm_coemulation_suite(
                 and cfg.include_stage69
                 and cfg.stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil
             ),
+            "include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil": (
+                cfg.include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
+                and cfg.include_stage70
+                and cfg.stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
+            ),
+            "include_stage70": (
+                cfg.include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
+                and cfg.include_stage70
+                and cfg.stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
+            ),
+            "stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil": (
+                cfg.include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
+                and cfg.include_stage70
+                and cfg.stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil
+            ),
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -7883,6 +8070,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage68_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil"] = stage68
     if stage69 is not None:
         core_payload["stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil"] = stage69
+    if stage70 is not None:
+        core_payload["stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil"] = stage70
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -7894,7 +8083,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 + 289 + 293 + 298 + 301 + 306 + 309 + 312 + 315 + 318 + 322 + 325 + 328 (69/69 Milestone) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 + 289 + 293 + 298 + 301 + 306 + 309 + 312 + 315 + 318 + 322 + 325 + 328 + 330 (70/70 Milestone!) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -8595,6 +8784,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 69 (Phase 328 69/69 Milestone Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-59 BIG6 HOME & Framing vs Dormant Auto Framing, Interval Shoot & Slot-1 Vault, TC Regenerate & HDMI REC Control, and Access Auth SSH + Fan Control / Auto Power OFF Temp. HIL)",
     )
     parser.add_argument(
+        "--include-stage70",
+        dest="include_stage70",
+        action="store_true",
+        default=True,
+        help="Include Stage 70 (Phase 330 70/70 Milestone! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-60 [Rec. Media Settings] Removed [Prioritize Rec. Media] + Initialize-only [Recording Media] Still 4 vs Movie 3 + [Auto Switch Media] CRITICAL Slot-2 -> Slot-1 Overflow Trap Dual-Lock 100%% Fail-Closed EROFS=30 + VPG200/VPG400 vs SDXC V60/V90 Speed Gates, [Proxy Settings] sq_proxy XAVC S HD 6M 8bit vs XAVC HS HD 9M/16M 10bit + Allowed on XAVC S-I DCI 4K <=59.94p + Cutoff at 100p/120fps+ + M4ROOT/SUB/*S03.MP4 Non-Playable & Coupled Delete/Protect + Slot-1 EROFS=30, [Creators' Cloud] / [C3 Portal] Surviving Initialize + Power-OFF BLE Zero-RF 3-Lock Guard vs Zero-BT FX6, and [My Menu] 6x7=42 Slots vs FX6 20-Item User Menu + Lock 0000..9999 PIN Excluded from All File & Scene File HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage70",
+        "--no-include-stage70",
+        dest="skip_stage70",
+        action="store_true",
+        help="Skip optional Stage 70 (alias for --skip-phase330)",
+    )
+    parser.add_argument(
+        "--skip-phase330",
+        action="store_true",
+        help="Skip optional Stage 70 (Phase 330 70/70 Milestone! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-60 Rec. Media Settings / Auto Switch / VPG200-400, Proxy Settings sq_proxy / M4ROOT SUB / Slot-1 EROFS=30, Creators' Cloud / C3 Portal / Power-OFF BLE Zero-RF 3-Lock, and My Menu 6x7=42 vs FX6 20-Item User Menu with Lock PIN HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -8680,6 +8888,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     enable_stage67 = bool(args.include_stage67) and (not args.skip_phase322) and (not args.skip_stage67)
     enable_stage68 = bool(args.include_stage68) and (not args.skip_phase325) and (not args.skip_stage68)
     enable_stage69 = bool(args.include_stage69) and (not args.skip_phase328) and (not args.skip_stage69)
+    enable_stage70 = bool(args.include_stage70) and (not args.skip_phase330) and (not args.skip_stage70)
     cfg = CoEmulationConfig(
         bt_mode=args.bt_mode,
         cine_ei_iso=args.cine_ei_iso,
@@ -8796,6 +9005,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase328_realhw_big6_home_framing_interval_tc_ssh_fan_hil=enable_stage69,
         include_stage69=enable_stage69,
         stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil=enable_stage69,
+        include_phase330_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil=enable_stage70,
+        include_stage70=enable_stage70,
+        stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil=enable_stage70,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -8874,6 +9086,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s67 = rep.get("stage67_realhw_steadyshot_47focal_selftimer_zebra_streaming_hil")
         s68 = rep.get("stage68_realhw_bright_mon_shotmark_usblan_bulb_dormant_hil")
         s69 = rep.get("stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil")
+        s70 = rep.get("stage70_realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -9558,6 +9771,19 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s69, dict)
             else ""
         )
+        s70_str = (
+            f" | realhw_rec_media_autoswitch_proxy_cloud_mymenu_hil={s70['source_mode']}("
+            f"m70={s70['milestone']},"
+            f"ovf_byp={s70['slot2_to_slot1_overflow_bypass_events']},"
+            f"px_pb={s70['on_camera_proxy_playback_frames']},"
+            f"ble_rf={s70['power_off_ble_zero_rf_violations']},"
+            f"mm_cap={s70['mymenu_exact_slot_capacity']},"
+            f"rf_tx={s70['rf_packets_transmitted']},"
+            f"s1_wr={s70['slot1_data_sector_writes']},"
+            f"emmc_wr={s70['emmc_nflasha_write_count']})"
+            if isinstance(s70, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -9566,7 +9792,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str}{s58_str}{s59_str}{s60_str}{s61_str}{s62_str}{s63_str}{s64_str}{s65_str}{s66_str}{s67_str}{s68_str}{s69_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str}{s58_str}{s59_str}{s60_str}{s61_str}{s62_str}{s63_str}{s64_str}{s65_str}{s66_str}{s67_str}{s68_str}{s69_str}{s70_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

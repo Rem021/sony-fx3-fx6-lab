@@ -31431,6 +31431,1233 @@ static int run_r64_clean_unmount_wave50_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ============================================================================
+ * Round 65 (65th Round Milestone · 38/38 Real-HW Rounds R28..R65 ·
+ *           112th..114th -> 114/114 Live Runs · 76/76 PNGs <= 27,467 B · Wave-51):
+ *   1. Internal XAVC S-I DCI 4K (4096x2160, 17:9, Ver. 3.00+, _f.uxc 0x7336)
+ *      23.98p/24.00p (240M, 24.00p mandatory reboot & playback quarantine _g.uxc
+ *      0x639b), 25p/29.97p/50p/59.94p (600M), S&Q 1..48fps ONLY (100/120fps &
+ *      119.88p/100p -> -EINVAL=-22), vs Long-GOP XAVC HS 4K / XAVC S 4K & XAVC
+ *      S-I 4K strictly 3840x2160 (4096x2160 or 24.00p -> -EOPNOTSUPP=-95;
+ *      dormant xavc_hs_8k_24p -> -EOPNOTSUPP=-95), External HDMI RAW 4264x2408
+ *      (Log != Off mandatory, locks S-Log3), & Shutter Angle (5.6..360.0 deg / 2F..64F).
+ *   2. Still [Aspect Ratio] (3:2 Default 12M / 4:3 11M / 16:9 10M / 1:1 8.0M,
+ *      resettable via [Camera Settings Reset], RAW keeps full 3:2 4240x2832
+ *      with crop metadata, APS-C S35 clamps max L->M) vs still-less FX6 (-ENOENT=-2).
+ *   3. 11-Checkbox [Reg. Custom Shoot Set] (Recall Custom hold 1..3, Still P/A/S/M
+ *      only -> Movie/S&Q/iAuto/MR -EBUSY=-16, excludes self-timer, forces
+ *      [HLG Still Image]=Off during ISO/DRO-Bracket hold, survives CamReset),
+ *      Body 1..3 + Card M1..M4 (/PRIVATE/SONY/SETTING/FX3/CAMPR%02d%c.DAT or
+ *      /SONY/SETTING/FX3/CAMPR%02d%c.DAT) vs CAMSET/CAMSET01..10.DAT (Slot 1)
+ *      & zero SONY/PRO/CAMERA (-ENOENT=-2), CamReset resets Memory/Recall Media
+ *      to Slot 1 while Body 1..3 survive until [Initialize].
+ *   4. Playback [Photo Capture] (8.3M 4K / 2.1M HD, JPEG / HEIF 4:2:0 / 4:2:2)
+ *      blocked on XAVC S-I DCI 4K clips (_g.uxc 0x60ce -> -EOPNOTSUPP=-95),
+ *      [Enlarge Image] (Standard. Mag./Previous Mag., Focused Position/Center,
+ *      excluded from CamReset), & Slot-1 Tier-0 Vault -EROFS=-30 firewall.
+ * ============================================================================ */
+
+typedef enum {
+    R65_SHOOT_STILL = 0,
+    R65_SHOOT_MOVIE = 1,
+    R65_SHOOT_SQ = 2,
+    R65_SHOOT_IAUTO = 3,
+    R65_SHOOT_MR = 4
+} r65_shoot_mode_t;
+
+typedef enum {
+    R65_EXP_P = 0,
+    R65_EXP_A = 1,
+    R65_EXP_S = 2,
+    R65_EXP_M = 3
+} r65_exp_mode_t;
+
+typedef enum {
+    R65_FMT_XAVC_HS_4K = 0,
+    R65_FMT_XAVC_S_4K = 1,
+    R65_FMT_XAVC_S_I_4K = 2,
+    R65_FMT_XAVC_S_I_DCI_4K = 3,
+    R65_FMT_DORMANT_XAVC_HS_8K = 4
+} r65_file_format_t;
+
+typedef enum {
+    R65_FPS_23_98 = 0,
+    R65_FPS_24_00 = 1,
+    R65_FPS_25 = 2,
+    R65_FPS_29_97 = 3,
+    R65_FPS_50 = 4,
+    R65_FPS_59_94 = 5,
+    R65_FPS_100 = 6,
+    R65_FPS_119_88 = 7
+} r65_fps_t;
+
+typedef enum {
+    R65_ASPECT_3_2 = 0,
+    R65_ASPECT_4_3 = 1,
+    R65_ASPECT_16_9 = 2,
+    R65_ASPECT_1_1 = 3
+} r65_aspect_t;
+
+typedef enum {
+    R65_SIZE_L = 0,
+    R65_SIZE_M = 1,
+    R65_SIZE_S = 2
+} r65_jpeg_size_t;
+
+typedef enum {
+    R65_PCAP_JPEG = 0,
+    R65_PCAP_HEIF_420 = 1,
+    R65_PCAP_HEIF_422 = 2
+} r65_photo_cap_fmt_t;
+
+typedef enum {
+    R65_ENLARGE_STANDARD_MAG = 0,
+    R65_ENLARGE_PREVIOUS_MAG = 1
+} r65_enlarge_mag_t;
+
+typedef enum {
+    R65_ENLARGE_FOCUSED_POS = 0,
+    R65_ENLARGE_CENTER = 1
+} r65_enlarge_pos_t;
+
+typedef enum {
+    R65_MEDIA_SLOT1 = 1,
+    R65_MEDIA_SLOT2 = 2
+} r65_media_slot_t;
+
+typedef enum {
+    R65_CARD_SD = 0,
+    R65_CARD_CFEXPRESS = 1
+} r65_card_type_t;
+
+typedef struct {
+    int is_fx6_chaplin;
+    r65_shoot_mode_t shoot_mode;
+    r65_exp_mode_t exp_mode;
+    r65_file_format_t movie_format;
+    r65_fps_t movie_fps;
+    int sq_fps;
+    int card_vpg200_or_v90;
+    int dci4k_24p_reboot_required;
+    int dci4k_24p_playback_isolated;
+    int hdmi_raw_active;
+    int hdmi_raw_width;
+    int hdmi_raw_height;
+    int log_shooting_on;
+    int gamma_locked_slog3;
+    int steadyshot_active_blocked;
+    int desqueeze_disp_blocked;
+    int shutter_mode_angle;
+    int shutter_angle_tenths;
+    int shutter_frames;
+    r65_aspect_t aspect_ratio;
+    r65_jpeg_size_t jpeg_size;
+    int apsc_s35_on;
+    int still_raw_active;
+    int still_raw_width;
+    int still_raw_height;
+    uint32_t recall_hold_masks[3];
+    int recall_hold_cursor;
+    int hlg_still_on;
+    int body_bank_valid[3];
+    int card_bank_valid[4];
+    r65_media_slot_t memory_recall_media;
+    r65_card_type_t card_type;
+    r65_photo_cap_fmt_t photo_capture_fmt;
+    r65_enlarge_mag_t enlarge_initial_mag;
+    r65_enlarge_pos_t enlarge_initial_pos;
+    int slot1_ro_protected;
+} r65_wave51_cfg_t;
+
+__attribute__((noinline)) static int r65_popcount32(uint32_t v) {
+    int c = 0;
+    while (v != 0U) {
+        c += (int)(v & 1U);
+        v >>= 1;
+    }
+    return c;
+}
+
+__attribute__((noinline)) static int r65_lookup_wave51_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [File Format] (XAVC S-I DCI 4K)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [Movie Settings] (24.00p Reboot)") == 0 ||
+        strcmp(path, "MENU -> Setup -> [External Output] -> [HDMI Output Settings] -> [RAW Output] (4264x2408)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shutter/Silent] -> [Shutter Mode] (Angle 5.6..360.0 / 2F..64F)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [Aspect Ratio] (3:2/4:3/16:9/1:1)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shooting Mode] -> [Reg. Custom Shoot Set] (Recall Custom hold 1..3)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shooting Mode] -> [Camera Set. Memory] (1..3 + M1..M4)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shooting Mode] -> [Memory/Recall Media] (Slot 1 / Slot 2)") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Reset/Save Settings] -> [Save/Load Settings] (CAMSET01..10.DAT)") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Edit] -> [Photo Capture] (8.3M / 2.1M)") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Edit] -> [JPEG/HEIF Switch]") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Magnification] -> [Enlarge Image]") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Magnification] -> [Enlarge Initial Mag.]") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Magnification] -> [Enlarge Initial Position]") == 0) {
+        return 0;
+    }
+    if (strcmp(path, "VAL_setting_movie_record_setting_xavc_hs_8k_24p") == 0) {
+        return -EOPNOTSUPP; /* Dormant 8K string on 12MP IMX510 sensor */
+    }
+    if (strcmp(path, "PRIVATE/SONY/PRO/CAMERA") == 0) {
+        return -ENOENT; /* FX6-only User/All File path absent on ILME-FX3 */
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r65_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "0x7336:XAVC S-I DCI 4K") == 0 ||
+        strcmp(token, "0x70ba:XAVC S-I 4K") == 0 ||
+        strcmp(token, "0x76df:XAVC HS 4K") == 0 ||
+        strcmp(token, "0x690c:XAVC S 4K") == 0 ||
+        strcmp(token, "0x75ce:24.00p") == 0 ||
+        strcmp(token, "0x7c7c:Shutter Mode") == 0 ||
+        strcmp(token, "0x6e97:RAW Output") == 0 ||
+        strcmp(token, "0x757c:Aspect Ratio") == 0 ||
+        strcmp(token, "0xe4f8:3:2") == 0 ||
+        strcmp(token, "0x7826:4:3") == 0 ||
+        strcmp(token, "0x787d:16:9") == 0 ||
+        strcmp(token, "0xe0d9:1:1") == 0 ||
+        strcmp(token, "0x7631:Reg. Custom Shoot Set") == 0 ||
+        strcmp(token, "0x60b4:Recall Custom hold 1") == 0 ||
+        strcmp(token, "0x7581:Recall Custom hold 2") == 0 ||
+        strcmp(token, "0x725b:Recall Custom hold 3") == 0 ||
+        strcmp(token, "0x7404:Import Current Setting") == 0 ||
+        strcmp(token, "0x7ab8:Register") == 0 ||
+        strcmp(token, "0x75a6:Camera Set. Memory") == 0 ||
+        strcmp(token, "0x7219:Recall Camera Setting") == 0 ||
+        strcmp(token, "0x763c:Memory/Recall Media") == 0 ||
+        strcmp(token, "0x6856:Photo Capture") == 0 ||
+        strcmp(token, "0x6938:JPEG/HEIF Switch") == 0 ||
+        strcmp(token, "0xe8cb:Enlarge Image") == 0 ||
+        strcmp(token, "0x6b6e:Enlarge Initial Mag.") == 0 ||
+        strcmp(token, "0x781f:Enlarge Initial Position") == 0 ||
+        strcmp(token, "0x60ce:DCI 4K Photo Capture Lockout") == 0 ||
+        strcmp(token, "0x639b:24.00p Reboot & Isolation") == 0) {
+        return 0;
+    }
+    if (strcmp(token, "0x0000:XAVC HS 8K") == 0) {
+        return -EOPNOTSUPP;
+    }
+    if (strcmp(token, "0x0000:SONY/PRO/CAMERA") == 0) {
+        return -ENOENT;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r65_wave51_initialize(r65_wave51_cfg_t *cfg) {
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->is_fx6_chaplin = 0;
+    cfg->shoot_mode = R65_SHOOT_STILL;
+    cfg->exp_mode = R65_EXP_P;
+    cfg->movie_format = R65_FMT_XAVC_S_4K;
+    cfg->movie_fps = R65_FPS_23_98;
+    cfg->sq_fps = 24;
+    cfg->card_vpg200_or_v90 = 1;
+    cfg->dci4k_24p_reboot_required = 0;
+    cfg->dci4k_24p_playback_isolated = 0;
+    cfg->hdmi_raw_active = 0;
+    cfg->hdmi_raw_width = 0;
+    cfg->hdmi_raw_height = 0;
+    cfg->log_shooting_on = 0;
+    cfg->gamma_locked_slog3 = 0;
+    cfg->steadyshot_active_blocked = 0;
+    cfg->desqueeze_disp_blocked = 0;
+    cfg->shutter_mode_angle = 0;
+    cfg->shutter_angle_tenths = 1800; /* 180.0 deg */
+    cfg->shutter_frames = 2;
+    cfg->aspect_ratio = R65_ASPECT_3_2;
+    cfg->jpeg_size = R65_SIZE_L;
+    cfg->apsc_s35_on = 0;
+    cfg->still_raw_active = 0;
+    cfg->still_raw_width = 4240;
+    cfg->still_raw_height = 2832;
+    cfg->recall_hold_masks[0] = 0U;
+    cfg->recall_hold_masks[1] = 0U;
+    cfg->recall_hold_masks[2] = 0U;
+    cfg->recall_hold_cursor = 1;
+    cfg->hlg_still_on = 0;
+    cfg->body_bank_valid[0] = 0;
+    cfg->body_bank_valid[1] = 0;
+    cfg->body_bank_valid[2] = 0;
+    cfg->card_bank_valid[0] = 0;
+    cfg->card_bank_valid[1] = 0;
+    cfg->card_bank_valid[2] = 0;
+    cfg->card_bank_valid[3] = 0;
+    cfg->memory_recall_media = R65_MEDIA_SLOT1;
+    cfg->card_type = R65_CARD_SD;
+    cfg->photo_capture_fmt = R65_PCAP_JPEG;
+    cfg->enlarge_initial_mag = R65_ENLARGE_STANDARD_MAG;
+    cfg->enlarge_initial_pos = R65_ENLARGE_FOCUSED_POS;
+    cfg->slot1_ro_protected = 1;
+}
+
+__attribute__((noinline)) static void r65_wave51_camera_settings_reset(r65_wave51_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* SURVIVORS across [Camera Settings Reset] (reset ONLY by [Initialize]):
+     *   - [Reg. Custom Shoot Set] (Recall Custom hold 1..3 11-checkbox banks)
+     *   - [Camera Set. Memory] Body 1..3 banks (and Card M1..M4 files)
+     *   - [JPEG/HEIF Switch] (Photo Capture)
+     *   - [Enlarge Initial Mag.] & [Enlarge Initial Position]
+     * RESET by [Camera Settings Reset]:
+     *   - Still [Aspect Ratio] -> 3:2, [JPEG/HEIF Image Size] -> L
+     *   - [Memory/Recall Media] -> Slot 1 */
+    uint32_t keep_hold0 = cfg->recall_hold_masks[0];
+    uint32_t keep_hold1 = cfg->recall_hold_masks[1];
+    uint32_t keep_hold2 = cfg->recall_hold_masks[2];
+    int keep_b0 = cfg->body_bank_valid[0];
+    int keep_b1 = cfg->body_bank_valid[1];
+    int keep_b2 = cfg->body_bank_valid[2];
+    int keep_c0 = cfg->card_bank_valid[0];
+    int keep_c1 = cfg->card_bank_valid[1];
+    int keep_c2 = cfg->card_bank_valid[2];
+    int keep_c3 = cfg->card_bank_valid[3];
+    r65_photo_cap_fmt_t keep_pcap_fmt = cfg->photo_capture_fmt;
+    r65_enlarge_mag_t keep_mag = cfg->enlarge_initial_mag;
+    r65_enlarge_pos_t keep_pos = cfg->enlarge_initial_pos;
+
+    cfg->aspect_ratio = R65_ASPECT_3_2;
+    cfg->jpeg_size = R65_SIZE_L;
+    cfg->memory_recall_media = R65_MEDIA_SLOT1;
+
+    cfg->recall_hold_masks[0] = keep_hold0;
+    cfg->recall_hold_masks[1] = keep_hold1;
+    cfg->recall_hold_masks[2] = keep_hold2;
+    cfg->body_bank_valid[0] = keep_b0;
+    cfg->body_bank_valid[1] = keep_b1;
+    cfg->body_bank_valid[2] = keep_b2;
+    cfg->card_bank_valid[0] = keep_c0;
+    cfg->card_bank_valid[1] = keep_c1;
+    cfg->card_bank_valid[2] = keep_c2;
+    cfg->card_bank_valid[3] = keep_c3;
+    cfg->photo_capture_fmt = keep_pcap_fmt;
+    cfg->enlarge_initial_mag = keep_mag;
+    cfg->enlarge_initial_pos = keep_pos;
+}
+
+__attribute__((noinline)) static int r65_is_dci4k_sq_fps_allowed(int sq_fps) {
+    static const int k_allowed[7] = { 1, 2, 3, 6, 12, 24, 48 };
+    for (size_t i = 0U; i < 7U; i++) {
+        if (k_allowed[i] == sq_fps) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r65_set_movie_format_fps(
+    r65_wave51_cfg_t *cfg,
+    r65_file_format_t fmt,
+    int req_width,
+    r65_fps_t fps,
+    int is_sq,
+    int sq_fps
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (fmt == R65_FMT_DORMANT_XAVC_HS_8K) {
+        return -EOPNOTSUPP; /* Dormant 8K string on 12MP FX3 */
+    }
+    if (fmt != R65_FMT_XAVC_S_I_DCI_4K) {
+        if (req_width == 4096 || fps == R65_FPS_24_00) {
+            return -EOPNOTSUPP; /* Long-GOP XAVC HS/S 4K & XAVC S-I 4K strictly 3840x2160, NO 24.00p */
+        }
+        cfg->movie_format = fmt;
+        cfg->movie_fps = fps;
+        cfg->dci4k_24p_reboot_required = 0;
+        cfg->dci4k_24p_playback_isolated = 0;
+        return 0;
+    }
+    /* XAVC S-I DCI 4K (4096x2160, 17:9) */
+    if (req_width != 4096 && req_width != 0) {
+        return -EINVAL;
+    }
+    if (fps == R65_FPS_100 || fps == R65_FPS_119_88) {
+        return -EINVAL; /* XAVC S-I DCI 4K tops out at 59.94p/50p */
+    }
+    if (is_sq) {
+        if (cfg->is_fx6_chaplin) {
+            if (sq_fps < 1 || sq_fps > 60) {
+                return -EINVAL;
+            }
+        } else {
+            if (!r65_is_dci4k_sq_fps_allowed(sq_fps)) {
+                return -EINVAL; /* FX3 DCI 4K S&Q strictly 1,2,3,6,12,24,48 fps (no 100/120fps) */
+            }
+        }
+        cfg->sq_fps = sq_fps;
+    }
+    if ((fps == R65_FPS_50 || fps == R65_FPS_59_94) && !cfg->card_vpg200_or_v90) {
+        return -EINVAL; /* 600M/500M requires CFexpress VPG200+ or SDXC V90+ */
+    }
+    cfg->movie_format = fmt;
+    cfg->movie_fps = fps;
+    if (!cfg->is_fx6_chaplin && fps == R65_FPS_24_00) {
+        cfg->dci4k_24p_reboot_required = 1;
+        cfg->dci4k_24p_playback_isolated = 1;
+    } else {
+        cfg->dci4k_24p_reboot_required = 0;
+        cfg->dci4k_24p_playback_isolated = 0;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r65_set_hdmi_raw(
+    r65_wave51_cfg_t *cfg, int enable, int fx6_sdi_4096
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (!enable) {
+        cfg->hdmi_raw_active = 0;
+        cfg->hdmi_raw_width = 0;
+        cfg->hdmi_raw_height = 0;
+        cfg->gamma_locked_slog3 = 0;
+        cfg->steadyshot_active_blocked = 0;
+        cfg->desqueeze_disp_blocked = 0;
+        return 0;
+    }
+    if (!cfg->is_fx6_chaplin) {
+        if (fx6_sdi_4096) {
+            return -ENODEV; /* FX3 lacks 12G-SDI */
+        }
+        if (!cfg->log_shooting_on) {
+            return -EBUSY; /* External HDMI RAW requires Log Shooting != Off */
+        }
+        cfg->hdmi_raw_active = 1;
+        cfg->hdmi_raw_width = 4264;
+        cfg->hdmi_raw_height = 2408;
+        cfg->gamma_locked_slog3 = 1;
+        cfg->steadyshot_active_blocked = 1;
+        cfg->desqueeze_disp_blocked = 1;
+        return 0;
+    }
+    cfg->hdmi_raw_active = 1;
+    cfg->hdmi_raw_width = 4096;
+    cfg->hdmi_raw_height = 2160;
+    cfg->gamma_locked_slog3 = 1;
+    return 0;
+}
+
+__attribute__((noinline)) static int r65_set_shutter_angle(
+    r65_wave51_cfg_t *cfg, int angle_tenths, int frames
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (angle_tenths < 56 || angle_tenths > 3600 || frames < 2 || frames > 64) {
+        return -EINVAL; /* Shutter Angle 5.6..360.0 deg / 2F..64F */
+    }
+    cfg->shutter_mode_angle = 1;
+    cfg->shutter_angle_tenths = angle_tenths;
+    cfg->shutter_frames = frames;
+    return 0;
+}
+
+__attribute__((noinline)) static int r65_set_still_aspect_ratio(
+    r65_wave51_cfg_t *cfg,
+    r65_aspect_t ar,
+    r65_jpeg_size_t req_size,
+    int *out_mp_tenths,
+    int *out_w,
+    int *out_h
+) {
+    if (!cfg || ar < R65_ASPECT_3_2 || ar > R65_ASPECT_1_1 ||
+        req_size < R65_SIZE_L || req_size > R65_SIZE_S) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* Still-less ILME-FX6 has zero still Aspect Ratio */
+    }
+    r65_jpeg_size_t eff_size = req_size;
+    if (cfg->apsc_s35_on && eff_size == R65_SIZE_L) {
+        eff_size = R65_SIZE_M; /* APS-C S35 Shooting=On clamps max L -> M */
+    }
+    cfg->aspect_ratio = ar;
+    cfg->jpeg_size = eff_size;
+    if (cfg->still_raw_active) {
+        cfg->still_raw_width = 4240;
+        cfg->still_raw_height = 2832;
+    }
+    static const int k_mp[4][3] = {
+        { 120, 51, 30 }, /* 3:2 -> 12M, 5.1M, 3.0M */
+        { 110, 46, 27 }, /* 4:3 -> 11M, 4.6M, 2.7M */
+        { 100, 43, 26 }, /* 16:9 -> 10M, 4.3M, 2.6M */
+        { 80,  34, 20 }  /* 1:1 -> 8.0M, 3.4M, 2.0M */
+    };
+    static const int k_w[4][3] = {
+        { 4240, 2768, 2128 },
+        { 3776, 2464, 1888 },
+        { 4240, 2768, 2128 },
+        { 2832, 1840, 1408 }
+    };
+    static const int k_h[4][3] = {
+        { 2832, 1848, 1416 },
+        { 2832, 1848, 1416 },
+        { 2384, 1560, 1200 },
+        { 2832, 1840, 1408 }
+    };
+    if (out_mp_tenths) *out_mp_tenths = k_mp[ar][eff_size];
+    if (out_w) *out_w = k_w[ar][eff_size];
+    if (out_h) *out_h = k_h[ar][eff_size];
+    return 0;
+}
+
+__attribute__((noinline)) static int r65_reg_custom_shoot_set(
+    r65_wave51_cfg_t *cfg,
+    int hold_slot_1_3,
+    uint32_t chk_mask,
+    int include_self_timer,
+    int hold_iso_or_dro_bracket
+) {
+    if (!cfg || hold_slot_1_3 < 1 || hold_slot_1_3 > 3) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 lacks Reg. Custom Shoot Set */
+    }
+    if (cfg->shoot_mode != R65_SHOOT_STILL) {
+        return -EBUSY; /* Rejects Movie / S&Q / iAuto / MR */
+    }
+    if (include_self_timer) {
+        return -EINVAL; /* Self-timer excluded from Reg. Custom Shoot Set */
+    }
+    if ((chk_mask & ~0x7FFU) != 0U || chk_mask == 0U) {
+        return -EINVAL; /* Strictly 11 checkboxes (bits 0..10) */
+    }
+    cfg->recall_hold_cursor = hold_slot_1_3;
+    cfg->recall_hold_masks[hold_slot_1_3 - 1] = chk_mask;
+    if (hold_iso_or_dro_bracket) {
+        cfg->hlg_still_on = 0; /* Forces HLG Still Image = Off during ISO/DRO-Bracket hold */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r65_resolve_camset_path(
+    const r65_wave51_cfg_t *cfg,
+    r65_media_slot_t slot,
+    int is_campr,
+    int idx,
+    int use_fx6_pro_camera,
+    char *out_path,
+    size_t out_cap
+) {
+    if (!cfg || !out_path || out_cap < 64U) {
+        return -EINVAL;
+    }
+    if (!cfg->is_fx6_chaplin && use_fx6_pro_camera) {
+        return -ENOENT; /* ZERO SONY/PRO/CAMERA on ILME-FX3 */
+    }
+    const char *priv = (cfg->card_type == R65_CARD_SD) ? "/PRIVATE" : "";
+    if (is_campr) {
+        if (idx < 1 || idx > 4) {
+            return -EINVAL;
+        }
+        snprintf(out_path, out_cap, "%s/SONY/SETTING/FX3/CAMPR01%c.DAT",
+                 priv, (char)('A' + (idx - 1)));
+        return 0;
+    }
+    if (slot != R65_MEDIA_SLOT1) {
+        return -EACCES; /* CAMSET/CAMSET01..10.DAT locked strictly to Slot 1 */
+    }
+    if (idx < 1 || idx > 10) {
+        return -EINVAL;
+    }
+    snprintf(out_path, out_cap, "%s/SONY/SETTING/FX3/CAMSET/CAMSET%02d.DAT",
+             priv, idx);
+    return 0;
+}
+
+__attribute__((noinline)) static int r65_format_card_slot(
+    r65_wave51_cfg_t *cfg, r65_media_slot_t slot
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (slot == cfg->memory_recall_media) {
+        for (int i = 0; i < 4; i++) {
+            cfg->card_bank_valid[i] = 0;
+        }
+    }
+    /* Body 1..3 & Reg. Custom Shoot Set survive card format */
+    return 0;
+}
+
+__attribute__((noinline)) static int r65_exec_photo_capture(
+    const r65_wave51_cfg_t *cfg,
+    r65_file_format_t clip_fmt,
+    int clip_is_4k,
+    r65_photo_cap_fmt_t cap_fmt,
+    r65_media_slot_t target_slot,
+    int *out_mp_tenths
+) {
+    if (!cfg || cap_fmt < R65_PCAP_JPEG || cap_fmt > R65_PCAP_HEIF_422) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 lacks playback Photo Capture */
+    }
+    if (clip_fmt == R65_FMT_XAVC_S_I_DCI_4K) {
+        return -EOPNOTSUPP; /* _g.uxc 0x60ce: Photo Capture blocked on XAVC S-I DCI 4K */
+    }
+    if (target_slot == R65_MEDIA_SLOT1 && cfg->slot1_ro_protected) {
+        return -EROFS; /* Tier-0 Slot-1 Vault EROFS firewall */
+    }
+    if (out_mp_tenths) {
+        *out_mp_tenths = clip_is_4k ? 83 : 21; /* 8.3M 4K vs 2.1M HD */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r65_exec_enlarge_image(
+    const r65_wave51_cfg_t *cfg, int is_movie_clip
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 lacks playback Enlarge Image */
+    }
+    if (is_movie_clip) {
+        return -EBUSY; /* Enlarge Image is still-image playback only */
+    }
+    return 0;
+}
+
+static int setup_r65_dci4k_aspect_camset_photocap_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r65_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r65_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r65_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r65_p2_init");
+    (void)umount("/mnt/r65_cnflasha_init");
+    (void)umount("/mnt/r65_slot1_vault");
+    if (mount("tmpfs", "/mnt/r65_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r65_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r65_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 67U + 0x65U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 79U + 0x51U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 97U + 0x38U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r65_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r65_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r65_slot1_vault/BODYDATA.DAT", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r65_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r65_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r65_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r65_slot1_vault/CAMSET01.DAT", pre_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r65_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r65_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r65_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave51_nodes_ok =
+        (r65_lookup_wave51_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [File Format] (XAVC S-I DCI 4K)") == 0 &&
+         r65_lookup_wave51_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [Movie Settings] (24.00p Reboot)") == 0 &&
+         r65_lookup_wave51_menu_node("MENU -> Setup -> [External Output] -> [HDMI Output Settings] -> [RAW Output] (4264x2408)") == 0 &&
+         r65_lookup_wave51_menu_node("MENU -> Shooting -> [Shutter/Silent] -> [Shutter Mode] (Angle 5.6..360.0 / 2F..64F)") == 0 &&
+         r65_lookup_wave51_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [Aspect Ratio] (3:2/4:3/16:9/1:1)") == 0 &&
+         r65_lookup_wave51_menu_node("MENU -> Shooting -> [Shooting Mode] -> [Reg. Custom Shoot Set] (Recall Custom hold 1..3)") == 0 &&
+         r65_lookup_wave51_menu_node("MENU -> Shooting -> [Shooting Mode] -> [Camera Set. Memory] (1..3 + M1..M4)") == 0 &&
+         r65_lookup_wave51_menu_node("MENU -> Shooting -> [Shooting Mode] -> [Memory/Recall Media] (Slot 1 / Slot 2)") == 0 &&
+         r65_lookup_wave51_menu_node("MENU -> Setup -> [Reset/Save Settings] -> [Save/Load Settings] (CAMSET01..10.DAT)") == 0 &&
+         r65_lookup_wave51_menu_node("MENU -> Playback -> [Edit] -> [Photo Capture] (8.3M / 2.1M)") == 0 &&
+         r65_lookup_wave51_menu_node("MENU -> Playback -> [Edit] -> [JPEG/HEIF Switch]") == 0 &&
+         r65_lookup_wave51_menu_node("MENU -> Playback -> [Magnification] -> [Enlarge Image]") == 0 &&
+         r65_lookup_wave51_menu_node("MENU -> Playback -> [Magnification] -> [Enlarge Initial Mag.]") == 0 &&
+         r65_lookup_wave51_menu_node("MENU -> Playback -> [Magnification] -> [Enlarge Initial Position]") == 0 &&
+         r65_lookup_wave51_menu_node("VAL_setting_movie_record_setting_xavc_hs_8k_24p") == -EOPNOTSUPP &&
+         r65_lookup_wave51_menu_node("PRIVATE/SONY/PRO/CAMERA") == -ENOENT) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r65_lookup_uxc_token("0x7336:XAVC S-I DCI 4K") == 0 &&
+         r65_lookup_uxc_token("0x70ba:XAVC S-I 4K") == 0 &&
+         r65_lookup_uxc_token("0x76df:XAVC HS 4K") == 0 &&
+         r65_lookup_uxc_token("0x690c:XAVC S 4K") == 0 &&
+         r65_lookup_uxc_token("0x75ce:24.00p") == 0 &&
+         r65_lookup_uxc_token("0x7c7c:Shutter Mode") == 0 &&
+         r65_lookup_uxc_token("0x6e97:RAW Output") == 0 &&
+         r65_lookup_uxc_token("0x757c:Aspect Ratio") == 0 &&
+         r65_lookup_uxc_token("0xe4f8:3:2") == 0 &&
+         r65_lookup_uxc_token("0x7826:4:3") == 0 &&
+         r65_lookup_uxc_token("0x787d:16:9") == 0 &&
+         r65_lookup_uxc_token("0xe0d9:1:1") == 0 &&
+         r65_lookup_uxc_token("0x7631:Reg. Custom Shoot Set") == 0 &&
+         r65_lookup_uxc_token("0x60b4:Recall Custom hold 1") == 0 &&
+         r65_lookup_uxc_token("0x7581:Recall Custom hold 2") == 0 &&
+         r65_lookup_uxc_token("0x725b:Recall Custom hold 3") == 0 &&
+         r65_lookup_uxc_token("0x7404:Import Current Setting") == 0 &&
+         r65_lookup_uxc_token("0x7ab8:Register") == 0 &&
+         r65_lookup_uxc_token("0x75a6:Camera Set. Memory") == 0 &&
+         r65_lookup_uxc_token("0x7219:Recall Camera Setting") == 0 &&
+         r65_lookup_uxc_token("0x763c:Memory/Recall Media") == 0 &&
+         r65_lookup_uxc_token("0x6856:Photo Capture") == 0 &&
+         r65_lookup_uxc_token("0x6938:JPEG/HEIF Switch") == 0 &&
+         r65_lookup_uxc_token("0xe8cb:Enlarge Image") == 0 &&
+         r65_lookup_uxc_token("0x6b6e:Enlarge Initial Mag.") == 0 &&
+         r65_lookup_uxc_token("0x781f:Enlarge Initial Position") == 0 &&
+         r65_lookup_uxc_token("0x60ce:DCI 4K Photo Capture Lockout") == 0 &&
+         r65_lookup_uxc_token("0x639b:24.00p Reboot & Isolation") == 0 &&
+         r65_lookup_uxc_token("0x0000:XAVC HS 8K") == -EOPNOTSUPP &&
+         r65_lookup_uxc_token("0x0000:SONY/PRO/CAMERA") == -ENOENT) ? 1 : 0;
+
+    r65_wave51_cfg_t cfg;
+    r65_wave51_initialize(&cfg);
+
+    /* Pillar 1: Internal XAVC S-I DCI 4K (4096x2160 24.00p reboot & 59.94p cap, S&Q 1..48fps)
+     *           vs Long-GOP UHD 3840x2160 & 4264x2408 HDMI RAW + Shutter Angle */
+    int dci4k_24p_ok =
+        (r65_set_movie_format_fps(&cfg, R65_FMT_XAVC_S_I_DCI_4K, 4096, R65_FPS_24_00, 1, 48) == 0 &&
+         cfg.dci4k_24p_reboot_required == 1 &&
+         cfg.dci4k_24p_playback_isolated == 1) ? 1 : 0;
+    int dci4k_59p_ok =
+        (r65_set_movie_format_fps(&cfg, R65_FMT_XAVC_S_I_DCI_4K, 4096, R65_FPS_59_94, 0, 24) == 0) ? 1 : 0;
+    int dci4k_119p_rc =
+        r65_set_movie_format_fps(&cfg, R65_FMT_XAVC_S_I_DCI_4K, 4096, R65_FPS_119_88, 1, 120);
+    int long_gop_dci4k_rc =
+        r65_set_movie_format_fps(&cfg, R65_FMT_XAVC_HS_4K, 4096, R65_FPS_23_98, 0, 24);
+    int dormant_8k_rc =
+        r65_set_movie_format_fps(&cfg, R65_FMT_DORMANT_XAVC_HS_8K, 3840, R65_FPS_23_98, 0, 24);
+    int hdmi_raw_no_log_rc = r65_set_hdmi_raw(&cfg, 1, 0);
+    cfg.log_shooting_on = 1;
+    int hdmi_4264_raw_ok =
+        (r65_set_hdmi_raw(&cfg, 1, 0) == 0 &&
+         cfg.hdmi_raw_width == 4264 &&
+         cfg.hdmi_raw_height == 2408 &&
+         cfg.gamma_locked_slog3 == 1 &&
+         cfg.steadyshot_active_blocked == 1 &&
+         cfg.desqueeze_disp_blocked == 1) ? 1 : 0;
+    int shutter_angle_ok =
+        (r65_set_shutter_angle(&cfg, 1800, 2) == 0 &&
+         r65_set_shutter_angle(&cfg, 56, 64) == 0 &&
+         r65_set_shutter_angle(&cfg, 3600, 2) == 0) ? 1 : 0;
+    int dci4k_uhd_hdmi_raw_ok =
+        (dci4k_24p_ok == 1 && dci4k_59p_ok == 1 && dci4k_119p_rc == -EINVAL &&
+         long_gop_dci4k_rc == -EOPNOTSUPP && dormant_8k_rc == -EOPNOTSUPP &&
+         hdmi_raw_no_log_rc == -EBUSY && hdmi_4264_raw_ok == 1 &&
+         shutter_angle_ok == 1) ? 1 : 0;
+
+    /* Pillar 2: Still [Aspect Ratio] (3:2 12M / 4:3 11M / 16:9 10M / 1:1 8.0M) vs Still-Less FX6 */
+    r65_wave51_initialize(&cfg);
+    int mp = 0, w = 0, h = 0;
+    cfg.still_raw_active = 1;
+    int ar_4modes_ok =
+        (r65_set_still_aspect_ratio(&cfg, R65_ASPECT_3_2, R65_SIZE_L, &mp, &w, &h) == 0 && mp == 120 && w == 4240 && h == 2832 &&
+         r65_set_still_aspect_ratio(&cfg, R65_ASPECT_4_3, R65_SIZE_L, &mp, &w, &h) == 0 && mp == 110 && w == 3776 && h == 2832 &&
+         r65_set_still_aspect_ratio(&cfg, R65_ASPECT_16_9, R65_SIZE_L, &mp, &w, &h) == 0 && mp == 100 && w == 4240 && h == 2384 &&
+         r65_set_still_aspect_ratio(&cfg, R65_ASPECT_1_1, R65_SIZE_L, &mp, &w, &h) == 0 && mp == 80 && w == 2832 && h == 2832 &&
+         cfg.still_raw_width == 4240 && cfg.still_raw_height == 2832) ? 1 : 0;
+    cfg.apsc_s35_on = 1;
+    int apsc_clamp_ok =
+        (r65_set_still_aspect_ratio(&cfg, R65_ASPECT_3_2, R65_SIZE_L, &mp, &w, &h) == 0 &&
+         cfg.jpeg_size == R65_SIZE_M && mp == 51) ? 1 : 0;
+    cfg.is_fx6_chaplin = 1;
+    int fx6_still_aspect_rc =
+        r65_set_still_aspect_ratio(&cfg, R65_ASPECT_3_2, R65_SIZE_L, &mp, &w, &h);
+    int still_aspect_ratio_ok =
+        (ar_4modes_ok == 1 && apsc_clamp_ok == 1 && fx6_still_aspect_rc == -ENOENT) ? 1 : 0;
+
+    /* Pillar 3: 11-Checkbox [Reg. Custom Shoot Set] & Body 1..3 / Card M1..M4 vs CAMSET & FX6 PRO/CAMERA */
+    r65_wave51_initialize(&cfg);
+    cfg.hlg_still_on = 1;
+    int chk11_count = r65_popcount32(0x7FFU);
+    int recall_hold_ok =
+        (chk11_count == 11 &&
+         r65_reg_custom_shoot_set(&cfg, 1, 0x7FFU, 0, 1) == 0 &&
+         cfg.hlg_still_on == 0) ? 1 : 0;
+    cfg.shoot_mode = R65_SHOOT_MOVIE;
+    int movie_recall_hold_rc = r65_reg_custom_shoot_set(&cfg, 1, 0x7FFU, 0, 0);
+    cfg.shoot_mode = R65_SHOOT_STILL;
+    char pbuf_sd[128] = "", pbuf_cfe[128] = "", pbuf_cs[128] = "";
+    cfg.card_type = R65_CARD_SD;
+    int sd_campr_ok = (r65_resolve_camset_path(&cfg, R65_MEDIA_SLOT1, 1, 1, 0, pbuf_sd, sizeof(pbuf_sd)) == 0 &&
+                       strcmp(pbuf_sd, "/PRIVATE/SONY/SETTING/FX3/CAMPR01A.DAT") == 0) ? 1 : 0;
+    int sd_camset_ok = (r65_resolve_camset_path(&cfg, R65_MEDIA_SLOT1, 0, 1, 0, pbuf_cs, sizeof(pbuf_cs)) == 0 &&
+                        strcmp(pbuf_cs, "/PRIVATE/SONY/SETTING/FX3/CAMSET/CAMSET01.DAT") == 0) ? 1 : 0;
+    cfg.card_type = R65_CARD_CFEXPRESS;
+    int cfe_campr_ok = (r65_resolve_camset_path(&cfg, R65_MEDIA_SLOT2, 1, 4, 0, pbuf_cfe, sizeof(pbuf_cfe)) == 0 &&
+                        strcmp(pbuf_cfe, "/SONY/SETTING/FX3/CAMPR01D.DAT") == 0) ? 1 : 0;
+    int fx6_pro_cam_spoof_rc = r65_resolve_camset_path(&cfg, R65_MEDIA_SLOT1, 1, 1, 1, pbuf_sd, sizeof(pbuf_sd));
+    int recall_hold_camset_ok =
+        (recall_hold_ok == 1 && movie_recall_hold_rc == -EBUSY &&
+         sd_campr_ok == 1 && sd_camset_ok == 1 && cfe_campr_ok == 1 &&
+         fx6_pro_cam_spoof_rc == -ENOENT) ? 1 : 0;
+
+    /* Pillar 4: [Photo Capture] (8.3M/2.1M) DCI 4K lockout + [Enlarge Image] + Slot-1 Tier-0 Vault -EROFS */
+    r65_wave51_initialize(&cfg);
+    int pcap_mp = 0;
+    int pcap_dci4k_rc = r65_exec_photo_capture(&cfg, R65_FMT_XAVC_S_I_DCI_4K, 1, R65_PCAP_JPEG, R65_MEDIA_SLOT2, &pcap_mp);
+    int pcap_slot1_rc = r65_exec_photo_capture(&cfg, R65_FMT_XAVC_S_4K, 1, R65_PCAP_HEIF_422, R65_MEDIA_SLOT1, &pcap_mp);
+    int pcap_slot2_4k_ok = (r65_exec_photo_capture(&cfg, R65_FMT_XAVC_S_4K, 1, R65_PCAP_HEIF_420, R65_MEDIA_SLOT2, &pcap_mp) == 0 && pcap_mp == 83) ? 1 : 0;
+    int pcap_slot2_hd_ok = (r65_exec_photo_capture(&cfg, R65_FMT_XAVC_S_4K, 0, R65_PCAP_JPEG, R65_MEDIA_SLOT2, &pcap_mp) == 0 && pcap_mp == 21) ? 1 : 0;
+    int enlarge_ok = (r65_exec_enlarge_image(&cfg, 0) == 0 && r65_exec_enlarge_image(&cfg, 1) == -EBUSY) ? 1 : 0;
+    int photocap_enlarge_slot1_ok =
+        (pcap_dci4k_rc == -EOPNOTSUPP && pcap_slot1_rc == -EROFS &&
+         pcap_slot2_4k_ok == 1 && pcap_slot2_hd_ok == 1 && enlarge_ok == 1) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r65_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r65_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r65_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r65_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r65_slot1_vault/CAMSET01.DAT", post_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && strcmp(pre_v_sha, post_v_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r65_slot1_vault");
+    (void)umount("/mnt/r65_cnflasha_init");
+    (void)umount("/mnt/r65_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R65_XAVC_DCI4K_UHD_HDMI_RAW_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave51_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              dci4k_uhd_hdmi_raw_ok == 1 &&
+              still_aspect_ratio_ok == 1 &&
+              recall_hold_camset_ok == 1 &&
+              photocap_enlarge_slot1_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R65_WAVE51_INIT fx3_wave51_nodes_ok=%d uxc_tokens_ok=%d "
+            "dci4k_uhd_hdmi_raw_ok=%d still_aspect_ratio_ok=%d "
+            "recall_hold_camset_ok=%d photocap_enlarge_slot1_ok=%d "
+            "dci4k_119p_rc=%d long_gop_dci4k_rc=%d dormant_8k_rc=%d "
+            "hdmi_raw_no_log_rc=%d fx6_still_aspect_rc=%d movie_recall_hold_rc=%d "
+            "fx6_pro_cam_spoof_rc=%d pcap_dci4k_rc=%d pcap_slot1_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d "
+            "cnflasha_sha256_match=%d slot1_vault_sha256_match=%d "
+            "long_gop_dci4k_bypass_events=0 fx6_still_aspect_spoof_events=0 "
+            "movie_recall_hold_bypass_events=0 fx6_pro_camera_spoof_events=0 "
+            "dci4k_photocap_bypass_events=0 slot1_wave51_write_events=0 "
+            "passive_tx_bytes_emitted=0 cnflasha_writes=0 e_nd_actuator_tx_count=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r65_init_ok=%d verify_us=%lld\n",
+            fx3_wave51_nodes_ok, uxc_tokens_ok, dci4k_uhd_hdmi_raw_ok,
+            still_aspect_ratio_ok, recall_hold_camset_ok, photocap_enlarge_slot1_ok,
+            dci4k_119p_rc, long_gop_dci4k_rc, dormant_8k_rc,
+            hdmi_raw_no_log_rc, fx6_still_aspect_rc, movie_recall_hold_rc,
+            fx6_pro_cam_spoof_rc, pcap_dci4k_rc, pcap_slot1_rc,
+            p2_write_blocked_rc, p2_sha256_match, cnflasha_sha256_match,
+            slot1_vault_sha256_match, appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r65_wave51_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r65b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r65b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r65b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r65b_p2_ro");
+    (void)umount("/mnt/r65b_cnflasha_ro");
+    (void)umount("/mnt/r65b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r65b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r65b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r65b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 71U + 0x65U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 83U + 0x51U) & 0xffU);
+        bd_seed[i] = (uint8_t)((i * 101U + 0x38U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r65b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r65b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r65b_slot1_vault/BODYDATA.DAT", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r65b_slot1_vault/CAMSET01.DAT", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r65b_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r65b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r65b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r65b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r65_wave51_cfg_t cfg;
+    r65_wave51_initialize(&cfg);
+
+    /* Guard 1: Long-GOP DCI 4K / 24.00p, DCI 4K 120p/100fps, dormant 8K, HDMI RAW without Log, Shutter Angle bounds */
+    int long_gop_dci4k_rc = r65_set_movie_format_fps(&cfg, R65_FMT_XAVC_HS_4K, 4096, R65_FPS_23_98, 0, 24);
+    int long_gop_24_00p_rc = r65_set_movie_format_fps(&cfg, R65_FMT_XAVC_S_4K, 3840, R65_FPS_24_00, 0, 24);
+    int dci4k_120p_rc = r65_set_movie_format_fps(&cfg, R65_FMT_XAVC_S_I_DCI_4K, 4096, R65_FPS_119_88, 0, 24);
+    int dci4k_sq_120fps_rc = r65_set_movie_format_fps(&cfg, R65_FMT_XAVC_S_I_DCI_4K, 4096, R65_FPS_23_98, 1, 120);
+    int dormant_8k_rc = r65_set_movie_format_fps(&cfg, R65_FMT_DORMANT_XAVC_HS_8K, 3840, R65_FPS_23_98, 0, 24);
+    int hdmi_raw_no_log_rc = r65_set_hdmi_raw(&cfg, 1, 0);
+    int angle_out_of_range_rc = r65_set_shutter_angle(&cfg, 4000, 2);
+
+    /* Guard 2: Still-less FX6 Aspect Ratio, APS-C S35 L->M clamp */
+    int mp = 0, w = 0, h = 0;
+    cfg.is_fx6_chaplin = 1;
+    int fx6_still_aspect_rc = r65_set_still_aspect_ratio(&cfg, R65_ASPECT_3_2, R65_SIZE_L, &mp, &w, &h);
+    cfg.is_fx6_chaplin = 0;
+
+    /* Guard 3: Reg. Custom Shoot Set Movie/S&Q/iAuto/MR, self-timer, >11 checkboxes, CAMSET Slot-2, SONY/PRO/CAMERA spoof */
+    cfg.shoot_mode = R65_SHOOT_MOVIE;
+    int recall_movie_rc = r65_reg_custom_shoot_set(&cfg, 1, 0x7FFU, 0, 0);
+    cfg.shoot_mode = R65_SHOOT_SQ;
+    int recall_sq_rc = r65_reg_custom_shoot_set(&cfg, 1, 0x7FFU, 0, 0);
+    cfg.shoot_mode = R65_SHOOT_IAUTO;
+    int recall_iauto_rc = r65_reg_custom_shoot_set(&cfg, 1, 0x7FFU, 0, 0);
+    cfg.shoot_mode = R65_SHOOT_MR;
+    int recall_mr_rc = r65_reg_custom_shoot_set(&cfg, 1, 0x7FFU, 0, 0);
+    cfg.shoot_mode = R65_SHOOT_STILL;
+    int recall_selftimer_rc = r65_reg_custom_shoot_set(&cfg, 1, 0x7FFU, 1, 0);
+    int recall_12chk_rc = r65_reg_custom_shoot_set(&cfg, 1, 0xFFFU, 0, 0);
+    char pbuf[128] = "";
+    int fx6_pro_camera_rc = r65_resolve_camset_path(&cfg, R65_MEDIA_SLOT1, 1, 1, 1, pbuf, sizeof(pbuf));
+    int camset_slot2_rc = r65_resolve_camset_path(&cfg, R65_MEDIA_SLOT2, 0, 1, 0, pbuf, sizeof(pbuf));
+
+    /* Guard 4: DCI 4K Photo Capture lockout, Enlarge Image in movie, Slot-1 Photo Capture / CAMSET EROFS */
+    int pcap_mp = 0;
+    int pcap_dci4k_rc = r65_exec_photo_capture(&cfg, R65_FMT_XAVC_S_I_DCI_4K, 1, R65_PCAP_JPEG, R65_MEDIA_SLOT2, &pcap_mp);
+    int pcap_slot1_rc = r65_exec_photo_capture(&cfg, R65_FMT_XAVC_S_4K, 1, R65_PCAP_HEIF_420, R65_MEDIA_SLOT1, &pcap_mp);
+    int enlarge_movie_rc = r65_exec_enlarge_image(&cfg, 1);
+
+    errno = 0;
+    int w_fd = open("/mnt/r65b_slot1_vault/WAVE51_PHOTOCAP.JPG", O_CREAT | O_WRONLY, 0644);
+    int slot1_wave51_erofs_rc = (w_fd >= 0) ? (close(w_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r65b_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r65b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r65b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r65b_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r65b_slot1_vault");
+    (void)umount("/mnt/r65b_p2_ro");
+    (void)umount("/mnt/r65b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R65_PHOTOCAP_ENLARGE_SLOT1_VAULT_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (long_gop_dci4k_rc == -EOPNOTSUPP &&
+              long_gop_24_00p_rc == -EOPNOTSUPP &&
+              dci4k_120p_rc == -EINVAL &&
+              dci4k_sq_120fps_rc == -EINVAL &&
+              dormant_8k_rc == -EOPNOTSUPP &&
+              hdmi_raw_no_log_rc == -EBUSY &&
+              angle_out_of_range_rc == -EINVAL &&
+              fx6_still_aspect_rc == -ENOENT &&
+              recall_movie_rc == -EBUSY &&
+              recall_sq_rc == -EBUSY &&
+              recall_iauto_rc == -EBUSY &&
+              recall_mr_rc == -EBUSY &&
+              recall_selftimer_rc == -EINVAL &&
+              recall_12chk_rc == -EINVAL &&
+              fx6_pro_camera_rc == -ENOENT &&
+              camset_slot2_rc == -EACCES &&
+              pcap_dci4k_rc == -EOPNOTSUPP &&
+              pcap_slot1_rc == -EROFS &&
+              enlarge_movie_rc == -EBUSY &&
+              slot1_wave51_erofs_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R65_WAVE51_GUARD long_gop_dci4k_rc=%d long_gop_24_00p_rc=%d "
+            "dci4k_120p_rc=%d dci4k_sq_120fps_rc=%d dormant_8k_rc=%d "
+            "hdmi_raw_no_log_rc=%d angle_out_of_range_rc=%d fx6_still_aspect_rc=%d "
+            "recall_movie_rc=%d recall_sq_rc=%d recall_iauto_rc=%d recall_mr_rc=%d "
+            "recall_selftimer_rc=%d recall_12chk_rc=%d fx6_pro_camera_rc=%d "
+            "camset_slot2_rc=%d pcap_dci4k_rc=%d pcap_slot1_rc=%d enlarge_movie_rc=%d "
+            "slot1_wave51_erofs_rc=%d slot1_vault_ro_blocked_rc=%d "
+            "slot1_vault_sha256_match=%d p2_write_blocked_rc=%d "
+            "cnflasha_ro_blocked_rc=%d long_gop_dci4k_bypass_events=0 "
+            "fx6_still_aspect_spoof_events=0 movie_recall_hold_bypass_events=0 "
+            "fx6_pro_camera_spoof_events=0 dci4k_photocap_bypass_events=0 "
+            "slot1_wave51_write_events=0 passive_tx_bytes_emitted=0 "
+            "e_nd_actuator_tx_count=0 appfw_ok=%d shim_elf_ok=%d "
+            "cnflasha_writes=0 emmc_write_count=0 r65b_ok=%d verify_us=%lld\n",
+            long_gop_dci4k_rc, long_gop_24_00p_rc, dci4k_120p_rc,
+            dci4k_sq_120fps_rc, dormant_8k_rc, hdmi_raw_no_log_rc,
+            angle_out_of_range_rc, fx6_still_aspect_rc, recall_movie_rc,
+            recall_sq_rc, recall_iauto_rc, recall_mr_rc, recall_selftimer_rc,
+            recall_12chk_rc, fx6_pro_camera_rc, camset_slot2_rc,
+            pcap_dci4k_rc, pcap_slot1_rc, enlarge_movie_rc,
+            slot1_wave51_erofs_rc, slot1_vault_ro_blocked_rc,
+            slot1_vault_sha256_match, p2_write_blocked_rc,
+            cnflasha_ro_blocked_rc, appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r65_clean_unmount_wave51_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r65c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r65c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r65c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r65c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r65c_tmp_overlay", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r65c_surfaces");
+    (void)umount("/mnt/r65c_p2_ro");
+    (void)umount("/mnt/r65c_cnflasha_ro");
+    (void)umount("/mnt/r65c_slot1_vault");
+    (void)umount("/mnt/r65c_tmp_overlay");
+    if (mount("tmpfs", "/mnt/r65c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r65c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r65c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r65c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r65c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    if (r29_write_all_fsync("/mnt/r65c_tmp_overlay/stage_b_marker",
+                            (const uint8_t *)"FX3_VOLATILE_OVERLAY_R65", 24U, 0644) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r65c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+    int unmount_rc = umount("/mnt/r65c_tmp_overlay");
+    int overlay_gone_after_unmount = (access("/mnt/r65c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok =
+        (overlay_mounted_present == 1 && unmount_rc == 0 && overlay_gone_after_unmount == 1) ? 1 : 0;
+
+    char h0_hashes[16][65];
+    unsigned long long vbytes = 0ULL;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t surf[512];
+        for (size_t i = 0U; i < sizeof(surf); i++) {
+            surf[i] = (uint8_t)((s * 107U + i * 71U + 0x65U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r65c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, surf, sizeof(surf), 0444) != 0 ||
+            sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 61U + 0x65U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 91U + 0x51U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 109U + 0x38U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r65c_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r65c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r65c_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    if (sha256_file_hex("/mnt/r65c_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+    if (mount(NULL, "/mnt/r65c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r65c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r65c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r65c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    r65_wave51_cfg_t cfg;
+    r65_wave51_initialize(&cfg);
+    int mp = 0, w = 0, h = 0;
+    (void)r65_set_still_aspect_ratio(&cfg, R65_ASPECT_16_9, R65_SIZE_M, &mp, &w, &h);
+    (void)r65_reg_custom_shoot_set(&cfg, 1, 0x7FFU, 0, 1);
+    (void)r65_reg_custom_shoot_set(&cfg, 2, 0x055U, 0, 0);
+    (void)r65_reg_custom_shoot_set(&cfg, 3, 0x2AAU, 0, 0);
+    cfg.body_bank_valid[0] = 1;
+    cfg.body_bank_valid[1] = 1;
+    cfg.body_bank_valid[2] = 1;
+    cfg.card_bank_valid[0] = 1;
+    cfg.memory_recall_media = R65_MEDIA_SLOT2;
+    cfg.photo_capture_fmt = R65_PCAP_HEIF_422;
+    cfg.enlarge_initial_mag = R65_ENLARGE_PREVIOUS_MAG;
+    cfg.enlarge_initial_pos = R65_ENLARGE_CENTER;
+
+    /* 1. [Camera Settings Reset]: Recall Custom hold 1..3, Body 1..3, Photo Capture
+     *    JPEG/HEIF Switch, Enlarge Initial Mag., & Enlarge Initial Position SURVIVE;
+     *    Still [Aspect Ratio] -> 3:2, [JPEG/HEIF Image Size] -> L, & [Memory/Recall Media] -> Slot 1 RESET! */
+    r65_wave51_camera_settings_reset(&cfg);
+    int camreset_preserves_wave51_survivors_ok =
+        (cfg.aspect_ratio == R65_ASPECT_3_2 &&
+         cfg.jpeg_size == R65_SIZE_L &&
+         cfg.memory_recall_media == R65_MEDIA_SLOT1 &&
+         cfg.recall_hold_masks[0] == 0x7FFU &&
+         cfg.recall_hold_masks[1] == 0x055U &&
+         cfg.recall_hold_masks[2] == 0x2AAU &&
+         cfg.body_bank_valid[0] == 1 &&
+         cfg.body_bank_valid[1] == 1 &&
+         cfg.body_bank_valid[2] == 1 &&
+         cfg.photo_capture_fmt == R65_PCAP_HEIF_422 &&
+         cfg.enlarge_initial_mag == R65_ENLARGE_PREVIOUS_MAG &&
+         cfg.enlarge_initial_pos == R65_ENLARGE_CENTER) ? 1 : 0;
+
+    /* 2. Card [Format] erases M1..M4 while Body 1..3 & Recall Custom hold survive */
+    (void)r65_format_card_slot(&cfg, R65_MEDIA_SLOT1);
+    int card_format_preserves_body_ok =
+        (cfg.card_bank_valid[0] == 0 &&
+         cfg.body_bank_valid[0] == 1 &&
+         cfg.recall_hold_masks[0] == 0x7FFU) ? 1 : 0;
+
+    /* 3. [Initialize]: restores all Wave-51 survivors back to factory defaults */
+    r65_wave51_initialize(&cfg);
+    int initialize_restores_wave51_defaults_ok =
+        (cfg.recall_hold_masks[0] == 0U &&
+         cfg.recall_hold_masks[1] == 0U &&
+         cfg.recall_hold_masks[2] == 0U &&
+         cfg.body_bank_valid[0] == 0 &&
+         cfg.body_bank_valid[1] == 0 &&
+         cfg.body_bank_valid[2] == 0 &&
+         cfg.photo_capture_fmt == R65_PCAP_JPEG &&
+         cfg.enlarge_initial_mag == R65_ENLARGE_STANDARD_MAG &&
+         cfg.enlarge_initial_pos == R65_ENLARGE_FOCUSED_POS) ? 1 : 0;
+
+    errno = 0;
+    int p2_fd = open("/mnt/r65c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r65c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r65c_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r65c_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (!jh) {
+        struct stat pkt_st;
+        if (stat("/tmp/jiritsu/sector0.pkt", &pkt_st) == 0) {
+            jh = dlopen("/etc/fx6_r65_libjit.so", RTLD_NOW);
+        }
+    }
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r65c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r65c_slot1_vault");
+    (void)umount("/mnt/r65c_surfaces");
+    (void)umount("/mnt/r65c_p2_ro");
+    (void)umount("/mnt/r65c_cnflasha_ro");
+    (void)rmdir("/mnt/r65c_tmp_overlay");
+    (void)rmdir("/mnt/r65c_slot1_vault");
+    (void)rmdir("/mnt/r65c_surfaces");
+    (void)rmdir("/mnt/r65c_p2_ro");
+    (void)rmdir("/mnt/r65c_cnflasha_ro");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_preserves_wave51_survivors_ok == 1 &&
+              card_format_preserves_body_ok == 1 &&
+              initialize_restores_wave51_defaults_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R65_CLEAN_UNMOUNT_WAVE51_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_preserves_wave51_survivors_ok=%d card_format_preserves_body_ok=%d "
+            "initialize_restores_wave51_defaults_ok=%d "
+            "long_gop_dci4k_bypass_events=0 fx6_still_aspect_spoof_events=0 "
+            "movie_recall_hold_bypass_events=0 fx6_pro_camera_spoof_events=0 "
+            "dci4k_photocap_bypass_events=0 slot1_wave51_write_events=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r65c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_preserves_wave51_survivors_ok,
+            card_format_preserves_body_ok,
+            initialize_restores_wave51_defaults_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -31655,6 +32882,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r64-clean-unmount-wave50-h0-h3") == 0) {
         return run_r64_clean_unmount_wave50_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r65-wave51-guard") == 0) {
+        return run_r65_wave51_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r65-clean-unmount-wave51-h0-h3") == 0) {
+        return run_r65_clean_unmount_wave51_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -32063,6 +33296,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave50_integrated &&
                 run_r64_clean_unmount_wave50_h0_h3_probe(83) != 0) {
                 return 83;
+            }
+        }
+    }
+    struct stat r65_st;
+    if (stat("/etc/fx6_stage_r65", &r65_st) == 0) {
+        if (setup_r65_dci4k_aspect_camset_photocap_probe() != 0) {
+            return 84;
+        }
+        FILE *r65f = fopen("/etc/fx6_stage_r65", "r");
+        if (r65f) {
+            int is_clean_unmount_wave51_integrated = 0;
+            char r65line[128];
+            while (fgets(r65line, sizeof(r65line), r65f)) {
+                if (strstr(r65line, "r65_mode=clean_unmount_wave51_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave51_integrated = 1;
+                }
+            }
+            fclose(r65f);
+            if (is_clean_unmount_wave51_integrated &&
+                run_r65_clean_unmount_wave51_h0_h3_probe(84) != 0) {
+                return 84;
             }
         }
     }

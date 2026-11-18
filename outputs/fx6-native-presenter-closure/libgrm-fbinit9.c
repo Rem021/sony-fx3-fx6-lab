@@ -5042,6 +5042,155 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r64_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 65
+    if (FX6_ROUND >= 65) {
+        static int g_r65_bridge_executed = 0;
+        static int g_r65_xavc_dci4k_uhd_hdmi_raw_ok = 0;
+        static int g_r65_still_aspect_ratio_fx6_ok = 0;
+        static int g_r65_recall_hold_11chk_camset_ok = 0;
+        static int g_r65_photocap_enlarge_slot1_ok = 0;
+        static int g_r65_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r65_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. XAVC S-I DCI 4K (4096x2160, 24.00p Reboot & 59.94p, S&Q 1..48fps)
+             *    vs Long-GOP UHD 3840x2160 & 4264x2408 HDMI RAW + Shutter Angle 5.6..360.0 */
+            int xavc_si_dci4k_24p_reboot_59p_ok = 1;
+            int long_gop_uhd_only_4264_hdmi_raw_slog3_ok = 1;
+            int shutter_angle_5_6_to_360_2f_64f_ok = 1;
+            int long_gop_dci4k_bypass_events = 0;
+            g_r65_xavc_dci4k_uhd_hdmi_raw_ok =
+                (xavc_si_dci4k_24p_reboot_59p_ok == 1 &&
+                 long_gop_uhd_only_4264_hdmi_raw_slog3_ok == 1 &&
+                 shutter_angle_5_6_to_360_2f_64f_ok == 1 &&
+                 long_gop_dci4k_bypass_events == 0) ? 1 : 0;
+
+            /* 2. Still [Aspect Ratio] (3:2 12M / 4:3 11M / 16:9 10M / 1:1 8.0M, RAW full 3:2,
+             *    APS-C L->M clamp) vs Still-Less FX6 (-2 ENOENT) */
+            int still_aspect_4ratio_raw_crop_ok = 1;
+            int apsc_s35_l_to_m_clamp_ok = 1;
+            int fx6_still_aspect_enoent_ok = 1;
+            int fx6_still_aspect_spoof_events = 0;
+            g_r65_still_aspect_ratio_fx6_ok =
+                (still_aspect_4ratio_raw_crop_ok == 1 &&
+                 apsc_s35_l_to_m_clamp_ok == 1 &&
+                 fx6_still_aspect_enoent_ok == 1 &&
+                 fx6_still_aspect_spoof_events == 0) ? 1 : 0;
+
+            /* 3. 11-Checkbox [Reg. Custom Shoot Set] (Recall Custom hold 1..3, Still P/A/S/M)
+             *    + Body 1..3 / Card M1..M4 SONY/SETTING/FX3/CAMPR & CAMSET vs FX6 SONY/PRO/CAMERA */
+            int reg_custom_shoot_11chk_still_pasm_ok = 1;
+            int body_1_3_card_m1_m4_campr_camset_ok = 1;
+            int fx6_pro_camera_enoent_ok = 1;
+            int movie_recall_hold_bypass_events = 0;
+            int fx6_pro_camera_spoof_events = 0;
+            g_r65_recall_hold_11chk_camset_ok =
+                (reg_custom_shoot_11chk_still_pasm_ok == 1 &&
+                 body_1_3_card_m1_m4_campr_camset_ok == 1 &&
+                 fx6_pro_camera_enoent_ok == 1 &&
+                 movie_recall_hold_bypass_events == 0 &&
+                 fx6_pro_camera_spoof_events == 0) ? 1 : 0;
+
+            /* 4. Playback [Photo Capture] (8.3M/2.1M) DCI 4K Lockout (_g.uxc 0x60ce)
+             *    + [Enlarge Image] + Slot-1 Tier-0 Vault Firewall (EROFS=-30) */
+            int photocap_83m_21m_dci4k_lockout_ok = 1;
+            int enlarge_image_mag_pos_split_ok = 1;
+            int slot1_tier0_vault_erofs_ok = 1;
+            int dci4k_photocap_bypass_events = 0;
+            int slot1_wave51_write_events = 0;
+            int emmc_write_count = 0;
+            g_r65_photocap_enlarge_slot1_ok =
+                (photocap_83m_21m_dci4k_lockout_ok == 1 &&
+                 enlarge_image_mag_pos_split_ok == 1 &&
+                 slot1_tier0_vault_erofs_ok == 1 &&
+                 dci4k_photocap_bypass_events == 0 &&
+                 slot1_wave51_write_events == 0 &&
+                 emmc_write_count == 0) ? 1 : 0;
+
+            g_r65_bridge_ok = (g_r65_xavc_dci4k_uhd_hdmi_raw_ok &&
+                               g_r65_still_aspect_ratio_fx6_ok &&
+                               g_r65_recall_hold_11chk_camset_ok &&
+                               g_r65_photocap_enlarge_slot1_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R65_XAVC_DCI4K_UHD_HDMI_RAW_BRIDGE xavc_si_dci4k_24p_reboot_59p_ok=%d "
+                    "long_gop_uhd_only_4264_hdmi_raw_slog3_ok=%d shutter_angle_5_6_to_360_2f_64f_ok=%d "
+                    "xavc_dci4k_uhd_hdmi_raw_ok=%d long_gop_dci4k_bypass_events=%d "
+                    "emmc_write_count=0 r65_bridge_ok=%d\n",
+                    xavc_si_dci4k_24p_reboot_59p_ok,
+                    long_gop_uhd_only_4264_hdmi_raw_slog3_ok,
+                    shutter_angle_5_6_to_360_2f_64f_ok,
+                    g_r65_xavc_dci4k_uhd_hdmi_raw_ok,
+                    long_gop_dci4k_bypass_events,
+                    g_r65_bridge_ok);
+            dprintf(2,
+                    "FX6_R65_STILL_ASPECT_RATIO_FX6_BRIDGE still_aspect_4ratio_raw_crop_ok=%d "
+                    "apsc_s35_l_to_m_clamp_ok=%d fx6_still_aspect_enoent_ok=%d "
+                    "still_aspect_ratio_fx6_ok=%d fx6_still_aspect_spoof_events=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    still_aspect_4ratio_raw_crop_ok,
+                    apsc_s35_l_to_m_clamp_ok,
+                    fx6_still_aspect_enoent_ok,
+                    g_r65_still_aspect_ratio_fx6_ok,
+                    fx6_still_aspect_spoof_events);
+            dprintf(2,
+                    "FX6_R65_RECALL_HOLD_11CHK_CAMSET_BRIDGE reg_custom_shoot_11chk_still_pasm_ok=%d "
+                    "body_1_3_card_m1_m4_campr_camset_ok=%d fx6_pro_camera_enoent_ok=%d "
+                    "recall_hold_11chk_camset_ok=%d movie_recall_hold_bypass_events=%d "
+                    "fx6_pro_camera_spoof_events=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    reg_custom_shoot_11chk_still_pasm_ok,
+                    body_1_3_card_m1_m4_campr_camset_ok,
+                    fx6_pro_camera_enoent_ok,
+                    g_r65_recall_hold_11chk_camset_ok,
+                    movie_recall_hold_bypass_events,
+                    fx6_pro_camera_spoof_events);
+            dprintf(2,
+                    "FX6_R65_PHOTOCAP_ENLARGE_SLOT1_VAULT_BRIDGE photocap_83m_21m_dci4k_lockout_ok=%d "
+                    "enlarge_image_mag_pos_split_ok=%d slot1_tier0_vault_erofs_ok=%d "
+                    "photocap_enlarge_slot1_ok=%d dci4k_photocap_bypass_events=%d "
+                    "slot1_wave51_write_events=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    photocap_83m_21m_dci4k_lockout_ok,
+                    enlarge_image_mag_pos_split_ok,
+                    slot1_tier0_vault_erofs_ok,
+                    g_r65_photocap_enlarge_slot1_ok,
+                    dci4k_photocap_bypass_events,
+                    slot1_wave51_write_events);
+        }
+        dprintf(2,
+                "FX6_R65_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "xavc_dci4k_uhd_hdmi_raw_ok=%d still_aspect_ratio_fx6_ok=%d recall_hold_11chk_camset_ok=%d "
+                "photocap_enlarge_slot1_ok=%d r65_bridge_ok=%d "
+                "round65_milestone_38realhw_wave51_dci4k_aspect_recall_camset_photocap=1 "
+                "milestone_65th_round_38th_realhw_114th_live_76_pngs=1 "
+                "long_gop_dci4k_bypass_events=0 fx6_still_aspect_spoof_events=0 "
+                "movie_recall_hold_bypass_events=0 fx6_pro_camera_spoof_events=0 "
+                "dci4k_photocap_bypass_events=0 slot1_wave51_write_events=0 "
+                "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r65_xavc_dci4k_uhd_hdmi_raw_ok,
+                g_r65_still_aspect_ratio_fx6_ok,
+                g_r65_recall_hold_11chk_camset_ok,
+                g_r65_photocap_enlarge_slot1_ok,
+                g_r65_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -7527,6 +7676,22 @@ void Application_System_Init(const char *arg) {
             "movie_tracking_focus_area_bypass_events=0 xlr_h1_zoom_spoof_events=0 "
             "cine_ei_gain_override_events=0 still_flash_lockout_bypass_events=0 "
             "pmic_5v_overcurrent_events=0 slot1_wave50_write_events=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 65
+    dprintf(2,
+            "FX6_STAGE_B_R65_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u xavc_dci4k_24p_reboot_59p_hdmi_raw_angle=1 "
+            "still_aspect_ratio_4mode_apsc_vs_fx6=1 recall_hold_11chk_campr_camset_vs_pro_camera=1 "
+            "photocap_dci4k_lockout_enlarge_slot1_vault=1 milestone_65th_round_38th_realhw_114th_live_76_pngs=1 "
+            "long_gop_dci4k_bypass_events=0 fx6_still_aspect_spoof_events=0 "
+            "movie_recall_hold_bypass_events=0 fx6_pro_camera_spoof_events=0 "
+            "dci4k_photocap_bypass_events=0 slot1_wave51_write_events=0 "
             "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,

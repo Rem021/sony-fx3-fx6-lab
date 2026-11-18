@@ -102,6 +102,7 @@ import realhw_lens_comp_af_illuminator_folder_rating_coemulator as p309  # noqa:
 import realhw_lock_op_parts_audio_timing_exp_step_coemulator as p253  # noqa: E402
 import realhw_mpr_dmm_recording_coemulator as p145  # noqa: E402
 import realhw_nouvc_dcc1_lut_path_cineei_coemulator as p194  # noqa: E402
+import realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_coemulator as p357  # noqa: E402
 import realhw_pixelmap_apr_monitor_vfadjust_customhold_hdmi_reccontrol_coemulator as p350  # noqa: E402
 import realhw_pixelmap_ntscpal_gammaassist_displaylut_coemulator as p222  # noqa: E402
 import realhw_power_save_monitor_language_volume_delete_coemulator as p281  # noqa: E402
@@ -307,6 +308,9 @@ class CoEmulationConfig:
     include_phase353_realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_hil: bool = True
     include_stage78: bool = True
     stage78_realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_hil: bool = True
+    include_phase357_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil: bool = True
+    include_stage79: bool = True
+    stage79_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -5977,6 +5981,126 @@ def run_stage78_realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_hil(
     }
 
 
+def run_stage79_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil(
+    config: Optional[CoEmulationConfig] = None,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 79 (Phase 357, 79/79 Full-Board Stages!): Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-69 Playback -> [Magnification] Still-Only Enlarge Image / playback_zoom_maginify_by_pinch Typo & Zero Movie Enlarge vs FX6 Thumbnail/Rec Review/Focus Magnifier x3/x6, Active Still [Anti-flicker Shoot.] 100/120Hz vs Dormant [Var. Shutter]/[Anti-flicker Tv Scan] EOPNOTSUPP=95 vs FX6 ECS 23.99..8000Hz, Wi-Fi WW728473 2.4/5GHz vs WW558244 2.4GHz-Only + WPA2/WPA3 + p12/p13 MS_RDONLY + [Airplane Mode] Survival, and Front #5 [IR Remote Ctrl] + [CTRL FOR HDMI] ctrl_for_hmdi 41-Key CEC Hijack Firewall (Zero CEC_REC) vs FX6 2.5mm LANC & 3.5mm Grip Remote HIL."""
+    cfg = CoEmulationConfig() if config is None else config
+    cfg.validate()
+    rep = p357.run_phase357_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_coemulation(
+        force_clean_room=cfg.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage79_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "is_79th_stage_milestone": bool(rep["is_79th_stage_milestone"]),
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "emmc_writes_authorized": red["emmc_writes_authorized"],
+        "cross_model_flash_authorized": red["cross_model_flash_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "emmc_corruptions": red["emmc_corruptions"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "passive_tx_bytes_emitted": red["passive_tx_bytes_emitted"],
+        "slot1_data_sector_writes": red["slot1_data_sector_writes"],
+        "slot1_avf_info_mutated": red["slot1_avf_info_mutated"],
+        "rf_packets_transmitted": red["rf_packets_transmitted"],
+        "rf_nvs_mutation_bytes": red["rf_nvs_mutation_bytes"],
+        "fx3_playback_magnify_items_count": red["fx3_playback_magnify_items_count"],
+        "playback_zoom_maginify_typo_matched": red["playback_zoom_maginify_typo_matched"],
+        "movie_playback_enlarge_supported": red["movie_playback_enlarge_supported"],
+        "movie_playback_enlarge_bypass_events": red["movie_playback_enlarge_bypass_events"],
+        "playback_magnify_reset_wipe_events": red["playback_magnify_reset_wipe_events"],
+        "fx6_still_or_pb_enlarge_supported": red["fx6_still_or_pb_enlarge_supported"],
+        "fx6_dormant_enlarge_screen_exposed_events": red[
+            "fx6_dormant_enlarge_screen_exposed_events"
+        ],
+        "fx3_anti_flicker_shoot_active": red["fx3_anti_flicker_shoot_active"],
+        "fx3_var_shutter_exposed": red["fx3_var_shutter_exposed"],
+        "fx3_anti_flicker_tv_scan_exposed": red["fx3_anti_flicker_tv_scan_exposed"],
+        "fx3_sc_tv_scan_0x60a8_empty_string": red["fx3_sc_tv_scan_0x60a8_empty_string"],
+        "dormant_var_shutter_or_tv_scan_exposed_events": red[
+            "dormant_var_shutter_or_tv_scan_exposed_events"
+        ],
+        "fx6_ecs_freq_min_hz": red["fx6_ecs_freq_min_hz"],
+        "fx6_ecs_freq_max_hz": red["fx6_ecs_freq_max_hz"],
+        "fx6_ecs_presets_count": red["fx6_ecs_presets_count"],
+        "ww558244_5ghz_bypass_events": red["ww558244_5ghz_bypass_events"],
+        "outdoor_5ghz_bypass_events": red["outdoor_5ghz_bypass_events"],
+        "deprecated_wep_wpa_ipsec_allowed_events": red[
+            "deprecated_wep_wpa_ipsec_allowed_events"
+        ],
+        "airplane_mode_cleared_by_reset_network_events": red[
+            "airplane_mode_cleared_by_reset_network_events"
+        ],
+        "p12_p13_ms_rdonly_enforced": red["p12_p13_ms_rdonly_enforced"],
+        "p12_cert_size_mib": red["p12_cert_size_mib"],
+        "p13_rf_nvs_size_mib": red["p13_rf_nvs_size_mib"],
+        "p12_p13_write_bypass_events": red["p12_p13_write_bypass_events"],
+        "fx3_ir_front_sensor_num": red["fx3_ir_front_sensor_num"],
+        "fx3_af_illuminator_sensor_num": red["fx3_af_illuminator_sensor_num"],
+        "fx3a_physical_ir_sensor_present": red["fx3a_physical_ir_sensor_present"],
+        "bt_ir_mutex_bypass_events": red["bt_ir_mutex_bypass_events"],
+        "ctrl_for_hmdi_typo_matched": red["ctrl_for_hmdi_typo_matched"],
+        "fx3_cec_key_events_count": red["fx3_cec_key_events_count"],
+        "fx3_cec_rec_event_count": red["fx3_cec_rec_event_count"],
+        "hil_bench_cec_hijack_bypass_events": red["hil_bench_cec_hijack_bypass_events"],
+        "fx3_physical_lanc_25mm_present": red["fx3_physical_lanc_25mm_present"],
+        "fx3_active_lanc_bkid_hits": red["fx3_active_lanc_bkid_hits"],
+        "fx6_lanc_25mm_port_num": red["fx6_lanc_25mm_port_num"],
+        "fx6_grip_remote_35mm_poles": red["fx6_grip_remote_35mm_poles"],
+        "fx6_exposed_ir_or_cec_events": red["fx6_exposed_ir_or_cec_events"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "stage79_milestone_probe": rep["stage79_milestone_probe"],
+        "pillar_a_playback_magnification_and_fx6_review_hil": rep[
+            "pillar_a_playback_magnification_and_fx6_review_hil"
+        ],
+        "pillar_b_antiflicker_varshutter_and_fx6_ecs_hil": rep[
+            "pillar_b_antiflicker_varshutter_and_fx6_ecs_hil"
+        ],
+        "pillar_c_wifi_sku_wpa3_nvs_and_airplane_hil": rep[
+            "pillar_c_wifi_sku_wpa3_nvs_and_airplane_hil"
+        ],
+        "pillar_d_ir_ctrl_for_hdmi_cec_and_fx6_lanc_hil": rep[
+            "pillar_d_ir_ctrl_for_hdmi_cec_and_fx6_lanc_hil"
+        ],
+        "phase357_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -5987,7 +6111,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 78-stage (Phase 33..353, 78/78 Full-Board Stages!) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 79-stage (Phase 33..357, 79/79 Full-Board Stages!) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -6486,6 +6610,17 @@ def run_fx3_vm_coemulation_suite(
             cfg.include_phase353_realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_hil
             and cfg.include_stage78
             and cfg.stage78_realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_hil
+        )
+        else None
+    )
+    stage79: Optional[Dict[str, object]] = (
+        run_stage79_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil(
+            cfg, env=env
+        )
+        if (
+            cfg.include_phase357_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil
+            and cfg.include_stage79
+            and cfg.stage79_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil
         )
         else None
     )
@@ -9086,6 +9221,85 @@ def run_fx3_vm_coemulation_suite(
         and stage78["appfw_crashes"] == 0
         and stage78["raw_firmware_bytes_leaked"] == 0
     )
+    stage79_ok = True if stage79 is None else (
+        bool(stage79["all_checks_passed"])
+        and stage79["phase_number"] == 357
+        and stage79["milestone"] == "79/79"
+        and bool(stage79["is_79th_stage_milestone"])
+        and stage79["nop_count"] == 0
+        and stage79["guest_code_modification_bytes"] == 0
+        and stage79["cp_mutation_bytes"] == 0
+        and stage79["wbi_mutation_bytes"] == 0
+        and stage79["calibration_mutation_bytes"] == 0
+        and stage79["cnflasha_mutation_bytes"] == 0
+        and bool(stage79["cnflasha_userspace_write_blocked"])
+        and stage79["nvram_persistent_writes"] == 0
+        and stage79["bk4_persistent_nvram_writes"] == 0
+        and stage79["physical_device_writes"] == 0
+        and (not stage79["persistent_emmc_writes_authorized"])
+        and (not stage79["emmc_writes_authorized"])
+        and (not stage79["cross_model_flash_authorized"])
+        and (not stage79["hardware_live_attachment_authorized"])
+        and (not stage79["overall_ready_for_hardware_attach"])
+        and (not stage79["isp_write_authorized"])
+        and stage79["emmc_nflasha_write_count"] == 0
+        and stage79["emmc_mutation_bytes"] == 0
+        and stage79["emmc_corruptions"] == 0
+        and (not stage79["spi_nor_write_authorized"])
+        and stage79["spi_nor_mutation_bytes"] == 0
+        and (not stage79["el3_payload_transmit_authorized"])
+        and stage79["otp_fuse_touches"] == 0
+        and stage79["rpmb_counter_increments"] == 0
+        and stage79["physical_usb_packets_emitted"] == 0
+        and stage79["passive_tx_bytes_emitted"] == 0
+        and stage79["slot1_data_sector_writes"] == 0
+        and (not stage79["slot1_avf_info_mutated"])
+        and stage79["rf_packets_transmitted"] == 0
+        and stage79["rf_nvs_mutation_bytes"] == 0
+        and stage79["fx3_playback_magnify_items_count"] == 3
+        and bool(stage79["playback_zoom_maginify_typo_matched"])
+        and (not stage79["movie_playback_enlarge_supported"])
+        and stage79["movie_playback_enlarge_bypass_events"] == 0
+        and stage79["playback_magnify_reset_wipe_events"] == 0
+        and (not stage79["fx6_still_or_pb_enlarge_supported"])
+        and stage79["fx6_dormant_enlarge_screen_exposed_events"] == 0
+        and bool(stage79["fx3_anti_flicker_shoot_active"])
+        and (not stage79["fx3_var_shutter_exposed"])
+        and (not stage79["fx3_anti_flicker_tv_scan_exposed"])
+        and bool(stage79["fx3_sc_tv_scan_0x60a8_empty_string"])
+        and stage79["dormant_var_shutter_or_tv_scan_exposed_events"] == 0
+        and stage79["fx6_ecs_freq_min_hz"] == 23.99
+        and stage79["fx6_ecs_freq_max_hz"] == 8000.0
+        and stage79["fx6_ecs_presets_count"] == 6
+        and stage79["ww558244_5ghz_bypass_events"] == 0
+        and stage79["outdoor_5ghz_bypass_events"] == 0
+        and stage79["deprecated_wep_wpa_ipsec_allowed_events"] == 0
+        and stage79["airplane_mode_cleared_by_reset_network_events"] == 0
+        and bool(stage79["p12_p13_ms_rdonly_enforced"])
+        and stage79["p12_cert_size_mib"] == 40
+        and stage79["p13_rf_nvs_size_mib"] == 4
+        and stage79["p12_p13_write_bypass_events"] == 0
+        and stage79["fx3_ir_front_sensor_num"] == 5
+        and stage79["fx3_af_illuminator_sensor_num"] == 8
+        and (not stage79["fx3a_physical_ir_sensor_present"])
+        and stage79["bt_ir_mutex_bypass_events"] == 0
+        and bool(stage79["ctrl_for_hmdi_typo_matched"])
+        and stage79["fx3_cec_key_events_count"] == 41
+        and stage79["fx3_cec_rec_event_count"] == 0
+        and stage79["hil_bench_cec_hijack_bypass_events"] == 0
+        and (not stage79["fx3_physical_lanc_25mm_present"])
+        and stage79["fx3_active_lanc_bkid_hits"] == 0
+        and stage79["fx6_lanc_25mm_port_num"] == 24
+        and stage79["fx6_grip_remote_35mm_poles"] == 4
+        and stage79["fx6_exposed_ir_or_cec_events"] == 0
+        and stage79["rsv_orphan_count"] == 0
+        and stage79["null_gpio_derefs"] == 0
+        and stage79["mailbox_stalls"] == 0
+        and stage79["stock_cp_fault_count"] == 0
+        and stage79["wf12_00342260_hits"] == 0
+        and stage79["appfw_crashes"] == 0
+        and stage79["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -9167,6 +9381,7 @@ def run_fx3_vm_coemulation_suite(
         and stage76_ok
         and stage77_ok
         and stage78_ok
+        and stage79_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -9692,6 +9907,21 @@ def run_fx3_vm_coemulation_suite(
                 and cfg.include_stage78
                 and cfg.stage78_realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_hil
             ),
+            "include_phase357_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil": (
+                cfg.include_phase357_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil
+                and cfg.include_stage79
+                and cfg.stage79_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil
+            ),
+            "include_stage79": (
+                cfg.include_phase357_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil
+                and cfg.include_stage79
+                and cfg.stage79_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil
+            ),
+            "stage79_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil": (
+                cfg.include_phase357_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil
+                and cfg.include_stage79
+                and cfg.stage79_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil
+            ),
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -9880,6 +10110,10 @@ def run_fx3_vm_coemulation_suite(
         core_payload[
             "stage78_realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_hil"
         ] = stage78
+    if stage79 is not None:
+        core_payload[
+            "stage79_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil"
+        ] = stage79
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -9891,7 +10125,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 + 289 + 293 + 298 + 301 + 306 + 309 + 312 + 315 + 318 + 322 + 325 + 328 + 330 + 333 + 335 + 337 + 339 + 343 + 346 + 350 + 353 (78/78 Full-Board Stages!) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 + 289 + 293 + 298 + 301 + 306 + 309 + 312 + 315 + 318 + 322 + 325 + 328 + 330 + 333 + 335 + 337 + 339 + 343 + 346 + 350 + 353 + 357 (79/79 Full-Board Stages!) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -10763,6 +10997,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 78 (Phase 353 78/78 Full-Board Stages! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-68 Area/Date 30-Zone/24h RTC vs FX6 Clock Set, Grid Line HDMI vs Marker Zero-HDMI (100%% monitor-only), Save/Load CAMSET01..10.DAT Slot-1 EROFS=30 vs 1..3/M1..M4 & FX6 All File, and Zero Sync Terminal / XLR-H1 MI-Shoe Exclusion vs FX6 Zero GENLOCK HIL)",
     )
     parser.add_argument(
+        "--include-stage79",
+        dest="include_stage79",
+        action="store_true",
+        default=True,
+        help="Include Stage 79 (Phase 357 79/79 Full-Board Stages! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-69 Playback -> [Magnification] Still-Only Enlarge Image / playback_zoom_maginify_by_pinch Typo & Zero Movie Enlarge vs FX6 Thumbnail/Rec Review/Focus Magnifier x3/x6, Active Still [Anti-flicker Shoot.] 100/120Hz vs Dormant [Var. Shutter]/[Anti-flicker Tv Scan] EOPNOTSUPP=95 vs FX6 ECS 23.99..8000Hz, Wi-Fi WW728473 2.4/5GHz vs WW558244 2.4GHz-Only + WPA2/WPA3 + p12/p13 MS_RDONLY + [Airplane Mode] Survival, and Front #5 [IR Remote Ctrl] + [CTRL FOR HDMI] ctrl_for_hmdi 41-Key CEC Hijack Firewall (Zero CEC_REC) vs FX6 2.5mm LANC & 3.5mm Grip Remote HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage79",
+        "--no-include-stage79",
+        dest="skip_stage79",
+        action="store_true",
+        help="Skip optional Stage 79 (alias for --skip-phase357)",
+    )
+    parser.add_argument(
+        "--skip-phase357",
+        action="store_true",
+        help="Skip optional Stage 79 (Phase 357 79/79 Full-Board Stages! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-69 Playback -> [Magnification] Still-Only vs Zero Movie Enlarge & FX6 Thumbnail/Rec Review/Focus Magnifier x3/x6, [Anti-flicker Shoot.] vs Dormant [Var. Shutter]/TV Scan vs FX6 ECS 23.99..8000Hz, Wi-Fi WW728473 5GHz/WPA3/p12-p13 MS_RDONLY/[Airplane Mode] Survival, and Front #5 [IR Remote Ctrl] + [CTRL FOR HDMI] 41-Key CEC Firewall (Zero CEC_REC) vs FX6 2.5mm LANC & 3.5mm Grip Remote HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -10857,6 +11110,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     enable_stage76 = bool(args.include_stage76) and (not args.skip_phase346) and (not args.skip_stage76)
     enable_stage77 = bool(args.include_stage77) and (not args.skip_phase350) and (not args.skip_stage77)
     enable_stage78 = bool(args.include_stage78) and (not args.skip_phase353) and (not args.skip_stage78)
+    enable_stage79 = bool(args.include_stage79) and (not args.skip_phase357) and (not args.skip_stage79)
     cfg = CoEmulationConfig(
         bt_mode=args.bt_mode,
         cine_ei_iso=args.cine_ei_iso,
@@ -11000,6 +11254,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase353_realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_hil=enable_stage78,
         include_stage78=enable_stage78,
         stage78_realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_hil=enable_stage78,
+        include_phase357_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil=enable_stage79,
+        include_stage79=enable_stage79,
+        stage79_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil=enable_stage79,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -11087,6 +11344,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s76 = rep.get("stage76_realhw_drive_focusbracket_shutter_efcs_creativelook_recoverdb_hil")
         s77 = rep.get("stage77_realhw_pixelmap_apr_monitor_vfadjust_customhold_hdmi_reccontrol_hil")
         s78 = rep.get("stage78_realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_hil")
+        s79 = rep.get("stage79_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -11897,6 +12155,19 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s78, dict)
             else ""
         )
+        s79_str = (
+            f" | realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_hil={s79['source_mode']}("
+            f"m79={s79['milestone']},"
+            f"mv_enl={int(s79['movie_playback_enlarge_supported'])},"
+            f"varsh={int(s79['fx3_var_shutter_exposed'])},"
+            f"rf_mut={s79['rf_nvs_mutation_bytes']},"
+            f"cec={s79['fx3_cec_key_events_count']}(rec={s79['fx3_cec_rec_event_count']}),"
+            f"fx3_lanc={int(s79['fx3_physical_lanc_25mm_present'])},"
+            f"s1_wr={s79['slot1_data_sector_writes']},"
+            f"emmc_wr={s79['emmc_nflasha_write_count']})"
+            if isinstance(s79, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -11905,7 +12176,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str}{s58_str}{s59_str}{s60_str}{s61_str}{s62_str}{s63_str}{s64_str}{s65_str}{s66_str}{s67_str}{s68_str}{s69_str}{s70_str}{s71_str}{s72_str}{s73_str}{s74_str}{s75_str}{s76_str}{s77_str}{s78_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str}{s58_str}{s59_str}{s60_str}{s61_str}{s62_str}{s63_str}{s64_str}{s65_str}{s66_str}{s67_str}{s68_str}{s69_str}{s70_str}{s71_str}{s72_str}{s73_str}{s74_str}{s75_str}{s76_str}{s77_str}{s78_str}{s79_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

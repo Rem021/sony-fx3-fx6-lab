@@ -2708,4 +2708,45 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 357（Stage 79 — `79/79` Full-Board VM Co-Emulation Stages!）：Wave-69 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` `Playback -> [Magnification]` 静态专属放大/`playback_zoom_maginify_by_pinch` 错字与零视频放大、`[Anti-flicker Shoot.]` vs 休眠 `[Var. Shutter]`/TV Scan & FX6 `ECS`、`Wi-Fi` `WW728473` 5GHz/`WPA2/WPA3`/`p12/p13 MS_RDONLY` 与 `[Airplane Mode]` 抗重置，以及 `#5` `[IR Remote Ctrl]` + `[CTRL FOR HDMI]` 41 键 CEC 劫持防火墙（零 `CEC_REC`）vs FX6 `2.5mm LANC` HIL
+
+[`realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_coemulator.py`](realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_coemulator.py)（Schema `phase357_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_coemulation_v1`）作为 **Stage 79（`79/79` Full-Board VM Co-Emulation Stages!）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase357` / `--skip-stage79` / `--no-include-stage79` 跳过，支持 `--include-stage79`），严格遵循 `os.O_RDONLY` + `<= 4096 B` 受界 `os.pread`、`physical_device_writes == 0`、`emmc_writes_authorized == False`、`cross_model_flash_authorized == False`、`slot1_data_sector_writes == 0`、`rf_nvs_mutation_bytes == 0`、`emmc_nflasha_write_count == 0` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 15 供体 `O_RDONLY` + 受界 `os.pread` 审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **15 份真实供体**（`4` 份 FX3 四语 `_f` `.uxc` + `4` 份基础 `.uxc` + `2` 份 `_g` `.uxc` + `2` 份 FX6 英文 `.uxc` + `FX3 appFw.so`、`FX3 BK4`、`FX6 appFw.so`），并在无供体 CI 环境（`work_root is None`、`FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1`、`FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__` 或 `--clean-room`）无缝回退至 `CLEAN_ROOM_SYNTHETIC`（`raw_firmware_bytes_leaked == 0`）。
+2. **Sub-Model 79A — `Playback -> [Magnification]` 静态专属放大、`playback_zoom_maginify_by_pinch` 错字与零视频放大 vs FX6 `Thumbnail` / `Rec Review` / `Focus Magnifier x3/x6`**：
+   - FX3 暴露 `[Enlarge Image]`（`base 0xe8cb`）、`[Enlarge Initial Mag.]`（`Standard. Mag.` 默认 / `Previous Mag.`，抗 Reset）与 `[Enlarge Initial Position]`（`Focused Position` 默认，无对焦点自动回退 `Center` / `Center`，抗 Reset），支持 `W/T` 变焦杆、捏合/双击（校验 Sony 原厂拼写错字 `playback_zoom_maginify_by_pinch`）与前后拨盘保倍切图；**严格禁止视频放大**（`playback_zoom::is_inhibition()` -> `base 0xe572` `"Unable to magnify."`，`EOPNOTSUPP=95`）。
+   - 对比 `ILME-FX6 Ver. 6.01` 零静态拍照/零回放放大（`Enlarge Screen` 休眠），改以 `THUMBNAIL`、`Rec Review`（`3s/10s/full`）及实时取景 `Focus Magnifier x3/x6`（Ver. 6.00+ 新增 `HDMI Focus Magnifier`）替代。
+3. **Sub-Model 79B — `[Anti-flicker Shoot.]`（100/120Hz）vs 休眠 `[Var. Shutter]` / `[Anti-flicker Tv Scan]`（`EOPNOTSUPP=95`）& FX6 `ECS`（`23.99..8000Hz`）**：
+   - FX3 Ver. 7.02 仅暴露静态机械快门 `[Anti-flicker Shoot.]`（100/120Hz 交流检测，可被 `[Camera Settings Reset]` 重置；Movie/`S&Q`、电子快门及 `BULB` 下禁用），而 `[Anti-flicker Set.]`、`[Var. Shutter]`（`BKID_APP_setting_high_res_ss`）、`[Var. Shutter Set.]` 与 `[Anti-flicker Tv Scan]`（简体中文 `_g 0x60a8` 为空串 `""`）在 FX3 上 **100% 休眠**（`EOPNOTSUPP=95`）。
+   - 对比 `ILME-FX6 Ver. 6.01` `Shooting > Shutter > ECS`（`23.99..8000 Hz`，6 档帧率预设 `59.94P->60.00Hz` / `50P->50.00Hz` / `29.97P->30.00Hz` / `25P->25.02Hz` / `24P->24.02Hz` / `23.98P->23.99Hz`）与 `Flicker Reduce`。
+4. **Sub-Model 79C — `Wi-Fi` `WW728473`（2.4/5GHz）vs `WW558244`（2.4GHz-Only）SKU 门控、`WPA2/WPA3`、`p12/p13` `MS_RDONLY` 与 `[Airplane Mode]` 抗重置**：
+   - 校验 `backup_get_wi_fi_frequency_band_dst` 门控 `WW728473`（`2.4GHz + 5GHz`，户外强制降频 `2.4GHz`）vs `WW558244`（仅 `2.4GHz`）；Ver. 7.00+ 移除 `WEP`/`WPA-PSK`/`IPsec`，保留 `WPA2-PSK`/`WPA3-SAE` 且强制 `Access Authen. = On`。
+   - `[SSID/PW Reset]` 仅重置 Wi-Fi Direct 凭据；`[Reset Network Set.]` **不会**清除 `[Airplane Mode] = On`（仅 `[Initialize]` 可还原）；`/dev/nflasha12`（`p12` `/cert` 40 MiB）与 `/dev/nflasha13`（`p13` 4 MiB RF/MAC NVS）严格保持 `MS_RDONLY`（写入返回 `EROFS=30`，`rf_nvs_mutation_bytes == 0`）。对比 FX6 `Access Point Mode` / `Station Mode`（`ILME-FX6V/VK` 5GHz vs `ILME-FX6T/TK` 2.4GHz）。
+5. **Sub-Model 79D — 前置 `#5` `[IR Remote Ctrl]`（区别于 `#8` 灯）、`[CTRL FOR HDMI]`（`ctrl_for_hmdi`）41 键 CEC 劫持防火墙（零 `CEC_REC`）vs FX6 `2.5mm LANC` & `3.5mm Grip Remote`**：
+   - `[IR Remote Ctrl]`（抗 Reset，默认 `Off`）映射前部 `#5` 红外接收器（非 `#8` AF 辅助灯/可见光+红外传感器；2025 `ILME-FX3A` 已物理移除 `#5`），开启时绕过 `[Power Save Start Time]`，且与 `[Bluetooth Rmt Ctrl] = On` 严格互斥（`EBUSY=16`）。
+   - `[CTRL FOR HDMI]`（`BKID_APP_setting_ctrl_for_hmdi` 拼写错字，出厂默认 `On` 且抗 Reset）在 `FX3 appFw.so` 中包含 **41** 个 `EVENT_INPUT_KEY_CEC_*` 注入向量（且 **0** 个 `CEC_REC` 事件），HIL 台架下必须强制 `Off`。FX3 无物理 `2.5mm LANC`（`UIBIZ_KEY_LANC_*` 休眠，0 活跃 `BKID_APP_*_lanc*`），对比 FX6 `#24` `2.5mm` 3 极 `REMOTE (LANC)` 与 `3.5mm` 4 极 Grip Remote（零暴露 `IR Remote`/`CTRL FOR HDMI` 菜单）。
+
+### Phase 357 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 357 Stage 79（79/79 Full-Board VM Co-Emulation Stages!）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_coemulator.py --self-test --json
+
+# 2. 全板 79 阶段（Stage 1..79, 79/79 Full-Board VM Co-Emulation Stages!）统一校验（支持 --include-stage79 与 --skip-phase357 / --skip-stage79 / --no-include-stage79）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage79 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 357 四模式 100 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_coemulator.py -v
+FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+
+
 

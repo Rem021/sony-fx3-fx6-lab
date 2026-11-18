@@ -163,6 +163,12 @@ from .realhw_51pillar_raw_heif_colorspace_shuttertype_nr_drive_vault_verifier im
     verify_51pillar_recovery_suite,
     verify_raw_heif_colorspace_shuttertype_nr_drive_and_vault,
 )
+from .realhw_52pillar_focus_area_zoom_lever_iso_minss_flash_vault_verifier import (
+    P296_ENV_CLEAN_ROOM_TEST,
+    run_pillar52_standalone_suite,
+    verify_52pillar_recovery_suite,
+    verify_focus_area_zoom_lever_iso_minss_flash_and_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -548,6 +554,14 @@ def main():
     p292_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p292_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p292_master.add_argument('--out', help='optional exclusive new output directory for 51pillar-recovery-master-report.json')
+    p296_p52 = sub.add_parser('verify-pillar52-focus-area-zoom-iso-flash-vault', help='Phase 296 Pillar 52 Focus Area 14-area Still+Movie vs Tracking lockout, Focus Area Limit >= 2, AF Area Registration Lock Operation Parts Off and Initialize survival, body W/T Zoom Lever vs handle-less XLR-H1 myth-bust and FX6 Smart Handle 0..99 display contrast, ISO Range Limit and Still-only ISO AUTO Min. SS vs Cine EI Base ISO lock, Flash Mode Mechanical-Shutter Still 1/250s gate vs Video Light Mode PMIC 5V <= 900 mA and Slot-1 EROFS/EBUSY vault verifier')
+    p296_p52.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p296_p52.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p296_p52.add_argument('--out', help='optional exclusive new output directory for pillar52-focus-area-zoom-iso-flash-vault-report.json')
+    p296_master = sub.add_parser('verify-52pillar-recovery', help='Phase 296 unified 52/52 real-hardware recovery master aggregator (Pillars 1..51 + Pillar 52)')
+    p296_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p296_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p296_master.add_argument('--out', help='optional exclusive new output directory for 52pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -3326,6 +3340,95 @@ def main():
                     f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_51pillar_sha256={report.master_51pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-pillar52-focus-area-zoom-iso-flash-vault':
+            report = run_pillar52_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'pillar52-focus-area-zoom-iso-flash-vault-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_52a={report.pillar_52a_focus_area_zoom_xlrh1_vault.scenarios_passed}/{report.pillar_52a_focus_area_zoom_xlrh1_vault.scenarios_total} "
+                    f"pillar_52b={report.pillar_52b_iso_minss_flash_videolight_vault.scenarios_passed}/{report.pillar_52b_iso_minss_flash_videolight_vault.scenarios_total} "
+                    f"movie_tracking_area_or_limit_violations={report.movie_tracking_area_or_limit_violations} "
+                    f"af_area_reg_lock_or_reset_drift_events={report.af_area_reg_lock_or_reset_drift_events} "
+                    f"xlrh1_zoom_or_hold_spoof_events={report.xlrh1_zoom_or_hold_spoof_events} "
+                    f"fx6_handle_or_pos_display_conflation_events={report.fx6_handle_or_pos_display_conflation_events} "
+                    f"iso_minss_or_cine_ei_lock_drift_events={report.iso_minss_or_cine_ei_lock_drift_events} "
+                    f"flash_still_mech_gate_violations={report.flash_still_mech_gate_violations} "
+                    f"mishoe_5v_overcurrent_events={report.mishoe_5v_overcurrent_events} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_ebusy_enforced={report.slot1_vault_erofs_ebusy_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-52pillar-recovery':
+            report = verify_52pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'52pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_1_2s_fast_cli_budget={report.under_1_2s_fast_cli_budget} "
+                    f"under_2_5s_fast_cli_budget={report.under_2_5s_fast_cli_budget} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar52_a={report.pillar52_a_focus_area_zoom_xlrh1_vault.scenarios_passed}/{report.pillar52_a_focus_area_zoom_xlrh1_vault.scenarios_total} "
+                    f"pillar52_b={report.pillar52_b_iso_minss_flash_videolight_vault.scenarios_passed}/{report.pillar52_b_iso_minss_flash_videolight_vault.scenarios_total} "
+                    f"movie_tracking_area_or_limit_violations={report.movie_tracking_area_or_limit_violations} "
+                    f"af_area_reg_lock_or_reset_drift_events={report.af_area_reg_lock_or_reset_drift_events} "
+                    f"xlrh1_zoom_or_hold_spoof_events={report.xlrh1_zoom_or_hold_spoof_events} "
+                    f"fx6_handle_or_pos_display_conflation_events={report.fx6_handle_or_pos_display_conflation_events} "
+                    f"iso_minss_or_cine_ei_lock_drift_events={report.iso_minss_or_cine_ei_lock_drift_events} "
+                    f"flash_still_mech_gate_violations={report.flash_still_mech_gate_violations} "
+                    f"mishoe_pmic_5v_overcurrent_events={report.mishoe_pmic_5v_overcurrent_events} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_ebusy_enforced={report.slot1_vault_erofs_ebusy_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_52pillar_sha256={report.master_52pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

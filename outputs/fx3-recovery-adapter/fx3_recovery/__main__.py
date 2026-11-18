@@ -187,6 +187,12 @@ from .realhw_55pillar_lens_comp_af_illuminator_folder_rating_vault_verifier impo
     verify_55pillar_recovery_suite,
     verify_lens_comp_af_illuminator_folder_rating_and_vault,
 )
+from .realhw_56pillar_switch_vh_af_stdadj_tcub_copy_vault_verifier import (
+    P314_ENV_CLEAN_ROOM_TEST,
+    run_pillar56_standalone_suite,
+    verify_56pillar_recovery_suite,
+    verify_switch_vh_af_stdadj_tcub_copy_and_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -604,6 +610,14 @@ def main():
     p308_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p308_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p308_master.add_argument('--out', help='optional exclusive new output directory for 55pillar-recovery-master-report.json')
+    p314_p56 = sub.add_parser('verify-pillar56-switch-vh-af-stdadj-tcub-copy-vault', help='Phase 314 Pillar 56 Still-only Switch V/H AF Area (0/90/270/INVALID orientation + 8 lockouts + coords clear) + 14-checkbox Focus Area Limit (>= 2 EINVAL=22 vs dormant xl/xs/custom_1..3 EOPNOTSUPP=95) + Initialize-only Focus Area Color vs FX6, 5-mode Exposure Std. Adjust (1/6 EV Initialize-only, EXIF isolation, M.M.) + Bracket Settings, 7-item Initialize-only TC/UB & TC/UB Disp. Setting (23.98p/24p/PAL format locks vs FX6 BNC TC IN/OUT), and Fail-Closed Slot-2 -> Slot-1 Reverse Copy Tier-0 Vault EROFS=30/EBUSY=16 Firewall + Slide Show Power-Save Bypass verifier')
+    p314_p56.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p314_p56.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p314_p56.add_argument('--out', help='optional exclusive new output directory for pillar56-switch-vh-af-stdadj-tcub-copy-vault-report.json')
+    p314_master = sub.add_parser('verify-56pillar-recovery', help='Phase 314 (56/56 Recovery Pillars) unified 56/56 real-hardware recovery master aggregator (Pillars 1..55 + Pillar 56)')
+    p314_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p314_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p314_master.add_argument('--out', help='optional exclusive new output directory for 56pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -3763,6 +3777,106 @@ def main():
                     f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_55pillar_sha256={report.master_55pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-pillar56-switch-vh-af-stdadj-tcub-copy-vault':
+            report = run_pillar56_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(
+                    args.out,
+                    {'pillar56-switch-vh-af-stdadj-tcub-copy-vault-report.json': encode(result)},
+                )
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_56a={report.pillar_56a_switch_vh_af_focus_limit_color_vault.scenarios_passed}/{report.pillar_56a_switch_vh_af_focus_limit_color_vault.scenarios_total} "
+                    f"pillar_56b={report.pillar_56b_exposure_std_tcub_reverse_copy_vault.scenarios_passed}/{report.pillar_56b_exposure_std_tcub_reverse_copy_vault.scenarios_total} "
+                    f"switch_vh_af_lockout_or_coords_drift_events={report.switch_vh_af_lockout_or_coords_drift_events} "
+                    f"focus_limit_lt2_or_dormant_symbol_events={report.focus_limit_lt2_or_dormant_symbol_events} "
+                    f"focus_area_color_or_fx6_spoof_events={report.focus_area_color_or_fx6_spoof_events} "
+                    f"exp_std_adj_mode_conflation_or_reset_drift_events={report.exp_std_adj_mode_conflation_or_reset_drift_events} "
+                    f"bracket_settings_reset_or_fx6_spoof_events={report.bracket_settings_reset_or_fx6_spoof_events} "
+                    f"tcub_reset_wipe_or_format_lock_violations={report.tcub_reset_wipe_or_format_lock_violations} "
+                    f"reverse_copy_slot2_to_slot1_bypass_events={report.reverse_copy_slot2_to_slot1_bypass_events} "
+                    f"slideshow_power_save_or_fx6_copy_clip_spoof_events={report.slideshow_power_save_or_fx6_copy_clip_spoof_events} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_copy_avf_info_mutation_bytes={report.slot1_copy_avf_info_mutation_bytes} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_ebusy_enforced={report.slot1_vault_erofs_ebusy_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-56pillar-recovery':
+            report = verify_56pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'56pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_1_5s_fast_cli_budget={report.under_1_5s_fast_cli_budget} "
+                    f"under_2_5s_fast_cli_budget={report.under_2_5s_fast_cli_budget} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar56_a={report.pillar56_a_switch_vh_af_focus_limit_color_vault.scenarios_passed}/{report.pillar56_a_switch_vh_af_focus_limit_color_vault.scenarios_total} "
+                    f"pillar56_b={report.pillar56_b_exposure_std_tcub_reverse_copy_vault.scenarios_passed}/{report.pillar56_b_exposure_std_tcub_reverse_copy_vault.scenarios_total} "
+                    f"switch_vh_af_lockout_or_coords_drift_events={report.switch_vh_af_lockout_or_coords_drift_events} "
+                    f"focus_limit_lt2_or_dormant_symbol_events={report.focus_limit_lt2_or_dormant_symbol_events} "
+                    f"focus_area_color_or_fx6_spoof_events={report.focus_area_color_or_fx6_spoof_events} "
+                    f"exp_std_adj_mode_conflation_or_reset_drift_events={report.exp_std_adj_mode_conflation_or_reset_drift_events} "
+                    f"bracket_settings_reset_or_fx6_spoof_events={report.bracket_settings_reset_or_fx6_spoof_events} "
+                    f"tcub_reset_wipe_or_format_lock_violations={report.tcub_reset_wipe_or_format_lock_violations} "
+                    f"reverse_copy_slot2_to_slot1_bypass_events={report.reverse_copy_slot2_to_slot1_bypass_events} "
+                    f"slideshow_power_save_or_fx6_copy_clip_spoof_events={report.slideshow_power_save_or_fx6_copy_clip_spoof_events} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_copy_avf_info_mutation_bytes={report.slot1_copy_avf_info_mutation_bytes} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_ebusy_enforced={report.slot1_vault_erofs_ebusy_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_56pillar_sha256={report.master_56pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

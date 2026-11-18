@@ -193,6 +193,12 @@ from .realhw_56pillar_switch_vh_af_stdadj_tcub_copy_vault_verifier import (
     verify_56pillar_recovery_suite,
     verify_switch_vh_af_stdadj_tcub_copy_and_vault,
 )
+from .realhw_57pillar_touch_disp_zero_evf_flash_interval_pb_vault_verifier import (
+    P320_ENV_CLEAN_ROOM_TEST,
+    run_pillar57_standalone_suite,
+    verify_57pillar_recovery_suite,
+    verify_touch_disp_zero_evf_flash_interval_pb_and_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -618,6 +624,14 @@ def main():
     p314_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p314_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p314_master.add_argument('--out', help='optional exclusive new output directory for 56pillar-recovery-master-report.json')
+    p320_p57 = sub.add_parser('verify-pillar57-touch-disp-zero-evf-flash-interval-pb-vault', help='Phase 320 Pillar 57 Wave-55 Touch Operation 4-item Initialize-only tree vs dormant Touch Shutter/AE/Pad/Footer (EOPNOTSUPP=95), Operation Customize -> DISP (Screen Disp) Set 4-shoot/3-PB pages + Zero-EVF Blackout Guard (zero built-in EVF/eye sensor/FINDER-MONITOR vs FX6 detachable LCD Viewfinder), Still-only AEL w/ Shutter & Flash Submenu reset split (Wireless Flash ONLY Camera Settings Reset vs direct MI-Shoe External Flash Set. vs FX6 Flash Band Reduce), Playback -> Viewing 9-speed Interval PB (1..9 default 5 read-only), and Playback -> Edit Slot-1 Tier-0 EROFS=30 / dormant Beauty Effect & Trimming EOPNOTSUPP=95 Vault Firewall verifier')
+    p320_p57.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p320_p57.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p320_p57.add_argument('--out', help='optional exclusive new output directory for pillar57-touch-disp-zero-evf-flash-interval-pb-vault-report.json')
+    p320_master = sub.add_parser('verify-57pillar-recovery', help='Phase 320 (57/57 Recovery Pillars) unified 57/57 real-hardware recovery master aggregator (Pillars 1..56 + Pillar 57)')
+    p320_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p320_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p320_master.add_argument('--out', help='optional exclusive new output directory for 57pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -3877,6 +3891,104 @@ def main():
                     f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_56pillar_sha256={report.master_56pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-pillar57-touch-disp-zero-evf-flash-interval-pb-vault':
+            report = run_pillar57_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(
+                    args.out,
+                    {'pillar57-touch-disp-zero-evf-flash-interval-pb-vault-report.json': encode(result)},
+                )
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_57a={report.pillar_57a_touch_disp_zero_evf_vault.scenarios_passed}/{report.pillar_57a_touch_disp_zero_evf_vault.scenarios_total} "
+                    f"pillar_57b={report.pillar_57b_still_ael_flash_interval_pb_edit_vault.scenarios_passed}/{report.pillar_57b_still_ael_flash_interval_pb_edit_vault.scenarios_total} "
+                    f"touch_op_dormant_trap_or_reset_drift_events={report.touch_op_dormant_trap_or_reset_drift_events} "
+                    f"disp_set_or_zero_evf_blackout_events={report.disp_set_or_zero_evf_blackout_events} "
+                    f"fx6_touch_or_evf_spoof_events={report.fx6_touch_or_evf_spoof_events} "
+                    f"still_ael_flash_reset_split_or_mishoe_drift_events={report.still_ael_flash_reset_split_or_mishoe_drift_events} "
+                    f"interval_pb_9scale_or_path_drift_events={report.interval_pb_9scale_or_path_drift_events} "
+                    f"playback_edit_dormant_or_slot1_vault_bypass_events={report.playback_edit_dormant_or_slot1_vault_bypass_events} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_edit_avf_info_mutation_bytes={report.slot1_edit_avf_info_mutation_bytes} "
+                    f"slot1_avf_info_mutated={report.slot1_avf_info_mutated} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_eopnotsupp_enforced={report.slot1_vault_erofs_eopnotsupp_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-57pillar-recovery':
+            report = verify_57pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'57pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_1_5s_fast_cli_budget={report.under_1_5s_fast_cli_budget} "
+                    f"under_2_5s_fast_cli_budget={report.under_2_5s_fast_cli_budget} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar57_a={report.pillar57_a_touch_disp_zero_evf_vault.scenarios_passed}/{report.pillar57_a_touch_disp_zero_evf_vault.scenarios_total} "
+                    f"pillar57_b={report.pillar57_b_still_ael_flash_interval_pb_edit_vault.scenarios_passed}/{report.pillar57_b_still_ael_flash_interval_pb_edit_vault.scenarios_total} "
+                    f"touch_op_dormant_trap_or_reset_drift_events={report.touch_op_dormant_trap_or_reset_drift_events} "
+                    f"disp_set_or_zero_evf_blackout_events={report.disp_set_or_zero_evf_blackout_events} "
+                    f"fx6_touch_or_evf_spoof_events={report.fx6_touch_or_evf_spoof_events} "
+                    f"still_ael_flash_reset_split_or_mishoe_drift_events={report.still_ael_flash_reset_split_or_mishoe_drift_events} "
+                    f"interval_pb_9scale_or_path_drift_events={report.interval_pb_9scale_or_path_drift_events} "
+                    f"playback_edit_dormant_or_slot1_vault_bypass_events={report.playback_edit_dormant_or_slot1_vault_bypass_events} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_edit_avf_info_mutation_bytes={report.slot1_edit_avf_info_mutation_bytes} "
+                    f"slot1_avf_info_mutated={report.slot1_avf_info_mutated} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_eopnotsupp_enforced={report.slot1_vault_erofs_eopnotsupp_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_57pillar_sha256={report.master_57pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

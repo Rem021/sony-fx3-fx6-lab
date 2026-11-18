@@ -2307,4 +2307,43 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 328（Stage 69 — 69/69 Milestone）：Wave-59 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` `BIG6 HOME` 主屏幕（`Fixed/Variable`、纯元数据 `ND Filter`、零电子 ND）& 手动 `[Framing Settings]` vs 休眠 AI `[Auto Framing]`、静态 `[Interval Shoot Func.]`（7 项全支持 Reset + `Slot-1` `EROFS=30` Vault）vs `FX6` `Interval Rec`、`[Time Code Make]` / `[HDMI Output Settings]`，以及 `[Access Authen.]`（SSH + PTP-IP）& 4 档 `[Fan Control]`（无 `Max`）HIL
+
+[`realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py`](realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py)（Schema `realhw_big6_home_framing_interval_tc_ssh_fan_coemulator_v1`）作为 **Stage 69（`69/69` Milestone！）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase328` / `--skip-stage69` / `--no-include-stage69` 跳过，支持 `--include-stage69`），严格遵循 `os.O_RDONLY` + `<= 4096 B` 受界 `os.pread`、`physical_device_writes == 0`、`electronic_nd_commands_emitted == 0`、`rf_packets_transmitted == 0`、`slot1_data_sector_writes == 0`、`slot1_avf_info_mutated == False` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 24 供体 `O_RDONLY` + 受界 `os.pread` 审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **24 份真实供体**（`14` 份 `.uxc` + `7` 份网络/SSH/LAN/BT `.so` 含 `libssh2.so.1.0.1` + `FX3 appFw.so`、`FX3 BK4`、`FX6 appFw.so` 3 份大镜像），冷读 `< 0.20s`，并在无供体 CI 环境下（`work_root is None`、`FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或 `--clean-room`）零 `NoneType / str` 异常地无缝回退至 `CLEAN_ROOM_SYNTHETIC`。
+2. **Sub-Model 69A — Ver. 7.00/7.02 `HOME`（`BIG6`）主屏幕 & 手动 `[Framing Settings]` vs 休眠 AI `[Auto Framing]`**：
+   - 建模硬前置条件 `Shooting -> [Shooting Mode] -> [Mode Settings] = [Fixed/Variable]`（在 `Flexible Exp.` / `P/A/S/M` / `Intelligent Auto` / `Ver. 6.01` 下拒绝返回 `EOPNOTSUPP=95`）；支持 `[HOME]` 自定义键或 `[Swipe Down] = Open Home Screen`（需 `[Touch Operation] = On`），4 态状态机（`OFF / ON_CURSOR_OFF / ON_CURSOR_ON / TEMP_OFF`），动态 6 格（`FPS`、`ISO` vs `Base ISO + EI`、`Shutter Speed` vs `Shutter Angle`、`[Home (Lower Left)]` 默认 `Aperture` vs **纯元数据 `ND Filter` 且无物理电子 ND** `electronic_nd_commands_emitted == 0`、`Picture Profile` vs `Select LUT`、`White Balance`）+ 边缘只读状态条（严禁经 HDMI/SDI 输出），对比 `ILME-FX6` 原生 `Home Screen`（`procam_big6_menu_home_*` + 真实电子可变 ND `1/4..1/128 + Clear + Auto`）；
+   - 建模活跃手动 `[Framing Settings]`（`Framing` `Off/On`、`Recording/Streaming` `Full/Crop`、`HDMI` `Crop/Full`、`[Switch Framing]`/`[Framing Stop (Full)]`，自动关闭 `APS-C S35`，`>= 100p` 返回 `EOPNOTSUPP=95`、录制/推流中锁定 `EBUSY=16`），并对休眠 AI `[Auto Framing]` / `[Auto Framing Settings]`（`TYPE_EFRAMING_SUPPORT_TYPE_MANUAL_ONLY`）在 FX3 7.02 与 FX6 6.01 上双端 fail-closed 返回 `EOPNOTSUPP=95`。
+3. **Sub-Model 69B — 静态 `[Interval Shoot Func.]`（7 项全支持 Reset）& `Slot-1` Tier-0 Vault 防火墙 vs `FX6` `Interval Rec`**：
+   - 严格限定 Still-only 静态序列（拒绝机内合并电影并返回 `EOPNOTSUPP=95`，Movie/`S&Q`/`Intelligent Auto` 拒绝，支持全部 7 项通过 `[Camera Settings Reset]` 重置：默认 `Electronic Shutter`、`1s`/`3s`/`30`/`Mid`/`Off`，`1..9999` 张最多产生 `19,998` 个 `RAW+JPEG/HEIF` 文件，退出 `BULB` -> `30"`）；强制执行 `Slot-1` Tier-0 Vault `EROFS=30` / `EBUSY=16` 防火墙（`slot1_data_sector_writes == 0`、`slot1_avf_info_mutated == False`）；对比 `ILME-FX6` `Project > Interval Rec`（机内单一 XAVC MXF `1s..24h`、`1..24` 帧，与 `Simul Rec`/`Picture Cache Rec`/`S&Q Motion`/`Proxy Rec` 互斥）。
+4. **Sub-Model 69C — `[Time Code Make/Run]`（`Regenerate` -> `Slot 1` & 强锁 `Rec Run`）& `[HDMI Output Settings]` vs `FX6`**：
+   - `Initialize`-only `[Time Code Make]`（`Preset`/`Regenerate`）：`Regenerate` 在 `Simult. Recording` 下读取 `Slot 1` 末段片段并**强制覆盖为 `Rec Run`**；`VMC-BNCM1` `EXT-LK` 要求 `Preset + Free Run`；无 `Clock` 模式（拒绝返回 `EOPNOTSUPP=95` vs FX6 `TC_MAKE_CLOCK` + BNC `TC IN/OUT`）；
+   - `Initialize`-only `[HDMI Output Settings]`：`[REC Control]` 要求 `[Time Code Output] = On`，在 **`Rec. Media = On` 与 `Off(HDMI Only)` 下均生效**，在 `S&Q`/推流下受阻；`[4ch Audio Output]` 严格在 `CH1/CH2` 与 `CH3/CH4` 间执行 2ch HDMI 上限（对比 FX6 `SDI/HDMI Remote I/F` 与 `Parallel Rec`）。
+5. **Sub-Model 69D & Redlines — Ver. 7.00+ `[Access Authen. Settings]`（SSH 隧道 + PTP-IP）& 4 档 FX3 vs 3 档 FX6 `[Fan Control]`（无 `Max`）+ `[Auto Power OFF Temp.]`**：
+   - `[Access Authen. Settings]` 默认 `On`，保留穿越 `[Camera Settings Reset]`、仅由 `[Reset Network Set.]` 或 `[Initialize]` 重置；基于 **SSH 隧道（`sshd_start` + Host Key Fingerprint + PTP-IP）**，对 `HTTP_DIGEST`/`BASIC_AUTH`/`HTTPS` 与已移除的 `WEP`/`WPA-PSK`/`Security(IPsec)` 返回 `EOPNOTSUPP=95`；`[Import Root Certificate]` 严限 `CLOUD/FTP/RTMP` 出站客户端 TLS 校验；强制零射频 `[Airplane Mode] = On`（`rf_packets_transmitted == 0`）；
+   - `[Fan Control]`（`Initialize`-only）：**FX3 4 档（`Auto`/`Minimum`/`Off in Rec`/`Always Off`）vs FX6 3 档（`Auto`/`Minimum`/`Off in Rec`，`Always Off` 休眠 -> `EOPNOTSUPP=95`）**，且**双机均无 `Max` 档（`FAN_CONTROL_MAX` 0 命中 -> `EOPNOTSUPP=95`）**；`[Auto Power OFF Temp.]`（`Standard`/`High`，`Initialize`-only，FX6 无此消费级选项）。
+
+### Phase 328 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 328 Stage 69（69/69 里程碑！）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py --self-test --json
+
+# 2. 全板 69 阶段（Stage 1..69, 69/69 里程碑！）统一校验（支持 --include-stage69 与 --skip-phase328 / --skip-stage69 / --no-include-stage69）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage69 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 328 四模式 94 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py -v
+FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+
 

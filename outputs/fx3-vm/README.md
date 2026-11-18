@@ -2787,6 +2787,42 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 362（Stage 81 — `81/81` Full-Board VM Co-Emulation Stages!）：Wave-71 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` 休眠 `[Anti-Dust Function]` / `[Shutter When Pwr OFF]` 与常开机械帘幕 vs `[Sensor Cleaning]` `>=51%` & FX6 密封 `e-ND` + `APR`、`[Focus Magnifier]` 5 项聚簇（`12.1MP` 倍率/`REC` 连续性/纯净 HDMI）vs FX6 `VF x3/x6` & `HDMI x2/x4`、`[Exposure Std. Adjust]` 5 模式 `+-1 EV` `1/6 EV` 抗 Reset 陷阱 vs FX6 `Auto Exposure Level -3.0..+3.0`，以及有线手机 `[USB-LAN/Tethering]` 零射频推流/FTP 与 `Slot 1 EROFS=30` 防火墙 vs FX6 `usbg_iap.ko` HIL
+
+[`realhw_antidust_shutteropen_focusmag_expstdadj_usbtether_coemulator.py`](realhw_antidust_shutteropen_focusmag_expstdadj_usbtether_coemulator.py)（Schema `phase362_realhw_antidust_shutteropen_focusmag_expstdadj_usbtether_coemulation_v1`）作为 **Stage 81（`81/81` Full-Board VM Co-Emulation Stages!）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase362` / `--skip-stage81` / `--no-include-stage81` 跳过，支持 `--include-stage81`），严格遵循 `os.O_RDONLY` + `<= 4096 B` 受界 `os.pread`、`physical_device_writes == 0`、`emmc_writes_authorized == False`、`cross_model_flash_authorized == False`、`slot1_sector_writes == 0`、`rf_tx_packets == 0`、`emmc_nflasha_write_count == 0` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 26 供体 `O_RDONLY` + 受界 `os.pread` 审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **26 份真实供体**（`23` 份紧凑供体：`4` 份 FX3 `_f` `.uxc` + `4` 份基础 `.uxc` + `2` 份 `_g` `.uxc` + `libNetServiceTethering.so` / `libTetheringResource.so` / `libInfraUsbCmn.so` / `libUsbControl.so` + `4` 份内核模块 `cdc_ncm.ko` / `rndis_host.ko` / `cdc_ether.ko` / `ipheth.ko` + `4` 份 FX6 `.uxc` + `FX6 libInfraUsbCmn.so`；以及 `3` 份受界窗口供体：`FX3 appFw.so`、`FX3 BK4`、`FX6 appFw.so`），并在无供体 CI 环境（`work_root is None`、`FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1`、`FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__` 或 `--clean-room`）无缝回退至 `CLEAN_ROOM_SYNTHETIC`（`raw_firmware_bytes_leaked == 0`）。
+2. **Sub-Model 81A — 休眠 `[Anti-Dust Function]` / `[Shutter When Pwr OFF]` 与常开机械帘幕 vs `[Sensor Cleaning]` `>=51%` & FX6 密封 `e-ND` + `APR`**：
+   - FX3 `ilc/2210` 对 `Shutter When Pwr OFF` 与 `Anti-dust Function` 命中数为 `0`（`_f 0x7495`/`0x709f`、`BKID_APP_setting_image_sensor_barrier`、`PID_SET_IMAGE_SENSOR_BARRIER` 为编译期保留但被 `VAL_FEATURE_MANAGER_menu_item_TYPE_MENU_ITEM_ALCIN_UUD` 屏蔽的休眠符号，返回 `EOPNOTSUPP=95`）；FX3 机械焦平面快门帘幕关机后**始终保持常开（`curtain_state_at_power_off == "OPEN"`）**，仅暴露 `Setup -> [Setup Option] -> [Sensor Cleaning]`（`_f 0x67d6`、旧版 `Cleaning Mode` `0xe7d7`、`NP-FZ100 >= 51%` 电量门控 `EAGAIN=11`、IBIS 超声波抖动 + 强制物理断电提示）。对比 FX6（`0` 个 `shutter_when_power_off` 符号、无机械快门与 IBIS 清洁、CMOS 密封于 `1/4..1/128 + CLEAR` 可变 `e-ND` 与 IR-cut 玻璃之后，仅暴露 `Technical > APR`）。
+3. **Sub-Model 81B — `[Focus Magnifier]` 完整 5 项 `[Focus Assistant]` 聚簇、`12.1MP` 精确倍率、`REC` 连续性与纯净 HDMI vs FX6 `VF x3/x6` & `HDMI x2/x4`**：
+   - `Shooting -> [Focus] -> [Focus Assistant]` 全部 5 项（`[Focus Magnifier]` 默认 `C5` + `MF` 触摸双击、`[Focus Magnif. Time]` `2 Sec`/`5 Sec`/`No Limit`、`[Initial Focus Mag.]`、`[AF in Focus Mag.]`、`[Auto Magnifier in MF]`）在 Ver. 2.00+ 均抗 Reset（`Not available`，仅 `[Initialize]` 清除）。精确倍率：Still FF `x1.0 -> x2.1 -> x4.1`、Still APS-C `x1.0 -> x1.5 -> x3.0`、Movie/S&Q `x1.0 <-> x4.0`（拒绝高像素机型休眠倍率 `x1.6..x6.1` `EOPNOTSUPP=95`）；后两项仅限 Still；支持 `MOVIE REC` 启停期间连续保持、内录 XAVC 与 Clean-HDMI（`HDMI Info. Display = Off`）零裁切，与 `[Peaking Display]`、`[Bright Monitoring]`（Ver. 7.00+）、`[De-Squeeze Display]` 共存并抑制 `[Marker Display]`、`[Switch V/H AF Area]` 与 `[AF Illuminator]`。对比 FX6 `Focus Magnifier x3/x6`（`BKID_APP_SETTING_CONTINUE_FOCUS_MAGNIFIER`）与 Ver. 6.0+ `Focus Mag Button Target`（`VF: x3.0/x6.0` vs `HDMI: x2.0/x4.0`，SDI 与内录 MXF 永不放大）。
+4. **Sub-Model 81C — `[Exposure Std. Adjust]` 5 模式 `+-1 EV` `1/6 EV` 抗 Reset 校准陷阱 vs FX6 `Auto Exposure Level -3.0..+3.0`**：
+   - FX3 `Exposure/Color -> [Exposure Comp.] -> [Exposure Std. Adjust]` 覆盖全部 5 种测光模式（`Multi`、`Center`、`Spot`、`Entire Screen Avg.`、`Highlight`），每模式 `-1 EV..+1 EV` 按 `1/6 EV` 分 13 档（拒绝休眠 `STEP_1_8` `EOPNOTSUPP=95`），**抗 `[Camera Settings Reset]`（仅 `[Initialize]` 归零）**，偏移 `M.M.` 零点与 Spot AEL 且不改写 `[Exposure Comp.]` 或 EXIF `ExposureBiasValue`；序列中修改会重置包围曝光计数；在 `P/A/S` 与 `Flexible ISO + ISO AUTO` 改变实际 AE，而在 `Cine EI` / `Cine EI Quick` / `M` 固定 ISO 下仅影响 `M.M.` 读数。对比 FX6 `Shooting > Auto Exposure > Level`（`-3.0..+3.0` 步进 `0.25 EV` 共 25 档，实证证伪 `+-2.0 EV` 传言，叠加每 LUT `Base Look > AE Level Offset` 与 `AE Speed -99..+99`）。
+5. **Sub-Model 81D — 有线手机 `[USB-LAN/Tethering]` `CDC-NCM/RNDIS/ipheth` 零射频推流/FTP 与 Tier-0 `Slot 1 EROFS=30` 防火墙 vs FX6 `usbg_iap.ko`**：
+   - FX3 `Setup -> [USB] -> [USB Connection Mode]`（精确 4 项，`NOUVC` 休眠 `EOPNOTSUPP=95`）与 `Network -> [USB-LAN/Tethering]` + Ver. 7.00+ `USB-LAN Cnct. Launch`（`libNetServiceTethering.so` + `cdc_ether.ko`/`cdc_ncm.ko`/`ipheth.ko`/`rndis_host.ko` + `dhcpcd`）支持在 **`[Airplane Mode] = On`（`rf_tx_packets == 0`）** 下进行 `RTMP/RTMPS/SRT` 推流与 `FTP` 传输（对比 `Creators' App` 推流向导需 BT+Wi-Fi、有线 USB `Monitor & Control` Ver. 4.00+ 不支持 TC/Focus Map/LUT 导入、双 USB 口并发阻塞 `EBUSY=16`、`[Reset Network Set.]` 后须立即重开 `[Airplane Mode]`）；Tier-0 `Slot 1` 通过硬 `EROFS=30` + `usbgmscif_setReadOnly` 阻断 `MTP`（锁定 `Slot 1`）与 `MSC`（`Single`/`Multi` LUN）写入（`slot1_sector_writes == 0`）。对比 FX6 `Network > USB Tethering`（`FX6 libInfraUsbCmn.so` 主动链接 `/usr/kmod/usbg_iap.ko` `CUsbGadgetIAP` iAP2，而 FX3 `libInfraUsbCmn.so`/`appFw.so` 已完整剥离）。
+
+### Phase 362 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 362 Stage 81（81/81 Full-Board VM Co-Emulation Stages!）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_antidust_shutteropen_focusmag_expstdadj_usbtether_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_antidust_shutteropen_focusmag_expstdadj_usbtether_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_antidust_shutteropen_focusmag_expstdadj_usbtether_coemulator.py --self-test --json
+
+# 2. 全板 81 阶段（Stage 1..81, 81/81 Full-Board VM Co-Emulation Stages!）统一校验（支持 --include-stage81 与 --skip-phase362 / --skip-stage81 / --no-include-stage81）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage81 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 362 四模式 100 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_antidust_shutteropen_focusmag_expstdadj_usbtether_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_antidust_shutteropen_focusmag_expstdadj_usbtether_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_antidust_shutteropen_focusmag_expstdadj_usbtether_coemulator.py -v
+FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_antidust_shutteropen_focusmag_expstdadj_usbtether_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+
 
 
 

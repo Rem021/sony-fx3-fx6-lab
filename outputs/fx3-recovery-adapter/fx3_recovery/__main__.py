@@ -169,6 +169,12 @@ from .realhw_52pillar_focus_area_zoom_lever_iso_minss_flash_vault_verifier impor
     verify_52pillar_recovery_suite,
     verify_focus_area_zoom_lever_iso_minss_flash_and_vault,
 )
+from .realhw_53pillar_dci4k_aspect_custom_hold_camset_photo_capture_vault_verifier import (
+    P300_ENV_CLEAN_ROOM_TEST,
+    run_pillar53_standalone_suite,
+    verify_53pillar_recovery_suite,
+    verify_dci4k_aspect_custom_hold_camset_photo_capture_and_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -562,6 +568,14 @@ def main():
     p296_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p296_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p296_master.add_argument('--out', help='optional exclusive new output directory for 52pillar-recovery-master-report.json')
+    p300_p53 = sub.add_parser('verify-pillar53-dci4k-aspect-custom-hold-camset-vault', help='Phase 300 Milestone Pillar 53 XAVC S-I DCI 4K (4096x2160 17:9) vs Long-GOP UHD split, 24.00p mandatory reboot volatile /tmp Stage-B wipe & quarantine, 4264x2408 HDMI RAW, Still Aspect Ratio (3:2..1:1), Reg. Custom Shoot Set 11 checkboxes & HLG Off, Camera Set. Memory %%c:%%s/SONY/SETTING/%%s/CAMPR%%02d%%c.DAT & CAMSET isolation vs FX6 PRO/CAMERA, Playback Photo Capture (8.3M/2.1M DCI 4K lockout) / Enlarge Image & Slot-1 EROFS/EBUSY vault verifier')
+    p300_p53.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p300_p53.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p300_p53.add_argument('--out', help='optional exclusive new output directory for pillar53-dci4k-aspect-custom-hold-camset-vault-report.json')
+    p300_master = sub.add_parser('verify-53pillar-recovery', help='Phase 300 (300th Phase Milestone) unified 53/53 real-hardware recovery master aggregator (Pillars 1..52 + Pillar 53)')
+    p300_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p300_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p300_master.add_argument('--out', help='optional exclusive new output directory for 53pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -3429,6 +3443,98 @@ def main():
                     f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_52pillar_sha256={report.master_52pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-pillar53-dci4k-aspect-custom-hold-camset-vault':
+            report = run_pillar53_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(
+                    args.out,
+                    {'pillar53-dci4k-aspect-custom-hold-camset-vault-report.json': encode(result)},
+                )
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_53a={report.pillar_53a_dci4k_2400p_hdmi_raw_aspect_vault.scenarios_passed}/{report.pillar_53a_dci4k_2400p_hdmi_raw_aspect_vault.scenarios_total} "
+                    f"pillar_53b={report.pillar_53b_custom_hold_camset_photo_capture_vault.scenarios_passed}/{report.pillar_53b_custom_hold_camset_photo_capture_vault.scenarios_total} "
+                    f"dci4k_long_gop_or_8k_violations={report.dci4k_long_gop_or_8k_violations} "
+                    f"reboot_2400p_stage_b_wipe_violations={report.reboot_2400p_stage_b_wipe_violations} "
+                    f"hdmi_raw_or_still_aspect_drift_events={report.hdmi_raw_or_still_aspect_drift_events} "
+                    f"fx6_still_or_raw_conflation_events={report.fx6_still_or_raw_conflation_events} "
+                    f"reg_custom_hold_or_hlg_lock_drift_events={report.reg_custom_hold_or_hlg_lock_drift_events} "
+                    f"camset_cross_model_path_drift_events={report.camset_cross_model_path_drift_events} "
+                    f"photo_capture_dci4k_lockout_bypass_events={report.photo_capture_dci4k_lockout_bypass_events} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_ebusy_enforced={report.slot1_vault_erofs_ebusy_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-53pillar-recovery':
+            report = verify_53pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'53pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_1_2s_fast_cli_budget={report.under_1_2s_fast_cli_budget} "
+                    f"under_2_5s_fast_cli_budget={report.under_2_5s_fast_cli_budget} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar53_a={report.pillar53_a_dci4k_2400p_hdmi_raw_aspect_vault.scenarios_passed}/{report.pillar53_a_dci4k_2400p_hdmi_raw_aspect_vault.scenarios_total} "
+                    f"pillar53_b={report.pillar53_b_custom_hold_camset_photo_capture_vault.scenarios_passed}/{report.pillar53_b_custom_hold_camset_photo_capture_vault.scenarios_total} "
+                    f"dci4k_long_gop_or_8k_violations={report.dci4k_long_gop_or_8k_violations} "
+                    f"reboot_2400p_stage_b_wipe_violations={report.reboot_2400p_stage_b_wipe_violations} "
+                    f"hdmi_raw_or_still_aspect_drift_events={report.hdmi_raw_or_still_aspect_drift_events} "
+                    f"fx6_still_or_raw_conflation_events={report.fx6_still_or_raw_conflation_events} "
+                    f"reg_custom_hold_or_hlg_lock_drift_events={report.reg_custom_hold_or_hlg_lock_drift_events} "
+                    f"camset_cross_model_path_drift_events={report.camset_cross_model_path_drift_events} "
+                    f"photo_capture_dci4k_lockout_bypass_events={report.photo_capture_dci4k_lockout_bypass_events} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_ebusy_enforced={report.slot1_vault_erofs_ebusy_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_53pillar_sha256={report.master_53pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

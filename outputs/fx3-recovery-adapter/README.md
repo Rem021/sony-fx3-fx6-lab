@@ -1172,10 +1172,23 @@ FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-
   python3 -B -m fx3_recovery verify-52pillar-recovery --clean-room --json
 ```
 
+## Phase 300（`300th` Phase Milestone Grand Closure!! Pillar 53 & 统一 `53/53` 恢复总检）：`[XAVC S-I DCI 4K]` `4096x2160` vs Long-GOP UHD 分裂、`24.00p` 强制重启清空 `/tmp` Stage-B 与回放隔离、`4264x2408` HDMI RAW 与静态 `[Aspect Ratio]`、`[Reg. Custom Shoot Set]` 11 项勾选与 `HLG` 锁定、`[Camera Set. Memory]` `CAMPR%02d%c.DAT` 路径隔离 vs FX6 `PRO/CAMERA`，及 `[Photo Capture]` DCI 4K 禁用与 `Slot-1` 金库 `EROFS`/`EBUSY` 防火墙（`verify-53pillar-recovery` / `verify-pillar53-dci4k-aspect-custom-hold-camset-vault`）
 
+- **[`realhw_53pillar_dci4k_aspect_custom_hold_camset_photo_capture_vault_verifier.py`](fx3_recovery/realhw_53pillar_dci4k_aspect_custom_hold_camset_photo_capture_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-51）落地 **Phase 300（第 300 阶段总里程碑！！）Pillar 53** 并将全套恢复总检推进至 **`53/53`（`VERIFIED_53OF53_PILLAR_RECOVERY_MASTER`）**（`< 1.2s` 快速 CLI 预算、`< 4.0s` 标称、`< 6.0s` 并发上限，保持 `verify-22..52pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OVERALL_READY_FOR_HARDWARE_ATTACH = False`、`P300_SLOT1_FORMAT_HARD_LOCKED = True`、`P300_SLOT1_VAULT_EROFS_EBUSY_ENFORCED = True`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` 与 `FX6 6.01` 共 **17 项** Wave-51 供体（`< 0.20s`，CI 下放宽至 `< 0.50s`），并支持 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动切换 `CLEAN_ROOM_SYNTHETIC` 洁净室模式：
+  - **支柱 53A — `[XAVC S-I DCI 4K]`（`4096x2160` `17:9` All-Intra vs Long-GOP `3840x2160` UHD 分裂）、`24.00p` 强制重启与回放隔离（易失 `/tmp` Stage-B 清空危险！）、`4264x2408` Type-A HDMI RAW 与静态 `[Aspect Ratio]`（`3:2 / 4:3 / 16:9 / 1:1`）（`6/6`）**：
+    - `P53A1`..`P53A6`：精确校验 `ILME-FX3 Ver. 3.00+/7.02` 真实暴露 **`[XAVC S-I DCI 4K]`**（`4096x2160` `17:9` All-Intra `4:2:2 10bit`，`23.98p`/`24.00p` `240M`..`59.94p` `600M`，`S&Q 1..48fps` 锁定 `100/120fps`，`600M` 强制 `CFexpress VPG200+` / `SDXC V90+`；`Ver. 6.00+` `Angle` `5.6..360.0°`），而 Long-GOP（`XAVC HS 4K`/`XAVC S 4K`）与 `XAVC S-I 4K` 严格保持 `3840x2160` `16:9` UHD 且无 `24.00p`（fail-closed 拦截休眠 `xavc_hs_8k_24p`）；**关键 Stage-B 防护**：切入或切出 `24.00p` 触发**强制相机重启**（`_g.uxc` `0x639b`/`0x63b6`），干净清空易失 `/tmp/` Stage-B bind mounts 回落原厂 `7.02`（`H0 == H2`）并隔离 `24.00p` 回放（`_g.uxc` `0x63d7`）；精确建模 `4264x2408` Type-A HDMI RAW（vs `ILME-FX6` `4096x2160 / 3840x2160` SDI/HDMI RAW）及静态 `[Aspect Ratio]`（`3:2` 默认 `12M`、`4:3` `11M`、`16:9` `10M`、`1:1` `8.0M`；RAW 保留完整 `3:2` 像素 + 裁切元数据；`APS-C S35 = On` 降档 `L -> M` vs 无静态管线 `ILME-FX6`）。
+  - **支柱 53B — `[Reg. Custom Shoot Set]`（`Recall Custom hold 1..3` 11 勾选框与 `HLG Still Image` 锁定）、`[Camera Set. Memory]`（`1..3 + M1..M4` `%c:%s/SONY/SETTING/%s/CAMPR%02d%c.DAT` & `CAMSET` vs FX6 `s/SONY/PRO/CAMERA/` 跨机型封锁），及 `[Playback] [Photo Capture]`（`8.3M/2.1M` DCI 4K 禁用与 `Slot-1` Tier-0 金库 `EROFS`/`EBUSY` 写入防火墙）/ 只读 `[Enlarge Image]`（`6/6`）**：
+    - `P53B1`..`P53B6`：强制静态 `P/A/S/M` 独占 `[Reg. Custom Shoot Set]`（`Recall Custom hold 1..3`、仅随 `Initialize` 清除、**11** 项 `is_checked_recall_custom_hold0..10` 勾选框、召回 `ISO` 或 `DRO Bracket` 时强锁 `[HLG Still Image] = Off`）；严格隔离存储卡路径：`ILME-FX3` 写入 `%c:%s/SONY/SETTING/FX3/CAMPR%02d%c.DAT`（`M1..M4`）与 `%c:%s/SONY/SETTING/FX3/CAMSET/*.DAT`（`CAMSET`，**零 `PRIVATE/SONY/PRO/CAMERA`**——后者属 `ILME-FX6` `Scene/User/All File` 专用，跨机型导入 fail-closed 拦截！），并阻断向只读 `Slot-1` Tier-0 金库保存 `M1..M4`/`CAMSET`；强制 `[Playback] -> [Edit] -> [Photo Capture]`（`8.3M` UHD / `2.1M` HD `JPEG`/`HEIF` 抽帧）：在 `XAVC S-I DCI 4K` 剪辑上禁止（`_g.uxc` `0x60ce`）且只要 `[Select Playback Media] = Slot 1` 挂载只读 Tier-0 恢复金库即 fail-closed 返回 `EROFS`/`EBUSY` 阻断写入，而只读 `[Enlarge Image]`（`Enlarge Initial Mag.` / `Enlarge Initial Position`，跨 `Camera Settings Reset` 留存）安全放行。
+  - **统一 `53/53` 恢复总检聚合器与 CLI（`evaluate_realhw_53pillar_recovery_master` / `evaluate_53pillar_recovery_master` / `verify-53pillar-recovery` / `verify-pillar53-dci4k-aspect-custom-hold-camset-vault`）**：
+    - 并发调用 `evaluate_realhw_52pillar_recovery_master`（`Pillars 1..52`）+ **Pillar 53**（`run_pillar53_standalone_suite`），汇总产出 **`53/53`（`VERIFIED_53OF53_PILLAR_RECOVERY_MASTER`）**与规范摘要哈希；[`tests/test_realhw_53pillar_dci4k_aspect_custom_hold_camset_photo_capture_vault_verifier.py`](tests/test_realhw_53pillar_dci4k_aspect_custom_hold_camset_photo_capture_vault_verifier.py) 提供 `>= 78` 项双模（本地只读供体 + 洁净室 + 环境变量强制）单元测试。
 
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-pillar53-dci4k-aspect-custom-hold-camset-vault --json
 
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-53pillar-recovery --json
 
-
-
-
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-53pillar-recovery --clean-room --json
+```

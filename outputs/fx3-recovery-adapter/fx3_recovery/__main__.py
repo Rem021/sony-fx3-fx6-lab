@@ -229,6 +229,12 @@ from .realhw_62pillar_rec_media_autoswitch_proxy_cloud_mymenu_vault_verifier imp
     verify_62pillar_recovery_suite,
     verify_rec_media_autoswitch_proxy_cloud_mymenu_and_vault,
 )
+from .realhw_63pillar_ftp_ftpes_customwb_afspeed_focusmap_marker_vault_verifier import (
+    P348_ENV_CLEAN_ROOM_TEST,
+    run_pillar63_standalone_suite,
+    verify_63pillar_recovery_suite,
+    verify_ftp_ftpes_customwb_afspeed_focusmap_marker_and_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -727,6 +733,27 @@ def main():
     p344_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p344_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p344_master.add_argument('--out', help='optional exclusive new output directory for 62pillar-recovery-master-report.json')
+    p348_p63 = sub.add_parser(
+        'verify-pillar63-ftp-ftpes-customwb-afspeed-focusmap-marker-vault',
+        help='Phase 348 Pillar 63 (Wave-61 [FTP Transfer Func.] FTP/FTPES Explicit TLS vs 0 SFTP, 9 Server Slots, Dormant Transfer JPEG/HEIF Size, USB-LAN Airplane-Mode Bypass & Slot-1 AVF_INFO EROFS=30 Firewall; White Balance Custom 1..3 / Cine EI Lockout / Shockless WB / Reset-immune Shutter AWB Lock vs FX6 ATW/Memory A..H; Movie AF Transition Speed 1..7 & AF Subj. Shift Sens. 1..5 Parity, App-Only Focus Map Ver. 6.00+ vs 0 In-Body UI; and 8 Reset-immune Marker Display 15 Ratios + 4-Color Peaking Display Clean-HDMI 0px Isolation vs FX6 80%%/90%%/92.5%%/95%% & User Box)',
+    )
+    p348_p63.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p348_p63.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p348_p63.add_argument('--out', help='optional exclusive new output directory for pillar63-ftp-ftpes-customwb-afspeed-focusmap-marker-vault-report.json')
+    p348_p63_alias = sub.add_parser(
+        'verify-pillar63-recovery',
+        help='Alias for verify-pillar63-ftp-ftpes-customwb-afspeed-focusmap-marker-vault (Phase 348 Pillar 63 standalone 12-scenario suite)',
+    )
+    p348_p63_alias.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p348_p63_alias.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p348_p63_alias.add_argument('--out', help='optional exclusive new output directory for pillar63-ftp-ftpes-customwb-afspeed-focusmap-marker-vault-report.json')
+    p348_master = sub.add_parser(
+        'verify-63pillar-recovery',
+        help='Phase 348 (63/63 Milestone) unified 63/63 real-hardware recovery master aggregator (Pillars 1..62 + Pillar 63)',
+    )
+    p348_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p348_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p348_master.add_argument('--out', help='optional exclusive new output directory for 63pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -4596,6 +4623,111 @@ def main():
                     f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_62pillar_sha256={report.master_62pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command in (
+            'verify-pillar63-ftp-ftpes-customwb-afspeed-focusmap-marker-vault',
+            'verify-pillar63-recovery',
+        ):
+            report = run_pillar63_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(
+                    args.out,
+                    {'pillar63-ftp-ftpes-customwb-afspeed-focusmap-marker-vault-report.json': encode(result)},
+                )
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_63a={report.pillar_63a_ftp_ftpes_usblan_customwb_vault.scenarios_passed}/{report.pillar_63a_ftp_ftpes_usblan_customwb_vault.scenarios_total} "
+                    f"pillar_63b={report.pillar_63b_movie_af_focusmap_marker_peaking_vault.scenarios_passed}/{report.pillar_63b_movie_af_focusmap_marker_peaking_vault.scenarios_total} "
+                    f"ftp_protocol_sftp_or_jpeg_size_drift_events={report.ftp_protocol_sftp_or_jpeg_size_drift_events} "
+                    f"wb_custom_cine_ei_or_shockless_drift_events={report.wb_custom_cine_ei_or_shockless_drift_events} "
+                    f"movie_af_speed_or_focus_map_spoof_events={report.movie_af_speed_or_focus_map_spoof_events} "
+                    f"marker_15ratio_peaking_hdmi_leak_events={report.marker_15ratio_peaking_hdmi_leak_events} "
+                    f"zero_rf_usblan_or_slot1_avf_bypass_events={report.zero_rf_usblan_or_slot1_avf_bypass_events} "
+                    f"rf_packets_transmitted={report.rf_packets_transmitted} "
+                    f"usblan_packets_transmitted={report.usblan_packets_transmitted} "
+                    f"rf_nvs_mutation_bytes={report.rf_nvs_mutation_bytes} "
+                    f"hdmi_marker_peaking_pixels_emitted={report.hdmi_marker_peaking_pixels_emitted} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_avf_info_mutation_bytes={report.slot1_avf_info_mutation_bytes} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_eopnotsupp_enforced={report.slot1_vault_erofs_eopnotsupp_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-63pillar-recovery':
+            report = verify_63pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'63pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_1_5s_fast_cli_budget={report.under_1_5s_fast_cli_budget} "
+                    f"under_2_5s_fast_cli_budget={report.under_2_5s_fast_cli_budget} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar63_a={report.pillar63_a_ftp_ftpes_usblan_customwb_vault.scenarios_passed}/{report.pillar63_a_ftp_ftpes_usblan_customwb_vault.scenarios_total} "
+                    f"pillar63_b={report.pillar63_b_movie_af_focusmap_marker_peaking_vault.scenarios_passed}/{report.pillar63_b_movie_af_focusmap_marker_peaking_vault.scenarios_total} "
+                    f"ftp_protocol_sftp_or_jpeg_size_drift_events={report.ftp_protocol_sftp_or_jpeg_size_drift_events} "
+                    f"wb_custom_cine_ei_or_shockless_drift_events={report.wb_custom_cine_ei_or_shockless_drift_events} "
+                    f"movie_af_speed_or_focus_map_spoof_events={report.movie_af_speed_or_focus_map_spoof_events} "
+                    f"marker_15ratio_peaking_hdmi_leak_events={report.marker_15ratio_peaking_hdmi_leak_events} "
+                    f"zero_rf_usblan_or_slot1_avf_bypass_events={report.zero_rf_usblan_or_slot1_avf_bypass_events} "
+                    f"rf_packets_transmitted={report.rf_packets_transmitted} "
+                    f"usblan_packets_transmitted={report.usblan_packets_transmitted} "
+                    f"rf_nvs_mutation_bytes={report.rf_nvs_mutation_bytes} "
+                    f"hdmi_marker_peaking_pixels_emitted={report.hdmi_marker_peaking_pixels_emitted} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_avf_info_mutation_bytes={report.slot1_avf_info_mutation_bytes} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_eopnotsupp_enforced={report.slot1_vault_erofs_eopnotsupp_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_63pillar_sha256={report.master_63pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

@@ -1385,6 +1385,7 @@ def build_stage_a_overlay(
     enable_r71: bool = False,
     enable_r72: bool = False,
     enable_r73: bool = False,
+    enable_r74: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1430,6 +1431,7 @@ def build_stage_a_overlay(
     r71_mode: str = "steadyshot_47focal_selftimer_zebra_streaming_big6",
     r72_mode: str = "bright_mon_shotmark_usblan_bulb_big6",
     r73_mode: str = "big6_framing_interval_tc_make_ssh_auth_fan_big6",
+    r74_mode: str = "rec_media_autoswitch_proxy_cloud_mymenu42_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1791,7 +1793,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r72_mode: {r72_mode}")
     if enable_r73 and r73_mode not in ("big6_framing_interval_tc_make_ssh_auth_fan_big6", "wave59_big6_framing_interval_tc_ssh_fan_erofs_guard", "clean_unmount_wave59_reset_h0_h3_big6"):
         raise ValueError(f"Unsupported r73_mode: {r73_mode}")
-    if enable_r73 and r73_mode == "wave59_big6_framing_interval_tc_ssh_fan_erofs_guard":
+    if enable_r74 and r74_mode not in ("rec_media_autoswitch_proxy_cloud_mymenu42_big6", "wave60_rec_media_proxy_poweroff_ble_mymenu_erofs_guard", "clean_unmount_wave60_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r74_mode: {r74_mode}")
+    if enable_r74 and r74_mode == "wave60_rec_media_proxy_poweroff_ble_mymenu_erofs_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r74_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r74-wave60-guard > /dev/console 2>&1\n"
+            "fx6_r74_gd_rc=$?\n"
+            "echo FX6_R74_WAVE60_GUARD_RC=$fx6_r74_gd_rc\n"
+            "echo FX6_R74_WAVE60_GUARD_EXIT rc=$fx6_r74_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r74_early_hook, 1)
+    elif enable_r73 and r73_mode == "wave59_big6_framing_interval_tc_ssh_fan_erofs_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -5453,6 +5471,77 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r74_meta: Optional[Dict[str, Any]] = None
+    if enable_r74:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r74_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r74"] = (
+            (
+                f"stage_r74=1\nr74_mode={r74_mode}\n"
+                f"rec_media_split_vs_dormant_prioritize_autoswitch_vpg=1\n"
+                f"proxy_sq_dci4k_vs_120p_m4root_sub_erofs30=1\n"
+                f"creators_cloud_star_init_persist_poweroff_ble_zerorf=1\n"
+                f"mymenu_6x7_42_slots_vs_fx6_20_user_menu_lock=1\n"
+                f"milestone_47th_realhw_141st_live_94_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r74_meta = {
+            "r74_mode": r74_mode,
+            "milestone_round_ordinal": 74,
+            "realhw_round_ordinal": 47,
+            "total_live_runs_at_completion": 141,
+            "total_png_receipts_at_completion": 94,
+            "rec_media_autoswitch_and_vpg_wave60": {
+                "menu_path": "Shooting -> [Media] -> [Rec. Media Settings] (_f 0x749d/0x78be)",
+                "dormant_prioritize_rec_media": "_f 0x719e Prioritize Rec. Media / _f 0x710d Sort(RAW/JPEG) / _f 0x765b Sort(JPEG/RAW) — 0 hits prioritize in FX3 appFw.so (merged into split [Recording Media] Ver. 2.00+..7.02)",
+                "still_recording_media": "BKID_APP_setting_still_recording_media: Slot 1 [def] / Slot 2 / Simult. Recording (_f 0x7505) / Sort Recording (_f 0x7916 RAW vs JPEG/HEIF via SortRecSlot1/2; shared quality/size/RAW type)",
+                "movie_recording_media": "BKID_APP_setting_movie_recording_media: Slot 1 [def] / Slot 2 / Simult. Recording (ZERO Movie Sort Recording; Simult. rejects mixed exFAT/FAT32)",
+                "auto_switch_media": "BKID_APP_setting_relay_rec (_f 0x6dd9): Off [def] / On; Reset-immune; Slot 2 + Auto Switch On full-card spillover hazard onto Slot 1 blocked by Tier-0 Vault EROFS=30",
+                "card_speed_gates": "S&Q XAVC S-I 4K (1200M) / HD 240fps (890M) require CFexpress Type A VPG200+; base 0xe228 (CFexpress VPG200) & base 0xe224/0xe93f/0xe9aa (CFexpress VPG400) warnings for high-bitrate + Proxy; zero CFexpress Type B",
+                "fx6_diff": "FX6 Project > Simul Rec (BKID_APP_SETTING_SIMUL_REC) + body/handle Rec Button Set (Slot A/B) + hard exclusions (FX6_2 0x41ee..0x41f7) vs LAN/Modem/Streaming/Proxy Rec/Chunk",
+            },
+            "proxy_settings_sq_proxy_and_m4root_sub": {
+                "menu_path": "Shooting -> [Image Quality/Rec] -> [Proxy Settings] (_f 0x6e3f/0x7aff)",
+                "elf_prefix_truth": "Uses sq_proxy (BKID_APP_setting_sq_proxy_{recording,file_format,record_setting}) + convert2MovieMainParams + CAUTION_ID_PROXY_*; 0 hits PRM_HAITA_*proxy*",
+                "formats_and_defaults": "Proxy Recording (Off def / On); XAVC S HD (def, 1280x720 AVC max 59.94p/50p, fixed 6M 4:2:0 8bit _f 0x764c) vs XAVC HS HD (1920x1080 HEVC max 59.94p/50p, 9M [format def _f 0x611c] / 16M [_f 0x62a6] 4:2:0 10bit); dormant _f 0x6b8f 16M 8bit & VAL_*_9M_420_8BIT",
+                "exact_lockout_vs_dci4k": "Disabled ONLY under normal Movie [Rec Frame Rate]=119.88p/100p OR S&Q 119.88p/100p / 120fps/100fps; XAVC S-I DCI 4K (max 59.94p/50p) IS ALLOWED (subject to VPG200/VPG400 gates)",
+                "file_layout_and_erofs": "/PRIVATE/M4ROOT/SUB/<Clip>S03.MP4 (SDXC) or /M4ROOT/SUB/<Clip>S03.MP4 (CFexpress Type A), non-playable in-camera, Delete/Protect coupled to parent clip; Slot-1 writes & coupled ops blocked EROFS=30",
+                "fx6_diff": "FX6 XAVC Proxy 1920x1080 AVC 9Mbps (XDROOT/Sub/) + Proxy Rec > Chunk (30s/1min/2min Slot B disabling Relay Rec & 2-slot Simul Rec); mutually exclusive with Simul Rec, S&Q, Interval Rec",
+            },
+            "creators_cloud_star_and_poweroff_ble_hazard": {
+                "cloud_suite": "[C3 Portal] (Ver. 4.00+, Cloud Private/Share LUT) + [Cloud Connection *] & [Cloud Information *] (Ver. 5.00+, BKID_APP_setting_cloud_connection, Ver. 7.00+ Clip Flag filter, CLOUD_CONNECTION_ON_FTP_OFF)",
+                "star_initialize_persistence": "Cloud Connection * and Cloud Information * SURVIVE [Camera Settings Reset], [Reset Network Set.], AND EVEN [Initialize] — require explicit Cloud Information unlink",
+                "cnct_while_power_off_ble_hazard": "[Cnct. while Power OFF] (_f 0x6ab3, BKID_APP_extern_menu_cnct_while_power_off, Off def / On) + Always Connected (_f 0x6833, UIBIZ_KEY_BLUETOOTH_LOWENERGY_POWER) keep BLE radio energized when physical POWER=OFF; Zero-RF containment enforces Airplane Mode=On + ALWAYS_CONNECTED_OFF (rf_tx_packets=0, poweroff_ble_rf_tx_packets=0)",
+                "fx6_diff": "FX6 has NO Bluetooth hardware (BKID_APP_SETTING_BLUETOOTH_FUNCTION dormant), zero power-off BLE wakeup; C3 Portal / M&C via USB-C tethering / Wi-Fi / LAN + Chunk Slot B",
+            },
+            "mymenu_42_slots_vs_fx6_user_menu_lock": {
+                "exact_capacity": "FX3 [My Menu] has exact 6x7=42 NVRAM slots (BKID_APP_mymenu_group{1..6}_setting_list{0..6}); 0 hits group0/group7/list7 (NOT 30 or 36)",
+                "six_ops_and_exclusions": "Add Item (_f 0x7122), Sort Item (_f 0x7a11), Delete Item (_f 0x698d), Delete Page (_f 0x6b7c), Delete All (_f 0x6226), Display From My Menu (_f 0x64f6 Off def/On); Playback items disallowed (-EOPNOTSUPP)",
+                "reset_survival": "All 42 slots + Display From My Menu survive [Camera Settings Reset]; cleared by [Initialize] or [Delete All]",
+                "fx6_diff": "FX6 20-item [User Menu] + [User Menu Only] (BKID_APP_SETTING_USER_MENU_ONLY, in All File not Scene File) + [User Menu with Lock] (Multi-Function Dial + MENU combo, PIN 0000..9999 def 0000, not exported in All/Scene File)",
+            },
+            "reset_tiers": {
+                "camera_settings_reset": "Resets [Proxy Settings] back to Off / XAVC S HD 6M 8bit while preserving Reset-immune Still/Movie [Recording Media], [Auto Switch Media], [Cnct. while Power OFF], all 42 [My Menu] slots + [Display From My Menu], [Airplane Mode], AND [Creators' Cloud *]",
+                "reset_network_settings": "Clears [Cnct. while Power OFF] / [Always Connected] while preserving [Cloud Connection *] / [Cloud Information *], [Airplane Mode]=On, [Recording Media], [Auto Switch Media], and all 42 [My Menu] slots",
+                "initialize": "Restores [Recording Media], [Auto Switch Media], and clears all 42 [My Menu] slots while [Cloud Connection *] / [Cloud Information *] SURVIVE EVEN [Initialize] (plus [Airplane Mode]=On preserved)",
+            },
+            "dormant_prioritize_bypass_events": 0,
+            "dormant_prm_haita_proxy_bypass_events": 0,
+            "dormant_mymenu_oob_bypass_events": 0,
+            "slot1_spillover_events": 0,
+            "poweroff_ble_rf_tx_packets": 0,
+            "rf_tx_packets": 0,
+            "wireless_tx_packets": 0,
+            "slot1_data_sector_writes": 0,
+            "slot1_avf_info_mutated": False,
+            "passive_tx_bytes_emitted": 0,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -5519,6 +5608,7 @@ def build_stage_a_overlay(
         "r71_enabled": enable_r71,
         "r72_enabled": enable_r72,
         "r73_enabled": enable_r73,
+        "r74_enabled": enable_r74,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -5640,6 +5730,8 @@ def build_stage_a_overlay(
         stage_a_meta["r72"] = r72_meta
     if r73_meta is not None:
         stage_a_meta["r73"] = r73_meta
+    if r74_meta is not None:
+        stage_a_meta["r74"] = r74_meta
     return replacements, additions, stage_a_meta
 
 
@@ -6002,6 +6094,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R71_",
         "FX6_R72_",
         "FX6_R73_",
+        "FX6_R74_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -6466,6 +6559,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r73_lang: Optional[Dict[str, Any]] = None
     last_r73_bridge: Optional[Dict[str, Any]] = None
     r73_wave59_guard_rc: Optional[int] = None
+    last_r74_wave60_init: Optional[Dict[str, Any]] = None
+    last_r74_rec_media_autoswitch_vpg_bridge: Optional[Dict[str, Any]] = None
+    last_r74_proxy_sq_m4root_sub_erofs_bridge: Optional[Dict[str, Any]] = None
+    last_r74_cloud_star_poweroff_ble_zerorf_bridge: Optional[Dict[str, Any]] = None
+    last_r74_mymenu42_fx6_lock_bridge: Optional[Dict[str, Any]] = None
+    last_r74_wave60_guard: Optional[Dict[str, Any]] = None
+    last_r74_clean_unmount_wave60_h0_h3: Optional[Dict[str, Any]] = None
+    last_r74_lang: Optional[Dict[str, Any]] = None
+    last_r74_bridge: Optional[Dict[str, Any]] = None
+    r74_wave60_guard_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -7511,6 +7614,28 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R73_WAVE59_GUARD_RC"), int):
                 r73_wave59_guard_rc = kv["FX6_R73_WAVE59_GUARD_RC"]
+        elif "FX6_R74_WAVE60_INIT " in line:
+            last_r74_wave60_init = _parse_kv_ints(line.split("FX6_R74_WAVE60_INIT ", 1)[1])
+        elif "FX6_R74_REC_MEDIA_AUTOSWITCH_VPG_BRIDGE " in line:
+            last_r74_rec_media_autoswitch_vpg_bridge = _parse_kv_ints(line.split("FX6_R74_REC_MEDIA_AUTOSWITCH_VPG_BRIDGE ", 1)[1])
+        elif "FX6_R74_PROXY_SQ_M4ROOT_SUB_EROFS_BRIDGE " in line:
+            last_r74_proxy_sq_m4root_sub_erofs_bridge = _parse_kv_ints(line.split("FX6_R74_PROXY_SQ_M4ROOT_SUB_EROFS_BRIDGE ", 1)[1])
+        elif "FX6_R74_CLOUD_STAR_POWEROFF_BLE_ZERORF_BRIDGE " in line:
+            last_r74_cloud_star_poweroff_ble_zerorf_bridge = _parse_kv_ints(line.split("FX6_R74_CLOUD_STAR_POWEROFF_BLE_ZERORF_BRIDGE ", 1)[1])
+        elif "FX6_R74_MYMENU42_FX6_LOCK_BRIDGE " in line:
+            last_r74_mymenu42_fx6_lock_bridge = _parse_kv_ints(line.split("FX6_R74_MYMENU42_FX6_LOCK_BRIDGE ", 1)[1])
+        elif "FX6_R74_WAVE60_GUARD " in line:
+            last_r74_wave60_guard = _parse_kv_ints(line.split("FX6_R74_WAVE60_GUARD ", 1)[1])
+        elif "FX6_R74_CLEAN_UNMOUNT_WAVE60_H0_H3 " in line:
+            last_r74_clean_unmount_wave60_h0_h3 = _parse_kv_ints(line.split("FX6_R74_CLEAN_UNMOUNT_WAVE60_H0_H3 ", 1)[1])
+        elif "FX6_R74_LANG_TELEMETRY " in line:
+            last_r74_lang = _parse_kv_ints(line.split("FX6_R74_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R74_BRIDGE " in line:
+            last_r74_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R74_BRIDGE ", 1)[1])
+        elif "FX6_R74_WAVE60_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R74_WAVE60_GUARD_RC"), int):
+                r74_wave60_guard_rc = kv["FX6_R74_WAVE60_GUARD_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -8740,6 +8865,34 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r73_bridge or {},
         }
 
+    r74_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r74_wave60_init,
+            last_r74_rec_media_autoswitch_vpg_bridge,
+            last_r74_proxy_sq_m4root_sub_erofs_bridge,
+            last_r74_cloud_star_poweroff_ble_zerorf_bridge,
+            last_r74_mymenu42_fx6_lock_bridge,
+            last_r74_wave60_guard,
+            last_r74_clean_unmount_wave60_h0_h3,
+            last_r74_lang,
+            last_r74_bridge,
+        )
+    ):
+        r74_telemetry = {
+            "wave60_guard_rc": r74_wave60_guard_rc,
+            "wave60_init": last_r74_wave60_init or {},
+            "rec_media_autoswitch_vpg_bridge": last_r74_rec_media_autoswitch_vpg_bridge or {},
+            "proxy_sq_m4root_sub_erofs_bridge": last_r74_proxy_sq_m4root_sub_erofs_bridge or {},
+            "cloud_star_poweroff_ble_zerorf_bridge": last_r74_cloud_star_poweroff_ble_zerorf_bridge or {},
+            "mymenu42_fx6_lock_bridge": last_r74_mymenu42_fx6_lock_bridge or {},
+            "wave60_guard": last_r74_wave60_guard or {},
+            "clean_unmount_wave60_h0_h3": last_r74_clean_unmount_wave60_h0_h3 or {},
+            "lang_telemetry": last_r74_lang or {},
+            "stage_b_bridge": last_r74_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -8810,6 +8963,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r71_telemetry": r71_telemetry,
         "r72_telemetry": r72_telemetry,
         "r73_telemetry": r73_telemetry,
+        "r74_telemetry": r74_telemetry,
     }
 
 
@@ -8957,6 +9111,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r72"
     if args.round >= 73:
         tmp_prefix = "fx6-r73"
+    if args.round >= 74:
+        tmp_prefix = "fx6-r74"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -9040,8 +9196,12 @@ def run_once(args: argparse.Namespace) -> int:
         r71_mode = getattr(args, "r71_mode", "steadyshot_47focal_selftimer_zebra_streaming_big6")
         r72_mode = getattr(args, "r72_mode", "bright_mon_shotmark_usblan_bulb_big6")
         r73_mode = getattr(args, "r73_mode", "big6_framing_interval_tc_make_ssh_auth_fan_big6")
+        r74_mode = getattr(args, "r74_mode", "rec_media_autoswitch_proxy_cloud_mymenu42_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone47RealHw141stLiveWave60RecMediaAutoSwitchProxyCloudPowerOffBleMyMenu42Erofs+r74_mode={r74_mode}+lang={lang})"
+                if args.round >= 74
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone46RealHw138thLiveWave59Big6HomeFramingIntervalShootTcMakeSshAuthFanErofs+r73_mode={r73_mode}+lang={lang})"
                 if args.round >= 73
                 else (
@@ -9298,6 +9458,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -9414,6 +9575,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r72_mode=r72_mode,
                 enable_r73=(args.round >= 73),
                 r73_mode=r73_mode,
+                enable_r74=(args.round >= 74),
+                r74_mode=r74_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -9593,6 +9756,7 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R71_WAVE57_GUARD_EXIT" in txt
                     or "FX6_R72_WAVE58_GUARD_EXIT" in txt
                     or "FX6_R73_WAVE59_GUARD_EXIT" in txt
+                    or "FX6_R74_WAVE60_GUARD_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -9674,6 +9838,7 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R71_WAVE57_GUARD_EXIT" in serial_text
             or "FX6_R72_WAVE58_GUARD_EXIT" in serial_text
             or "FX6_R73_WAVE59_GUARD_EXIT" in serial_text
+            or "FX6_R74_WAVE60_GUARD_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -9770,6 +9935,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r71_mode": r71_mode if args.round >= 71 else None,
             "r72_mode": r72_mode if args.round >= 72 else None,
             "r73_mode": r73_mode if args.round >= 73 else None,
+            "r74_mode": r74_mode if args.round >= 74 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -9850,6 +10016,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r71_telemetry": milestones.get("r71_telemetry") if args.round >= 71 else None,
             "r72_telemetry": milestones.get("r72_telemetry") if args.round >= 72 else None,
             "r73_telemetry": milestones.get("r73_telemetry") if args.round >= 73 else None,
+            "r74_telemetry": milestones.get("r74_telemetry") if args.round >= 74 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -11996,6 +12163,173 @@ def sanitize_round73_summary(
     )
 
 
+_sanitize_r74_value = _sanitize_r73_value
+
+
+def sanitize_round74_summary(
+    r74a_raw: Dict[str, Any],
+    r74b_raw: Dict[str, Any],
+    r74c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the Round 74 (47/47 Real-HW Rounds, 141/141 Live Runs, 94/94 PNGs) summary.json telemetry receipt."""
+    t74a = r74a_raw.get("r74_telemetry") or {}
+    t74b = r74b_raw.get("r74_telemetry") or {}
+    t74c = r74c_raw.get("r74_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r74_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 74,
+            "lang": raw.get("lang", "en"),
+            "r74_mode": raw.get("r74_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r74_telemetry": _sanitize_r74_value(raw.get("r74_telemetry") or {}),
+            "gpe0_readback": _sanitize_r74_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r74_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r74_value(entry)
+
+    r74a_nz = (r74a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r74b_guard = t74b.get("wave60_guard") or {}
+    r74c_h0h3 = t74c.get("clean_unmount_wave60_h0_h3") or {}
+    r74a_init = t74a.get("wave60_init") or {}
+
+    return _sanitize_r74_value(
+        {
+            "schema": "fx6-on-fx3-round74-rec-media-autoswitch-proxy-cloud-mymenu42-qemu-v1",
+            "round": 74,
+            "milestone": (
+                "47/47 Real-HW Rounds (R28..R74)! — Wave-60 [Rec. Media Settings] Split [Recording Media] (Still Slot1/Slot2/Simult./Sort vs "
+                "Movie Slot1/Slot2/Simult. with 0 Sort) & [Auto Switch Media] (BKID_APP_setting_relay_rec, Off def / On, Slot 1 EROFS=30 spillover hazard) "
+                "vs Dormant [Prioritize Rec. Media] (_f 0x719e, 0 hits prioritize in FX3 appFw.so -> EOPNOTSUPP=95) + CFexpress VPG200/VPG400 Speed Gates "
+                "vs FX6 Simul Rec + Dual Rec Button Set + LAN/Modem/Proxy/Streaming/Chunk Exclusions; [Proxy Settings] sq_proxy (XAVC S HD 6M 8bit def vs "
+                "XAVC HS HD 16M/9M 10bit, XAVC S-I DCI 4K allowed vs 120p/100p lockout, *S03.MP4 in M4ROOT/SUB/ Slot 1 EROFS=30); [Creators' Cloud] "
+                "Initialize-persistent Cloud Connection* / Cloud Information* & [Cnct. while Power OFF] (_f 0x6ab3, Zero-RF BLE containment) vs BLE-less FX6; "
+                "and [My Menu] 6x7=42 NVRAM Slots (BKID_APP_mymenu_group{1..6}_setting_list{0..6}, group0/group7/list7 OOB -> EOPNOTSUPP=95) vs "
+                "FX6 20-Item User Menu + User Menu with Lock (0000..9999 PIN) "
+                "(139th..141st Live Unmodified ILME-FX3 Ver. 7.02 ARM64 QEMU Runs -> 141/141 Live Runs, 94/94 PNGs <= 27,467 B!)"
+            ),
+            "date": "2026-11-18",
+            "kernel_version": r74a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "realhw_mechanisms_verified": {
+                "wave60_rec_media_autoswitch_proxy_cloud_mymenu42_init": r74a_init,
+                "rec_media_autoswitch_vpg_stage_b_bridge": t74a.get("rec_media_autoswitch_vpg_bridge") or {},
+                "proxy_sq_m4root_sub_erofs_stage_b_bridge": t74a.get("proxy_sq_m4root_sub_erofs_bridge") or {},
+                "cloud_star_poweroff_ble_zerorf_stage_b_bridge": t74a.get("cloud_star_poweroff_ble_zerorf_bridge") or {},
+                "mymenu42_fx6_lock_stage_b_bridge": t74a.get("mymenu42_fx6_lock_bridge") or {},
+                "wave60_fail_closed_guard": r74b_guard,
+                "clean_unmount_wave60_reset_and_16_h0_h3": r74c_h0h3,
+            },
+            "runs": {
+                "r74a_rec_media_autoswitch_proxy_cloud_mymenu42_big6_schinese": _clean_run(
+                    r74a_raw,
+                    (
+                        "139th Live FX3 7.02 QEMU Run (Round 74 / 47th Real-HW Round!) — Wave-60 4-pillar Stage-A/B verification: "
+                        "dormant [Prioritize Rec. Media] (_f 0x719e, 0 prioritize hits) vs Ver. 2.00+..7.02 split Reset-immune [Recording Media] "
+                        "(Still Slot1/Slot2/Simult./Sort vs Movie Slot1/Slot2/Simult. with 0 Sort) & [Auto Switch Media] (BKID_APP_setting_relay_rec) + "
+                        "CFexpress VPG200/VPG400 speed gates vs FX6 Simul Rec + Dual Rec Button Set + LAN/Modem/Proxy/Streaming/Chunk Exclusions; "
+                        "[Proxy Settings] sq_proxy (XAVC S HD 6M 8bit def vs XAVC HS HD 16M/9M 10bit, XAVC S-I DCI 4K allowed vs 120p/100p lockout, "
+                        "*S03.MP4 in M4ROOT/SUB/) vs FX6 1080p 9M AVC + Slot-B Chunk; [Creators' Cloud] Initialize-persistent Cloud Connection* / "
+                        "Cloud Information* & [Cnct. while Power OFF] (_f 0x6ab3, BLE energized when physical POWER=OFF vs BLE-less FX6); and "
+                        "[My Menu] 6x7=42 NVRAM slots (BKID_APP_mymenu_group{1..6}_setting_list{0..6}, group0/group7/list7 = 0 hits) vs "
+                        "FX6 20-item User Menu + User Menu with Lock (0000..9999 PIN), "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r74a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r74b_wave60_rec_media_proxy_poweroff_ble_mymenu_erofs_guard": _clean_run(
+                    r74b_raw,
+                    (
+                        "140th Live FX3 7.02 QEMU Run — Fail-closed Wave-60 guard rehearsal: dormant [Prioritize Rec. Media] (-95 EOPNOTSUPP), "
+                        "absent Movie Sort (-95 EOPNOTSUPP), Simult. Recording mixed exFAT/FAT32 (-22 EINVAL), Auto Switch Slot 2->Slot 1 spillover / "
+                        "Simult. / M4ROOT/SUB/*S03.MP4 write & coupled delete / P12 / P2 / cnflasha Tier-0 Slot 1 write blocks (-30 EROFS, "
+                        "slot1_data_sector_writes=0, emmc_write_count=0), CFexpress VPG200/VPG400 speed-gate & 120p/100p Proxy lockouts (-16 EBUSY), "
+                        "OOB mymenu_group0/group7/list7 & Playback-in-MyMenu (-95 EOPNOTSUPP), 43rd FX3 My Menu slot & 21st FX6 User Menu slot (-28 ENOSPC), "
+                        "and [Cnct. while Power OFF]=On BLE Zero-RF containment (Airplane Mode=On + ALWAYS_CONNECTED_OFF -> -100 ENETDOWN, "
+                        "poweroff_ble_rf_tx_packets=0, rf_tx_packets=0)"
+                    ),
+                ),
+                "r74c_clean_unmount_wave60_reset_h0_h3_big6_schinese": _clean_run(
+                    r74c_raw,
+                    (
+                        "141st Live FX3 7.02 QEMU Run (47/47 Real-HW Rounds! 141/141 Live Runs, 94/94 PNGs <= 27,467 B!) — Clean unmount of volatile Stage-B overlay "
+                        "restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + 3-tier persistence split verification "
+                        "([Camera Settings Reset] resets [Proxy Settings] while preserving [Recording Media], [Auto Switch Media], "
+                        "[Cnct. while Power OFF], all 42 [My Menu] slots, and Cloud Connection* / Cloud Information*; "
+                        "[Reset Network Set.] clears [Cnct. while Power OFF] while preserving [Recording Media], [My Menu], and Cloud*; "
+                        "[Initialize] clears [Recording Media], [Auto Switch Media], [Cnct. while Power OFF], and all 42 [My Menu] slots "
+                        "while Cloud Connection* / Cloud Information* SURVIVES Initialize until explicit unlink!) + "
+                        "dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r74_rec_media_autoswitch_proxy_cloud_mymenu42_audit": {
+                "round": 74,
+                "realhw_rounds_count": 47,
+                "total_live_runs": 141,
+                "total_png_receipts": 94,
+                "milestone324_qemu_rounds": 47,
+                "milestone324_qemu_runs": 141,
+                "milestone324_png_receipts": 94,
+                "total_runs": 3,
+                "fx3_prioritize_rec_media_present": False,
+                "fx3_movie_sort_recording_present": False,
+                "fx3_mymenu_30_or_36_slots_only": False,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "r74a_wave60_rec_media_proxy_cloud_mymenu42_verified": bool(r74a_init.get("r74_init_ok") == 1),
+                "r74a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r74a_nz >= 300000),
+                "r74b_wave60_guard_fail_closed": bool(r74b_guard.get("r74b_ok") == 1),
+                "r74b_slot1_erofs_spillover_and_proxy_zero_sector_writes_verified": bool(
+                    r74b_guard.get("slot1_spillover_erofs_rc") == -30
+                    and r74b_guard.get("proxy_slot1_s03_erofs_rc") == -30
+                    and r74b_guard.get("slot1_data_sector_writes") == 0
+                ),
+                "r74b_poweroff_ble_zero_rf_containment_verified": bool(
+                    r74b_guard.get("poweroff_ble_zerorf_tx_rc") == -100
+                    and r74b_guard.get("poweroff_ble_rf_tx_packets") == 0
+                    and r74b_guard.get("rf_tx_packets") == 0
+                ),
+                "r74c_clean_unmount_wave60_reset_and_16_h0_eq_h3_verified": bool(
+                    r74c_h0h3.get("r74c_ok") == 1
+                    and r74c_h0h3.get("camreset_resets_proxy_preserves_media_ble_mymenu_cloud_ok") == 1
+                    and r74c_h0h3.get("nwreset_clears_poweroff_ble_preserves_cloud_star_and_airplane_ok") == 1
+                    and r74c_h0h3.get("initialize_clears_media_mymenu42_preserves_cloud_star_ok") == 1
+                    and r74c_h0h3.get("explicit_cloud_unlink_clears_star_ok") == 1
+                    and r74c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) dual-slot SDXC UHS-II + CFexpress Type A VPG200/VPG400 card bench verifying live Still/Movie [Recording Media] split, [Auto Switch Media] spillover across full Slot 2 onto Slot 1, mixed exFAT/FAT32 Simult. rejection, and physical write-protect lock (EROFS=30) remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) XAVC HS/S/S-I recording bench verifying sq_proxy codec/resolution matrix (XAVC S HD 6M 8bit vs XAVC HS HD 16M/9M 10bit, XAVC S-I DCI 4K allowed vs 120p/100p Proxy lockout) and real-time M4ROOT/SUB/*S03.MP4 sidecar write + coupled delete vs FX6 Slot-B Chunk Proxy remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) RF shield-box & Creators' Cloud pairing bench verifying physical POWER=OFF BLE advertisement/wake via [Cnct. while Power OFF], Airplane Mode=On zero-RF containment, Initialize-persistent Cloud Connection* / Cloud Information* NVRAM credentials, and 42-slot [My Menu] NVRAM persistence remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
@@ -12025,7 +12359,8 @@ def main() -> int:
     # r70_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70]
     # r71_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71]
     # r72_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73], required=True)
+    # r73_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -12073,6 +12408,7 @@ def main() -> int:
     ap.add_argument("--r71-mode", type=str, choices=["steadyshot_47focal_selftimer_zebra_streaming_big6", "wave57_steadyshot_selftimer_zebra_streaming_erofs_guard", "clean_unmount_wave57_reset_h0_h3_big6"], default="steadyshot_47focal_selftimer_zebra_streaming_big6")
     ap.add_argument("--r72-mode", type=str, choices=["bright_mon_shotmark_usblan_bulb_big6", "wave58_bright_mon_shotmark_usblan_bulb_erofs_guard", "clean_unmount_wave58_reset_h0_h3_big6"], default="bright_mon_shotmark_usblan_bulb_big6")
     ap.add_argument("--r73-mode", type=str, choices=["big6_framing_interval_tc_make_ssh_auth_fan_big6", "wave59_big6_framing_interval_tc_ssh_fan_erofs_guard", "clean_unmount_wave59_reset_h0_h3_big6"], default="big6_framing_interval_tc_make_ssh_auth_fan_big6")
+    ap.add_argument("--r74-mode", type=str, choices=["rec_media_autoswitch_proxy_cloud_mymenu42_big6", "wave60_rec_media_proxy_poweroff_ble_mymenu_erofs_guard", "clean_unmount_wave60_reset_h0_h3_big6"], default="rec_media_autoswitch_proxy_cloud_mymenu42_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

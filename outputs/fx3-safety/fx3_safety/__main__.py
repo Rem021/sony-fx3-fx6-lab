@@ -227,6 +227,11 @@ from .realhw_bright_mon_shotmark_usblan_bulb_dormant_and_136gate_guard import (
     evaluate_g135_bright_mon_shotmark_vault_guard,
     evaluate_g136_tc_link_wifi_usblan_bulb_dormant_guard,
 )
+from .realhw_big6_home_framing_interval_tc_ssh_fan_and_138gate_guard import (
+    evaluate_138gate_preflight,
+    evaluate_g137_big6_home_framing_interval_vault_guard,
+    evaluate_g138_tc_make_hdmi_rec_ssh_authen_fan_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -4274,6 +4279,95 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_136.add_argument("--json", action="store_true", help="Emit structured JSON report")
     p_136.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 164. verify-big6-home-framing-interval-vault-guard
+    p_g137 = sub.add_parser(
+        "verify-big6-home-framing-interval-vault-guard",
+        aliases=["verify-g137-big6-home-framing-interval"],
+        help="Verify Gate G137: Ver. 7.00+ BIG6 Home screen Fixed/Variable prerequisite and Manual ND metadata vs FX6 e-ND, Manual Framing Settings vs dormant Auto Framing (EOPNOTSUPP=95), and Still Interval Shoot Func. 9999-shot Slot-1 Tier-0 Vault Firewall (EROFS=30 / EBUSY=16)",
+    )
+    p_g137.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g137.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g137.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g137.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g137.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 165. verify-tc-make-hdmi-rec-ssh-authen-fan-guard
+    p_g138 = sub.add_parser(
+        "verify-tc-make-hdmi-rec-ssh-authen-fan-guard",
+        aliases=["verify-g138-tc-make-hdmi-rec-ssh-fan"],
+        help="Verify Gate G138: Time Code Make Regenerate forced Rec Run and HDMI REC Control state machine, Ver. 7.00+ SSH-based Access Authen. vs Zero HTTPS/Digest, and 4-mode FX3 vs 3-mode FX6 Fan Control Zero-Max truth (EOPNOTSUPP=95)",
+    )
+    p_g138.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g138.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g138.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g138.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g138.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 166. verify-138-gates
+    p_138 = sub.add_parser(
+        "verify-138-gates",
+        help="Run Phase 313 Wave-59 Unified 138-Gate Master Safety Preflight Engine (G01..G138)",
+    )
+    p_138.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_138.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_138.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G138 gates can be rehearsed offline",
+    )
+    p_138.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_138.add_argument("--summary", action="store_true", help="Emit concise summary output")
 
     args = parser.parse_args(argv)
 
@@ -9061,6 +9155,171 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_136_gates_verified if args.dry_run_simulated else report.offline_133_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-big6-home-framing-interval-vault-guard",
+        "verify-g137-big6-home-framing-interval",
+    ):
+        verdict, res = evaluate_g137_big6_home_framing_interval_vault_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.big6_home_framing_interval_vault_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_mode_settings": guard["effective_mode_settings"],
+                    "big6_screen_active": guard["big6_screen_active"],
+                    "big6_hdmi_output_active": guard["big6_hdmi_output_active"],
+                    "effective_home_lower_left": guard["effective_home_lower_left"],
+                    "fx3_physical_end_actuator_present": guard["fx3_physical_end_actuator_present"],
+                    "effective_framing_on": guard["effective_framing_on"],
+                    "fx3_framing_support_lock": guard["fx3_framing_support_lock"],
+                    "effective_interval_shooting": guard["effective_interval_shooting"],
+                    "interval_shot_count": guard["interval_shot_count"],
+                    "slot_1_contains_tier0_vault": guard["slot_1_contains_tier0_vault"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.big6_home_framing_interval_vault_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} big6_mode={guard['effective_mode_settings']} "
+                f"big6_active={guard['big6_screen_active']} "
+                f"lower_left={guard['effective_home_lower_left']} "
+                f"fx3_end_hw={guard['fx3_physical_end_actuator_present']} "
+                f"framing={guard['effective_framing_on']} "
+                f"interval={guard['effective_interval_shooting']} "
+                f"slot1_vault={guard['slot_1_contains_tier0_vault']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-tc-make-hdmi-rec-ssh-authen-fan-guard",
+        "verify-g138-tc-make-hdmi-rec-ssh-fan",
+    ):
+        verdict, res = evaluate_g138_tc_make_hdmi_rec_ssh_authen_fan_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.tc_make_hdmi_rec_ssh_authen_fan_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_tc_make": guard["effective_tc_make"],
+                    "effective_tc_run": guard["effective_tc_run"],
+                    "tc_regenerate_forced_rec_run": guard["tc_regenerate_forced_rec_run"],
+                    "ext_tc_lock_status": guard["ext_tc_lock_status"],
+                    "effective_hdmi_rec_control": guard["effective_hdmi_rec_control"],
+                    "cardless_hdmi_rec_ctrl_permitted": guard["cardless_hdmi_rec_ctrl_permitted"],
+                    "effective_access_authen_settings": guard["effective_access_authen_settings"],
+                    "sshd_control_active": guard["sshd_control_active"],
+                    "access_authen_transports": guard["access_authen_transports"],
+                    "effective_fan_control": guard["effective_fan_control"],
+                    "fx3_exact_fan_modes_count": guard["fx3_exact_fan_modes_count"],
+                    "fx6_exact_fan_modes_count": guard["fx6_exact_fan_modes_count"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.tc_make_hdmi_rec_ssh_authen_fan_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} tc_make={guard['effective_tc_make']} "
+                f"tc_run={guard['effective_tc_run']} "
+                f"hdmi_rec={guard['effective_hdmi_rec_control']} "
+                f"authen={guard['effective_access_authen_settings']} "
+                f"sshd={guard['sshd_control_active']} "
+                f"fan={guard['effective_fan_control']} "
+                f"fx3_fan_modes={guard['fx3_exact_fan_modes_count']} "
+                f"fx6_fan_modes={guard['fx6_exact_fan_modes_count']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-138-gates":
+        report = evaluate_138gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g137_status": report.g137_result["status"],
+                    "g138_status": report.g138_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/138 "
+                f"g137_to_g138_all_passed={report.g137_to_g138_all_passed} "
+                f"all_138_gates_verified={report.all_138_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_138_gates_verified if args.dry_run_simulated else report.offline_135_gates_verified
         return 0 if ok else 1
 
     return 2

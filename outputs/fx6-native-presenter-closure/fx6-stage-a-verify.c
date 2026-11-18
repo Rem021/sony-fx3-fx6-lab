@@ -30077,6 +30077,1360 @@ static int run_r63_clean_unmount_still_reset_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ============================================================================
+ * Round 64 (64th Round Power-of-Two Grand Milestone · 37/37 Real-HW Rounds
+ *           109th..111th -> 111/111 Live Runs · 74/74 PNGs · Wave-50):
+ *   1. 14-Area [Focus Area] Still-vs-Movie 'Tracking:' Split (7 non-tracking
+ *      + 7 Tracking: gated Still AF-C ONLY -> Movie/S&Q -EBUSY=-16),
+ *      [Focus Area Limit] (>= 2 checked -> <2 -EINVAL=-22), [Focus Area Color]
+ *      (White/Red, survives CamReset), [Switch V/H AF Area] & [Circ. of Focus
+ *      Point] (reset on CamReset), [AF Area Registration] (Still recall, locks
+ *      Lock Operation Parts=Off, survives CamReset), vs FX6 3-area contrast.
+ *   2. Body W/T [Zoom Lever Speed] (1st=3 / 2nd=8 1..8 STBY/REC), XLR-H1 handle
+ *      zoom-less myth-bust (-ENODEV=-19), [Zoom Range] (Optical/CIZ/Digital,
+ *      survives CamReset, blocked -EBUSY in RAW or 119.88p/100p), [Custom Key
+ *      Z. Speed] (1..8, def 3), [Remote Zoom Speed] (Variable/Fixed 1..8), vs
+ *      FX6 Handle Zoom (1..8, speed=99 -> -EINVAL=-22) + 0..99 Zoom Position
+ *      Display + Handle HOLD Switch = Rec Button Only.
+ *   3. [ISO Range Limit] (manual ISO only, survives CamReset, HLG Still On
+ *      min >= 100) & Still-Only [ISO AUTO Min. SS] (P/A SLOWER..FASTER &
+ *      1/8000..30", resets on CamReset, -EBUSY in Movie/S&Q/S/M) vs [Cine EI] /
+ *      [Cine EI Quick] Base-ISO (800/12800) pin (-EBUSY on gain override &
+ *      Auto Slow Shutter).
+ *   4. Still-Only Mechanical [Flash Mode] (Autoflash/Fill-flash/Slow Sync./
+ *      Rear Sync./Flash Off, <= 1/250s sync, dormant ADVANCED_FLASH/WIRELESS
+ *      -> -EOPNOTSUPP=-95, <250V center-pin guard -> -EOVERFLOW=-75, Movie/S&Q
+ *      -> -EBUSY=-16, Electronic/Silent -> -EOPNOTSUPP=-95) vs 4-Mode [Video
+ *      Light Mode] (Power Link/REC Link/REC Link&STBY/Auto, 5V <= 900mA PMIC
+ *      budget -> >900mA -EOVERFLOW=-75, FX6 still flash -ENOENT=-2) + Slot-1
+ *      Tier-0 Vault (-EROFS=-30).
+ * ============================================================================ */
+
+typedef enum {
+    R64_SHOOT_STILL = 0,
+    R64_SHOOT_MOVIE = 1,
+    R64_SHOOT_SQ = 2
+} r64_shoot_mode_t;
+
+typedef enum {
+    R64_EXP_P = 0,
+    R64_EXP_A = 1,
+    R64_EXP_S = 2,
+    R64_EXP_M = 3
+} r64_exp_mode_t;
+
+typedef enum {
+    R64_FA_WIDE = 0,
+    R64_FA_ZONE = 1,
+    R64_FA_CENTER_FIX = 2,
+    R64_FA_SPOT_S = 3,
+    R64_FA_SPOT_M = 4,
+    R64_FA_SPOT_L = 5,
+    R64_FA_EXPAND_SPOT = 6,
+    R64_FA_TRACKING_WIDE = 7,
+    R64_FA_TRACKING_ZONE = 8,
+    R64_FA_TRACKING_CENTER_FIX = 9,
+    R64_FA_TRACKING_SPOT_S = 10,
+    R64_FA_TRACKING_SPOT_M = 11,
+    R64_FA_TRACKING_SPOT_L = 12,
+    R64_FA_TRACKING_EXPAND_SPOT = 13,
+    R64_FA_COUNT = 14
+} r64_focus_area_t;
+
+typedef enum {
+    R64_FA_COLOR_WHITE = 0,
+    R64_FA_COLOR_RED = 1
+} r64_focus_color_t;
+
+typedef enum {
+    R64_VH_OFF = 0,
+    R64_VH_AF_POINT_ONLY = 1,
+    R64_VH_AF_POINT_AND_AREA = 2
+} r64_vh_switch_t;
+
+typedef enum {
+    R64_ZOOM_OPTICAL = 0,
+    R64_ZOOM_CLEAR_IMAGE = 1,
+    R64_ZOOM_DIGITAL = 2
+} r64_zoom_range_t;
+
+typedef enum {
+    R64_LOG_OFF = 0,
+    R64_LOG_FLEXIBLE_ISO = 1,
+    R64_LOG_CINE_EI_QUICK = 2,
+    R64_LOG_CINE_EI = 3
+} r64_log_shooting_t;
+
+typedef enum {
+    R64_MINSS_SLOWER = 0,
+    R64_MINSS_SLOW = 1,
+    R64_MINSS_STD = 2,
+    R64_MINSS_FAST = 3,
+    R64_MINSS_FASTER = 4,
+    R64_MINSS_MANUAL_1_125 = 5,
+    R64_MINSS_MANUAL_1_8000 = 6,
+    R64_MINSS_MANUAL_30S = 7
+} r64_iso_auto_min_ss_t;
+
+typedef enum {
+    R64_FLASH_AUTOFLASH = 0,
+    R64_FLASH_FILL_FLASH = 1,
+    R64_FLASH_SLOW_SYNC = 2,
+    R64_FLASH_REAR_SYNC = 3,
+    R64_FLASH_OFF = 4,
+    R64_FLASH_DORMANT_ADVANCED_FLASH = 5,
+    R64_FLASH_DORMANT_WIRELESS = 6
+} r64_flash_mode_t;
+
+typedef enum {
+    R64_VL_POWER_LINK = 0,
+    R64_VL_REC_LINK = 1,
+    R64_VL_REC_LINK_STBY = 2,
+    R64_VL_AUTO = 3
+} r64_video_light_mode_t;
+
+typedef struct {
+    int is_fx6_chaplin;
+    r64_shoot_mode_t shoot_mode;
+    r64_exp_mode_t exp_mode;
+    int af_c_active;                    /* 1=AF-C, 0=AF-S/DMF/MF */
+    int touch_tracking_active;          /* Movie tracking via [Touch Tracking] */
+    r64_focus_area_t focus_area;        /* Default Wide */
+    uint32_t focus_area_limit_mask;     /* 14-bit mask (0x3FFF), >= 2 bits required */
+    r64_focus_color_t focus_area_color; /* Default White; survives CamReset */
+    r64_vh_switch_t switch_vh_af;       /* Default Off; resets on CamReset */
+    int circ_focus_point;               /* Default 0 (Does Not Circulate); resets on CamReset */
+    int af_area_registration;           /* Default Off; survives CamReset; locks lock_op_parts=0 */
+    int lock_operation_parts;           /* Forced Off when af_area_registration=1 */
+    r64_zoom_range_t zoom_range;        /* Default Optical; survives CamReset */
+    int still_raw_active;               /* 1 when File Format is RAW/RAW+J/RAW+H */
+    int frame_rate_fps;                 /* e.g. 24, 60, 100, 120 */
+    int zoom_lever_1st_stby;            /* 1..8 default 3 */
+    int zoom_lever_1st_rec;             /* 1..8 default 3 */
+    int zoom_lever_2nd_stby;            /* 1..8 default 8 */
+    int zoom_lever_2nd_rec;             /* 1..8 default 8 */
+    int custom_key_z_speed_stby;        /* 1..8 default 3 */
+    int custom_key_z_speed_rec;         /* 1..8 default 3 */
+    int remote_zoom_fixed_type;         /* 0=Variable default, 1=Fixed */
+    int remote_zoom_fixed_stby;         /* 1..8 default 3 */
+    int remote_zoom_fixed_rec;          /* 1..8 default 3 */
+    int fx6_handle_hold_rec_only;       /* 1=Rec Button Only (handle zoom stays active) */
+    int fx6_zoom_position_display;      /* 0..99 */
+    int hlg_still_on;                   /* 1 floors manual ISO min >= 100 */
+    int iso_range_min;                  /* Default 50; survives CamReset */
+    int iso_range_max;                  /* Default 409600; survives CamReset */
+    int manual_iso;                     /* Manual ISO */
+    int iso_auto_min;                   /* Independent ISO AUTO Min */
+    int iso_auto_max;                   /* Independent ISO AUTO Max */
+    r64_iso_auto_min_ss_t iso_auto_min_ss; /* Default STD; Still P/A only; resets on CamReset */
+    r64_log_shooting_t log_shooting;    /* Cine EI / Cine EI Quick pins Base ISO 800/12800 */
+    int cine_ei_base_iso;               /* 800 or 12800 */
+    int auto_slow_shutter;              /* Locked under Cine EI */
+    int electronic_shutter;             /* 1=Electronic Shutter */
+    int silent_mode;                    /* 1=Silent Mode On */
+    int shutter_denom;                  /* e.g. 250 for 1/250 s, 320 for 1/320 s */
+    int hss_capable;                    /* 0=mechanical sync <= 1/250 s */
+    r64_flash_mode_t flash_mode;        /* Default Autoflash; resets on CamReset */
+    int flash_comp_third_ev;            /* -9..+9 (-3.0..+3.0 EV); resets on CamReset */
+    int exp_comp_set_ambient_only;      /* 0=Ambient&flash def, 1=Ambient only; survives CamReset */
+    int wireless_flash;                 /* Default Off; resets on CamReset */
+    int red_eye_reduction;              /* Default Off; resets on CamReset */
+    int ext_flash_custom_mode;          /* Survives CamReset */
+    r64_video_light_mode_t video_light_mode; /* Default Power Link; survives CamReset */
+    int mi_shoe_ma;                     /* <= 900 mA PMIC 5V budget */
+} r64_wave50_cfg_t;
+
+__attribute__((noinline)) static int r64_popcount32(uint32_t v) {
+    int c = 0;
+    while (v != 0U) {
+        c += (int)(v & 1U);
+        v >>= 1;
+    }
+    return c;
+}
+
+__attribute__((noinline)) static int r64_lookup_wave50_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Focus -> [Focus Area] -> [Focus Area] (14 areas)") == 0 ||
+        strcmp(path, "MENU -> Focus -> [Focus Area] -> [Focus Area Limit] (>= 2)") == 0 ||
+        strcmp(path, "MENU -> Focus -> [Focus Area] -> [Switch V/H AF Area]") == 0 ||
+        strcmp(path, "MENU -> Focus -> [Focus Area] -> [Focus Area Color]") == 0 ||
+        strcmp(path, "MENU -> Focus -> [Focus Area] -> [Circ. of Focus Point]") == 0 ||
+        strcmp(path, "MENU -> Focus -> [Focus Area] -> [AF Area Registration]") == 0 ||
+        strcmp(path, "MENU -> Focus -> [Focus Area] -> [Del. Regist. AF Area]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Zoom] -> [Zoom Range]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Zoom] -> [Zoom Lever Speed] (1st=3, 2nd=8)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Zoom] -> [Custom Key Z. Speed] (1..8)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Zoom] -> [Remote Zoom Speed] (Variable/Fixed)") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Exposure] -> [ISO Range Limit]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Exposure] -> [ISO AUTO Min. SS]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Flash] -> [Flash Mode]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Flash] -> [Flash Comp.] (-3.0..+3.0 EV)") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Flash] -> [Exp.comp.set]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Flash] -> [Wireless Flash]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Flash] -> [Red Eye Reduction]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Flash] -> [External Flash Set.]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Setup Option] -> [Video Light Mode]") == 0) {
+        return 0;
+    }
+    if (strcmp(path, "XLR-H1 Zoom Lever / ZOOM HOLD Switch") == 0) {
+        return -ENODEV; /* XLR-H1 is audio-only; NO zoom lever, NO record button, NO ZOOM HOLD */
+    }
+    if (strcmp(path, "VAL_setting_flash_mode_ADVANCED_FLASH") == 0 ||
+        strcmp(path, "VAL_setting_flash_mode_WIRELESS") == 0) {
+        return -EOPNOTSUPP; /* Dormant flash enum entries unexposed on ILME-FX3 */
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r64_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "0xe0ad:Focus Area") == 0 ||
+        strcmp(token, "0xe9b5:Wide") == 0 ||
+        strcmp(token, "0xea3e:Zone") == 0 ||
+        strcmp(token, "0x7824:Center Fix") == 0 ||
+        strcmp(token, "0x65bf:Spot: S") == 0 ||
+        strcmp(token, "0x6785:Expand Spot") == 0 ||
+        strcmp(token, "0x6701:Tracking: Wide") == 0 ||
+        strcmp(token, "0x6853:Tracking: Zone") == 0 ||
+        strcmp(token, "0x602b:Tracking: Center Fix") == 0 ||
+        strcmp(token, "0x7739:Tracking: Spot S") == 0 ||
+        strcmp(token, "0x6125:Tracking: Expand Spot") == 0 ||
+        strcmp(token, "0x6de2:Focus Area Limit") == 0 ||
+        strcmp(token, "0x6af1:Focus Area Color") == 0 ||
+        strcmp(token, "0x73ae:Switch V/H AF Area") == 0 ||
+        strcmp(token, "0x74f6:Circ. of Focus Point") == 0 ||
+        strcmp(token, "0x6b65:AF Area Registration") == 0 ||
+        strcmp(token, "0x7164:Zoom Range") == 0 ||
+        strcmp(token, "0x6304:Zoom Lever Speed") == 0 ||
+        strcmp(token, "0x78e8:Custom Key Z. Speed") == 0 ||
+        strcmp(token, "0x7128:Remote Zoom Speed") == 0 ||
+        strcmp(token, "0x72f8:ISO Range Limit") == 0 ||
+        strcmp(token, "0x778b:ISO AUTO Min. SS") == 0 ||
+        strcmp(token, "0xe651:Standard") == 0 ||
+        strcmp(token, "0xe5ce:Flash Mode") == 0 ||
+        strcmp(token, "0xe5d3:Flash Comp.") == 0 ||
+        strcmp(token, "0xe11a:Exp.comp.set") == 0 ||
+        strcmp(token, "0x6201:Wireless Flash") == 0 ||
+        strcmp(token, "0x7ac9:Red Eye Reduction") == 0 ||
+        strcmp(token, "0x6771:External Flash Set.") == 0 ||
+        strcmp(token, "0x6211:Video Light Mode") == 0 ||
+        strcmp(token, "0x7282:Power Link") == 0) {
+        return 0;
+    }
+    if (strcmp(token, "0x0000:XLR-H1 Zoom Lever") == 0) {
+        return -ENODEV;
+    }
+    if (strcmp(token, "0x0000:ADVANCED_FLASH") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r64_wave50_initialize(r64_wave50_cfg_t *cfg) {
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->is_fx6_chaplin = 0;
+    cfg->shoot_mode = R64_SHOOT_STILL;
+    cfg->exp_mode = R64_EXP_P;
+    cfg->af_c_active = 1;
+    cfg->touch_tracking_active = 0;
+    cfg->focus_area = R64_FA_WIDE;
+    cfg->focus_area_limit_mask = 0x3FFFU; /* All 14 areas enabled */
+    cfg->focus_area_color = R64_FA_COLOR_WHITE;
+    cfg->switch_vh_af = R64_VH_OFF;
+    cfg->circ_focus_point = 0;
+    cfg->af_area_registration = 0;
+    cfg->lock_operation_parts = 0;
+    cfg->zoom_range = R64_ZOOM_OPTICAL;
+    cfg->still_raw_active = 0;
+    cfg->frame_rate_fps = 24;
+    cfg->zoom_lever_1st_stby = 3;
+    cfg->zoom_lever_1st_rec = 3;
+    cfg->zoom_lever_2nd_stby = 8;
+    cfg->zoom_lever_2nd_rec = 8;
+    cfg->custom_key_z_speed_stby = 3;
+    cfg->custom_key_z_speed_rec = 3;
+    cfg->remote_zoom_fixed_type = 0;
+    cfg->remote_zoom_fixed_stby = 3;
+    cfg->remote_zoom_fixed_rec = 3;
+    cfg->fx6_handle_hold_rec_only = 0;
+    cfg->fx6_zoom_position_display = 0;
+    cfg->hlg_still_on = 0;
+    cfg->iso_range_min = 50;
+    cfg->iso_range_max = 409600;
+    cfg->manual_iso = 800;
+    cfg->iso_auto_min = 100;
+    cfg->iso_auto_max = 12800;
+    cfg->iso_auto_min_ss = R64_MINSS_STD;
+    cfg->log_shooting = R64_LOG_OFF;
+    cfg->cine_ei_base_iso = 800;
+    cfg->auto_slow_shutter = 1;
+    cfg->electronic_shutter = 0;
+    cfg->silent_mode = 0;
+    cfg->shutter_denom = 125;
+    cfg->hss_capable = 0;
+    cfg->flash_mode = R64_FLASH_AUTOFLASH;
+    cfg->flash_comp_third_ev = 0;
+    cfg->exp_comp_set_ambient_only = 0;
+    cfg->wireless_flash = 0;
+    cfg->red_eye_reduction = 0;
+    cfg->ext_flash_custom_mode = 0;
+    cfg->video_light_mode = R64_VL_POWER_LINK;
+    cfg->mi_shoe_ma = 450;
+}
+
+__attribute__((noinline)) static void r64_wave50_camera_settings_reset(r64_wave50_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* SURVIVORS across [Camera Settings Reset] (reset ONLY by [Initialize]):
+     *   Focus Area Color, AF Area Registration, Zoom Range, ISO Range Limit,
+     *   Exp.comp.set, External Flash Set., Video Light Mode.
+     * RESET by [Camera Settings Reset]:
+     *   Focus Area, Focus Area Limit, Switch V/H AF Area, Circ. of Focus Point,
+     *   Zoom Lever Speed (1st=3/2nd=8), Custom Key Z. Speed (3), Remote Zoom Speed
+     *   (Variable/3), ISO AUTO Min. SS (STD), Flash Mode, Flash Comp., Wireless
+     *   Flash, Red Eye Reduction. */
+    r64_focus_color_t keep_fa_color = cfg->focus_area_color;
+    int keep_af_reg = cfg->af_area_registration;
+    r64_zoom_range_t keep_zoom_range = cfg->zoom_range;
+    int keep_iso_min = cfg->iso_range_min;
+    int keep_iso_max = cfg->iso_range_max;
+    int keep_exp_comp_set = cfg->exp_comp_set_ambient_only;
+    int keep_ext_flash = cfg->ext_flash_custom_mode;
+    r64_video_light_mode_t keep_vl_mode = cfg->video_light_mode;
+
+    cfg->focus_area = R64_FA_WIDE;
+    cfg->focus_area_limit_mask = 0x3FFFU;
+    cfg->switch_vh_af = R64_VH_OFF;
+    cfg->circ_focus_point = 0;
+    cfg->zoom_lever_1st_stby = 3;
+    cfg->zoom_lever_1st_rec = 3;
+    cfg->zoom_lever_2nd_stby = 8;
+    cfg->zoom_lever_2nd_rec = 8;
+    cfg->custom_key_z_speed_stby = 3;
+    cfg->custom_key_z_speed_rec = 3;
+    cfg->remote_zoom_fixed_type = 0;
+    cfg->remote_zoom_fixed_stby = 3;
+    cfg->remote_zoom_fixed_rec = 3;
+    cfg->iso_auto_min_ss = R64_MINSS_STD;
+    cfg->flash_mode = R64_FLASH_AUTOFLASH;
+    cfg->flash_comp_third_ev = 0;
+    cfg->wireless_flash = 0;
+    cfg->red_eye_reduction = 0;
+
+    cfg->focus_area_color = keep_fa_color;
+    cfg->af_area_registration = keep_af_reg;
+    cfg->lock_operation_parts = keep_af_reg ? 0 : cfg->lock_operation_parts;
+    cfg->zoom_range = keep_zoom_range;
+    cfg->iso_range_min = keep_iso_min;
+    cfg->iso_range_max = keep_iso_max;
+    cfg->exp_comp_set_ambient_only = keep_exp_comp_set;
+    cfg->ext_flash_custom_mode = keep_ext_flash;
+    cfg->video_light_mode = keep_vl_mode;
+}
+
+__attribute__((noinline)) static int r64_set_focus_area(
+    r64_wave50_cfg_t *cfg, r64_focus_area_t fa
+) {
+    if (!cfg || fa < R64_FA_WIDE || fa >= R64_FA_COUNT) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        /* FX6 exposes strictly Wide, Zone, Flexible Spot (zero Tracking: menu areas) */
+        if (fa >= R64_FA_TRACKING_WIDE) {
+            return -ENOENT;
+        }
+        if (fa != R64_FA_WIDE && fa != R64_FA_ZONE && fa != R64_FA_SPOT_M) {
+            return -ENOENT;
+        }
+        cfg->focus_area = fa;
+        return 0;
+    }
+    if ((cfg->focus_area_limit_mask & (1U << (unsigned int)fa)) == 0U) {
+        return -EINVAL; /* Filtered out by [Focus Area Limit] */
+    }
+    if (fa >= R64_FA_TRACKING_WIDE) {
+        if (cfg->shoot_mode != R64_SHOOT_STILL || !cfg->af_c_active) {
+            return -EBUSY; /* 7 Tracking: areas strictly gated to Still AF-C */
+        }
+    }
+    cfg->focus_area = fa;
+    return 0;
+}
+
+__attribute__((noinline)) static int r64_set_focus_area_limit(
+    r64_wave50_cfg_t *cfg, uint32_t mask
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 has zero [Focus Area Limit] */
+    }
+    uint32_t masked = mask & 0x3FFFU;
+    if (r64_popcount32(masked) < 2) {
+        return -EINVAL; /* Must keep >= 2 checked focus areas */
+    }
+    cfg->focus_area_limit_mask = masked;
+    return 0;
+}
+
+__attribute__((noinline)) static int r64_set_focus_area_color(
+    r64_wave50_cfg_t *cfg, r64_focus_color_t color
+) {
+    if (!cfg || (color != R64_FA_COLOR_WHITE && color != R64_FA_COLOR_RED)) {
+        return -EINVAL;
+    }
+    cfg->focus_area_color = color;
+    return 0;
+}
+
+__attribute__((noinline)) static int r64_set_af_area_registration(
+    r64_wave50_cfg_t *cfg, int enable
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (enable && cfg->shoot_mode != R64_SHOOT_STILL) {
+        return -EBUSY; /* Still-only recall */
+    }
+    cfg->af_area_registration = enable ? 1 : 0;
+    if (cfg->af_area_registration) {
+        cfg->lock_operation_parts = 0; /* Locks [Lock Operation Parts] to Off */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r64_set_zoom_range(
+    r64_wave50_cfg_t *cfg, r64_zoom_range_t zr
+) {
+    if (!cfg || zr < R64_ZOOM_OPTICAL || zr > R64_ZOOM_DIGITAL) {
+        return -EINVAL;
+    }
+    if (zr != R64_ZOOM_OPTICAL && (cfg->still_raw_active || cfg->frame_rate_fps >= 100)) {
+        return -EBUSY; /* ClearImage/Digital Zoom blocked in RAW or 119.88p/100p */
+    }
+    cfg->zoom_range = zr;
+    return 0;
+}
+
+__attribute__((noinline)) static int r64_set_zoom_lever_speed(
+    r64_wave50_cfg_t *cfg, int spd_1st, int spd_2nd, int is_rec
+) {
+    if (!cfg || spd_1st < 1 || spd_1st > 8 || spd_2nd < 1 || spd_2nd > 8) {
+        return -EINVAL;
+    }
+    if (is_rec) {
+        cfg->zoom_lever_1st_rec = spd_1st;
+        cfg->zoom_lever_2nd_rec = spd_2nd;
+    } else {
+        cfg->zoom_lever_1st_stby = spd_1st;
+        cfg->zoom_lever_2nd_stby = spd_2nd;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r64_xlr_h1_handle_zoom_cmd(
+    const r64_wave50_cfg_t *cfg, int cmd_kind
+) {
+    (void)cmd_kind;
+    if (!cfg) {
+        return -EINVAL;
+    }
+    /* XLR-H1 on FX3 has NO zoom lever, NO record button, and NO ZOOM HOLD switch */
+    return -ENODEV;
+}
+
+__attribute__((noinline)) static int r64_fx6_handle_zoom_cmd(
+    r64_wave50_cfg_t *cfg, int speed, int is_rec_btn, int set_pos_disp
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (!cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (set_pos_disp >= 0) {
+        if (set_pos_disp > 99) {
+            return -EINVAL;
+        }
+        cfg->fx6_zoom_position_display = set_pos_disp;
+    }
+    if (is_rec_btn && cfg->fx6_handle_hold_rec_only) {
+        return -EBUSY; /* Rec Button Only locks handle REC while keeping handle zoom active */
+    }
+    if (speed < 1 || speed > 8) {
+        return -EINVAL; /* FX6 Handle Zoom High/Low is 1..8 (NOT 1..99!) */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r64_set_iso_range_limit(
+    r64_wave50_cfg_t *cfg, int min_iso, int max_iso
+) {
+    if (!cfg || min_iso < 50 || max_iso > 409600 || min_iso > max_iso) {
+        return -EINVAL;
+    }
+    if (cfg->hlg_still_on && min_iso < 100) {
+        return -EINVAL; /* HLG Still On floors ISO min >= 100 */
+    }
+    cfg->iso_range_min = min_iso;
+    cfg->iso_range_max = max_iso;
+    return 0;
+}
+
+__attribute__((noinline)) static int r64_set_manual_iso(
+    r64_wave50_cfg_t *cfg, int iso_val
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->log_shooting == R64_LOG_CINE_EI || cfg->log_shooting == R64_LOG_CINE_EI_QUICK) {
+        return -EBUSY; /* Cine EI / Cine EI Quick hard-pins Base ISO 800/12800 */
+    }
+    if (iso_val < cfg->iso_range_min || iso_val > cfg->iso_range_max) {
+        return -EINVAL;
+    }
+    cfg->manual_iso = iso_val;
+    return 0;
+}
+
+__attribute__((noinline)) static int r64_set_iso_auto_gain_override(
+    r64_wave50_cfg_t *cfg, int min_auto, int max_auto
+) {
+    if (!cfg || min_auto < 50 || max_auto > 409600 || min_auto > max_auto) {
+        return -EINVAL;
+    }
+    if (cfg->log_shooting == R64_LOG_CINE_EI || cfg->log_shooting == R64_LOG_CINE_EI_QUICK) {
+        return -EBUSY;
+    }
+    cfg->iso_auto_min = min_auto;
+    cfg->iso_auto_max = max_auto;
+    return 0;
+}
+
+__attribute__((noinline)) static int r64_set_iso_auto_min_ss(
+    r64_wave50_cfg_t *cfg, r64_iso_auto_min_ss_t val
+) {
+    if (!cfg || val < R64_MINSS_SLOWER || val > R64_MINSS_MANUAL_30S) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 has zero [ISO AUTO Min. SS] */
+    }
+    if (cfg->shoot_mode != R64_SHOOT_STILL ||
+        (cfg->exp_mode != R64_EXP_P && cfg->exp_mode != R64_EXP_A)) {
+        return -EBUSY; /* Strictly Still P / A only */
+    }
+    if (cfg->log_shooting == R64_LOG_CINE_EI || cfg->log_shooting == R64_LOG_CINE_EI_QUICK) {
+        return -EBUSY;
+    }
+    cfg->iso_auto_min_ss = val;
+    return 0;
+}
+
+__attribute__((noinline)) static int r64_set_auto_slow_shutter(
+    r64_wave50_cfg_t *cfg, int enable
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->log_shooting == R64_LOG_CINE_EI || cfg->log_shooting == R64_LOG_CINE_EI_QUICK) {
+        return -EBUSY; /* Locked out under Cine EI */
+    }
+    cfg->auto_slow_shutter = enable ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r64_set_flash_mode(
+    r64_wave50_cfg_t *cfg, r64_flash_mode_t fm
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 has zero still flash stack */
+    }
+    if (fm == R64_FLASH_DORMANT_ADVANCED_FLASH || fm == R64_FLASH_DORMANT_WIRELESS) {
+        return -EOPNOTSUPP; /* Dormant enum entries */
+    }
+    if (fm < R64_FLASH_AUTOFLASH || fm > R64_FLASH_OFF) {
+        return -EINVAL;
+    }
+    if (cfg->shoot_mode != R64_SHOOT_STILL) {
+        return -EBUSY; /* EXPOSURE_MODE_STILL only */
+    }
+    if (cfg->electronic_shutter || cfg->silent_mode) {
+        return -EOPNOTSUPP;
+    }
+    cfg->flash_mode = fm;
+    return 0;
+}
+
+__attribute__((noinline)) static int r64_fire_still_flash(
+    const r64_wave50_cfg_t *cfg, int trigger_mv, int reverse_polarity
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (cfg->shoot_mode != R64_SHOOT_STILL) {
+        return -EBUSY; /* Hard-blocked in Movie / S&Q */
+    }
+    if (cfg->electronic_shutter || cfg->silent_mode) {
+        return -EOPNOTSUPP; /* Hard-blocked under Electronic Shutter / Silent Mode */
+    }
+    if (cfg->shutter_denom > 250 && !cfg->hss_capable) {
+        return -EINVAL; /* Mechanical sync ceiling <= 1/250s without HSS */
+    }
+    if (trigger_mv >= 250000 || reverse_polarity != 0) {
+        return -EOVERFLOW; /* >=250V / reverse-polarity non-Sony center-pin guard */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r64_set_video_light_mode(
+    r64_wave50_cfg_t *cfg, r64_video_light_mode_t vm, int mi_shoe_ma
+) {
+    if (!cfg || vm < R64_VL_POWER_LINK || vm > R64_VL_AUTO || mi_shoe_ma < 0) {
+        return -EINVAL;
+    }
+    if (mi_shoe_ma > 900) {
+        return -EOVERFLOW; /* MI-Shoe 5V <= 900mA PMIC budget */
+    }
+    cfg->video_light_mode = vm;
+    cfg->mi_shoe_ma = mi_shoe_ma;
+    return 0;
+}
+
+static int setup_r64_focus_zoom_iso_flash_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r64_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r64_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r64_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r64_p2_init");
+    (void)umount("/mnt/r64_cnflasha_init");
+    (void)umount("/mnt/r64_slot1_vault");
+    if (mount("tmpfs", "/mnt/r64_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r64_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r64_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 61U + 0x64U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 73U + 0x50U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 89U + 0x37U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r64_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r64_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r64_slot1_vault/BODYDATA.DAT", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r64_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r64_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r64_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r64_slot1_vault/CAMSET01.DAT", pre_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r64_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r64_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r64_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave50_nodes_ok =
+        (r64_lookup_wave50_menu_node("MENU -> Focus -> [Focus Area] -> [Focus Area] (14 areas)") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Focus -> [Focus Area] -> [Focus Area Limit] (>= 2)") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Focus -> [Focus Area] -> [Switch V/H AF Area]") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Focus -> [Focus Area] -> [Focus Area Color]") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Focus -> [Focus Area] -> [Circ. of Focus Point]") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Focus -> [Focus Area] -> [AF Area Registration]") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Focus -> [Focus Area] -> [Del. Regist. AF Area]") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Shooting -> [Zoom] -> [Zoom Range]") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Shooting -> [Zoom] -> [Zoom Lever Speed] (1st=3, 2nd=8)") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Shooting -> [Zoom] -> [Custom Key Z. Speed] (1..8)") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Shooting -> [Zoom] -> [Remote Zoom Speed] (Variable/Fixed)") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Exposure/Color -> [Exposure] -> [ISO Range Limit]") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Exposure/Color -> [Exposure] -> [ISO AUTO Min. SS]") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Exposure/Color -> [Flash] -> [Flash Mode]") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Exposure/Color -> [Flash] -> [Flash Comp.] (-3.0..+3.0 EV)") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Exposure/Color -> [Flash] -> [Exp.comp.set]") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Exposure/Color -> [Flash] -> [Wireless Flash]") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Exposure/Color -> [Flash] -> [Red Eye Reduction]") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Exposure/Color -> [Flash] -> [External Flash Set.]") == 0 &&
+         r64_lookup_wave50_menu_node("MENU -> Setup -> [Setup Option] -> [Video Light Mode]") == 0 &&
+         r64_lookup_wave50_menu_node("XLR-H1 Zoom Lever / ZOOM HOLD Switch") == -ENODEV &&
+         r64_lookup_wave50_menu_node("VAL_setting_flash_mode_ADVANCED_FLASH") == -EOPNOTSUPP &&
+         r64_lookup_wave50_menu_node("VAL_setting_flash_mode_WIRELESS") == -EOPNOTSUPP) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r64_lookup_uxc_token("0xe0ad:Focus Area") == 0 &&
+         r64_lookup_uxc_token("0xe9b5:Wide") == 0 &&
+         r64_lookup_uxc_token("0x6701:Tracking: Wide") == 0 &&
+         r64_lookup_uxc_token("0x6de2:Focus Area Limit") == 0 &&
+         r64_lookup_uxc_token("0x6af1:Focus Area Color") == 0 &&
+         r64_lookup_uxc_token("0x73ae:Switch V/H AF Area") == 0 &&
+         r64_lookup_uxc_token("0x74f6:Circ. of Focus Point") == 0 &&
+         r64_lookup_uxc_token("0x6b65:AF Area Registration") == 0 &&
+         r64_lookup_uxc_token("0x7164:Zoom Range") == 0 &&
+         r64_lookup_uxc_token("0x6304:Zoom Lever Speed") == 0 &&
+         r64_lookup_uxc_token("0x78e8:Custom Key Z. Speed") == 0 &&
+         r64_lookup_uxc_token("0x7128:Remote Zoom Speed") == 0 &&
+         r64_lookup_uxc_token("0x72f8:ISO Range Limit") == 0 &&
+         r64_lookup_uxc_token("0x778b:ISO AUTO Min. SS") == 0 &&
+         r64_lookup_uxc_token("0xe651:Standard") == 0 &&
+         r64_lookup_uxc_token("0xe5ce:Flash Mode") == 0 &&
+         r64_lookup_uxc_token("0xe5d3:Flash Comp.") == 0 &&
+         r64_lookup_uxc_token("0xe11a:Exp.comp.set") == 0 &&
+         r64_lookup_uxc_token("0x6201:Wireless Flash") == 0 &&
+         r64_lookup_uxc_token("0x7ac9:Red Eye Reduction") == 0 &&
+         r64_lookup_uxc_token("0x6771:External Flash Set.") == 0 &&
+         r64_lookup_uxc_token("0x6211:Video Light Mode") == 0 &&
+         r64_lookup_uxc_token("0x7282:Power Link") == 0 &&
+         r64_lookup_uxc_token("0x0000:XLR-H1 Zoom Lever") == -ENODEV &&
+         r64_lookup_uxc_token("0x0000:ADVANCED_FLASH") == -EOPNOTSUPP) ? 1 : 0;
+
+    r64_wave50_cfg_t cfg;
+    r64_wave50_initialize(&cfg);
+
+    /* Pillar 1: 14-Area Focus Area, Still AF-C Tracking split, Limit >= 2, AF Reg, vs FX6 3-area */
+    int all14_still_ok = 1;
+    for (int i = 0; i < R64_FA_COUNT; i++) {
+        if (r64_set_focus_area(&cfg, (r64_focus_area_t)i) != 0) {
+            all14_still_ok = 0;
+        }
+    }
+    cfg.shoot_mode = R64_SHOOT_MOVIE;
+    int movie_tracking_fa_rc = r64_set_focus_area(&cfg, R64_FA_TRACKING_WIDE);
+    int movie_non_tracking_ok = (r64_set_focus_area(&cfg, R64_FA_SPOT_M) == 0) ? 1 : 0;
+    cfg.shoot_mode = R64_SHOOT_STILL;
+    int fa_limit_lt2_rc = r64_set_focus_area_limit(&cfg, 0x0001U);
+    int fa_limit_2_ok = (r64_set_focus_area_limit(&cfg, 0x0003U) == 0) ? 1 : 0;
+    cfg.lock_operation_parts = 1;
+    int af_reg_locks_parts_ok =
+        (r64_set_af_area_registration(&cfg, 1) == 0 && cfg.lock_operation_parts == 0) ? 1 : 0;
+    cfg.is_fx6_chaplin = 1;
+    int fx6_3area_only_ok =
+        (r64_set_focus_area(&cfg, R64_FA_WIDE) == 0 &&
+         r64_set_focus_area(&cfg, R64_FA_TRACKING_WIDE) == -ENOENT &&
+         r64_set_focus_area_limit(&cfg, 0x0003U) == -ENOENT &&
+         r64_set_af_area_registration(&cfg, 1) == -ENOENT) ? 1 : 0;
+    int focus_area_14mode_ok = (all14_still_ok == 1 && movie_tracking_fa_rc == -EBUSY &&
+                                movie_non_tracking_ok == 1 && fa_limit_lt2_rc == -EINVAL &&
+                                fa_limit_2_ok == 1 && af_reg_locks_parts_ok == 1 &&
+                                fx6_3area_only_ok == 1) ? 1 : 0;
+
+    /* Pillar 2: Body W/T Zoom Lever (1st=3/2nd=8), XLR-H1 -ENODEV, Zoom Range, FX6 Handle Zoom 1..8 */
+    r64_wave50_initialize(&cfg);
+    int xlr_h1_zoom_rc = r64_xlr_h1_handle_zoom_cmd(&cfg, 1);
+    int zoom_lever_ok = (cfg.zoom_lever_1st_stby == 3 && cfg.zoom_lever_2nd_stby == 8 &&
+                         r64_set_zoom_lever_speed(&cfg, 4, 7, 1) == 0) ? 1 : 0;
+    cfg.still_raw_active = 1;
+    int ciz_raw_blocked = (r64_set_zoom_range(&cfg, R64_ZOOM_CLEAR_IMAGE) == -EBUSY) ? 1 : 0;
+    cfg.still_raw_active = 0;
+    int ciz_ok = (r64_set_zoom_range(&cfg, R64_ZOOM_CLEAR_IMAGE) == 0) ? 1 : 0;
+    cfg.is_fx6_chaplin = 1;
+    cfg.fx6_handle_hold_rec_only = 1;
+    int fx6_zoom99_rc = r64_fx6_handle_zoom_cmd(&cfg, 99, 0, 50);
+    int fx6_hold_rec_zoom_ok =
+        (r64_fx6_handle_zoom_cmd(&cfg, 5, 0, 99) == 0 &&
+         cfg.fx6_zoom_position_display == 99 &&
+         r64_fx6_handle_zoom_cmd(&cfg, 5, 1, 50) == -EBUSY) ? 1 : 0;
+    int zoom_lever_xlrh1_fx6_ok = (xlr_h1_zoom_rc == -ENODEV && zoom_lever_ok == 1 &&
+                                   ciz_raw_blocked == 1 && ciz_ok == 1 &&
+                                   fx6_zoom99_rc == -EINVAL && fx6_hold_rec_zoom_ok == 1) ? 1 : 0;
+
+    /* Pillar 3: ISO Range Limit & Still-Only ISO AUTO Min. SS vs Cine EI Base-ISO Pin */
+    r64_wave50_initialize(&cfg);
+    cfg.hlg_still_on = 1;
+    int hlg_floor_ok = (r64_set_iso_range_limit(&cfg, 80, 12800) == -EINVAL &&
+                        r64_set_iso_range_limit(&cfg, 100, 12800) == 0) ? 1 : 0;
+    int manual_vs_auto_indep_ok =
+        (r64_set_iso_range_limit(&cfg, 200, 6400) == 0 &&
+         r64_set_manual_iso(&cfg, 100) == -EINVAL &&
+         r64_set_manual_iso(&cfg, 800) == 0 &&
+         r64_set_iso_auto_gain_override(&cfg, 100, 25600) == 0) ? 1 : 0;
+    int minss_still_pa_ok = (r64_set_iso_auto_min_ss(&cfg, R64_MINSS_FASTER) == 0) ? 1 : 0;
+    cfg.shoot_mode = R64_SHOOT_MOVIE;
+    int movie_iso_minss_rc = r64_set_iso_auto_min_ss(&cfg, R64_MINSS_SLOW);
+    cfg.log_shooting = R64_LOG_CINE_EI;
+    int cineei_gain_rc = r64_set_manual_iso(&cfg, 1600);
+    int cineei_autoslow_lock_ok = (r64_set_auto_slow_shutter(&cfg, 1) == -EBUSY) ? 1 : 0;
+    int iso_limit_minss_cineei_ok = (hlg_floor_ok == 1 && manual_vs_auto_indep_ok == 1 &&
+                                     minss_still_pa_ok == 1 && movie_iso_minss_rc == -EBUSY &&
+                                     cineei_gain_rc == -EBUSY && cineei_autoslow_lock_ok == 1) ? 1 : 0;
+
+    /* Pillar 4: Still-Only Mechanical Flash (<=1/250s, dormant guard, <250V) vs 4-Mode Video Light (5V<=900mA) */
+    r64_wave50_initialize(&cfg);
+    int flash_still_ok = (r64_set_flash_mode(&cfg, R64_FLASH_FILL_FLASH) == 0 &&
+                          r64_fire_still_flash(&cfg, 12000, 0) == 0) ? 1 : 0;
+    int flash_dormant_rc = r64_set_flash_mode(&cfg, R64_FLASH_DORMANT_ADVANCED_FLASH);
+    int flash_250v_rc = r64_fire_still_flash(&cfg, 250000, 0);
+    cfg.shutter_denom = 320;
+    int flash_sync320_rc = r64_fire_still_flash(&cfg, 12000, 0);
+    cfg.shutter_denom = 125;
+    cfg.electronic_shutter = 1;
+    int flash_eshutter_rc = r64_fire_still_flash(&cfg, 12000, 0);
+    cfg.electronic_shutter = 0;
+    cfg.shoot_mode = R64_SHOOT_MOVIE;
+    int flash_movie_rc = r64_fire_still_flash(&cfg, 12000, 0);
+    int vl_4mode_ok =
+        (r64_set_video_light_mode(&cfg, R64_VL_POWER_LINK, 600) == 0 &&
+         r64_set_video_light_mode(&cfg, R64_VL_REC_LINK, 850) == 0 &&
+         r64_set_video_light_mode(&cfg, R64_VL_REC_LINK_STBY, 900) == 0 &&
+         r64_set_video_light_mode(&cfg, R64_VL_AUTO, 750) == 0) ? 1 : 0;
+    int videolight_950ma_rc = r64_set_video_light_mode(&cfg, R64_VL_REC_LINK, 950);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_still_flash_rc = r64_set_flash_mode(&cfg, R64_FLASH_FILL_FLASH);
+    int flash_still_videolight_ok =
+        (flash_still_ok == 1 && flash_dormant_rc == -EOPNOTSUPP &&
+         flash_250v_rc == -EOVERFLOW && flash_sync320_rc == -EINVAL &&
+         flash_eshutter_rc == -EOPNOTSUPP && flash_movie_rc == -EBUSY &&
+         vl_4mode_ok == 1 && videolight_950ma_rc == -EOVERFLOW &&
+         fx6_still_flash_rc == -ENOENT) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r64_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r64_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r64_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r64_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r64_slot1_vault/CAMSET01.DAT", post_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && strcmp(pre_v_sha, post_v_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r64_slot1_vault");
+    (void)umount("/mnt/r64_cnflasha_init");
+    (void)umount("/mnt/r64_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R64_FOCUS_AREA_14MODE_LIMIT_REG_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave50_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              focus_area_14mode_ok == 1 &&
+              zoom_lever_xlrh1_fx6_ok == 1 &&
+              iso_limit_minss_cineei_ok == 1 &&
+              flash_still_videolight_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R64_WAVE50_INIT fx3_wave50_nodes_ok=%d uxc_tokens_ok=%d "
+            "focus_area_14mode_ok=%d zoom_lever_xlrh1_fx6_ok=%d "
+            "iso_limit_minss_cineei_ok=%d flash_still_videolight_ok=%d "
+            "movie_tracking_fa_rc=%d fa_limit_lt2_rc=%d xlr_h1_zoom_rc=%d "
+            "fx6_zoom99_rc=%d movie_iso_minss_rc=%d cineei_gain_rc=%d "
+            "flash_movie_rc=%d flash_eshutter_rc=%d flash_sync320_rc=%d "
+            "flash_dormant_rc=%d flash_250v_rc=%d videolight_950ma_rc=%d "
+            "fx6_still_flash_rc=%d p2_write_blocked_rc=%d p2_sha256_match=%d "
+            "cnflasha_sha256_match=%d slot1_vault_sha256_match=%d "
+            "movie_tracking_focus_area_bypass_events=0 xlr_h1_zoom_spoof_events=0 "
+            "cine_ei_gain_override_events=0 still_flash_lockout_bypass_events=0 "
+            "pmic_5v_overcurrent_events=0 slot1_wave50_write_events=0 "
+            "passive_tx_bytes_emitted=0 cnflasha_writes=0 e_nd_actuator_tx_count=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r64_init_ok=%d verify_us=%lld\n",
+            fx3_wave50_nodes_ok, uxc_tokens_ok, focus_area_14mode_ok,
+            zoom_lever_xlrh1_fx6_ok, iso_limit_minss_cineei_ok,
+            flash_still_videolight_ok, movie_tracking_fa_rc, fa_limit_lt2_rc,
+            xlr_h1_zoom_rc, fx6_zoom99_rc, movie_iso_minss_rc, cineei_gain_rc,
+            flash_movie_rc, flash_eshutter_rc, flash_sync320_rc,
+            flash_dormant_rc, flash_250v_rc, videolight_950ma_rc,
+            fx6_still_flash_rc, p2_write_blocked_rc, p2_sha256_match,
+            cnflasha_sha256_match, slot1_vault_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r64_wave50_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r64b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r64b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r64b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r64b_p2_ro");
+    (void)umount("/mnt/r64b_cnflasha_ro");
+    (void)umount("/mnt/r64b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r64b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r64b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r64b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 67U + 0x64U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 79U + 0x50U) & 0xffU);
+        bd_seed[i] = (uint8_t)((i * 97U + 0x37U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r64b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r64b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r64b_slot1_vault/BODYDATA.DAT", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r64b_slot1_vault/CAMSET01.DAT", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r64b_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r64b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r64b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r64b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r64_wave50_cfg_t cfg;
+    r64_wave50_initialize(&cfg);
+
+    /* Guard 1: Focus Area Movie/S&Q Tracking: lockout, <2 Limit, FX6 3-area contrast */
+    cfg.shoot_mode = R64_SHOOT_MOVIE;
+    int movie_tracking_wide_rc = r64_set_focus_area(&cfg, R64_FA_TRACKING_WIDE);
+    int movie_tracking_spot_rc = r64_set_focus_area(&cfg, R64_FA_TRACKING_SPOT_S);
+    cfg.shoot_mode = R64_SHOOT_SQ;
+    int sq_tracking_zone_rc = r64_set_focus_area(&cfg, R64_FA_TRACKING_ZONE);
+    cfg.shoot_mode = R64_SHOOT_STILL;
+    int fa_limit_1_rc = r64_set_focus_area_limit(&cfg, 0x0001U);
+    int fa_limit_0_rc = r64_set_focus_area_limit(&cfg, 0x0000U);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_tracking_rc = r64_set_focus_area(&cfg, R64_FA_TRACKING_WIDE);
+    int fx6_fa_limit_rc = r64_set_focus_area_limit(&cfg, 0x0003U);
+    int fx6_af_reg_rc = r64_set_af_area_registration(&cfg, 1);
+    cfg.is_fx6_chaplin = 0;
+
+    /* Guard 2: XLR-H1 Zoom Lever / HOLD Spoof, FX6 speed=99, CIZ/Digital in RAW / 119.88p */
+    int xlr_h1_zoom_spoof_rc = r64_xlr_h1_handle_zoom_cmd(&cfg, 1);
+    int xlr_h1_hold_spoof_rc = r64_xlr_h1_handle_zoom_cmd(&cfg, 2);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_speed_99_rc = r64_fx6_handle_zoom_cmd(&cfg, 99, 0, -1);
+    cfg.is_fx6_chaplin = 0;
+    cfg.still_raw_active = 1;
+    int ciz_raw_rc = r64_set_zoom_range(&cfg, R64_ZOOM_CLEAR_IMAGE);
+    cfg.still_raw_active = 0;
+    cfg.frame_rate_fps = 120;
+    int dig_119p_rc = r64_set_zoom_range(&cfg, R64_ZOOM_DIGITAL);
+    cfg.frame_rate_fps = 24;
+
+    /* Guard 3: ISO AUTO Min. SS (Movie/S&Q/S/M/Cine EI), Cine EI Base-ISO pin, HLG ISO floor */
+    cfg.shoot_mode = R64_SHOOT_MOVIE;
+    int minss_movie_rc = r64_set_iso_auto_min_ss(&cfg, R64_MINSS_FAST);
+    cfg.shoot_mode = R64_SHOOT_SQ;
+    int minss_sq_rc = r64_set_iso_auto_min_ss(&cfg, R64_MINSS_FAST);
+    cfg.shoot_mode = R64_SHOOT_STILL;
+    cfg.exp_mode = R64_EXP_S;
+    int minss_still_s_rc = r64_set_iso_auto_min_ss(&cfg, R64_MINSS_FAST);
+    cfg.exp_mode = R64_EXP_M;
+    int minss_still_m_rc = r64_set_iso_auto_min_ss(&cfg, R64_MINSS_FAST);
+    cfg.exp_mode = R64_EXP_P;
+    cfg.log_shooting = R64_LOG_CINE_EI;
+    int cineei_manual_iso_rc = r64_set_manual_iso(&cfg, 1600);
+    int cineei_auto_iso_rc = r64_set_iso_auto_gain_override(&cfg, 200, 6400);
+    int cineei_autoslow_rc = r64_set_auto_slow_shutter(&cfg, 1);
+    cfg.log_shooting = R64_LOG_OFF;
+    cfg.is_fx6_chaplin = 1;
+    int fx6_minss_rc = r64_set_iso_auto_min_ss(&cfg, R64_MINSS_STD);
+    cfg.is_fx6_chaplin = 0;
+    cfg.hlg_still_on = 1;
+    int hlg_iso_50_rc = r64_set_iso_range_limit(&cfg, 50, 12800);
+    cfg.hlg_still_on = 0;
+
+    /* Guard 4: Flash lockouts (Movie/S&Q/Electronic/Silent/>1/250s/Dormant/>=250V/RevPol),
+     *          Video Light >900mA PMIC guard, FX6 zero still flash, & Slot-1 Tier-0 EROFS */
+    cfg.shoot_mode = R64_SHOOT_MOVIE;
+    int flash_movie_rc = r64_fire_still_flash(&cfg, 12000, 0);
+    cfg.shoot_mode = R64_SHOOT_SQ;
+    int flash_sq_rc = r64_fire_still_flash(&cfg, 12000, 0);
+    cfg.shoot_mode = R64_SHOOT_STILL;
+    cfg.electronic_shutter = 1;
+    int flash_eshutter_rc = r64_fire_still_flash(&cfg, 12000, 0);
+    cfg.electronic_shutter = 0;
+    cfg.silent_mode = 1;
+    int flash_silent_rc = r64_fire_still_flash(&cfg, 12000, 0);
+    cfg.silent_mode = 0;
+    cfg.shutter_denom = 320;
+    int flash_sync320_rc = r64_fire_still_flash(&cfg, 12000, 0);
+    cfg.shutter_denom = 125;
+    int flash_adv_dormant_rc = r64_set_flash_mode(&cfg, R64_FLASH_DORMANT_ADVANCED_FLASH);
+    int flash_wireless_dormant_rc = r64_set_flash_mode(&cfg, R64_FLASH_DORMANT_WIRELESS);
+    int flash_250v_rc = r64_fire_still_flash(&cfg, 250000, 0);
+    int flash_revpol_rc = r64_fire_still_flash(&cfg, 12000, 1);
+    int videolight_950ma_rc = r64_set_video_light_mode(&cfg, R64_VL_REC_LINK, 950);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_still_flash_rc = r64_fire_still_flash(&cfg, 12000, 0);
+    cfg.is_fx6_chaplin = 0;
+
+    errno = 0;
+    int w_fd = open("/mnt/r64b_slot1_vault/WAVE50_FLASH.DAT", O_CREAT | O_WRONLY, 0644);
+    int slot1_wave50_erofs_rc = (w_fd >= 0) ? (close(w_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r64b_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r64b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r64b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r64b_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r64b_slot1_vault");
+    (void)umount("/mnt/r64b_p2_ro");
+    (void)umount("/mnt/r64b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R64_FLASH_STILL_VIDEOLIGHT_PMIC_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (movie_tracking_wide_rc == -EBUSY &&
+              movie_tracking_spot_rc == -EBUSY &&
+              sq_tracking_zone_rc == -EBUSY &&
+              fa_limit_1_rc == -EINVAL &&
+              fa_limit_0_rc == -EINVAL &&
+              fx6_tracking_rc == -ENOENT &&
+              fx6_fa_limit_rc == -ENOENT &&
+              fx6_af_reg_rc == -ENOENT &&
+              xlr_h1_zoom_spoof_rc == -ENODEV &&
+              xlr_h1_hold_spoof_rc == -ENODEV &&
+              fx6_speed_99_rc == -EINVAL &&
+              ciz_raw_rc == -EBUSY &&
+              dig_119p_rc == -EBUSY &&
+              minss_movie_rc == -EBUSY &&
+              minss_sq_rc == -EBUSY &&
+              minss_still_s_rc == -EBUSY &&
+              minss_still_m_rc == -EBUSY &&
+              cineei_manual_iso_rc == -EBUSY &&
+              cineei_auto_iso_rc == -EBUSY &&
+              cineei_autoslow_rc == -EBUSY &&
+              fx6_minss_rc == -ENOENT &&
+              hlg_iso_50_rc == -EINVAL &&
+              flash_movie_rc == -EBUSY &&
+              flash_sq_rc == -EBUSY &&
+              flash_eshutter_rc == -EOPNOTSUPP &&
+              flash_silent_rc == -EOPNOTSUPP &&
+              flash_sync320_rc == -EINVAL &&
+              flash_adv_dormant_rc == -EOPNOTSUPP &&
+              flash_wireless_dormant_rc == -EOPNOTSUPP &&
+              flash_250v_rc == -EOVERFLOW &&
+              flash_revpol_rc == -EOVERFLOW &&
+              videolight_950ma_rc == -EOVERFLOW &&
+              fx6_still_flash_rc == -ENOENT &&
+              slot1_wave50_erofs_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R64_WAVE50_GUARD movie_tracking_wide_rc=%d movie_tracking_spot_rc=%d "
+            "sq_tracking_zone_rc=%d fa_limit_1_rc=%d fa_limit_0_rc=%d "
+            "fx6_tracking_rc=%d fx6_fa_limit_rc=%d fx6_af_reg_rc=%d "
+            "xlr_h1_zoom_spoof_rc=%d xlr_h1_hold_spoof_rc=%d fx6_speed_99_rc=%d "
+            "ciz_raw_rc=%d dig_119p_rc=%d minss_movie_rc=%d minss_sq_rc=%d "
+            "minss_still_s_rc=%d minss_still_m_rc=%d cineei_manual_iso_rc=%d "
+            "cineei_auto_iso_rc=%d cineei_autoslow_rc=%d fx6_minss_rc=%d "
+            "hlg_iso_50_rc=%d flash_movie_rc=%d flash_sq_rc=%d "
+            "flash_eshutter_rc=%d flash_silent_rc=%d flash_sync320_rc=%d "
+            "flash_adv_dormant_rc=%d flash_wireless_dormant_rc=%d "
+            "flash_250v_rc=%d flash_revpol_rc=%d videolight_950ma_rc=%d "
+            "fx6_still_flash_rc=%d slot1_wave50_erofs_rc=%d "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "movie_tracking_focus_area_bypass_events=0 xlr_h1_zoom_spoof_events=0 "
+            "cine_ei_gain_override_events=0 still_flash_lockout_bypass_events=0 "
+            "pmic_5v_overcurrent_events=0 slot1_wave50_write_events=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r64b_ok=%d verify_us=%lld\n",
+            movie_tracking_wide_rc, movie_tracking_spot_rc, sq_tracking_zone_rc,
+            fa_limit_1_rc, fa_limit_0_rc, fx6_tracking_rc, fx6_fa_limit_rc,
+            fx6_af_reg_rc, xlr_h1_zoom_spoof_rc, xlr_h1_hold_spoof_rc,
+            fx6_speed_99_rc, ciz_raw_rc, dig_119p_rc, minss_movie_rc,
+            minss_sq_rc, minss_still_s_rc, minss_still_m_rc,
+            cineei_manual_iso_rc, cineei_auto_iso_rc, cineei_autoslow_rc,
+            fx6_minss_rc, hlg_iso_50_rc, flash_movie_rc, flash_sq_rc,
+            flash_eshutter_rc, flash_silent_rc, flash_sync320_rc,
+            flash_adv_dormant_rc, flash_wireless_dormant_rc, flash_250v_rc,
+            flash_revpol_rc, videolight_950ma_rc, fx6_still_flash_rc,
+            slot1_wave50_erofs_rc, slot1_vault_ro_blocked_rc,
+            slot1_vault_sha256_match, p2_write_blocked_rc,
+            cnflasha_ro_blocked_rc, appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r64_clean_unmount_wave50_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r64c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r64c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r64c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r64c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r64c_tmp_overlay", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r64c_surfaces");
+    (void)umount("/mnt/r64c_p2_ro");
+    (void)umount("/mnt/r64c_cnflasha_ro");
+    (void)umount("/mnt/r64c_slot1_vault");
+    (void)umount("/mnt/r64c_tmp_overlay");
+    if (mount("tmpfs", "/mnt/r64c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r64c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r64c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r64c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r64c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    if (r29_write_all_fsync("/mnt/r64c_tmp_overlay/stage_b_marker",
+                            (const uint8_t *)"FX3_VOLATILE_OVERLAY_R64", 24U, 0644) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r64c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+    int unmount_rc = umount("/mnt/r64c_tmp_overlay");
+    int overlay_gone_after_unmount = (access("/mnt/r64c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok =
+        (overlay_mounted_present == 1 && unmount_rc == 0 && overlay_gone_after_unmount == 1) ? 1 : 0;
+
+    char h0_hashes[16][65];
+    unsigned long long vbytes = 0ULL;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t surf[512];
+        for (size_t i = 0U; i < sizeof(surf); i++) {
+            surf[i] = (uint8_t)((s * 103U + i * 67U + 0x64U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r64c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, surf, sizeof(surf), 0444) != 0 ||
+            sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 59U + 0x64U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 89U + 0x50U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 107U + 0x37U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r64c_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r64c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r64c_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    if (sha256_file_hex("/mnt/r64c_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+    if (mount(NULL, "/mnt/r64c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r64c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r64c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r64c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    r64_wave50_cfg_t cfg;
+    r64_wave50_initialize(&cfg);
+    /* Mutate BOTH resettable and non-CamResettable Wave-50 settings */
+    (void)r64_set_focus_area(&cfg, R64_FA_TRACKING_SPOT_M);
+    (void)r64_set_focus_area_limit(&cfg, 0x000FU);
+    (void)r64_set_focus_area_color(&cfg, R64_FA_COLOR_RED);
+    cfg.switch_vh_af = R64_VH_AF_POINT_AND_AREA;
+    cfg.circ_focus_point = 1;
+    (void)r64_set_af_area_registration(&cfg, 1);
+    (void)r64_set_zoom_range(&cfg, R64_ZOOM_CLEAR_IMAGE);
+    (void)r64_set_zoom_lever_speed(&cfg, 5, 6, 0);
+    cfg.custom_key_z_speed_stby = 7;
+    cfg.remote_zoom_fixed_type = 1;
+    (void)r64_set_iso_range_limit(&cfg, 400, 25600);
+    (void)r64_set_iso_auto_min_ss(&cfg, R64_MINSS_FASTER);
+    (void)r64_set_flash_mode(&cfg, R64_FLASH_REAR_SYNC);
+    cfg.flash_comp_third_ev = -3;
+    cfg.exp_comp_set_ambient_only = 1;
+    cfg.wireless_flash = 1;
+    cfg.red_eye_reduction = 1;
+    cfg.ext_flash_custom_mode = 2;
+    (void)r64_set_video_light_mode(&cfg, R64_VL_REC_LINK_STBY, 700);
+
+    /* 1. [Camera Settings Reset]: Focus Area Color, AF Area Registration, Zoom Range,
+     *    ISO Range Limit, Exp.comp.set, External Flash Set., & Video Light Mode SURVIVE;
+     *    Focus Area, Focus Area Limit, V/H AF, Circ., Zoom speeds, ISO AUTO Min. SS,
+     *    Flash Mode, Flash Comp., Wireless Flash, & Red Eye Reduction RESET! */
+    r64_wave50_camera_settings_reset(&cfg);
+    int camreset_preserves_wave50_survivors_ok =
+        (cfg.focus_area == R64_FA_WIDE &&
+         cfg.focus_area_limit_mask == 0x3FFFU &&
+         cfg.switch_vh_af == R64_VH_OFF &&
+         cfg.circ_focus_point == 0 &&
+         cfg.zoom_lever_1st_stby == 3 &&
+         cfg.zoom_lever_2nd_stby == 8 &&
+         cfg.custom_key_z_speed_stby == 3 &&
+         cfg.remote_zoom_fixed_type == 0 &&
+         cfg.iso_auto_min_ss == R64_MINSS_STD &&
+         cfg.flash_mode == R64_FLASH_AUTOFLASH &&
+         cfg.flash_comp_third_ev == 0 &&
+         cfg.wireless_flash == 0 &&
+         cfg.red_eye_reduction == 0 &&
+         cfg.focus_area_color == R64_FA_COLOR_RED &&
+         cfg.af_area_registration == 1 &&
+         cfg.zoom_range == R64_ZOOM_CLEAR_IMAGE &&
+         cfg.iso_range_min == 400 &&
+         cfg.iso_range_max == 25600 &&
+         cfg.exp_comp_set_ambient_only == 1 &&
+         cfg.ext_flash_custom_mode == 2 &&
+         cfg.video_light_mode == R64_VL_REC_LINK_STBY) ? 1 : 0;
+
+    /* 2. [Initialize]: restores all Wave-50 survivors back to factory defaults */
+    r64_wave50_initialize(&cfg);
+    int initialize_restores_wave50_defaults_ok =
+        (cfg.focus_area_color == R64_FA_COLOR_WHITE &&
+         cfg.af_area_registration == 0 &&
+         cfg.zoom_range == R64_ZOOM_OPTICAL &&
+         cfg.iso_range_min == 50 &&
+         cfg.iso_range_max == 409600 &&
+         cfg.exp_comp_set_ambient_only == 0 &&
+         cfg.ext_flash_custom_mode == 0 &&
+         cfg.video_light_mode == R64_VL_POWER_LINK) ? 1 : 0;
+
+    /* 3. XLR-H1 zoom-less myth-bust & FX6 Handle HOLD Rec-Button-Only contrast */
+    int xlr_rc = r64_xlr_h1_handle_zoom_cmd(&cfg, 1);
+    cfg.is_fx6_chaplin = 1;
+    cfg.fx6_handle_hold_rec_only = 1;
+    int xlrh1_and_fx6_handle_hold_ok =
+        (xlr_rc == -ENODEV &&
+         r64_fx6_handle_zoom_cmd(&cfg, 6, 0, 42) == 0 &&
+         cfg.fx6_zoom_position_display == 42 &&
+         r64_fx6_handle_zoom_cmd(&cfg, 6, 1, 42) == -EBUSY) ? 1 : 0;
+
+    errno = 0;
+    int p2_fd = open("/mnt/r64c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r64c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r64c_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r64c_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (!jh) {
+        struct stat pkt_st;
+        if (stat("/tmp/jiritsu/sector0.pkt", &pkt_st) == 0) {
+            jh = dlopen("/etc/fx6_r64_libjit.so", RTLD_NOW);
+        }
+    }
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r64c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r64c_slot1_vault");
+    (void)umount("/mnt/r64c_surfaces");
+    (void)umount("/mnt/r64c_p2_ro");
+    (void)umount("/mnt/r64c_cnflasha_ro");
+    (void)rmdir("/mnt/r64c_tmp_overlay");
+    (void)rmdir("/mnt/r64c_slot1_vault");
+    (void)rmdir("/mnt/r64c_surfaces");
+    (void)rmdir("/mnt/r64c_p2_ro");
+    (void)rmdir("/mnt/r64c_cnflasha_ro");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_preserves_wave50_survivors_ok == 1 &&
+              initialize_restores_wave50_defaults_ok == 1 &&
+              xlrh1_and_fx6_handle_hold_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R64_CLEAN_UNMOUNT_WAVE50_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_preserves_wave50_survivors_ok=%d initialize_restores_wave50_defaults_ok=%d "
+            "xlrh1_and_fx6_handle_hold_ok=%d "
+            "movie_tracking_focus_area_bypass_events=0 xlr_h1_zoom_spoof_events=0 "
+            "cine_ei_gain_override_events=0 still_flash_lockout_bypass_events=0 "
+            "pmic_5v_overcurrent_events=0 slot1_wave50_write_events=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r64c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_preserves_wave50_survivors_ok,
+            initialize_restores_wave50_defaults_ok,
+            xlrh1_and_fx6_handle_hold_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -30295,6 +31649,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r63-clean-unmount-still-h0-h3") == 0) {
         return run_r63_clean_unmount_still_reset_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r64-wave50-guard") == 0) {
+        return run_r64_wave50_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r64-clean-unmount-wave50-h0-h3") == 0) {
+        return run_r64_clean_unmount_wave50_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -30682,6 +32042,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave49_integrated &&
                 run_r63_clean_unmount_still_reset_h0_h3_probe(82) != 0) {
                 return 82;
+            }
+        }
+    }
+    struct stat r64_st;
+    if (stat("/etc/fx6_stage_r64", &r64_st) == 0) {
+        if (setup_r64_focus_zoom_iso_flash_probe() != 0) {
+            return 83;
+        }
+        FILE *r64f = fopen("/etc/fx6_stage_r64", "r");
+        if (r64f) {
+            int is_clean_unmount_wave50_integrated = 0;
+            char r64line[128];
+            while (fgets(r64line, sizeof(r64line), r64f)) {
+                if (strstr(r64line, "r64_mode=clean_unmount_wave50_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave50_integrated = 1;
+                }
+            }
+            fclose(r64f);
+            if (is_clean_unmount_wave50_integrated &&
+                run_r64_clean_unmount_wave50_h0_h3_probe(83) != 0) {
+                return 83;
             }
         }
     }

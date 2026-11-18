@@ -68,6 +68,7 @@ import lut3d_tetrahedral_subzero_sdi_emulator as p99  # noqa: E402
 import mxf_mp4_ptpv2_tally_monsoon_emulator as p127  # noqa: E402
 import playback_shotmark_dewpoint_emulator as p87  # noqa: E402
 import qmp_guest_introspection_tracer as p58  # noqa: E402
+import realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_coemulator as p369  # noqa: E402
 import realhw_antidust_shutteropen_focusmag_expstdadj_usbtether_coemulator as p362  # noqa: E402
 import realhw_apsc_s35_face_eye_af_version_coemulator as p267  # noqa: E402
 import realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_coemulator as p353  # noqa: E402
@@ -327,6 +328,9 @@ class CoEmulationConfig:
     include_phase367_realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_hil: bool = True
     include_stage83: bool = True
     stage83_realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_hil: bool = True
+    include_phase369_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil: bool = True
+    include_stage84: bool = True
+    stage84_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -6637,6 +6641,104 @@ def run_stage83_realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_hil(
     }
 
 
+def run_stage84_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil(
+    config: Optional[CoEmulationConfig] = None,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 84 (Phase 369, 84/84 Full-Board VM Co-Emulation Stages!): Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-74 [AF Transition Speed] 1..7 / [AF Subj. Shift Sens.] 1..5 (5_RESPONSICE!) / [Focus Area Color] Zero-Dormant, [Zebra Display] Custom1/2 & S-Log3 41%/61%/94% vs FX6 Single-Select 0..109%, [Marker Display] 15-Aspect Clean-HDMI 0 px, and [Save/Load Settings] Slot 1 CAMSET*.DAT (G92) vs [Camera Set. Memory] CAMPR*.DAT & Tier-0 EROFS=30 HIL."""
+    cfg = CoEmulationConfig() if config is None else config
+    cfg.validate()
+    rep = p369.run_phase369_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_coemulation(
+        force_clean_room=cfg.force_clean_room,
+        env=env,
+    )
+    return {
+        "stage": "stage84_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "is_84th_stage_milestone": bool(rep["is_84th_stage_milestone"]),
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": rep["nop_count"],
+        "guest_code_modification_bytes": rep["guest_code_modification_bytes"],
+        "cp_mutation_bytes": rep["cp_mutation_bytes"],
+        "wbi_mutation_bytes": rep["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": rep["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": rep["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": rep["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": rep["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": rep["bk4_persistent_nvram_writes"],
+        "physical_device_writes": rep["physical_device_writes"],
+        "persistent_emmc_writes_authorized": rep["persistent_emmc_writes_authorized"],
+        "emmc_writes_authorized": rep["emmc_writes_authorized"],
+        "cross_model_flash_authorized": rep["cross_model_flash_authorized"],
+        "hardware_live_attachment_authorized": rep["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": rep["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": rep["isp_write_authorized"],
+        "emmc_nflasha_write_count": rep["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": rep["emmc_mutation_bytes"],
+        "emmc_corruptions": rep["emmc_corruptions"],
+        "spi_nor_write_authorized": rep["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": rep["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": rep["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": rep["otp_fuse_touches"],
+        "rpmb_counter_increments": rep["rpmb_counter_increments"],
+        "physical_usb_packets_emitted": rep["physical_usb_packets_emitted"],
+        "passive_tx_bytes_emitted": rep["passive_tx_bytes_emitted"],
+        "slot1_sector_writes": rep["slot1_sector_writes"],
+        "slot1_data_sector_writes": rep["slot1_data_sector_writes"],
+        "slot1_avf_info_mutated": rep["slot1_avf_info_mutated"],
+        "rf_tx_packets": rep["rf_tx_packets"],
+        "rf_packets_transmitted": rep["rf_packets_transmitted"],
+        "rf_nvs_mutation_bytes": rep["rf_nvs_mutation_bytes"],
+        "fx3_af_transition_speed_steps": rep["fx3_af_transition_speed_steps"],
+        "fx3_af_transition_speed_default": rep["fx3_af_transition_speed_default"],
+        "fx3_af_subj_shift_sens_steps": rep["fx3_af_subj_shift_sens_steps"],
+        "fx3_af_subj_shift_sens_default": rep["fx3_af_subj_shift_sens_default"],
+        "shared_elf_typo_symbol": rep["shared_elf_typo_symbol"],
+        "fx3_focus_area_colors_count": rep["fx3_focus_area_colors_count"],
+        "fx3_dormant_focus_area_colors_exposed_events": rep["fx3_dormant_focus_area_colors_exposed_events"],
+        "fx3_diagonal_focus_point_wrap_events": rep["fx3_diagonal_focus_point_wrap_events"],
+        "fx3_reset_immune_af_wipe_events": rep["fx3_reset_immune_af_wipe_events"],
+        "fx6_af_subj_shift_7step_rumor_disproved": rep["fx6_af_subj_shift_7step_rumor_disproved"],
+        "fx3_zebra_level_options_count": rep["fx3_zebra_level_options_count"],
+        "fx3_hdmi_zebra_leaked_pixels": rep["fx3_hdmi_zebra_leaked_pixels"],
+        "fx3_zebra_reset_wipe_events": rep["fx3_zebra_reset_wipe_events"],
+        "fx6_zebra_display_modes_count": rep["fx6_zebra_display_modes_count"],
+        "fx6_zebra_simultaneous_both_exposed_events": rep["fx6_zebra_simultaneous_both_exposed_events"],
+        "fx3_marker_5_items_count": rep["fx3_marker_5_items_count"],
+        "fx3_marker_active_aspect_ratios_count": rep["fx3_marker_active_aspect_ratios_count"],
+        "fx3_hdmi_marker_leaked_pixels": rep["fx3_hdmi_marker_leaked_pixels"],
+        "fx3_marker_reset_wipe_events": rep["fx3_marker_reset_wipe_events"],
+        "fx6_aspect_mask_max": rep["fx6_aspect_mask_max"],
+        "g92_errata_reconciled": rep["g92_errata_reconciled"],
+        "fx3_saveload_slot1_locked": rep["fx3_saveload_slot1_locked"],
+        "fx3_pro_camera_path_hits": rep["fx3_pro_camera_path_hits"],
+        "fx3_saveload_card_max_slots": rep["fx3_saveload_card_max_slots"],
+        "fx3_saveload_cloud_max_slots": rep["fx3_saveload_cloud_max_slots"],
+        "fx3_saveload_exclusions_count": rep["fx3_saveload_exclusions_count"],
+        "fx3_slot1_erofs_bypass_events": rep["fx3_slot1_erofs_bypass_events"],
+        "fx6_all_file_max_slots": rep["fx6_all_file_max_slots"],
+        "fx6_user_menu_lock_pin_leaked_events": rep["fx6_user_menu_lock_pin_leaked_events"],
+        "rsv_orphan_count": rep["rsv_orphan_count"],
+        "null_gpio_derefs": rep["null_gpio_derefs"],
+        "mailbox_stalls": rep["mailbox_stalls"],
+        "stock_cp_fault_count": rep["stock_cp_fault_count"],
+        "wf12_00342260_hits": rep["wf12_00342260_hits"],
+        "appfw_crashes": rep["appfw_crashes"],
+        "raw_firmware_bytes_leaked": rep["raw_firmware_bytes_leaked"],
+        "donors": rep["donors"],
+        "stage84_milestone_probe": rep["stage84_milestone_probe"],
+        "submodel_84a_af_speed_shift_circ_color": rep["submodel_84a_af_speed_shift_circ_color"],
+        "submodel_84b_zebra_custom_slog3_fx6": rep["submodel_84b_zebra_custom_slog3_fx6"],
+        "submodel_84c_marker_15aspect_clean_hdmi_fx6": rep["submodel_84c_marker_15aspect_clean_hdmi_fx6"],
+        "submodel_84d_saveload_camset_vs_campr_erofs": rep["submodel_84d_saveload_camset_vs_campr_erofs"],
+        "phase369_audit_digest_sha256": rep["phase369_audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -6647,7 +6749,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 83-stage (Phase 33..367, 83/83 Full-Board Stages!) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 84-stage (Phase 33..369, 84/84 Full-Board Stages!) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -7201,6 +7303,17 @@ def run_fx3_vm_coemulation_suite(
             cfg.include_phase367_realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_hil
             and cfg.include_stage83
             and cfg.stage83_realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_hil
+        )
+        else None
+    )
+    stage84: Optional[Dict[str, object]] = (
+        run_stage84_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil(
+            cfg, env=env
+        )
+        if (
+            cfg.include_phase369_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil
+            and cfg.include_stage84
+            and cfg.stage84_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil
         )
         else None
     )
@@ -10192,6 +10305,79 @@ def run_fx3_vm_coemulation_suite(
         and stage83["appfw_crashes"] == 0
         and stage83["raw_firmware_bytes_leaked"] == 0
     )
+    stage84_ok = True if stage84 is None else (
+        bool(stage84["all_checks_passed"])
+        and stage84["phase_number"] == 369
+        and stage84["milestone"] == "84/84"
+        and bool(stage84["is_84th_stage_milestone"])
+        and stage84["nop_count"] == 0
+        and stage84["guest_code_modification_bytes"] == 0
+        and stage84["cp_mutation_bytes"] == 0
+        and stage84["wbi_mutation_bytes"] == 0
+        and stage84["calibration_mutation_bytes"] == 0
+        and stage84["cnflasha_mutation_bytes"] == 0
+        and bool(stage84["cnflasha_userspace_write_blocked"])
+        and stage84["nvram_persistent_writes"] == 0
+        and stage84["bk4_persistent_nvram_writes"] == 0
+        and stage84["physical_device_writes"] == 0
+        and (not stage84["persistent_emmc_writes_authorized"])
+        and (not stage84["emmc_writes_authorized"])
+        and (not stage84["cross_model_flash_authorized"])
+        and (not stage84["hardware_live_attachment_authorized"])
+        and (not stage84["overall_ready_for_hardware_attach"])
+        and (not stage84["isp_write_authorized"])
+        and stage84["emmc_nflasha_write_count"] == 0
+        and stage84["emmc_mutation_bytes"] == 0
+        and stage84["emmc_corruptions"] == 0
+        and (not stage84["spi_nor_write_authorized"])
+        and stage84["spi_nor_mutation_bytes"] == 0
+        and (not stage84["el3_payload_transmit_authorized"])
+        and stage84["otp_fuse_touches"] == 0
+        and stage84["rpmb_counter_increments"] == 0
+        and stage84["physical_usb_packets_emitted"] == 0
+        and stage84["passive_tx_bytes_emitted"] == 0
+        and stage84["slot1_sector_writes"] == 0
+        and stage84["slot1_data_sector_writes"] == 0
+        and (not stage84["slot1_avf_info_mutated"])
+        and stage84["rf_tx_packets"] == 0
+        and stage84["rf_packets_transmitted"] == 0
+        and stage84["rf_nvs_mutation_bytes"] == 0
+        and stage84["fx3_af_transition_speed_steps"] == 7
+        and stage84["fx3_af_transition_speed_default"] == 5
+        and stage84["fx3_af_subj_shift_sens_steps"] == 5
+        and stage84["fx3_af_subj_shift_sens_default"] == 5
+        and stage84["fx3_focus_area_colors_count"] == 2
+        and stage84["fx3_dormant_focus_area_colors_exposed_events"] == 0
+        and stage84["fx3_diagonal_focus_point_wrap_events"] == 0
+        and stage84["fx3_reset_immune_af_wipe_events"] == 0
+        and bool(stage84["fx6_af_subj_shift_7step_rumor_disproved"])
+        and stage84["fx3_zebra_level_options_count"] == 10
+        and stage84["fx3_hdmi_zebra_leaked_pixels"] == 0
+        and stage84["fx3_zebra_reset_wipe_events"] == 0
+        and stage84["fx6_zebra_display_modes_count"] == 3
+        and stage84["fx6_zebra_simultaneous_both_exposed_events"] == 0
+        and stage84["fx3_marker_5_items_count"] == 5
+        and stage84["fx3_marker_active_aspect_ratios_count"] == 15
+        and stage84["fx3_hdmi_marker_leaked_pixels"] == 0
+        and stage84["fx3_marker_reset_wipe_events"] == 0
+        and stage84["fx6_aspect_mask_max"] == 15
+        and bool(stage84["g92_errata_reconciled"])
+        and bool(stage84["fx3_saveload_slot1_locked"])
+        and stage84["fx3_pro_camera_path_hits"] == 0
+        and stage84["fx3_saveload_card_max_slots"] == 10
+        and stage84["fx3_saveload_cloud_max_slots"] == 60
+        and stage84["fx3_saveload_exclusions_count"] >= 15
+        and stage84["fx3_slot1_erofs_bypass_events"] == 0
+        and stage84["fx6_all_file_max_slots"] == 64
+        and stage84["fx6_user_menu_lock_pin_leaked_events"] == 0
+        and stage84["rsv_orphan_count"] == 0
+        and stage84["null_gpio_derefs"] == 0
+        and stage84["mailbox_stalls"] == 0
+        and stage84["stock_cp_fault_count"] == 0
+        and stage84["wf12_00342260_hits"] == 0
+        and stage84["appfw_crashes"] == 0
+        and stage84["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -10278,6 +10464,7 @@ def run_fx3_vm_coemulation_suite(
         and stage81_ok
         and stage82_ok
         and stage83_ok
+        and stage84_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -10878,6 +11065,21 @@ def run_fx3_vm_coemulation_suite(
                 and cfg.include_stage83
                 and cfg.stage83_realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_hil
             ),
+            "include_phase369_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil": (
+                cfg.include_phase369_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil
+                and cfg.include_stage84
+                and cfg.stage84_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil
+            ),
+            "include_stage84": (
+                cfg.include_phase369_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil
+                and cfg.include_stage84
+                and cfg.stage84_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil
+            ),
+            "stage84_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil": (
+                cfg.include_phase369_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil
+                and cfg.include_stage84
+                and cfg.stage84_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil
+            ),
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -11086,6 +11288,10 @@ def run_fx3_vm_coemulation_suite(
         core_payload[
             "stage83_realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_hil"
         ] = stage83
+    if stage84 is not None:
+        core_payload[
+            "stage84_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil"
+        ] = stage84
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -11097,7 +11303,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 + 289 + 293 + 298 + 301 + 306 + 309 + 312 + 315 + 318 + 322 + 325 + 328 + 330 + 333 + 335 + 337 + 339 + 343 + 346 + 350 + 353 + 357 + 360 + 362 + 365 + 367 (83/83 Full-Board Stages!) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 + 289 + 293 + 298 + 301 + 306 + 309 + 312 + 315 + 318 + 322 + 325 + 328 + 330 + 333 + 335 + 337 + 339 + 343 + 346 + 350 + 353 + 357 + 360 + 362 + 365 + 367 + 369 (84/84 Full-Board Stages!) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -12064,6 +12270,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 83 (Phase 367 83/83 Full-Board Stages! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-73 [Lock Operation Parts] & MENU+Fn 5s Global Lock vs FX6 Dual HOLD & 4-Digit User Menu with Lock, [Shockless WB] & Still-Only Reset-Resistant [Shutter AWB Lock] vs FX6 WHT BAL & ATW Speed 1..5, [Focus Assistant] 4-Item Split & Dormant [Focus Ring Rotate] 0-Enum Disproof vs FX6 AF Assist / Ver. 6.0 HDMI Focus Mag, and Playback [Delete]/[Protect]/[Recover Image DB] AVF_INFO Boot-Prompt Trap Blocked by Tier-0 Slot 1 EROFS=30 HIL)",
     )
     parser.add_argument(
+        "--include-stage84",
+        dest="include_stage84",
+        action="store_true",
+        default=True,
+        help="Include Stage 84 (Phase 369 84/84 Full-Board Stages! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-74 [AF Transition Speed] 1..7 / [AF Subj. Shift Sens.] 1..5 (5_RESPONSICE!) / [Focus Area Color] Zero-Dormant vs FX6 AF Speed/Sens. & PUSH AUTO, [Zebra Display] Custom1/2 & S-Log3 41%%/61%%/94%% IRE vs FX6 Single-Select 0..109%%, [Marker Display] 15-Aspect Clean-HDMI 0 px vs FX6 Aspect Mask & User Box, and [Save/Load Settings] Slot 1 CAMSET*.DAT (G92 Errata) vs [Camera Set. Memory] CAMPR*.DAT & Tier-0 Slot 1 EROFS=30 HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage84",
+        "--no-include-stage84",
+        dest="skip_stage84",
+        action="store_true",
+        help="Skip optional Stage 84 (alias for --skip-phase369)",
+    )
+    parser.add_argument(
+        "--skip-phase369",
+        action="store_true",
+        help="Skip optional Stage 84 (Phase 369 84/84 Full-Board Stages! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-74 [AF Transition Speed] 1..7 / [AF Subj. Shift Sens.] 1..5 (5_RESPONSICE!) / [Focus Area Color] Zero-Dormant, [Zebra Display] Custom1/2 & S-Log3 41%%/61%%/94%% vs FX6 Single-Select 0..109%%, [Marker Display] 15-Aspect Clean-HDMI 0 px, and [Save/Load Settings] Slot 1 CAMSET*.DAT (G92) vs [Camera Set. Memory] CAMPR*.DAT & Tier-0 Slot 1 EROFS=30 HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -12163,6 +12388,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     enable_stage81 = bool(args.include_stage81) and (not args.skip_phase362) and (not args.skip_stage81)
     enable_stage82 = bool(args.include_stage82) and (not args.skip_phase365) and (not args.skip_stage82)
     enable_stage83 = bool(args.include_stage83) and (not args.skip_phase367) and (not args.skip_stage83)
+    enable_stage84 = bool(args.include_stage84) and (not args.skip_phase369) and (not args.skip_stage84)
     cfg = CoEmulationConfig(
         bt_mode=args.bt_mode,
         cine_ei_iso=args.cine_ei_iso,
@@ -12321,6 +12547,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase367_realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_hil=enable_stage83,
         include_stage83=enable_stage83,
         stage83_realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_hil=enable_stage83,
+        include_phase369_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil=enable_stage84,
+        include_stage84=enable_stage84,
+        stage84_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil=enable_stage84,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -12413,6 +12642,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s81 = rep.get("stage81_realhw_antidust_shutteropen_focusmag_expstdadj_usbtether_hil")
         s82 = rep.get("stage82_realhw_audioreclevel_4chmon_touchfunc_remoteshoot_ptp_hil")
         s83 = rep.get("stage83_realhw_lockop_shocklesswb_awblock_focusassist_recoverdb_hil")
+        s84 = rep.get("stage84_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -13285,6 +13515,18 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s83, dict)
             else ""
         )
+        s84_str = (
+            f" | realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_hil={s84['source_mode']}("
+            f"m84={s84['milestone']},"
+            f"af={s84['fx3_af_transition_speed_steps']}/{s84['fx3_af_subj_shift_sens_steps']}/c{s84['fx3_focus_area_colors_count']},"
+            f"z={s84['fx3_zebra_level_options_count']}/h{s84['fx3_hdmi_zebra_leaked_pixels']},"
+            f"mrk={s84['fx3_marker_active_aspect_ratios_count']}/h{s84['fx3_hdmi_marker_leaked_pixels']},"
+            f"pro={s84['fx3_pro_camera_path_hits']},"
+            f"s1_wr={s84['slot1_data_sector_writes']},"
+            f"emmc_wr={s84['emmc_nflasha_write_count']})"
+            if isinstance(s84, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -13293,7 +13535,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str}{s58_str}{s59_str}{s60_str}{s61_str}{s62_str}{s63_str}{s64_str}{s65_str}{s66_str}{s67_str}{s68_str}{s69_str}{s70_str}{s71_str}{s72_str}{s73_str}{s74_str}{s75_str}{s76_str}{s77_str}{s78_str}{s79_str}{s80_str}{s81_str}{s82_str}{s83_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str}{s58_str}{s59_str}{s60_str}{s61_str}{s62_str}{s63_str}{s64_str}{s65_str}{s66_str}{s67_str}{s68_str}{s69_str}{s70_str}{s71_str}{s72_str}{s73_str}{s74_str}{s75_str}{s76_str}{s77_str}{s78_str}{s79_str}{s80_str}{s81_str}{s82_str}{s83_str}{s84_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

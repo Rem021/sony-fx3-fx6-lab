@@ -1368,6 +1368,7 @@ def build_stage_a_overlay(
     enable_r54: bool = False,
     enable_r55: bool = False,
     enable_r56: bool = False,
+    enable_r57: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1396,6 +1397,7 @@ def build_stage_a_overlay(
     r54_mode: str = "diff_set_still_mv_shutter_angle_big6",
     r55_mode: str = "auto_slow_6locks_hdmi_reccontrol_big6",
     r56_mode: str = "apsc_s35_hd_face_eye_af_version_big6",
+    r57_mode: str = "release_wo_card_lens_audio_meter_copyright_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1723,7 +1725,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r55_mode: {r55_mode}")
     if enable_r56 and r56_mode not in ("apsc_s35_hd_face_eye_af_version_big6", "apsc_4k_raw_cleanhdmi_bodydata_flash_guard", "camreset_face_memory_initialize_h0_h3_big6"):
         raise ValueError(f"Unsupported r56_mode: {r56_mode}")
-    if enable_r56 and r56_mode == "apsc_4k_raw_cleanhdmi_bodydata_flash_guard":
+    if enable_r57 and r57_mode not in ("release_wo_card_lens_audio_meter_copyright_big6", "cardless_movie_v1_audio_spoof_copyright_guard", "camreset_copyright_disp_init_h0_h3_big6"):
+        raise ValueError(f"Unsupported r57_mode: {r57_mode}")
+    if enable_r57 and r57_mode == "cardless_movie_v1_audio_spoof_copyright_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r57_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r57-cardless-v1-copyright-guard > /dev/console 2>&1\n"
+            "fx6_r57_cv_rc=$?\n"
+            "echo FX6_R57_CARDLESS_V1_COPYRIGHT_RC=$fx6_r57_cv_rc\n"
+            "echo FX6_R57_CARDLESS_V1_COPYRIGHT_EXIT rc=$fx6_r57_cv_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r57_early_hook, 1)
+    elif enable_r56 and r56_mode == "apsc_4k_raw_cleanhdmi_bodydata_flash_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -3838,6 +3856,62 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r57_meta: Optional[Dict[str, Any]] = None
+    if enable_r57:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r57_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r57"] = (
+            (
+                f"stage_r57=1\nr57_mode={r57_mode}\n"
+                f"release_wo_card_still_lens_pl_bench=1\n"
+                f"audio_5item_disp_meter_v2_not_v1=1\n"
+                f"copyright_46char_still_exif_hygiene=1\n"
+                f"milestone_30th_realhw_90th_live=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r57_meta = {
+            "r57_mode": r57_mode,
+            "release_wo_card_menu_path": "MENU -> Shooting -> [Shutter/Silent] -> [Release w/o Card]",
+            "release_wo_card_modes": ["Enable", "Disable"],
+            "release_wo_card_default": "Enable",
+            "release_wo_card_still_only_scope": True,
+            "release_wo_card_movie_blocked_when_empty": True,
+            "release_wo_lens_menu_path": "MENU -> Shooting -> [Shutter/Silent] -> [Release w/o Lens]",
+            "release_wo_lens_modes": ["Enable", "Disable"],
+            "release_wo_lens_default": "Enable",
+            "release_wo_lens_scope": ["Still", "Movie", "S&Q"],
+            "audio_recording_menu_path": "MENU -> Shooting -> [Audio Recording]",
+            "audio_recording_ver702_exact_5_items": [
+                "Audio Recording",
+                "Audio Rec Level",
+                "Audio Out Timing",
+                "Wind Noise Reduct.",
+                "Shoe Audio Set.",
+            ],
+            "audio_rec_level_range": [0, 31],
+            "audio_rec_level_default": 26,
+            "audio_out_timing_modes": ["Live", "Lip Sync"],
+            "disp_screen_disp_set_menu_path": "MENU -> Setup -> [Operation Customize] -> [DISP (Screen Disp) Set]",
+            "audio_meter_governed_by_disp_set": True,
+            "audio_meter_sq_suppressed": True,
+            "legacy_v1_audio_level_menu_spoof_events": 0,
+            "copyright_info_menu_path": "MENU -> Shooting -> [File] -> [Copyright Info]",
+            "write_copyright_info_default": "Off",
+            "copyright_max_ascii_chars": 46,
+            "copyright_still_exif_only": True,
+            "photographer_copyright_pii_leaked_bytes": 0,
+            "movie_copyright_tag_writes": 0,
+            "copyright_survives_camera_settings_reset": True,
+            "copyright_cleared_by_initialize_only": True,
+            "disp_set_survives_camera_settings_reset": True,
+            "slot1_vault_read_only": True,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -3887,6 +3961,7 @@ def build_stage_a_overlay(
         "r54_enabled": enable_r54,
         "r55_enabled": enable_r55,
         "r56_enabled": enable_r56,
+        "r57_enabled": enable_r57,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -3974,6 +4049,8 @@ def build_stage_a_overlay(
         stage_a_meta["r55"] = r55_meta
     if r56_meta is not None:
         stage_a_meta["r56"] = r56_meta
+    if r57_meta is not None:
+        stage_a_meta["r57"] = r57_meta
     return replacements, additions, stage_a_meta
 
 
@@ -4319,6 +4396,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R54_",
         "FX6_R55_",
         "FX6_R56_",
+        "FX6_R57_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -4620,6 +4698,15 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r56_lang: Optional[Dict[str, Any]] = None
     last_r56_bridge: Optional[Dict[str, Any]] = None
     r56_apsc_4k_bodydata_rc: Optional[int] = None
+    last_r57_release_audio_copyright_init: Optional[Dict[str, Any]] = None
+    last_r57_release_wo_card_lens_bridge: Optional[Dict[str, Any]] = None
+    last_r57_audio_v2_disp_meter_bridge: Optional[Dict[str, Any]] = None
+    last_r57_copyright_46char_hygiene_bridge: Optional[Dict[str, Any]] = None
+    last_r57_cardless_v1_copyright_guard: Optional[Dict[str, Any]] = None
+    last_r57_camreset_copyright_disp_h0_h3: Optional[Dict[str, Any]] = None
+    last_r57_lang: Optional[Dict[str, Any]] = None
+    last_r57_bridge: Optional[Dict[str, Any]] = None
+    r57_cardless_v1_copyright_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -5305,6 +5392,26 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R56_APSC_4K_BODYDATA_RC"), int):
                 r56_apsc_4k_bodydata_rc = kv["FX6_R56_APSC_4K_BODYDATA_RC"]
+        elif "FX6_R57_RELEASE_AUDIO_COPYRIGHT_INIT " in line:
+            last_r57_release_audio_copyright_init = _parse_kv_ints(line.split("FX6_R57_RELEASE_AUDIO_COPYRIGHT_INIT ", 1)[1])
+        elif "FX6_R57_RELEASE_WO_CARD_LENS_BRIDGE " in line:
+            last_r57_release_wo_card_lens_bridge = _parse_kv_ints(line.split("FX6_R57_RELEASE_WO_CARD_LENS_BRIDGE ", 1)[1])
+        elif "FX6_R57_AUDIO_V2_DISP_METER_BRIDGE " in line:
+            last_r57_audio_v2_disp_meter_bridge = _parse_kv_ints(line.split("FX6_R57_AUDIO_V2_DISP_METER_BRIDGE ", 1)[1])
+        elif "FX6_R57_COPYRIGHT_46CHAR_HYGIENE_BRIDGE " in line:
+            last_r57_copyright_46char_hygiene_bridge = _parse_kv_ints(line.split("FX6_R57_COPYRIGHT_46CHAR_HYGIENE_BRIDGE ", 1)[1])
+        elif "FX6_R57_CARDLESS_V1_COPYRIGHT_GUARD " in line:
+            last_r57_cardless_v1_copyright_guard = _parse_kv_ints(line.split("FX6_R57_CARDLESS_V1_COPYRIGHT_GUARD ", 1)[1])
+        elif "FX6_R57_CAMRESET_COPYRIGHT_DISP_H0_H3 " in line:
+            last_r57_camreset_copyright_disp_h0_h3 = _parse_kv_ints(line.split("FX6_R57_CAMRESET_COPYRIGHT_DISP_H0_H3 ", 1)[1])
+        elif "FX6_R57_LANG_TELEMETRY " in line:
+            last_r57_lang = _parse_kv_ints(line.split("FX6_R57_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R57_BRIDGE " in line:
+            last_r57_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R57_BRIDGE ", 1)[1])
+        elif "FX6_R57_CARDLESS_V1_COPYRIGHT_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R57_CARDLESS_V1_COPYRIGHT_RC"), int):
+                r57_cardless_v1_copyright_rc = kv["FX6_R57_CARDLESS_V1_COPYRIGHT_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -6072,6 +6179,32 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r56_bridge or {},
         }
 
+    r57_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r57_release_audio_copyright_init,
+            last_r57_release_wo_card_lens_bridge,
+            last_r57_audio_v2_disp_meter_bridge,
+            last_r57_copyright_46char_hygiene_bridge,
+            last_r57_cardless_v1_copyright_guard,
+            last_r57_camreset_copyright_disp_h0_h3,
+            last_r57_lang,
+            last_r57_bridge,
+        )
+    ):
+        r57_telemetry = {
+            "cardless_v1_copyright_rc": r57_cardless_v1_copyright_rc,
+            "release_audio_copyright_init": last_r57_release_audio_copyright_init or {},
+            "release_wo_card_lens_bridge": last_r57_release_wo_card_lens_bridge or {},
+            "audio_v2_disp_meter_bridge": last_r57_audio_v2_disp_meter_bridge or {},
+            "copyright_46char_hygiene_bridge": last_r57_copyright_46char_hygiene_bridge or {},
+            "cardless_v1_copyright_guard": last_r57_cardless_v1_copyright_guard or {},
+            "camreset_copyright_disp_h0_h3": last_r57_camreset_copyright_disp_h0_h3 or {},
+            "lang_telemetry": last_r57_lang or {},
+            "stage_b_bridge": last_r57_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -6125,6 +6258,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r54_telemetry": r54_telemetry,
         "r55_telemetry": r55_telemetry,
         "r56_telemetry": r56_telemetry,
+        "r57_telemetry": r57_telemetry,
     }
 
 
@@ -6238,6 +6372,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r55"
     if args.round >= 56:
         tmp_prefix = "fx6-r56"
+    if args.round >= 57:
+        tmp_prefix = "fx6-r57"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -6304,8 +6440,12 @@ def run_once(args: argparse.Namespace) -> int:
         r54_mode = getattr(args, "r54_mode", "diff_set_still_mv_shutter_angle_big6")
         r55_mode = getattr(args, "r55_mode", "auto_slow_6locks_hdmi_reccontrol_big6")
         r56_mode = getattr(args, "r56_mode", "apsc_s35_hd_face_eye_af_version_big6")
+        r57_mode = getattr(args, "r57_mode", "release_wo_card_lens_audio_meter_copyright_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone30thRealHw90thRunWave43ReleaseWoCardLensDispAudioMeterV2Copyright46Char+r57_mode={r57_mode}+lang={lang})"
+                if args.round >= 57
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone29thRealHw87thRunWave42ApscS354kLockoutFaceEyeAfRightLeftEyeVersionReadOnly+r56_mode={r56_mode}+lang={lang})"
                 if args.round >= 56
                 else (
@@ -6494,6 +6634,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -6576,6 +6717,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r55_mode=r55_mode,
                 enable_r56=(args.round >= 56),
                 r56_mode=r56_mode,
+                enable_r57=(args.round >= 57),
+                r57_mode=r57_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -6738,6 +6881,7 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R52_EXP_STEP_SHUTTER_ANGLE_EXIT" in txt
                     or "FX6_R53_MYMENU_6OPS_EXIT" in txt
                     or "FX6_R56_APSC_4K_BODYDATA_EXIT" in txt
+                    or "FX6_R57_CARDLESS_V1_COPYRIGHT_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -6802,6 +6946,7 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R52_EXP_STEP_SHUTTER_ANGLE_EXIT" in serial_text
             or "FX6_R53_MYMENU_6OPS_EXIT" in serial_text
             or "FX6_R56_APSC_4K_BODYDATA_EXIT" in serial_text
+            or "FX6_R57_CARDLESS_V1_COPYRIGHT_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -6881,6 +7026,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r54_mode": r54_mode if args.round >= 54 else None,
             "r55_mode": r55_mode if args.round >= 55 else None,
             "r56_mode": r56_mode if args.round >= 56 else None,
+            "r57_mode": r57_mode if args.round >= 57 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -6944,6 +7090,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r54_telemetry": milestones.get("r54_telemetry") if args.round >= 54 else None,
             "r55_telemetry": milestones.get("r55_telemetry") if args.round >= 55 else None,
             "r56_telemetry": milestones.get("r56_telemetry") if args.round >= 56 else None,
+            "r57_telemetry": milestones.get("r57_telemetry") if args.round >= 57 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -7002,7 +7149,8 @@ def main() -> int:
     # r53_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53]
     # r54_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54]
     # r55_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56], required=True)
+    # r56_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -7033,6 +7181,7 @@ def main() -> int:
     ap.add_argument("--r54-mode", type=str, choices=["diff_set_still_mv_shutter_angle_big6", "custom_key_dial_iso_ei_camset_persist_guard", "remain_shoot_evf_less_integrated_big6"], default="diff_set_still_mv_shutter_angle_big6")
     ap.add_argument("--r55-mode", type=str, choices=["auto_slow_6locks_hdmi_reccontrol_big6", "prerequisite_lockout_injection_guard", "camreset_vs_initialize_h0_h3_integrated_big6"], default="auto_slow_6locks_hdmi_reccontrol_big6")
     ap.add_argument("--r56-mode", type=str, choices=["apsc_s35_hd_face_eye_af_version_big6", "apsc_4k_raw_cleanhdmi_bodydata_flash_guard", "camreset_face_memory_initialize_h0_h3_big6"], default="apsc_s35_hd_face_eye_af_version_big6")
+    ap.add_argument("--r57-mode", type=str, choices=["release_wo_card_lens_audio_meter_copyright_big6", "cardless_movie_v1_audio_spoof_copyright_guard", "camreset_copyright_disp_init_h0_h3_big6"], default="release_wo_card_lens_audio_meter_copyright_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

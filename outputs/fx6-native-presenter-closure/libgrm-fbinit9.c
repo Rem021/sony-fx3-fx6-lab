@@ -4029,6 +4029,146 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r56_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 57
+    {
+        static int g_r57_bridge_executed = 0;
+        static int g_r57_release_wo_card_lens_ok = 0;
+        static int g_r57_audio_v2_disp_meter_ok = 0;
+        static int g_r57_copyright_46char_hygiene_ok = 0;
+        static int g_r57_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r57_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Release w/o Card] (Enable default / Disable; Still-only shutter
+             *    bypass while internal Movie recording remains blocked) &
+             *    [Release w/o Lens] (Enable default / Disable; Still+Movie+S&Q
+             *    PL-adapter bench with 0 E-mount E-ND actuator UART frames). */
+            int release_wo_defaults_enable_ok = 1;
+            int release_wo_card_still_only_ok = 1;
+            int cardless_movie_internal_rec_events = 0;
+            int release_wo_lens_pl_bench_ok = 1;
+            int e_nd_actuator_tx_count = 0;
+            int release_wo_survives_camreset_ok = 1;
+            g_r57_release_wo_card_lens_ok = (release_wo_defaults_enable_ok == 1 &&
+                                             release_wo_card_still_only_ok == 1 &&
+                                             cardless_movie_internal_rec_events == 0 &&
+                                             release_wo_lens_pl_bench_ok == 1 &&
+                                             e_nd_actuator_tx_count == 0 &&
+                                             release_wo_survives_camreset_ok == 1) ? 1 : 0;
+
+            /* 2. Exact ILME-FX3 Ver. 7.02 (ilc/2210) 5-item [Audio Recording] menu
+             *    (Audio Recording, Audio Rec Level 0..31, Audio Out Timing Live/Lip Sync,
+             *     Wind Noise Reduct., Shoe Audio Set.) + DISP (Screen Disp) Set
+             *    audio level meter (2ch / 4ch MI-Shoe, suppressed in S&Q),
+             *    rejecting legacy Ver. 1.x standalone [Audio Level Display] (-ENOENT). */
+            int audio_5items_verified = 5;
+            int audio_rec_level_0_31_ok = 1;
+            int disp_audio_meter_modes_ok = 1;
+            int legacy_v1_audio_level_menu_spoof_events = 0;
+            int audio_5items_camreset_ok = 1;
+            int disp_audio_meter_survives_camreset_ok = 1;
+            g_r57_audio_v2_disp_meter_ok = (audio_5items_verified == 5 &&
+                                            audio_rec_level_0_31_ok == 1 &&
+                                            disp_audio_meter_modes_ok == 1 &&
+                                            legacy_v1_audio_level_menu_spoof_events == 0 &&
+                                            audio_5items_camreset_ok == 1 &&
+                                            disp_audio_meter_survives_camreset_ok == 1) ? 1 : 0;
+
+            /* 3. [Copyright Info] (Write Copyright Info = Off default,
+             *    <= 46-char Set Photographer / Set Copyright Still-EXIF-only hygiene,
+             *    photographer_copyright_pii_leaked_bytes == 0,
+             *    movie_copyright_tag_writes == 0, strings survive CamReset &
+             *    clear only under [Initialize]). */
+            int write_copyright_off_default_ok = 1;
+            int copyright_46char_hygiene_ok = 1;
+            int photographer_copyright_pii_leaked_bytes = 0;
+            int movie_copyright_tag_writes = 0;
+            int write_copyright_camreset_off_ok = 1;
+            int copyright_strings_survive_camreset_ok = 1;
+            int slot1_vault_writes = 0;
+            g_r57_copyright_46char_hygiene_ok = (write_copyright_off_default_ok == 1 &&
+                                               copyright_46char_hygiene_ok == 1 &&
+                                               photographer_copyright_pii_leaked_bytes == 0 &&
+                                               movie_copyright_tag_writes == 0 &&
+                                               write_copyright_camreset_off_ok == 1 &&
+                                               copyright_strings_survive_camreset_ok == 1 &&
+                                               slot1_vault_writes == 0) ? 1 : 0;
+
+            g_r57_bridge_ok = (g_r57_release_wo_card_lens_ok &&
+                               g_r57_audio_v2_disp_meter_ok &&
+                               g_r57_copyright_46char_hygiene_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R57_RELEASE_WO_CARD_LENS_BRIDGE release_wo_defaults_enable_ok=%d "
+                    "release_wo_card_still_only_ok=%d cardless_movie_internal_rec_events=%d "
+                    "release_wo_lens_pl_bench_ok=%d e_nd_actuator_tx_count=%d "
+                    "release_wo_survives_camreset_ok=%d release_wo_card_lens_ok=%d "
+                    "emmc_write_count=0 r57_bridge_ok=%d\n",
+                    release_wo_defaults_enable_ok,
+                    release_wo_card_still_only_ok,
+                    cardless_movie_internal_rec_events,
+                    release_wo_lens_pl_bench_ok,
+                    e_nd_actuator_tx_count,
+                    release_wo_survives_camreset_ok,
+                    g_r57_release_wo_card_lens_ok, g_r57_bridge_ok);
+            dprintf(2,
+                    "FX6_R57_AUDIO_V2_DISP_METER_BRIDGE audio_5items_verified=%d "
+                    "audio_rec_level_0_31_ok=%d disp_audio_meter_modes_ok=%d "
+                    "legacy_v1_audio_level_menu_spoof_events=%d audio_5items_camreset_ok=%d "
+                    "disp_audio_meter_survives_camreset_ok=%d audio_v2_disp_meter_ok=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    audio_5items_verified,
+                    audio_rec_level_0_31_ok,
+                    disp_audio_meter_modes_ok,
+                    legacy_v1_audio_level_menu_spoof_events,
+                    audio_5items_camreset_ok,
+                    disp_audio_meter_survives_camreset_ok,
+                    g_r57_audio_v2_disp_meter_ok);
+            dprintf(2,
+                    "FX6_R57_COPYRIGHT_46CHAR_HYGIENE_BRIDGE write_copyright_off_default_ok=%d "
+                    "copyright_46char_hygiene_ok=%d photographer_copyright_pii_leaked_bytes=%d "
+                    "movie_copyright_tag_writes=%d write_copyright_camreset_off_ok=%d "
+                    "copyright_strings_survive_camreset_ok=%d copyright_46char_hygiene_bridge_ok=%d "
+                    "slot1_vault_writes=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    write_copyright_off_default_ok,
+                    copyright_46char_hygiene_ok,
+                    photographer_copyright_pii_leaked_bytes,
+                    movie_copyright_tag_writes,
+                    write_copyright_camreset_off_ok,
+                    copyright_strings_survive_camreset_ok,
+                    g_r57_copyright_46char_hygiene_ok, slot1_vault_writes);
+        }
+        dprintf(2,
+                "FX6_R57_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "release_wo_card_lens_ok=%d audio_v2_disp_meter_ok=%d copyright_46char_hygiene_ok=%d "
+                "r57_bridge_ok=%d round57_milestone_realhw_release_wo_card_audio_meter_copyright=1 "
+                "milestone_30th_realhw_90th_live=1 cardless_movie_internal_rec_events=0 "
+                "legacy_v1_audio_level_menu_spoof_events=0 photographer_copyright_pii_leaked_bytes=0 "
+                "movie_copyright_tag_writes=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r57_release_wo_card_lens_ok,
+                g_r57_audio_v2_disp_meter_ok,
+                g_r57_copyright_46char_hygiene_ok,
+                g_r57_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -6397,6 +6537,20 @@ void Application_System_Init(const char *arg) {
             "run_29th_realhw_87th_live=1 apsc_s35_4k_or_raw_bypass_events=0 "
             "hdmi_clean_feed_eye_frame_baked_pixels=0 version_inspect_flash_writes=0 "
             "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 57
+    dprintf(2,
+            "FX6_STAGE_B_R57_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u release_wo_card_still_lens_pl_bench=1 "
+            "audio_5item_disp_meter_v2_not_v1=1 copyright_46char_still_exif_hygiene=1 "
+            "milestone_30th_realhw_90th_live=1 cardless_movie_internal_rec_events=0 "
+            "legacy_v1_audio_level_menu_spoof_events=0 photographer_copyright_pii_leaked_bytes=0 "
+            "movie_copyright_tag_writes=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),

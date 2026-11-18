@@ -212,6 +212,11 @@ from .realhw_touch_shooting_disp_evf_ael_flash_interval_pb_and_130gate_guard imp
     evaluate_g129_touch_shooting_and_disp_evf_absence_guard,
     evaluate_g130_ael_wireless_flash_and_interval_pb_edit_guard,
 )
+from .realhw_dial_customize_mydial_fn_liveview_lut_embed_and_132gate_guard import (
+    evaluate_132gate_preflight,
+    evaluate_g131_dial_customize_mydial_fn_guard,
+    evaluate_g132_liveview_grid_lut_embed_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -3992,6 +3997,95 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_130.add_argument("--json", action="store_true", help="Emit structured JSON report")
     p_130.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 155. verify-dial-customize-mydial-fn-guard
+    p_g131 = sub.add_parser(
+        "verify-dial-customize-mydial-fn-guard",
+        aliases=["verify-g131-dial-customize-mydial-fn"],
+        help="Verify Gate G131: [Dial Customize] 5-Item Ver. 7.02 Truth (Initialize-only vs legacy Dial Setup / Dial-Wheel Lock), Physical 3-Dial Topology vs Dormant 4-Dial Rear Dial L/R (EOPNOTSUPP=95), [My Dial Settings] 1..3 Shared NVRAM & Lock Override, and [Fn Menu Settings] 12 Still + 12 Movie Split vs FX6 Multi Function Dial / Direct Menu",
+    )
+    p_g131.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g131.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g131.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g131.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g131.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 156. verify-liveview-grid-lut-embed-guard
+    p_g132 = sub.add_parser(
+        "verify-liveview-grid-lut-embed-guard",
+        aliases=["verify-g132-liveview-grid-lut-embed"],
+        help="Verify Gate G132: Still-only [Live View Display Set.] 3-Item + Bright Monitoring Override, [Grid Line] Clean-HDMI Isolation vs FX6 Marker Safety Zone 80/90/92.5/95%% & Dormant Custom PNG Grids, and [Manage User LUTs] (709(800%%) / .cube O_RDONLY) vs [Embed LUT File] (SD/SDHC Off Lock) vs PPLUT1..4 + Slot-1 Tier-0 Vault Firewall (EROFS=30 / EBUSY=16)",
+    )
+    p_g132.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g132.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g132.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g132.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g132.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 157. verify-132-gates
+    p_132 = sub.add_parser(
+        "verify-132-gates",
+        help="Run Phase 303 Wave-56 Unified 132-Gate Master Safety Preflight Engine (G01..G132)",
+    )
+    p_132.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_132.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_132.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G132 gates can be rehearsed offline",
+    )
+    p_132.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_132.add_argument("--summary", action="store_true", help="Emit concise summary output")
 
     args = parser.parse_args(argv)
 
@@ -8320,6 +8414,155 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_130_gates_verified if args.dry_run_simulated else report.offline_127_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-dial-customize-mydial-fn-guard",
+        "verify-g131-dial-customize-mydial-fn",
+    ):
+        verdict, res = evaluate_g131_dial_customize_mydial_fn_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "dial_customize_5_items": res.dial_customize_mydial_fn_guard["dial_customize_5_items"],
+                    "fx3_physical_3_dials": res.dial_customize_mydial_fn_guard["fx3_physical_3_dials"],
+                    "effective_av_tv_rotate": res.dial_customize_mydial_fn_guard["effective_av_tv_rotate"],
+                    "effective_function_ring": res.dial_customize_mydial_fn_guard["effective_function_ring"],
+                    "effective_lock_operation_parts": res.dial_customize_mydial_fn_guard["effective_lock_operation_parts"],
+                    "fn_menu_still_slots": res.dial_customize_mydial_fn_guard["fn_menu_still_slots"],
+                    "fn_menu_movie_slots": res.dial_customize_mydial_fn_guard["fn_menu_movie_slots"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.dial_customize_mydial_fn_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} dials={len(guard['fx3_physical_3_dials'])} "
+                f"av_tv={guard['effective_av_tv_rotate']} ring={guard['effective_function_ring']} "
+                f"lock={guard['effective_lock_operation_parts']} "
+                f"fn_split={guard['fn_menu_still_slots']}+{guard['fn_menu_movie_slots']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-liveview-grid-lut-embed-guard",
+        "verify-g132-liveview-grid-lut-embed",
+    ):
+        verdict, res = evaluate_g132_liveview_grid_lut_embed_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_live_view_display": res.liveview_grid_lut_embed_guard["effective_live_view_display"],
+                    "effective_exposure_effect": res.liveview_grid_lut_embed_guard["effective_exposure_effect"],
+                    "effective_frame_rate_low_limit": res.liveview_grid_lut_embed_guard["effective_frame_rate_low_limit"],
+                    "effective_grid_line_display": res.liveview_grid_lut_embed_guard["effective_grid_line_display"],
+                    "effective_grid_line_type": res.liveview_grid_lut_embed_guard["effective_grid_line_type"],
+                    "effective_select_lut": res.liveview_grid_lut_embed_guard["effective_select_lut"],
+                    "effective_embed_lut_file": res.liveview_grid_lut_embed_guard["effective_embed_lut_file"],
+                    "slot_1_contains_tier0_vault": res.liveview_grid_lut_embed_guard["slot_1_contains_tier0_vault"],
+                    "slot1_data_sector_writes": res.liveview_grid_lut_embed_guard["slot1_data_sector_writes"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.liveview_grid_lut_embed_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} lv={guard['effective_live_view_display']} "
+                f"fr_low={guard['effective_frame_rate_low_limit']} "
+                f"grid={guard['effective_grid_line_display']} "
+                f"lut={guard['effective_select_lut']} embed={guard['effective_embed_lut_file']} "
+                f"slot1_vault={guard['slot_1_contains_tier0_vault']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-132-gates":
+        report = evaluate_132gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g131_status": report.g131_result["status"],
+                    "g132_status": report.g132_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/132 "
+                f"g131_to_g132_all_passed={report.g131_to_g132_all_passed} "
+                f"all_132_gates_verified={report.all_132_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_132_gates_verified if args.dry_run_simulated else report.offline_129_gates_verified
         return 0 if ok else 1
 
     return 2

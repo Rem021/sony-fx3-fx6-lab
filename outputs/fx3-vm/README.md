@@ -2748,5 +2748,45 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 360（Stage 80 — `80/80` Full-Board VM Co-Emulation Stages!）：Wave-70 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` `[Peaking Display]` 纯净 HDMI/对焦放大共存与休眠 `[Focus Map]` vs FX6 `B&W`/零 `Type/Freq`、Ver. 2.00+ 移除 `[Audio Level Display]` 与仅内麦 `[Wind Noise Reduct.]`（零 `Auto`）vs `XLR-H1` `LOW CUT` & FX6 `CH1..4 Wind Filter`、`[USB Power Supply]` 强制 `NP-FZ100`/开机不充电/`DC-C1 >=65W/5A` vs FX6 无电池 `19.5V DC IN`，以及 `[NTSC/PAL Selector]` `J1/U2/CE` SKU 门控/`AVF_INFO` 创建更新与 `Slot 1 EROFS=30` vs FX6 `Frequency` 缩略图过滤 HIL
+
+[`realhw_peaking_cleanhdmi_audiometer_wind_usbpd_dcc1_ntscpal_avfinfo_coemulator.py`](realhw_peaking_cleanhdmi_audiometer_wind_usbpd_dcc1_ntscpal_avfinfo_coemulator.py)（Schema `phase360_realhw_peaking_cleanhdmi_audiometer_wind_usbpd_dcc1_ntscpal_avfinfo_coemulation_v1`）作为 **Stage 80（`80/80` Full-Board VM Co-Emulation Stages!）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase360` / `--skip-stage80` / `--no-include-stage80` 跳过，支持 `--include-stage80`），严格遵循 `os.O_RDONLY` + `<= 4096 B` 受界 `os.pread`、`physical_device_writes == 0`、`emmc_writes_authorized == False`、`cross_model_flash_authorized == False`、`slot1_data_sector_writes == 0`、`rf_nvs_mutation_bytes == 0`、`emmc_nflasha_write_count == 0` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 16 供体 `O_RDONLY` + 受界 `os.pread` 审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **16 份真实供体**（`4` 份 FX3 四语 `_f` `.uxc` + `4` 份基础 `.uxc` + `2` 份 `_g` `.uxc` + `libUsbBusPower.so` `48,232 B` + `2` 份 FX6 英文 `.uxc` + `FX3 appFw.so`、`FX3 BK4`、`FX6 appFw.so`），并在无供体 CI 环境（`work_root is None`、`FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1`、`FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__` 或 `--clean-room`）无缝回退至 `CLEAN_ROOM_SYNTHETIC`（`raw_firmware_bytes_leaked == 0`）。
+2. **Sub-Model 80A — `[Peaking Display]` 纯净 HDMI / `[Focus Magnifier]` 共存 / 休眠 `[Focus Map]` vs FX6 `Monitoring > Peaking` `B&W` 与零 `Peaking Type`/`Peaking Frequency`**：
+   - FX3 `Shooting -> [Focus]` 暴露 3 项抗 Reset（`Not available`，仅 `[Initialize]` 还原）菜单：`[Peaking Display]`（`_f 0x6280`，默认 `Off`/`On`，后拨盘右键默认 `Peaking Display Select`）、`[Peaking Level]`（`High`/`Mid` 默认/`Low`）与 `[Peaking Color]`（`Red`/`Yellow`/`Blue`/`White` 默认）。
+   - 无论 `[HDMI Info. Display]` 或 `RAW Output = On`（`G83`）如何配置，峰值线 **永不通过 HDMI 输出**（`hdmi_peaking_leaked_pixels == 0`），且与 `[Focus Magnifier]`（`x1.0`/`x4.0`/`x8.0`，零 `PRM_HAITA_*peaking*focus_mag*` 互斥）严格共存；机内 `[Focus Map]` 100% 休眠（`EOPNOTSUPP=95`），仅无线 `Monitor & Control Ver. 2.1.0+` 远端透传（USB 下不可用 `EOPNOTSUPP=95`）。对比 FX6 `Monitoring > Peaking`（仅 `Setting`/`Level`/`Color: B&W/Red/Yellow/Blue` 于 VF/LCD，`SDI`/`HDMI` `Output Display` 独立），并证伪 FX6 `Peaking Type`/`Peaking Frequency`（`0` 个 `appFw.so` 活跃符号，仅休眠 `ns2 0x4501/0x4503` 字符）。
+3. **Sub-Model 80B — Ver. 2.00+ 移除 `[Audio Level Display]` 与仅内麦 `[Wind Noise Reduct.]`（零 `Auto`）vs `XLR-H1` `LOW CUT` & FX6 `CH1..4 Wind Filter`**：
+   - FX3 Ver. 2.00..7.02 永久移除独立 `[Audio Level Display]` 菜单项（`_f 0x7a36` Ver. 1.x 遗留 `EOPNOTSUPP=95`），音表改由 `DISP`/`BIG6` 自动渲染（`2ch`/`4ch`，`S&Q` 下显示 `0ch` 隐藏），Remote SDK 仅只读（`EACCES=13`）。
+   - `Shooting -> [Audio Recording]` 保留精确 5 项 `Can be reset` 参数：`[Audio Recording]`、`[Audio Rec Level]`（`0..31` 默认 `26`，校验原厂错字符号 `adj_audio_rec_level_defult`，内置永久不可关限幅器）、`[Audio Out Timing]`（`Live`/`Lip Sync`）、`[Wind Noise Reduct.]`（仅 `Off`/`On`，`Auto`/`On Advanced` 返回 `EOPNOTSUPP=95`，仅作用于机身立体声内麦并经 `MSG_ID_INFRABB_ADF_IN_SET_LOW_CUT` 生效，外接 `3.5mm MIC`/`XLR-H1`/`S&Q` 旁路）与 `[Shoe Audio Set.]`；优先级 `3.5mm MIC > XLR-H1 DIGITAL (Off/100Hz/300Hz 硬件 LOW CUT) > Internal Mic`。对比 FX6 `CH1..CH4 Wind Filter`（无手柄物理 `LOW CUT` 开关）、6 档 `Limiter Mode` 与 `Audio Level Meter`。
+4. **Sub-Model 80C — `[USB Power Supply]` 强制 `NP-FZ100` / 开机只供电不充电 / `DC-C1 >=65W/5A` vs FX6 无电池 `19.5V DC IN`**：
+   - FX3 `Setup -> [USB] -> [USB Power Supply]`（默认 `On`，抗 Reset）仅限 USB Type-C 口（`base 0xe931` 拒绝 `Multi/Micro-USB` `ENODEV=19`）；`9V/3A 27W+` 稳定供电 vs `5V/1.5A LOW` 缓降耗电。
+   - `libUsbBusPower.so`（`48,232 B`）+ `VAL_battery_inserted_BATTERY_IS_{INSERTED,NOT_INSERTED}` 强制必须插入 `NP-FZ100`（零无电池启动，热拔瞬断掉电 `EIO=5`）；开机供电**绝不充电**（`CHARGE` 灭，旁路 `[Power Save Start Time]` `G82`），关机充电严格限定 `10°C..30°C`（超窗 `CHARGE` 快闪故障 `EACCES=13`）；`DC-C1` 假电池耦合器须 `>=65W` PD + `5A` 线材并锁定屏幕亮度 Max。对比 FX6 `19.5V DC IN`（`18.0V..20.5V`，`16.5V`/`15.5V` 两级低压告警，支持真无电池启动、`DC IN -> BP-U` 无缝接管、带电热插拔重启防护，USB-C 不支持机身供电 `EOPNOTSUPP=95`）。
+5. **Sub-Model 80D — `[NTSC/PAL Selector]` `J1/U2/CE` SKU 门控、`AVF_INFO` 影像库与 `Slot 1 EROFS=30` vs FX6 `Frequency` 缩略图过滤**：
+   - `lib::backup_get_ntsc_pal_selector_dst`：`J1`（日本）锁定 `[NTSC/PAL Selector]` 仅 `NTSC`（切 `PAL` 返回 `EOPNOTSUPP=95`）；`U2`（默认 `NTSC` -> 切换显示 `Running on PAL.` `base 0xe0b6`）；`CE/CEC/E33`（默认 `PAL` -> 切换显示 `Running on NTSC.` `base 0xe77a`）；Ver. 7.02 仅 XAVC 切换冷重启且**不强制格式化存储卡**，屏蔽跨区回放（`_g 0x61ca`/`0x644e`）并触发 `AVF_INFO` `Create?`（`0xea23`）/ `Update?`（`0xea24`）/ `[Recover Image DB]`（`0xe918`，`<10%` 或 `<6400mV` 电量拒绝 `EAGAIN=11`），Tier-0 `Slot 1` 返回硬 `EROFS=30`（`slot1_data_sector_writes == 0`）。对比 FX6 `Project > Rec Format > Frequency`（`59.94/50/29.97/25/24/23.98Hz` 重启提示 `ns2 0x40ab`，`Thumbnail` 按频率自动隐藏非匹配片段）。
+
+### Phase 360 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 360 Stage 80（80/80 Full-Board VM Co-Emulation Stages!）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_peaking_cleanhdmi_audiometer_wind_usbpd_dcc1_ntscpal_avfinfo_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_peaking_cleanhdmi_audiometer_wind_usbpd_dcc1_ntscpal_avfinfo_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_peaking_cleanhdmi_audiometer_wind_usbpd_dcc1_ntscpal_avfinfo_coemulator.py --self-test --json
+
+# 2. 全板 80 阶段（Stage 1..80, 80/80 Full-Board VM Co-Emulation Stages!）统一校验（支持 --include-stage80 与 --skip-phase360 / --skip-stage80 / --no-include-stage80）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage80 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 360 四模式 100 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_peaking_cleanhdmi_audiometer_wind_usbpd_dcc1_ntscpal_avfinfo_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_peaking_cleanhdmi_audiometer_wind_usbpd_dcc1_ntscpal_avfinfo_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_peaking_cleanhdmi_audiometer_wind_usbpd_dcc1_ntscpal_avfinfo_coemulator.py -v
+FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_peaking_cleanhdmi_audiometer_wind_usbpd_dcc1_ntscpal_avfinfo_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+
+
 
 

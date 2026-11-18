@@ -1342,6 +1342,29 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-reco
   /usr/bin/python3 -B -m fx3_recovery verify-60pillar-recovery --force-clean-room --json
 ```
 
+## Phase 340（Pillar 61 / `61/61` 统一恢复总检里程碑）：Wave-59 `BIG6` Home 主屏幕与手动 `Framing Settings` vs 休眠 `Auto Framing` / 静态 `Interval Shoot Func.` 9,999 张 `Slot-1 EROFS=30` vs FX6 `Interval Rec` / `Time Code Make/Run` `Regenerate` 强锁 `Rec Run` 与 HDMI `REC Control` / `Access Authen.` SSH+PTP-IP + `Fan Control` 4 档无 `Max` 与 `Slot-1` 金库防火墙（`verify-61pillar-recovery` / `verify-pillar61-recovery` / `verify-pillar61-big6-framing-interval-tc-auth-fan-vault`）
+
+- **[`realhw_61pillar_big6_home_framing_interval_tc_make_auth_fan_vault_verifier.py`](fx3_recovery/realhw_61pillar_big6_home_framing_interval_tc_make_auth_fan_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-59）落地 **Phase 340 Pillar 61（`61/61`）** 并将全套恢复总检正式推进至 **`61/61`（`VERIFIED_61OF61_PILLAR_RECOVERY_MASTER`）**（`< 1.5s` 快速 CLI 预算、`< 4.0s` 标称、`< 6.0s` 并发上限，保持 `verify-22..60pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OVERALL_READY_FOR_HARDWARE_ATTACH = False`、`CROSS_MODEL_FLASH_AUTHORIZED = False`、`P340_AIRPLANE_MODE_FORCED_ON = True`、`P340_RF_PACKETS_TRANSMITTED = 0`、`P340_SLOT1_FORMAT_HARD_LOCKED = True`、`P340_SLOT1_VAULT_EROFS_EOPNOTSUPP_ENFORCED = True`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` 与 `FX6 6.01` 共 **17 项** Wave-59 供体（`< 2.0s` 并发宽容预算且显式防护 `work_root is None` 以避免无供体 CI 触发 `NoneType / str` 异常），并在 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时安全回退至 `CLEAN_ROOM_SYNTHETIC`（同时将旧版 `30..49` 支柱过紧的 `0.15s` donor 读取壁钟阈值统一放宽至 `2.0s` 以消除并发 QEMU 重 I/O 抖动）：
+  - **Sub-Pillar 61A（`HOME (BIG6)` 主屏幕与 `Mode Settings=Fixed/Variable` 前置条件 + 手动 `Framing Settings` vs 休眠 `Auto Framing` + 静态 `Interval Shoot Func.` 9,999 张 `Slot-1 EROFS=30` 防火墙 vs FX6 `Interval Rec`）**：锁定 FX3 Ver. 7.00/7.02 `HOME` (`BIG6`) 激活硬前提 `Mode Settings = Fixed/Variable`（`BKID_APP_setting_fps_fixed_variable_select`）、动态 6 格矩阵（`FPS`、`ISO / Base ISO + EI` 经 `update_big6_item_iso_ei`、`Shutter Speed/Angle`、`Home (Lower Left)` 默认 `Aperture` vs 纯手动元数据 `ND Filter` 且无物理 `e-ND` 硬件、`Picture Profile / Select LUT`、`White Balance`）及只读边缘状态条；锁定手动 `[Framing Settings]`（`Framing`、`Recording/Streaming` `Full`/`Crop`、`HDMI` `Crop`/`Full`、`TYPE_EFRAMING_SUPPORT_TYPE_MANUAL_ONLY`、强关 `APS-C S35` 及录制/流传输/`>=100p` 锁定）vs 100% 休眠 AI `[Auto Framing]`（`FX3 appFw.so` `AUTO_FRAMING_AFR` / `PTZAUTOFRAMING_*` 均 `0` 命中 -> `EOPNOTSUPP=95`）；锁定仅生成静态照片的 `[Interval Shoot Func.]`（7 项全部支持 `Camera Settings Reset`，`Shutter Type in Interval = Electronic Shutter` 独立默认，`1..9,999` 张与 `BULB -> 30"` 回退 -> `Slot-1` Tier-0 触发 `EROFS=30` 阻断 `DCIM/` 与 `AVF_INFO` 写卡爆发）对照 `FX6 Project > Interval Rec`（单 XAVC MXF、`1s..24h`、`Pre-Lighting` 与互斥列表）。
+  - **Sub-Pillar 61B（不可 Reset `[Time Code Make/Run]` + HDMI `[REC Control]` + Ver. 7.00+ `[Access Authen.]` SSH/TLS + `[Fan Control]` 4 档零 `Max` 对照 + 零射频 / `Slot-1 EROFS=30` 金库防火墙）**：锁定不可随 `Camera Settings Reset` 复位的 `[Time Code Make]`（`Preset`/`Regenerate`：`Regenerate` 在 `Simult. Recording` 下读 Slot 1 且无视选项强按 `Rec Run` 运行；`VMC-BNCM1` LTC `EXT-LK` 要求 `Preset + Free Run`）与 HDMI `[REC Control]`（强制要求 `[Time Code Output] = On`，实测 `Rec. Media = On` 与 `Off(HDMI Only)` 含 RAW 下均有效，`S&Q`/Streaming 受限）及 `[4ch Audio Output]` 对照 `FX6 TC_MAKE_CLOCK` 与 `SDI/HDMI Remote I/F` vs `Parallel Rec`；锁定 Ver. 7.00+ `[Access Authen.]`（基于 `SSH` `MSGID_SSHD_START_CMD` + `PTP-IP` 与 Host Key Fingerprint，`WEP`/`WPA-PSK`/`IPsec` 已移除，`HTTP_DIGEST`/`BASIC_AUTH`/`HTTPS` 均为 `0` 命中，`[Import Root Certificate]` 仅用于 FTPS/RTMPS/Cloud 出站 TLS）；锁定 `[Fan Control]`（FX3 `Auto`/`Minimum`/`Off in Rec`/`Always Off` 4 档 vs FX6 `Auto`/`Minimum`/`Off in Rec` 3 档且 `Always Off` 休眠，**FX3 与 FX6 均不存在 `Max` 选项！**）与 `[Auto Power OFF Temp.]`（`Standard`/`High` 约 `90..120` 分钟，低温烫伤/三脚架警告）、Zero-RF（`Airplane Mode=On` 经 `Reset Network Set.` 保留，USB-LAN `cdc_ncm`）与 `Slot-1 EROFS=30` 金库防火墙 + `Backup.bin H0 == H3`（`16/16`）。
+  - **统一 `61/61` 恢复总检聚合器与 CLI（`evaluate_realhw_61pillar_recovery_master` / `evaluate_61pillar_recovery_master` / `verify-61pillar-recovery` / `verify-pillar61-recovery` / `verify-pillar61-big6-framing-interval-tc-auth-fan-vault`）**：
+    - 并发调用 `evaluate_realhw_60pillar_recovery_master`（`Pillars 1..60`）+ **Pillar 61**（`run_pillar61_standalone_suite`），在 `< 1.5s` 内汇总产出 **`61/61`（`VERIFIED_61OF61_PILLAR_RECOVERY_MASTER`）** 并自动接入 Milestone 311 / 324 最高支柱发现接口；[`tests/test_realhw_61pillar_big6_home_framing_interval_tc_make_auth_fan_vault_verifier.py`](tests/test_realhw_61pillar_big6_home_framing_interval_tc_make_auth_fan_vault_verifier.py) 提供 **>= 96 项**四模单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-pillar61-big6-framing-interval-tc-auth-fan-vault --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-pillar61-recovery --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-61pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-61pillar-recovery --force-clean-room --json
+```
+
+
 
 
 

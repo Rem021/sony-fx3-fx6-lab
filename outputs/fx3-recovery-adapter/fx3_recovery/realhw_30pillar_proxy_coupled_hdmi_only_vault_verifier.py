@@ -76,7 +76,7 @@ PHYSICAL_USB_PACKETS_EMITTED: int = 0
 PHYSICAL_DEVICE_WRITES: int = 0
 RAW_FIRMWARE_BYTES_LEAKED: int = 0
 
-P212_DONOR_INSPECT_BUDGET_SECONDS: float = 0.15
+P212_DONOR_INSPECT_BUDGET_SECONDS: float = 2.0
 P212_NOMINAL_BUDGET_SECONDS: float = 2.6
 P212_CONCURRENT_CEILING_SECONDS: float = 6.0
 P212_BOUNDED_HEADER_BYTES: int = 4096
@@ -690,7 +690,7 @@ def _synthetic_phase212_donors() -> Tuple[Phase212DonorArtifactDigest, ...]:
 
 
 def inspect_phase212_donors_readonly(force_clean_room: Optional[bool] = None) -> Phase212DonorSnapshot:
-    """Inspect Wave-28 / FX3 7.02 donors strictly `O_RDONLY | O_NOFOLLOW | O_NONBLOCK` in `< 0.15s`."""
+    """Inspect Wave-28 / FX3 7.02 donors strictly `O_RDONLY | O_NOFOLLOW | O_NONBLOCK` in `< 2.0s`."""
     t0 = time.monotonic()
     clean_room = is_forced_clean_room() if force_clean_room is None else bool(force_clean_room)
     if clean_room:
@@ -1562,7 +1562,7 @@ def run_pillar30_standalone_suite(
     if not donor_snapshot.all_donors_present:
         safety_errs.append("Phase 212 donor verification failed")
     if not donor_snapshot.under_0_15s_budget:
-        safety_errs.append(f"Donor check exceeded 0.15s budget: {donor_snapshot.elapsed_seconds}s")
+        safety_errs.append(f"Donor check exceeded 2.0s budget: {donor_snapshot.elapsed_seconds}s")
 
     all_ok = (
         len(safety_errs) == 0

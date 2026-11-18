@@ -151,6 +151,12 @@ from .realhw_49pillar_usb_mode_hdmi_info_protect_network_reset_vault_verifier im
     verify_49pillar_recovery_suite,
     verify_usb_mode_hdmi_info_protect_network_reset_and_vault,
 )
+from .realhw_50pillar_pp_scinetone_creativelook_dro_wb_metering_vault_verifier import (
+    P287_ENV_CLEAN_ROOM_TEST,
+    run_pillar50_standalone_suite,
+    verify_50pillar_recovery_suite,
+    verify_pp_scinetone_creativelook_dro_wb_metering_and_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -520,6 +526,14 @@ def main():
     p282_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p282_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p282_master.add_argument('--out', help='optional exclusive new output directory for 49pillar-recovery-master-report.json')
+    p287_p50 = sub.add_parser('verify-pp-scinetone-wb-metering-vault', help='Phase 287 Pillar 50 Picture Profile PP11 S-Cinetone default vs Creative Look / DRO / Log Shooting mutual exclusivity, PPLUT 1080p clamp & PP1..11 reset trap, White Balance 2500K..9900K / Custom 1..3 CAMSET exclusion / Cine EI guard & Metering 6-mode / De-Squeeze Face Priority / Base ISO invariance vault verifier')
+    p287_p50.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p287_p50.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p287_p50.add_argument('--out', help='optional exclusive new output directory for pillar50-pp-scinetone-wb-metering-vault-report.json')
+    p287_master = sub.add_parser('verify-50pillar-recovery', help='Phase 287 milestone unified 50/50 real-hardware recovery master aggregator (Pillars 1..49 + Pillar 50)')
+    p287_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p287_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p287_master.add_argument('--out', help='optional exclusive new output directory for 50pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -3122,6 +3136,91 @@ def main():
                     f"network_reset_zero_rf_violations={report.network_reset_zero_rf_violations} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_49pillar_sha256={report.master_49pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-pp-scinetone-wb-metering-vault':
+            report = run_pillar50_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'pillar50-pp-scinetone-wb-metering-vault-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_50a={report.pillar_50a_pp_scinetone_creativelook_dro_vault.scenarios_passed}/{report.pillar_50a_pp_scinetone_creativelook_dro_vault.scenarios_total} "
+                    f"pillar_50b={report.pillar_50b_wb_camset_exclusion_metering_vault.scenarios_passed}/{report.pillar_50b_wb_camset_exclusion_metering_vault.scenarios_total} "
+                    f"double_log_or_lockout_bypass_events={report.double_log_or_lockout_bypass_events} "
+                    f"pplut_1080p_clamp_bypass_events={report.pplut_1080p_clamp_bypass_events} "
+                    f"pp_internal_reset_trap_violations={report.pp_internal_reset_trap_violations} "
+                    f"fx6_baselook_confusion_events={report.fx6_baselook_confusion_events} "
+                    f"wb_cine_ei_awb_or_custom_setup_trap_events={report.wb_cine_ei_awb_or_custom_setup_trap_events} "
+                    f"wb_custom_camset_exclusion_drift_events={report.wb_custom_camset_exclusion_drift_events} "
+                    f"metering_desqueeze_or_cine_ei_base_iso_drift_events={report.metering_desqueeze_or_cine_ei_base_iso_drift_events} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-50pillar-recovery':
+            report = verify_50pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'50pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_2_2s_fast_cli_budget={report.under_2_2s_fast_cli_budget} "
+                    f"under_2_5s_fast_cli_budget={report.under_2_5s_fast_cli_budget} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar50_a={report.pillar50_a_pp_scinetone_creativelook_dro_vault.scenarios_passed}/{report.pillar50_a_pp_scinetone_creativelook_dro_vault.scenarios_total} "
+                    f"pillar50_b={report.pillar50_b_wb_camset_exclusion_metering_vault.scenarios_passed}/{report.pillar50_b_wb_camset_exclusion_metering_vault.scenarios_total} "
+                    f"double_log_or_lockout_bypass_events={report.double_log_or_lockout_bypass_events} "
+                    f"pplut_1080p_clamp_bypass_events={report.pplut_1080p_clamp_bypass_events} "
+                    f"pp_internal_reset_trap_violations={report.pp_internal_reset_trap_violations} "
+                    f"fx6_baselook_confusion_events={report.fx6_baselook_confusion_events} "
+                    f"wb_cine_ei_awb_or_custom_setup_trap_events={report.wb_cine_ei_awb_or_custom_setup_trap_events} "
+                    f"wb_custom_camset_exclusion_drift_events={report.wb_custom_camset_exclusion_drift_events} "
+                    f"metering_desqueeze_or_cine_ei_base_iso_drift_events={report.metering_desqueeze_or_cine_ei_base_iso_drift_events} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_50pillar_sha256={report.master_50pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

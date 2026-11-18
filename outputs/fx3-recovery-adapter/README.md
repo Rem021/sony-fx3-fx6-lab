@@ -1109,6 +1109,28 @@ FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-
   python3 -B -m fx3_recovery verify-49pillar-recovery --clean-room --json
 ```
 
+## Phase 287（`50/50` 里程碑！Pillar 50 & 统一 `verify-50pillar-recovery` 总检）：`[Picture Profile]` `PP11`（`S-Cinetone`）默认与 `[Creative Look]` / `[DRO]` / `[Log Shooting]` 互斥锁、`PPLUT` `1080p` 钳位与 `PP1..11` 非可复位内部参数陷阱、`[White Balance]` `Custom 1..3` `CAMSET` 排除与 `[Metering Mode]` `De-Squeeze` / `Cine EI` Base ISO 被动 `M.M.` 不变性验证（`verify-50pillar-recovery` / `verify-pp-scinetone-wb-metering-vault`）
+
+- **[`realhw_50pillar_pp_scinetone_creativelook_dro_wb_metering_vault_verifier.py`](fx3_recovery/realhw_50pillar_pp_scinetone_creativelook_dro_wb_metering_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-48）落地 **Phase 287 Pillar 50（`50/50` 恢复支柱总里程碑！）** 并将全套恢复总检推进至 **`50/50`（`VERIFIED_50OF50_PILLAR_RECOVERY_MASTER`）**（`< 2.2s` CLI 快速预算、`< 4.0s` 标称、`< 6.0s` 并发上限，保持 `verify-22..49pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`P287_SLOT1_FORMAT_HARD_LOCKED = True`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` 与 `FX6 6.01` 共 **11 项** Wave-48 供体（`< 0.20s`，CI 下放宽至 `< 0.50s`），并支持 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动切换 `CLEAN_ROOM_SYNTHETIC` 洁净室模式：
+  - **支柱 50A — `[Picture Profile]` 开箱 `PP11`（`S-Cinetone`）默认与 `[Creative Look]`（10 组预设 + `CREATIVE_BOX_1..6`）/ `[D-Range Optimizer]` / `[Log Shooting]` 互斥锁、`PPLUT1..4` 电影独占与 `1080p` HDMI 钳位、`PP1..11` 非可复位内部参数陷阱及与 FX6 `Base Look` 区分（`6/6`）**：
+    - `P50A1`..`P50A6`：精确核验原厂 `ILME-FX3` `[Picture Profile]`（`BKID_APP_setting_picture_profile`，`_f.uxc` `0x6830`）默认 **`PP11`（`S-Cinetone`，`0x67ab`/`0x6e61`）** 同效作用于 Movie 与 Still（除非勾选 `[Different Set for Still/Mv]` `0x62ee`）；一旦 `[Picture Profile] != Off`，`[Creative Look]`（`0x6823`：`ST`..`SE` + `CREATIVE_BOX_1..6`）强制锁为 `'-'` 且 `[D-Range Optimizer]`（`0xe89c`：`Auto`/`Lv1..Lv5`）强制锁为 `Off`；`[Log Shooting]`（`Flexible ISO`/`Cine EI Quick`/`Cine EI`，`0x6020`）同时锁死 `PP = Off`、`CL = '-'` 与 `DRO = Off`（杜绝双 Log 畸变），而 `PPLUT1..4` 仅限 Movie 域并将内录下 HDMI 输出钳位在 `1080p`；显式校验 **关键恢复复位陷阱**：`[Camera Settings Reset]` 与 `[Initialize]` **均不会**复位 `PP1..PP11` 内部参数或 `[Different Set for Still/Mv]` 勾选标记，完整基线恢复必须执行逐配置 `[PPx] -> [Reset]`（`PPLUT1..4` 随 `Initialize` 复位）及跨机型与 `ILME-FX6` `Base Look`（`Custom` 下场景文件 1 默认 `S-Cinetone`，`Cine EI` 锁 `S-Log3`）划界。
+  - **支柱 50B — `[White Balance]`（`2500K..9900K` / `A7..B7` / `G7..M7`、`Custom 1..3` 随 `Reset` 留存但被 `Slot-1` `CAMSET` 排除、`Cine EI` AWB 封锁、`Custom Setup` 错误陷阱、非可复位 `Shutter AWB Lock`）与 `[Metering Mode]`（6 模式、`De-Squeeze != Off` 强锁 `Face Priority = Off`、非可复位 `AEL w/ Shutter`、`Cine EI` Base ISO `800`/`12800` 被动 `M.M.` 不变性）（`6/6`）**：
+    - `P50B1`..`P50B6`：精确校验 `[White Balance]`（`0xe5d4`）`Auto` 默认（`Priority Set in AWB` `0x67a7`）、`2500K..9900K`（`100K` 步进 / `75` 档 + `A7..B7`/`G7..M7`）、`Custom 1..3`（`0xe79d..0xe79c`）、非可复位 `Shutter AWB Lock`（`Off` `0x66db`）与 `Shockless WB`（`1 (Fast)` `0x62fe`）；拦截 `Cine EI` / `Cine EI Quick` 下 `Auto`/`Underwater Auto` WB 及 `Log Shooting != Off` 或 `S-Log3`/`PPLUT1..4` 下执行 `[Custom Setup]` 的错误陷阱；核验 **`Custom 1..3` 白平衡记忆值跨 `[Camera Settings Reset]` 留存却无法由 `Slot 1` `Save/Load Settings`（`CAMSET`）保存或恢复**——强制以人工重标定替代虚假的 `CAMSET` 复原预期；完整覆盖 6 种 `[Metering Mode]`（`0xe5cf`）、`De-Squeeze != Off` 时强锁 `Face Priority in Multi Metering = Off`（`0x69c7`）、`Wide` 对焦区强锁 `Spot Metering Point = Center`（`0x625c`）、非可复位 `AEL w/ Shutter`（`0x669d`），以及 `Cine EI` Base ISO（`800`/`12800`）仅输出 `M.M.` 偏差而不变动传感器增益的不变性。
+  - **统一 `50/50` 恢复总检聚合器与 CLI（`evaluate_realhw_50pillar_recovery_master` / `evaluate_50pillar_recovery_master` / `verify-50pillar-recovery` / `verify-pp-scinetone-wb-metering-vault`）**：
+    - 并发调用 `evaluate_realhw_49pillar_recovery_master`（`Pillars 1..49`）+ **Pillar 50**（`run_pillar50_standalone_suite`），汇总产出 **`50/50`**（`VERIFIED_50OF50_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_50pillar_pp_scinetone_creativelook_dro_wb_metering_vault_verifier.py`](tests/test_realhw_50pillar_pp_scinetone_creativelook_dro_wb_metering_vault_verifier.py) 提供 `>= 74` 项双模（本地只读供体 + 洁净室 + 环境变量强制）单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-pp-scinetone-wb-metering-vault --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-50pillar-recovery --json
+
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-50pillar-recovery --clean-room --json
+```
+
+
 
 
 

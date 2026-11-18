@@ -277,6 +277,11 @@ from .realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_and_156gate_guar
     evaluate_g155_areadate_dst_grid_cleanhdmi_guard,
     evaluate_g156_saveload_camset_mishoe_genlock_guard,
 )
+from .realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_and_158gate_guard import (
+    evaluate_158gate_preflight,
+    evaluate_g157_pbmag_varshutter_ecs_guard,
+    evaluate_g158_wifi5ghz_nvs_ir_lanc_cec_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -5214,6 +5219,95 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_156.add_argument("--json", action="store_true", help="Emit structured JSON report")
     p_156.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 194. verify-pbmag-varshutter-ecs-guard
+    p_g157 = sub.add_parser(
+        "verify-pbmag-varshutter-ecs-guard",
+        aliases=["verify-g157-pbmag-varshutter-ecs", "verify-g157"],
+        help="Verify Gate G157: Still-Only Playback -> [Magnification] (maginify Typo & Zero Movie Zoom vs FX6 Thumbnail/Rec Review/Focus Mag) plus Still [Anti-flicker Shoot.] 100/120Hz vs Dormant [Var. Shutter] / [Anti-flicker Tv Scan] (EOPNOTSUPP=95) vs FX6 ECS 23.99..8000Hz Firewall",
+    )
+    p_g157.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g157.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g157.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g157.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g157.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 195. verify-wifi5ghz-nvs-ir-lanc-cec-guard
+    p_g158 = sub.add_parser(
+        "verify-wifi5ghz-nvs-ir-lanc-cec-guard",
+        aliases=["verify-g158-wifi5ghz-nvs-ir-lanc-cec", "verify-g158"],
+        help="Verify Gate G158: Wi-Fi WW728473/WW558244 5GHz SKU Lock + WPA2/WPA3-Only + [Airplane Mode] Survives [Reset Network Set.] + p12/p13 MS_RDONLY RF NVS Shield plus Front #5 [IR Remote Ctrl] (vs FX3A Removal) / [CTRL FOR HDMI] (ctrl_for_hmdi Default-On 41-Key CEC Bench Hijack Firewall) vs FX6 2.5mm LANC",
+    )
+    p_g158.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g158.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g158.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g158.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g158.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 196. verify-158-gates
+    p_158 = sub.add_parser(
+        "verify-158-gates",
+        help="Run Phase 363 (Task H457, Wave-69) Unified 158-Gate Milestone Master Safety Preflight Engine (G01..G158)",
+    )
+    p_158.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_158.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_158.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G158 gates can be rehearsed offline",
+    )
+    p_158.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_158.add_argument("--summary", action="store_true", help="Emit concise summary output")
 
     args = parser.parse_args(argv)
 
@@ -11593,6 +11687,164 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_156_gates_verified if args.dry_run_simulated else report.offline_153_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-pbmag-varshutter-ecs-guard",
+        "verify-g157-pbmag-varshutter-ecs",
+        "verify-g157",
+    ):
+        verdict, res = evaluate_g157_pbmag_varshutter_ecs_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.pbmag_varshutter_ecs_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_playback_media_kind": guard["effective_playback_media_kind"],
+                    "effective_mag_factor": guard["effective_mag_factor"],
+                    "movie_playback_zoom_supported": guard["movie_playback_zoom_supported"],
+                    "effective_anti_flicker_shoot": guard["effective_anti_flicker_shoot"],
+                    "fx3_var_shutter_exposed": guard["fx3_var_shutter_exposed"],
+                    "fx3_anti_flicker_tv_scan_exposed": guard["fx3_anti_flicker_tv_scan_exposed"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.pbmag_varshutter_ecs_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} pb_kind={guard['effective_playback_media_kind']} "
+                f"mag={guard['effective_mag_factor']} "
+                f"movie_zoom={guard['movie_playback_zoom_supported']} "
+                f"af_shoot={guard['effective_anti_flicker_shoot']} "
+                f"var_shutter={guard['fx3_var_shutter_exposed']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-wifi5ghz-nvs-ir-lanc-cec-guard",
+        "verify-g158-wifi5ghz-nvs-ir-lanc-cec",
+        "verify-g158",
+    ):
+        verdict, res = evaluate_g158_wifi5ghz_nvs_ir_lanc_cec_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.wifi5ghz_nvs_ir_lanc_cec_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "wifi_sku_code": guard["wifi_sku_code"],
+                    "effective_wifi_band": guard["effective_wifi_band"],
+                    "effective_airplane_mode": guard["effective_airplane_mode"],
+                    "p12_p13_ms_readonly_enforced": guard["p12_p13_ms_readonly_enforced"],
+                    "rf_nvs_mutation_bytes": guard["rf_nvs_mutation_bytes"],
+                    "effective_ctrl_for_hdmi": guard["effective_ctrl_for_hdmi"],
+                    "cec_key_events_count": guard["cec_key_events_count"],
+                    "cec_rec_event_count": guard["cec_rec_event_count"],
+                    "fx3_physical_lanc_25mm_present": guard["fx3_physical_lanc_25mm_present"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.wifi5ghz_nvs_ir_lanc_cec_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} sku={guard['wifi_sku_code']} "
+                f"band={guard['effective_wifi_band']} "
+                f"p12_p13_ro={guard['p12_p13_ms_readonly_enforced']} "
+                f"ctrl_hdmi={guard['effective_ctrl_for_hdmi']} "
+                f"cec_keys={guard['cec_key_events_count']} "
+                f"fx3_lanc={guard['fx3_physical_lanc_25mm_present']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-158-gates":
+        report = evaluate_158gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "schema_version": report.schema_version,
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g157_status": report.g157_result["status"],
+                    "g158_status": report.g158_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/158 "
+                f"g157_to_g158_all_passed={report.g157_to_g158_all_passed} "
+                f"all_158_gates_verified={report.all_158_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_158_gates_verified if args.dry_run_simulated else report.offline_155_gates_verified
         return 0 if ok else 1
 
     return 2

@@ -1130,6 +1130,28 @@ FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-
   python3 -B -m fx3_recovery verify-50pillar-recovery --clean-room --json
 ```
 
+## Phase 292（Pillar 51 / `51/51` 统一恢复总检）：静态 `[Image Quality Settings]`（`Compressed`/`Uncompressed` `.ARW` 禁用休眠 `Lossless Comp`、`HEIF 4:2:0/4:2:2` `.HIF`、`[HLG Still Image]` `BT.2100`）、`[Color Space]` `AdobeRGB` `_DSC` 与禁止 `_` 开头前缀、`[Shutter Type]` 精确 2 选（无 `Auto`）+ 5 锁矩阵/`1/250 s` 闪光同步、`[Long Exposure NR]`/`[High ISO NR]`/`[Drive Mode]` `10 fps` 连拍与 `Slot-1` 金库写入防火墙（`verify-51pillar-recovery` / `verify-pillar51-raw-heif-colorspace-shuttertype-vault`）
+
+- **[`realhw_51pillar_raw_heif_colorspace_shuttertype_nr_drive_vault_verifier.py`](fx3_recovery/realhw_51pillar_raw_heif_colorspace_shuttertype_nr_drive_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-49）落地 **Phase 292 Pillar 51（`51/51`）** 并将全套恢复总检推进至 **`51/51`（`VERIFIED_51OF51_PILLAR_RECOVERY_MASTER`）**（`< 1.2s` 快速 CLI 预算、`< 4.0s` 标称、`< 6.0s` 并发上限，保持 `verify-22..50pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OVERALL_READY_FOR_HARDWARE_ATTACH = False`、`P292_SLOT1_FORMAT_HARD_LOCKED = True`、`P292_SLOT1_VAULT_EROFS_EBUSY_ENFORCED = True`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` 与 `FX6 6.01` 共 **17 项** Wave-49 供体（`< 0.20s`，CI 下放宽至 `< 0.50s`），并支持 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动切换 `CLEAN_ROOM_SYNTHETIC` 洁净室模式：
+  - **支柱 51A — 静态 `[Image Quality Settings]`（`Compressed`/`Uncompressed` 14-bit `.ARW` 禁用休眠 `Lossless Comp`、`JPEG/HEIF Switch` `4:2:0/4:2:2` 10-bit `.HIF`、`[HLG Still Image]` `BT.2100` 覆盖与 4 项锁定 vs 无静态管线 `ILME-FX6`）、`[Color Space]` `AdobeRGB` `_DSC` 前缀、`[Set File Name]` 禁 `_` 开头与 `Slot-1` 金库写入防火墙（`6/6`）**：
+    - `P51A1`..`P51A6`：精确建模 `MENU -> Shooting -> [Image Quality/Rec]`：`ILME-FX3 Ver. 7.02`（`12 MP IMX510`）仅暴露 `[Compressed]`（默认）与 `[Uncompressed]` 14-bit `.ARW`（fail-closed 拦截 `appFw.so`/`_f.uxc` `0x6b56` 休眠 `Lossless Comp` / `Lossless Comp (L)/(M)/(S)`），并与零 `DCIM`/`.ARW`/`.JPG`/`.HIF` 静态管线的 `ILME-FX6` 严格划界；`[HLG Still Image] = On` 强制校验 3 项前提（`HEIF(4:2:0/4:2:2)` + `File Format == HEIF` + `P/A/S/M` 且未被 `Reg. Custom Shoot Set` 覆盖），锁定 `Picture Profile`/`Creative Look`/`D-Range Optimizer`/`DRO Bracket`，迁移 ISO 边界并把有效 `[Color Space]` 覆盖为 `BT.2100`（`BT.2020`）；校验 `[Color Space]`（`sRGB` 默认 -> `DSC00001` vs `AdobeRGB` -> `_DSC0001`）与 `[Set File Name]`（`DSC` 默认、跨 `[Camera Settings Reset]` 留存、禁止首字符为 `_`）；强制 `Slot-1` Tier-0 金库 `EROFS`/`EBUSY` 写入防火墙阻断静态 `.ARW`/`.JPG`/`.HIF` 拍摄写入与 `Sort Recording` 定向写入，保持 Stage-B `/tmp/` 易失叠加（`BLKROSET=True`）及 `16/16` `H0 == H3` `Backup.bin` 不变性。
+  - **支柱 51B — `[Shutter Type]` 精确 2 选分割（`Mechanical Shutter` 默认 vs `Electronic Shutter`，无 `Auto`！）、`1/250 s` 闪光同步、电子/静音 5 锁矩阵、`[e-Front Curtain Shut.]`、`[Long Exposure NR]`/`[High ISO NR]` 与 `[Drive Mode]` `10 fps` 连拍/包围 `Slot-1` 金库防火墙（`6/6`）**：
+    - `P51B1`..`P51B6`：精确建模 `MENU -> Shooting -> [Shutter/Silent] -> [Shutter Type]`（`0x7aa9`）在 `ILME-FX3 Ver. 7.02` 仅暴露 **2 项**（`Mechanical Shutter` 默认 vs `Electronic Shutter`，fail-closed 拦截休眠 `Auto` / `BKID_APP_setting_still_shutter_type_anti_distortion_shutter`），并与 `mechanical_shutter = False` 的 `ILME-FX6` 划界；校验 `Electronic Shutter` 与 `Silent Mode = On`（可经 `Target Function Settings` 覆盖）触发 **5 锁矩阵**（禁用 ① `Flash` `1/250 s` 全幅同步、② `Long Exposure NR`、③ `e-Front Curtain Shut.` 默认 `On` 且跨 `Camera Settings Reset` 留存、④ `BULB`、⑤ `Anti-flicker Shoot.`）；校验 `[Long Exposure NR]`（`>= 1 s` 等长暗帧 `t_NR == t_shutter`，连拍/连续包围锁定为 `Off`，`Intelligent Auto` 强制 `On`）、`[High ISO NR]`（`Normal` 默认 / `Low` / `Off`，`RAW` 不可用且不作用于 `.ARW`）、`[Drive Mode]`（全部 8 模式，`Hi+` 在 `Compressed` RAW 下达 `10 fps`、在 `Uncompressed` RAW 或闪光时降速 `< 10 fps`、`Hi+` 非实时监看、`F > F11` 首张对焦锁定、`HLG Still = On` 禁用 `DRO Bracket`），以及 `Slot-1` 突发连拍/包围 `DCIM` 与 `AVF_INFO` ImageDB `EROFS`/`EBUSY` 金库防火墙。
+  - **统一 `51/51` 恢复总检聚合器与 CLI（`evaluate_realhw_51pillar_recovery_master` / `evaluate_51pillar_recovery_master` / `verify-51pillar-recovery` / `verify-pillar51-raw-heif-colorspace-shuttertype-vault`）**：
+    - 并发调用 `evaluate_realhw_50pillar_recovery_master`（`Pillars 1..50`）+ **Pillar 51**（`run_pillar51_standalone_suite`），汇总产出 **`51/51`**（`VERIFIED_51OF51_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_51pillar_raw_heif_colorspace_shuttertype_nr_drive_vault_verifier.py`](tests/test_realhw_51pillar_raw_heif_colorspace_shuttertype_nr_drive_vault_verifier.py) 提供 `>= 76` 项双模（本地只读供体 + 洁净室 + 环境变量强制）单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-pillar51-raw-heif-colorspace-shuttertype-vault --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-51pillar-recovery --json
+
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-51pillar-recovery --clean-room --json
+```
+
+
 
 
 

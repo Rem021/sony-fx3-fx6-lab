@@ -1,0 +1,49 @@
+# Phase 328 Engineering Closure Report — VM HIL Stage 69 (`69/69` Milestone: Wave-59 Ver. 7.00/7.02 `BIG6 HOME` 主屏幕 & `[Framing Settings]` vs 休眠 `[Auto Framing]`、`[Interval Shoot Func.]` & `Slot-1` `EROFS=30` Vault、`[Time Code Make]` / `[HDMI Output Settings]`，以及 `[Access Authen. Settings]` SSH/PTP-IP & `[Fan Control]` / `[Auto Power OFF Temp.]` HIL)
+
+- **日期**：`2026-11-17`
+- **任务 / 分支**：`H395`（`task_44cb80649a9b`） · `codex/h395-phase328-vm-stage69-big6-home-framing-interval-tc-ssh-fan-hil`
+- **硬件安全红线**：`physical_device_writes = 0`、`persistent_emmc_writes_authorized = False`、`hardware_live_attachment_authorized = False`、`overall_ready_for_hardware_attach = False`、`electronic_nd_commands_emitted = 0`、`rf_packets_transmitted = 0`、`slot1_data_sector_writes = 0`、`slot1_avf_info_mutated = False`、`raw_firmware_bytes_leaked = 0`
+
+---
+
+## 核心结论速览（Conclusion First）
+
+1. **Stage 69（`69/69` 里程碑）已完成实现、全板接入与多模校验**：
+   - 新增 [`realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h395-phase328-vm-stage69-big6-home-framing-interval-tc-ssh-fan-hil/outputs/fx3-vm/realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py)（Schema `realhw_big6_home_framing_interval_tc_ssh_fan_coemulator_v1`）及其 `94` 项四模式单测 [`test_realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h395-phase328-vm-stage69-big6-home-framing-interval-tc-ssh-fan-hil/outputs/fx3-vm/tests/test_realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py)，并接入 [`fx3_vm_coemulation_suite.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h395-phase328-vm-stage69-big6-home-framing-interval-tc-ssh-fan-hil/outputs/fx3-vm/fx3_vm_coemulation_suite.py) 作为 `stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil`；
+   - `make verify-milestone-311`（含 `FX3_FX6_FORCE_CLEAN_ROOM=1`）与 `make verify-milestone-295` 均自动推进至 **`vm_stages=69/69`** 且 **`leaked=0`**，`make clean-audit` 报告 `ALL GREEN`（`2.92s`）。
+2. **24 份真实供体 `os.O_RDONLY` + 受界 `os.pread`（`< 0.20s`）与 `work_root is None` 洁净室对等回退**：
+   - **`实测事实`**：通过 `os.open(..., os.O_RDONLY)` 与严格受界 `os.pread`（`<= 4096 B`）完成对 Wave-59 全部 **24 份真实供体**（`14` 份 UXC 四语/英文包 + `7` 份网络/SSH/LAN/BT `.so` 含 `libssh2.so.1.0.1` `216,784 B` SHA-256 `5dc7ca0687907bc6f4b7938000a934a7fa8cd8122c31950c682e5147964cee0c` + `FX3 appFw.so` `79,015,712 B`、`FX3 BK4` `2,229,740 B`、`FX6 appFw.so` `50,520,424 B`）的冷读字节与 SHA-256 锚定审计，并在 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 及无供体 CI（`work_root is None`）下零异常切换至 `CLEAN_ROOM_SYNTHETIC`（`raw_firmware_bytes_leaked = 0`）。
+3. **Wave-59 四大实机子系统工程闭环（严格区分 `实测事实` vs `推断`）**：
+   - **69A Ver. 7.00/7.02 `HOME`（`BIG6`）主屏幕 & `[Framing Settings]` vs 休眠 `[Auto Framing]`**：
+     - **`实测事实`**：FX3 `HOME`（`BIG6`）硬性依赖 `Ver. 7.00+` 与 `Shooting -> [Shooting Mode] -> [Mode Settings] = [Fixed/Variable]`（`BKID_APP_setting_fps_fixed_variable_select`），经 `[HOME]` 自定义键或 `[Swipe Down] = Open Home Screen`（需 `[Touch Operation] = On`）进入 4 态状态机（`OFF / ON_CURSOR_OFF / ON_CURSOR_ON / TEMP_OFF`）；`update_big6_item_iso_ei` 动态切换 `ISO` vs `Base ISO + EI`，`[Home (Lower Left)]` 默认 `Aperture` 而选 `ND Filter` 仅为**纯手动元数据记录**（FX3 无任何物理电子可变 ND 硬件，`electronic_nd_commands_emitted = 0`，对比 `ILME-FX6` Ver. 6.00+ 原生 `Home Screen` + 真实可变 e-ND `1/4..1/128 + Clear + Auto`）；边缘只读状态条绝不经 HDMI/SDI 输出（`hdmi_sdi_status_bar_leaked_pixels = 0`）。主动手动 `[Framing Settings]`（`Framing`、`Recording/Streaming` `Full/Crop`、`HDMI` `Crop/Full`）自动关闭 `APS-C S35` 并在 `>= 100p` 或录制/推流期间锁定；休眠 AI `[Auto Framing]` / `[Auto Framing Settings]` 在 `FX3 appFw.so` 固定为 `TYPE_EFRAMING_SUPPORT_TYPE_MANUAL_ONLY`（FX3 7.02 与 FX6 6.01 均 `0` 活跃实现，双端 fail-closed 返回 `EOPNOTSUPP=95`）。
+   - **69B 静态 `[Interval Shoot Func.]`（7 项全支持 Reset）& `Slot-1` Tier-0 Vault vs `FX6` `Interval Rec`**：
+     - **`实测事实`**：FX3 `Shooting -> [Drive Mode] -> [Interval Shoot Func.]` 严格为 **Still-only 静态照片序列**（不作机内电影封装），全部 7 项子参数（`Interval Shooting`、`Shooting Start Time` `1s..99m59s`、`Shooting Interval` `1s..60s`、`Number of Shots` `1..9999` 最高生成 `19,998` 份 `RAW+JPEG/HEIF` 文件、`AE Tracking Sensitivity`、独立默认 `Electronic Shutter` 的 `Shutter Type in Interval`、`Shoot Interval Priority`）均支持 `[Camera Settings Reset]` 重置；退出 `BULB` 回退至 `30"`，且在 `Intelligent Auto` / Movie / `S&Q` 下拒绝（`EOPNOTSUPP=95`）。对比 `ILME-FX6` `Project > Interval Rec`（机内直接封装单一 XAVC MXF，`1s..24h`、`1..24` 帧，与 `Simul Rec`、`Picture Cache Rec`、`S&Q Motion`、`Proxy Rec` 严格互斥返回 `EBUSY=16`，切换视频格式自动取消）。
+     - **`推断`**：由于单次 9,999 张拍摄会在 `DCIM/` 与 `AVF_INFO` 产生最高 `19,998` 次密集落盘改写，台架对任何指向 `Slot 1`（含 `Simult. Recording`）的间隔拍摄写入与触发一律执行 Tier-0 Vault 防火墙 fail-closed 拦截并返回 `EROFS=30` / `EBUSY=16`（`slot1_data_sector_writes = 0`，`slot1_avf_info_mutated = False`）。
+   - **69C `[Time Code Make/Run]`（`Regenerate` -> `Slot 1` & 强锁 `Rec Run`）& `[HDMI Output Settings]`**：
+     - **`实测事实`**：`[Time Code Make]`（`Preset` / `Regenerate`，`Initialize`-only 抗 `[Camera Settings Reset]`）在 `Regenerate` 且 `[Recording Media] = Simult. Recording` 时读取 `Slot 1` 末段片段并**强制覆盖为 `Rec Run`**（无视 `[Time Code Run]` 当前设置）；`VMC-BNCM1` `EXT-LK` 要求 `Preset + Free Run` 且未手动改写预设值；FX3 不支持 `Clock` 模式（`EOPNOTSUPP=95`，对比 FX6 `TC_MAKE_CLOCK` + BNC `TC IN/OUT`）。`[HDMI Output Settings]` 同属 `Initialize`-only，`[REC Control]` 需前置 `[Time Code Output] = On`，依据 `PRM_HAITA_setting_rec_control_*` 在 **`Rec. Media = On` 与 `Off(HDMI Only)` 两种模式下均生效**（S&Q 返回 `EOPNOTSUPP=95`，推流期间 `EBUSY=16`）；`[4ch Audio Output]` 严格在 `CH1/CH2` 与 `CH3/CH4` 间执行 2ch HDMI 上限（对比 FX6 `SDI/HDMI Remote I/F` 与 `Parallel Rec`）。
+   - **69D Ver. 7.00+ `[Access Authen. Settings]`（SSH + PTP-IP）& `[Fan Control]` / `[Auto Power OFF Temp.]`**：
+     - **`实测事实`**：Ver. 7.00+ `[Access Authen. Settings]` 默认 `On`（穿越 `[Camera Settings Reset]`，仅随 `[Reset Network Set.]` 或 `[Initialize]` 重置为 `On`），实证 `FX3 appFw.so` 仅通过 **SSH 隧道（`sshd_start` + Host Key Fingerprint + PTP-IP）** 实现认证与加密，`HTTP_DIGEST`、`BASIC_AUTH`、`HTTPS` 均为 `0` 命中（fail-closed `EOPNOTSUPP=95`）；已移除 `WEP`/`WPA-PSK`/`Security(IPsec)` 均返回 `EOPNOTSUPP=95`；`[Import Root Certificate]` 仅用于 `CLOUD/FTP/RTMP` 出站客户端 TLS 校验。`[Fan Control]`（`Initialize`-only）在 **FX3 暴露 4 档（`Auto` / `Minimum` / `Off in Rec` / `Always Off`），在 FX6 仅暴露 3 档（`Auto` / `Minimum` / `Off in Rec`，`Always Off` 休眠 -> `EOPNOTSUPP=95`）**，且**双机 `FAN_CONTROL_MAX` 均为 `0` 命中（`Max` 模式在双端均返回 `EOPNOTSUPP=95`）**；`[Auto Power OFF Temp.]`（`Standard` 30m vs `High` 90m + 低温烫伤警告，`Initialize`-only）仅在 FX3 暴露，FX6 `High` 返回 `EOPNOTSUPP=95`。
+     - **`推断`**：台架强制保持 `[Airplane Mode] = On` 穿越 `[Reset Network Set.]` 与 `[Initialize]`，锁死 `rf_packets_transmitted = 0` 与 `rf_nvs_mutation_bytes = 0`。
+
+---
+
+## 交付物与验证矩阵
+
+| 交付文件（严格域隔离 5/5） | 职责与核心结果 |
+| :--- | :--- |
+| [`realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h395-phase328-vm-stage69-big6-home-framing-interval-tc-ssh-fan-hil/outputs/fx3-vm/realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py) | Stage 69（Phase 328）主协同仿真器 + 24 供体 `os.O_RDONLY` + 受界 `os.pread`（`<=4096 B`）与 `work_root is None` 洁净室回退 |
+| [`fx3_vm_coemulation_suite.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h395-phase328-vm-stage69-big6-home-framing-interval-tc-ssh-fan-hil/outputs/fx3-vm/fx3_vm_coemulation_suite.py) | 接入 `stage69_realhw_big6_home_framing_interval_tc_ssh_fan_hil`（支持 `--include-stage69` / `--skip-stage69` / `--no-include-stage69` / `--skip-phase328`） |
+| [`test_realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h395-phase328-vm-stage69-big6-home-framing-interval-tc-ssh-fan-hil/outputs/fx3-vm/tests/test_realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py) | 94 项四模式单测（覆盖 24 供体、`BIG6 HOME` 6 格与零 e-ND、手动 Framing vs 休眠 Auto Framing、Interval 7 项 Reset & `Slot-1 EROFS=30`、TC Regenerate & HDMI `REC Control`、SSH/PTP-IP & 4/3 档 Fan 无 `Max` 及 Suite 篡改检测） |
+| [`outputs/fx3-vm/README.md`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h395-phase328-vm-stage69-big6-home-framing-interval-tc-ssh-fan-hil/outputs/fx3-vm/README.md) | 追加 Stage 69（`69/69`）架构说明与四模式 CLI/测试命令 |
+| [`reports/.../README.md`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h395-phase328-vm-stage69-big6-home-framing-interval-tc-ssh-fan-hil/reports/2026-11-17-phase328-vm-stage69-big6-home-framing-interval-tc-ssh-fan-hil/README.md) | 本工程结案报告（结论先行，严格区分 `实测事实` 与 `推断`） |
+
+### 实测验证记录
+
+| 验证项 | 模式 / 命令 | 实测结果 |
+| :--- | :--- | :--- |
+| Stage 69 独立三模式自检 | `realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py --self-test`（默认 / `FX3_CLEAN_ROOM_TEST=1` / `FX3_FX6_FORCE_CLEAN_ROOM=1`） | 均通过（`donors=24`, `end_tx=0`, `afram_byp=0`, `ivl_mux=0`, `fan_max=0`, `rf_tx=0`, `s1_wr=0`, `emmc_wr=0`, `leak=0`） |
+| Stage 69 单元测试 | `unittest test_realhw_big6_home_framing_interval_tc_ssh_fan_coemulator.py`（4 模式：正常 / `FX3_CLEAN_ROOM_TEST=1` / `FX3_FX6_FORCE_CLEAN_ROOM=1` / 无供体回退） | 正常模式 `94/94 OK`；其余 3 种洁净/无供体模式 `94` 项通过（`skipped=3` 仅本地供体对比用例，`0` 失败/`0` 错误） |
+| 全板 69 阶段 Suite CLI | `fx3_vm_coemulation_suite.py --summary`（`LOCAL_DONOR_O_RDONLY`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 与 `--skip-stage69`） | 均 `PASS`（`m69=69/69`, `end_tx=0`, `afram_byp=0`, `ivl_mux=0`, `fan_max=0`, `rf_tx=0`, `s1_wr=0`, `emmc_wr=0`） |
+| `outputs/fx3-vm` 全量发现 | `unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'`（双模） | 默认供体模式 `3725/3725 OK`（`222.72s`，`0` 失败/`0` 错误）；`FX3_FX6_FORCE_CLEAN_ROOM=1` `3725` 项通过（`195.60s`，`skipped=8`，`0` 失败/`0` 错误） |
+| Master Gate 里程碑校验 | `make verify-milestone-311`、`FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-milestone-311`、`make verify-milestone-295`、`FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-milestone-295` | 全部 `status=OK`，`vm_stages=69/69`，`e_nd_tx=0`，`rf_pkts=0`，`leaked=0` |
+| 工作区卫生审计 | `make clean-audit` | `ALL GREEN`（`2.92s`） |

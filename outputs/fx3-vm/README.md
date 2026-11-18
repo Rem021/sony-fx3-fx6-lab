@@ -2111,4 +2111,44 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 312 Stage 64（64/64 2^6 VM 阶段里程碑！）— 真实硬件 Wave-54：`[Switch V/H AF Area]` & 14 项 `[Focus Area Limit]`、5 模式 `[Exposure Std. Adjust]` 1/6 EV + Still `[Bracket Settings]`、`[Time Code Format]` DF/NDF 23.98p/24p/PAL 锁 & `[User Bit Time Rec]`，以及 `[Select Playback Media]=Slot 2` 反向 `[Copy]` (`Slot 2 -> Slot 1`) Tier-0 Vault 防火墙协同仿真台架
+
+[`realhw_switch_vh_af_stdadj_tcub_copy_slot_coemulator.py`](realhw_switch_vh_af_stdadj_tcub_copy_slot_coemulator.py) 作为 **Phase 312 Stage 64（`64/64` Power-of-Two $2^6$ 里程碑，Schema `realhw_switch_vh_af_stdadj_tcub_copy_slot_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase312_realhw_switch_vh_af_stdadj_tcub_copy_slot_hil=True` / `include_stage64=True` / `stage64_realhw_switch_vh_af_stdadj_tcub_copy_slot_hil=True`，支持显式 `--include-stage64` 以及 `--skip-phase312` / `--skip-stage64` / `--no-include-stage64` 跳过），在严格锁定 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`emmc_nflasha_write_count == 0`、`emmc_corruptions == 0`、`nop_count == 0`、`guest_code_modification_bytes == 0`、`physical_usb_packets_emitted == 0`、`switch_vh_af_non_afc_or_invalid_pitch_bypass_events == 0`、`focus_area_limit_lt2_or_dormant_alpha_exposed_events == 0`、`exposure_std_adj_reset_wipe_or_missing_5th_mode_events == 0`、`bracket_movie_sq_or_fx6_bypass_events == 0`、`tc_format_2398p_24p_or_pal_df_violation_events == 0`、**`fx3_has_bnc_tc_in_out_switch == False`**、**`fx6_has_bnc_tc_in_out_switch == True`**、**`slot1_data_sector_writes == 0`**、**`slot1_avf_info_mutated == False`**、`slot1_vault_copy_reverse_direction_mutation_bytes == 0`、**`reverse_copy_slot2_to_slot1_vault_bypass_events == 0`** 与 **`raw_firmware_bytes_leaked == 0`**（共 43 项红线不变量）的前提下完成五大闭环：
+
+1. **高速双模 17 供体 `O_RDONLY` 字节与 SHA-256 精确锚定审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 通过受界 `os.O_RDONLY`（`<= 4096 B`）核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **17 份真实供体**：FX3 `string_*_f.uxc` 4 语种（`en_f=373,820 B`、`sc_f=322,652 B`、`tc_f=324,148 B`、`ja_f=447,840 B`）、FX3 `string_*.uxc` 4 语种（`en=165,740 B`、`sc=149,064 B`、`tc=151,908 B`、`ja=235,040 B`）、FX3 `string_*_g.uxc` 4 语种（`en_g=69,600 B`、`sc_g=65,016 B`、`tc_g=65,244 B`、`ja_g=76,120 B`）、FX6 `string_english.uxc`（`118,208 B`）与 `string_english_2.uxc`（`118,676 B`），以及 `FX3 appFw.so`（`79,015,712 B`）、`FX3 BK4`（`2,229,740 B`）与 `FX6 appFw.so`（`50,520,424 B`）；支持 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 与 CLI `--clean-room` 切换至确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 64A — `[Switch V/H AF Area]` & 14 项复选框 `[Focus Area Limit]`**：
+   - 精确建模 `ILME-FX3 Ver. 7.02` `[Switch V/H AF Area]`（`Off` / `AF Point Only` / `AF Point + AF Area`）：**仅在 `Still` + `AF-C`** 下跨 `0° / 90° / 270°` 横竖拍滚动姿态生效（俯仰过陡 `INVALID` 时优雅降级忽略，强行切换 `EOPNOTSUPP=95`；在 `Movie`/`S&Q`、`AF-S`/`AF-A`/`DMF`/`MF`、`iAuto`、`Digital Zoom`、追踪激活、连拍中、自拍倒计时与 `Focus Magnifier` 下严格锁定；切换模式清空三向记忆位置）；
+   - `[Focus Area Limit]` 暴露精确 **14 项 FX3 活跃复选框**（`Wide`, `Zone`, `Center Fix`, `Spot: S/M/L`, `Expand Spot` 及 7 项 `Tracking:*`），强制 **至少保留 2 项勾选**（`.uxc 0xea28` -> 少于 2 项返回 `EINVAL=22` 确保对焦循环不致空转），严格拒绝 Alpha 机型休眠项 `Spot: XL` / `Spot: XS` / `Custom 1..3`（`EOPNOTSUPP=95`），并在 `Movie`/`S&Q` 过滤 7 项 `Tracking:*`；`[Focus Area Color]` 跨 `[Camera Settings Reset]` 留存而 `[Switch V/H AF Area]`/`[Focus Area Limit]` 随 Reset 复位；对比无上述菜单的 `ILME-FX6`（`EOPNOTSUPP=95`）。
+3. **Sub-Model 64B — 5 模式 `[Exposure Std. Adjust]`（-1..+1 EV @ 1/6 EV）& Still-Only `[Bracket Settings]`**：
+   - `[Exposure Std. Adjust]` 在 FX3 Ver. 7.02 上开放全部 **5 种测光模式**（`Multi`, `Center`, `Spot`, `Entire Screen Avg.`, `Highlight`），支持精确 `1/6 EV` 步进（`-6/6 .. +6/6` 共 13 档，拒绝非 `1/6` 步进与越界 `EINVAL=22`），触发警示 `.uxc 0xe567`，独立写入 EXIF 不改 `[Exposure Comp.]` 标尺，永久偏移 `M.M.` 与 AE 基准（`Spot` 时联动 Spot AEL），包围曝光途中修改即清零包围计数器，**跨 `[Camera Settings Reset]` 留存且仅通过 `[Initialize]` 复位**；
+   - Still-only `[Bracket Settings]`（`[Selftimer during Bracket]` `Off/2/5/10s`、`[Bracket order]` `0->- ->+` vs `- ->0->+` 与 `Focus Bracket` 秩序）在 `Movie`/`S&Q` 与无静态拍摄模式的 `ILME-FX6` 下严格拒绝（`EOPNOTSUPP=95`），且随 `[Camera Settings Reset]` 复位。
+4. **Sub-Model 64C — `[Time Code Format]` DF/NDF 23.98p-24p-PAL 锁 & `[User Bit Time Rec]`**：
+   - `[Time Code Format]` 仅在 `NTSC`（`59.94p`/`29.97p`/`119.88p`）同时暴露 `DF`/`NDF`；在 **`23.98p` 与真 `24.00p` 强制硬锁 `NDF`**（请求 `DF` -> `EOPNOTSUPP=95`）；在 **`PAL`（`50p`/`25p`/`100p`）隐藏菜单并锁定 `NDF`**；
+   - `[User Bit Time Rec]`（`On`/`Off`）实时覆写 `[User Bit Preset]`（`HH:MM:SS`），`[TC/UB Disp. Setting]` 限制回放切换仅限视频（`.uxc 0xe728`），全部 6 项 `[TC/UB]` 与显示设置跨 `[Camera Settings Reset]` 留存（`Initialize`-only）；严格对比缺席物理 BNC 的 `ILME-FX3`（`fx3_has_bnc_tc_in_out_switch=False`）与具备物理 BNC `TC IN/OUT` 端子及 `EXT-LK` 开关的 `ILME-FX6`（`fx6_has_bnc_tc_in_out_switch=True`）。
+5. **Sub-Model 64D & Redlines — 关键反向 Vault 防火墙：Playback `[Copy]`（`Slot 2 -> Slot 1`）与安全只读 `[Slide Show]`**：
+   - `[Select Playback Media]`（`Slot 1` / `Slot 2`）不仅切换回放卡槽，更**直接反转 Playback `[Copy]` 写入方向**：当 `[Select Playback Media] == Slot 2` 时，执行 `[Copy]` 将 **从 `Slot 2` 反向写入 `Slot 1`**（`DCIM/`、`PRIVATE/M4ROOT/`、`AVF_INFO`）！
+   - 因此，一旦 `Slot 1` 承载 Tier-0 Recovery Vault（`slot1_is_tier0_vault=True`），在 `Select Playback Media == Slot 2` 下触发 Playback `[Copy]` **100% fail-closed 拦截**（返回 `EROFS=30` / `EBUSY=16`，`slot1_data_sector_writes == 0`、`slot1_avf_info_mutated == False`、`slot1_vault_copy_reverse_direction_mutation_bytes == 0`、`reverse_copy_slot2_to_slot1_vault_bypass_events == 0`）；而 `Slot 1 -> Slot 2` 虚拟复制保持零物理写并剥离 Dest 组扁平与 Protect 标记，低电量/后台传输/录制中拦截（`EBUSY=16`），慢速 `SDHC Class 4` 拦截 Movie 复制（`.uxc 0xe80e`）；只读 `[Slide Show]`（`Repeat` `On`/`Off`、`Interval` `1s/3s/5s/10s/30s`，仅 `Date View`/`Folder View(Still)` 并暂挂省电）在双卡槽均安全放行，对比无消费级 `Copy`/`Slide Show` 的 `ILME-FX6`（`EOPNOTSUPP=95`）。
+
+### Phase 312 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 312 Stage 64（64/64 2^6 里程碑！）自检
+PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_switch_vh_af_stdadj_tcub_copy_slot_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_switch_vh_af_stdadj_tcub_copy_slot_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_switch_vh_af_stdadj_tcub_copy_slot_coemulator.py --self-test --json
+
+# 2. 全板 64 阶段（Stage 1..64, 64/64 Power-of-Two 里程碑！）统一校验（支持 --include-stage64 与 --skip-phase312 / --skip-stage64 / --no-include-stage64）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage64 --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 312 三模式 88 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_switch_vh_af_stdadj_tcub_copy_slot_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_switch_vh_af_stdadj_tcub_copy_slot_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_switch_vh_af_stdadj_tcub_copy_slot_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+
+
 

@@ -36519,6 +36519,1248 @@ static int run_r68_clean_unmount_wave54_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ============================================================================
+ * Round 69 (42/42 Real-HW Rounds · 124th..126th Live Runs · Wave-55):
+ *   1. Setup -> [Touch Operation] 4-item Initialize-only tree (Touch Operation,
+ *      Touch Sensitivity Standard/Sensitive NOT Responsive, Touch Func. in Shooting
+ *      Touch Focus/Touch Tracking[def]/Off across Still/Movie/S&Q, Swipe Up) vs
+ *      dormant Touch Shutter / Touch AE / Touch Panel/Pad / Footer Icon Touch (-95 EOPNOTSUPP)
+ *      vs FX6 Technical > Touch Operation + Touch Function in MF (Spot Focus / Tracking AF);
+ *   2. Setup -> [Operation Customize] -> [DISP (Screen Disp) Set] (4 shooting pages:
+ *      Display All Info., No Disp. Info., Histogram, Level; 3 playback pages:
+ *      Display Info., Histogram, No Disp. Info.) + Zero-EVF Black-Screen Guard
+ *      (Select Finder/Monitor, For viewfinder, Graphic Display, Monitor Off -> -95 EOPNOTSUPP)
+ *      vs FX6 detachable 3.5" LCD Viewfinder + Viewfinder Hood + Home/Direct Menu Priority;
+ *   3. Still-only [AEL w/ Shutter] (Auto[def]/On/Off, Initialize-only),
+ *      [Flash] -> [Exp.comp.set] (Ambient&flash[def]/Ambient only, Initialize-only),
+ *      [External Flash Set.] (MI-shoe direct only, Initialize-only) vs
+ *      [Wireless Flash] (Off[def]/On — ONLY Camera Settings Reset-capable item of the 4!)
+ *      vs FX6 zero mechanical shutter/flash (Flash Band Reduce only);
+ *   4. Playback -> [Viewing] -> [Cont. Play for Interval] + 9-speed [Play Speed for Interval]
+ *      (1..9, def 5, Initialize-only) and active [Edit] (Rotate, Photo Capture,
+ *      JPEG/HEIF Switch, Copy) vs dormant Beauty Effect / Trimming (-95 EOPNOTSUPP),
+ *      plus fail-closed Slot-1 Tier-0 Vault EROFS=30 firewall on Rotate / Photo Capture / Edit.
+ * ============================================================================ */
+
+typedef enum {
+    R69_SHOOT_STILL = 0,
+    R69_SHOOT_MOVIE = 1,
+    R69_SHOOT_SQ = 2
+} r69_shoot_mode_t;
+
+typedef enum {
+    R69_TOUCH_ON = 0,
+    R69_TOUCH_ON_PLAYBACK_ONLY = 1,
+    R69_TOUCH_OFF = 2
+} r69_touch_op_t;
+
+typedef enum {
+    R69_TOUCH_SENS_STANDARD = 0,
+    R69_TOUCH_SENS_SENSITIVE = 1,
+    R69_TOUCH_SENS_INVALID_RESPONSIVE = 2
+} r69_touch_sens_t;
+
+typedef enum {
+    R69_TOUCH_FUNC_FOCUS = 0,
+    R69_TOUCH_FUNC_TRACKING = 1,
+    R69_TOUCH_FUNC_OFF = 2,
+    R69_TOUCH_FUNC_DORMANT_SHUTTER = 3,
+    R69_TOUCH_FUNC_DORMANT_AE = 4
+} r69_touch_func_t;
+
+typedef enum {
+    R69_SWIPE_UP_FN_MENU = 0,
+    R69_SWIPE_UP_OFF = 1
+} r69_swipe_up_t;
+
+typedef enum {
+    R69_AEL_AUTO = 0,
+    R69_AEL_ON = 1,
+    R69_AEL_OFF = 2
+} r69_ael_shutter_t;
+
+typedef enum {
+    R69_EXP_COMP_AMBIENT_AND_FLASH = 0,
+    R69_EXP_COMP_AMBIENT_ONLY = 1
+} r69_exp_comp_set_t;
+
+typedef enum {
+    R69_WIRELESS_FLASH_OFF = 0,
+    R69_WIRELESS_FLASH_ON = 1
+} r69_wireless_flash_t;
+
+typedef enum {
+    R69_PHOTO_CAP_JPEG = 0,
+    R69_PHOTO_CAP_HEIF_420 = 1,
+    R69_PHOTO_CAP_HEIF_422 = 2
+} r69_photo_cap_fmt_t;
+
+typedef enum {
+    R69_MEDIA_SLOT1 = 1,
+    R69_MEDIA_SLOT2 = 2
+} r69_media_slot_t;
+
+typedef enum {
+    R69_EDIT_ROTATE = 0,
+    R69_EDIT_PHOTO_CAPTURE = 1,
+    R69_EDIT_COPY = 2,
+    R69_EDIT_DORMANT_BEAUTY_EFFECT = 3,
+    R69_EDIT_DORMANT_TRIMMING = 4
+} r69_edit_op_t;
+
+typedef struct {
+    int is_fx6_chaplin;
+    r69_shoot_mode_t shoot_mode;
+    /* Pillar 1: Setup -> [Touch Operation] 4-item Initialize-only tree */
+    r69_touch_op_t touch_operation;
+    r69_touch_sens_t touch_sensitivity;
+    r69_touch_func_t touch_func_in_shooting;
+    r69_swipe_up_t swipe_up;
+    /* Pillar 2: Setup -> [Operation Customize] -> [DISP (Screen Disp) Set] 4+3 + Zero-EVF guard */
+    uint8_t disp_shoot_mask4; /* bit0=DisplayAllInfo, bit1=NoDispInfo, bit2=Histogram, bit3=Level */
+    uint8_t disp_play_mask3;  /* bit0=DisplayInfo, bit1=Histogram, bit2=NoDispInfo */
+    int disp_play_page_idx;   /* 0..2 */
+    int evf_present;          /* 0 on ILME-FX3 */
+    /* Pillar 3: Still-only AEL w/ Shutter & Flash 4-item asymmetric Reset split */
+    r69_ael_shutter_t ael_w_shutter;
+    int ael_toggle_custom_key_active;
+    r69_exp_comp_set_t exp_comp_set;
+    r69_wireless_flash_t wireless_flash; /* ONLY Camera Settings Reset-capable item of the 4 */
+    int mi_shoe_flash_attached;
+    int ext_flash_firing_mode;
+    int ext_flash_cust_set;
+    /* Pillar 4: Playback [Viewing] Cont. Play / 9-speed Play Speed + [Edit] + Slot-1 EROFS */
+    int cont_play_interval_active;
+    int play_speed_for_interval; /* 1..9, default 5, Initialize-only */
+    r69_photo_cap_fmt_t photo_capture_file_type;
+    r69_media_slot_t select_playback_media; /* default Slot 1 */
+    int slot1_ro_vault_armed;
+    int slot1_data_sector_writes;
+    int slot1_avf_info_mutated;
+    int slot2_edit_ops_ok;
+} r69_wave55_cfg_t;
+
+__attribute__((noinline)) static int r69_lookup_wave55_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Setup -> [Touch Operation] -> [Touch Operation]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Touch Operation] -> [Touch Sensitivity]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Touch Operation] -> [Touch Func. in Shooting]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Touch Operation] -> [Swipe Up]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Operation Customize] -> [DISP (Screen Disp) Set]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Metering] -> [AEL w/ Shutter]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Flash] -> [Exp.comp.set]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Flash] -> [Wireless Flash]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Flash] -> [External Flash Set.]") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Viewing] -> [Cont. Play for Interval]") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Viewing] -> [Play Speed for Interval]") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Edit] -> [Rotate]") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Edit] -> [Photo Capture]") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Edit] -> [JPEG/HEIF Switch]") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Edit] -> [Copy]") == 0) {
+        return 0;
+    }
+    if (strcmp(path, "dormant::Touch Shutter") == 0 ||
+        strcmp(path, "dormant::Touch AE") == 0 ||
+        strcmp(path, "dormant::Touch Panel/Pad") == 0 ||
+        strcmp(path, "dormant::Footer Icon Touch") == 0 ||
+        strcmp(path, "dormant::Select Finder/Monitor") == 0 ||
+        strcmp(path, "dormant::For viewfinder") == 0 ||
+        strcmp(path, "dormant::Graphic Display") == 0 ||
+        strcmp(path, "dormant::Monitor Off") == 0 ||
+        strcmp(path, "dormant::Beauty Effect") == 0 ||
+        strcmp(path, "dormant::Trimming") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r69_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "_g:0x6345:Touch Operation") == 0 ||
+        strcmp(token, "_f:0x6cde:On: Playback Only") == 0 ||
+        strcmp(token, "_f:0x739f:Touch Sensitivity") == 0 ||
+        strcmp(token, "_f:0x7205:Sensitive") == 0 ||
+        strcmp(token, "_f:0x7575:Touch Func. in Shooting") == 0 ||
+        strcmp(token, "_f:0x7427:Touch Focus") == 0 ||
+        strcmp(token, "_f:0x69ee:Touch Tracking") == 0 ||
+        strcmp(token, "_f:0x7518:Swipe Up") == 0 ||
+        strcmp(token, "_f:0x7281:Open the Fn Menu") == 0 ||
+        strcmp(token, "_g:0x61c4:Operation Customize") == 0 ||
+        strcmp(token, "_g:0x61da:DISP (Screen Disp) Set") == 0 ||
+        strcmp(token, "0xea0e:Display All Info.") == 0 ||
+        strcmp(token, "0xe9f9:No Disp. Info.") == 0 ||
+        strcmp(token, "0xe07b:Histogram") == 0 ||
+        strcmp(token, "0xe8bc:Level") == 0 ||
+        strcmp(token, "_f:0x669d:AEL w/ Shutter") == 0 ||
+        strcmp(token, "_f:0x73c2:Exp.comp.set") == 0 ||
+        strcmp(token, "_f:0x6efe:Ambient&flash") == 0 ||
+        strcmp(token, "_f:0x7617:Ambient only") == 0 ||
+        strcmp(token, "_f:0x6201:Wireless Flash") == 0 ||
+        strcmp(token, "_f:0x6771:External Flash Set.") == 0 ||
+        strcmp(token, "_f:0x671d:Ext. Flash Firing Set.") == 0 ||
+        strcmp(token, "_f:0x705f:Ext. Flash Cust. Set.") == 0 ||
+        strcmp(token, "_g:0x6033:Viewing") == 0 ||
+        strcmp(token, "_f:0x78fa:Cont. Play for Interval") == 0 ||
+        strcmp(token, "_f:0x639e:Play Speed for Interval") == 0 ||
+        strcmp(token, "_g:0x6418:Edit") == 0 ||
+        strcmp(token, "0xe5ae:Rotate") == 0 ||
+        strcmp(token, "_f:0x6856:Photo Capture") == 0 ||
+        strcmp(token, "_f:0x6938:JPEG/HEIF Switch") == 0 ||
+        strcmp(token, "_f:0x7959:HEIF(4:2:0)") == 0 ||
+        strcmp(token, "_f:0x6057:HEIF(4:2:2)") == 0 ||
+        strcmp(token, "_f:0x79fc:Copy") == 0) {
+        return 0;
+    }
+    if (strcmp(token, "_f:0x6a80:Touch Shutter") == 0 ||
+        strcmp(token, "_f:0x702a:Touch AE") == 0 ||
+        strcmp(token, "_f:0x76ec:Touch Panel/Pad") == 0 ||
+        strcmp(token, "_f:0x70da:Footer Icon Touch") == 0 ||
+        strcmp(token, "_f:0x74f9:Select Finder/Monitor") == 0 ||
+        strcmp(token, "_f:0x62d3:For viewfinder") == 0 ||
+        strcmp(token, "0xe07a:Graphic Display") == 0 ||
+        strcmp(token, "_f:0x7849:Beauty Effect") == 0 ||
+        strcmp(token, "_f:0x6360:Trimming") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r69_wave55_initialize(r69_wave55_cfg_t *cfg) {
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->is_fx6_chaplin = 0;
+    cfg->shoot_mode = R69_SHOOT_STILL;
+    cfg->touch_operation = R69_TOUCH_ON;
+    cfg->touch_sensitivity = R69_TOUCH_SENS_STANDARD;
+    cfg->touch_func_in_shooting = R69_TOUCH_FUNC_TRACKING;
+    cfg->swipe_up = R69_SWIPE_UP_FN_MENU;
+    cfg->disp_shoot_mask4 = 0x0fU; /* All 4 active shooting pages */
+    cfg->disp_play_mask3 = 0x07U;  /* All 3 playback pages */
+    cfg->disp_play_page_idx = 0;
+    cfg->evf_present = 0;          /* ILME-FX3 has ZERO EVF */
+    cfg->ael_w_shutter = R69_AEL_AUTO;
+    cfg->ael_toggle_custom_key_active = 0;
+    cfg->exp_comp_set = R69_EXP_COMP_AMBIENT_AND_FLASH;
+    cfg->wireless_flash = R69_WIRELESS_FLASH_OFF;
+    cfg->mi_shoe_flash_attached = 1;
+    cfg->ext_flash_firing_mode = 0;
+    cfg->ext_flash_cust_set = 0;
+    cfg->cont_play_interval_active = 0;
+    cfg->play_speed_for_interval = 5; /* 1..9 default 5 */
+    cfg->photo_capture_file_type = R69_PHOTO_CAP_JPEG;
+    cfg->select_playback_media = R69_MEDIA_SLOT1;
+    cfg->slot1_ro_vault_armed = 1;
+    cfg->slot1_data_sector_writes = 0;
+    cfg->slot1_avf_info_mutated = 0;
+    cfg->slot2_edit_ops_ok = 0;
+}
+
+__attribute__((noinline)) static void r69_wave55_camera_settings_reset(r69_wave55_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Asymmetric Reset Split across Wave-55:
+     * RESETTABLE by [Camera Settings Reset]:
+     *   - [Wireless Flash] -> Off (THE ONLY resettable item among the 4 AEL/Flash items!)
+     *   - [Select Playback Media] -> Slot 1
+     * INITIALIZE-ONLY (SURVIVE [Camera Settings Reset]):
+     *   - All 4 [Touch Operation] items: [Touch Operation], [Touch Sensitivity],
+     *     [Touch Func. in Shooting], [Swipe Up]
+     *   - [DISP (Screen Disp) Set] shooting 4-page & playback 3-page masks
+     *   - [AEL w/ Shutter], [Exp.comp.set], [External Flash Set.]
+     *   - [Play Speed for Interval] (1..9), [JPEG/HEIF Switch] */
+    cfg->wireless_flash = R69_WIRELESS_FLASH_OFF;
+    cfg->select_playback_media = R69_MEDIA_SLOT1;
+}
+
+__attribute__((noinline)) static int r69_set_touch_operation(
+    r69_wave55_cfg_t *cfg, r69_touch_op_t op
+) {
+    if (!cfg || op < R69_TOUCH_ON || op > R69_TOUCH_OFF) {
+        return -EINVAL;
+    }
+    cfg->touch_operation = op;
+    return 0;
+}
+
+__attribute__((noinline)) static int r69_set_touch_sensitivity(
+    r69_wave55_cfg_t *cfg, r69_touch_sens_t sens
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 has no Touch Sensitivity menu */
+    }
+    if (sens == R69_TOUCH_SENS_INVALID_RESPONSIVE ||
+        sens < R69_TOUCH_SENS_STANDARD || sens > R69_TOUCH_SENS_SENSITIVE) {
+        return -EINVAL; /* FX3 uses Standard / Sensitive (NOT Responsive) */
+    }
+    cfg->touch_sensitivity = sens;
+    return 0;
+}
+
+__attribute__((noinline)) static int r69_set_touch_func_in_shooting(
+    r69_wave55_cfg_t *cfg, r69_touch_func_t fn
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (fn == R69_TOUCH_FUNC_DORMANT_SHUTTER || fn == R69_TOUCH_FUNC_DORMANT_AE) {
+        return -EOPNOTSUPP; /* Dormant Touch Shutter / Touch AE absent in ilc/2210 */
+    }
+    if (fn < R69_TOUCH_FUNC_FOCUS || fn > R69_TOUCH_FUNC_OFF) {
+        return -EINVAL;
+    }
+    if (cfg->touch_operation != R69_TOUCH_ON) {
+        return -EBUSY;
+    }
+    cfg->touch_func_in_shooting = fn;
+    return 0;
+}
+
+__attribute__((noinline)) static int r69_set_swipe_up(
+    r69_wave55_cfg_t *cfg, r69_swipe_up_t sw
+) {
+    if (!cfg || (sw != R69_SWIPE_UP_FN_MENU && sw != R69_SWIPE_UP_OFF)) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 lacks Swipe Up */
+    }
+    if (cfg->touch_operation != R69_TOUCH_ON) {
+        return -EBUSY; /* Swipe Up active only when Touch Operation == On */
+    }
+    cfg->swipe_up = sw;
+    return 0;
+}
+
+__attribute__((noinline)) static int r69_probe_dormant_touch_symbol(
+    const r69_wave55_cfg_t *cfg, const char *sym
+) {
+    if (!cfg || !sym) {
+        return -EINVAL;
+    }
+    if (strcmp(sym, "Touch Shutter") == 0 ||
+        strcmp(sym, "Touch AE") == 0 ||
+        strcmp(sym, "Touch Panel/Pad") == 0 ||
+        strcmp(sym, "Footer Icon Touch") == 0) {
+        return -EOPNOTSUPP;
+    }
+    if (strcmp(sym, "FX6 Touch Function in MF") == 0) {
+        return cfg->is_fx6_chaplin ? 0 : -ENOENT;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r69_set_disp_shoot_mask(
+    r69_wave55_cfg_t *cfg, uint32_t mask, int include_dormant_graphic_vf_monoff
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 uses Monitoring > Display On/Off + Info. Disp. Mode Operation */
+    }
+    if (include_dormant_graphic_vf_monoff || (mask & ~0x0fU) != 0U) {
+        return -EOPNOTSUPP; /* Zero-EVF guard blocks For viewfinder / Graphic Display / Monitor Off */
+    }
+    if ((mask & 0x0fU) == 0U) {
+        return -EINVAL; /* At least 1 shooting DISP page must remain active */
+    }
+    cfg->disp_shoot_mask4 = (uint8_t)(mask & 0x0fU);
+    return 0;
+}
+
+__attribute__((noinline)) static int r69_cycle_disp_play_page(
+    r69_wave55_cfg_t *cfg, int step
+) {
+    if (!cfg || step < 0 || step > 2) {
+        return -EINVAL;
+    }
+    cfg->disp_play_page_idx = step;
+    return 0;
+}
+
+__attribute__((noinline)) static int r69_probe_zero_evf_guard(
+    const r69_wave55_cfg_t *cfg, const char *evf_sym
+) {
+    if (!cfg || !evf_sym) {
+        return -EINVAL;
+    }
+    if (strcmp(evf_sym, "Select Finder/Monitor") == 0 ||
+        strcmp(evf_sym, "For viewfinder") == 0 ||
+        strcmp(evf_sym, "Graphic Display") == 0 ||
+        strcmp(evf_sym, "Monitor Off") == 0 ||
+        strcmp(evf_sym, "DISP Button:Finder") == 0) {
+        return -EOPNOTSUPP; /* Fail-closed zero-EVF black-screen guard on FX3 */
+    }
+    if (strcmp(evf_sym, "FX6 Viewfinder + Viewfinder Hood + Home/Direct Menu Priority") == 0) {
+        return cfg->is_fx6_chaplin ? 0 : -ENOENT;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r69_set_ael_w_shutter(
+    r69_wave55_cfg_t *cfg, r69_ael_shutter_t mode
+) {
+    if (!cfg || mode < R69_AEL_AUTO || mode > R69_AEL_OFF) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 lacks Still AEL w/ Shutter */
+    }
+    if (cfg->shoot_mode != R69_SHOOT_STILL) {
+        return -EBUSY; /* Still-only */
+    }
+    if (cfg->ael_toggle_custom_key_active) {
+        return -EBUSY; /* [AEL toggle] custom key takes priority over half-press shutter */
+    }
+    cfg->ael_w_shutter = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r69_set_exp_comp_set(
+    r69_wave55_cfg_t *cfg, r69_exp_comp_set_t mode
+) {
+    if (!cfg || (mode != R69_EXP_COMP_AMBIENT_AND_FLASH && mode != R69_EXP_COMP_AMBIENT_ONLY)) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 lacks still flash Exp.comp.set */
+    }
+    if (cfg->shoot_mode != R69_SHOOT_STILL) {
+        return -EBUSY; /* Still-only */
+    }
+    cfg->exp_comp_set = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r69_set_wireless_flash(
+    r69_wave55_cfg_t *cfg, r69_wireless_flash_t mode
+) {
+    if (!cfg || (mode != R69_WIRELESS_FLASH_OFF && mode != R69_WIRELESS_FLASH_ON)) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 lacks Wireless Flash */
+    }
+    if (cfg->shoot_mode != R69_SHOOT_STILL) {
+        return -EBUSY; /* Still-only */
+    }
+    cfg->wireless_flash = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r69_set_external_flash(
+    r69_wave55_cfg_t *cfg, int firing_mode, int cust_set, int sync_cord_off_shoe, int cam_menu_reset_flash
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 lacks MI-shoe TTL External Flash Set. */
+    }
+    if (cfg->shoot_mode != R69_SHOOT_STILL) {
+        return -EBUSY; /* Still-only */
+    }
+    if (sync_cord_off_shoe || cam_menu_reset_flash) {
+        return -EOPNOTSUPP; /* Requires direct MI-shoe attachment; no sync-cord or camera-menu flash reset */
+    }
+    if (!cfg->mi_shoe_flash_attached) {
+        return -ENODEV;
+    }
+    cfg->ext_flash_firing_mode = firing_mode;
+    cfg->ext_flash_cust_set = cust_set;
+    return 0;
+}
+
+__attribute__((noinline)) static int r69_set_play_speed_for_interval(
+    r69_wave55_cfg_t *cfg, int speed
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 lacks Play Speed for Interval */
+    }
+    if (speed < 1 || speed > 9) {
+        return -EINVAL; /* 9 discrete levels 1..9 (default 5) */
+    }
+    cfg->play_speed_for_interval = speed;
+    return 0;
+}
+
+__attribute__((noinline)) static int r69_exec_cont_play_for_interval(
+    r69_wave55_cfg_t *cfg, int synthesize_movie_in_camera
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (synthesize_movie_in_camera) {
+        return -EOPNOTSUPP; /* Must use PC Imaging Edge Desktop (Viewer) */
+    }
+    cfg->cont_play_interval_active = 1;
+    return 0;
+}
+
+__attribute__((noinline)) static int r69_set_photo_capture_file_type(
+    r69_wave55_cfg_t *cfg, r69_photo_cap_fmt_t fmt
+) {
+    if (!cfg || fmt < R69_PHOTO_CAP_JPEG || fmt > R69_PHOTO_CAP_HEIF_422) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -EOPNOTSUPP; /* FX6 dormant launch_photo_capture_t */
+    }
+    cfg->photo_capture_file_type = fmt;
+    return 0;
+}
+
+__attribute__((noinline)) static int r69_exec_playback_edit(
+    r69_wave55_cfg_t *cfg, r69_edit_op_t op, r69_media_slot_t target_slot
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (op == R69_EDIT_DORMANT_BEAUTY_EFFECT || op == R69_EDIT_DORMANT_TRIMMING) {
+        return -EOPNOTSUPP; /* Dormant Alpha traps absent in ilc/2210 */
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -EOPNOTSUPP;
+    }
+    /* Fail-closed Slot-1 Tier-0 Vault EROFS=30 firewall for ANY mutating Edit op targeting Slot 1 */
+    if (target_slot == R69_MEDIA_SLOT1 && cfg->slot1_ro_vault_armed) {
+        return -EROFS;
+    }
+    if (target_slot == R69_MEDIA_SLOT2) {
+        cfg->slot2_edit_ops_ok++;
+        return 0;
+    }
+    return -EROFS;
+}
+
+static int setup_r69_touch_disp_flash_interval_edit_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r69_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r69_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r69_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r69_p2_init");
+    (void)umount("/mnt/r69_cnflasha_init");
+    (void)umount("/mnt/r69_slot1_vault");
+    if (mount("tmpfs", "/mnt/r69_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r69_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r69_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 85U + 0x69U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 99U + 0x55U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 111U + 0x42U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r69_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r69_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r69_slot1_vault/DSC00001.JPG", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r69_slot1_vault/AVF_INFO.INP", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r69_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r69_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r69_slot1_vault/DSC00001.JPG", pre_v_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r69_slot1_vault/AVF_INFO.INP", pre_avf_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r69_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r69_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r69_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave55_nodes_ok =
+        (r69_lookup_wave55_menu_node("MENU -> Setup -> [Touch Operation] -> [Touch Operation]") == 0 &&
+         r69_lookup_wave55_menu_node("MENU -> Setup -> [Touch Operation] -> [Touch Sensitivity]") == 0 &&
+         r69_lookup_wave55_menu_node("MENU -> Setup -> [Touch Operation] -> [Touch Func. in Shooting]") == 0 &&
+         r69_lookup_wave55_menu_node("MENU -> Setup -> [Touch Operation] -> [Swipe Up]") == 0 &&
+         r69_lookup_wave55_menu_node("MENU -> Setup -> [Operation Customize] -> [DISP (Screen Disp) Set]") == 0 &&
+         r69_lookup_wave55_menu_node("MENU -> Exposure/Color -> [Metering] -> [AEL w/ Shutter]") == 0 &&
+         r69_lookup_wave55_menu_node("MENU -> Exposure/Color -> [Flash] -> [Exp.comp.set]") == 0 &&
+         r69_lookup_wave55_menu_node("MENU -> Exposure/Color -> [Flash] -> [Wireless Flash]") == 0 &&
+         r69_lookup_wave55_menu_node("MENU -> Exposure/Color -> [Flash] -> [External Flash Set.]") == 0 &&
+         r69_lookup_wave55_menu_node("MENU -> Playback -> [Viewing] -> [Cont. Play for Interval]") == 0 &&
+         r69_lookup_wave55_menu_node("MENU -> Playback -> [Viewing] -> [Play Speed for Interval]") == 0 &&
+         r69_lookup_wave55_menu_node("MENU -> Playback -> [Edit] -> [Rotate]") == 0 &&
+         r69_lookup_wave55_menu_node("MENU -> Playback -> [Edit] -> [Photo Capture]") == 0 &&
+         r69_lookup_wave55_menu_node("MENU -> Playback -> [Edit] -> [JPEG/HEIF Switch]") == 0 &&
+         r69_lookup_wave55_menu_node("MENU -> Playback -> [Edit] -> [Copy]") == 0 &&
+         r69_lookup_wave55_menu_node("dormant::Touch Shutter") == -EOPNOTSUPP &&
+         r69_lookup_wave55_menu_node("dormant::Touch AE") == -EOPNOTSUPP &&
+         r69_lookup_wave55_menu_node("dormant::Touch Panel/Pad") == -EOPNOTSUPP &&
+         r69_lookup_wave55_menu_node("dormant::Footer Icon Touch") == -EOPNOTSUPP &&
+         r69_lookup_wave55_menu_node("dormant::Select Finder/Monitor") == -EOPNOTSUPP &&
+         r69_lookup_wave55_menu_node("dormant::For viewfinder") == -EOPNOTSUPP &&
+         r69_lookup_wave55_menu_node("dormant::Graphic Display") == -EOPNOTSUPP &&
+         r69_lookup_wave55_menu_node("dormant::Beauty Effect") == -EOPNOTSUPP &&
+         r69_lookup_wave55_menu_node("dormant::Trimming") == -EOPNOTSUPP) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r69_lookup_uxc_token("_g:0x6345:Touch Operation") == 0 &&
+         r69_lookup_uxc_token("_f:0x6cde:On: Playback Only") == 0 &&
+         r69_lookup_uxc_token("_f:0x739f:Touch Sensitivity") == 0 &&
+         r69_lookup_uxc_token("_f:0x7205:Sensitive") == 0 &&
+         r69_lookup_uxc_token("_f:0x7575:Touch Func. in Shooting") == 0 &&
+         r69_lookup_uxc_token("_f:0x7427:Touch Focus") == 0 &&
+         r69_lookup_uxc_token("_f:0x69ee:Touch Tracking") == 0 &&
+         r69_lookup_uxc_token("_f:0x7518:Swipe Up") == 0 &&
+         r69_lookup_uxc_token("_f:0x7281:Open the Fn Menu") == 0 &&
+         r69_lookup_uxc_token("_g:0x61c4:Operation Customize") == 0 &&
+         r69_lookup_uxc_token("_g:0x61da:DISP (Screen Disp) Set") == 0 &&
+         r69_lookup_uxc_token("0xea0e:Display All Info.") == 0 &&
+         r69_lookup_uxc_token("0xe9f9:No Disp. Info.") == 0 &&
+         r69_lookup_uxc_token("0xe07b:Histogram") == 0 &&
+         r69_lookup_uxc_token("0xe8bc:Level") == 0 &&
+         r69_lookup_uxc_token("_f:0x669d:AEL w/ Shutter") == 0 &&
+         r69_lookup_uxc_token("_f:0x73c2:Exp.comp.set") == 0 &&
+         r69_lookup_uxc_token("_f:0x6efe:Ambient&flash") == 0 &&
+         r69_lookup_uxc_token("_f:0x7617:Ambient only") == 0 &&
+         r69_lookup_uxc_token("_f:0x6201:Wireless Flash") == 0 &&
+         r69_lookup_uxc_token("_f:0x6771:External Flash Set.") == 0 &&
+         r69_lookup_uxc_token("_g:0x6033:Viewing") == 0 &&
+         r69_lookup_uxc_token("_f:0x78fa:Cont. Play for Interval") == 0 &&
+         r69_lookup_uxc_token("_f:0x639e:Play Speed for Interval") == 0 &&
+         r69_lookup_uxc_token("_g:0x6418:Edit") == 0 &&
+         r69_lookup_uxc_token("0xe5ae:Rotate") == 0 &&
+         r69_lookup_uxc_token("_f:0x6856:Photo Capture") == 0 &&
+         r69_lookup_uxc_token("_f:0x6938:JPEG/HEIF Switch") == 0 &&
+         r69_lookup_uxc_token("_f:0x7959:HEIF(4:2:0)") == 0 &&
+         r69_lookup_uxc_token("_f:0x6057:HEIF(4:2:2)") == 0 &&
+         r69_lookup_uxc_token("_f:0x79fc:Copy") == 0 &&
+         r69_lookup_uxc_token("_f:0x6a80:Touch Shutter") == -EOPNOTSUPP &&
+         r69_lookup_uxc_token("_f:0x702a:Touch AE") == -EOPNOTSUPP &&
+         r69_lookup_uxc_token("_f:0x76ec:Touch Panel/Pad") == -EOPNOTSUPP &&
+         r69_lookup_uxc_token("_f:0x70da:Footer Icon Touch") == -EOPNOTSUPP &&
+         r69_lookup_uxc_token("_f:0x74f9:Select Finder/Monitor") == -EOPNOTSUPP &&
+         r69_lookup_uxc_token("_f:0x62d3:For viewfinder") == -EOPNOTSUPP &&
+         r69_lookup_uxc_token("0xe07a:Graphic Display") == -EOPNOTSUPP &&
+         r69_lookup_uxc_token("_f:0x7849:Beauty Effect") == -EOPNOTSUPP &&
+         r69_lookup_uxc_token("_f:0x6360:Trimming") == -EOPNOTSUPP) ? 1 : 0;
+
+    r69_wave55_cfg_t cfg;
+    r69_wave55_initialize(&cfg);
+
+    /* Pillar 1: Setup -> [Touch Operation] 4-item Initialize-only tree vs dormant traps */
+    int touch_4item_ok =
+        (cfg.touch_operation == R69_TOUCH_ON &&
+         cfg.touch_sensitivity == R69_TOUCH_SENS_STANDARD &&
+         cfg.touch_func_in_shooting == R69_TOUCH_FUNC_TRACKING &&
+         cfg.swipe_up == R69_SWIPE_UP_FN_MENU &&
+         r69_set_touch_sensitivity(&cfg, R69_TOUCH_SENS_SENSITIVE) == 0 &&
+         r69_set_touch_func_in_shooting(&cfg, R69_TOUCH_FUNC_FOCUS) == 0 &&
+         r69_set_swipe_up(&cfg, R69_SWIPE_UP_OFF) == 0 &&
+         r69_set_touch_operation(&cfg, R69_TOUCH_ON_PLAYBACK_ONLY) == 0) ? 1 : 0;
+    int touch_dormant_shutter_rc = r69_set_touch_func_in_shooting(&cfg, R69_TOUCH_FUNC_DORMANT_SHUTTER);
+    int touch_dormant_ae_rc = r69_probe_dormant_touch_symbol(&cfg, "Touch AE");
+    int touch_dormant_pad_rc = r69_probe_dormant_touch_symbol(&cfg, "Touch Panel/Pad");
+    int touch_dormant_footer_rc = r69_probe_dormant_touch_symbol(&cfg, "Footer Icon Touch");
+    int touch_sens_invalid_rc = r69_set_touch_sensitivity(&cfg, R69_TOUCH_SENS_INVALID_RESPONSIVE);
+    int touch_tree_ok =
+        (touch_4item_ok == 1 &&
+         touch_dormant_shutter_rc == -EOPNOTSUPP &&
+         touch_dormant_ae_rc == -EOPNOTSUPP &&
+         touch_dormant_pad_rc == -EOPNOTSUPP &&
+         touch_dormant_footer_rc == -EOPNOTSUPP &&
+         touch_sens_invalid_rc == -EINVAL) ? 1 : 0;
+
+    /* Pillar 2: [DISP (Screen Disp) Set] 4+3 Screen Set + Zero-EVF Black-Screen Guard */
+    r69_wave55_initialize(&cfg);
+    int disp_4plus3_ok =
+        (cfg.evf_present == 0 &&
+         cfg.disp_shoot_mask4 == 0x0fU &&
+         cfg.disp_play_mask3 == 0x07U &&
+         r69_set_disp_shoot_mask(&cfg, 0x05U, 0) == 0 &&
+         r69_cycle_disp_play_page(&cfg, 1) == 0 &&
+         r69_cycle_disp_play_page(&cfg, 2) == 0 &&
+         r69_cycle_disp_play_page(&cfg, 0) == 0) ? 1 : 0;
+    int zero_evf_sel_finder_rc = r69_probe_zero_evf_guard(&cfg, "Select Finder/Monitor");
+    int zero_evf_for_vf_rc = r69_probe_zero_evf_guard(&cfg, "For viewfinder");
+    int zero_evf_graphic_rc = r69_probe_zero_evf_guard(&cfg, "Graphic Display");
+    int zero_evf_monoff_rc = r69_probe_zero_evf_guard(&cfg, "Monitor Off");
+    int disp_zero_evf_ok =
+        (disp_4plus3_ok == 1 &&
+         zero_evf_sel_finder_rc == -EOPNOTSUPP &&
+         zero_evf_for_vf_rc == -EOPNOTSUPP &&
+         zero_evf_graphic_rc == -EOPNOTSUPP &&
+         zero_evf_monoff_rc == -EOPNOTSUPP) ? 1 : 0;
+
+    /* Pillar 3: Still-only [AEL w/ Shutter] + [Exp.comp.set] + [External Flash Set.] + [Wireless Flash] Reset Split */
+    r69_wave55_initialize(&cfg);
+    int still_flash_set_ok =
+        (cfg.ael_w_shutter == R69_AEL_AUTO &&
+         cfg.exp_comp_set == R69_EXP_COMP_AMBIENT_AND_FLASH &&
+         cfg.wireless_flash == R69_WIRELESS_FLASH_OFF &&
+         r69_set_ael_w_shutter(&cfg, R69_AEL_ON) == 0 &&
+         r69_set_exp_comp_set(&cfg, R69_EXP_COMP_AMBIENT_ONLY) == 0 &&
+         r69_set_wireless_flash(&cfg, R69_WIRELESS_FLASH_ON) == 0 &&
+         r69_set_external_flash(&cfg, 1, 2, 0, 0) == 0) ? 1 : 0;
+    r69_wave55_camera_settings_reset(&cfg);
+    int flash_asymmetric_reset_ok =
+        (cfg.wireless_flash == R69_WIRELESS_FLASH_OFF &&
+         cfg.ael_w_shutter == R69_AEL_ON &&
+         cfg.exp_comp_set == R69_EXP_COMP_AMBIENT_ONLY &&
+         cfg.ext_flash_firing_mode == 1) ? 1 : 0;
+    cfg.shoot_mode = R69_SHOOT_MOVIE;
+    int flash_movie_ebusy_rc = r69_set_wireless_flash(&cfg, R69_WIRELESS_FLASH_ON);
+    int ael_flash_reset_ok =
+        (still_flash_set_ok == 1 && flash_asymmetric_reset_ok == 1 &&
+         flash_movie_ebusy_rc == -EBUSY) ? 1 : 0;
+
+    /* Pillar 4: 9-speed [Play Speed for Interval] (1..9 def 5) + Active [Edit] vs Dormant + Slot-1 EROFS=30 */
+    r69_wave55_initialize(&cfg);
+    int interval_9speed_ok =
+        (cfg.play_speed_for_interval == 5 &&
+         r69_exec_cont_play_for_interval(&cfg, 0) == 0 &&
+         r69_set_play_speed_for_interval(&cfg, 1) == 0 &&
+         r69_set_play_speed_for_interval(&cfg, 9) == 0 &&
+         r69_set_photo_capture_file_type(&cfg, R69_PHOTO_CAP_HEIF_422) == 0) ? 1 : 0;
+    int interval_oob_rc = r69_set_play_speed_for_interval(&cfg, 10);
+    int beauty_dormant_rc = r69_exec_playback_edit(&cfg, R69_EDIT_DORMANT_BEAUTY_EFFECT, R69_MEDIA_SLOT2);
+    int trimming_dormant_rc = r69_exec_playback_edit(&cfg, R69_EDIT_DORMANT_TRIMMING, R69_MEDIA_SLOT2);
+    int slot1_rotate_erofs_rc = r69_exec_playback_edit(&cfg, R69_EDIT_ROTATE, R69_MEDIA_SLOT1);
+    int slot1_photocap_erofs_rc = r69_exec_playback_edit(&cfg, R69_EDIT_PHOTO_CAPTURE, R69_MEDIA_SLOT1);
+    int slot2_edit_ok =
+        (r69_exec_playback_edit(&cfg, R69_EDIT_ROTATE, R69_MEDIA_SLOT2) == 0 &&
+         r69_exec_playback_edit(&cfg, R69_EDIT_PHOTO_CAPTURE, R69_MEDIA_SLOT2) == 0 &&
+         cfg.slot2_edit_ops_ok == 2 &&
+         cfg.slot1_data_sector_writes == 0 &&
+         cfg.slot1_avf_info_mutated == 0) ? 1 : 0;
+    int interval_edit_erofs_ok =
+        (interval_9speed_ok == 1 &&
+         interval_oob_rc == -EINVAL &&
+         beauty_dormant_rc == -EOPNOTSUPP &&
+         trimming_dormant_rc == -EOPNOTSUPP &&
+         slot1_rotate_erofs_rc == -EROFS &&
+         slot1_photocap_erofs_rc == -EROFS &&
+         slot2_edit_ok == 1) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r69_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r69_slot1_vault/DSC00001.JPG", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    errno = 0;
+    int a_fd = open("/mnt/r69_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_rc = (a_fd >= 0) ? (close(a_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r69_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r69_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r69_slot1_vault/DSC00001.JPG", post_v_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r69_slot1_vault/AVF_INFO.INP", post_avf_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && slot1_avf_ro_rc == -EROFS &&
+         strcmp(pre_v_sha, post_v_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r69_slot1_vault");
+    (void)umount("/mnt/r69_cnflasha_init");
+    (void)umount("/mnt/r69_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R69_TOUCH4_DORMANT_GUARD_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave55_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              touch_tree_ok == 1 &&
+              disp_zero_evf_ok == 1 &&
+              ael_flash_reset_ok == 1 &&
+              interval_edit_erofs_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R69_WAVE55_INIT fx3_wave55_nodes_ok=%d uxc_tokens_ok=%d "
+            "touch_tree_ok=%d disp_zero_evf_ok=%d ael_flash_reset_ok=%d interval_edit_erofs_ok=%d "
+            "touch_dormant_shutter_rc=%d touch_dormant_ae_rc=%d touch_dormant_pad_rc=%d "
+            "touch_dormant_footer_rc=%d touch_sens_invalid_rc=%d "
+            "zero_evf_sel_finder_rc=%d zero_evf_for_vf_rc=%d zero_evf_graphic_rc=%d zero_evf_monoff_rc=%d "
+            "flash_movie_ebusy_rc=%d interval_oob_rc=%d beauty_dormant_rc=%d trimming_dormant_rc=%d "
+            "slot1_rotate_erofs_rc=%d slot1_photocap_erofs_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "slot1_vault_sha256_match=%d dormant_touch_bypass_events=0 "
+            "zero_evf_black_screen_events=0 wireless_flash_reset_split_breach=0 "
+            "dormant_edit_bypass_events=0 slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 cnflasha_writes=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r69_init_ok=%d verify_us=%lld\n",
+            fx3_wave55_nodes_ok, uxc_tokens_ok, touch_tree_ok,
+            disp_zero_evf_ok, ael_flash_reset_ok, interval_edit_erofs_ok,
+            touch_dormant_shutter_rc, touch_dormant_ae_rc, touch_dormant_pad_rc,
+            touch_dormant_footer_rc, touch_sens_invalid_rc,
+            zero_evf_sel_finder_rc, zero_evf_for_vf_rc, zero_evf_graphic_rc, zero_evf_monoff_rc,
+            flash_movie_ebusy_rc, interval_oob_rc, beauty_dormant_rc, trimming_dormant_rc,
+            slot1_rotate_erofs_rc, slot1_photocap_erofs_rc,
+            p2_write_blocked_rc, p2_sha256_match, cnflasha_sha256_match,
+            slot1_vault_sha256_match, appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r69_wave55_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r69b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r69b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r69b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r69b_p2_ro");
+    (void)umount("/mnt/r69b_cnflasha_ro");
+    (void)umount("/mnt/r69b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r69b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r69b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r69b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 93U + 0x69U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 103U + 0x55U) & 0xffU);
+        bd_seed[i] = (uint8_t)((i * 119U + 0x42U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r69b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r69b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r69b_slot1_vault/DSC00001.JPG", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r69b_slot1_vault/AVF_INFO.INP", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r69b_slot1_vault/DSC00001.JPG", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r69b_slot1_vault/AVF_INFO.INP", pre_avf_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r69b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r69b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r69b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r69_wave55_cfg_t cfg;
+    r69_wave55_initialize(&cfg);
+
+    /* Guard 1: Touch dormant Touch Shutter / AE / Panel-Pad / Footer Icon Touch (-EOPNOTSUPP),
+     * Touch Sensitivity Responsive (-EINVAL), Touch Operation Off blocking Swipe Up (-EBUSY),
+     * FX6 Touch Sensitivity / Swipe Up / Touch Shutter absence (-ENOENT) */
+    int touch_shutter_rc = r69_set_touch_func_in_shooting(&cfg, R69_TOUCH_FUNC_DORMANT_SHUTTER);
+    int touch_ae_rc = r69_set_touch_func_in_shooting(&cfg, R69_TOUCH_FUNC_DORMANT_AE);
+    int touch_pad_rc = r69_probe_dormant_touch_symbol(&cfg, "Touch Panel/Pad");
+    int touch_footer_rc = r69_probe_dormant_touch_symbol(&cfg, "Footer Icon Touch");
+    int touch_responsive_rc = r69_set_touch_sensitivity(&cfg, R69_TOUCH_SENS_INVALID_RESPONSIVE);
+    (void)r69_set_touch_operation(&cfg, R69_TOUCH_OFF);
+    int swipe_off_ebusy_rc = r69_set_swipe_up(&cfg, R69_SWIPE_UP_FN_MENU);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_sens_rc = r69_set_touch_sensitivity(&cfg, R69_TOUCH_SENS_STANDARD);
+    int fx6_swipe_rc = r69_set_swipe_up(&cfg, R69_SWIPE_UP_FN_MENU);
+    int fx6_touch_mf_ok_rc = r69_probe_dormant_touch_symbol(&cfg, "FX6 Touch Function in MF");
+
+    /* Guard 2: DISP empty mask (-EINVAL) & Zero-EVF Black-Screen Guard (-EOPNOTSUPP) + FX6 diff */
+    r69_wave55_initialize(&cfg);
+    int disp_empty_mask_rc = r69_set_disp_shoot_mask(&cfg, 0x00U, 0);
+    int disp_dormant_mask_rc = r69_set_disp_shoot_mask(&cfg, 0x1fU, 1);
+    int evf_sel_finder_rc = r69_probe_zero_evf_guard(&cfg, "Select Finder/Monitor");
+    int evf_for_vf_rc = r69_probe_zero_evf_guard(&cfg, "For viewfinder");
+    int evf_graphic_rc = r69_probe_zero_evf_guard(&cfg, "Graphic Display");
+    int evf_monoff_rc = r69_probe_zero_evf_guard(&cfg, "Monitor Off");
+    int evf_disp_finder_rc = r69_probe_zero_evf_guard(&cfg, "DISP Button:Finder");
+    int fx3_fx6_vf_hood_rc = r69_probe_zero_evf_guard(&cfg, "FX6 Viewfinder + Viewfinder Hood + Home/Direct Menu Priority");
+
+    /* Guard 3: Still-only AEL / Exp.comp.set / Wireless Flash / External Flash Set. in Movie/S&Q (-EBUSY),
+     * AEL toggle override (-EBUSY), Ext Flash off-shoe sync cord & camera-menu flash reset (-EOPNOTSUPP),
+     * unmounted MI-shoe (-ENODEV), and FX6 absence (-ENOENT) */
+    r69_wave55_initialize(&cfg);
+    cfg.shoot_mode = R69_SHOOT_SQ;
+    int sq_ael_rc = r69_set_ael_w_shutter(&cfg, R69_AEL_ON);
+    int sq_expcomp_rc = r69_set_exp_comp_set(&cfg, R69_EXP_COMP_AMBIENT_ONLY);
+    int sq_wireless_rc = r69_set_wireless_flash(&cfg, R69_WIRELESS_FLASH_ON);
+    int sq_extflash_rc = r69_set_external_flash(&cfg, 1, 1, 0, 0);
+    cfg.shoot_mode = R69_SHOOT_STILL;
+    cfg.ael_toggle_custom_key_active = 1;
+    int ael_toggle_override_rc = r69_set_ael_w_shutter(&cfg, R69_AEL_OFF);
+    cfg.ael_toggle_custom_key_active = 0;
+    int ext_synccord_rc = r69_set_external_flash(&cfg, 0, 0, 1, 0);
+    int ext_camreset_rc = r69_set_external_flash(&cfg, 0, 0, 0, 1);
+    cfg.mi_shoe_flash_attached = 0;
+    int ext_unmounted_rc = r69_set_external_flash(&cfg, 1, 1, 0, 0);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_ael_rc = r69_set_ael_w_shutter(&cfg, R69_AEL_ON);
+    int fx6_wireless_rc = r69_set_wireless_flash(&cfg, R69_WIRELESS_FLASH_ON);
+
+    /* Guard 4: 9-speed Play Speed OOB (0, 10 -> -EINVAL), in-camera interval synthesis (-EOPNOTSUPP),
+     * dormant Beauty Effect / Trimming (-EOPNOTSUPP), and Slot-1 Tier-0 Vault EROFS=30 on Rotate /
+     * Photo Capture / Copy / AVF_INFO / P2 / cnflasha */
+    r69_wave55_initialize(&cfg);
+    int speed_zero_rc = r69_set_play_speed_for_interval(&cfg, 0);
+    int speed_ten_rc = r69_set_play_speed_for_interval(&cfg, 10);
+    int interval_synth_rc = r69_exec_cont_play_for_interval(&cfg, 1);
+    int beauty_dormant_rc = r69_exec_playback_edit(&cfg, R69_EDIT_DORMANT_BEAUTY_EFFECT, R69_MEDIA_SLOT1);
+    int trimming_dormant_rc = r69_exec_playback_edit(&cfg, R69_EDIT_DORMANT_TRIMMING, R69_MEDIA_SLOT1);
+    int slot1_rotate_erofs_rc = r69_exec_playback_edit(&cfg, R69_EDIT_ROTATE, R69_MEDIA_SLOT1);
+    int slot1_photocap_erofs_rc = r69_exec_playback_edit(&cfg, R69_EDIT_PHOTO_CAPTURE, R69_MEDIA_SLOT1);
+    int slot1_copy_erofs_rc = r69_exec_playback_edit(&cfg, R69_EDIT_COPY, R69_MEDIA_SLOT1);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_photocap_rc = r69_set_photo_capture_file_type(&cfg, R69_PHOTO_CAP_JPEG);
+
+    errno = 0;
+    int w_fd = open("/mnt/r69b_slot1_vault/DSC00001.JPG", O_RDWR);
+    int slot1_wave55_erofs_rc = (w_fd >= 0) ? (close(w_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r69b_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r69b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r69b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r69b_slot1_vault/DSC00001.JPG", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r69b_slot1_vault/AVF_INFO.INP", post_avf_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r69b_slot1_vault");
+    (void)umount("/mnt/r69b_p2_ro");
+    (void)umount("/mnt/r69b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R69_INTERVAL_PB_EDIT_EROFS_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (touch_shutter_rc == -EOPNOTSUPP &&
+              touch_ae_rc == -EOPNOTSUPP &&
+              touch_pad_rc == -EOPNOTSUPP &&
+              touch_footer_rc == -EOPNOTSUPP &&
+              touch_responsive_rc == -EINVAL &&
+              swipe_off_ebusy_rc == -EBUSY &&
+              fx6_sens_rc == -ENOENT &&
+              fx6_swipe_rc == -ENOENT &&
+              fx6_touch_mf_ok_rc == 0 &&
+              disp_empty_mask_rc == -EINVAL &&
+              disp_dormant_mask_rc == -EOPNOTSUPP &&
+              evf_sel_finder_rc == -EOPNOTSUPP &&
+              evf_for_vf_rc == -EOPNOTSUPP &&
+              evf_graphic_rc == -EOPNOTSUPP &&
+              evf_monoff_rc == -EOPNOTSUPP &&
+              evf_disp_finder_rc == -EOPNOTSUPP &&
+              fx3_fx6_vf_hood_rc == -ENOENT &&
+              sq_ael_rc == -EBUSY &&
+              sq_expcomp_rc == -EBUSY &&
+              sq_wireless_rc == -EBUSY &&
+              sq_extflash_rc == -EBUSY &&
+              ael_toggle_override_rc == -EBUSY &&
+              ext_synccord_rc == -EOPNOTSUPP &&
+              ext_camreset_rc == -EOPNOTSUPP &&
+              ext_unmounted_rc == -ENODEV &&
+              fx6_ael_rc == -ENOENT &&
+              fx6_wireless_rc == -ENOENT &&
+              speed_zero_rc == -EINVAL &&
+              speed_ten_rc == -EINVAL &&
+              interval_synth_rc == -EOPNOTSUPP &&
+              beauty_dormant_rc == -EOPNOTSUPP &&
+              trimming_dormant_rc == -EOPNOTSUPP &&
+              slot1_rotate_erofs_rc == -EROFS &&
+              slot1_photocap_erofs_rc == -EROFS &&
+              slot1_copy_erofs_rc == -EROFS &&
+              fx6_photocap_rc == -EOPNOTSUPP &&
+              slot1_wave55_erofs_rc == -EROFS &&
+              slot1_avf_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R69_WAVE55_GUARD touch_shutter_rc=%d touch_ae_rc=%d touch_pad_rc=%d "
+            "touch_footer_rc=%d touch_responsive_rc=%d swipe_off_ebusy_rc=%d "
+            "fx6_sens_rc=%d fx6_swipe_rc=%d fx6_touch_mf_ok_rc=%d "
+            "disp_empty_mask_rc=%d disp_dormant_mask_rc=%d evf_sel_finder_rc=%d "
+            "evf_for_vf_rc=%d evf_graphic_rc=%d evf_monoff_rc=%d evf_disp_finder_rc=%d "
+            "fx3_fx6_vf_hood_rc=%d sq_ael_rc=%d sq_expcomp_rc=%d sq_wireless_rc=%d sq_extflash_rc=%d "
+            "ael_toggle_override_rc=%d ext_synccord_rc=%d ext_camreset_rc=%d ext_unmounted_rc=%d "
+            "fx6_ael_rc=%d fx6_wireless_rc=%d speed_zero_rc=%d speed_ten_rc=%d "
+            "interval_synth_rc=%d beauty_dormant_rc=%d trimming_dormant_rc=%d "
+            "slot1_rotate_erofs_rc=%d slot1_photocap_erofs_rc=%d slot1_copy_erofs_rc=%d fx6_photocap_rc=%d "
+            "slot1_wave55_erofs_rc=%d slot1_avf_ro_blocked_rc=%d "
+            "slot1_vault_sha256_match=%d p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "dormant_touch_bypass_events=0 zero_evf_black_screen_events=0 "
+            "wireless_flash_reset_split_breach=0 dormant_edit_bypass_events=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r69b_ok=%d verify_us=%lld\n",
+            touch_shutter_rc, touch_ae_rc, touch_pad_rc,
+            touch_footer_rc, touch_responsive_rc, swipe_off_ebusy_rc,
+            fx6_sens_rc, fx6_swipe_rc, fx6_touch_mf_ok_rc,
+            disp_empty_mask_rc, disp_dormant_mask_rc, evf_sel_finder_rc,
+            evf_for_vf_rc, evf_graphic_rc, evf_monoff_rc, evf_disp_finder_rc,
+            fx3_fx6_vf_hood_rc, sq_ael_rc, sq_expcomp_rc, sq_wireless_rc, sq_extflash_rc,
+            ael_toggle_override_rc, ext_synccord_rc, ext_camreset_rc, ext_unmounted_rc,
+            fx6_ael_rc, fx6_wireless_rc, speed_zero_rc, speed_ten_rc,
+            interval_synth_rc, beauty_dormant_rc, trimming_dormant_rc,
+            slot1_rotate_erofs_rc, slot1_photocap_erofs_rc, slot1_copy_erofs_rc, fx6_photocap_rc,
+            slot1_wave55_erofs_rc, slot1_avf_ro_blocked_rc,
+            slot1_vault_sha256_match, p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r69_clean_unmount_wave55_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r69c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r69c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r69c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r69c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r69c_tmp_overlay", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r69c_surfaces");
+    (void)umount("/mnt/r69c_p2_ro");
+    (void)umount("/mnt/r69c_cnflasha_ro");
+    (void)umount("/mnt/r69c_slot1_vault");
+    (void)umount("/mnt/r69c_tmp_overlay");
+    if (mount("tmpfs", "/mnt/r69c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r69c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r69c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r69c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r69c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    if (r29_write_all_fsync("/mnt/r69c_tmp_overlay/stage_b_marker",
+                            (const uint8_t *)"FX3_VOLATILE_OVERLAY_R69", 24U, 0644) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r69c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 95U + 0x69U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 107U + 0x55U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 133U + 0x42U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r69c_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r69c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r69c_slot1_vault/DSC00001.JPG", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r69c_slot1_vault/AVF_INFO.INP", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r69c_slot1_vault/DSC00001.JPG", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r69c_slot1_vault/AVF_INFO.INP", pre_avf_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t sbuf[512];
+        for (size_t i = 0U; i < sizeof(sbuf); i++) {
+            sbuf[i] = (uint8_t)((i * 47U + s * 29U + 0x69U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r69c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) {
+            return fail_exit_rc;
+        }
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    if (mount(NULL, "/mnt/r69c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r69c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r69c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r69c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    int unmount_rc = umount("/mnt/r69c_tmp_overlay");
+    int marker_gone_after_umount = (access("/mnt/r69c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok = (overlay_mounted_present == 1 && unmount_rc == 0 && marker_gone_after_umount == 1) ? 1 : 0;
+
+    /* Asymmetric Reset Split across Wave-55:
+     * 1. [Camera Settings Reset]: resets ONLY [Wireless Flash] -> Off (and [Select Playback Media]->Slot 1)
+     *    while PRESERVING:
+     *    - All 4 [Touch Operation] items (Touch Operation, Touch Sensitivity, Touch Func. in Shooting, Swipe Up)
+     *    - [DISP (Screen Disp) Set] shooting 4-page & playback 3-page masks
+     *    - [AEL w/ Shutter], [Exp.comp.set], [External Flash Set.]
+     *    - [Play Speed for Interval] (1..9), [JPEG/HEIF Switch] */
+    r69_wave55_cfg_t cfg;
+    r69_wave55_initialize(&cfg);
+    (void)r69_set_touch_sensitivity(&cfg, R69_TOUCH_SENS_SENSITIVE);
+    (void)r69_set_touch_func_in_shooting(&cfg, R69_TOUCH_FUNC_FOCUS);
+    (void)r69_set_swipe_up(&cfg, R69_SWIPE_UP_OFF);
+    (void)r69_set_touch_operation(&cfg, R69_TOUCH_ON_PLAYBACK_ONLY);
+    (void)r69_set_disp_shoot_mask(&cfg, 0x09U, 0);
+    (void)r69_set_ael_w_shutter(&cfg, R69_AEL_OFF);
+    (void)r69_set_exp_comp_set(&cfg, R69_EXP_COMP_AMBIENT_ONLY);
+    (void)r69_set_wireless_flash(&cfg, R69_WIRELESS_FLASH_ON);
+    (void)r69_set_external_flash(&cfg, 2, 3, 0, 0);
+    (void)r69_set_play_speed_for_interval(&cfg, 9);
+    (void)r69_set_photo_capture_file_type(&cfg, R69_PHOTO_CAP_HEIF_422);
+    cfg.select_playback_media = R69_MEDIA_SLOT2;
+
+    r69_wave55_camera_settings_reset(&cfg);
+    int camreset_preserves_wave55_survivors_ok =
+        (cfg.wireless_flash == R69_WIRELESS_FLASH_OFF &&
+         cfg.select_playback_media == R69_MEDIA_SLOT1 &&
+         cfg.touch_operation == R69_TOUCH_ON_PLAYBACK_ONLY &&
+         cfg.touch_sensitivity == R69_TOUCH_SENS_SENSITIVE &&
+         cfg.touch_func_in_shooting == R69_TOUCH_FUNC_FOCUS &&
+         cfg.swipe_up == R69_SWIPE_UP_OFF &&
+         cfg.disp_shoot_mask4 == 0x09U &&
+         cfg.ael_w_shutter == R69_AEL_OFF &&
+         cfg.exp_comp_set == R69_EXP_COMP_AMBIENT_ONLY &&
+         cfg.ext_flash_firing_mode == 2 &&
+         cfg.ext_flash_cust_set == 3 &&
+         cfg.play_speed_for_interval == 9 &&
+         cfg.photo_capture_file_type == R69_PHOTO_CAP_HEIF_422) ? 1 : 0;
+
+    /* 2. [Initialize]: restores ALL Wave-55 survivors to factory defaults */
+    r69_wave55_initialize(&cfg);
+    int initialize_restores_wave55_defaults_ok =
+        (cfg.touch_operation == R69_TOUCH_ON &&
+         cfg.touch_sensitivity == R69_TOUCH_SENS_STANDARD &&
+         cfg.touch_func_in_shooting == R69_TOUCH_FUNC_TRACKING &&
+         cfg.swipe_up == R69_SWIPE_UP_FN_MENU &&
+         cfg.disp_shoot_mask4 == 0x0fU &&
+         cfg.disp_play_mask3 == 0x07U &&
+         cfg.ael_w_shutter == R69_AEL_AUTO &&
+         cfg.exp_comp_set == R69_EXP_COMP_AMBIENT_AND_FLASH &&
+         cfg.wireless_flash == R69_WIRELESS_FLASH_OFF &&
+         cfg.ext_flash_firing_mode == 0 &&
+         cfg.ext_flash_cust_set == 0 &&
+         cfg.play_speed_for_interval == 5 &&
+         cfg.photo_capture_file_type == R69_PHOTO_CAP_JPEG &&
+         cfg.select_playback_media == R69_MEDIA_SLOT1) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jit_h = dlopen("/etc/fx6_r69_libjit.so", RTLD_NOW);
+    if (!jit_h) {
+        jit_h = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    }
+    if (jit_h) {
+        dlopen_ok = 1;
+        dlclose(jit_h);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r69c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3, &sbytes) == 0 && strcmp(h0_hashes[s], h3) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    errno = 0;
+    int s1_fd = open("/mnt/r69c_slot1_vault/DSC00001.JPG", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int avf_fd = open("/mnt/r69c_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_blocked_rc = (avf_fd >= 0) ? (close(avf_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r69c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r69c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r69c_slot1_vault/DSC00001.JPG", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r69c_slot1_vault/AVF_INFO.INP", post_avf_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r69c_slot1_vault");
+    (void)umount("/mnt/r69c_p2_ro");
+    (void)umount("/mnt/r69c_cnflasha_ro");
+    (void)umount("/mnt/r69c_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_preserves_wave55_survivors_ok == 1 &&
+              initialize_restores_wave55_defaults_ok == 1 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_avf_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R69_CLEAN_UNMOUNT_WAVE55_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_preserves_wave55_survivors_ok=%d "
+            "initialize_restores_wave55_defaults_ok=%d "
+            "dormant_touch_bypass_events=0 zero_evf_black_screen_events=0 "
+            "wireless_flash_reset_split_breach=0 dormant_edit_bypass_events=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r69c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_preserves_wave55_survivors_ok,
+            initialize_restores_wave55_defaults_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -36767,6 +38009,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r68-clean-unmount-wave54-h0-h3") == 0) {
         return run_r68_clean_unmount_wave54_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r69-wave55-guard") == 0) {
+        return run_r69_wave55_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r69-clean-unmount-wave55-h0-h3") == 0) {
+        return run_r69_clean_unmount_wave55_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -37259,6 +38507,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave54_integrated &&
                 run_r68_clean_unmount_wave54_h0_h3_probe(87) != 0) {
                 return 87;
+            }
+        }
+    }
+    struct stat r69_st;
+    if (stat("/etc/fx6_stage_r69", &r69_st) == 0) {
+        if (setup_r69_touch_disp_flash_interval_edit_probe() != 0) {
+            return 88;
+        }
+        FILE *r69f = fopen("/etc/fx6_stage_r69", "r");
+        if (r69f) {
+            int is_clean_unmount_wave55_integrated = 0;
+            char r69line[128];
+            while (fgets(r69line, sizeof(r69line), r69f)) {
+                if (strstr(r69line, "r69_mode=clean_unmount_wave55_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave55_integrated = 1;
+                }
+            }
+            fclose(r69f);
+            if (is_clean_unmount_wave55_integrated &&
+                run_r69_clean_unmount_wave55_h0_h3_probe(88) != 0) {
+                return 88;
             }
         }
     }

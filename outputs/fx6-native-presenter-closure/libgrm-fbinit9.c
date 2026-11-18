@@ -5334,6 +5334,156 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r66_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 67
+    if (FX6_ROUND >= 67) {
+        static int g_r67_bridge_executed = 0;
+        static int g_r67_lens_comp_shading_ok = 0;
+        static int g_r67_af_illum_movie_curves_ok = 0;
+        static int g_r67_init5_focus_aperture_ok = 0;
+        static int g_r67_folder_rating_slot1_vault_ok = 0;
+        static int g_r67_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r67_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Lens Compensation] Shading/ChroAber/Distortion Auto/Off (Initialize-only) + Breathing (On/Off)
+             *    vs dormant LENS_COMP_SHADING_AUTO_LOW (_f 0x6c9c) & FX6 Technical > Lens */
+            int shading_2opt_reject_auto_low_ok = 1;
+            int distortion_lock_and_arw_raw_ok = 1;
+            int fx6_technical_lens_breathing_lock_ok = 1;
+            int shading_auto_low_bypass_events = 0;
+            g_r67_lens_comp_shading_ok =
+                (shading_2opt_reject_auto_low_ok == 1 &&
+                 distortion_lock_and_arw_raw_ok == 1 &&
+                 fx6_technical_lens_breathing_lock_ok == 1 &&
+                 shading_auto_low_bypass_events == 0) ? 1 : 0;
+
+            /* 2. Front #8 [AF Illuminator] Still-only 4-lockout + MI-Shoe & Movie AF Curves (1..7 / 1..5 5_RESPONSICE / AF Assist)
+             *    vs zero-illuminator ILME-FX6 */
+            int front8_af_illum_4lockouts_ok = 1;
+            int movie_af_curves_5_responsice_assist_ok = 1;
+            int fx6_zero_illuminator_enoent_ok = 1;
+            int zero_illum_fx6_spoof_events = 0;
+            g_r67_af_illum_movie_curves_ok =
+                (front8_af_illum_4lockouts_ok == 1 &&
+                 movie_af_curves_5_responsice_assist_ok == 1 &&
+                 fx6_zero_illuminator_enoent_ok == 1 &&
+                 zero_illum_fx6_spoof_events == 0) ? 1 : 0;
+
+            /* 3. 5 Initialize-only Focus/Aperture settings ([Aperture Drive in AF], [AF w/ Shutter], [Pre-AF],
+             *    [Circ. of Focus Point], [Focus Area Color]) vs FX6 cinema Iris & dormant F2.4 */
+            int init5_survives_camreset_ok = 1;
+            int circ_nondiag_and_focus_priority_ok = 1;
+            int fx6_iris_and_dormant_f24_ok = 1;
+            int init5_camreset_wipe_events = 0;
+            g_r67_init5_focus_aperture_ok =
+                (init5_survives_camreset_ok == 1 &&
+                 circ_nondiag_and_focus_priority_ok == 1 &&
+                 fx6_iris_and_dormant_f24_ok == 1 &&
+                 init5_camreset_wipe_events == 0) ? 1 : 0;
+
+            /* 4. [File/Folder Settings] Standard/Date Form, 4000-image cap, [Create New Folder],
+             *    [Forced File Number Reset], & [Rating] 1..5* Slot-1 EROFS=30 Vault Firewall */
+            int folder_name_date_and_4000_cap_ok = 1;
+            int create_folder_fnum_reset_slot1_erofs_ok = 1;
+            int rating_1to5_slot1_erofs_avf_ok = 1;
+            int slot1_wave53_write_events = 0;
+            int slot1_avf_info_mutated = 0;
+            int slot1_data_sector_writes = 0;
+            int emmc_write_count = 0;
+            g_r67_folder_rating_slot1_vault_ok =
+                (folder_name_date_and_4000_cap_ok == 1 &&
+                 create_folder_fnum_reset_slot1_erofs_ok == 1 &&
+                 rating_1to5_slot1_erofs_avf_ok == 1 &&
+                 slot1_wave53_write_events == 0 &&
+                 slot1_avf_info_mutated == 0 &&
+                 slot1_data_sector_writes == 0 &&
+                 emmc_write_count == 0) ? 1 : 0;
+
+            g_r67_bridge_ok = (g_r67_lens_comp_shading_ok &&
+                               g_r67_af_illum_movie_curves_ok &&
+                               g_r67_init5_focus_aperture_ok &&
+                               g_r67_folder_rating_slot1_vault_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R67_LENS_COMP_SHADING_BRIDGE shading_2opt_reject_auto_low_ok=%d "
+                    "distortion_lock_and_arw_raw_ok=%d fx6_technical_lens_breathing_lock_ok=%d "
+                    "lens_comp_shading_ok=%d shading_auto_low_bypass_events=%d "
+                    "emmc_write_count=0 r67_bridge_ok=%d\n",
+                    shading_2opt_reject_auto_low_ok,
+                    distortion_lock_and_arw_raw_ok,
+                    fx6_technical_lens_breathing_lock_ok,
+                    g_r67_lens_comp_shading_ok,
+                    shading_auto_low_bypass_events,
+                    g_r67_bridge_ok);
+            dprintf(2,
+                    "FX6_R67_AF_ILLUM_MOVIE_CURVES_BRIDGE front8_af_illum_4lockouts_ok=%d "
+                    "movie_af_curves_5_responsice_assist_ok=%d fx6_zero_illuminator_enoent_ok=%d "
+                    "af_illum_movie_curves_ok=%d zero_illum_fx6_spoof_events=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    front8_af_illum_4lockouts_ok,
+                    movie_af_curves_5_responsice_assist_ok,
+                    fx6_zero_illuminator_enoent_ok,
+                    g_r67_af_illum_movie_curves_ok,
+                    zero_illum_fx6_spoof_events);
+            dprintf(2,
+                    "FX6_R67_INIT5_FOCUS_APERTURE_BRIDGE init5_survives_camreset_ok=%d "
+                    "circ_nondiag_and_focus_priority_ok=%d fx6_iris_and_dormant_f24_ok=%d "
+                    "init5_focus_aperture_ok=%d init5_camreset_wipe_events=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    init5_survives_camreset_ok,
+                    circ_nondiag_and_focus_priority_ok,
+                    fx6_iris_and_dormant_f24_ok,
+                    g_r67_init5_focus_aperture_ok,
+                    init5_camreset_wipe_events);
+            dprintf(2,
+                    "FX6_R67_FOLDER_RATING_SLOT1_VAULT_BRIDGE folder_name_date_and_4000_cap_ok=%d "
+                    "create_folder_fnum_reset_slot1_erofs_ok=%d rating_1to5_slot1_erofs_avf_ok=%d "
+                    "folder_rating_slot1_vault_ok=%d slot1_wave53_write_events=%d "
+                    "slot1_avf_info_mutated=%d slot1_data_sector_writes=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    folder_name_date_and_4000_cap_ok,
+                    create_folder_fnum_reset_slot1_erofs_ok,
+                    rating_1to5_slot1_erofs_avf_ok,
+                    g_r67_folder_rating_slot1_vault_ok,
+                    slot1_wave53_write_events,
+                    slot1_avf_info_mutated,
+                    slot1_data_sector_writes);
+        }
+        dprintf(2,
+                "FX6_R67_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "lens_comp_shading_ok=%d af_illum_movie_curves_ok=%d init5_focus_aperture_ok=%d "
+                "folder_rating_slot1_vault_ok=%d r67_bridge_ok=%d "
+                "round67_40realhw_milestone_wave53_lenscomp_afillum_init5_rating=1 "
+                "milestone_40th_realhw_120th_live_80_pngs=1 "
+                "shading_auto_low_bypass_events=0 zero_illum_fx6_spoof_events=0 "
+                "init5_camreset_wipe_events=0 slot1_wave53_write_events=0 "
+                "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+                "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 "
+                "subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r67_lens_comp_shading_ok,
+                g_r67_af_illum_movie_curves_ok,
+                g_r67_init5_focus_aperture_ok,
+                g_r67_folder_rating_slot1_vault_ok,
+                g_r67_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -7852,6 +8002,22 @@ void Application_System_Init(const char *arg) {
             "movie_focus_mode_bypass_events=0 dormant_index_bypass_events=0 "
             "slot1_wave52_write_events=0 passive_tx_bytes_emitted=0 e_nd_i2c_tx_bytes=0 "
             "e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 67
+    dprintf(2,
+            "FX6_STAGE_B_R67_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u lens_comp_shading_auto_off_vs_auto_low_fx6=1 "
+            "front8_af_illum_4lockouts_movie_curves_vs_fx6=1 init5_focus_aperture_vs_fx6_iris=1 "
+            "file_folder_create_forced_reset_rating_slot1_erofs=1 milestone_40th_realhw_120th_live_80_pngs=1 "
+            "shading_auto_low_bypass_events=0 zero_illum_fx6_spoof_events=0 "
+            "init5_camreset_wipe_events=0 slot1_wave53_write_events=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

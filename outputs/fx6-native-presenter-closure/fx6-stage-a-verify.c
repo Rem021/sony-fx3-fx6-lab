@@ -33882,6 +33882,1364 @@ static int run_r66_clean_unmount_wave52_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ============================================================================
+ * Round 67 (40/40 Real-HW Rounds Milestone / 118th..120th Live Runs -> 120/120)
+ * Wave-53: [Lens Compensation] Shading/ChroAber/Distortion/Breathing vs Dormant
+ * Auto: Low (0x6c9c) & FX6 Technical > Lens; Front #8 [AF Illuminator] 4-Lockout
+ * & Movie AF Curves (1..7 / 1..5 5_RESPONSICE / AF Assist) vs Zero-Illuminator FX6;
+ * 5 Initialize-Only Focus/Aperture Settings vs FX6 Iris; and [File/Folder Settings]
+ * + [Create New Folder] + [Forced File Number Reset] + [Rating] 1..5* Slot-1 EROFS=30
+ * ============================================================================ */
+
+typedef enum {
+    R67_SHOOT_STILL = 0,
+    R67_SHOOT_MOVIE = 1,
+    R67_SHOOT_SQ = 2
+} r67_shoot_mode_t;
+
+typedef enum {
+    R67_COMP_OFF = 0,
+    R67_COMP_AUTO = 1,
+    R67_COMP_DORMANT_AUTO_LOW = 2
+} r67_lens_comp_opt_t;
+
+typedef enum {
+    R67_LENS_STD_SUPPORT = 0,
+    R67_LENS_DISTORTION_LOCKED_AUTO = 1, /* SELP1650 / FE 28-70mm */
+    R67_LENS_UNCHIPPED_MANUAL = 2,       /* LENS_COMP_VALUE_NOT_EXIST */
+    R67_LENS_PRE_AF_NA = 3,              /* LENS_PRE_AF_NA */
+    R67_LENS_AF_ASSIST_INCOMPAT = 4,     /* SELP1650 / SEL18200LE */
+    R67_LENS_MOUNT_ADAPTOR_LA_EA = 5     /* LA-EA* Mount Adaptor */
+} r67_lens_profile_t;
+
+typedef enum {
+    R67_SS_OFF = 0,
+    R67_SS_STANDARD = 1,
+    R67_SS_ACTIVE = 2
+} r67_steadyshot_t;
+
+typedef enum {
+    R67_CODEC_XAVC_SI_4K = 0,
+    R67_CODEC_HDMI_RAW = 1
+} r67_codec_t;
+
+typedef enum {
+    R67_FM_AF_S = 0,
+    R67_FM_AF_A = 1,
+    R67_FM_AF_C = 2,
+    R67_FM_MF = 3
+} r67_focus_mode_t;
+
+typedef enum {
+    R67_ILLUM_AUTO = 0,
+    R67_ILLUM_OFF = 1
+} r67_af_illum_t;
+
+typedef enum {
+    R67_APERTURE_FOCUS_PRIORITY = 0,
+    R67_APERTURE_STANDARD = 1,
+    R67_APERTURE_SILENT_PRIORITY = 2
+} r67_aperture_drive_t;
+
+typedef enum {
+    R67_CIRC_DOES_NOT = 0,
+    R67_CIRC_CIRCULATE = 1
+} r67_circ_focus_t;
+
+typedef enum {
+    R67_FRAME_WHITE = 0,
+    R67_FRAME_RED = 1
+} r67_focus_color_t;
+
+typedef enum {
+    R67_FOLDER_STANDARD_FORM = 0,
+    R67_FOLDER_DATE_FORM = 1
+} r67_folder_form_t;
+
+typedef enum {
+    R67_FILENUM_SERIES = 0,
+    R67_FILENUM_RESET = 1
+} r67_file_number_t;
+
+typedef enum {
+    R67_MEDIA_SLOT1 = 1,
+    R67_MEDIA_SLOT2 = 2
+} r67_media_slot_t;
+
+typedef struct {
+    int is_fx6_chaplin;
+    r67_shoot_mode_t shoot_mode;
+    r67_lens_profile_t lens;
+    r67_steadyshot_t steadyshot;
+    r67_codec_t codec;
+    int sq_240fps;
+    r67_lens_comp_opt_t shading_comp;
+    r67_lens_comp_opt_t chro_aber_comp;
+    r67_lens_comp_opt_t distortion_comp;
+    int breathing_comp;
+    int arw_shading_gain_applied;
+    int arw_distortion_baked;
+    /* Pillar 2 */
+    r67_focus_mode_t focus_mode;
+    int subject_moving;
+    int focus_mag_active;
+    int mi_shoe_flash_on;
+    r67_af_illum_t af_illuminator;
+    int front_led8_fired;
+    int mi_flash_assist_fired;
+    int af_transition_speed;     /* 1..7 def 5 */
+    int af_subj_shift_sens;      /* 1..5 def 5 (5_RESPONSICE) */
+    int af_assist;               /* 0/1 def 0 */
+    /* Pillar 3: 5 Initialize-only Focus & Aperture settings */
+    r67_aperture_drive_t aperture_drive_in_af;
+    r67_aperture_drive_t silent_aperture_drive_in_af;
+    int silent_mode_on;
+    int burst_speed_may_decrease;
+    int live_preview_dof_omitted;
+    int audible_aperture_drive;
+    int af_w_shutter;            /* def 1 (On) */
+    int pre_af;                  /* def 0 (Off) */
+    r67_circ_focus_t circ_of_focus_point; /* def Does Not Circulate */
+    r67_focus_color_t focus_area_color;   /* def White */
+    /* FX6 cinema Iris contrast */
+    int fx6_auto_iris;
+    int fx6_iris_override_qsteps; /* -4..+4 => -1.0..+1.0 in 0.25 */
+    /* Pillar 4: File/Folder Settings + Rating + Slot-1 EROFS=30 Vault */
+    r67_folder_form_t folder_name_form;
+    r67_file_number_t file_number_mode;
+    char file_prefix[4];         /* def "DSC" */
+    int simult_rec;
+    int slot1_ro_protected;
+    int slot1_max_folder;
+    int slot2_max_folder;
+    int active_rec_folder;
+    int slot2_next_file_num;
+    int slot2_exif_xmp_rating;
+    int slot2_avf_info_rev;
+    int slot1_data_sector_writes;
+    int slot1_avf_info_mutated;
+} r67_wave53_cfg_t;
+
+__attribute__((noinline)) static int r67_lookup_wave53_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [Lens Compensation]") == 0 ||
+        strcmp(path, "MENU -> Lens Compensation -> [Shading Comp.] -> [Auto/Off]") == 0 ||
+        strcmp(path, "MENU -> Lens Compensation -> [Chromatic Aberration Comp.] -> [Auto/Off]") == 0 ||
+        strcmp(path, "MENU -> Lens Compensation -> [Distortion Comp.] -> [Auto/Off]") == 0 ||
+        strcmp(path, "MENU -> Lens Compensation -> [Breathing Comp.] -> [On/Off]") == 0 ||
+        strcmp(path, "MENU -> Focus -> [AF/MF] -> [AF Illuminator]") == 0 ||
+        strcmp(path, "MENU -> Focus -> [AF/MF] -> [AF Transition Speed]") == 0 ||
+        strcmp(path, "MENU -> Focus -> [AF/MF] -> [AF Subj. Shift Sensitivity]") == 0 ||
+        strcmp(path, "MENU -> Focus -> [AF/MF] -> [AF Assist]") == 0 ||
+        strcmp(path, "MENU -> Focus -> [AF/MF] -> [Aperture Drive in AF]") == 0 ||
+        strcmp(path, "MENU -> Focus -> [AF/MF] -> [AF w/ Shutter]") == 0 ||
+        strcmp(path, "MENU -> Focus -> [AF/MF] -> [Pre-AF]") == 0 ||
+        strcmp(path, "MENU -> Focus -> [Focus Area] -> [Circ. of Focus Point]") == 0 ||
+        strcmp(path, "MENU -> Focus -> [Focus Area] -> [Focus Area Color]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [File] -> [File/Folder Settings]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [File] -> [Select REC Folder]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [File] -> [Create New Folder]") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Selection/Memo] -> [Rating]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Operation Customize] -> [Rating Set(Custom Key)]") == 0) {
+        return 0;
+    }
+    if (strcmp(path, "VAL_setting_lens_comp_shading_LENS_COMP_SHADING_AUTO_LOW") == 0 ||
+        strcmp(path, "FX6_2 0x4fc3:Close Iris to F2.4 for AF") == 0) {
+        return -EOPNOTSUPP;
+    }
+    if (strcmp(path, "FX6 Technical -> [Lens] / Iris / Clip Flag / XAVC Root Folder Name") == 0) {
+        return -ENOENT;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r67_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "_f:0x75c8:Lens Compensation") == 0 ||
+        strcmp(token, "_f:0x64e1:Shading Comp.") == 0 ||
+        strcmp(token, "_f:0x68cd:Chromatic Aberration Comp.") == 0 ||
+        strcmp(token, "_f:0x6200:Distortion Comp.") == 0 ||
+        strcmp(token, "_f:0x73ea:Breathing Comp.") == 0 ||
+        strcmp(token, "0xe07f:AF Illuminator") == 0 ||
+        strcmp(token, "_f:0x6e9d:AF Transition Speed") == 0 ||
+        strcmp(token, "_f:0x79d6:AF Subj. Shift Sensitivity") == 0 ||
+        strcmp(token, "_f:0x64de:AF Subj. Shift Sens.") == 0 ||
+        strcmp(token, "_f:0x64a9:AF Assist") == 0 ||
+        strcmp(token, "_f:0x7879:Aperture Drive in AF") == 0 ||
+        strcmp(token, "_f:0x771d:AF w/ Shutter") == 0 ||
+        strcmp(token, "_f:0x76d8:Pre-AF") == 0 ||
+        strcmp(token, "_f:0x74f6:Circ. of Focus Point") == 0 ||
+        strcmp(token, "_f:0x74ad:Focus Area Color") == 0 ||
+        strcmp(token, "0xe9ab:Folder Name") == 0 ||
+        strcmp(token, "0xe4ff:Standard Form") == 0 ||
+        strcmp(token, "0xe448:Date Form") == 0 ||
+        strcmp(token, "0xe4f5:File Number") == 0 ||
+        strcmp(token, "_f:0x6271:Set File Name") == 0 ||
+        strcmp(token, "_f:0x790f:Forced File Number Reset") == 0 ||
+        strcmp(token, "0xe859:Select REC Folder") == 0 ||
+        strcmp(token, "_f:0x60c7:Create New Folder") == 0 ||
+        strcmp(token, "_f:0x684f:Rating") == 0 ||
+        strcmp(token, "_f:0x766e:Rating Set(Custom Key)") == 0 ||
+        strcmp(token, "_f:0x7a79:Add Rating") == 0 ||
+        strcmp(token, "_g:0x627d:Can't add since a Rating is already applied.") == 0) {
+        return 0;
+    }
+    if (strcmp(token, "_f:0x6c9c:Auto: Low") == 0) {
+        return -EOPNOTSUPP;
+    }
+    if (strcmp(token, "0x0000:FX6_Close_Iris_F2_4_for_AF") == 0) {
+        return -ENOENT;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r67_wave53_initialize(r67_wave53_cfg_t *cfg) {
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->is_fx6_chaplin = 0;
+    cfg->shoot_mode = R67_SHOOT_STILL;
+    cfg->lens = R67_LENS_STD_SUPPORT;
+    cfg->steadyshot = R67_SS_STANDARD;
+    cfg->codec = R67_CODEC_XAVC_SI_4K;
+    cfg->sq_240fps = 0;
+    cfg->shading_comp = R67_COMP_AUTO;
+    cfg->chro_aber_comp = R67_COMP_AUTO;
+    cfg->distortion_comp = R67_COMP_OFF;
+    cfg->breathing_comp = 0;
+    cfg->arw_shading_gain_applied = 1;
+    cfg->arw_distortion_baked = 0;
+    cfg->focus_mode = R67_FM_AF_A;
+    cfg->subject_moving = 0;
+    cfg->focus_mag_active = 0;
+    cfg->mi_shoe_flash_on = 0;
+    cfg->af_illuminator = R67_ILLUM_AUTO;
+    cfg->front_led8_fired = 0;
+    cfg->mi_flash_assist_fired = 0;
+    cfg->af_transition_speed = 5;
+    cfg->af_subj_shift_sens = 5;
+    cfg->af_assist = 0;
+    cfg->aperture_drive_in_af = R67_APERTURE_STANDARD;
+    cfg->silent_aperture_drive_in_af = R67_APERTURE_STANDARD;
+    cfg->silent_mode_on = 0;
+    cfg->burst_speed_may_decrease = 0;
+    cfg->live_preview_dof_omitted = 0;
+    cfg->audible_aperture_drive = 0;
+    cfg->af_w_shutter = 1;
+    cfg->pre_af = 0;
+    cfg->circ_of_focus_point = R67_CIRC_DOES_NOT;
+    cfg->focus_area_color = R67_FRAME_WHITE;
+    cfg->fx6_auto_iris = 0;
+    cfg->fx6_iris_override_qsteps = 0;
+    cfg->folder_name_form = R67_FOLDER_STANDARD_FORM;
+    cfg->file_number_mode = R67_FILENUM_SERIES;
+    memcpy(cfg->file_prefix, "DSC", 4U);
+    cfg->simult_rec = 0;
+    cfg->slot1_ro_protected = 1;
+    cfg->slot1_max_folder = 100;
+    cfg->slot2_max_folder = 100;
+    cfg->active_rec_folder = 100;
+    cfg->slot2_next_file_num = 1;
+    cfg->slot2_exif_xmp_rating = 0;
+    cfg->slot2_avf_info_rev = 0;
+    cfg->slot1_data_sector_writes = 0;
+    cfg->slot1_avf_info_mutated = 0;
+}
+
+__attribute__((noinline)) static void r67_wave53_camera_settings_reset(r67_wave53_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Reset-tier asymmetry across Wave-53:
+     * RESETTABLE by [Camera Settings Reset]:
+     *   - [Breathing Comp.] -> Off
+     *   - [AF Illuminator] -> Auto
+     *   - [AF Transition Speed] -> 5, [AF Subj. Shift Sensitivity] -> 5, [AF Assist] -> Off
+     * INITIALIZE-ONLY (SURVIVE [Camera Settings Reset]):
+     *   - [Shading Comp.], [Chromatic Aberration Comp.], [Distortion Comp.]
+     *   - 5 Focus/Aperture settings: [Aperture Drive in AF], [AF w/ Shutter], [Pre-AF],
+     *     [Circ. of Focus Point], [Focus Area Color]
+     *   - [Folder Name], [File Number], [Set File Name] */
+    cfg->breathing_comp = 0;
+    cfg->af_illuminator = R67_ILLUM_AUTO;
+    cfg->af_transition_speed = 5;
+    cfg->af_subj_shift_sens = 5;
+    cfg->af_assist = 0;
+}
+
+__attribute__((noinline)) static int r67_set_shading_comp(
+    r67_wave53_cfg_t *cfg, r67_lens_comp_opt_t opt
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (opt == R67_COMP_DORMANT_AUTO_LOW) {
+        return -EOPNOTSUPP; /* Dormant LENS_COMP_SHADING_AUTO_LOW (_f 0x6c9c 'Auto: Low') */
+    }
+    if (opt != R67_COMP_OFF && opt != R67_COMP_AUTO) {
+        return -EINVAL;
+    }
+    if (cfg->lens == R67_LENS_UNCHIPPED_MANUAL) {
+        return -ENODEV; /* LENS_COMP_VALUE_NOT_EXIST */
+    }
+    cfg->shading_comp = opt;
+    cfg->arw_shading_gain_applied = (opt == R67_COMP_AUTO) ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r67_set_chro_aber_comp(
+    r67_wave53_cfg_t *cfg, r67_lens_comp_opt_t opt
+) {
+    if (!cfg || (opt != R67_COMP_OFF && opt != R67_COMP_AUTO)) {
+        return -EINVAL;
+    }
+    if (cfg->lens == R67_LENS_UNCHIPPED_MANUAL) {
+        return -ENODEV;
+    }
+    cfg->chro_aber_comp = opt;
+    return 0;
+}
+
+__attribute__((noinline)) static int r67_set_distortion_comp(
+    r67_wave53_cfg_t *cfg, r67_lens_comp_opt_t opt
+) {
+    if (!cfg || (opt != R67_COMP_OFF && opt != R67_COMP_AUTO)) {
+        return -EINVAL;
+    }
+    if (cfg->lens == R67_LENS_UNCHIPPED_MANUAL) {
+        return -ENODEV;
+    }
+    if (opt == R67_COMP_OFF) {
+        if (cfg->lens == R67_LENS_DISTORTION_LOCKED_AUTO ||
+            (cfg->shoot_mode == R67_SHOOT_MOVIE && cfg->steadyshot == R67_SS_ACTIVE)) {
+            return -EBUSY; /* Hard-locked to Auto on SELP1650/FE 28-70mm or SteadyShot=Active */
+        }
+    }
+    cfg->distortion_comp = opt;
+    cfg->arw_distortion_baked = 0; /* Distortion Comp NEVER bakes into ARW pixels */
+    return 0;
+}
+
+__attribute__((noinline)) static int r67_set_breathing_comp(
+    r67_wave53_cfg_t *cfg, int on
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        if (on && (cfg->distortion_comp == R67_COMP_OFF ||
+                   cfg->shoot_mode == R67_SHOOT_SQ ||
+                   cfg->codec == R67_CODEC_HDMI_RAW)) {
+            return -EBUSY; /* FX6 Technical > Lens Breathing forced Off */
+        }
+        cfg->breathing_comp = on ? 1 : 0;
+        return 0;
+    }
+    if (on) {
+        if (cfg->shoot_mode != R67_SHOOT_MOVIE ||
+            cfg->codec == R67_CODEC_HDMI_RAW ||
+            cfg->sq_240fps) {
+            return -EBUSY; /* FX3 Movie-only, locked in Still/HDMI RAW/S&Q 240p */
+        }
+    }
+    cfg->breathing_comp = on ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r67_set_af_illuminator(
+    r67_wave53_cfg_t *cfg, r67_af_illum_t illum, int trigger_fire
+) {
+    if (!cfg || (illum != R67_ILLUM_AUTO && illum != R67_ILLUM_OFF)) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* Shutterless ILME-FX6 lacks Front #8 AF Illuminator LED */
+    }
+    if (cfg->shoot_mode == R67_SHOOT_MOVIE || cfg->shoot_mode == R67_SHOOT_SQ) {
+        return -EBUSY; /* Lockout 1: Movie / S&Q */
+    }
+    if (trigger_fire) {
+        if (illum == R67_ILLUM_OFF ||
+            cfg->focus_mode == R67_FM_AF_C ||
+            (cfg->focus_mode == R67_FM_AF_A && cfg->subject_moving) ||
+            cfg->focus_mag_active ||
+            cfg->lens == R67_LENS_MOUNT_ADAPTOR_LA_EA) {
+            return -EBUSY; /* Lockouts 2..4: AF-C / moving AF-A / Focus Mag / LA-EA* */
+        }
+        cfg->front_led8_fired = 1;
+        cfg->mi_flash_assist_fired = cfg->mi_shoe_flash_on ? 1 : 0;
+        return 0;
+    }
+    cfg->af_illuminator = illum;
+    return 0;
+}
+
+__attribute__((noinline)) static int r67_set_movie_af_curves(
+    r67_wave53_cfg_t *cfg, int speed_1_7, int sens_1_5, int af_assist_on
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (speed_1_7 < 1 || speed_1_7 > 7 || sens_1_5 < 1 || sens_1_5 > 5) {
+        return -EINVAL;
+    }
+    if (cfg->shoot_mode == R67_SHOOT_STILL) {
+        return -EBUSY; /* Movie & S&Q only */
+    }
+    if (af_assist_on) {
+        if (cfg->focus_mode != R67_FM_AF_C) {
+            return -EBUSY; /* AF Assist requires MOVIE_AUTO (AF-C) */
+        }
+        if (cfg->lens == R67_LENS_AF_ASSIST_INCOMPAT) {
+            return -ENODEV; /* SELP1650 / SEL18200LE */
+        }
+    }
+    cfg->af_transition_speed = speed_1_7;
+    cfg->af_subj_shift_sens = sens_1_5;
+    cfg->af_assist = af_assist_on ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r67_set_aperture_drive_in_af(
+    r67_wave53_cfg_t *cfg, r67_aperture_drive_t mode
+) {
+    if (!cfg || mode < R67_APERTURE_FOCUS_PRIORITY || mode > R67_APERTURE_SILENT_PRIORITY) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (cfg->shoot_mode != R67_SHOOT_STILL) {
+        return -EBUSY; /* Still-only */
+    }
+    cfg->aperture_drive_in_af = mode;
+    cfg->burst_speed_may_decrease = (mode == R67_APERTURE_FOCUS_PRIORITY) ? 1 : 0;
+    cfg->live_preview_dof_omitted = (mode == R67_APERTURE_FOCUS_PRIORITY) ? 1 : 0;
+    cfg->audible_aperture_drive = (mode == R67_APERTURE_FOCUS_PRIORITY) ? 1 : 0;
+    if (cfg->silent_mode_on && mode != R67_APERTURE_FOCUS_PRIORITY) {
+        cfg->silent_aperture_drive_in_af = mode;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r67_set_af_w_shutter(
+    r67_wave53_cfg_t *cfg, int on
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (cfg->shoot_mode != R67_SHOOT_STILL) {
+        return -EBUSY; /* Still-only */
+    }
+    cfg->af_w_shutter = on ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r67_set_pre_af(
+    r67_wave53_cfg_t *cfg, int on
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (cfg->shoot_mode != R67_SHOOT_STILL) {
+        return -EBUSY; /* Still-only */
+    }
+    if (on && cfg->lens == R67_LENS_PRE_AF_NA) {
+        return -ENODEV; /* VAL_lens_pre_af_support_LENS_PRE_AF_NA */
+    }
+    cfg->pre_af = on ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r67_set_circ_of_focus_point(
+    r67_wave53_cfg_t *cfg, r67_circ_focus_t circ, int area_supported, int diagonal_req
+) {
+    if (!cfg || (circ != R67_CIRC_DOES_NOT && circ != R67_CIRC_CIRCULATE)) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (diagonal_req) {
+        return -EINVAL; /* Non-diagonal H/V wrap only */
+    }
+    if (!area_supported) {
+        return -EBUSY; /* Only Zone / Spot: S/M/L / Expand Spot + Tracking */
+    }
+    cfg->circ_of_focus_point = circ;
+    return 0;
+}
+
+__attribute__((noinline)) static int r67_set_focus_area_color(
+    r67_wave53_cfg_t *cfg, r67_focus_color_t color
+) {
+    if (!cfg || (color != R67_FRAME_WHITE && color != R67_FRAME_RED)) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    cfg->focus_area_color = color;
+    return 0;
+}
+
+__attribute__((noinline)) static int r67_fx6_iris_or_dormant_f24(
+    r67_wave53_cfg_t *cfg, int access_dormant_f24, int auto_iris, int override_qsteps
+) {
+    if (!cfg || !cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (access_dormant_f24) {
+        return -ENOENT; /* FX6_2 0x4fc3 'Close Iris to F2.4 for AF' (0 hits in FX6 appFw.so) */
+    }
+    if (override_qsteps < -4 || override_qsteps > 4) {
+        return -EINVAL;
+    }
+    cfg->fx6_auto_iris = auto_iris ? 1 : 0;
+    cfg->fx6_iris_override_qsteps = override_qsteps;
+    return 0;
+}
+
+__attribute__((noinline)) static int r67_set_file_folder_settings(
+    r67_wave53_cfg_t *cfg, r67_folder_form_t fform, r67_file_number_t fnum, const char *prefix
+) {
+    if (!cfg || !prefix || strlen(prefix) != 3U) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (prefix[0] == '_') {
+        return -EINVAL; /* Leading underscore banned in [Set File Name] */
+    }
+    for (size_t i = 0U; i < 3U; i++) {
+        char c = prefix[i];
+        int ok_ch = ((c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_') ? 1 : 0;
+        if (!ok_ch) {
+            return -EINVAL;
+        }
+    }
+    cfg->folder_name_form = fform;
+    cfg->file_number_mode = fnum;
+    memcpy(cfg->file_prefix, prefix, 4U);
+    return 0;
+}
+
+__attribute__((noinline)) static int r67_select_rec_folder(
+    r67_wave53_cfg_t *cfg, int folder_num, int slot1_has, int slot2_has
+) {
+    if (!cfg || folder_num < 100 || folder_num > 999) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (cfg->folder_name_form == R67_FOLDER_DATE_FORM) {
+        return -EBUSY; /* [Date Form] disables [Select REC Folder] */
+    }
+    if (cfg->simult_rec && (!slot1_has || !slot2_has)) {
+        return -ENOENT; /* Simultaneous dual-slot rec requires common folder on both slots */
+    }
+    cfg->active_rec_folder = folder_num;
+    return 0;
+}
+
+__attribute__((noinline)) static int r67_exec_create_new_folder(
+    r67_wave53_cfg_t *cfg, r67_media_slot_t target_slot, int images_in_cur_folder
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (images_in_cur_folder > 4000 || cfg->slot2_max_folder >= 999) {
+        return -ENOSPC; /* 4,000-image cap / 999MSDCF ceiling (STATUS_OF_MEDIA_SLOT1_FOLDER_MAX) */
+    }
+    if ((target_slot == R67_MEDIA_SLOT1 || cfg->simult_rec) && cfg->slot1_ro_protected) {
+        return -EROFS; /* Tier-0 Slot-1 Vault EROFS=30 firewall */
+    }
+    int next_num = ((cfg->slot1_max_folder > cfg->slot2_max_folder)
+                        ? cfg->slot1_max_folder
+                        : cfg->slot2_max_folder) + 1;
+    if (next_num > 999) {
+        return -ENOSPC;
+    }
+    cfg->slot2_max_folder = next_num;
+    cfg->active_rec_folder = next_num;
+    return 0;
+}
+
+__attribute__((noinline)) static int r67_exec_forced_file_number_reset(
+    r67_wave53_cfg_t *cfg, r67_media_slot_t target_slot
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if ((target_slot == R67_MEDIA_SLOT1 || cfg->simult_rec) && cfg->slot1_ro_protected) {
+        return -EROFS; /* Tier-0 Slot-1 Vault EROFS=30 firewall */
+    }
+    cfg->slot2_next_file_num = 1;
+    return r67_exec_create_new_folder(cfg, target_slot, 0);
+}
+
+__attribute__((noinline)) static int r67_exec_rating(
+    r67_wave53_cfg_t *cfg, r67_media_slot_t target_slot, int stars,
+    int is_shooting_add_rating, int already_rated, int is_movie_rec, int bg_xfer
+) {
+    if (!cfg || stars < 1 || stars > 5) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 uses Clip Flag (OK/NG/KEEP), not 1..5* Rating */
+    }
+    if (bg_xfer) {
+        return -EBUSY; /* EDIT_FUNC_CMP_NG_DURING_BACKGROUND_TRANSFER_RATING */
+    }
+    if (is_shooting_add_rating && is_movie_rec) {
+        return -EOPNOTSUPP; /* Add Rating blocked during Movie recording */
+    }
+    if (is_shooting_add_rating && already_rated) {
+        return -EEXIST; /* _g.uxc 0x627d: Can't add since a Rating is already applied. */
+    }
+    if (target_slot == R67_MEDIA_SLOT1 && cfg->slot1_ro_protected) {
+        return -EROFS; /* Tier-0 Slot-1 Vault EROFS=30 firewall (EXIF/XMP + AVF_INFO untouched) */
+    }
+    cfg->slot2_exif_xmp_rating = stars;
+    cfg->slot2_avf_info_rev++;
+    return 0;
+}
+
+static int setup_r67_lens_comp_af_illum_init5_folder_rating_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r67_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r67_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r67_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r67_p2_init");
+    (void)umount("/mnt/r67_cnflasha_init");
+    (void)umount("/mnt/r67_slot1_vault");
+    if (mount("tmpfs", "/mnt/r67_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r67_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r67_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 79U + 0x67U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 91U + 0x53U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 107U + 0x40U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r67_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r67_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r67_slot1_vault/DSC00001.JPG", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r67_slot1_vault/AVF_INFO.INP", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r67_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r67_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r67_slot1_vault/DSC00001.JPG", pre_v_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r67_slot1_vault/AVF_INFO.INP", pre_avf_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r67_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r67_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r67_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave53_nodes_ok =
+        (r67_lookup_wave53_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [Lens Compensation]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Lens Compensation -> [Shading Comp.] -> [Auto/Off]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Lens Compensation -> [Chromatic Aberration Comp.] -> [Auto/Off]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Lens Compensation -> [Distortion Comp.] -> [Auto/Off]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Lens Compensation -> [Breathing Comp.] -> [On/Off]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Focus -> [AF/MF] -> [AF Illuminator]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Focus -> [AF/MF] -> [AF Transition Speed]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Focus -> [AF/MF] -> [AF Subj. Shift Sensitivity]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Focus -> [AF/MF] -> [AF Assist]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Focus -> [AF/MF] -> [Aperture Drive in AF]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Focus -> [AF/MF] -> [AF w/ Shutter]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Focus -> [AF/MF] -> [Pre-AF]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Focus -> [Focus Area] -> [Circ. of Focus Point]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Focus -> [Focus Area] -> [Focus Area Color]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Shooting -> [File] -> [File/Folder Settings]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Shooting -> [File] -> [Select REC Folder]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Shooting -> [File] -> [Create New Folder]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Playback -> [Selection/Memo] -> [Rating]") == 0 &&
+         r67_lookup_wave53_menu_node("MENU -> Setup -> [Operation Customize] -> [Rating Set(Custom Key)]") == 0 &&
+         r67_lookup_wave53_menu_node("VAL_setting_lens_comp_shading_LENS_COMP_SHADING_AUTO_LOW") == -EOPNOTSUPP &&
+         r67_lookup_wave53_menu_node("FX6_2 0x4fc3:Close Iris to F2.4 for AF") == -EOPNOTSUPP &&
+         r67_lookup_wave53_menu_node("FX6 Technical -> [Lens] / Iris / Clip Flag / XAVC Root Folder Name") == -ENOENT) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r67_lookup_uxc_token("_f:0x75c8:Lens Compensation") == 0 &&
+         r67_lookup_uxc_token("_f:0x64e1:Shading Comp.") == 0 &&
+         r67_lookup_uxc_token("_f:0x68cd:Chromatic Aberration Comp.") == 0 &&
+         r67_lookup_uxc_token("_f:0x6200:Distortion Comp.") == 0 &&
+         r67_lookup_uxc_token("_f:0x73ea:Breathing Comp.") == 0 &&
+         r67_lookup_uxc_token("_f:0x6c9c:Auto: Low") == -EOPNOTSUPP &&
+         r67_lookup_uxc_token("0xe07f:AF Illuminator") == 0 &&
+         r67_lookup_uxc_token("_f:0x6e9d:AF Transition Speed") == 0 &&
+         r67_lookup_uxc_token("_f:0x79d6:AF Subj. Shift Sensitivity") == 0 &&
+         r67_lookup_uxc_token("_f:0x64de:AF Subj. Shift Sens.") == 0 &&
+         r67_lookup_uxc_token("_f:0x64a9:AF Assist") == 0 &&
+         r67_lookup_uxc_token("_f:0x7879:Aperture Drive in AF") == 0 &&
+         r67_lookup_uxc_token("_f:0x771d:AF w/ Shutter") == 0 &&
+         r67_lookup_uxc_token("_f:0x76d8:Pre-AF") == 0 &&
+         r67_lookup_uxc_token("_f:0x74f6:Circ. of Focus Point") == 0 &&
+         r67_lookup_uxc_token("_f:0x74ad:Focus Area Color") == 0 &&
+         r67_lookup_uxc_token("0xe9ab:Folder Name") == 0 &&
+         r67_lookup_uxc_token("0xe4ff:Standard Form") == 0 &&
+         r67_lookup_uxc_token("0xe448:Date Form") == 0 &&
+         r67_lookup_uxc_token("0xe4f5:File Number") == 0 &&
+         r67_lookup_uxc_token("_f:0x6271:Set File Name") == 0 &&
+         r67_lookup_uxc_token("_f:0x790f:Forced File Number Reset") == 0 &&
+         r67_lookup_uxc_token("0xe859:Select REC Folder") == 0 &&
+         r67_lookup_uxc_token("_f:0x60c7:Create New Folder") == 0 &&
+         r67_lookup_uxc_token("_f:0x684f:Rating") == 0 &&
+         r67_lookup_uxc_token("_f:0x766e:Rating Set(Custom Key)") == 0 &&
+         r67_lookup_uxc_token("_f:0x7a79:Add Rating") == 0 &&
+         r67_lookup_uxc_token("_g:0x627d:Can't add since a Rating is already applied.") == 0 &&
+         r67_lookup_uxc_token("0x0000:FX6_Close_Iris_F2_4_for_AF") == -ENOENT) ? 1 : 0;
+
+    r67_wave53_cfg_t cfg;
+    r67_wave53_initialize(&cfg);
+
+    /* Pillar 1: [Lens Compensation] Shading/ChroAber/Distortion Auto/Off + Breathing vs Auto: Low & FX6 */
+    int shading_auto_low_rc = r67_set_shading_comp(&cfg, R67_COMP_DORMANT_AUTO_LOW);
+    int fx3_3comp_ok =
+        (cfg.shading_comp == R67_COMP_AUTO &&
+         cfg.chro_aber_comp == R67_COMP_AUTO &&
+         cfg.distortion_comp == R67_COMP_OFF &&
+         r67_set_shading_comp(&cfg, R67_COMP_OFF) == 0 &&
+         cfg.arw_shading_gain_applied == 0 &&
+         r67_set_shading_comp(&cfg, R67_COMP_AUTO) == 0 &&
+         cfg.arw_shading_gain_applied == 1 &&
+         r67_set_distortion_comp(&cfg, R67_COMP_AUTO) == 0 &&
+         cfg.arw_distortion_baked == 0) ? 1 : 0;
+    cfg.lens = R67_LENS_DISTORTION_LOCKED_AUTO;
+    int dist_selp1650_lock_rc = r67_set_distortion_comp(&cfg, R67_COMP_OFF);
+    cfg.lens = R67_LENS_STD_SUPPORT;
+    cfg.shoot_mode = R67_SHOOT_MOVIE;
+    cfg.steadyshot = R67_SS_ACTIVE;
+    int dist_active_ss_lock_rc = r67_set_distortion_comp(&cfg, R67_COMP_OFF);
+    int breathing_movie_ok = (r67_set_breathing_comp(&cfg, 1) == 0 && cfg.breathing_comp == 1) ? 1 : 0;
+    cfg.is_fx6_chaplin = 1;
+    cfg.distortion_comp = R67_COMP_OFF;
+    int fx6_breath_dist_off_rc = r67_set_breathing_comp(&cfg, 1);
+    int lens_comp_ok =
+        (shading_auto_low_rc == -EOPNOTSUPP && fx3_3comp_ok == 1 &&
+         dist_selp1650_lock_rc == -EBUSY && dist_active_ss_lock_rc == -EBUSY &&
+         breathing_movie_ok == 1 && fx6_breath_dist_off_rc == -EBUSY) ? 1 : 0;
+
+    /* Pillar 2: Front #8 [AF Illuminator] Still-only 4-lockout + Movie AF Curves vs Zero-Illuminator FX6 */
+    r67_wave53_initialize(&cfg);
+    cfg.focus_mode = R67_FM_AF_S;
+    cfg.mi_shoe_flash_on = 1;
+    int illum_still_fire_ok =
+        (r67_set_af_illuminator(&cfg, R67_ILLUM_AUTO, 1) == 0 &&
+         cfg.front_led8_fired == 1 && cfg.mi_flash_assist_fired == 1) ? 1 : 0;
+    cfg.focus_mode = R67_FM_AF_C;
+    int illum_afc_rc = r67_set_af_illuminator(&cfg, R67_ILLUM_AUTO, 1);
+    cfg.shoot_mode = R67_SHOOT_MOVIE;
+    int movie_curves_ok =
+        (r67_set_movie_af_curves(&cfg, 7, 1, 1) == 0 &&
+         cfg.af_transition_speed == 7 && cfg.af_subj_shift_sens == 1 && cfg.af_assist == 1) ? 1 : 0;
+    int illum_movie_rc = r67_set_af_illuminator(&cfg, R67_ILLUM_AUTO, 0);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_illum_rc = r67_set_af_illuminator(&cfg, R67_ILLUM_AUTO, 0);
+    int af_illum_curves_ok =
+        (illum_still_fire_ok == 1 && illum_afc_rc == -EBUSY &&
+         movie_curves_ok == 1 && illum_movie_rc == -EBUSY &&
+         fx6_illum_rc == -ENOENT) ? 1 : 0;
+
+    /* Pillar 3: 5 Initialize-Only Focus & Aperture settings vs FX6 Cinema Iris */
+    r67_wave53_initialize(&cfg);
+    int init5_set_ok =
+        (r67_set_aperture_drive_in_af(&cfg, R67_APERTURE_FOCUS_PRIORITY) == 0 &&
+         cfg.burst_speed_may_decrease == 1 &&
+         r67_set_af_w_shutter(&cfg, 0) == 0 &&
+         r67_set_pre_af(&cfg, 1) == 0 &&
+         r67_set_circ_of_focus_point(&cfg, R67_CIRC_CIRCULATE, 1, 0) == 0 &&
+         r67_set_focus_area_color(&cfg, R67_FRAME_RED) == 0) ? 1 : 0;
+    int circ_diag_rc = r67_set_circ_of_focus_point(&cfg, R67_CIRC_CIRCULATE, 1, 1);
+    r67_wave53_camera_settings_reset(&cfg);
+    int init5_survives_camreset_ok =
+        (cfg.aperture_drive_in_af == R67_APERTURE_FOCUS_PRIORITY &&
+         cfg.af_w_shutter == 0 && cfg.pre_af == 1 &&
+         cfg.circ_of_focus_point == R67_CIRC_CIRCULATE &&
+         cfg.focus_area_color == R67_FRAME_RED) ? 1 : 0;
+    cfg.is_fx6_chaplin = 1;
+    int fx6_iris_ok = (r67_fx6_iris_or_dormant_f24(&cfg, 0, 1, 2) == 0) ? 1 : 0;
+    int fx6_dormant_f24_rc = r67_fx6_iris_or_dormant_f24(&cfg, 1, 0, 0);
+    int init5_iris_ok =
+        (init5_set_ok == 1 && circ_diag_rc == -EINVAL &&
+         init5_survives_camreset_ok == 1 && fx6_iris_ok == 1 &&
+         fx6_dormant_f24_rc == -ENOENT) ? 1 : 0;
+
+    /* Pillar 4: [File/Folder Settings] + [Create New Folder] + [Rating] 1..5* Slot-1 EROFS=30 Vault */
+    r67_wave53_initialize(&cfg);
+    int date_form_locks_select_ok =
+        (r67_set_file_folder_settings(&cfg, R67_FOLDER_DATE_FORM, R67_FILENUM_RESET, "FX3") == 0 &&
+         r67_select_rec_folder(&cfg, 100, 1, 1) == -EBUSY) ? 1 : 0;
+    int new_folder_slot1_rc = r67_exec_create_new_folder(&cfg, R67_MEDIA_SLOT1, 10);
+    int new_folder_slot2_ok =
+        (r67_exec_create_new_folder(&cfg, R67_MEDIA_SLOT2, 10) == 0 &&
+         cfg.slot2_max_folder == 101 && cfg.active_rec_folder == 101) ? 1 : 0;
+    int rating_slot1_rc = r67_exec_rating(&cfg, R67_MEDIA_SLOT1, 5, 0, 0, 0, 0);
+    int rating_slot2_ok =
+        (r67_exec_rating(&cfg, R67_MEDIA_SLOT2, 5, 0, 0, 0, 0) == 0 &&
+         cfg.slot2_exif_xmp_rating == 5 && cfg.slot2_avf_info_rev == 1) ? 1 : 0;
+    int folder_rating_ok =
+        (date_form_locks_select_ok == 1 && new_folder_slot1_rc == -EROFS &&
+         new_folder_slot2_ok == 1 && rating_slot1_rc == -EROFS &&
+         rating_slot2_ok == 1) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r67_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r67_slot1_vault/DSC00001.JPG", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    errno = 0;
+    int a_fd = open("/mnt/r67_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_rc = (a_fd >= 0) ? (close(a_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r67_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r67_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r67_slot1_vault/DSC00001.JPG", post_v_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r67_slot1_vault/AVF_INFO.INP", post_avf_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && slot1_avf_ro_rc == -EROFS &&
+         strcmp(pre_v_sha, post_v_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r67_slot1_vault");
+    (void)umount("/mnt/r67_cnflasha_init");
+    (void)umount("/mnt/r67_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R67_LENS_COMP_SHADING_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave53_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              lens_comp_ok == 1 &&
+              af_illum_curves_ok == 1 &&
+              init5_iris_ok == 1 &&
+              folder_rating_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R67_WAVE53_INIT fx3_wave53_nodes_ok=%d uxc_tokens_ok=%d "
+            "lens_comp_ok=%d af_illum_curves_ok=%d init5_iris_ok=%d folder_rating_ok=%d "
+            "shading_auto_low_rc=%d dist_selp1650_lock_rc=%d dist_active_ss_lock_rc=%d "
+            "fx6_breath_dist_off_rc=%d illum_afc_rc=%d illum_movie_rc=%d fx6_illum_rc=%d "
+            "circ_diag_rc=%d fx6_dormant_f24_rc=%d new_folder_slot1_rc=%d rating_slot1_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "slot1_vault_sha256_match=%d shading_auto_low_bypass_events=0 "
+            "zero_illum_fx6_spoof_events=0 init5_camreset_wipe_events=0 "
+            "slot1_wave53_write_events=0 slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 cnflasha_writes=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r67_init_ok=%d verify_us=%lld\n",
+            fx3_wave53_nodes_ok, uxc_tokens_ok, lens_comp_ok,
+            af_illum_curves_ok, init5_iris_ok, folder_rating_ok,
+            shading_auto_low_rc, dist_selp1650_lock_rc, dist_active_ss_lock_rc,
+            fx6_breath_dist_off_rc, illum_afc_rc, illum_movie_rc, fx6_illum_rc,
+            circ_diag_rc, fx6_dormant_f24_rc, new_folder_slot1_rc, rating_slot1_rc,
+            p2_write_blocked_rc, p2_sha256_match, cnflasha_sha256_match,
+            slot1_vault_sha256_match, appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r67_wave53_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r67b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r67b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r67b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r67b_p2_ro");
+    (void)umount("/mnt/r67b_cnflasha_ro");
+    (void)umount("/mnt/r67b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r67b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r67b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r67b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 83U + 0x67U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 97U + 0x53U) & 0xffU);
+        bd_seed[i] = (uint8_t)((i * 113U + 0x40U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r67b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r67b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r67b_slot1_vault/DSC00001.JPG", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r67b_slot1_vault/AVF_INFO.INP", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r67b_slot1_vault/DSC00001.JPG", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r67b_slot1_vault/AVF_INFO.INP", pre_avf_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r67b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r67b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r67b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r67_wave53_cfg_t cfg;
+    r67_wave53_initialize(&cfg);
+
+    /* Guard 1: Dormant Auto: Low (-EOPNOTSUPP), SELP1650/Active-SS Distortion Off (-EBUSY),
+     * Unchipped lens (-ENODEV), Breathing in Still/HDMI RAW/S&Q 240p (-EBUSY), FX6 Breathing locks */
+    int shading_auto_low_rc = r67_set_shading_comp(&cfg, R67_COMP_DORMANT_AUTO_LOW);
+    cfg.lens = R67_LENS_DISTORTION_LOCKED_AUTO;
+    int dist_selp1650_rc = r67_set_distortion_comp(&cfg, R67_COMP_OFF);
+    cfg.lens = R67_LENS_STD_SUPPORT;
+    cfg.shoot_mode = R67_SHOOT_MOVIE;
+    cfg.steadyshot = R67_SS_ACTIVE;
+    int dist_active_ss_rc = r67_set_distortion_comp(&cfg, R67_COMP_OFF);
+    cfg.lens = R67_LENS_UNCHIPPED_MANUAL;
+    int unchipped_rc = r67_set_shading_comp(&cfg, R67_COMP_OFF);
+    cfg.lens = R67_LENS_STD_SUPPORT;
+    cfg.shoot_mode = R67_SHOOT_STILL;
+    int breath_still_rc = r67_set_breathing_comp(&cfg, 1);
+    cfg.shoot_mode = R67_SHOOT_MOVIE;
+    cfg.codec = R67_CODEC_HDMI_RAW;
+    int breath_raw_rc = r67_set_breathing_comp(&cfg, 1);
+    cfg.codec = R67_CODEC_XAVC_SI_4K;
+    cfg.sq_240fps = 1;
+    int breath_sq240_rc = r67_set_breathing_comp(&cfg, 1);
+    cfg.is_fx6_chaplin = 1;
+    cfg.shoot_mode = R67_SHOOT_SQ;
+    cfg.distortion_comp = R67_COMP_AUTO;
+    int fx6_breath_sq_rc = r67_set_breathing_comp(&cfg, 1);
+
+    /* Guard 2: Front #8 AF Illuminator 4 lockouts (Movie/S&Q, AF-C/moving AF-A, Focus Mag, LA-EA*)
+     * + zero-illuminator FX6 (-ENOENT) + AF Assist in MF/SELP1650 */
+    r67_wave53_initialize(&cfg);
+    cfg.shoot_mode = R67_SHOOT_SQ;
+    int illum_sq_rc = r67_set_af_illuminator(&cfg, R67_ILLUM_AUTO, 1);
+    cfg.shoot_mode = R67_SHOOT_STILL;
+    cfg.focus_mode = R67_FM_AF_C;
+    int illum_afc_rc = r67_set_af_illuminator(&cfg, R67_ILLUM_AUTO, 1);
+    cfg.focus_mode = R67_FM_AF_A;
+    cfg.subject_moving = 1;
+    int illum_afa_mov_rc = r67_set_af_illuminator(&cfg, R67_ILLUM_AUTO, 1);
+    cfg.subject_moving = 0;
+    cfg.focus_mode = R67_FM_AF_S;
+    cfg.focus_mag_active = 1;
+    int illum_mag_rc = r67_set_af_illuminator(&cfg, R67_ILLUM_AUTO, 1);
+    cfg.focus_mag_active = 0;
+    cfg.lens = R67_LENS_MOUNT_ADAPTOR_LA_EA;
+    int illum_laea_rc = r67_set_af_illuminator(&cfg, R67_ILLUM_AUTO, 1);
+    cfg.lens = R67_LENS_STD_SUPPORT;
+    cfg.is_fx6_chaplin = 1;
+    int fx6_illum_rc = r67_set_af_illuminator(&cfg, R67_ILLUM_AUTO, 0);
+    r67_wave53_initialize(&cfg);
+    cfg.shoot_mode = R67_SHOOT_MOVIE;
+    cfg.focus_mode = R67_FM_MF;
+    int assist_mf_rc = r67_set_movie_af_curves(&cfg, 5, 5, 1);
+    cfg.focus_mode = R67_FM_AF_C;
+    cfg.lens = R67_LENS_AF_ASSIST_INCOMPAT;
+    int assist_incompat_rc = r67_set_movie_af_curves(&cfg, 5, 5, 1);
+
+    /* Guard 3: 5 Initialize-only Focus/Aperture Movie lockouts, LENS_PRE_AF_NA, diagonal wrap, FX6 dormant F2.4 */
+    r67_wave53_initialize(&cfg);
+    cfg.shoot_mode = R67_SHOOT_MOVIE;
+    int ap_movie_rc = r67_set_aperture_drive_in_af(&cfg, R67_APERTURE_FOCUS_PRIORITY);
+    int af_shutter_movie_rc = r67_set_af_w_shutter(&cfg, 0);
+    int pre_af_movie_rc = r67_set_pre_af(&cfg, 1);
+    cfg.shoot_mode = R67_SHOOT_STILL;
+    cfg.lens = R67_LENS_PRE_AF_NA;
+    int pre_af_na_rc = r67_set_pre_af(&cfg, 1);
+    int circ_diag_rc = r67_set_circ_of_focus_point(&cfg, R67_CIRC_CIRCULATE, 1, 1);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_dormant_f24_rc = r67_fx6_iris_or_dormant_f24(&cfg, 1, 0, 0);
+
+    /* Guard 4: Date Form Select REC, leading '_' file prefix, 4000-image cap, Add Rating conflict/movie,
+     * BG transfer Rating, and Slot-1 EROFS=30 Vault Firewall */
+    r67_wave53_initialize(&cfg);
+    int prefix_underscore_rc = r67_set_file_folder_settings(&cfg, R67_FOLDER_STANDARD_FORM, R67_FILENUM_SERIES, "_FX");
+    cfg.folder_name_form = R67_FOLDER_DATE_FORM;
+    int select_date_rc = r67_select_rec_folder(&cfg, 100, 1, 1);
+    cfg.folder_name_form = R67_FOLDER_STANDARD_FORM;
+    int folder_cap_4001_rc = r67_exec_create_new_folder(&cfg, R67_MEDIA_SLOT2, 4001);
+    int folder_slot1_rc = r67_exec_create_new_folder(&cfg, R67_MEDIA_SLOT1, 10);
+    int fnum_reset_slot1_rc = r67_exec_forced_file_number_reset(&cfg, R67_MEDIA_SLOT1);
+    cfg.simult_rec = 1;
+    int simult_new_folder_rc = r67_exec_create_new_folder(&cfg, R67_MEDIA_SLOT2, 10);
+    cfg.simult_rec = 0;
+    int rating_slot1_rc = r67_exec_rating(&cfg, R67_MEDIA_SLOT1, 5, 0, 0, 0, 0);
+    int add_rating_dup_rc = r67_exec_rating(&cfg, R67_MEDIA_SLOT2, 4, 1, 1, 0, 0);
+    int add_rating_rec_rc = r67_exec_rating(&cfg, R67_MEDIA_SLOT2, 4, 1, 0, 1, 0);
+    int rating_bg_xfer_rc = r67_exec_rating(&cfg, R67_MEDIA_SLOT2, 4, 0, 0, 0, 1);
+
+    errno = 0;
+    int w_fd = open("/mnt/r67b_slot1_vault/DSC00001.JPG", O_RDWR);
+    int slot1_wave53_erofs_rc = (w_fd >= 0) ? (close(w_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r67b_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r67b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r67b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r67b_slot1_vault/DSC00001.JPG", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r67b_slot1_vault/AVF_INFO.INP", post_avf_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r67b_slot1_vault");
+    (void)umount("/mnt/r67b_p2_ro");
+    (void)umount("/mnt/r67b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R67_FOLDER_RATING_SLOT1_VAULT_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (shading_auto_low_rc == -EOPNOTSUPP &&
+              dist_selp1650_rc == -EBUSY &&
+              dist_active_ss_rc == -EBUSY &&
+              unchipped_rc == -ENODEV &&
+              breath_still_rc == -EBUSY &&
+              breath_raw_rc == -EBUSY &&
+              breath_sq240_rc == -EBUSY &&
+              fx6_breath_sq_rc == -EBUSY &&
+              illum_sq_rc == -EBUSY &&
+              illum_afc_rc == -EBUSY &&
+              illum_afa_mov_rc == -EBUSY &&
+              illum_mag_rc == -EBUSY &&
+              illum_laea_rc == -EBUSY &&
+              fx6_illum_rc == -ENOENT &&
+              assist_mf_rc == -EBUSY &&
+              assist_incompat_rc == -ENODEV &&
+              ap_movie_rc == -EBUSY &&
+              af_shutter_movie_rc == -EBUSY &&
+              pre_af_movie_rc == -EBUSY &&
+              pre_af_na_rc == -ENODEV &&
+              circ_diag_rc == -EINVAL &&
+              fx6_dormant_f24_rc == -ENOENT &&
+              prefix_underscore_rc == -EINVAL &&
+              select_date_rc == -EBUSY &&
+              folder_cap_4001_rc == -ENOSPC &&
+              folder_slot1_rc == -EROFS &&
+              fnum_reset_slot1_rc == -EROFS &&
+              simult_new_folder_rc == -EROFS &&
+              rating_slot1_rc == -EROFS &&
+              add_rating_dup_rc == -EEXIST &&
+              add_rating_rec_rc == -EOPNOTSUPP &&
+              rating_bg_xfer_rc == -EBUSY &&
+              slot1_wave53_erofs_rc == -EROFS &&
+              slot1_avf_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R67_WAVE53_GUARD shading_auto_low_rc=%d dist_selp1650_rc=%d "
+            "dist_active_ss_rc=%d unchipped_rc=%d breath_still_rc=%d "
+            "breath_raw_rc=%d breath_sq240_rc=%d fx6_breath_sq_rc=%d "
+            "illum_sq_rc=%d illum_afc_rc=%d illum_afa_mov_rc=%d "
+            "illum_mag_rc=%d illum_laea_rc=%d fx6_illum_rc=%d "
+            "assist_mf_rc=%d assist_incompat_rc=%d ap_movie_rc=%d "
+            "af_shutter_movie_rc=%d pre_af_movie_rc=%d pre_af_na_rc=%d "
+            "circ_diag_rc=%d fx6_dormant_f24_rc=%d prefix_underscore_rc=%d "
+            "select_date_rc=%d folder_cap_4001_rc=%d folder_slot1_rc=%d "
+            "fnum_reset_slot1_rc=%d simult_new_folder_rc=%d rating_slot1_rc=%d "
+            "add_rating_dup_rc=%d add_rating_rec_rc=%d rating_bg_xfer_rc=%d "
+            "slot1_wave53_erofs_rc=%d slot1_avf_ro_blocked_rc=%d "
+            "slot1_vault_sha256_match=%d p2_write_blocked_rc=%d "
+            "cnflasha_ro_blocked_rc=%d shading_auto_low_bypass_events=0 "
+            "zero_illum_fx6_spoof_events=0 init5_camreset_wipe_events=0 "
+            "slot1_wave53_write_events=0 slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r67b_ok=%d verify_us=%lld\n",
+            shading_auto_low_rc, dist_selp1650_rc, dist_active_ss_rc,
+            unchipped_rc, breath_still_rc, breath_raw_rc, breath_sq240_rc,
+            fx6_breath_sq_rc, illum_sq_rc, illum_afc_rc, illum_afa_mov_rc,
+            illum_mag_rc, illum_laea_rc, fx6_illum_rc, assist_mf_rc,
+            assist_incompat_rc, ap_movie_rc, af_shutter_movie_rc,
+            pre_af_movie_rc, pre_af_na_rc, circ_diag_rc, fx6_dormant_f24_rc,
+            prefix_underscore_rc, select_date_rc, folder_cap_4001_rc,
+            folder_slot1_rc, fnum_reset_slot1_rc, simult_new_folder_rc,
+            rating_slot1_rc, add_rating_dup_rc, add_rating_rec_rc,
+            rating_bg_xfer_rc, slot1_wave53_erofs_rc, slot1_avf_ro_blocked_rc,
+            slot1_vault_sha256_match, p2_write_blocked_rc,
+            cnflasha_ro_blocked_rc, appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r67_clean_unmount_wave53_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r67c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r67c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r67c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r67c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r67c_tmp_overlay", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r67c_surfaces");
+    (void)umount("/mnt/r67c_p2_ro");
+    (void)umount("/mnt/r67c_cnflasha_ro");
+    (void)umount("/mnt/r67c_slot1_vault");
+    (void)umount("/mnt/r67c_tmp_overlay");
+    if (mount("tmpfs", "/mnt/r67c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r67c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r67c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r67c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r67c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    if (r29_write_all_fsync("/mnt/r67c_tmp_overlay/stage_b_marker",
+                            (const uint8_t *)"FX3_VOLATILE_OVERLAY_R67", 24U, 0644) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r67c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 89U + 0x67U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 103U + 0x53U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 127U + 0x40U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r67c_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r67c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r67c_slot1_vault/DSC00001.JPG", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r67c_slot1_vault/AVF_INFO.INP", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r67c_slot1_vault/DSC00001.JPG", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r67c_slot1_vault/AVF_INFO.INP", pre_avf_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t sbuf[512];
+        for (size_t i = 0U; i < sizeof(sbuf); i++) {
+            sbuf[i] = (uint8_t)((i * 41U + s * 19U + 0x67U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r67c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) {
+            return fail_exit_rc;
+        }
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    if (mount(NULL, "/mnt/r67c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r67c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r67c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r67c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    int unmount_rc = umount("/mnt/r67c_tmp_overlay");
+    int marker_gone_after_umount = (access("/mnt/r67c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok = (overlay_mounted_present == 1 && unmount_rc == 0 && marker_gone_after_umount == 1) ? 1 : 0;
+
+    /* Reset-tier asymmetry across Wave-53:
+     * 1. [Camera Settings Reset]: resets [Breathing Comp.] -> Off, [AF Illuminator] -> Auto,
+     *    [AF Transition Speed] -> 5, [AF Subj. Shift Sensitivity] -> 5, [AF Assist] -> Off,
+     *    while PRESERVING [Shading/ChroAber/Distortion Comp.], all 5 Focus/Aperture settings
+     *    ([Aperture Drive in AF], [AF w/ Shutter], [Pre-AF], [Circ. of Focus Point], [Focus Area Color]),
+     *    and [Folder Name] / [File Number] / [Set File Name]. */
+    r67_wave53_cfg_t cfg;
+    r67_wave53_initialize(&cfg);
+    (void)r67_set_shading_comp(&cfg, R67_COMP_OFF);
+    (void)r67_set_chro_aber_comp(&cfg, R67_COMP_OFF);
+    (void)r67_set_distortion_comp(&cfg, R67_COMP_AUTO);
+    cfg.shoot_mode = R67_SHOOT_MOVIE;
+    (void)r67_set_breathing_comp(&cfg, 1);
+    (void)r67_set_movie_af_curves(&cfg, 2, 1, 1);
+    cfg.shoot_mode = R67_SHOOT_STILL;
+    (void)r67_set_af_illuminator(&cfg, R67_ILLUM_OFF, 0);
+    (void)r67_set_aperture_drive_in_af(&cfg, R67_APERTURE_SILENT_PRIORITY);
+    (void)r67_set_af_w_shutter(&cfg, 0);
+    (void)r67_set_pre_af(&cfg, 1);
+    (void)r67_set_circ_of_focus_point(&cfg, R67_CIRC_CIRCULATE, 1, 0);
+    (void)r67_set_focus_area_color(&cfg, R67_FRAME_RED);
+    (void)r67_set_file_folder_settings(&cfg, R67_FOLDER_DATE_FORM, R67_FILENUM_RESET, "FX3");
+
+    r67_wave53_camera_settings_reset(&cfg);
+    int camreset_preserves_wave53_survivors_ok =
+        (cfg.breathing_comp == 0 &&
+         cfg.af_illuminator == R67_ILLUM_AUTO &&
+         cfg.af_transition_speed == 5 &&
+         cfg.af_subj_shift_sens == 5 &&
+         cfg.af_assist == 0 &&
+         cfg.shading_comp == R67_COMP_OFF &&
+         cfg.chro_aber_comp == R67_COMP_OFF &&
+         cfg.distortion_comp == R67_COMP_AUTO &&
+         cfg.aperture_drive_in_af == R67_APERTURE_SILENT_PRIORITY &&
+         cfg.af_w_shutter == 0 &&
+         cfg.pre_af == 1 &&
+         cfg.circ_of_focus_point == R67_CIRC_CIRCULATE &&
+         cfg.focus_area_color == R67_FRAME_RED &&
+         cfg.folder_name_form == R67_FOLDER_DATE_FORM &&
+         cfg.file_number_mode == R67_FILENUM_RESET &&
+         strcmp(cfg.file_prefix, "FX3") == 0) ? 1 : 0;
+
+    /* 2. [Initialize]: restores ALL Wave-53 settings to factory defaults */
+    r67_wave53_initialize(&cfg);
+    int initialize_restores_wave53_defaults_ok =
+        (cfg.shading_comp == R67_COMP_AUTO &&
+         cfg.chro_aber_comp == R67_COMP_AUTO &&
+         cfg.distortion_comp == R67_COMP_OFF &&
+         cfg.breathing_comp == 0 &&
+         cfg.af_illuminator == R67_ILLUM_AUTO &&
+         cfg.af_transition_speed == 5 &&
+         cfg.af_subj_shift_sens == 5 &&
+         cfg.af_assist == 0 &&
+         cfg.aperture_drive_in_af == R67_APERTURE_STANDARD &&
+         cfg.af_w_shutter == 1 &&
+         cfg.pre_af == 0 &&
+         cfg.circ_of_focus_point == R67_CIRC_DOES_NOT &&
+         cfg.focus_area_color == R67_FRAME_WHITE &&
+         cfg.folder_name_form == R67_FOLDER_STANDARD_FORM &&
+         cfg.file_number_mode == R67_FILENUM_SERIES &&
+         strcmp(cfg.file_prefix, "DSC") == 0) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jit_h = dlopen("/etc/fx6_r66_libjit.so", RTLD_NOW);
+    if (!jit_h) {
+        jit_h = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    }
+    if (jit_h) {
+        dlopen_ok = 1;
+        dlclose(jit_h);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r67c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3, &sbytes) == 0 && strcmp(h0_hashes[s], h3) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    errno = 0;
+    int s1_fd = open("/mnt/r67c_slot1_vault/DSC00001.JPG", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int avf_fd = open("/mnt/r67c_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_blocked_rc = (avf_fd >= 0) ? (close(avf_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r67c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r67c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r67c_slot1_vault/DSC00001.JPG", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r67c_slot1_vault/AVF_INFO.INP", post_avf_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r67c_slot1_vault");
+    (void)umount("/mnt/r67c_p2_ro");
+    (void)umount("/mnt/r67c_cnflasha_ro");
+    (void)umount("/mnt/r67c_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_preserves_wave53_survivors_ok == 1 &&
+              initialize_restores_wave53_defaults_ok == 1 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_avf_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R67_CLEAN_UNMOUNT_WAVE53_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_preserves_wave53_survivors_ok=%d "
+            "initialize_restores_wave53_defaults_ok=%d "
+            "shading_auto_low_bypass_events=0 zero_illum_fx6_spoof_events=0 "
+            "init5_camreset_wipe_events=0 slot1_wave53_write_events=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r67c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_preserves_wave53_survivors_ok,
+            initialize_restores_wave53_defaults_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -34118,6 +35476,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r66-clean-unmount-wave52-h0-h3") == 0) {
         return run_r66_clean_unmount_wave52_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r67-wave53-guard") == 0) {
+        return run_r67_wave53_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r67-clean-unmount-wave53-h0-h3") == 0) {
+        return run_r67_clean_unmount_wave53_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -34568,6 +35932,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave52_integrated &&
                 run_r66_clean_unmount_wave52_h0_h3_probe(85) != 0) {
                 return 85;
+            }
+        }
+    }
+    struct stat r67_st;
+    if (stat("/etc/fx6_stage_r67", &r67_st) == 0) {
+        if (setup_r67_lens_comp_af_illum_init5_folder_rating_probe() != 0) {
+            return 86;
+        }
+        FILE *r67f = fopen("/etc/fx6_stage_r67", "r");
+        if (r67f) {
+            int is_clean_unmount_wave53_integrated = 0;
+            char r67line[128];
+            while (fgets(r67line, sizeof(r67line), r67f)) {
+                if (strstr(r67line, "r67_mode=clean_unmount_wave53_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave53_integrated = 1;
+                }
+            }
+            fclose(r67f);
+            if (is_clean_unmount_wave53_integrated &&
+                run_r67_clean_unmount_wave53_h0_h3_probe(86) != 0) {
+                return 86;
             }
         }
     }

@@ -2266,3 +2266,45 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 325（Stage 68 — 68/68 Milestone）：Wave-58 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` 自定义键 `[Bright Monitoring]` Ver. 7.00+ 放大共存 & `[Monitor Brightness]`、`[Shot Mark 1/2]` / `[Clip Flag]` vs 休眠 `[Divide]`/`[Extract]` & `Slot-1` `EROFS=30` Vault、零蓝牙 `[Timecode Link]` vs `VMC-BNCM1` & `WPA2/WPA3` / `USB-LAN` 互斥，以及 Still `[BULB]` 机械快门与休眠 `[Bulb Timer]` / `[Auto HDR]` HIL
+
+[`realhw_bright_mon_shotmark_usblan_bulb_dormant_coemulator.py`](realhw_bright_mon_shotmark_usblan_bulb_dormant_coemulator.py)（Schema `realhw_bright_mon_shotmark_usblan_bulb_dormant_coemulator_v1`）作为 **Stage 68（`68/68` Milestone！）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase325` / `--skip-stage68` / `--no-include-stage68` 跳过，支持 `--include-stage68`），严格遵循 `os.O_RDONLY`、`<= 4096 B` 受界窗口、`physical_device_writes == 0`、`rf_packets_transmitted == 0`、`slot1_data_sector_writes == 0` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 28 供体 `O_RDONLY` 字节与 SHA-256 精确锚定审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 通过受界 `os.O_RDONLY`（`<= 4096 B`）核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **28 份真实供体**（`14` 份 `.uxc` + `7` 份网络/蓝牙 `.so` + `4` 份 `USB-LAN` `.ko` + `FX3 appFw.so`、`FX3 BK4`、`FX6 appFw.so` 3 份大镜像），支持无供体 CI 环境下 `work_root is None`、`FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 与 CLI `--clean-room` 自动对等回退至 `CLEAN_ROOM_SYNTHETIC`。
+2. **Sub-Model 68A — 自定义键独占 `[Bright Monitoring]`（`Ver. 7.00+` 对焦放大共存）& `[Monitor Brightness]` vs `FX6` `VF Brightness 1..15` & AE `Backlight`**：
+   - `ILME-FX3 Ver. 7.02` `[Bright Monitoring]`（`_f 0x701f`，`BRIGHT_MONITORING_STATE_{ON,OFF}`）**不在拍摄菜单暴露开关**（仅由 `[Custom Key/Dial Set.]` 触发，来自拍摄菜单返回 `EOPNOTSUPP=95`）；激活期间强制 `[Live View Display] -> [Setting Effect OFF]`；关机、切出 `P/A/S/M` 或由 `MF` 切向 `AF` 时自动取消；**`Ver. 7.00/7.02` 明确支持开启期间同时使用 `[Focus Magnifier]` 与 `[Auto Magnifier in MF]`**（`Ver. 6.01` 基线互斥拒绝）；
+   - `[Monitor Brightness]`（`base 0xe44b`，`BKID_APP_setting_lcd_brightness`，`Initialize`-only 抗 `[Camera Settings Reset]`）仅暴露 `Manual`（`-2..+2`，默认 `0`）与 `Sunny Weather`（`0xe1da`），对休眠 `Auto`/`LCD_BRIGHTNESS_AUTO` fail-closed 返回 `EOPNOTSUPP=95`；对比 `ILME-FX6`（`Monitoring > VF Setting > Brightness 1..15` 默认 `8` + `Color/B&W`，`Shooting > Auto Exposure > Mode > Backlight` 为逆光 AE 补偿，而 `LCD/VF Backlight` 与 `NIGHTSHOT_*` 均休眠拒绝）。
+3. **Sub-Model 68B — `[Shot Mark 1/2]` / `[Clip Flag]` vs 零机内 `[Divide]` / `[Extract]` / `FTP Cut` & `Slot-1` Tier-0 `EROFS=30` Vault 防火墙**：
+   - 建模 FX3 录制 `[Add Shot Mark1/2]`（`_f 0x628b/0x628a`）、回放 `[Add/Delete Shot Mark1/2]`（`_f 0x6143/0x6142`）、12 项 `[Image Jump Setting]`、`[Clip Flag]`（`OK/NG/KEEP/Off`）、`[Photo Capture]`（`JPEG/HEIF_420/HEIF_422`）及 `[Create Divider Frame]`；
+   - 对不存在的机内 `[Divide]` / `[Extract]`（`FX3/FX6 appFw.so` `0` 命中）与休眠 UXC `Cut to 15/30/60 seconds`（`0x7005/0x6e38/0x6c2a`）返回 `EOPNOTSUPP=95`；对比 `FX6`（`Thumbnail > Clip Flag` 活跃，CBM 退役后遗留 `Shot Mark 0..9` / `Essence Mark` 休眠拒绝）；
+   - 强制执行 **`Slot-1` Tier-0 Vault `EROFS=30` / `EBUSY=16` 防火墙**：任何写卡操作（`Shot Mark` 增删、`Clip Flag` 修改、`Photo Capture`、`Create Divider Frame`、`Copy/Rotate`）指向 `Slot 1` 时 100% fail-closed 拦截（`slot1_data_sector_writes == 0`，`slot1_avf_info_mutated == False`）。
+4. **Sub-Model 68C — 零蓝牙 `[Timecode Link]` vs 有线 `VMC-BNCM1`（`EXT-LK`）、`WPA2/WPA3` 独占 Wi-Fi（`WW728473` vs `WW558244`）、`BT 5.0`（`15/2/1`）& `USB-LAN` 互斥 + `[Airplane Mode]=On` 持久保留**：
+   - 对不存在的蓝牙 `[Timecode Link]` / `UltraSync BLUE` 及 `Ver. 7.00+` 已移除的 `WEP` / `WPA-PSK` / `Security(IPsec)` fail-closed 返回 `EOPNOTSUPP=95`；
+   - 建模 FX3 Multi/Micro USB + `VMC-BNCM1` 有线外接 LTC（需 `Preset + Free Run` -> `EXT-LK`）vs FX6 物理 `TC IN/OUT` BNC 拨动开关（及零蓝牙硬件 FX6 vs FX3 `Bluetooth 5.0` `15` 配对 / `2` 并发 / `1` BT 遥控上限）；
+   - 建模 `USB-LAN` 内核模块栈（`cdc_ncm.ko`/`r8152.ko`/`ax88179_178a.ko`/`asix.ko` 等与 `[USB-LAN Cnct. Launch]` 默认 `Off`）：激活时禁用机内 Wi-Fi 且与 Multi/Micro USB（`VMC-BNCM1`/有线控制）严格互斥返回 `EBUSY=16`；`[Airplane Mode]=On` 在 `[Reset Network Set.]` 与 `[Initialize]` 后均保持开启（`rf_packets_transmitted == 0`）。
+5. **Sub-Model 68D & Redlines — Still `[BULB]` 机械快门约束 & `[DRO]` / `[DRO Bracket]` vs 休眠 `[Bulb Timer]` & `[Auto HDR]`**：
+   - 对休眠 `[Bulb Timer]`（`BKID_APP_setting_bulb_timer`, `_f 0x630f`, `ilc/2210` `0` 命中）与休眠 `[Auto HDR]`（`base 0xe49d`，由 `[HLG Still Image]` 替代）fail-closed 返回 `EOPNOTSUPP=95`；
+   - 建模 Still `[BULB]`（强制 `Manual Exposure` + **`[Mechanical Shutter]`**；在 `Electronic Shutter`、`Cont. Shooting`、`Self-timer(Cont)`、`Cont. Bracket`、`Interval Shooting` 下拒绝并回退 `30"`）以及 `[D-Range Optimizer]`（`Picture Profile != Off` 或 `HLG Still Image == On` 时强制 `Off` 并锁定 `[DRO Bracket]`）。
+
+### Phase 325 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 325 Stage 68（68/68 里程碑！）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_bright_mon_shotmark_usblan_bulb_dormant_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_bright_mon_shotmark_usblan_bulb_dormant_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_bright_mon_shotmark_usblan_bulb_dormant_coemulator.py --self-test --json
+
+# 2. 全板 68 阶段（Stage 1..68, 68/68 里程碑！）统一校验（支持 --include-stage68 与 --skip-phase325 / --skip-stage68 / --no-include-stage68）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage68 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 325 三模式 92 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_bright_mon_shotmark_usblan_bulb_dormant_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_bright_mon_shotmark_usblan_bulb_dormant_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_bright_mon_shotmark_usblan_bulb_dormant_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+
+

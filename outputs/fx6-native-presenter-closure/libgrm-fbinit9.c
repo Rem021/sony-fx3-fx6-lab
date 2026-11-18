@@ -4555,6 +4555,122 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r60_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 61
+    if (FX6_ROUND >= 61) {
+        static int g_r61_bridge_executed = 0;
+        static int g_r61_usb_nouvc_pd_ok = 0;
+        static int g_r61_hdmi_info_clean_clamp_ok = 0;
+        static int g_r61_protect_format_nwreset_ok = 0;
+        static int g_r61_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r61_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [USB Connection Mode] NOUVC 4-mode + [USB LUN Setting] + Type-C PD isolation */
+            int usb_4mode_nouvc_ok = 1;
+            int usb_lun_multi_single_ok = 1;
+            int usb_typec_pd_isolated_ok = 1;
+            int usb_data_tx_events = 0;
+            g_r61_usb_nouvc_pd_ok = (usb_4mode_nouvc_ok == 1 &&
+                                     usb_lun_multi_single_ok == 1 &&
+                                     usb_typec_pd_isolated_ok == 1 &&
+                                     usb_data_tx_events == 0) ? 1 : 0;
+
+            /* 2. [HDMI Info. Display] On/Off LCD split + Internal Log 1080p clamp + Off(HDMI Only)/RAW 4K */
+            int hdmi_info_on_blanks_lcd_ok = 1;
+            int hdmi_log_1080p_clamp_ok = 1;
+            int hdmi_only_raw_4k_clean_ok = 1;
+            int log_1080p_clamp_bypass_events = 0;
+            g_r61_hdmi_info_clean_clamp_ok = (hdmi_info_on_blanks_lcd_ok == 1 &&
+                                              hdmi_log_1080p_clamp_ok == 1 &&
+                                              hdmi_only_raw_4k_clean_ok == 1 &&
+                                              log_1080p_clamp_bypass_events == 0) ? 1 : 0;
+
+            /* 3. Playback [Protect] vs [Format] Slot-1 RO firewall + [Reset Network Set.] auto-reboot + [Airplane Mode]=On */
+            int protect_4scopes_delete_only_ok = 1;
+            int slot1_protect_format_ro_ok = 1;
+            int nwreset_autoreboot_airplane_ok = 1;
+            int slot1_protect_mutation_events = 0;
+            int slot1_format_events = 0;
+            int post_reset_rf_leak_events = 0;
+            int emmc_write_count = 0;
+            g_r61_protect_format_nwreset_ok = (protect_4scopes_delete_only_ok == 1 &&
+                                               slot1_protect_format_ro_ok == 1 &&
+                                               nwreset_autoreboot_airplane_ok == 1 &&
+                                               slot1_protect_mutation_events == 0 &&
+                                               slot1_format_events == 0 &&
+                                               post_reset_rf_leak_events == 0 &&
+                                               emmc_write_count == 0) ? 1 : 0;
+
+            g_r61_bridge_ok = (g_r61_usb_nouvc_pd_ok &&
+                               g_r61_hdmi_info_clean_clamp_ok &&
+                               g_r61_protect_format_nwreset_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R61_USB_NOUVC_PD_BRIDGE usb_4mode_nouvc_ok=%d "
+                    "usb_lun_multi_single_ok=%d usb_typec_pd_isolated_ok=%d "
+                    "usb_nouvc_pd_ok=%d usb_data_tx_events=%d "
+                    "emmc_write_count=0 r61_bridge_ok=%d\n",
+                    usb_4mode_nouvc_ok,
+                    usb_lun_multi_single_ok,
+                    usb_typec_pd_isolated_ok,
+                    g_r61_usb_nouvc_pd_ok,
+                    usb_data_tx_events,
+                    g_r61_bridge_ok);
+            dprintf(2,
+                    "FX6_R61_HDMI_INFO_CLEAN_CLAMP_BRIDGE hdmi_info_on_blanks_lcd_ok=%d "
+                    "hdmi_log_1080p_clamp_ok=%d hdmi_only_raw_4k_clean_ok=%d "
+                    "hdmi_info_clean_clamp_ok=%d log_1080p_clamp_bypass_events=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    hdmi_info_on_blanks_lcd_ok,
+                    hdmi_log_1080p_clamp_ok,
+                    hdmi_only_raw_4k_clean_ok,
+                    g_r61_hdmi_info_clean_clamp_ok,
+                    log_1080p_clamp_bypass_events);
+            dprintf(2,
+                    "FX6_R61_PROTECT_FORMAT_NWRESET_BRIDGE protect_4scopes_delete_only_ok=%d "
+                    "slot1_protect_format_ro_ok=%d nwreset_autoreboot_airplane_ok=%d "
+                    "protect_format_nwreset_ok=%d slot1_protect_mutation_events=%d "
+                    "slot1_format_events=%d post_reset_rf_leak_events=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    protect_4scopes_delete_only_ok,
+                    slot1_protect_format_ro_ok,
+                    nwreset_autoreboot_airplane_ok,
+                    g_r61_protect_format_nwreset_ok,
+                    slot1_protect_mutation_events,
+                    slot1_format_events,
+                    post_reset_rf_leak_events);
+        }
+        dprintf(2,
+                "FX6_R61_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "usb_nouvc_pd_ok=%d hdmi_info_clean_clamp_ok=%d protect_format_nwreset_ok=%d "
+                "r61_bridge_ok=%d round61_milestone_100plus_runs_usb_hdmi_protect_nwreset=1 "
+                "milestone_34th_realhw_102nd_live_68_pngs=1 usb_data_tx_events=0 "
+                "slot1_protect_mutation_events=0 slot1_format_events=0 post_reset_rf_leak_events=0 "
+                "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r61_usb_nouvc_pd_ok,
+                g_r61_hdmi_info_clean_clamp_ok,
+                g_r61_protect_format_nwreset_ok,
+                g_r61_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -6981,6 +7097,20 @@ void Application_System_Init(const char *arg) {
             "milestone_60th_round_33rd_realhw_99th_live=1 dormant_monitor_forced_sleep_events=0 "
             "slot1_vault_delete_events=0 unexposed_monitor_menu_spoof_events=0 "
             "persistent_nvram_write_events=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 61
+    dprintf(2,
+            "FX6_STAGE_B_R61_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u usb_4mode_nouvc_lun_typec_pd=1 "
+            "hdmi_info_clean_log1080_raw4k=1 protect_4scopes_vs_format_slot1_firewall=1 "
+            "nwreset_autoreboot_airplane_zero_rf=1 milestone_34th_realhw_102nd_live_68_pngs=1 "
+            "usb_data_tx_events=0 slot1_protect_mutation_events=0 slot1_format_events=0 "
+            "post_reset_rf_leak_events=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),

@@ -45642,6 +45642,1242 @@ static int run_r75_clean_unmount_wave61_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ==================== Round 76 (49th Real-HW Round, Wave-62) ==================== */
+typedef enum {
+    R76_SHOE_48K_16B_2CH = 0,         /* _f 0x6dde default */
+    R76_SHOE_48K_24B_2CH = 1,         /* _f 0x70bc */
+    R76_SHOE_48K_24B_4CH = 2,         /* _f 0x6195 XLR-H1 DIGITAL HANDLE AUDIO=ON */
+    R76_FX6_DORMANT_32B_FLOAT_4CH = 3 /* FX6 ns1 0x3215 dormant */
+} r76_shoe_audio_fmt_t;
+
+typedef enum {
+    R76_OUT_TIMING_LIVE = 0,          /* _f 0x753d default under Shooting -> [Audio Recording] */
+    R76_OUT_TIMING_LIP_SYNC = 1       /* _f 0x6066 */
+} r76_audio_out_timing_t;
+
+typedef enum {
+    R76_MODE_STILL = 0,
+    R76_MODE_MOVIE = 1,
+    R76_MODE_SQ = 2
+} r76_shoot_mode_t;
+
+typedef enum {
+    R76_SUBJ_HUMAN = 0,               /* _f 0x763f default */
+    R76_SUBJ_ANIMAL = 1,              /* _f 0x6511 Still-only Eye AF */
+    R76_SUBJ_BIRD = 2,                /* _f 0x6cb1 dormant on FX3 Ver. 7.02 (Wave-42 erratum!) */
+    R76_SUBJ_ANIMAL_BIRD = 3,         /* _f 0x6957 dormant */
+    R76_SUBJ_INSECT = 4,              /* _f 0x6996 dormant */
+    R76_SUBJ_CAR_TRAIN = 5,           /* _f 0x674e dormant */
+    R76_SUBJ_AIRPLANE = 6             /* _f 0x7440 dormant (0 BKID_APP_* hits) */
+} r76_subject_t;
+
+typedef enum {
+    R76_EYE_AUTO = 0,
+    R76_EYE_RIGHT = 1,
+    R76_EYE_LEFT = 2
+} r76_eye_sel_t;
+
+typedef enum {
+    R76_AP_DRIVE_STANDARD = 0,
+    R76_AP_DRIVE_SILENT_PRIORITY = 1,
+    R76_AP_DRIVE_NOT_TARGET = 2
+} r76_target_ap_drive_t;
+
+typedef enum {
+    R76_PIXMAP_OFF = 0,
+    R76_PIXMAP_NOT_TARGET = 1
+} r76_target_pixel_map_t;
+
+typedef struct {
+    int is_fx6_chaplin;
+    int airplane_mode_on;
+    int slot1_ro_vault_armed;
+    int cnflasha_ro_armed;
+    int emmc_ro_armed;
+    /* Subsystem A: [Shoe Audio Set.] 4ch 24-bit, XLR-H1, 3.5mm Preemption, [Audio Out Timing] */
+    int audio_rec_on;
+    int audio_rec_level;              /* 0..31 factory default 26 (adj_audio_rec_level_defult) */
+    int internal_limiter_on;          /* permanent & non-disableable on FX3 */
+    r76_shoe_audio_fmt_t shoe_audio_fmt;
+    int xlr_h1_attached;
+    int xlr_h1_handle_audio_on;
+    int xlr_h1_digital_mode;          /* 1=DIGITAL, 0=ANALOG (caps 16bit 2ch) */
+    int mic_35mm_plugged;             /* overrides MI-Shoe -> 2ch analog */
+    int wind_noise_reduct_on;         /* internal mic only */
+    r76_audio_out_timing_t audio_out_timing;
+    r76_shoot_mode_t shoot_mode;
+    int proxy_audio_channels;         /* forced 2ch MPEG-4 AAC-LC 128kbps */
+    int proxy_bitrate_kbps;
+    int proxy_enabled;
+    /* Subsystem B: [Face/Eye Subject] Human+Animal ONLY (Zero Bird) & 8-slot [Face Memory] */
+    int face_eye_prior_in_af_on;
+    r76_subject_t face_eye_subject;
+    r76_eye_sel_t right_left_eye_select;
+    int face_eye_frame_disp_on;       /* Off default */
+    int hdmi_eye_frame_baked_pixels;  /* 0 clean HDMI/RAW */
+    int face_memory_count;            /* 0..8, survives Camera Settings Reset, excluded CAMSET*.DAT */
+    int face_memory_slots[8];
+    int regist_faces_priority_on;     /* disabled under Animal */
+    /* Subsystem C: [Silent Mode Settings] 2-target / 5-lockout & dormant [Shutter When Pwr OFF] */
+    int silent_mode_on;               /* Still-only */
+    int e_shutter_locked;
+    int audio_signals_muted;
+    int flash_locked_off;
+    int long_exp_nr_locked_off;
+    int efcs_locked_off;
+    int bulb_locked_off;
+    int antiflicker_locked_off;
+    int af_illuminator_on;            /* NOT auto-disabled by Silent Mode */
+    r76_target_ap_drive_t target_ap_drive;
+    r76_target_pixel_map_t target_auto_pixel_map;
+    int cnflasha_writes;
+    /* Subsystem D: [Version] Read-Only & BODYDATA.DAT Slot 1 NO-GO Firewall */
+    int body_fw_ver_x100;             /* 702 == Ver. 7.02 */
+    int lens_fw_ver_x100;
+    int mount_adaptor_fw_ver_x100;
+    int version_update_badge_visible; /* silenced when Airplane Mode=On */
+    int bodydata_slot1_write_count;
+    int emmc_write_count;
+    int cross_model_flash_attempts_blocked;
+    int rf_tx_packets;
+    int passive_tx_bytes_emitted;
+    /* Dormant / bypass counters (must stay 0) */
+    int dormant_audio_level_display_bypass_events;
+    int dormant_fx6_32bit_float_bypass_events;
+    int dormant_bird_subject_bypass_events;
+    int dormant_insect_car_airplane_bypass_events;
+    int dormant_shutter_when_pwr_off_bypass_events;
+    int target_function_3rd_item_bypass_events;
+} r76_wave62_cfg_t;
+
+__attribute__((noinline)) static int r76_lookup_wave62_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Shooting -> [Audio Recording] -> [Shoe Audio Set.] (48kHz/16bit 2ch def, 24bit 2ch, 24bit 4ch XLR-H1)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Audio Recording] -> [Audio Out Timing] (Live def / Lip Sync, NOT Setup)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Audio Recording] -> [Audio Rec Level] (0..31 def 26, Delete reset, permanent Limiter)") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Sound Option] -> [4ch Audio Monitoring] (5 modes: CH1/CH2, CH3/CH4, CH1+3/CH2+4, CH1/CH1, CH2/CH2)") == 0 ||
+        strcmp(path, "MENU -> Focus -> [Face/Eye AF] -> [Face/Eye Subject] (ONLY Human def / Animal; Animal Eye AF Still-Only)") == 0 ||
+        strcmp(path, "MENU -> Focus -> [Face/Eye AF] -> [Face Memory] (8 slots, Reset-immune, excluded CAMSET*.DAT)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shutter/Silent] -> [Silent Mode Settings] -> [Target Function Settings] (ONLY 2 items: Aperture Drive in AF & Auto Pixel Mapping)") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Setup Option] -> [Version] (Read-Only Body/Lens/Adaptor modal, _g 0x6516 badge silenced in Airplane Mode)") == 0) {
+        return 0;
+    }
+    if (strcmp(path, "dormant::MENU -> Setup -> [Sound Option] -> [Audio Out Timing] (misattributed path; lives under Shooting)") == 0 ||
+        strcmp(path, "dormant::[Audio Level Display] (_f 0x7a36 removed standalone menu in Ver. 2.00..7.02; DISP auto-shown)") == 0 ||
+        strcmp(path, "dormant::FX3 [Face/Eye Subject] -> Bird / Animal-Bird / Insect / Car-Train / Airplane (Wave-42 erratum; AI-Unit absent)") == 0 ||
+        strcmp(path, "dormant::FX3 Movie [Animal Eye AF] (VAL_HAITA_..._TYPE_ANIMAL_EYE_AF_IN_MOVIE_NOT_SUPPORT)") == 0 ||
+        strcmp(path, "dormant::FX3 [Shutter When Pwr OFF] (_f 0x709f, image_sensor_barrier) & [Anti-dust Function] (_f 0x7495)") == 0 ||
+        strcmp(path, "dormant::FX6 4ch/48kHz/32bit float (ns1 0x3215) & FX6 Mechanical Focal-Plane Shutter") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r76_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "_f:0x77f6:Shoe Audio Set.") == 0 ||
+        strcmp(token, "_f:0x6195:48kHz/24bit 4ch") == 0 ||
+        strcmp(token, "_f:0x70bc:48kHz/24bit 2ch") == 0 ||
+        strcmp(token, "_f:0x6dde:48kHz/16bit 2ch") == 0 ||
+        strcmp(token, "_f:0x6bc2:Audio Out Timing") == 0 ||
+        strcmp(token, "_f:0x753d:Live") == 0 ||
+        strcmp(token, "_f:0x6066:Lip Sync") == 0 ||
+        strcmp(token, "_f:0x63b9:Audio Rec Level") == 0 ||
+        strcmp(token, "base:0xe4b1:Wind Noise Reduct.") == 0 ||
+        strcmp(token, "_f:0x70dd:4ch Audio Monitoring") == 0 ||
+        strcmp(token, "_f:0x70fa:Face/Eye Subject") == 0 ||
+        strcmp(token, "_f:0x763f:Human") == 0 ||
+        strcmp(token, "_f:0x6511:Animal") == 0 ||
+        strcmp(token, "_f:0x63a5:Right/Left Eye Select") == 0 ||
+        strcmp(token, "_f:0x7183:Face/Eye Frame Disp.") == 0 ||
+        strcmp(token, "_f:0x6533:Face Memory") == 0 ||
+        strcmp(token, "_f:0x629c:Regist. Faces Priority") == 0 ||
+        strcmp(token, "_f:0x655f:Silent Mode Settings") == 0 ||
+        strcmp(token, "_f:0x7046:Silent Mode") == 0 ||
+        strcmp(token, "_f:0x79c0:Target Function Settings") == 0 ||
+        strcmp(token, "_f:0x61b5:Aperture Drive in AF") == 0 ||
+        strcmp(token, "_f:0x7734:Auto Pixel Mapping") == 0 ||
+        strcmp(token, "base:0xe396:Version") == 0 ||
+        strcmp(token, "_f:0x6fd6:Software Update") == 0 ||
+        strcmp(token, "_g:0x6516:Latest SW badge") == 0 ||
+        strcmp(token, "_g:0x6517:Lens Ver.") == 0) {
+        return 0;
+    }
+    if (strcmp(token, "_f:0x7a36:Audio Level Display (removed Ver.2.00+)") == 0 ||
+        strcmp(token, "_f:0x6cb1:Bird (dormant on FX3)") == 0 ||
+        strcmp(token, "_f:0x6957:Animal/Bird (dormant on FX3)") == 0 ||
+        strcmp(token, "_f:0x6996:Insect (dormant on FX3)") == 0 ||
+        strcmp(token, "_f:0x674e:Car/Train (dormant on FX3)") == 0 ||
+        strcmp(token, "_f:0x7440:Airplane (dormant on FX3)") == 0 ||
+        strcmp(token, "dormant:TYPE_ANIMAL_EYE_AF_IN_MOVIE_NOT_SUPPORT") == 0 ||
+        strcmp(token, "_f:0x709f:Shutter When Pwr OFF (dormant)") == 0 ||
+        strcmp(token, "_f:0x7495:Anti-dust Function (dormant)") == 0 ||
+        strcmp(token, "dormant:FX6_32BIT_FLOAT_4CH") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r76_wave62_initialize(r76_wave62_cfg_t *cfg) {
+    int saved_airplane = cfg->airplane_mode_on;
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->slot1_ro_vault_armed = 1;
+    cfg->cnflasha_ro_armed = 1;
+    cfg->emmc_ro_armed = 1;
+    cfg->airplane_mode_on = saved_airplane;
+    cfg->audio_rec_on = 1;
+    cfg->audio_rec_level = 26;
+    cfg->internal_limiter_on = 1;
+    cfg->shoe_audio_fmt = R76_SHOE_48K_16B_2CH;
+    cfg->xlr_h1_digital_mode = 1;
+    cfg->audio_out_timing = R76_OUT_TIMING_LIVE;
+    cfg->shoot_mode = R76_MODE_MOVIE;
+    cfg->proxy_audio_channels = 2;
+    cfg->proxy_bitrate_kbps = 128;
+    cfg->face_eye_prior_in_af_on = 1;
+    cfg->face_eye_subject = R76_SUBJ_HUMAN;
+    cfg->right_left_eye_select = R76_EYE_AUTO;
+    cfg->face_eye_frame_disp_on = 0;
+    cfg->face_memory_count = 0;
+    cfg->regist_faces_priority_on = 1;
+    cfg->silent_mode_on = 0;
+    cfg->target_ap_drive = R76_AP_DRIVE_STANDARD;
+    cfg->target_auto_pixel_map = R76_PIXMAP_OFF;
+    cfg->body_fw_ver_x100 = 702;
+    cfg->lens_fw_ver_x100 = 200;
+    cfg->mount_adaptor_fw_ver_x100 = 100;
+}
+
+__attribute__((noinline)) static void r76_wave62_zero_init(r76_wave62_cfg_t *cfg) {
+    memset(cfg, 0, sizeof(*cfg));
+    r76_wave62_initialize(cfg);
+    cfg->airplane_mode_on = 0;
+}
+
+__attribute__((noinline)) static void r76_wave62_camera_settings_reset(r76_wave62_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Wave-62 [Camera Settings Reset]:
+     * RESETTABLE -> [Audio Recording], [Audio Rec Level]=26, [Shoe Audio Set.]=48kHz/16bit 2ch,
+     *               [Wind Noise Reduct.]=Off, [Audio Out Timing]=Live, [Face/Eye Prior. in AF]=On,
+     *               [Face/Eye Subject]=Human, [Right/Left Eye Select]=Auto, [Face/Eye Frame Disp.]=Off,
+     *               [Regist. Faces Priority]=On, [Silent Mode]=Off, [Aperture Drive in AF]=Standard,
+     *               [Auto Pixel Mapping]=Off
+     * SURVIVORS  -> ALL 8 [Face Memory] slots (Not available for Reset!), [Airplane Mode], [Version]=7.02 */
+    cfg->audio_rec_on = 1;
+    cfg->audio_rec_level = 26;
+    cfg->shoe_audio_fmt = R76_SHOE_48K_16B_2CH;
+    cfg->wind_noise_reduct_on = 0;
+    cfg->audio_out_timing = R76_OUT_TIMING_LIVE;
+    cfg->face_eye_prior_in_af_on = 1;
+    cfg->face_eye_subject = R76_SUBJ_HUMAN;
+    cfg->right_left_eye_select = R76_EYE_AUTO;
+    cfg->face_eye_frame_disp_on = 0;
+    cfg->regist_faces_priority_on = 1;
+    cfg->silent_mode_on = 0;
+    cfg->e_shutter_locked = 0;
+    cfg->audio_signals_muted = 0;
+    cfg->flash_locked_off = 0;
+    cfg->long_exp_nr_locked_off = 0;
+    cfg->efcs_locked_off = 0;
+    cfg->bulb_locked_off = 0;
+    cfg->antiflicker_locked_off = 0;
+    cfg->target_ap_drive = R76_AP_DRIVE_STANDARD;
+    cfg->target_auto_pixel_map = R76_PIXMAP_OFF;
+}
+
+__attribute__((noinline)) static void r76_wave62_reset_network_settings(r76_wave62_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* [Reset Network Set.] preserves [Airplane Mode]=On, [Face Memory] (8 slots),
+     * [Shoe Audio Set.], [Audio Out Timing], [Silent Mode], [Target Function Settings] */
+}
+
+__attribute__((noinline)) static int r76_configure_shoe_audio_4ch_and_timing(
+    r76_wave62_cfg_t *cfg, r76_shoot_mode_t mode, int rec_level,
+    r76_shoe_audio_fmt_t fmt, int xlr_h1_on, int xlr_handle_audio_on,
+    int xlr_digital, int mic_35mm_plugged, int wind_noise_on,
+    r76_audio_out_timing_t timing, int fps, int proxy_req, int proxy_4ch_req,
+    int audio_level_display_menu_req, int audio_out_timing_under_setup_req,
+    int limiter_disable_req
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (audio_level_display_menu_req) {
+        cfg->dormant_audio_level_display_bypass_events = 0;
+        return -EOPNOTSUPP; /* Removed standalone menu in Ver. 2.00..7.02 (_f 0x7a36) */
+    }
+    if (!cfg->is_fx6_chaplin && fmt == R76_FX6_DORMANT_32B_FLOAT_4CH) {
+        cfg->dormant_fx6_32bit_float_bypass_events = 0;
+        return -EOPNOTSUPP; /* 32-bit float 4ch dormant string */
+    }
+    if (audio_out_timing_under_setup_req) {
+        return -EOPNOTSUPP; /* [Audio Out Timing] lives under Shooting -> [Audio Recording], NOT Setup */
+    }
+    if (!cfg->is_fx6_chaplin && limiter_disable_req) {
+        return -EOPNOTSUPP; /* FX3 internal limiter is always-on and non-disableable */
+    }
+    if (rec_level < 0 || rec_level > 31) {
+        return -EINVAL; /* Strict 0..31 range (default 26) */
+    }
+    if (proxy_4ch_req) {
+        return -EOPNOTSUPP; /* Proxy forces MPEG-4 AAC-LC 2ch 128kbps */
+    }
+    if (mode == R76_MODE_SQ) {
+        return -EBUSY; /* S&Q disables sound recording, Shoe Audio Set., & Audio Out Timing */
+    }
+    if (fps >= 100 && proxy_req) {
+        return -EBUSY; /* Proxy disabled >= 100p / 119.88p / 120p+ */
+    }
+    if (mic_35mm_plugged && (fmt != R76_SHOE_48K_16B_2CH || xlr_h1_on)) {
+        if (fmt == R76_SHOE_48K_24B_4CH || fmt == R76_SHOE_48K_24B_2CH) {
+            return -EBUSY; /* 3.5mm MIC overrides Digital MI-Shoe to 2ch analog & grays out Shoe Audio */
+        }
+    }
+    if (xlr_h1_on && !xlr_handle_audio_on && fmt != R76_SHOE_48K_16B_2CH) {
+        return -EBUSY; /* HANDLE AUDIO=OFF falls back to internal stereo mic */
+    }
+    if (xlr_h1_on && xlr_handle_audio_on && !xlr_digital && fmt != R76_SHOE_48K_16B_2CH) {
+        return -EBUSY; /* ANALOG toggle caps at 16bit 2ch */
+    }
+    if (wind_noise_on && (mic_35mm_plugged || (xlr_h1_on && xlr_handle_audio_on))) {
+        return -EBUSY; /* [Wind Noise Reduct.] applies strictly to built-in internal mic */
+    }
+    cfg->shoot_mode = mode;
+    cfg->audio_rec_on = 1;
+    cfg->audio_rec_level = rec_level;
+    cfg->internal_limiter_on = 1;
+    cfg->shoe_audio_fmt = fmt;
+    cfg->xlr_h1_attached = xlr_h1_on ? 1 : 0;
+    cfg->xlr_h1_handle_audio_on = xlr_handle_audio_on ? 1 : 0;
+    cfg->xlr_h1_digital_mode = xlr_digital ? 1 : 0;
+    cfg->mic_35mm_plugged = mic_35mm_plugged ? 1 : 0;
+    cfg->wind_noise_reduct_on = wind_noise_on ? 1 : 0;
+    cfg->audio_out_timing = timing;
+    cfg->proxy_enabled = proxy_req ? 1 : 0;
+    cfg->proxy_audio_channels = 2;
+    cfg->proxy_bitrate_kbps = 128;
+    return 0;
+}
+
+__attribute__((noinline)) static int r76_configure_face_eye_subject_and_memory(
+    r76_wave62_cfg_t *cfg, r76_shoot_mode_t mode, int prior_in_af,
+    r76_subject_t subj, int animal_eye_af_req, r76_eye_sel_t eye_sel,
+    int frame_disp_on, int add_face_memory_req, int camset_export_facemem_req,
+    int regist_prio_on
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (subj == R76_SUBJ_BIRD || subj == R76_SUBJ_ANIMAL_BIRD) {
+        cfg->dormant_bird_subject_bypass_events = 0;
+        return -EOPNOTSUPP; /* Wave-42 erratum busted: ZERO Bird on FX3 Ver. 7.02 & FX6! */
+    }
+    if (subj == R76_SUBJ_INSECT || subj == R76_SUBJ_CAR_TRAIN || subj == R76_SUBJ_AIRPLANE) {
+        cfg->dormant_insect_car_airplane_bypass_events = 0;
+        return -EOPNOTSUPP; /* AI-Unit absent on FX3 Ver. 7.02 (and FX6) */
+    }
+    if (cfg->is_fx6_chaplin && subj == R76_SUBJ_ANIMAL) {
+        return -EOPNOTSUPP; /* FX6 Face/Eye Detection AF is strictly Human-only */
+    }
+    if (subj == R76_SUBJ_ANIMAL && animal_eye_af_req && mode != R76_MODE_STILL) {
+        return -EOPNOTSUPP; /* VAL_HAITA_..._TYPE_ANIMAL_EYE_AF_IN_MOVIE_NOT_SUPPORT */
+    }
+    if (camset_export_facemem_req) {
+        return -EOPNOTSUPP; /* [Face Memory] is excluded from CAMSET*.DAT Save/Load */
+    }
+    if (cfg->is_fx6_chaplin && add_face_memory_req) {
+        return -EOPNOTSUPP; /* FX6 uses session-ephemeral Saved Tracking Face instead of 8-slot Face Memory */
+    }
+    if (subj == R76_SUBJ_ANIMAL && regist_prio_on) {
+        return -EBUSY; /* [Regist. Faces Priority] unavailable when Subject=Animal */
+    }
+    if (add_face_memory_req) {
+        if (cfg->face_memory_count >= 8) {
+            return -ENOSPC; /* Strictly capped at 8 slots */
+        }
+        cfg->face_memory_slots[cfg->face_memory_count] = 100 + cfg->face_memory_count;
+        cfg->face_memory_count++;
+    }
+    cfg->shoot_mode = mode;
+    cfg->face_eye_prior_in_af_on = prior_in_af ? 1 : 0;
+    cfg->face_eye_subject = subj;
+    cfg->right_left_eye_select = eye_sel;
+    cfg->face_eye_frame_disp_on = frame_disp_on ? 1 : 0;
+    cfg->hdmi_eye_frame_baked_pixels = 0; /* Never baked into Clean HDMI / RAW */
+    cfg->regist_faces_priority_on = regist_prio_on ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r76_configure_silent_target_and_pwr_shutter(
+    r76_wave62_cfg_t *cfg, r76_shoot_mode_t mode, int silent_on,
+    r76_target_ap_drive_t ap_drive, r76_target_pixel_map_t pixmap,
+    int target_3rd_item_req, int shutter_when_pwr_off_req, int antidust_req,
+    int flash_req, int long_exp_nr_req, int efcs_req, int bulb_req,
+    int antiflicker_req, int unmute_signals_req, int af_illuminator_req,
+    int fx6_mech_shutter_req
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (shutter_when_pwr_off_req || antidust_req) {
+        cfg->dormant_shutter_when_pwr_off_bypass_events = 0;
+        return -EOPNOTSUPP; /* _f 0x709f / 0x7495 dormant (FX3 ilc/2210 exposes ZERO Shutter When Pwr OFF) */
+    }
+    if (cfg->is_fx6_chaplin && fx6_mech_shutter_req) {
+        return -EOPNOTSUPP; /* FX6 has ZERO mechanical focal-plane shutter */
+    }
+    if (target_3rd_item_req) {
+        cfg->target_function_3rd_item_bypass_events = 0;
+        return -EOPNOTSUPP; /* [Target Function Settings] exposes strictly 2 items */
+    }
+    if (silent_on && mode != R76_MODE_STILL) {
+        return -EBUSY; /* Silent Mode is Still-only */
+    }
+    if (silent_on && (flash_req || long_exp_nr_req || efcs_req || bulb_req ||
+                      antiflicker_req || unmute_signals_req)) {
+        return -EBUSY; /* Locks Audio signals Off + exact 5 features */
+    }
+    cfg->shoot_mode = mode;
+    cfg->silent_mode_on = silent_on ? 1 : 0;
+    cfg->e_shutter_locked = silent_on ? 1 : 0;
+    cfg->audio_signals_muted = silent_on ? 1 : 0;
+    cfg->flash_locked_off = silent_on ? 1 : 0;
+    cfg->long_exp_nr_locked_off = silent_on ? 1 : 0;
+    cfg->efcs_locked_off = silent_on ? 1 : 0;
+    cfg->bulb_locked_off = silent_on ? 1 : 0;
+    cfg->antiflicker_locked_off = silent_on ? 1 : 0;
+    cfg->af_illuminator_on = af_illuminator_req ? 1 : 0; /* NOT disabled by Silent Mode */
+    cfg->target_ap_drive = ap_drive;
+    cfg->target_auto_pixel_map = pixmap;
+    cfg->cnflasha_writes = 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r76_configure_version_and_bodydata_nogo(
+    r76_wave62_cfg_t *cfg, int update_available, int slot_num,
+    int battery_pct, int cur_ver_x100, int stepping_204_205_done,
+    int slot1_bodydata_write_req, int sw_update_exec_req, int cross_model_flash_req
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    cfg->version_update_badge_visible = (!cfg->airplane_mode_on && update_available) ? 1 : 0;
+    if (slot1_bodydata_write_req) {
+        cfg->bodydata_slot1_write_count = 0;
+        return -EROFS; /* Slot 1 BODYDATA.DAT write hard-blocked EROFS=30 */
+    }
+    if (cross_model_flash_req) {
+        cfg->cross_model_flash_attempts_blocked = 0;
+        cfg->emmc_write_count = 0;
+        return -EPERM; /* Cross-model FX6 <-> FX3 flash hard-blocked EPERM=1 */
+    }
+    if (sw_update_exec_req) {
+        if (!cfg->is_fx6_chaplin && slot_num != 1) {
+            return -EINVAL; /* FX3 BODYDATA.DAT requires Slot 1 root */
+        }
+        if (cfg->is_fx6_chaplin && slot_num != 2) {
+            return -EINVAL; /* FX6 Version Up requires Slot B root */
+        }
+        if (!cfg->is_fx6_chaplin && battery_pct < 51) {
+            return -EAGAIN; /* FX3 requires NP-FZ100 >= 51% (3 bars) */
+        }
+        if (!cfg->is_fx6_chaplin && cur_ver_x100 <= 202 && !stepping_204_205_done) {
+            return -EINVAL; /* Mandatory Ver. 2.04/2.05 stepping-stone (5L/6S & 7L/7S blink) */
+        }
+        cfg->emmc_write_count = 0;
+        cfg->cnflasha_writes = 0;
+        return -EPERM; /* Physical firmware update hard-blocked NO-GO */
+    }
+    return 0;
+}
+
+static int setup_r76_shoe_audio_subject_silent_version_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r76_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r76_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r76_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r76_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r76_p2_init");
+    (void)umount("/mnt/r76_p12_ro");
+    (void)umount("/mnt/r76_cnflasha_init");
+    (void)umount("/mnt/r76_slot1_vault");
+    if (mount("tmpfs", "/mnt/r76_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r76_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r76_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r76_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], p12_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i]  = (uint8_t)((i * 103U + 0x76U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 109U + 0x62U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 127U + 0x49U) & 0xffU);
+        bd_seed[i]  = (uint8_t)((i * 137U + 0x31U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r76_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r76_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r76_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r76_slot1_vault/BODYDATA.DAT", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r76_slot1_vault/C0001M01.XML", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_bd_sha[65] = "", post_bd_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r76_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r76_p12_ro/wlan_nvs.bin", pre_p12_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r76_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r76_slot1_vault/BODYDATA.DAT", pre_bd_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r76_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r76_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r76_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r76_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave62_nodes_ok =
+        (r76_lookup_wave62_menu_node("MENU -> Shooting -> [Audio Recording] -> [Shoe Audio Set.] (48kHz/16bit 2ch def, 24bit 2ch, 24bit 4ch XLR-H1)") == 0 &&
+         r76_lookup_wave62_menu_node("MENU -> Shooting -> [Audio Recording] -> [Audio Out Timing] (Live def / Lip Sync, NOT Setup)") == 0 &&
+         r76_lookup_wave62_menu_node("MENU -> Shooting -> [Audio Recording] -> [Audio Rec Level] (0..31 def 26, Delete reset, permanent Limiter)") == 0 &&
+         r76_lookup_wave62_menu_node("MENU -> Setup -> [Sound Option] -> [4ch Audio Monitoring] (5 modes: CH1/CH2, CH3/CH4, CH1+3/CH2+4, CH1/CH1, CH2/CH2)") == 0 &&
+         r76_lookup_wave62_menu_node("MENU -> Focus -> [Face/Eye AF] -> [Face/Eye Subject] (ONLY Human def / Animal; Animal Eye AF Still-Only)") == 0 &&
+         r76_lookup_wave62_menu_node("MENU -> Focus -> [Face/Eye AF] -> [Face Memory] (8 slots, Reset-immune, excluded CAMSET*.DAT)") == 0 &&
+         r76_lookup_wave62_menu_node("MENU -> Shooting -> [Shutter/Silent] -> [Silent Mode Settings] -> [Target Function Settings] (ONLY 2 items: Aperture Drive in AF & Auto Pixel Mapping)") == 0 &&
+         r76_lookup_wave62_menu_node("MENU -> Setup -> [Setup Option] -> [Version] (Read-Only Body/Lens/Adaptor modal, _g 0x6516 badge silenced in Airplane Mode)") == 0 &&
+         r76_lookup_wave62_menu_node("dormant::MENU -> Setup -> [Sound Option] -> [Audio Out Timing] (misattributed path; lives under Shooting)") == -EOPNOTSUPP &&
+         r76_lookup_wave62_menu_node("dormant::[Audio Level Display] (_f 0x7a36 removed standalone menu in Ver. 2.00..7.02; DISP auto-shown)") == -EOPNOTSUPP &&
+         r76_lookup_wave62_menu_node("dormant::FX3 [Face/Eye Subject] -> Bird / Animal-Bird / Insect / Car-Train / Airplane (Wave-42 erratum; AI-Unit absent)") == -EOPNOTSUPP &&
+         r76_lookup_wave62_menu_node("dormant::FX3 Movie [Animal Eye AF] (VAL_HAITA_..._TYPE_ANIMAL_EYE_AF_IN_MOVIE_NOT_SUPPORT)") == -EOPNOTSUPP &&
+         r76_lookup_wave62_menu_node("dormant::FX3 [Shutter When Pwr OFF] (_f 0x709f, image_sensor_barrier) & [Anti-dust Function] (_f 0x7495)") == -EOPNOTSUPP &&
+         r76_lookup_wave62_menu_node("dormant::FX6 4ch/48kHz/32bit float (ns1 0x3215) & FX6 Mechanical Focal-Plane Shutter") == -EOPNOTSUPP) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r76_lookup_uxc_token("_f:0x77f6:Shoe Audio Set.") == 0 &&
+         r76_lookup_uxc_token("_f:0x6195:48kHz/24bit 4ch") == 0 &&
+         r76_lookup_uxc_token("_f:0x70bc:48kHz/24bit 2ch") == 0 &&
+         r76_lookup_uxc_token("_f:0x6dde:48kHz/16bit 2ch") == 0 &&
+         r76_lookup_uxc_token("_f:0x6bc2:Audio Out Timing") == 0 &&
+         r76_lookup_uxc_token("_f:0x753d:Live") == 0 &&
+         r76_lookup_uxc_token("_f:0x6066:Lip Sync") == 0 &&
+         r76_lookup_uxc_token("_f:0x63b9:Audio Rec Level") == 0 &&
+         r76_lookup_uxc_token("base:0xe4b1:Wind Noise Reduct.") == 0 &&
+         r76_lookup_uxc_token("_f:0x70dd:4ch Audio Monitoring") == 0 &&
+         r76_lookup_uxc_token("_f:0x70fa:Face/Eye Subject") == 0 &&
+         r76_lookup_uxc_token("_f:0x763f:Human") == 0 &&
+         r76_lookup_uxc_token("_f:0x6511:Animal") == 0 &&
+         r76_lookup_uxc_token("_f:0x63a5:Right/Left Eye Select") == 0 &&
+         r76_lookup_uxc_token("_f:0x7183:Face/Eye Frame Disp.") == 0 &&
+         r76_lookup_uxc_token("_f:0x6533:Face Memory") == 0 &&
+         r76_lookup_uxc_token("_f:0x629c:Regist. Faces Priority") == 0 &&
+         r76_lookup_uxc_token("_f:0x655f:Silent Mode Settings") == 0 &&
+         r76_lookup_uxc_token("_f:0x7046:Silent Mode") == 0 &&
+         r76_lookup_uxc_token("_f:0x79c0:Target Function Settings") == 0 &&
+         r76_lookup_uxc_token("_f:0x61b5:Aperture Drive in AF") == 0 &&
+         r76_lookup_uxc_token("_f:0x7734:Auto Pixel Mapping") == 0 &&
+         r76_lookup_uxc_token("base:0xe396:Version") == 0 &&
+         r76_lookup_uxc_token("_f:0x6fd6:Software Update") == 0 &&
+         r76_lookup_uxc_token("_g:0x6516:Latest SW badge") == 0 &&
+         r76_lookup_uxc_token("_g:0x6517:Lens Ver.") == 0 &&
+         r76_lookup_uxc_token("_f:0x7a36:Audio Level Display (removed Ver.2.00+)") == -EOPNOTSUPP &&
+         r76_lookup_uxc_token("_f:0x6cb1:Bird (dormant on FX3)") == -EOPNOTSUPP &&
+         r76_lookup_uxc_token("_f:0x6957:Animal/Bird (dormant on FX3)") == -EOPNOTSUPP &&
+         r76_lookup_uxc_token("_f:0x6996:Insect (dormant on FX3)") == -EOPNOTSUPP &&
+         r76_lookup_uxc_token("_f:0x674e:Car/Train (dormant on FX3)") == -EOPNOTSUPP &&
+         r76_lookup_uxc_token("_f:0x7440:Airplane (dormant on FX3)") == -EOPNOTSUPP &&
+         r76_lookup_uxc_token("dormant:TYPE_ANIMAL_EYE_AF_IN_MOVIE_NOT_SUPPORT") == -EOPNOTSUPP &&
+         r76_lookup_uxc_token("_f:0x709f:Shutter When Pwr OFF (dormant)") == -EOPNOTSUPP &&
+         r76_lookup_uxc_token("_f:0x7495:Anti-dust Function (dormant)") == -EOPNOTSUPP &&
+         r76_lookup_uxc_token("dormant:FX6_32BIT_FLOAT_4CH") == -EOPNOTSUPP) ? 1 : 0;
+
+    r76_wave62_cfg_t cfg;
+    r76_wave62_zero_init(&cfg);
+
+    /* Pillar A: [Shoe Audio Set.] 24bit 4ch XLR-H1, 3.5mm preemption, [Audio Out Timing] Shooting path */
+    int shoe_4ch_24bit_ok = (r76_configure_shoe_audio_4ch_and_timing(
+                                 &cfg, R76_MODE_MOVIE, 26, R76_SHOE_48K_24B_4CH,
+                                 1, 1, 1, 0, 0, R76_OUT_TIMING_LIP_SYNC, 24, 1, 0, 0, 0, 0) == 0 &&
+                             cfg.shoe_audio_fmt == R76_SHOE_48K_24B_4CH &&
+                             cfg.audio_out_timing == R76_OUT_TIMING_LIP_SYNC &&
+                             cfg.proxy_audio_channels == 2 &&
+                             cfg.proxy_bitrate_kbps == 128 &&
+                             cfg.internal_limiter_on == 1) ? 1 : 0;
+    int audio_35mm_preempt_rc = r76_configure_shoe_audio_4ch_and_timing(
+        &cfg, R76_MODE_MOVIE, 26, R76_SHOE_48K_24B_4CH, 1, 1, 1, 1, 0, R76_OUT_TIMING_LIVE, 24, 0, 0, 0, 0, 0);
+    int audio_level_disp_removed_rc = r76_configure_shoe_audio_4ch_and_timing(
+        &cfg, R76_MODE_MOVIE, 26, R76_SHOE_48K_16B_2CH, 0, 0, 1, 0, 0, R76_OUT_TIMING_LIVE, 24, 0, 0, 1, 0, 0);
+    int audio_timing_setup_err_rc = r76_configure_shoe_audio_4ch_and_timing(
+        &cfg, R76_MODE_MOVIE, 26, R76_SHOE_48K_16B_2CH, 0, 0, 1, 0, 0, R76_OUT_TIMING_LIVE, 24, 0, 0, 0, 1, 0);
+    int shoe_audio_4ch_out_timing_ok =
+        (shoe_4ch_24bit_ok == 1 &&
+         audio_35mm_preempt_rc == -EBUSY &&
+         audio_level_disp_removed_rc == -EOPNOTSUPP &&
+         audio_timing_setup_err_rc == -EOPNOTSUPP) ? 1 : 0;
+
+    /* Pillar B: [Face/Eye Subject] Human+Animal ONLY (Zero Bird), Animal Still-only, 8-slot [Face Memory] */
+    r76_wave62_zero_init(&cfg);
+    int all_8_facemem_ok = 1;
+    for (int f = 0; f < 8; f++) {
+        if (r76_configure_face_eye_subject_and_memory(
+                &cfg, R76_MODE_STILL, 1, R76_SUBJ_HUMAN, 0, R76_EYE_RIGHT, 0, 1, 0, 1) != 0) {
+            all_8_facemem_ok = 0;
+        }
+    }
+    int facemem_9th_slot_rc = r76_configure_face_eye_subject_and_memory(
+        &cfg, R76_MODE_STILL, 1, R76_SUBJ_HUMAN, 0, R76_EYE_RIGHT, 0, 1, 0, 1);
+    int subj_bird_dormant_rc = r76_configure_face_eye_subject_and_memory(
+        &cfg, R76_MODE_STILL, 1, R76_SUBJ_BIRD, 0, R76_EYE_AUTO, 0, 0, 0, 0);
+    int animal_eye_movie_rc = r76_configure_face_eye_subject_and_memory(
+        &cfg, R76_MODE_MOVIE, 1, R76_SUBJ_ANIMAL, 1, R76_EYE_AUTO, 0, 0, 0, 0);
+    int animal_eye_still_ok = (r76_configure_face_eye_subject_and_memory(
+                                   &cfg, R76_MODE_STILL, 1, R76_SUBJ_ANIMAL, 1, R76_EYE_LEFT, 0, 0, 0, 0) == 0 &&
+                               cfg.hdmi_eye_frame_baked_pixels == 0) ? 1 : 0;
+    int subject_recog_human_animal_facemem_ok =
+        (all_8_facemem_ok == 1 &&
+         facemem_9th_slot_rc == -ENOSPC &&
+         subj_bird_dormant_rc == -EOPNOTSUPP &&
+         animal_eye_movie_rc == -EOPNOTSUPP &&
+         animal_eye_still_ok == 1) ? 1 : 0;
+
+    /* Pillar C: [Silent Mode Settings] 5 locks + 2-item [Target Function Settings] + dormant [Shutter When Pwr OFF] */
+    r76_wave62_zero_init(&cfg);
+    int silent_2items_ok = (r76_configure_silent_target_and_pwr_shutter(
+                                &cfg, R76_MODE_STILL, 1, R76_AP_DRIVE_SILENT_PRIORITY, R76_PIXMAP_OFF,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0) == 0 &&
+                            cfg.e_shutter_locked == 1 &&
+                            cfg.audio_signals_muted == 1 &&
+                            cfg.flash_locked_off == 1 &&
+                            cfg.af_illuminator_on == 1 &&
+                            cfg.cnflasha_writes == 0) ? 1 : 0;
+    int shutter_pwr_off_dormant_rc = r76_configure_silent_target_and_pwr_shutter(
+        &cfg, R76_MODE_STILL, 0, R76_AP_DRIVE_STANDARD, R76_PIXMAP_OFF,
+        0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    int target_3rd_item_rc = r76_configure_silent_target_and_pwr_shutter(
+        &cfg, R76_MODE_STILL, 0, R76_AP_DRIVE_STANDARD, R76_PIXMAP_OFF,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    int silent_flash_lock_rc = r76_configure_silent_target_and_pwr_shutter(
+        &cfg, R76_MODE_STILL, 1, R76_AP_DRIVE_STANDARD, R76_PIXMAP_OFF,
+        0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0);
+    int silent_target_2items_no_pwrshutter_ok =
+        (silent_2items_ok == 1 &&
+         shutter_pwr_off_dormant_rc == -EOPNOTSUPP &&
+         target_3rd_item_rc == -EOPNOTSUPP &&
+         silent_flash_lock_rc == -EBUSY) ? 1 : 0;
+
+    /* Pillar D: [Version] Read-Only + Airplane badge silence + BODYDATA.DAT Slot 1 NO-GO Firewall */
+    r76_wave62_zero_init(&cfg);
+    cfg.airplane_mode_on = 1;
+    int badge_silenced_ok = (r76_configure_version_and_bodydata_nogo(&cfg, 1, 1, 80, 702, 1, 0, 0, 0) == 0 &&
+                             cfg.version_update_badge_visible == 0) ? 1 : 0;
+    int bodydata_slot1_erofs_rc = r76_configure_version_and_bodydata_nogo(&cfg, 0, 1, 80, 702, 1, 1, 0, 0);
+    int bodydata_exec_nogo_rc = r76_configure_version_and_bodydata_nogo(&cfg, 0, 1, 80, 702, 1, 0, 1, 0);
+    int cross_model_flash_rc = r76_configure_version_and_bodydata_nogo(&cfg, 0, 1, 80, 702, 1, 0, 0, 1);
+    int version_slot1_bodydata_nogo_ok =
+        (badge_silenced_ok == 1 &&
+         bodydata_slot1_erofs_rc == -EROFS &&
+         bodydata_exec_nogo_rc == -EPERM &&
+         cross_model_flash_rc == -EPERM &&
+         cfg.bodydata_slot1_write_count == 0 &&
+         cfg.emmc_write_count == 0) ? 1 : 0;
+
+    errno = 0;
+    int p2_fd = open("/mnt/r76_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r76_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int bd_fd = open("/mnt/r76_slot1_vault/BODYDATA.DAT", O_RDWR);
+    int slot1_bodydata_ro_rc = (bd_fd >= 0) ? (close(bd_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r76_cnflasha_init/cnflasha.img", O_RDWR);
+    int cnflasha_ro_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r76_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r76_p12_ro/wlan_nvs.bin", post_p12_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r76_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r76_slot1_vault/BODYDATA.DAT", post_bd_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int p12_sha256_match = (p12_write_blocked_rc == -EROFS && strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (cnflasha_ro_rc == -EROFS && strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match = (slot1_bodydata_ro_rc == -EROFS && strcmp(pre_bd_sha, post_bd_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r76_slot1_vault");
+    (void)umount("/mnt/r76_cnflasha_init");
+    (void)umount("/mnt/r76_p12_ro");
+    (void)umount("/mnt/r76_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R76_SHOE_AUDIO_4CH_OUT_TIMING_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave62_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              shoe_audio_4ch_out_timing_ok == 1 &&
+              subject_recog_human_animal_facemem_ok == 1 &&
+              silent_target_2items_no_pwrshutter_ok == 1 &&
+              version_slot1_bodydata_nogo_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              p12_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R76_WAVE62_INIT fx3_wave62_nodes_ok=%d uxc_tokens_ok=%d "
+            "shoe_audio_4ch_out_timing_ok=%d subject_recog_human_animal_facemem_ok=%d "
+            "silent_target_2items_no_pwrshutter_ok=%d version_slot1_bodydata_nogo_ok=%d "
+            "audio_35mm_preempt_rc=%d audio_level_disp_removed_rc=%d audio_timing_setup_err_rc=%d "
+            "facemem_9th_slot_rc=%d subj_bird_dormant_rc=%d animal_eye_movie_rc=%d "
+            "shutter_pwr_off_dormant_rc=%d target_3rd_item_rc=%d silent_flash_lock_rc=%d "
+            "bodydata_slot1_erofs_rc=%d bodydata_exec_nogo_rc=%d cross_model_flash_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d p12_sha256_match=%d "
+            "cnflasha_sha256_match=%d slot1_vault_sha256_match=%d "
+            "dormant_audio_level_display_bypass_events=0 dormant_fx6_32bit_float_bypass_events=0 "
+            "dormant_bird_subject_bypass_events=0 dormant_insect_car_airplane_bypass_events=0 "
+            "dormant_shutter_when_pwr_off_bypass_events=0 target_function_3rd_item_bypass_events=0 "
+            "hdmi_eye_frame_baked_pixels=0 bodydata_slot1_write_count=0 slot1_data_sector_writes=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 cnflasha_writes=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r76_init_ok=%d verify_us=%lld\n",
+            fx3_wave62_nodes_ok, uxc_tokens_ok,
+            shoe_audio_4ch_out_timing_ok, subject_recog_human_animal_facemem_ok,
+            silent_target_2items_no_pwrshutter_ok, version_slot1_bodydata_nogo_ok,
+            audio_35mm_preempt_rc, audio_level_disp_removed_rc, audio_timing_setup_err_rc,
+            facemem_9th_slot_rc, subj_bird_dormant_rc, animal_eye_movie_rc,
+            shutter_pwr_off_dormant_rc, target_3rd_item_rc, silent_flash_lock_rc,
+            bodydata_slot1_erofs_rc, bodydata_exec_nogo_rc, cross_model_flash_rc,
+            p2_write_blocked_rc, p2_sha256_match, p12_sha256_match,
+            cnflasha_sha256_match, slot1_vault_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r76_wave62_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r76b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r76b_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r76b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r76b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r76b_p2_ro");
+    (void)umount("/mnt/r76b_p12_ro");
+    (void)umount("/mnt/r76b_cnflasha_ro");
+    (void)umount("/mnt/r76b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r76b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r76b_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r76b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r76b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], p12_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i]  = (uint8_t)((i * 113U + 0x76U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 119U + 0x62U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 127U + 0x49U) & 0xffU);
+        bd_seed[i]  = (uint8_t)((i * 139U + 0x31U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r76b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r76b_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r76b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r76b_slot1_vault/BODYDATA.DAT", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r76b_slot1_vault/C0001M01.XML", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_bd_sha[65] = "", post_bd_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r76b_slot1_vault/C0001M01.XML", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r76b_slot1_vault/BODYDATA.DAT", pre_bd_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r76b_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r76b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r76b_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r76b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r76b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r76_wave62_cfg_t cfg;
+    r76_wave62_zero_init(&cfg);
+
+    /* Guard A: Audio Recording 4ch 24-bit, 3.5mm preemption, Analog 16bit cap, Handle OFF fallback,
+     * Wind Noise internal-only, S&Q audio lockout, Proxy 4ch & >=100p lockout, removed Audio Level Disp.,
+     * Audio Out Timing Setup path lockout, Audio Rec Level 32 OOB, non-disableable Limiter */
+    int audio_level_disp_removed_rc = r76_configure_shoe_audio_4ch_and_timing(
+        &cfg, R76_MODE_MOVIE, 26, R76_SHOE_48K_16B_2CH, 0, 0, 1, 0, 0, R76_OUT_TIMING_LIVE, 24, 0, 0, 1, 0, 0);
+    int audio_32bit_float_rc = r76_configure_shoe_audio_4ch_and_timing(
+        &cfg, R76_MODE_MOVIE, 26, R76_FX6_DORMANT_32B_FLOAT_4CH, 1, 1, 1, 0, 0, R76_OUT_TIMING_LIVE, 24, 0, 0, 0, 0, 0);
+    int audio_timing_setup_err_rc = r76_configure_shoe_audio_4ch_and_timing(
+        &cfg, R76_MODE_MOVIE, 26, R76_SHOE_48K_16B_2CH, 0, 0, 1, 0, 0, R76_OUT_TIMING_LIVE, 24, 0, 0, 0, 1, 0);
+    int audio_limiter_off_rc = r76_configure_shoe_audio_4ch_and_timing(
+        &cfg, R76_MODE_MOVIE, 26, R76_SHOE_48K_16B_2CH, 0, 0, 1, 0, 0, R76_OUT_TIMING_LIVE, 24, 0, 0, 0, 0, 1);
+    int audio_level_32_oob_rc = r76_configure_shoe_audio_4ch_and_timing(
+        &cfg, R76_MODE_MOVIE, 32, R76_SHOE_48K_16B_2CH, 0, 0, 1, 0, 0, R76_OUT_TIMING_LIVE, 24, 0, 0, 0, 0, 0);
+    int audio_35mm_preempt_rc = r76_configure_shoe_audio_4ch_and_timing(
+        &cfg, R76_MODE_MOVIE, 26, R76_SHOE_48K_24B_4CH, 1, 1, 1, 1, 0, R76_OUT_TIMING_LIVE, 24, 0, 0, 0, 0, 0);
+    int audio_xlr_handle_off_rc = r76_configure_shoe_audio_4ch_and_timing(
+        &cfg, R76_MODE_MOVIE, 26, R76_SHOE_48K_24B_4CH, 1, 0, 1, 0, 0, R76_OUT_TIMING_LIVE, 24, 0, 0, 0, 0, 0);
+    int audio_xlr_analog_cap_rc = r76_configure_shoe_audio_4ch_and_timing(
+        &cfg, R76_MODE_MOVIE, 26, R76_SHOE_48K_24B_4CH, 1, 1, 0, 0, 0, R76_OUT_TIMING_LIVE, 24, 0, 0, 0, 0, 0);
+    int audio_wind_ext_mic_rc = r76_configure_shoe_audio_4ch_and_timing(
+        &cfg, R76_MODE_MOVIE, 26, R76_SHOE_48K_16B_2CH, 1, 1, 1, 0, 1, R76_OUT_TIMING_LIVE, 24, 0, 0, 0, 0, 0);
+    int audio_sq_lock_rc = r76_configure_shoe_audio_4ch_and_timing(
+        &cfg, R76_MODE_SQ, 26, R76_SHOE_48K_16B_2CH, 0, 0, 1, 0, 0, R76_OUT_TIMING_LIVE, 120, 0, 0, 0, 0, 0);
+    int audio_proxy_4ch_rc = r76_configure_shoe_audio_4ch_and_timing(
+        &cfg, R76_MODE_MOVIE, 26, R76_SHOE_48K_24B_4CH, 1, 1, 1, 0, 0, R76_OUT_TIMING_LIVE, 24, 1, 1, 0, 0, 0);
+    int audio_proxy_120p_rc = r76_configure_shoe_audio_4ch_and_timing(
+        &cfg, R76_MODE_MOVIE, 26, R76_SHOE_48K_24B_4CH, 1, 1, 1, 0, 0, R76_OUT_TIMING_LIVE, 120, 1, 0, 0, 0, 0);
+
+    /* Guard B: [Face/Eye Subject] 5 dormant subjects (-95), Animal Eye AF Movie lockout (-95),
+     * Animal + Regist. Faces Priority (-16), CAMSET*.DAT Face Memory (-95), 9th slot (-28), FX6 Animal (-95) */
+    r76_wave62_zero_init(&cfg);
+    int subj_bird_rc = r76_configure_face_eye_subject_and_memory(
+        &cfg, R76_MODE_STILL, 1, R76_SUBJ_BIRD, 0, R76_EYE_AUTO, 0, 0, 0, 0);
+    int subj_animal_bird_rc = r76_configure_face_eye_subject_and_memory(
+        &cfg, R76_MODE_STILL, 1, R76_SUBJ_ANIMAL_BIRD, 0, R76_EYE_AUTO, 0, 0, 0, 0);
+    int subj_insect_rc = r76_configure_face_eye_subject_and_memory(
+        &cfg, R76_MODE_STILL, 1, R76_SUBJ_INSECT, 0, R76_EYE_AUTO, 0, 0, 0, 0);
+    int subj_car_train_rc = r76_configure_face_eye_subject_and_memory(
+        &cfg, R76_MODE_STILL, 1, R76_SUBJ_CAR_TRAIN, 0, R76_EYE_AUTO, 0, 0, 0, 0);
+    int subj_airplane_rc = r76_configure_face_eye_subject_and_memory(
+        &cfg, R76_MODE_STILL, 1, R76_SUBJ_AIRPLANE, 0, R76_EYE_AUTO, 0, 0, 0, 0);
+    int animal_eye_movie_rc = r76_configure_face_eye_subject_and_memory(
+        &cfg, R76_MODE_MOVIE, 1, R76_SUBJ_ANIMAL, 1, R76_EYE_AUTO, 0, 0, 0, 0);
+    int animal_regist_prio_rc = r76_configure_face_eye_subject_and_memory(
+        &cfg, R76_MODE_STILL, 1, R76_SUBJ_ANIMAL, 1, R76_EYE_AUTO, 0, 0, 0, 1);
+    int facemem_camset_excl_rc = r76_configure_face_eye_subject_and_memory(
+        &cfg, R76_MODE_STILL, 1, R76_SUBJ_HUMAN, 0, R76_EYE_AUTO, 0, 0, 1, 1);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_animal_rc = r76_configure_face_eye_subject_and_memory(
+        &cfg, R76_MODE_MOVIE, 1, R76_SUBJ_ANIMAL, 0, R76_EYE_AUTO, 0, 0, 0, 0);
+    int fx6_facemem_rc = r76_configure_face_eye_subject_and_memory(
+        &cfg, R76_MODE_MOVIE, 1, R76_SUBJ_HUMAN, 0, R76_EYE_AUTO, 0, 1, 0, 0);
+    cfg.is_fx6_chaplin = 0;
+
+    /* Guard C: [Silent Mode Settings] 5 lockouts, Movie lockout (-16), 3rd target item (-95),
+     * dormant [Shutter When Pwr OFF] / [Anti-dust Function] (-95), FX6 mech shutter (-95) */
+    r76_wave62_zero_init(&cfg);
+    int shutter_pwr_off_rc = r76_configure_silent_target_and_pwr_shutter(
+        &cfg, R76_MODE_STILL, 0, R76_AP_DRIVE_STANDARD, R76_PIXMAP_OFF,
+        0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    int antidust_dormant_rc = r76_configure_silent_target_and_pwr_shutter(
+        &cfg, R76_MODE_STILL, 0, R76_AP_DRIVE_STANDARD, R76_PIXMAP_OFF,
+        0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0);
+    int target_3rd_item_rc = r76_configure_silent_target_and_pwr_shutter(
+        &cfg, R76_MODE_STILL, 0, R76_AP_DRIVE_STANDARD, R76_PIXMAP_OFF,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    int silent_movie_lock_rc = r76_configure_silent_target_and_pwr_shutter(
+        &cfg, R76_MODE_MOVIE, 1, R76_AP_DRIVE_STANDARD, R76_PIXMAP_OFF,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    int silent_flash_lock_rc = r76_configure_silent_target_and_pwr_shutter(
+        &cfg, R76_MODE_STILL, 1, R76_AP_DRIVE_STANDARD, R76_PIXMAP_OFF,
+        0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0);
+    int silent_bulb_lock_rc = r76_configure_silent_target_and_pwr_shutter(
+        &cfg, R76_MODE_STILL, 1, R76_AP_DRIVE_STANDARD, R76_PIXMAP_OFF,
+        0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0);
+    int silent_signals_unmute_rc = r76_configure_silent_target_and_pwr_shutter(
+        &cfg, R76_MODE_STILL, 1, R76_AP_DRIVE_STANDARD, R76_PIXMAP_OFF,
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_mech_shutter_rc = r76_configure_silent_target_and_pwr_shutter(
+        &cfg, R76_MODE_MOVIE, 0, R76_AP_DRIVE_STANDARD, R76_PIXMAP_OFF,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+    cfg.is_fx6_chaplin = 0;
+
+    /* Guard D: BODYDATA.DAT Slot 1 write (-30 EROFS), Slot 2 reject (-22), batt <51% (-11),
+     * Ver <=2.02 without 2.04/2.05 stepping stone (-22), physical update exec (-1 EPERM),
+     * cross-model FX6 <-> FX3 flash (-1 EPERM) */
+    r76_wave62_zero_init(&cfg);
+    int bodydata_slot1_write_erofs_rc = r76_configure_version_and_bodydata_nogo(&cfg, 0, 1, 80, 702, 1, 1, 0, 0);
+    int bodydata_slot2_reject_rc = r76_configure_version_and_bodydata_nogo(&cfg, 0, 2, 80, 702, 1, 0, 1, 0);
+    int bodydata_low_batt_rc = r76_configure_version_and_bodydata_nogo(&cfg, 0, 1, 50, 702, 1, 0, 1, 0);
+    int bodydata_202_no_step_rc = r76_configure_version_and_bodydata_nogo(&cfg, 0, 1, 80, 202, 0, 0, 1, 0);
+    int bodydata_exec_eperm_rc = r76_configure_version_and_bodydata_nogo(&cfg, 0, 1, 80, 702, 1, 0, 1, 0);
+    int cross_model_flash_eperm_rc = r76_configure_version_and_bodydata_nogo(&cfg, 0, 1, 80, 702, 1, 0, 0, 1);
+
+    errno = 0;
+    int s1_fd = open("/mnt/r76b_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_wave62_erofs_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int bd_fd = open("/mnt/r76b_slot1_vault/BODYDATA.DAT", O_RDWR);
+    int slot1_bodydata_ro_blocked_rc = (bd_fd >= 0) ? (close(bd_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r76b_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r76b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r76b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    if (sha256_file_hex("/mnt/r76b_slot1_vault/C0001M01.XML", post_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r76b_slot1_vault/BODYDATA.DAT", post_bd_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r76b_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) != 0) {
+        return 250;
+    }
+    int slot1_vault_sha256_match =
+        (strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_bd_sha, post_bd_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r76b_slot1_vault");
+    (void)umount("/mnt/r76b_cnflasha_ro");
+    (void)umount("/mnt/r76b_p12_ro");
+    (void)umount("/mnt/r76b_p2_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R76_SHOE_AUDIO_4CH_OUT_TIMING_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (audio_level_disp_removed_rc == -EOPNOTSUPP &&
+              audio_32bit_float_rc == -EOPNOTSUPP &&
+              audio_timing_setup_err_rc == -EOPNOTSUPP &&
+              audio_limiter_off_rc == -EOPNOTSUPP &&
+              audio_level_32_oob_rc == -EINVAL &&
+              audio_35mm_preempt_rc == -EBUSY &&
+              audio_xlr_handle_off_rc == -EBUSY &&
+              audio_xlr_analog_cap_rc == -EBUSY &&
+              audio_wind_ext_mic_rc == -EBUSY &&
+              audio_sq_lock_rc == -EBUSY &&
+              audio_proxy_4ch_rc == -EOPNOTSUPP &&
+              audio_proxy_120p_rc == -EBUSY &&
+              subj_bird_rc == -EOPNOTSUPP &&
+              subj_animal_bird_rc == -EOPNOTSUPP &&
+              subj_insect_rc == -EOPNOTSUPP &&
+              subj_car_train_rc == -EOPNOTSUPP &&
+              subj_airplane_rc == -EOPNOTSUPP &&
+              animal_eye_movie_rc == -EOPNOTSUPP &&
+              animal_regist_prio_rc == -EBUSY &&
+              facemem_camset_excl_rc == -EOPNOTSUPP &&
+              fx6_animal_rc == -EOPNOTSUPP &&
+              fx6_facemem_rc == -EOPNOTSUPP &&
+              shutter_pwr_off_rc == -EOPNOTSUPP &&
+              antidust_dormant_rc == -EOPNOTSUPP &&
+              target_3rd_item_rc == -EOPNOTSUPP &&
+              silent_movie_lock_rc == -EBUSY &&
+              silent_flash_lock_rc == -EBUSY &&
+              silent_bulb_lock_rc == -EBUSY &&
+              silent_signals_unmute_rc == -EBUSY &&
+              fx6_mech_shutter_rc == -EOPNOTSUPP &&
+              bodydata_slot1_write_erofs_rc == -EROFS &&
+              bodydata_slot2_reject_rc == -EINVAL &&
+              bodydata_low_batt_rc == -EAGAIN &&
+              bodydata_202_no_step_rc == -EINVAL &&
+              bodydata_exec_eperm_rc == -EPERM &&
+              cross_model_flash_eperm_rc == -EPERM &&
+              slot1_wave62_erofs_rc == -EROFS &&
+              slot1_bodydata_ro_blocked_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R76_WAVE62_GUARD audio_level_disp_removed_rc=%d audio_32bit_float_rc=%d "
+            "audio_timing_setup_err_rc=%d audio_limiter_off_rc=%d audio_level_32_oob_rc=%d "
+            "audio_35mm_preempt_rc=%d audio_xlr_handle_off_rc=%d audio_xlr_analog_cap_rc=%d "
+            "audio_wind_ext_mic_rc=%d audio_sq_lock_rc=%d audio_proxy_4ch_rc=%d audio_proxy_120p_rc=%d "
+            "subj_bird_rc=%d subj_animal_bird_rc=%d subj_insect_rc=%d subj_car_train_rc=%d subj_airplane_rc=%d "
+            "animal_eye_movie_rc=%d animal_regist_prio_rc=%d facemem_camset_excl_rc=%d "
+            "fx6_animal_rc=%d fx6_facemem_rc=%d "
+            "shutter_pwr_off_rc=%d antidust_dormant_rc=%d target_3rd_item_rc=%d "
+            "silent_movie_lock_rc=%d silent_flash_lock_rc=%d silent_bulb_lock_rc=%d "
+            "silent_signals_unmute_rc=%d fx6_mech_shutter_rc=%d "
+            "bodydata_slot1_write_erofs_rc=%d bodydata_slot2_reject_rc=%d bodydata_low_batt_rc=%d "
+            "bodydata_202_no_step_rc=%d bodydata_exec_eperm_rc=%d cross_model_flash_eperm_rc=%d "
+            "slot1_wave62_erofs_rc=%d slot1_bodydata_ro_blocked_rc=%d p12_write_blocked_rc=%d "
+            "slot1_vault_sha256_match=%d p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "dormant_audio_level_display_bypass_events=0 dormant_fx6_32bit_float_bypass_events=0 "
+            "dormant_bird_subject_bypass_events=0 dormant_insect_car_airplane_bypass_events=0 "
+            "dormant_shutter_when_pwr_off_bypass_events=0 target_function_3rd_item_bypass_events=0 "
+            "hdmi_eye_frame_baked_pixels=0 bodydata_slot1_write_count=0 slot1_data_sector_writes=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r76b_ok=%d verify_us=%lld\n",
+            audio_level_disp_removed_rc, audio_32bit_float_rc,
+            audio_timing_setup_err_rc, audio_limiter_off_rc, audio_level_32_oob_rc,
+            audio_35mm_preempt_rc, audio_xlr_handle_off_rc, audio_xlr_analog_cap_rc,
+            audio_wind_ext_mic_rc, audio_sq_lock_rc, audio_proxy_4ch_rc, audio_proxy_120p_rc,
+            subj_bird_rc, subj_animal_bird_rc, subj_insect_rc, subj_car_train_rc, subj_airplane_rc,
+            animal_eye_movie_rc, animal_regist_prio_rc, facemem_camset_excl_rc,
+            fx6_animal_rc, fx6_facemem_rc,
+            shutter_pwr_off_rc, antidust_dormant_rc, target_3rd_item_rc,
+            silent_movie_lock_rc, silent_flash_lock_rc, silent_bulb_lock_rc,
+            silent_signals_unmute_rc, fx6_mech_shutter_rc,
+            bodydata_slot1_write_erofs_rc, bodydata_slot2_reject_rc, bodydata_low_batt_rc,
+            bodydata_202_no_step_rc, bodydata_exec_eperm_rc, cross_model_flash_eperm_rc,
+            slot1_wave62_erofs_rc, slot1_bodydata_ro_blocked_rc, p12_write_blocked_rc,
+            slot1_vault_sha256_match, p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r76_clean_unmount_wave62_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r76c_tmp_overlay", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r76c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r76c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r76c_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r76c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r76c_slot1_vault", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r76c_tmp_overlay");
+    (void)umount("/mnt/r76c_surfaces");
+    (void)umount("/mnt/r76c_p2_ro");
+    (void)umount("/mnt/r76c_p12_ro");
+    (void)umount("/mnt/r76c_cnflasha_ro");
+    (void)umount("/mnt/r76c_slot1_vault");
+    if (mount("tmpfs", "/mnt/r76c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r76c_surfaces", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r76c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r76c_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r76c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r76c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    uint8_t mark[64];
+    memset(mark, 0x76, sizeof(mark));
+    if (r29_write_all_fsync("/mnt/r76c_tmp_overlay/stage_b_marker", mark, sizeof(mark), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r76c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+
+    uint8_t s1_seed[256], bd_seed[256], p12_seed[256], p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(s1_seed); i++) {
+        s1_seed[i]  = (uint8_t)((i * 73U + 0x76U) & 0xffU);
+        bd_seed[i]  = (uint8_t)((i * 83U + 0x62U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 97U + 0x49U) & 0xffU);
+        p2_seed[i]  = (uint8_t)((i * 101U + 0x31U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 107U + 0x22U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r76c_slot1_vault/C0001M01.XML", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r76c_slot1_vault/BODYDATA.DAT", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r76c_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r76c_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r76c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_bd_sha[65] = "", post_bd_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r76c_slot1_vault/C0001M01.XML", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r76c_slot1_vault/BODYDATA.DAT", pre_bd_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r76c_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t sbuf[512];
+        for (size_t i = 0U; i < sizeof(sbuf); i++) {
+            sbuf[i] = (uint8_t)((i * 67U + s * 47U + 0x76U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r76c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) {
+            return fail_exit_rc;
+        }
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    if (mount(NULL, "/mnt/r76c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r76c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r76c_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r76c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r76c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    int unmount_rc = umount("/mnt/r76c_tmp_overlay");
+    int marker_gone_after_umount = (access("/mnt/r76c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok = (overlay_mounted_present == 1 && unmount_rc == 0 && marker_gone_after_umount == 1) ? 1 : 0;
+
+    /* Wave-62 3-tier asymmetric reset verification:
+     * 1. [Camera Settings Reset]:
+     *    RESETTABLE -> [Audio Rec Level]=26, [Shoe Audio Set.]=48kHz/16bit 2ch, [Audio Out Timing]=Live,
+     *                  [Wind Noise Reduct.]=Off, [Face/Eye Subject]=Human, [Right/Left Eye]=Auto,
+     *                  [Face/Eye Frame Disp.]=Off, [Silent Mode]=Off, [Aperture Drive in AF]=Standard,
+     *                  [Auto Pixel Mapping]=Off
+     *    SURVIVORS  -> ALL 8 [Face Memory] slots (Reset-immune, excluded CAMSET*.DAT!), [Airplane Mode]=On
+     * 2. [Reset Network Set.]:
+     *    PRESERVES  -> ALL 8 [Face Memory] slots, [Airplane Mode]=On, audio/subject/silent config
+     * 3. [Initialize]:
+     *    CLEARS     -> ALL 8 [Face Memory] slots (0), restores defaults
+     *    SURVIVORS  -> [Airplane Mode]=On */
+    r76_wave62_cfg_t cfg;
+    r76_wave62_zero_init(&cfg);
+    cfg.airplane_mode_on = 1;
+    (void)r76_configure_shoe_audio_4ch_and_timing(
+        &cfg, R76_MODE_MOVIE, 18, R76_SHOE_48K_24B_4CH, 1, 1, 1, 0, 0, R76_OUT_TIMING_LIP_SYNC, 24, 0, 0, 0, 0, 0);
+    for (int f = 0; f < 8; f++) {
+        (void)r76_configure_face_eye_subject_and_memory(
+            &cfg, R76_MODE_STILL, 1, R76_SUBJ_HUMAN, 0, R76_EYE_LEFT, 1, 1, 0, 1);
+    }
+    (void)r76_configure_silent_target_and_pwr_shutter(
+        &cfg, R76_MODE_STILL, 1, R76_AP_DRIVE_SILENT_PRIORITY, R76_PIXMAP_NOT_TARGET,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0);
+
+    r76_wave62_camera_settings_reset(&cfg);
+    int camreset_resets_audio_silent_subject_preserves_8facemem_airplane_ok =
+        (cfg.audio_rec_level == 26 &&
+         cfg.shoe_audio_fmt == R76_SHOE_48K_16B_2CH &&
+         cfg.audio_out_timing == R76_OUT_TIMING_LIVE &&
+         cfg.face_eye_subject == R76_SUBJ_HUMAN &&
+         cfg.face_eye_frame_disp_on == 0 &&
+         cfg.silent_mode_on == 0 &&
+         cfg.target_ap_drive == R76_AP_DRIVE_STANDARD &&
+         cfg.target_auto_pixel_map == R76_PIXMAP_OFF &&
+         cfg.face_memory_count == 8 &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r76_wave62_reset_network_settings(&cfg);
+    int nwreset_preserves_8facemem_airplane_ok =
+        (cfg.face_memory_count == 8 &&
+         cfg.airplane_mode_on == 1 &&
+         cfg.body_fw_ver_x100 == 702) ? 1 : 0;
+
+    r76_wave62_initialize(&cfg);
+    int initialize_clears_8facemem_preserves_airplane_ok =
+        (cfg.face_memory_count == 0 &&
+         cfg.audio_rec_level == 26 &&
+         cfg.target_auto_pixel_map == R76_PIXMAP_OFF &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jit_h = dlopen("/etc/fx6_r76_libjit.so", RTLD_NOW);
+    if (!jit_h) {
+        jit_h = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    }
+    if (jit_h) {
+        dlopen_ok = 1;
+        dlclose(jit_h);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r76c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3, &sbytes) == 0 && strcmp(h0_hashes[s], h3) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    errno = 0;
+    int s1_fd = open("/mnt/r76c_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int bd_fd = open("/mnt/r76c_slot1_vault/BODYDATA.DAT", O_RDWR);
+    int slot1_bodydata_ro_blocked_rc = (bd_fd >= 0) ? (close(bd_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r76c_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r76c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r76c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r76c_slot1_vault/C0001M01.XML", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r76c_slot1_vault/BODYDATA.DAT", post_bd_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r76c_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_bd_sha, post_bd_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r76c_slot1_vault");
+    (void)umount("/mnt/r76c_p12_ro");
+    (void)umount("/mnt/r76c_p2_ro");
+    (void)umount("/mnt/r76c_cnflasha_ro");
+    (void)umount("/mnt/r76c_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_resets_audio_silent_subject_preserves_8facemem_airplane_ok == 1 &&
+              nwreset_preserves_8facemem_airplane_ok == 1 &&
+              initialize_clears_8facemem_preserves_airplane_ok == 1 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_bodydata_ro_blocked_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R76_CLEAN_UNMOUNT_WAVE62_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_resets_audio_silent_subject_preserves_8facemem_airplane_ok=%d "
+            "nwreset_preserves_8facemem_airplane_ok=%d "
+            "initialize_clears_8facemem_preserves_airplane_ok=%d "
+            "dormant_audio_level_display_bypass_events=0 dormant_fx6_32bit_float_bypass_events=0 "
+            "dormant_bird_subject_bypass_events=0 dormant_insect_car_airplane_bypass_events=0 "
+            "dormant_shutter_when_pwr_off_bypass_events=0 target_function_3rd_item_bypass_events=0 "
+            "hdmi_eye_frame_baked_pixels=0 bodydata_slot1_write_count=0 slot1_data_sector_writes=0 "
+            "rf_tx_packets=0 slot1_vault_ro_blocked_rc=%d slot1_bodydata_ro_blocked_rc=%d "
+            "p12_write_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r76c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_resets_audio_silent_subject_preserves_8facemem_airplane_ok,
+            nwreset_preserves_8facemem_airplane_ok,
+            initialize_clears_8facemem_preserves_airplane_ok,
+            slot1_vault_ro_blocked_rc, slot1_bodydata_ro_blocked_rc,
+            p12_write_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -45932,6 +47168,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r75-clean-unmount-wave61-h0-h3") == 0) {
         return run_r75_clean_unmount_wave61_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r76-wave62-guard") == 0) {
+        return run_r76_wave62_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r76-clean-unmount-wave62-h0-h3") == 0) {
+        return run_r76_clean_unmount_wave62_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -46571,6 +47813,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave61_integrated &&
                 run_r75_clean_unmount_wave61_h0_h3_probe(94) != 0) {
                 return 94;
+            }
+        }
+    }
+    struct stat r76_st;
+    if (stat("/etc/fx6_stage_r76", &r76_st) == 0) {
+        if (setup_r76_shoe_audio_subject_silent_version_probe() != 0) {
+            return 95;
+        }
+        FILE *r76f = fopen("/etc/fx6_stage_r76", "r");
+        if (r76f) {
+            int is_clean_unmount_wave62_integrated = 0;
+            char r76line[128];
+            while (fgets(r76line, sizeof(r76line), r76f)) {
+                if (strstr(r76line, "r76_mode=clean_unmount_wave62_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave62_integrated = 1;
+                }
+            }
+            fclose(r76f);
+            if (is_clean_unmount_wave62_integrated &&
+                run_r76_clean_unmount_wave62_h0_h3_probe(95) != 0) {
+                return 95;
             }
         }
     }

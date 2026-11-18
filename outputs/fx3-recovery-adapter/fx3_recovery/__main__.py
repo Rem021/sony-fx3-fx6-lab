@@ -223,6 +223,12 @@ from .realhw_61pillar_big6_home_framing_interval_tc_make_auth_fan_vault_verifier
     verify_61pillar_recovery_suite,
     verify_big6_framing_interval_tc_auth_fan_and_vault,
 )
+from .realhw_62pillar_rec_media_autoswitch_proxy_cloud_mymenu_vault_verifier import (
+    P344_ENV_CLEAN_ROOM_TEST,
+    run_pillar62_standalone_suite,
+    verify_62pillar_recovery_suite,
+    verify_rec_media_autoswitch_proxy_cloud_mymenu_and_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -700,6 +706,27 @@ def main():
     p340_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p340_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p340_master.add_argument('--out', help='optional exclusive new output directory for 61pillar-recovery-master-report.json')
+    p344_p62 = sub.add_parser(
+        'verify-pillar62-rec-media-autoswitch-proxy-cloud-mymenu-vault',
+        help='Phase 344 Pillar 62 (Wave-60 Rec. Media Settings, dormant Prioritize Rec. Media, Reset-immune Auto Switch Media Slot-1 spillover hazard, VPG200/VPG400 card-speed gates, Proxy Settings sq_proxy XAVC S-I DCI 4K allowed vs 120p/100p lockout and M4ROOT/SUB/*S03.MP4, Creators Cloud star Initialize-persistence, Cnct. while Power OFF BLE RF hazard, and My Menu 6x7=42 slots vs FX6 20-item User Menu with Lock + Slot-1 EROFS=30 Vault Firewall)',
+    )
+    p344_p62.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p344_p62.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p344_p62.add_argument('--out', help='optional exclusive new output directory for pillar62-rec-media-autoswitch-proxy-cloud-mymenu-vault-report.json')
+    p344_p62_alias = sub.add_parser(
+        'verify-pillar62-recovery',
+        help='Alias for verify-pillar62-rec-media-autoswitch-proxy-cloud-mymenu-vault (Phase 344 Pillar 62 standalone 12-scenario suite)',
+    )
+    p344_p62_alias.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p344_p62_alias.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p344_p62_alias.add_argument('--out', help='optional exclusive new output directory for pillar62-rec-media-autoswitch-proxy-cloud-mymenu-vault-report.json')
+    p344_master = sub.add_parser(
+        'verify-62pillar-recovery',
+        help='Phase 344 (62/62 Milestone) unified 62/62 real-hardware recovery master aggregator (Pillars 1..61 + Pillar 62)',
+    )
+    p344_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p344_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p344_master.add_argument('--out', help='optional exclusive new output directory for 62pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -4466,6 +4493,109 @@ def main():
                     f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_61pillar_sha256={report.master_61pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command in (
+            'verify-pillar62-rec-media-autoswitch-proxy-cloud-mymenu-vault',
+            'verify-pillar62-recovery',
+        ):
+            report = run_pillar62_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(
+                    args.out,
+                    {'pillar62-rec-media-autoswitch-proxy-cloud-mymenu-vault-report.json': encode(result)},
+                )
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_62a={report.pillar_62a_rec_media_autoswitch_proxy_vault.scenarios_passed}/{report.pillar_62a_rec_media_autoswitch_proxy_vault.scenarios_total} "
+                    f"pillar_62b={report.pillar_62b_cloud_poweroff_ble_mymenu_vault.scenarios_passed}/{report.pillar_62b_cloud_poweroff_ble_mymenu_vault.scenarios_total} "
+                    f"rec_media_prioritize_or_autoswitch_drift_events={report.rec_media_prioritize_or_autoswitch_drift_events} "
+                    f"card_speed_vpg200_vpg400_gate_drift_events={report.card_speed_vpg200_vpg400_gate_drift_events} "
+                    f"proxy_sq_dci4k_or_120p_lockout_drift_events={report.proxy_sq_dci4k_or_120p_lockout_drift_events} "
+                    f"cloud_init_persist_or_power_off_ble_rf_events={report.cloud_init_persist_or_power_off_ble_rf_events} "
+                    f"mymenu_42slot_or_fx6_lock_spoof_events={report.mymenu_42slot_or_fx6_lock_spoof_events} "
+                    f"zero_rf_or_slot1_vault_bypass_events={report.zero_rf_or_slot1_vault_bypass_events} "
+                    f"rf_packets_transmitted={report.rf_packets_transmitted} "
+                    f"rf_nvs_mutation_bytes={report.rf_nvs_mutation_bytes} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_dcim_m4root_avf_mutation_bytes={report.slot1_dcim_m4root_avf_mutation_bytes} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_eopnotsupp_enforced={report.slot1_vault_erofs_eopnotsupp_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-62pillar-recovery':
+            report = verify_62pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'62pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_1_5s_fast_cli_budget={report.under_1_5s_fast_cli_budget} "
+                    f"under_2_5s_fast_cli_budget={report.under_2_5s_fast_cli_budget} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar62_a={report.pillar62_a_rec_media_autoswitch_proxy_vault.scenarios_passed}/{report.pillar62_a_rec_media_autoswitch_proxy_vault.scenarios_total} "
+                    f"pillar62_b={report.pillar62_b_cloud_poweroff_ble_mymenu_vault.scenarios_passed}/{report.pillar62_b_cloud_poweroff_ble_mymenu_vault.scenarios_total} "
+                    f"rec_media_prioritize_or_autoswitch_drift_events={report.rec_media_prioritize_or_autoswitch_drift_events} "
+                    f"card_speed_vpg200_vpg400_gate_drift_events={report.card_speed_vpg200_vpg400_gate_drift_events} "
+                    f"proxy_sq_dci4k_or_120p_lockout_drift_events={report.proxy_sq_dci4k_or_120p_lockout_drift_events} "
+                    f"cloud_init_persist_or_power_off_ble_rf_events={report.cloud_init_persist_or_power_off_ble_rf_events} "
+                    f"mymenu_42slot_or_fx6_lock_spoof_events={report.mymenu_42slot_or_fx6_lock_spoof_events} "
+                    f"zero_rf_or_slot1_vault_bypass_events={report.zero_rf_or_slot1_vault_bypass_events} "
+                    f"rf_packets_transmitted={report.rf_packets_transmitted} "
+                    f"rf_nvs_mutation_bytes={report.rf_nvs_mutation_bytes} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_dcim_m4root_avf_mutation_bytes={report.slot1_dcim_m4root_avf_mutation_bytes} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_eopnotsupp_enforced={report.slot1_vault_erofs_eopnotsupp_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_62pillar_sha256={report.master_62pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

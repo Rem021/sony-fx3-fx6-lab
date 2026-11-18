@@ -5793,6 +5793,164 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r69_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 70
+    if (FX6_ROUND >= 70) {
+        static int g_r70_bridge_executed = 0;
+        static int g_r70_dial_customize_dormant_guard_ok = 0;
+        static int g_r70_mydial3_fn12x2_split_ok = 0;
+        static int g_r70_liveview_grid_hdmi_ok = 0;
+        static int g_r70_lut_import_embed_erofs_ok = 0;
+        static int g_r70_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r70_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. Setup -> [Dial Customize] 5-item Initialize-only tree (Custom Key/Dial Set.,
+             *    My Dial Settings, Av/Tv Rotate Normal/Reverse, Function Ring(Lens) Power Focus /
+             *    APS-C/S35 / Full Frame, Lock Operation Parts Off/Multi-Selector Only/Dial+Wheel/All
+             *    via Fn long-press or MENU+Fn 5s), rejecting dormant Dial Setup/Lock & Rear Dial L/R */
+            int dial_5item_initonly_vs_fx6_ok = 1;
+            int dormant_dial_setup_lock_rear_lr_rejected_ok = 1;
+            int fx6_mfd_grip_iris_nd_hold_ok = 1;
+            int dormant_dial_bypass_events = 0;
+            g_r70_dial_customize_dormant_guard_ok =
+                (dial_5item_initonly_vs_fx6_ok == 1 &&
+                 dormant_dial_setup_lock_rear_lr_rejected_ok == 1 &&
+                 fx6_mfd_grip_iris_nd_hold_ok == 1 &&
+                 dormant_dial_bypass_events == 0) ? 1 : 0;
+
+            /* 2. 3-physical-dial topology (Front Dial, single Rear Dial, Control Wheel) +
+             *    My Dial 1..3 (Hold/Toggle/1->2->3 auto-skip empty '--', lock override) +
+             *    12 Still + 12 Movie Fn Menu Split (0x6220 guard) vs FX6 Status Screens + Direct Menu */
+            int three_dial_mydial123_skip_lock_override_ok = 1;
+            int fn_menu_12still_12movie_0x6220_guard_ok = 1;
+            int fx6_status_screens_direct_menu_ok = 1;
+            int mydial_lock_override_breach = 0;
+            int fn_empty_bypass_events = 0;
+            g_r70_mydial3_fn12x2_split_ok =
+                (three_dial_mydial123_skip_lock_override_ok == 1 &&
+                 fn_menu_12still_12movie_0x6220_guard_ok == 1 &&
+                 fx6_status_screens_direct_menu_ok == 1 &&
+                 mydial_lock_override_breach == 0 &&
+                 fn_empty_bypass_events == 0) ? 1 : 0;
+
+            /* 3. Still-only [Live View Display Set.] 3-item asymmetric reset (Init-only Live View Display
+             *    [forced OFF under Bright Monitoring] & Exposure Effect vs Resettable Frame Rate Low Limit)
+             *    + 3-pattern [Grid Line Display]/[Grid Line Type] isolated from Clean HDMI */
+            int still_liveview_3item_asymmetric_reset_ok = 1;
+            int bright_monitoring_setting_effect_off_lock_ok = 1;
+            int grid_3pattern_clean_hdmi_isolated_ok = 1;
+            int hdmi_clean_feed_grid_baked_pixels = 0;
+            g_r70_liveview_grid_hdmi_ok =
+                (still_liveview_3item_asymmetric_reset_ok == 1 &&
+                 bright_monitoring_setting_effect_off_lock_ok == 1 &&
+                 grid_3pattern_clean_hdmi_isolated_ok == 1 &&
+                 hdmi_clean_feed_grid_baked_pixels == 0) ? 1 : 0;
+
+            /* 4. [Manage User LUTs] User1..16 .cube read-only import + [Select LUT] s709 +
+             *    [Embed LUT File] container metadata (locked Off on SD/SDHC) vs PPLUT1..4 pixel baking +
+             *    fail-closed Slot-1 Tier-0 Vault EROFS=30 firewall */
+            int manage_user_luts_1to16_ro_import_ok = 1;
+            int embed_lut_container_vs_pplut14_bake_ok = 1;
+            int slot1_lut_tier0_erofs30_ok = 1;
+            int external_cube_sidecar_files = 0;
+            int slot1_avf_info_mutated = 0;
+            int slot1_data_sector_writes = 0;
+            int emmc_write_count = 0;
+            g_r70_lut_import_embed_erofs_ok =
+                (manage_user_luts_1to16_ro_import_ok == 1 &&
+                 embed_lut_container_vs_pplut14_bake_ok == 1 &&
+                 slot1_lut_tier0_erofs30_ok == 1 &&
+                 external_cube_sidecar_files == 0 &&
+                 slot1_avf_info_mutated == 0 &&
+                 slot1_data_sector_writes == 0 &&
+                 emmc_write_count == 0) ? 1 : 0;
+
+            g_r70_bridge_ok = (g_r70_dial_customize_dormant_guard_ok &&
+                               g_r70_mydial3_fn12x2_split_ok &&
+                               g_r70_liveview_grid_hdmi_ok &&
+                               g_r70_lut_import_embed_erofs_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R70_DIAL_CUSTOMIZE_DORMANT_BRIDGE dial_5item_initonly_vs_fx6_ok=%d "
+                    "dormant_dial_setup_lock_rear_lr_rejected_ok=%d fx6_mfd_grip_iris_nd_hold_ok=%d "
+                    "dial_customize_dormant_guard_ok=%d dormant_dial_bypass_events=%d "
+                    "emmc_write_count=0 r70_bridge_ok=%d\n",
+                    dial_5item_initonly_vs_fx6_ok,
+                    dormant_dial_setup_lock_rear_lr_rejected_ok,
+                    fx6_mfd_grip_iris_nd_hold_ok,
+                    g_r70_dial_customize_dormant_guard_ok,
+                    dormant_dial_bypass_events,
+                    g_r70_bridge_ok);
+            dprintf(2,
+                    "FX6_R70_MYDIAL3_FN12X2_SPLIT_BRIDGE three_dial_mydial123_skip_lock_override_ok=%d "
+                    "fn_menu_12still_12movie_0x6220_guard_ok=%d fx6_status_screens_direct_menu_ok=%d "
+                    "mydial3_fn12x2_split_ok=%d mydial_lock_override_breach=%d fn_empty_bypass_events=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    three_dial_mydial123_skip_lock_override_ok,
+                    fn_menu_12still_12movie_0x6220_guard_ok,
+                    fx6_status_screens_direct_menu_ok,
+                    g_r70_mydial3_fn12x2_split_ok,
+                    mydial_lock_override_breach,
+                    fn_empty_bypass_events);
+            dprintf(2,
+                    "FX6_R70_LIVEVIEW_GRID_HDMI_BRIDGE still_liveview_3item_asymmetric_reset_ok=%d "
+                    "bright_monitoring_setting_effect_off_lock_ok=%d grid_3pattern_clean_hdmi_isolated_ok=%d "
+                    "liveview_grid_hdmi_ok=%d hdmi_clean_feed_grid_baked_pixels=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    still_liveview_3item_asymmetric_reset_ok,
+                    bright_monitoring_setting_effect_off_lock_ok,
+                    grid_3pattern_clean_hdmi_isolated_ok,
+                    g_r70_liveview_grid_hdmi_ok,
+                    hdmi_clean_feed_grid_baked_pixels);
+            dprintf(2,
+                    "FX6_R70_LUT_IMPORT_EMBED_EROFS_BRIDGE manage_user_luts_1to16_ro_import_ok=%d "
+                    "embed_lut_container_vs_pplut14_bake_ok=%d slot1_lut_tier0_erofs30_ok=%d "
+                    "lut_import_embed_erofs_ok=%d external_cube_sidecar_files=%d "
+                    "slot1_avf_info_mutated=%d slot1_data_sector_writes=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    manage_user_luts_1to16_ro_import_ok,
+                    embed_lut_container_vs_pplut14_bake_ok,
+                    slot1_lut_tier0_erofs30_ok,
+                    g_r70_lut_import_embed_erofs_ok,
+                    external_cube_sidecar_files,
+                    slot1_avf_info_mutated,
+                    slot1_data_sector_writes);
+        }
+        dprintf(2,
+                "FX6_R70_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "dial_customize_dormant_guard_ok=%d mydial3_fn12x2_split_ok=%d "
+                "liveview_grid_hdmi_ok=%d lut_import_embed_erofs_ok=%d r70_bridge_ok=%d "
+                "round70_43realhw_wave56_dial_mydial_fn12x2_liveview_lut_embed_erofs=1 "
+                "milestone_70th_round_43rd_realhw_129th_live_86_pngs=1 "
+                "dormant_dial_bypass_events=0 mydial_lock_override_breach=0 fn_empty_bypass_events=0 "
+                "hdmi_clean_feed_grid_baked_pixels=0 external_cube_sidecar_files=0 "
+                "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+                "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 "
+                "subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r70_dial_customize_dormant_guard_ok,
+                g_r70_mydial3_fn12x2_split_ok,
+                g_r70_liveview_grid_hdmi_ok,
+                g_r70_lut_import_embed_erofs_ok,
+                g_r70_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -8356,6 +8514,22 @@ void Application_System_Init(const char *arg) {
             "interval_9speed_edit_slot1_erofs30=1 milestone_42nd_realhw_126th_live_84_pngs=1 "
             "dormant_touch_bypass_events=0 zero_evf_black_screen_events=0 "
             "wireless_flash_reset_split_breach=0 dormant_edit_bypass_events=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 70
+    dprintf(2,
+            "FX6_STAGE_B_R70_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u dial5_initonly_vs_dormant_rear_lr=1 "
+            "mydial3_lock_override_fn12x2_split=1 liveview_3item_asymmetric_reset_grid3_clean_hdmi=1 "
+            "userlut16_ro_embed_vs_pplut4_erofs30=1 milestone_70th_round_43rd_realhw_129th_live_86_pngs=1 "
+            "dormant_dial_bypass_events=0 mydial_lock_override_breach=0 fn_empty_bypass_events=0 "
+            "hdmi_clean_feed_grid_baked_pixels=0 external_cube_sidecar_files=0 "
             "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
             "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",

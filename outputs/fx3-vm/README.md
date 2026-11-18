@@ -2823,6 +2823,38 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 365（Stage 82 — `82/82` Full-Board VM Co-Emulation Stages!）：Wave-72 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` `[Audio Rec Level]` (`0..31`) / `XLR-H1` 物理旁路 / 常驻限幅器 vs FX6 三层 Reference & 6 档 `Limiter Mode`、`[Audio Out Timing]` `Live`/`Lip Sync` & 精确 5 项 `[4ch Audio Monitoring]` vs FX6 7 项 `Monitor CH` / 零侧边 `"MONITOR VOL"` 键、`[Touch Operation]` 精确 4 项 vs 100% 休眠 `[Touch Panel/Pad]`/`[Touch Shutter]`/`[Touch AE]` & FX6 `Touch Function in MF`/`BIG6`，以及 `[Remote Shoot Setting]` PTP/PTP-IP `Destination Only` 零写卡 RAM 直传与 `Slot 1 EROFS=30` 防火墙 vs FX6 `Camera Remote Control` HIL
 
+[`realhw_audioreclevel_4chmon_touchfunc_remoteshoot_ptp_coemulator.py`](realhw_audioreclevel_4chmon_touchfunc_remoteshoot_ptp_coemulator.py)（Schema `phase365_realhw_audioreclevel_4chmon_touchfunc_remoteshoot_ptp_coemulation_v1`）作为 **Stage 82（`82/82` Full-Board VM Co-Emulation Stages!）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase365` / `--skip-stage82` / `--no-include-stage82` 跳过，支持 `--include-stage82`），严格遵循 `os.O_RDONLY` + `<= 4096 B` 受界 `os.pread`、`ready_for_live_camera_attach == False`、`physical_device_writes == 0`、`emmc_writes_authorized == False`、`slot1_data_sector_writes == 0`、`rf_tx_packets == 0`、`emmc_nflasha_write_count == 0` 与 `raw_firmware_bytes_leaked == 0`：
 
+1. **高速双模 25 供体 `O_RDONLY` + 受界 `os.pread` 审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` **25 份真实供体**（`20` 份紧凑供体：`4` 语言 FX3 `_f`/基础/`_g` `.uxc` + `libptp.so`/`libInfraPtpControl.so`/`libInfraPtpExtCmd.so`/`libInfraMtpServer.so` + FX6 `.uxc`/`libptp.so`/`libInfraPtpControl.so`；以及 `5` 份受界窗口供体：`FX3 appFw.so`、`FX3 libInfraRemote.so`、`FX3 BK4`、`FX6 appFw.so`、`FX6 libInfraRemote.so`），在无供体 CI 环境无缝回退 `CLEAN_ROOM_SYNTHETIC`（`raw_firmware_bytes_leaked == 0`）。
+2. **Sub-Model 82A — `[Audio Rec Level]`（`0..31`）/ `XLR-H1` 物理旁路 / 常驻机身限幅器 vs FX6 三层 Reference & 6 档 `Limiter Mode`**：
+   - FX3 Ver. 7.02 `Shooting -> [Audio Recording] -> [Audio Rec Level]`（`0..31` 共 `32` 档，出厂默认 `26` `adj_audio_rec_level_defult`，`Delete` 键复位 `26`，`Can be reset`）仅作用于内置立体声麦与 `3.5mm MIC` 且常驻**不可关闭机身限幅器**（`EOPNOTSUPP=95`）；`XLR-H1` `HANDLE AUDIO = ON` 且无 `3.5mm` 插入时完全旁路置灰机身增益（`greyed_out=True`），改由手柄物理开关（`LINE +4 dBu`、`MIC/MIC+48V` `ATT 0/10/20 dB` = `-60/-50/-40 dBu`、`AUTO/MAN(/LINK)`、`0..10` 电位器、`48kHz/24bit 2ch/4ch`）主导；`S&Q` 锁定全部 `4` 项（`0ch` 音频，`EBUSY=16`）。对比 FX6 `Audio -> [Audio Input]` `CH1..CH4` 矩阵、`0..99` 数字电平、三层 Reference（`INPUT1/2 MIC Reference -80..-30 dB`、`Line Input Reference +4/0/-3 dB/EBUL`、`Reference Level -20/-18/-16/-12 dB/EBUL` 5 档）与实证 **6 档 `Limiter Mode`**（`Off`/`-6dB`/`-9dB`/`-12dB`/`-15dB`/`-17dB`，证伪 4 档传言）。
+3. **Sub-Model 82B — `[Audio Out Timing]` `Live`/`Lip Sync`、`[Volume Settings]` `0..15` 与精确 5 项 `[4ch Audio Monitoring]` vs FX6 7 项 `Monitor CH` & 零侧边 `"MONITOR VOL"` 键**：
+   - FX3 `[Audio Out Timing]`（`Live` 默认 `0ms` / `Lip Sync`，`Can be reset`，`S&Q` 禁用）；`Setup -> [Sound Option]` `[Volume Settings]`（`0..15` 默认 `7`，Reset 免疫 `Not available` + 扬声器靠近 `XLR-H1` 防啸叫告警）与精确 **5 项 `[4ch Audio Monitoring]`**（`CH1/CH2` 默认、`CH3/CH4`、`CH1+3/CH2+4`、**`CH1/CH1`**、**`CH2/CH2`** — 纠偏 Wave 62/70 误写，拒绝 `CH1/CH2 mono mix`/`CH1+2/CH3+4`/`All` `EOPNOTSUPP=95`，Reset 免疫 `Not available`，与 HDMI `[4ch Audio Output]` 独立并控制 `3.5mm` 2ch 耳机 + 后置单声道扬声器）。对比 FX6 7 项 `Monitor CH`、`Headphone Out`（`Stereo`/`Mono`）、`Volume`（`0..50`，**机身侧面零 `"MONITOR VOL +/-"` 物理键** `ENODEV=19`）、`HDMI 2ch` vs `SDI 4ch`。
+4. **Sub-Model 82C — `Setup -> [Touch Operation]` 精确 4 项 vs 100% 休眠 `[Touch Panel/Pad]`/`[Touch Shutter]`/`[Touch AE]` & FX6 `Touch Function in MF` / `BIG6`**：
+   - FX3 Ver. 7.02 仅暴露 4 项 Reset 免疫项（仅 `[Initialize]` 清零）：`[Touch Operation]`（`On` 默认 / `On: Playback Only` / `Off`）、`[Touch Sensitivity]`（`Standard` 默认 / `Sensitive`）、`[Touch Func. in Shooting]`（`Touch Focus` / `Touch Tracking` 默认 / `Off`，Still/Movie/`S&Q` 全局共享）与 `[Swipe Up]`（`Open the Fn Menu` 默认 / `Off`）。证明 `[Touch Panel/Pad]`、`[Touch Shutter]` 与 `[Touch AE]` **100% 休眠（`EOPNOTSUPP=95`）**，且 `[Spot Metering Point] = Focus Point Link` 仅绑定静态对焦区而**不跟随动态追踪框**。对比 FX6 `Touch Operation`、`Touch Function in MF`（`Spot Focus` 在手动镜头 / `De-Squeeze != 1.0x` / `Focus Magnifier` 时禁用 `EBUSY=16`；`Tracking AF`）与 Ver. 6.00+ `BIG6`/全菜单触控。
+5. **Sub-Model 82D — `[PC Remote Function]` -> `[Remote Shoot Setting]` 演进、PTP/PTP-IP `Destination Only` 零写卡 RAM 直传与 Tier-0 `Slot 1 EROFS=30` 防火墙 vs FX6 `Camera Remote Control`**：
+   - FX3 Ver. 1.x `[PC Remote Function]` 升级为 Ver. 2.00..7.02 `Network -> [Cnct./Remote Sht.] -> [Remote Shoot Setting]`（免疫 `[Camera Settings Reset]`，仅由 `[Reset Network Set.]` / `[Initialize]` 恢复出厂）：`[Still Img. Save Dest.]`（`Destination Only` / **出厂默认 `Dest.+Camera`** / `Camera Only`，`CONNECTED` 锁定 `EBUSY=16`）、`[Save Image Size]`（`Original`/`2M`）、`[RAW+J Save Image]`、`[RAW+H Save Image]`；USB `/dev/usb/sicd_*`（`054c:0d2b`）与 PTP-IP TCP `15740` 链路下，**仅 `Destination Only` 可无卡 RAM 直传（`slot1_data_sector_writes == 0`，USB-C 有线零射频 `rf_tx_packets == 0`）**，而默认 `Dest.+Camera` 与 `Camera Only` 无卡拒拍（`ENODEV=19`）且插卡触发 Tier-0 `Slot 1` 硬 `EROFS=30`。对比 FX6 `Camera Remote Control`（PTP-IP `15740`，UI 零 `Still Img. Save Dest.` 暴露 `EOPNOTSUPP=95`）。
 
+### Phase 365 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 365 Stage 82（82/82 Full-Board VM Co-Emulation Stages!）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_audioreclevel_4chmon_touchfunc_remoteshoot_ptp_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_audioreclevel_4chmon_touchfunc_remoteshoot_ptp_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_audioreclevel_4chmon_touchfunc_remoteshoot_ptp_coemulator.py --self-test --json
+
+# 2. 全板 82 阶段（Stage 1..82, 82/82 Full-Board VM Co-Emulation Stages!）统一校验（支持 --include-stage82 与 --skip-phase365 / --skip-stage82 / --no-include-stage82）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage82 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 365 四模式 100 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_audioreclevel_4chmon_touchfunc_remoteshoot_ptp_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_audioreclevel_4chmon_touchfunc_remoteshoot_ptp_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_audioreclevel_4chmon_touchfunc_remoteshoot_ptp_coemulator.py -v
+FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_audioreclevel_4chmon_touchfunc_remoteshoot_ptp_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
+```

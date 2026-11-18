@@ -175,6 +175,12 @@ from .realhw_53pillar_dci4k_aspect_custom_hold_camset_photo_capture_vault_verifi
     verify_53pillar_recovery_suite,
     verify_dci4k_aspect_custom_hold_camset_photo_capture_and_vault,
 )
+from .realhw_54pillar_sensor_cleaning_ev_comp_focus_mode_rotate_vault_verifier import (
+    P304_ENV_CLEAN_ROOM_TEST,
+    run_pillar54_standalone_suite,
+    verify_54pillar_recovery_suite,
+    verify_sensor_cleaning_ev_comp_focus_mode_rotate_and_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -576,6 +582,14 @@ def main():
     p300_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p300_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p300_master.add_argument('--out', help='optional exclusive new output directory for 53pillar-recovery-master-report.json')
+    p304_p54 = sub.add_parser('verify-pillar54-sensor-cleaning-ev-comp-focus-mode-rotate-vault', help='Phase 304 Pillar 54 Sensor Cleaning >= 51%% NP-FZ100 battery gate + mandatory power-switch OFF vs FX6 e-ND + Technical APR, Exposure Comp. +-5.0/+-2.0 EV (M+ISO AUTO only, Exposure step Initialize-only, 100%% Cine EI lockout), Focus Mode 5-Still vs 2-Movie AF-C/MF clamp (EOPNOTSUPP=95/EINVAL=22) + Priority Set/AF Illuminator, Playback View Mode / exact 9-25 Image Index / Display as Group / Display Rotation / Rotate Slot-1 Tier-0 EROFS/EBUSY Vault Firewall verifier')
+    p304_p54.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p304_p54.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p304_p54.add_argument('--out', help='optional exclusive new output directory for pillar54-sensor-cleaning-ev-comp-focus-mode-rotate-vault-report.json')
+    p304_master = sub.add_parser('verify-54pillar-recovery', help='Phase 304 unified 54/54 real-hardware recovery master aggregator (Pillars 1..53 + Pillar 54)')
+    p304_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p304_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p304_master.add_argument('--out', help='optional exclusive new output directory for 54pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -3535,6 +3549,106 @@ def main():
                     f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_53pillar_sha256={report.master_53pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-pillar54-sensor-cleaning-ev-comp-focus-mode-rotate-vault':
+            report = run_pillar54_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(
+                    args.out,
+                    {'pillar54-sensor-cleaning-ev-comp-focus-mode-rotate-vault-report.json': encode(result)},
+                )
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_54a={report.pillar_54a_sensor_cleaning_ev_comp_vault.scenarios_passed}/{report.pillar_54a_sensor_cleaning_ev_comp_vault.scenarios_total} "
+                    f"pillar_54b={report.pillar_54b_focus_mode_playback_rotate_vault.scenarios_passed}/{report.pillar_54b_focus_mode_playback_rotate_vault.scenarios_total} "
+                    f"sensor_cleaning_low_battery_bypass_events={report.sensor_cleaning_low_battery_bypass_events} "
+                    f"sensor_cleaning_no_power_off_violations={report.sensor_cleaning_no_power_off_violations} "
+                    f"fx6_ibis_shake_conflation_events={report.fx6_ibis_shake_conflation_events} "
+                    f"ev_comp_range_or_cine_ei_lockout_violations={report.ev_comp_range_or_cine_ei_lockout_violations} "
+                    f"exposure_step_or_dormant_reset_ev_drift_events={report.exposure_step_or_dormant_reset_ev_drift_events} "
+                    f"focus_mode_movie_clamp_or_dormant_drift_events={report.focus_mode_movie_clamp_or_dormant_drift_events} "
+                    f"priority_set_or_illuminator_gate_violations={report.priority_set_or_illuminator_gate_violations} "
+                    f"image_index_dormant_or_view_mode_drift_events={report.image_index_dormant_or_view_mode_drift_events} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_rotate_exif_mutation_bytes={report.slot1_rotate_exif_mutation_bytes} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_ebusy_enforced={report.slot1_vault_erofs_ebusy_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-54pillar-recovery':
+            report = verify_54pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'54pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_1_5s_fast_cli_budget={report.under_1_5s_fast_cli_budget} "
+                    f"under_2_5s_fast_cli_budget={report.under_2_5s_fast_cli_budget} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar54_a={report.pillar54_a_sensor_cleaning_ev_comp_vault.scenarios_passed}/{report.pillar54_a_sensor_cleaning_ev_comp_vault.scenarios_total} "
+                    f"pillar54_b={report.pillar54_b_focus_mode_playback_rotate_vault.scenarios_passed}/{report.pillar54_b_focus_mode_playback_rotate_vault.scenarios_total} "
+                    f"sensor_cleaning_low_battery_bypass_events={report.sensor_cleaning_low_battery_bypass_events} "
+                    f"sensor_cleaning_no_power_off_violations={report.sensor_cleaning_no_power_off_violations} "
+                    f"fx6_ibis_shake_conflation_events={report.fx6_ibis_shake_conflation_events} "
+                    f"ev_comp_range_or_cine_ei_lockout_violations={report.ev_comp_range_or_cine_ei_lockout_violations} "
+                    f"exposure_step_or_dormant_reset_ev_drift_events={report.exposure_step_or_dormant_reset_ev_drift_events} "
+                    f"focus_mode_movie_clamp_or_dormant_drift_events={report.focus_mode_movie_clamp_or_dormant_drift_events} "
+                    f"priority_set_or_illuminator_gate_violations={report.priority_set_or_illuminator_gate_violations} "
+                    f"image_index_dormant_or_view_mode_drift_events={report.image_index_dormant_or_view_mode_drift_events} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_rotate_exif_mutation_bytes={report.slot1_rotate_exif_mutation_bytes} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_ebusy_enforced={report.slot1_vault_erofs_ebusy_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_54pillar_sha256={report.master_54pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

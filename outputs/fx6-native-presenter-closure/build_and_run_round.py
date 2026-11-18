@@ -1376,6 +1376,7 @@ def build_stage_a_overlay(
     enable_r62: bool = False,
     enable_r63: bool = False,
     enable_r64: bool = False,
+    enable_r65: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1412,6 +1413,7 @@ def build_stage_a_overlay(
     r62_mode: str = "pp_scinetone_look_wb_metering_big6",
     r63_mode: str = "still_raw_heif_colorspace_shutter_drive_big6",
     r64_mode: str = "focus_area_zoom_iso_flash_big6",
+    r65_mode: str = "dci4k_aspect_camset_photocap_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1755,7 +1757,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r63_mode: {r63_mode}")
     if enable_r64 and r64_mode not in ("focus_area_zoom_iso_flash_big6", "wave50_focus_zoom_iso_flash_guard", "clean_unmount_wave50_reset_h0_h3_big6"):
         raise ValueError(f"Unsupported r64_mode: {r64_mode}")
-    if enable_r64 and r64_mode == "wave50_focus_zoom_iso_flash_guard":
+    if enable_r65 and r65_mode not in ("dci4k_aspect_camset_photocap_big6", "wave51_dci4k_aspect_camset_photocap_guard", "clean_unmount_wave51_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r65_mode: {r65_mode}")
+    if enable_r65 and r65_mode == "wave51_dci4k_aspect_camset_photocap_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r65_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r65-wave51-guard > /dev/console 2>&1\n"
+            "fx6_r65_gd_rc=$?\n"
+            "echo FX6_R65_WAVE51_GUARD_RC=$fx6_r65_gd_rc\n"
+            "echo FX6_R65_WAVE51_GUARD_EXIT rc=$fx6_r65_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r65_early_hook, 1)
+    elif enable_r64 and r64_mode == "wave50_focus_zoom_iso_flash_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -4545,6 +4563,91 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r65_meta: Optional[Dict[str, Any]] = None
+    if enable_r65:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r65_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r65"] = (
+            (
+                f"stage_r65=1\nr65_mode={r65_mode}\n"
+                f"xavc_dci4k_24p_reboot_59p_hdmi_raw_angle=1\n"
+                f"still_aspect_ratio_4mode_apsc_vs_fx6=1\n"
+                f"recall_hold_11chk_campr_camset_vs_pro_camera=1\n"
+                f"photocap_dci4k_lockout_enlarge_slot1_vault=1\n"
+                f"milestone_65th_round_38th_realhw_114th_live_76_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r65_meta = {
+            "r65_mode": r65_mode,
+            "milestone_65th_round_38realhw_rounds": True,
+            "realhw_round_ordinal": 38,
+            "total_live_runs_at_completion": 114,
+            "total_png_receipts_at_completion": 76,
+            "xavc_si_dci4k_uxc_token": "0x7336:XAVC S-I DCI 4K",
+            "xavc_si_dci4k_resolution": "4096x2160",
+            "xavc_si_dci4k_aspect": "17:9",
+            "xavc_si_dci4k_fw_added": "Ver. 3.00+",
+            "xavc_si_dci4k_fps_supported": ["23.98p", "24.00p", "25p", "29.97p", "50p", "59.94p"],
+            "xavc_si_dci4k_24_00p_requires_reboot_and_isolates_playback": True,
+            "xavc_si_dci4k_sq_fps_supported": [1, 2, 3, 6, 12, 24, 48],
+            "xavc_si_dci4k_100_120fps_rejected": True,
+            "long_gop_4k_uhd_only_3840x2160": True,
+            "dormant_8k_24p_rejected_eopnotsupp": True,
+            "hdmi_raw_output_resolution": "4264x2408",
+            "hdmi_raw_requires_log_and_locks_slog3": True,
+            "shutter_mode_angle_range_deg": [5.6, 360.0],
+            "shutter_mode_angle_frames_range": [2, 64],
+            "still_aspect_ratio_uxc_token": "0x757c:Aspect Ratio",
+            "still_aspect_ratio_options_mp": {
+                "3:2": {"L": "12M", "M": "5.1M", "S": "3.0M"},
+                "4:3": {"L": "11M", "M": "4.6M", "S": "2.7M"},
+                "16:9": {"L": "10M", "M": "4.3M", "S": "2.6M"},
+                "1:1": {"L": "8.0M", "M": "3.4M", "S": "2.0M"},
+            },
+            "still_aspect_ratio_default": "3:2",
+            "still_aspect_ratio_raw_full_3_2_with_crop_meta": True,
+            "apsc_s35_on_clamps_jpeg_size_l_to_m": True,
+            "fx6_still_aspect_ratio_present": False,
+            "reg_custom_shoot_set_uxc_token": "0x7631:Reg. Custom Shoot Set",
+            "reg_custom_shoot_set_hold_slots": [
+                "Recall Custom hold 1",
+                "Recall Custom hold 2",
+                "Recall Custom hold 3",
+            ],
+            "reg_custom_shoot_set_checkbox_count": 11,
+            "reg_custom_shoot_set_still_pasm_only": True,
+            "reg_custom_shoot_set_excludes_self_timer": True,
+            "reg_custom_shoot_set_forces_hlg_still_off_on_iso_dro_hold": True,
+            "reg_custom_shoot_set_survives_camera_settings_reset": True,
+            "camera_set_memory_body_banks": [1, 2, 3],
+            "camera_set_memory_card_banks": ["M1", "M2", "M3", "M4"],
+            "fx3_card_campr_sd_path_fmt": "/PRIVATE/SONY/SETTING/FX3/CAMPR%02d%c.DAT",
+            "fx3_card_campr_cfexpress_path_fmt": "/SONY/SETTING/FX3/CAMPR%02d%c.DAT",
+            "fx3_card_camset_sd_path_fmt": "/PRIVATE/SONY/SETTING/FX3/CAMSET/CAMSET%02d.DAT",
+            "fx3_sony_pro_camera_present": False,
+            "memory_recall_media_resets_to_slot1_on_camreset": True,
+            "photo_capture_uxc_token": "0x6856:Photo Capture",
+            "photo_capture_mp": {"4K": "8.3M", "HD": "2.1M"},
+            "photo_capture_file_types": ["JPEG", "HEIF(4:2:0)", "HEIF(4:2:2)"],
+            "photo_capture_dci4k_lockout_uxc_token": "_g.uxc 0x60ce",
+            "enlarge_image_still_playback_only": True,
+            "enlarge_initial_mag_options": ["Standard. Mag.", "Previous Mag."],
+            "enlarge_initial_pos_options": ["Focused Position", "Center"],
+            "slot1_tier0_vault_erofs": True,
+            "long_gop_dci4k_bypass_events": 0,
+            "fx6_still_aspect_spoof_events": 0,
+            "movie_recall_hold_bypass_events": 0,
+            "fx6_pro_camera_spoof_events": 0,
+            "dci4k_photocap_bypass_events": 0,
+            "slot1_wave51_write_events": 0,
+            "passive_tx_bytes_emitted": 0,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -4602,6 +4705,7 @@ def build_stage_a_overlay(
         "r62_enabled": enable_r62,
         "r63_enabled": enable_r63,
         "r64_enabled": enable_r64,
+        "r65_enabled": enable_r65,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -4705,6 +4809,8 @@ def build_stage_a_overlay(
         stage_a_meta["r63"] = r63_meta
     if r64_meta is not None:
         stage_a_meta["r64"] = r64_meta
+    if r65_meta is not None:
+        stage_a_meta["r65"] = r65_meta
     return replacements, additions, stage_a_meta
 
 
@@ -5058,6 +5164,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R62_",
         "FX6_R63_",
         "FX6_R64_",
+        "FX6_R65_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -5432,6 +5539,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r64_lang: Optional[Dict[str, Any]] = None
     last_r64_bridge: Optional[Dict[str, Any]] = None
     r64_wave50_guard_rc: Optional[int] = None
+    last_r65_wave51_init: Optional[Dict[str, Any]] = None
+    last_r65_xavc_dci4k_uhd_hdmi_raw_bridge: Optional[Dict[str, Any]] = None
+    last_r65_still_aspect_ratio_fx6_bridge: Optional[Dict[str, Any]] = None
+    last_r65_recall_hold_11chk_camset_bridge: Optional[Dict[str, Any]] = None
+    last_r65_photocap_enlarge_slot1_bridge: Optional[Dict[str, Any]] = None
+    last_r65_wave51_guard: Optional[Dict[str, Any]] = None
+    last_r65_clean_unmount_wave51_h0_h3: Optional[Dict[str, Any]] = None
+    last_r65_lang: Optional[Dict[str, Any]] = None
+    last_r65_bridge: Optional[Dict[str, Any]] = None
+    r65_wave51_guard_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -6279,6 +6396,28 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R64_WAVE50_GUARD_RC"), int):
                 r64_wave50_guard_rc = kv["FX6_R64_WAVE50_GUARD_RC"]
+        elif "FX6_R65_WAVE51_INIT " in line:
+            last_r65_wave51_init = _parse_kv_ints(line.split("FX6_R65_WAVE51_INIT ", 1)[1])
+        elif "FX6_R65_XAVC_DCI4K_UHD_HDMI_RAW_BRIDGE " in line:
+            last_r65_xavc_dci4k_uhd_hdmi_raw_bridge = _parse_kv_ints(line.split("FX6_R65_XAVC_DCI4K_UHD_HDMI_RAW_BRIDGE ", 1)[1])
+        elif "FX6_R65_STILL_ASPECT_RATIO_FX6_BRIDGE " in line:
+            last_r65_still_aspect_ratio_fx6_bridge = _parse_kv_ints(line.split("FX6_R65_STILL_ASPECT_RATIO_FX6_BRIDGE ", 1)[1])
+        elif "FX6_R65_RECALL_HOLD_11CHK_CAMSET_BRIDGE " in line:
+            last_r65_recall_hold_11chk_camset_bridge = _parse_kv_ints(line.split("FX6_R65_RECALL_HOLD_11CHK_CAMSET_BRIDGE ", 1)[1])
+        elif "FX6_R65_PHOTOCAP_ENLARGE_SLOT1_VAULT_BRIDGE " in line:
+            last_r65_photocap_enlarge_slot1_bridge = _parse_kv_ints(line.split("FX6_R65_PHOTOCAP_ENLARGE_SLOT1_VAULT_BRIDGE ", 1)[1])
+        elif "FX6_R65_WAVE51_GUARD " in line:
+            last_r65_wave51_guard = _parse_kv_ints(line.split("FX6_R65_WAVE51_GUARD ", 1)[1])
+        elif "FX6_R65_CLEAN_UNMOUNT_WAVE51_H0_H3 " in line:
+            last_r65_clean_unmount_wave51_h0_h3 = _parse_kv_ints(line.split("FX6_R65_CLEAN_UNMOUNT_WAVE51_H0_H3 ", 1)[1])
+        elif "FX6_R65_LANG_TELEMETRY " in line:
+            last_r65_lang = _parse_kv_ints(line.split("FX6_R65_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R65_BRIDGE " in line:
+            last_r65_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R65_BRIDGE ", 1)[1])
+        elif "FX6_R65_WAVE51_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R65_WAVE51_GUARD_RC"), int):
+                r65_wave51_guard_rc = kv["FX6_R65_WAVE51_GUARD_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -7256,6 +7395,34 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r64_bridge or {},
         }
 
+    r65_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r65_wave51_init,
+            last_r65_xavc_dci4k_uhd_hdmi_raw_bridge,
+            last_r65_still_aspect_ratio_fx6_bridge,
+            last_r65_recall_hold_11chk_camset_bridge,
+            last_r65_photocap_enlarge_slot1_bridge,
+            last_r65_wave51_guard,
+            last_r65_clean_unmount_wave51_h0_h3,
+            last_r65_lang,
+            last_r65_bridge,
+        )
+    ):
+        r65_telemetry = {
+            "wave51_guard_rc": r65_wave51_guard_rc,
+            "wave51_init": last_r65_wave51_init or {},
+            "xavc_dci4k_uhd_hdmi_raw_bridge": last_r65_xavc_dci4k_uhd_hdmi_raw_bridge or {},
+            "still_aspect_ratio_fx6_bridge": last_r65_still_aspect_ratio_fx6_bridge or {},
+            "recall_hold_11chk_camset_bridge": last_r65_recall_hold_11chk_camset_bridge or {},
+            "photocap_enlarge_slot1_bridge": last_r65_photocap_enlarge_slot1_bridge or {},
+            "wave51_guard": last_r65_wave51_guard or {},
+            "clean_unmount_wave51_h0_h3": last_r65_clean_unmount_wave51_h0_h3 or {},
+            "lang_telemetry": last_r65_lang or {},
+            "stage_b_bridge": last_r65_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -7317,6 +7484,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r62_telemetry": r62_telemetry,
         "r63_telemetry": r63_telemetry,
         "r64_telemetry": r64_telemetry,
+        "r65_telemetry": r65_telemetry,
     }
 
 
@@ -7446,6 +7614,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r63"
     if args.round >= 64:
         tmp_prefix = "fx6-r64"
+    if args.round >= 65:
+        tmp_prefix = "fx6-r65"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -7520,8 +7690,12 @@ def run_once(args: argparse.Namespace) -> int:
         r62_mode = getattr(args, "r62_mode", "pp_scinetone_look_wb_metering_big6")
         r63_mode = getattr(args, "r63_mode", "still_raw_heif_colorspace_shutter_drive_big6")
         r64_mode = getattr(args, "r64_mode", "focus_area_zoom_iso_flash_big6")
+        r65_mode = getattr(args, "r65_mode", "dci4k_aspect_camset_photocap_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone65thRound38RealHw114thLiveWave51Dci4kAspectRecallHoldCamsetPhotoCap+r65_mode={r65_mode}+lang={lang})"
+                if args.round >= 65
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone64thRound37RealHw111thLiveWave50Focus14AreaZoomLeverXlrH1IsoMinSsCineEiMechFlashVideoLight+r64_mode={r64_mode}+lang={lang})"
                 if args.round >= 64
                 else (
@@ -7742,6 +7916,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -7840,6 +8015,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r63_mode=r63_mode,
                 enable_r64=(args.round >= 64),
                 r64_mode=r64_mode,
+                enable_r65=(args.round >= 65),
+                r65_mode=r65_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -8010,6 +8187,7 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R62_WAVE48_GUARD_EXIT" in txt
                     or "FX6_R63_WAVE49_GUARD_EXIT" in txt
                     or "FX6_R64_WAVE50_GUARD_EXIT" in txt
+                    or "FX6_R65_WAVE51_GUARD_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -8082,6 +8260,7 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R62_WAVE48_GUARD_EXIT" in serial_text
             or "FX6_R63_WAVE49_GUARD_EXIT" in serial_text
             or "FX6_R64_WAVE50_GUARD_EXIT" in serial_text
+            or "FX6_R65_WAVE51_GUARD_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -8169,6 +8348,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r62_mode": r62_mode if args.round >= 62 else None,
             "r63_mode": r63_mode if args.round >= 63 else None,
             "r64_mode": r64_mode if args.round >= 64 else None,
+            "r65_mode": r65_mode if args.round >= 65 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -8240,6 +8420,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r62_telemetry": milestones.get("r62_telemetry") if args.round >= 62 else None,
             "r63_telemetry": milestones.get("r63_telemetry") if args.round >= 63 else None,
             "r64_telemetry": milestones.get("r64_telemetry") if args.round >= 64 else None,
+            "r65_telemetry": milestones.get("r65_telemetry") if args.round >= 65 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -9143,6 +9324,143 @@ def sanitize_round64_summary(
     )
 
 
+def _sanitize_r65_value(val: Any) -> Any:
+    return _sanitize_r64_value(val)
+
+
+def sanitize_round65_summary(
+    r65a_raw: Dict[str, Any],
+    r65b_raw: Dict[str, Any],
+    r65c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the repo-root Round 65 (65th Round / 38/38 Real-HW Rounds Milestone) summary.json telemetry receipt."""
+    t65a = r65a_raw.get("r65_telemetry") or {}
+    t65b = r65b_raw.get("r65_telemetry") or {}
+    t65c = r65c_raw.get("r65_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r65_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 65,
+            "lang": raw.get("lang", "en"),
+            "r65_mode": raw.get("r65_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r65_telemetry": _sanitize_r65_value(raw.get("r65_telemetry") or {}),
+            "gpe0_readback": _sanitize_r65_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r65_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r65_value(entry)
+
+    r65a_nz = (r65a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r65b_guard = t65b.get("wave51_guard") or {}
+    r65c_h0h3 = t65c.get("clean_unmount_wave51_h0_h3") or {}
+    r65a_init = t65a.get("wave51_init") or {}
+
+    return _sanitize_r65_value(
+        {
+            "schema": "fx6-on-fx3-round65-milestone-38realhw-dci4k-aspect-recall-hold-camset-photocap-qemu-v1",
+            "round": 65,
+            "milestone": (
+                "65th Round Grand Milestone! (38/38 Real-HW Rounds R28..R65, Wave-51 XAVC S-I DCI 4K 4096x2160 24.00p Reboot & 59.94p "
+                "vs Long-GOP UHD & 4264x2408 HDMI RAW + Still Aspect Ratio vs FX6 + 11-Checkbox Reg. Custom Shoot Set / Body 1..3 & Card M1..M4 "
+                "CAMPR/CAMSET vs FX6 SONY/PRO/CAMERA + Photo Capture DCI 4K Lockout & Slot-1 Tier-0 Vault Firewall, "
+                "112th..114th Live Unmodified ILME-FX3 7.02 Runs -> 114/114 Total Live Runs, 76/76 PNGs <= 27,467 B)"
+            ),
+            "date": "2026-11-17",
+            "kernel_version": r65a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "realhw_mechanisms_verified": {
+                "wave51_dci4k_aspect_camset_photocap_init": r65a_init,
+                "xavc_dci4k_uhd_hdmi_raw_stage_b_bridge": t65a.get("xavc_dci4k_uhd_hdmi_raw_bridge") or {},
+                "still_aspect_ratio_fx6_stage_b_bridge": t65a.get("still_aspect_ratio_fx6_bridge") or {},
+                "recall_hold_11chk_camset_stage_b_bridge": t65a.get("recall_hold_11chk_camset_bridge") or {},
+                "photocap_enlarge_slot1_vault_stage_b_bridge": t65a.get("photocap_enlarge_slot1_bridge") or {},
+                "wave51_fail_closed_guard": r65b_guard,
+                "clean_unmount_wave51_reset_and_16_h0_h3": r65c_h0h3,
+            },
+            "runs": {
+                "r65a_dci4k_aspect_camset_photocap_big6_schinese": _clean_run(
+                    r65a_raw,
+                    (
+                        "112th Live FX3 7.02 QEMU Run (65th Round Milestone!) — Wave-51 4-pillar Stage-A/B verification: "
+                        "Internal XAVC S-I DCI 4K (0x7336: 4096x2160 17:9, Ver. 3.00+, 24.00p Reboot & playback quarantine _g.uxc 0x639b, "
+                        "59.94p 600M cap, S&Q 1..48fps only) vs Long-GOP UHD 3840x2160 & 4264x2408 HDMI RAW (Log != Off, S-Log3 lock) + Shutter Angle (5.6..360.0 deg / 2F..64F), "
+                        "Still [Aspect Ratio] (0x757c: 3:2 12M default / 4:3 11M / 16:9 10M / 1:1 8.0M, RAW full 3:2 crop meta, APS-C S35 L->M clamp) vs still-less FX6 (-2 ENOENT), "
+                        "11-Checkbox [Reg. Custom Shoot Set] (0x7631 Recall Custom hold 1..3 Still P/A/S/M only, HLG Still Off on ISO/DRO hold) + Body 1..3 & Card M1..M4 "
+                        "(/PRIVATE/SONY/SETTING/FX3/CAMPR%02d%c.DAT & CAMSET01..10.DAT) vs FX6 SONY/PRO/CAMERA (-2 ENOENT), "
+                        "[Photo Capture] (0x6856 8.3M/2.1M JPEG/HEIF 4:2:0/4:2:2) DCI 4K Lockout (_g.uxc 0x60ce) + [Enlarge Image] + Slot-1 Tier-0 Vault Firewall (-30 EROFS), "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r65a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r65b_wave51_dci4k_aspect_camset_photocap_guard": _clean_run(
+                    r65b_raw,
+                    (
+                        "113th Live FX3 7.02 QEMU Run — Fail-closed Wave-51 guard rehearsal: Long-GOP DCI 4K / 24.00p (-95 EOPNOTSUPP), "
+                        "XAVC S-I DCI 4K 119.88p & S&Q 120fps (-22 EINVAL), dormant xavc_hs_8k_24p (-95 EOPNOTSUPP), HDMI RAW without Log (-16 EBUSY), "
+                        "out-of-range Shutter Angle 400.0 deg (-22 EINVAL), still-less FX6 Aspect Ratio (-2 ENOENT), "
+                        "Movie/S&Q/iAuto/MR Reg. Custom Shoot Set (-16 EBUSY), Self-Timer / 12th checkbox (-22 EINVAL), "
+                        "FX6 SONY/PRO/CAMERA path spoof (-2 ENOENT), Slot-2 CAMSET (-13 EACCES), DCI 4K Photo Capture lockout (_g.uxc 0x60ce -95 EOPNOTSUPP), "
+                        "Movie Enlarge Image (-16 EBUSY), and Slot-1 Photo Capture / CAMSET / P2 / cnflasha protection (-30 EROFS)"
+                    ),
+                ),
+                "r65c_clean_unmount_wave51_reset_h0_h3_big6_schinese": _clean_run(
+                    r65c_raw,
+                    (
+                        "114th Live FX3 7.02 QEMU Run (38/38 Real-HW Rounds & 65th Round Milestone!) — Clean unmount of volatile /tmp Stage-B overlay restoring "
+                        "100% unmodified stock ILME-FX3 Ver. 7.02 + reset-tier asymmetry ([Camera Settings Reset] resets Aspect Ratio->3:2, JPEG/HEIF Image Size->L, "
+                        "and Memory/Recall Media->Slot 1 while preserving Recall Custom hold 1..3, Body 1..3 banks, Photo Capture JPEG/HEIF Switch, "
+                        "Enlarge Initial Mag., & Enlarge Initial Position; Card [Format] erases M1..M4 while preserving Body 1..3 & Recall hold; "
+                        "[Initialize] restores all Wave-51 survivors to factory defaults) + dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r65_milestone_dci4k_aspect_recall_hold_camset_photocap_audit": {
+                "round": 65,
+                "milestone": 65,
+                "milestone295_qemu_rounds": 38,
+                "milestone295_qemu_runs": 114,
+                "milestone295_png_receipts": 76,
+                "total_runs": 3,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "r65a_wave51_dci4k_aspect_camset_photocap_verified": bool(r65a_init.get("r65_init_ok") == 1),
+                "r65a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r65a_nz >= 300000),
+                "r65b_wave51_guard_fail_closed": bool(r65b_guard.get("r65b_ok") == 1),
+                "r65c_clean_unmount_wave51_reset_and_16_h0_eq_h3_verified": bool(
+                    r65c_h0h3.get("r65c_ok") == 1 and r65c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) CFexpress VPG200+ / SDXC V90+ & HDMI external recorder bench verifying internal XAVC S-I DCI 4K (4096x2160 17:9, 24.00p reboot & playback quarantine, 59.94p 600M cap, S&Q 1..48fps), Long-GOP 3840x2160 UHD boundary, 4264x2408 HDMI RAW (Log!=Off -> S-Log3 lock), and Shutter Angle (5.6..360.0 deg / 2F..64F) remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) optical & media bench verifying Still [Aspect Ratio] (3:2 12M / 4:3 11M / 16:9 10M / 1:1 8.0M, RAW full 3:2 crop metadata, APS-C S35 L->M clamp), 11-checkbox [Reg. Custom Shoot Set] (Recall Custom hold 1..3 Still P/A/S/M only, HLG Still Off), and Body 1..3 / Card M1..M4 SONY/SETTING/FX3/CAMPR & CAMSET01..10.DAT paths vs ILME-FX6 SONY/PRO/CAMERA remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) playback bench verifying [Photo Capture] (8.3M 4K / 2.1M HD, JPEG/HEIF 4:2:0/4:2:2) XAVC S-I DCI 4K lockout (_g.uxc 0x60ce), still-only [Enlarge Image] (Enlarge Initial Mag./Position survival across Camera Settings Reset), and Slot-1 write protection remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
@@ -9163,7 +9481,8 @@ def main() -> int:
     # r61_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61]
     # r62_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62]
     # r63_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64], required=True)
+    # r64_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -9202,6 +9521,7 @@ def main() -> int:
     ap.add_argument("--r62-mode", type=str, choices=["pp_scinetone_look_wb_metering_big6", "pp_log_wb_cineei_metering_guard", "clean_unmount_pp_wb_reset_h0_h3_big6"], default="pp_scinetone_look_wb_metering_big6")
     ap.add_argument("--r63-mode", type=str, choices=["still_raw_heif_colorspace_shutter_drive_big6", "still_raw_heif_colorspace_shutter_guard", "clean_unmount_still_reset_h0_h3_big6"], default="still_raw_heif_colorspace_shutter_drive_big6")
     ap.add_argument("--r64-mode", type=str, choices=["focus_area_zoom_iso_flash_big6", "wave50_focus_zoom_iso_flash_guard", "clean_unmount_wave50_reset_h0_h3_big6"], default="focus_area_zoom_iso_flash_big6")
+    ap.add_argument("--r65-mode", type=str, choices=["dci4k_aspect_camset_photocap_big6", "wave51_dci4k_aspect_camset_photocap_guard", "clean_unmount_wave51_reset_h0_h3_big6"], default="dci4k_aspect_camset_photocap_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

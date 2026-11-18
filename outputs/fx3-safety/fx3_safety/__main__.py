@@ -272,6 +272,11 @@ from .realhw_pixelmap_apr_monitor_vfadjust_customhold_hdmi_reccontrol_and_154gat
     evaluate_g153_pixelmap_apr_monitor_vfadjust_guard,
     evaluate_g154_recall_custom_hold_hdmi_reccontrol_vault_guard,
 )
+from .realhw_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_and_156gate_guard import (
+    evaluate_156gate_preflight,
+    evaluate_g155_areadate_dst_grid_cleanhdmi_guard,
+    evaluate_g156_saveload_camset_mishoe_genlock_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -5120,6 +5125,95 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_154.add_argument("--json", action="store_true", help="Emit structured JSON report")
     p_154.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 191. verify-areadate-grid-cleanhdmi-guard
+    p_g155 = sub.add_parser(
+        "verify-areadate-grid-cleanhdmi-guard",
+        aliases=["verify-g155-areadate-grid-cleanhdmi", "verify-g155"],
+        help="Verify Gate G155: Area/Date/Time Setting 30 GMT Zones (saylight_saving Typo & 24h Soldered RTC vs FX6 Clock Set) plus Grid Line Display HDMI Pass-Through vs Marker Display (80%%/90%% Safety Zone, 15 Ratios) Zero-HDMI & 5-Item Reset-Resistance Firewall",
+    )
+    p_g155.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g155.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g155.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g155.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g155.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 192. verify-saveload-camset-mishoe-genlock-guard
+    p_g156 = sub.add_parser(
+        "verify-saveload-camset-mishoe-genlock-guard",
+        aliases=["verify-g156-saveload-camset-mishoe", "verify-g156"],
+        help="Verify Gate G156: [Save/Load Settings] Slot 1 EROFS=30 %%c:%%s/SONY/SETTING/%%s/CAMSET/%%s.DAT (CAMSET%%02d / FTPSET%%02d / CAMPR%%02d%%c.DAT, libSaveLoadSettings.so, Zero PRO/CAMERA) vs FX6 All File, plus Zero Sync Terminal + XLR-H1 vs HVL-LBPC MI-Shoe Exclusion & PMIC 5V <= 900mA vs FX6 Zero GENLOCK Firewall",
+    )
+    p_g156.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g156.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g156.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g156.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g156.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 193. verify-156-gates
+    p_156 = sub.add_parser(
+        "verify-156-gates",
+        help="Run Phase 359 (Task H451, Wave-68) Unified 156-Gate Milestone Master Safety Preflight Engine (G01..G156)",
+    )
+    p_156.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_156.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_156.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G156 gates can be rehearsed offline",
+    )
+    p_156.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_156.add_argument("--summary", action="store_true", help="Emit concise summary output")
 
     args = parser.parse_args(argv)
 
@@ -11345,6 +11439,160 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_154_gates_verified if args.dry_run_simulated else report.offline_151_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-areadate-grid-cleanhdmi-guard",
+        "verify-g155-areadate-grid-cleanhdmi",
+        "verify-g155",
+    ):
+        verdict, res = evaluate_g155_areadate_dst_grid_cleanhdmi_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.areadate_grid_cleanhdmi_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "area_gmt_zones_count": guard["area_gmt_zones_count"],
+                    "rtc_battery_charged": guard["rtc_battery_charged"],
+                    "grid_rendered_on_hdmi": guard["grid_rendered_on_hdmi"],
+                    "marker_rendered_on_hdmi": guard["marker_rendered_on_hdmi"],
+                    "hdmi_marker_injected_pixels": guard["hdmi_marker_injected_pixels"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.areadate_grid_cleanhdmi_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} zones={guard['area_gmt_zones_count']} "
+                f"rtc={guard['rtc_battery_charged']} "
+                f"grid_hdmi={guard['grid_rendered_on_hdmi']} "
+                f"marker_hdmi={guard['marker_rendered_on_hdmi']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-saveload-camset-mishoe-genlock-guard",
+        "verify-g156-saveload-camset-mishoe",
+        "verify-g156",
+    ):
+        verdict, res = evaluate_g156_saveload_camset_mishoe_genlock_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.saveload_camset_mishoe_genlock_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_operation": guard["effective_operation"],
+                    "effective_target_media": guard["effective_target_media"],
+                    "slot1_tier0_vault_firewall_blocked": guard["slot1_tier0_vault_firewall_blocked"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "emmc_nflasha_write_count": guard["emmc_nflasha_write_count"],
+                    "fx3_physical_sync_terminal_present": guard["fx3_physical_sync_terminal_present"],
+                    "mishoe_xlr_h1_exclusion_triggered": guard["mishoe_xlr_h1_exclusion_triggered"],
+                    "fx6_physical_genlock_bnc_present": guard["fx6_physical_genlock_bnc_present"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.saveload_camset_mishoe_genlock_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} op={guard['effective_operation']} "
+                f"media={guard['effective_target_media']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"sync={guard['fx3_physical_sync_terminal_present']} "
+                f"xlr_excl={guard['mishoe_xlr_h1_exclusion_triggered']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-156-gates":
+        report = evaluate_156gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "schema_version": report.schema_version,
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g155_status": report.g155_result["status"],
+                    "g156_status": report.g156_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/156 "
+                f"g155_to_g156_all_passed={report.g155_to_g156_all_passed} "
+                f"all_156_gates_verified={report.all_156_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_156_gates_verified if args.dry_run_simulated else report.offline_153_gates_verified
         return 0 if ok else 1
 
     return 2

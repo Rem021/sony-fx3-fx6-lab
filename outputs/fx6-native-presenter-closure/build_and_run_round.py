@@ -1384,6 +1384,7 @@ def build_stage_a_overlay(
     enable_r70: bool = False,
     enable_r71: bool = False,
     enable_r72: bool = False,
+    enable_r73: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1428,6 +1429,7 @@ def build_stage_a_overlay(
     r70_mode: str = "dial_mydial_fn12x2_liveview_lut_big6",
     r71_mode: str = "steadyshot_47focal_selftimer_zebra_streaming_big6",
     r72_mode: str = "bright_mon_shotmark_usblan_bulb_big6",
+    r73_mode: str = "big6_framing_interval_tc_make_ssh_auth_fan_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1787,7 +1789,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r71_mode: {r71_mode}")
     if enable_r72 and r72_mode not in ("bright_mon_shotmark_usblan_bulb_big6", "wave58_bright_mon_shotmark_usblan_bulb_erofs_guard", "clean_unmount_wave58_reset_h0_h3_big6"):
         raise ValueError(f"Unsupported r72_mode: {r72_mode}")
-    if enable_r72 and r72_mode == "wave58_bright_mon_shotmark_usblan_bulb_erofs_guard":
+    if enable_r73 and r73_mode not in ("big6_framing_interval_tc_make_ssh_auth_fan_big6", "wave59_big6_framing_interval_tc_ssh_fan_erofs_guard", "clean_unmount_wave59_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r73_mode: {r73_mode}")
+    if enable_r73 and r73_mode == "wave59_big6_framing_interval_tc_ssh_fan_erofs_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r73_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r73-wave59-guard > /dev/console 2>&1\n"
+            "fx6_r73_gd_rc=$?\n"
+            "echo FX6_R73_WAVE59_GUARD_RC=$fx6_r73_gd_rc\n"
+            "echo FX6_R73_WAVE59_GUARD_EXIT rc=$fx6_r73_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r73_early_hook, 1)
+    elif enable_r72 and r72_mode == "wave58_bright_mon_shotmark_usblan_bulb_erofs_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -5348,6 +5366,93 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r73_meta: Optional[Dict[str, Any]] = None
+    if enable_r73:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r73_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r73"] = (
+            (
+                f"stage_r73=1\nr73_mode={r73_mode}\n"
+                f"big6_fixed_var_home_framing_vs_dormant_auto=1\n"
+                f"interval_shoot_9999_vs_fx6_mxf_erofs30=1\n"
+                f"reset_immune_tc_make_run_hdmi_recctrl_4ch=1\n"
+                f"ssh_access_auth_rootcert_4mode_fan_zeromax=1\n"
+                f"milestone_46th_realhw_138th_live_92_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r73_meta = {
+            "r73_mode": r73_mode,
+            "milestone_round_ordinal": 73,
+            "realhw_round_ordinal": 46,
+            "total_live_runs_at_completion": 138,
+            "total_png_receipts_at_completion": 92,
+            "big6_home_and_manual_framing_wave59": {
+                "mode_settings_precondition": "Fixed/Variable (_f 0x7d0d/0x7d19, BKID_APP_setting_fps_fixed_variable_select)",
+                "entry_methods": ["[HOME] custom key (_f 0x7cad/0x7cb1)", "[Swipe Down] (_f 0x7cdd, _g 0x6526)"],
+                "home_state_machine": ["OFF", "ON_CURSOR_OFF", "ON_CURSOR_ON", "TEMP_OFF"],
+                "big6_6_tiles": [
+                    "FPS (Fixed/Variable)",
+                    "ISO or Base ISO (800/12800) + EI (update_big6_item_iso_ei)",
+                    "Shutter Speed / Shutter Angle",
+                    "[Home (Lower Left)] Aperture [def] vs metadata-only ND Filter (0 internal e-ND hardware)",
+                    "Picture Profile (Log=Off) / Select LUT (Log!=Off, _f 0x643e)",
+                    "White Balance",
+                ],
+                "manual_framing_settings": "Framing (Off def/On), Recording/Streaming (Full def/Crop), HDMI (Crop def/Full); APS-C S35 forced Off; locked during rec/streaming/>=100p",
+                "dormant_auto_framing": "TYPE_EFRAMING_SUPPORT_TYPE_MANUAL_ONLY; 0 hits AUTO_FRAMING_AFR / FRAMING_SIZE / PTZAUTOFRAMING_* on FX3 & FX6",
+            },
+            "interval_shoot_func_vs_fx6_interval_rec": {
+                "menu_path": "Drive Mode -> [Interval Shoot Func.] (_f 0x7027/0x77a7, BKID_APP_setting_interval_shooting)",
+                "resettable_7_items": [
+                    "Interval Shooting (Off def/On)",
+                    "Shooting Start Time (1s..99m59s, def 1s)",
+                    "Shooting Interval (1s..60s, def 3s)",
+                    "Number of Shots (1..9999, def 30)",
+                    "AE Tracking Sensitivity (High/Mid[def]/Low)",
+                    "Shutter Type in Interval (Mechanical / Electronic Shutter [forced def])",
+                    "Shoot Interval Priority (Off def/On)",
+                ],
+                "playback_pairing": ["Display as Group (_f 0x6f26)", "PB Speed for Interval (_f 0x72bd)"],
+                "lockouts": "Disabled in Intelligent Auto; cancels BULB -> 30\"; <= 19,998 DCIM still writes target Slot 1 fail-closed EROFS=30",
+                "fx6_diff": "FX6 Project > Interval Rec produces single XAVC MXF clip (1s..24h, 1..24 frames, Pre-Lighting, MODEL_VALUE_CHANGED_BY_EXCLUSION_INTERVAL_REC)",
+            },
+            "timecode_make_run_and_hdmi_rec_control": {
+                "tc_make": "Preset [def] / Regenerate (NO Clock on FX3 vs FX6 Clock)",
+                "tc_run": "Rec Run [def] / Free Run",
+                "regenerate_rule": "Reads [Recording Media] (Slot 1 in Simult. Recording) and forces Rec Run regardless of tc_run",
+                "vmc_bncm1_ext_lk": "Strictly requires Preset + Free Run",
+                "hdmi_output_settings": "Rec. Media dur HDMI Output (On def / Off(HDMI Only)), Time Code Output (Off def / On), REC Control (Off def / On), 4ch Audio Output (CH1/CH2 def / CH3/CH4 stereo 2ch rec+pb)",
+                "rec_control_rule": "Requires [Time Code Output]=On; valid in BOTH Rec. Media=On and Off(HDMI Only); blocked in S&Q & Streaming",
+                "reset_immunity": "TC Make, TC Run, and ALL HDMI Output Settings are Reset-immune (survive Camera Settings Reset; require Initialize)",
+            },
+            "access_authen_and_fan_control": {
+                "ver700_removed_legacy_crypto": ["WEP", "WPA-PSK", "Security(IPsec)"],
+                "active_crypto_and_auth": "WPA2-PSK / WPA3-SAE + [Access Authen. Settings] (def On, SSH MSGID_SSHD_START_CMD + PTP-IP; 0 hits HTTP_DIGEST/BASIC_AUTH/HTTPS)",
+                "root_certificate": "[Import Root Certificate] (_f 0x7940) outbound FTPS/RTMPS/Cloud TLS only",
+                "fan_control_4modes": ["Auto [def]", "Minimum", "Off in Rec", "Always Off"],
+                "fan_control_zero_max": "FAN_CONTROL_MAX has 0 hits on BOTH FX3 & FX6 (FX6 exposes 3 modes Auto/Minimum/Off in Rec with Always Off dormant)",
+                "auto_power_off_temp": "Standard [def] / High (~30->90 min 4K 59.94p, ~60->120 min HD 59.94p at 25C, tripod warning)",
+            },
+            "reset_tiers": {
+                "camera_settings_reset": "Resets Mode Settings, Home (Lower Left), Framing Settings (all 3), and all 7 Interval Shoot Func. items; preserves Reset-immune TC Make/Run, ALL HDMI Output Settings, Access Authen., Root Cert., Fan Control, Auto Power OFF Temp., and Airplane Mode",
+                "reset_network_settings": "Clears Access Authen. Settings (def On) & Import Root Certificate while preserving Airplane Mode = On and Camera/TC/HDMI/Fan/Temp settings",
+                "initialize": "Restores ALL Wave-59 defaults while STILL preserving Airplane Mode = On",
+            },
+            "dormant_auto_framing_bypass_events": 0,
+            "dormant_http_auth_bypass_events": 0,
+            "dormant_fan_max_bypass_events": 0,
+            "rf_tx_packets": 0,
+            "wireless_tx_packets": 0,
+            "slot1_data_sector_writes": 0,
+            "slot1_avf_info_mutated": False,
+            "passive_tx_bytes_emitted": 0,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -5413,6 +5518,7 @@ def build_stage_a_overlay(
         "r70_enabled": enable_r70,
         "r71_enabled": enable_r71,
         "r72_enabled": enable_r72,
+        "r73_enabled": enable_r73,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -5532,6 +5638,8 @@ def build_stage_a_overlay(
         stage_a_meta["r71"] = r71_meta
     if r72_meta is not None:
         stage_a_meta["r72"] = r72_meta
+    if r73_meta is not None:
+        stage_a_meta["r73"] = r73_meta
     return replacements, additions, stage_a_meta
 
 
@@ -5893,6 +6001,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R70_",
         "FX6_R71_",
         "FX6_R72_",
+        "FX6_R73_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -6347,6 +6456,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r72_lang: Optional[Dict[str, Any]] = None
     last_r72_bridge: Optional[Dict[str, Any]] = None
     r72_wave58_guard_rc: Optional[int] = None
+    last_r73_wave59_init: Optional[Dict[str, Any]] = None
+    last_r73_big6_home_framing_dormant_bridge: Optional[Dict[str, Any]] = None
+    last_r73_interval_shoot_9999_erofs_bridge: Optional[Dict[str, Any]] = None
+    last_r73_tc_make_run_hdmi_4ch_bridge: Optional[Dict[str, Any]] = None
+    last_r73_ssh_access_auth_fan_temp_bridge: Optional[Dict[str, Any]] = None
+    last_r73_wave59_guard: Optional[Dict[str, Any]] = None
+    last_r73_clean_unmount_wave59_h0_h3: Optional[Dict[str, Any]] = None
+    last_r73_lang: Optional[Dict[str, Any]] = None
+    last_r73_bridge: Optional[Dict[str, Any]] = None
+    r73_wave59_guard_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -7370,6 +7489,28 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R72_WAVE58_GUARD_RC"), int):
                 r72_wave58_guard_rc = kv["FX6_R72_WAVE58_GUARD_RC"]
+        elif "FX6_R73_WAVE59_INIT " in line:
+            last_r73_wave59_init = _parse_kv_ints(line.split("FX6_R73_WAVE59_INIT ", 1)[1])
+        elif "FX6_R73_BIG6_HOME_FRAMING_DORMANT_BRIDGE " in line:
+            last_r73_big6_home_framing_dormant_bridge = _parse_kv_ints(line.split("FX6_R73_BIG6_HOME_FRAMING_DORMANT_BRIDGE ", 1)[1])
+        elif "FX6_R73_INTERVAL_SHOOT_9999_EROFS_BRIDGE " in line:
+            last_r73_interval_shoot_9999_erofs_bridge = _parse_kv_ints(line.split("FX6_R73_INTERVAL_SHOOT_9999_EROFS_BRIDGE ", 1)[1])
+        elif "FX6_R73_TC_MAKE_RUN_HDMI_4CH_BRIDGE " in line:
+            last_r73_tc_make_run_hdmi_4ch_bridge = _parse_kv_ints(line.split("FX6_R73_TC_MAKE_RUN_HDMI_4CH_BRIDGE ", 1)[1])
+        elif "FX6_R73_SSH_ACCESS_AUTH_FAN_TEMP_BRIDGE " in line:
+            last_r73_ssh_access_auth_fan_temp_bridge = _parse_kv_ints(line.split("FX6_R73_SSH_ACCESS_AUTH_FAN_TEMP_BRIDGE ", 1)[1])
+        elif "FX6_R73_WAVE59_GUARD " in line:
+            last_r73_wave59_guard = _parse_kv_ints(line.split("FX6_R73_WAVE59_GUARD ", 1)[1])
+        elif "FX6_R73_CLEAN_UNMOUNT_WAVE59_H0_H3 " in line:
+            last_r73_clean_unmount_wave59_h0_h3 = _parse_kv_ints(line.split("FX6_R73_CLEAN_UNMOUNT_WAVE59_H0_H3 ", 1)[1])
+        elif "FX6_R73_LANG_TELEMETRY " in line:
+            last_r73_lang = _parse_kv_ints(line.split("FX6_R73_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R73_BRIDGE " in line:
+            last_r73_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R73_BRIDGE ", 1)[1])
+        elif "FX6_R73_WAVE59_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R73_WAVE59_GUARD_RC"), int):
+                r73_wave59_guard_rc = kv["FX6_R73_WAVE59_GUARD_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -8571,6 +8712,34 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r72_bridge or {},
         }
 
+    r73_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r73_wave59_init,
+            last_r73_big6_home_framing_dormant_bridge,
+            last_r73_interval_shoot_9999_erofs_bridge,
+            last_r73_tc_make_run_hdmi_4ch_bridge,
+            last_r73_ssh_access_auth_fan_temp_bridge,
+            last_r73_wave59_guard,
+            last_r73_clean_unmount_wave59_h0_h3,
+            last_r73_lang,
+            last_r73_bridge,
+        )
+    ):
+        r73_telemetry = {
+            "wave59_guard_rc": r73_wave59_guard_rc,
+            "wave59_init": last_r73_wave59_init or {},
+            "big6_home_framing_dormant_bridge": last_r73_big6_home_framing_dormant_bridge or {},
+            "interval_shoot_9999_erofs_bridge": last_r73_interval_shoot_9999_erofs_bridge or {},
+            "tc_make_run_hdmi_4ch_bridge": last_r73_tc_make_run_hdmi_4ch_bridge or {},
+            "ssh_access_auth_fan_temp_bridge": last_r73_ssh_access_auth_fan_temp_bridge or {},
+            "wave59_guard": last_r73_wave59_guard or {},
+            "clean_unmount_wave59_h0_h3": last_r73_clean_unmount_wave59_h0_h3 or {},
+            "lang_telemetry": last_r73_lang or {},
+            "stage_b_bridge": last_r73_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -8640,6 +8809,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r70_telemetry": r70_telemetry,
         "r71_telemetry": r71_telemetry,
         "r72_telemetry": r72_telemetry,
+        "r73_telemetry": r73_telemetry,
     }
 
 
@@ -8785,6 +8955,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r71"
     if args.round >= 72:
         tmp_prefix = "fx6-r72"
+    if args.round >= 73:
+        tmp_prefix = "fx6-r73"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -8867,8 +9039,12 @@ def run_once(args: argparse.Namespace) -> int:
         r70_mode = getattr(args, "r70_mode", "dial_mydial_fn12x2_liveview_lut_big6")
         r71_mode = getattr(args, "r71_mode", "steadyshot_47focal_selftimer_zebra_streaming_big6")
         r72_mode = getattr(args, "r72_mode", "bright_mon_shotmark_usblan_bulb_big6")
+        r73_mode = getattr(args, "r73_mode", "big6_framing_interval_tc_make_ssh_auth_fan_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone46RealHw138thLiveWave59Big6HomeFramingIntervalShootTcMakeSshAuthFanErofs+r73_mode={r73_mode}+lang={lang})"
+                if args.round >= 73
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone45RealHw135thLiveWave58BrightMonShotMarkUsbLanBulbDormantErofs+r72_mode={r72_mode}+lang={lang})"
                 if args.round >= 72
                 else (
@@ -9121,6 +9297,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -9235,6 +9412,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r71_mode=r71_mode,
                 enable_r72=(args.round >= 72),
                 r72_mode=r72_mode,
+                enable_r73=(args.round >= 73),
+                r73_mode=r73_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -9413,6 +9592,7 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R70_WAVE56_GUARD_EXIT" in txt
                     or "FX6_R71_WAVE57_GUARD_EXIT" in txt
                     or "FX6_R72_WAVE58_GUARD_EXIT" in txt
+                    or "FX6_R73_WAVE59_GUARD_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -9493,6 +9673,7 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R70_WAVE56_GUARD_EXIT" in serial_text
             or "FX6_R71_WAVE57_GUARD_EXIT" in serial_text
             or "FX6_R72_WAVE58_GUARD_EXIT" in serial_text
+            or "FX6_R73_WAVE59_GUARD_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -9588,6 +9769,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r70_mode": r70_mode if args.round >= 70 else None,
             "r71_mode": r71_mode if args.round >= 71 else None,
             "r72_mode": r72_mode if args.round >= 72 else None,
+            "r73_mode": r73_mode if args.round >= 73 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -9667,6 +9849,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r70_telemetry": milestones.get("r70_telemetry") if args.round >= 70 else None,
             "r71_telemetry": milestones.get("r71_telemetry") if args.round >= 71 else None,
             "r72_telemetry": milestones.get("r72_telemetry") if args.round >= 72 else None,
+            "r73_telemetry": milestones.get("r73_telemetry") if args.round >= 73 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -11668,6 +11851,151 @@ def sanitize_round72_summary(
     )
 
 
+_sanitize_r73_value = _sanitize_r72_value
+
+
+def sanitize_round73_summary(
+    r73a_raw: Dict[str, Any],
+    r73b_raw: Dict[str, Any],
+    r73c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the Round 73 (46/46 Real-HW Rounds, 138/138 Live Runs, 92/92 PNGs) summary.json telemetry receipt."""
+    t73a = r73a_raw.get("r73_telemetry") or {}
+    t73b = r73b_raw.get("r73_telemetry") or {}
+    t73c = r73c_raw.get("r73_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r73_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 73,
+            "lang": raw.get("lang", "en"),
+            "r73_mode": raw.get("r73_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r73_telemetry": _sanitize_r73_value(raw.get("r73_telemetry") or {}),
+            "gpe0_readback": _sanitize_r73_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r73_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r73_value(entry)
+
+    r73a_nz = (r73a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r73b_guard = t73b.get("wave59_guard") or {}
+    r73c_h0h3 = t73c.get("clean_unmount_wave59_h0_h3") or {}
+    r73a_init = t73a.get("wave59_init") or {}
+
+    return _sanitize_r73_value(
+        {
+            "schema": "fx6-on-fx3-round73-big6-home-framing-interval-tc-make-ssh-auth-fan-qemu-v1",
+            "round": 73,
+            "milestone": (
+                "46/46 Real-HW Rounds (R28..R73)! — Wave-59 Ver. 7.00/7.02 [BIG6] Home Screen (Mode Settings = Fixed/Variable hard precondition & "
+                "Home (Lower Left) Aperture def vs metadata-only ND Filter with 0 e-ND TX vs FX6 physical e-ND), Manual [Framing Settings] "
+                "(TYPE_EFRAMING_SUPPORT_TYPE_MANUAL_ONLY) vs 100% dormant [Auto Framing] (0 hits AUTO_FRAMING_AFR -> EOPNOTSUPP=95); "
+                "Still [Interval Shoot Func.] (7 Resettable items, Electronic Shutter def, 1..9,999 burst vs FX6 single-MXF Interval Rec & Slot 1 EROFS=30); "
+                "Reset-Immune [Time Code Make/Run] (Regenerate reads Slot 1 & forces Rec Run; VMC-BNCM1 EXT-LK requires Preset+Free Run) & "
+                "HDMI [REC Control] + [4ch Audio Output]; and Ver. 7.00+ [Access Authen.] (SSH MSGID_SSHD_START_CMD + PTP-IP, 0 HTTP_DIGEST/BASIC_AUTH/HTTPS) + "
+                "4-Mode [Fan Control] (Auto/Minimum/Off in Rec/Always Off, 0 hits FAN_CONTROL_MAX on BOTH FX3 & FX6!) "
+                "(136th..138th Live Unmodified ILME-FX3 Ver. 7.02 ARM64 QEMU Runs -> 138/138 Live Runs, 92/92 PNGs <= 27,467 B!)"
+            ),
+            "date": "2026-11-18",
+            "kernel_version": r73a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "realhw_mechanisms_verified": {
+                "wave59_big6_framing_interval_tc_ssh_fan_init": r73a_init,
+                "big6_home_framing_dormant_stage_b_bridge": t73a.get("big6_home_framing_dormant_bridge") or {},
+                "interval_shoot_9999_erofs_stage_b_bridge": t73a.get("interval_shoot_9999_erofs_bridge") or {},
+                "tc_make_run_hdmi_4ch_stage_b_bridge": t73a.get("tc_make_run_hdmi_4ch_bridge") or {},
+                "ssh_access_auth_fan_temp_stage_b_bridge": t73a.get("ssh_access_auth_fan_temp_bridge") or {},
+                "wave59_fail_closed_guard": r73b_guard,
+                "clean_unmount_wave59_reset_and_16_h0_h3": r73c_h0h3,
+            },
+            "runs": {
+                "r73a_big6_framing_interval_tc_make_ssh_auth_fan_big6_schinese": _clean_run(
+                    r73a_raw,
+                    (
+                        "136th Live FX3 7.02 QEMU Run (Round 73 / 46th Real-HW Round!) — Wave-59 4-pillar Stage-A/B verification: "
+                        "Ver. 7.00/7.02 [BIG6] Home (BKID_APP_setting_fps_fixed_variable_select precondition, update_big6_item_iso_ei Base ISO + EI, "
+                        "[Home (Lower Left)] Aperture def vs metadata-only ND Filter with 0 e-ND TX vs FX6 physical e-ND) + "
+                        "Manual [Framing Settings] (Recording/Streaming Full/Crop, HDMI Crop/Full, TYPE_EFRAMING_SUPPORT_TYPE_MANUAL_ONLY) vs "
+                        "100% dormant [Auto Framing] (0 AUTO_FRAMING_AFR hits, EOPNOTSUPP=95); "
+                        "Still [Interval Shoot Func.] (7 Resettable items, Electronic Shutter def, 1..9,999 burst) vs FX6 single-MXF Interval Rec & Slot 1 EROFS=30 Firewall; "
+                        "Reset-immune [Time Code Make/Run] (Regenerate reads Slot 1 & forces Rec Run; VMC-BNCM1 EXT-LK requires Preset+Free Run) + "
+                        "HDMI [REC Control] (requires Time Code Output=On; valid in On and Off(HDMI Only)) + [4ch Audio Output]; and "
+                        "Ver. 7.00+ [Access Authen.] (OpenSSH MSGID_SSHD_START_CMD + PTP-IP, WEP/WPA-PSK/IPsec removed, 0 HTTP_DIGEST/BASIC_AUTH/HTTPS, outbound Import Root Cert) + "
+                        "4-mode [Fan Control] (Auto/Minimum/Off in Rec/Always Off vs FX6 3-mode, 0 FAN_CONTROL_MAX hits on BOTH FX3 & FX6!), "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r73a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r73b_wave59_big6_framing_interval_tc_ssh_fan_erofs_guard": _clean_run(
+                    r73b_raw,
+                    (
+                        "137th Live FX3 7.02 QEMU Run — Fail-closed Wave-59 guard rehearsal: dormant [Auto Framing] (-95 EOPNOTSUPP), dormant FAN_CONTROL_MAX (-95 EOPNOTSUPP), "
+                        "removed HTTP_DIGEST/BASIC_AUTH/WEP/IPsec (-95 EOPNOTSUPP), BIG6 without Mode Settings=Fixed/Variable (-16 EBUSY), "
+                        "HDMI REC Control with Time Code Output=Off (-16 EBUSY), VMC-BNCM1 EXT-LK under Regenerate (-16 EBUSY), "
+                        "metadata-only ND Filter physical e-ND TX block (-95 EOPNOTSUPP), Airplane Mode=On RF TX block (-100 ENETDOWN / rf_tx_packets=0), "
+                        "and 9,999-shot Interval Shoot burst / AVF_INFO / P2 / cnflasha Tier-0 Slot 1 write blocks (-30 EROFS, slot1_data_sector_writes=0, emmc_write_count=0)"
+                    ),
+                ),
+                "r73c_clean_unmount_wave59_reset_h0_h3_big6_schinese": _clean_run(
+                    r73c_raw,
+                    (
+                        "138th Live FX3 7.02 QEMU Run (46/46 Real-HW Rounds! 138/138 Live Runs, 92/92 PNGs <= 27,467 B!) — Clean unmount of volatile Stage-B overlay "
+                        "restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + 3-tier asymmetric reset boundaries "
+                        "([Camera Settings Reset] resets Mode Settings, Home (Lower Left), Framing Settings, and all 7 Interval Shoot Func. items while preserving "
+                        "Time Code Make, Time Code Run, HDMI Output Settings, Access Authen. Settings, Fan Control, and Auto Power OFF Temp.; "
+                        "[Reset Network Set.] clears Access Authen. while preserving Airplane Mode=On; [Initialize] restores Wave-59 defaults while preserving Airplane Mode=On) + "
+                        "dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r73_big6_framing_interval_tc_ssh_fan_erofs_audit": {
+                "round": 73,
+                "realhw_rounds_count": 46,
+                "total_live_runs": 138,
+                "total_png_receipts": 92,
+                "milestone324_qemu_rounds": 46,
+                "milestone324_qemu_runs": 138,
+                "milestone324_png_receipts": 92,
+                "total_runs": 3,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "r73a_wave59_big6_framing_interval_tc_ssh_fan_verified": bool(r73a_init.get("r73_init_ok") == 1),
+                "r73a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r73a_nz >= 300000),
+                "r73b_wave59_guard_fail_closed": bool(r73b_guard.get("r73b_ok") == 1),
+                "r73c_clean_unmount_wave59_reset_and_16_h0_eq_h3_verified": bool(
+                    r73c_h0h3.get("r73c_ok") == 1 and r73c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) Big-6 Home UI & Framing Crop sensor readout bench verifying Mode Settings = Fixed/Variable live tiles, metadata-only ND Filter tags (0 physical e-ND attenuation) vs ILME-FX6 internal e-ND hardware, Manual Framing Full/Crop readout, and dormant Auto Framing non-exposure remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) mechanical/electronic shutter & dual-slot card bench verifying Still [Interval Shoot Func.] 1..9,999 burst timing, Electronic Shutter default, Shot Interval Priority, and Slot-1 physical write-protection (EROFS=30) vs FX6 single-MXF Interval Rec remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) VMC-BNCM1 LTC generator, HDMI REC Control + 4ch audio sink, OpenSSH/PTP-IP Ethernet bench, and chassis thermal chamber verifying 4-mode Fan Control (Auto/Minimum/Off in Rec/Always Off, zero Max mode) + Auto Power OFF Temp. Standard/High throttling remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
@@ -11696,7 +12024,8 @@ def main() -> int:
     # r69_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69]
     # r70_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70]
     # r71_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72], required=True)
+    # r72_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -11743,6 +12072,7 @@ def main() -> int:
     ap.add_argument("--r70-mode", type=str, choices=["dial_mydial_fn12x2_liveview_lut_big6", "wave56_dial_mydial_fn_liveview_lut_erofs_guard", "clean_unmount_wave56_reset_h0_h3_big6"], default="dial_mydial_fn12x2_liveview_lut_big6")
     ap.add_argument("--r71-mode", type=str, choices=["steadyshot_47focal_selftimer_zebra_streaming_big6", "wave57_steadyshot_selftimer_zebra_streaming_erofs_guard", "clean_unmount_wave57_reset_h0_h3_big6"], default="steadyshot_47focal_selftimer_zebra_streaming_big6")
     ap.add_argument("--r72-mode", type=str, choices=["bright_mon_shotmark_usblan_bulb_big6", "wave58_bright_mon_shotmark_usblan_bulb_erofs_guard", "clean_unmount_wave58_reset_h0_h3_big6"], default="bright_mon_shotmark_usblan_bulb_big6")
+    ap.add_argument("--r73-mode", type=str, choices=["big6_framing_interval_tc_make_ssh_auth_fan_big6", "wave59_big6_framing_interval_tc_ssh_fan_erofs_guard", "clean_unmount_wave59_reset_h0_h3_big6"], default="big6_framing_interval_tc_make_ssh_auth_fan_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

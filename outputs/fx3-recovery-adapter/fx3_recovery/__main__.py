@@ -157,6 +157,12 @@ from .realhw_50pillar_pp_scinetone_creativelook_dro_wb_metering_vault_verifier i
     verify_50pillar_recovery_suite,
     verify_pp_scinetone_creativelook_dro_wb_metering_and_vault,
 )
+from .realhw_51pillar_raw_heif_colorspace_shuttertype_nr_drive_vault_verifier import (
+    P292_ENV_CLEAN_ROOM_TEST,
+    run_pillar51_standalone_suite,
+    verify_51pillar_recovery_suite,
+    verify_raw_heif_colorspace_shuttertype_nr_drive_and_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -534,6 +540,14 @@ def main():
     p287_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p287_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p287_master.add_argument('--out', help='optional exclusive new output directory for 50pillar-recovery-master-report.json')
+    p292_p51 = sub.add_parser('verify-pillar51-raw-heif-colorspace-shuttertype-vault', help='Phase 292 Pillar 51 Still Image Quality Compressed/Uncompressed RAW vs dormant Lossless Comp, HEIF 4:2:0/4:2:2, HLG Still BT.2100 vs still-less FX6, Color Space AdobeRGB _DSC prefix and leading-underscore ban, Shutter Type 2-option Mechanical/Electronic without Auto, 1/250s sync and 5-lock matrix, e-Front Curtain, Long Exposure/High ISO NR, Drive Mode 10 fps Hi+ and Slot-1 EROFS/EBUSY vault verifier')
+    p292_p51.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p292_p51.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p292_p51.add_argument('--out', help='optional exclusive new output directory for pillar51-raw-heif-colorspace-shuttertype-vault-report.json')
+    p292_master = sub.add_parser('verify-51pillar-recovery', help='Phase 292 unified 51/51 real-hardware recovery master aggregator (Pillars 1..50 + Pillar 51)')
+    p292_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p292_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p292_master.add_argument('--out', help='optional exclusive new output directory for 51pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -3221,6 +3235,97 @@ def main():
                     f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_50pillar_sha256={report.master_50pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-pillar51-raw-heif-colorspace-shuttertype-vault':
+            report = run_pillar51_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'pillar51-raw-heif-colorspace-shuttertype-vault-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_51a={report.pillar_51a_raw_heif_hlg_colorspace_vault.scenarios_passed}/{report.pillar_51a_raw_heif_hlg_colorspace_vault.scenarios_total} "
+                    f"pillar_51b={report.pillar_51b_shuttertype_nr_drive_vault.scenarios_passed}/{report.pillar_51b_shuttertype_nr_drive_vault.scenarios_total} "
+                    f"dormant_lossless_raw_exposure_events={report.dormant_lossless_raw_exposure_events} "
+                    f"fx6_still_pipeline_conflation_events={report.fx6_still_pipeline_conflation_events} "
+                    f"hlg_still_prereq_or_lockout_drift_events={report.hlg_still_prereq_or_lockout_drift_events} "
+                    f"colorspace_adobergb_prefix_violations={report.colorspace_adobergb_prefix_violations} "
+                    f"shutter_type_auto_spoof_events={report.shutter_type_auto_spoof_events} "
+                    f"fx6_mechanical_shutter_conflation_events={report.fx6_mechanical_shutter_conflation_events} "
+                    f"electronic_silent_5lock_bypass_events={report.electronic_silent_5lock_bypass_events} "
+                    f"nr_or_drive_burst_wall_violations={report.nr_or_drive_burst_wall_violations} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_ebusy_enforced={report.slot1_vault_erofs_ebusy_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-51pillar-recovery':
+            report = verify_51pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'51pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_1_2s_fast_cli_budget={report.under_1_2s_fast_cli_budget} "
+                    f"under_2_5s_fast_cli_budget={report.under_2_5s_fast_cli_budget} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar51_a={report.pillar51_a_raw_heif_hlg_colorspace_vault.scenarios_passed}/{report.pillar51_a_raw_heif_hlg_colorspace_vault.scenarios_total} "
+                    f"pillar51_b={report.pillar51_b_shuttertype_nr_drive_vault.scenarios_passed}/{report.pillar51_b_shuttertype_nr_drive_vault.scenarios_total} "
+                    f"dormant_lossless_raw_exposure_events={report.dormant_lossless_raw_exposure_events} "
+                    f"fx6_still_pipeline_conflation_events={report.fx6_still_pipeline_conflation_events} "
+                    f"hlg_still_prereq_or_lockout_drift_events={report.hlg_still_prereq_or_lockout_drift_events} "
+                    f"colorspace_adobergb_prefix_violations={report.colorspace_adobergb_prefix_violations} "
+                    f"shutter_type_auto_spoof_events={report.shutter_type_auto_spoof_events} "
+                    f"fx6_mechanical_shutter_conflation_events={report.fx6_mechanical_shutter_conflation_events} "
+                    f"electronic_silent_5lock_bypass_events={report.electronic_silent_5lock_bypass_events} "
+                    f"nr_or_drive_burst_wall_violations={report.nr_or_drive_burst_wall_violations} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_ebusy_enforced={report.slot1_vault_erofs_ebusy_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_51pillar_sha256={report.master_51pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

@@ -242,6 +242,11 @@ from .realhw_ftp_ftpes_customwb_af_focusmap_marker_and_142gate_guard import (
     evaluate_g141_ftp_ftpes_avf_vault_and_customwb_cineei_guard,
     evaluate_g142_movie_af_focusmap_marker_peaking_guard,
 )
+from .realhw_shoe_audio_4ch_subject_recog_silent_bodydata_and_144gate_guard import (
+    evaluate_144gate_preflight,
+    evaluate_g143_shoe_audio_4ch_out_timing_and_subject_recog_guard,
+    evaluate_g144_silent_target_no_pwrshutter_and_slot1_bodydata_nogo_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -4556,6 +4561,95 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_142.add_argument("--json", action="store_true", help="Emit structured JSON report")
     p_142.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 173. verify-shoe-audio-4ch-subject-recog-guard
+    p_g143 = sub.add_parser(
+        "verify-shoe-audio-4ch-subject-recog-guard",
+        aliases=["verify-g143-shoe-audio-subject-recog", "verify-g143"],
+        help="Verify Gate G143: Shooting -> [Audio Recording] -> [Audio Out Timing] (Live/Lip Sync, S&Q lock, NOT Sound Option), removed [Audio Level Display], [Audio Rec Level] 0..31 default 26 + always-on limiter, [Shoe Audio Set.] 48kHz/24bit 4ch vs 3.5mm MIC override & AAC-LC Proxy, plus [Face/Eye Subject] Human/Animal vs dormant Bird/Animal-Bird/Insect/Car-Train/Airplane (EOPNOTSUPP=95) & Still-only Animal Eye AF",
+    )
+    p_g143.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g143.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g143.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g143.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g143.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 174. verify-silent-target-bodydata-nogo-guard
+    p_g144 = sub.add_parser(
+        "verify-silent-target-bodydata-nogo-guard",
+        aliases=["verify-g144-silent-target-bodydata-nogo", "verify-g144"],
+        help="Verify Gate G144: [Silent Mode Settings] 5-disabled-func lock (AF Illuminator NOT disabled), 2-item [Target Function Settings] (Aperture Drive in AF & Auto Pixel Mapping Off), dormant [Shutter When Pwr OFF]/[Anti-dust Function] EOPNOTSUPP=95 & shutterless FX6 Auto Pixel Restore, Zero-RF [Version] badge silence, FX3 Slot 1 NP-FZ100 >= 51%% + Ver. 2.04/2.05 stepping-stone vs FX6 Slot B + AC Adaptor, and HARD NO-GO Slot-1 BODYDATA.DAT / eMMC flash firewall (EROFS=30 / EPERM=1)",
+    )
+    p_g144.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g144.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g144.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g144.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g144.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 175. verify-144-gates
+    p_144 = sub.add_parser(
+        "verify-144-gates",
+        help="Run Phase 323 Wave-62 Unified 144-Gate (12^2 Gross Milestone) Master Safety Preflight Engine (G01..G144)",
+    )
+    p_144.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_144.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_144.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G144 gates can be rehearsed offline",
+    )
+    p_144.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_144.add_argument("--summary", action="store_true", help="Emit concise summary output")
 
     args = parser.parse_args(argv)
 
@@ -9832,6 +9926,164 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_142_gates_verified if args.dry_run_simulated else report.offline_139_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-shoe-audio-4ch-subject-recog-guard",
+        "verify-g143-shoe-audio-subject-recog",
+        "verify-g143",
+    ):
+        verdict, res = evaluate_g143_shoe_audio_4ch_out_timing_and_subject_recog_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.shoe_audio_4ch_subject_recog_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "audio_out_timing_menu_path": guard["audio_out_timing_menu_path"],
+                    "effective_audio_out_timing": guard["effective_audio_out_timing"],
+                    "effective_audio_rec_level": guard["effective_audio_rec_level"],
+                    "effective_shoe_audio_set": guard["effective_shoe_audio_set"],
+                    "audio_limiter_always_on_fx3": guard["audio_limiter_always_on_fx3"],
+                    "effective_face_eye_subject": guard["effective_face_eye_subject"],
+                    "animal_eye_af_active_in_mode": guard["animal_eye_af_active_in_mode"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.shoe_audio_4ch_subject_recog_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} out_timing={guard['effective_audio_out_timing']} "
+                f"rec_level={guard['effective_audio_rec_level']} "
+                f"shoe_audio={guard['effective_shoe_audio_set']} "
+                f"subject={guard['effective_face_eye_subject']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-silent-target-bodydata-nogo-guard",
+        "verify-g144-silent-target-bodydata-nogo",
+        "verify-g144",
+    ):
+        verdict, res = evaluate_g144_silent_target_no_pwrshutter_and_slot1_bodydata_nogo_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.silent_target_bodydata_nogo_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_silent_mode": guard["effective_silent_mode"],
+                    "target_function_exact_2_items": guard["target_function_exact_2_items"],
+                    "dormant_shutter_when_pwr_off_blocked": guard["dormant_shutter_when_pwr_off_blocked"],
+                    "fx3_bodydata_required_slot": guard["fx3_bodydata_required_slot"],
+                    "fx6_bodydata_required_slot": guard["fx6_bodydata_required_slot"],
+                    "emmc_writes_authorized": res.emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "hardware_live_attachment_authorized": res.hardware_live_attachment_authorized,
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.silent_target_bodydata_nogo_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} silent={guard['effective_silent_mode']} "
+                f"target_items={len(guard['target_function_exact_2_items'])} "
+                f"fx3_slot={guard['fx3_bodydata_required_slot']} "
+                f"fx6_slot={guard['fx6_bodydata_required_slot']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"emmc_writes_authorized={res.emmc_writes_authorized} "
+                f"cross_model_flash_authorized={res.cross_model_flash_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-144-gates":
+        report = evaluate_144gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "schema_version": report.schema_version,
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g143_status": report.g143_result["status"],
+                    "g144_status": report.g144_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/144 "
+                f"g143_to_g144_all_passed={report.g143_to_g144_all_passed} "
+                f"all_144_gates_verified={report.all_144_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_144_gates_verified if args.dry_run_simulated else report.offline_141_gates_verified
         return 0 if ok else 1
 
     return 2

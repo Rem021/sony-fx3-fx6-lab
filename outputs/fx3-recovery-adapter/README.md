@@ -1320,6 +1320,29 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-reco
   /usr/bin/python3 -B -m fx3_recovery verify-59pillar-recovery --force-clean-room --json
 ```
 
+## Phase 336（Pillar 60 / `60/60` 统一恢复总检里程碑）：Wave-58 `Bright Monitoring` Ver.7.00+ 放大对焦共存与监视器亮度 / 机械快门 `BULB` 与 `DRO` vs 休眠 `Bulb Timer`/`Auto HDR` / `Shot Mark 1-2` 与 `Clip Flag` vs 休眠 `Divide/Extract`、`VMC-BNCM1 EXT-LK`、`WPA3-SAE` + `USB-LAN` 零射频与 `Slot-1 EROFS=30` 金库防火墙（`verify-60pillar-recovery` / `verify-pillar60-recovery` / `verify-pillar60-bright-mon-shotmark-usblan-bulb-vault`）
+
+- **[`realhw_60pillar_bright_mon_shotmark_usblan_bulb_dormant_vault_verifier.py`](fx3_recovery/realhw_60pillar_bright_mon_shotmark_usblan_bulb_dormant_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-58）落地 **Phase 336 Pillar 60（`60/60`）** 并将全套恢复总检正式推进至 **`60/60`（`VERIFIED_60OF60_PILLAR_RECOVERY_MASTER`）**（`< 1.5s` 快速 CLI 预算、`< 4.0s` 标称、`< 6.0s` 并发上限，保持 `verify-22..59pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OVERALL_READY_FOR_HARDWARE_ATTACH = False`、`CROSS_MODEL_FLASH_AUTHORIZED = False`、`P336_AIRPLANE_MODE_FORCED_ON = True`、`P336_RF_PACKETS_TRANSMITTED = 0`、`P336_SLOT1_FORMAT_HARD_LOCKED = True`、`P336_SLOT1_VAULT_EROFS_EOPNOTSUPP_ENFORCED = True`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` 与 `FX6 6.01` 共 **17 项** Wave-58 供体（`< 0.20s`，CI 下 `< 0.50s` 且显式防护 `work_root is None` 以避免无供体 Ubuntu CI 触发 `NoneType / str` 异常），并在 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时安全回退至 `CLEAN_ROOM_SYNTHETIC`：
+  - **Sub-Pillar 60A（`Bright Monitoring` Ver.7.00+ 放大对焦共存、`Monitor Brightness` 手动/晴天模式、机械 `BULB` 与 `D-Range Optimizer` vs 休眠 `Bulb Timer`/`Auto HDR` + FX6 `VF Setting` / `AE Backlight` 边界）**：锁定仅自定义键可触发的 `[Bright Monitoring]`（强制 `Live View Display = Setting Effect OFF`；关机、切离 `P/A/S/M` 或切离 `MF` 时自动取消；**Ver. 7.00/7.02 解锁与 `[Focus Magnifier]` 及 `[Auto Magnifier in MF]` 并发共存**；无多档增益/区域扩展）、`Initialize` 专属 `Setup -> [Monitor] -> [Monitor Brightness]`（`Manual -2..+2` 默认 `0` / `Sunny Weather`，休眠 `Auto` 严格拒绝 `EOPNOTSUPP=95`），对照 FX6 `VF Setting > Brightness (1..15)` 与 `Auto Exposure > Mode > Backlight` 命名歧义隔离。锁定静态机械快门专属 `[BULB]`（在 `Electronic Shutter`、连拍、包围或间隔下自动退回 `30"` 并在激活时禁用 `Anti-flicker Shoot.`）与可复位 `[D-Range Optimizer]`（`Auto[默认]/Off/Lv1..5` 及 `DRO Bracket`，`Picture Profile != Off` 或 `HLG Still Image = On` 时锁死），以及严格 fail-closed 的休眠 `[Bulb Timer]`（`_f 0x630f`）与 `[Auto HDR]`（`base 0xe49d`，`EOPNOTSUPP=95`）。
+  - **Sub-Pillar 60B（`Shot Mark 1/2` 与 Ver.6.00+/7.00+ `Clip Flag` `OK/NG/KEEP` vs 休眠 `Divide/Extract`、`VMC-BNCM1 EXT-LK`、WPA3-SAE 与 `USB-LAN` 零射频飞行隔离 + `Slot-1 EROFS=30` 金库防火墙）**：锁定录制/回放 `[Shot Mark 1/2]`（`*M01.XML`）、`[Clip Flag]`（`OK/NG/KEEP`）、`[Image Jump Setting]` 及 `[Edit]`（`Photo Capture`、`JPEG/HEIF Switch`、`Copy`、`Rotate`、`Create Divider Frame`），严格阻断在 FX3 `appFw.so` 中 0 命中的休眠 `[Divide]` / `[Extract]` / `Cut to 15/30/60s`（`EOPNOTSUPP=95`）。锁定零蓝牙 `[Timecode Link]` / `UltraSync BLUE`（`0` 命中 -> `EOPNOTSUPP=95`）与 Multi/Micro USB `VMC-BNCM1` 有线 LTC `EXT-LK` + HDMI `TC Output`（对照 FX6 物理 `TC IN/OUT` BNC），锁定 Wi-Fi SKU 边界（`WW728473` `2.4/5GHz` vs `WW558244` `2.4GHz`）、Ver. 7.00+ 剔除 `WEP/WPA-PSK/IPsec` 强制 `WPA2-PSK/WPA3-SAE`、`USB-LAN`（`cdc_ncm`/`r8152`）与 Wi-Fi/Multi USB 互斥、`Airplane Mode = On` 在 `Reset Network Set.` 与 `Initialize` 后均保持开启（`rf_packets_transmitted == 0`），以及保护 `Slot-1` `M4ROOT/*M01.XML`、`AVF_INFO`、`Photo Capture` 与 `Create Divider Frame` 的 Tier-0 金库 `EROFS=30` 防火墙（`Backup.bin H0 == H3`，`16/16`）。
+  - **统一 `60/60` 恢复总检聚合器与 CLI（`evaluate_realhw_60pillar_recovery_master` / `evaluate_60pillar_recovery_master` / `verify-60pillar-recovery` / `verify-pillar60-recovery` / `verify-pillar60-bright-mon-shotmark-usblan-bulb-vault`）**：
+    - 并发调用 `evaluate_realhw_59pillar_recovery_master`（`Pillars 1..59`）+ **Pillar 60**（`run_pillar60_standalone_suite`），在 `< 1.5s` 内汇总产出 **`60/60`（`VERIFIED_60OF60_PILLAR_RECOVERY_MASTER`）** 并自动接入 Milestone 311 / 324 最高支柱发现接口；[`tests/test_realhw_60pillar_bright_mon_shotmark_usblan_bulb_dormant_vault_verifier.py`](tests/test_realhw_60pillar_bright_mon_shotmark_usblan_bulb_dormant_vault_verifier.py) 提供 **>= 96 项**四模单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-pillar60-bright-mon-shotmark-usblan-bulb-vault --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-pillar60-recovery --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-60pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-60pillar-recovery --force-clean-room --json
+```
+
+
 
 
 

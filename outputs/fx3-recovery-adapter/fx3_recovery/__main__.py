@@ -217,6 +217,12 @@ from .realhw_60pillar_bright_mon_shotmark_usblan_bulb_dormant_vault_verifier imp
     verify_60pillar_recovery_suite,
     verify_bright_mon_shotmark_usblan_bulb_and_vault,
 )
+from .realhw_61pillar_big6_home_framing_interval_tc_make_auth_fan_vault_verifier import (
+    P340_ENV_CLEAN_ROOM_TEST,
+    run_pillar61_standalone_suite,
+    verify_61pillar_recovery_suite,
+    verify_big6_framing_interval_tc_auth_fan_and_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -682,6 +688,18 @@ def main():
     p336_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p336_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p336_master.add_argument('--out', help='optional exclusive new output directory for 60pillar-recovery-master-report.json')
+    p340_p61 = sub.add_parser('verify-pillar61-big6-framing-interval-tc-auth-fan-vault', help='Phase 340 Pillar 61 (Wave-59 Ver.7.00/7.02 HOME BIG6 Fixed/Variable & Lower-Left metadata-only ND vs FX6 e-ND, Manual Framing Settings vs dormant Auto Framing EOPNOTSUPP=95, Still Interval Shoot Func. 9999 shots Slot-1 EROFS=30 vs FX6 Interval Rec, Initialize-only Time Code Make/Run Regenerate forced Rec Run & HDMI REC Control TC Output=On gate, Ver.7.00+ Access Authen. SSH+PTP-IP & outbound TLS Root Cert, Fan Control 4-mode FX3 / 3-mode FX6 with ZERO Max + Zero-RF Slot-1 Vault Firewall)')
+    p340_p61.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p340_p61.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p340_p61.add_argument('--out', help='optional exclusive new output directory for pillar61-big6-framing-interval-tc-auth-fan-vault-report.json')
+    p340_p61_alias = sub.add_parser('verify-pillar61-recovery', help='Alias for verify-pillar61-big6-framing-interval-tc-auth-fan-vault (Phase 340 Pillar 61 standalone 12-scenario suite)')
+    p340_p61_alias.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p340_p61_alias.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p340_p61_alias.add_argument('--out', help='optional exclusive new output directory for pillar61-big6-framing-interval-tc-auth-fan-vault-report.json')
+    p340_master = sub.add_parser('verify-61pillar-recovery', help='Phase 340 (61/61 Milestone) unified 61/61 real-hardware recovery master aggregator (Pillars 1..60 + Pillar 61)')
+    p340_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p340_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p340_master.add_argument('--out', help='optional exclusive new output directory for 61pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -4345,6 +4363,109 @@ def main():
                     f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_60pillar_sha256={report.master_60pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command in (
+            'verify-pillar61-big6-framing-interval-tc-auth-fan-vault',
+            'verify-pillar61-recovery',
+        ):
+            report = run_pillar61_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(
+                    args.out,
+                    {'pillar61-big6-framing-interval-tc-auth-fan-vault-report.json': encode(result)},
+                )
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_61a={report.pillar_61a_big6_home_framing_interval_vault.scenarios_passed}/{report.pillar_61a_big6_home_framing_interval_vault.scenarios_total} "
+                    f"pillar_61b={report.pillar_61b_tc_make_hdmi_auth_fan_vault.scenarios_passed}/{report.pillar_61b_tc_make_hdmi_auth_fan_vault.scenarios_total} "
+                    f"big6_home_or_lower_left_nd_drift_events={report.big6_home_or_lower_left_nd_drift_events} "
+                    f"framing_manual_or_dormant_auto_framing_drift_events={report.framing_manual_or_dormant_auto_framing_drift_events} "
+                    f"interval_shoot_9999_or_fx6_mxf_spoof_events={report.interval_shoot_9999_or_fx6_mxf_spoof_events} "
+                    f"tc_make_regen_or_hdmi_rec_ctrl_drift_events={report.tc_make_regen_or_hdmi_rec_ctrl_drift_events} "
+                    f"access_authen_ssh_tls_or_fan_max_drift_events={report.access_authen_ssh_tls_or_fan_max_drift_events} "
+                    f"zero_rf_or_slot1_vault_bypass_events={report.zero_rf_or_slot1_vault_bypass_events} "
+                    f"rf_packets_transmitted={report.rf_packets_transmitted} "
+                    f"rf_nvs_mutation_bytes={report.rf_nvs_mutation_bytes} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_dcim_avf_mutation_bytes={report.slot1_dcim_avf_mutation_bytes} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_eopnotsupp_enforced={report.slot1_vault_erofs_eopnotsupp_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-61pillar-recovery':
+            report = verify_61pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'61pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_1_5s_fast_cli_budget={report.under_1_5s_fast_cli_budget} "
+                    f"under_2_5s_fast_cli_budget={report.under_2_5s_fast_cli_budget} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar61_a={report.pillar61_a_big6_home_framing_interval_vault.scenarios_passed}/{report.pillar61_a_big6_home_framing_interval_vault.scenarios_total} "
+                    f"pillar61_b={report.pillar61_b_tc_make_hdmi_auth_fan_vault.scenarios_passed}/{report.pillar61_b_tc_make_hdmi_auth_fan_vault.scenarios_total} "
+                    f"big6_home_or_lower_left_nd_drift_events={report.big6_home_or_lower_left_nd_drift_events} "
+                    f"framing_manual_or_dormant_auto_framing_drift_events={report.framing_manual_or_dormant_auto_framing_drift_events} "
+                    f"interval_shoot_9999_or_fx6_mxf_spoof_events={report.interval_shoot_9999_or_fx6_mxf_spoof_events} "
+                    f"tc_make_regen_or_hdmi_rec_ctrl_drift_events={report.tc_make_regen_or_hdmi_rec_ctrl_drift_events} "
+                    f"access_authen_ssh_tls_or_fan_max_drift_events={report.access_authen_ssh_tls_or_fan_max_drift_events} "
+                    f"zero_rf_or_slot1_vault_bypass_events={report.zero_rf_or_slot1_vault_bypass_events} "
+                    f"rf_packets_transmitted={report.rf_packets_transmitted} "
+                    f"rf_nvs_mutation_bytes={report.rf_nvs_mutation_bytes} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_dcim_avf_mutation_bytes={report.slot1_dcim_avf_mutation_bytes} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_eopnotsupp_enforced={report.slot1_vault_erofs_eopnotsupp_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_61pillar_sha256={report.master_61pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

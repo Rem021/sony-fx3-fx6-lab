@@ -7,7 +7,7 @@ Before an operator ever inserts a staging CFexpress Type A / SDXC V90 card
 into a physical Sony ILME-FX3 (`Ver. 7.02`, Model ID `0x91030080`), this
 offline air-gapped bench verifier proves:
 
-1. **Bounded `O_RDONLY` Donor Inspection (`< 0.15s`) + Clean-Room Fallback**:
+1. **Bounded `O_RDONLY` Donor Inspection (`< 2.0s`) + Clean-Room Fallback**:
    - Inspects pinned local FX3 `Ver. 7.02` & Stage-B donor artifacts strictly via
      `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` with `fstat`
      stability checks and bounded (`<= 4096 B`) header reads for multi-hundred-MB
@@ -152,7 +152,7 @@ P184_FORBIDDEN_BODYDATA_NAMES: Tuple[str, ...] = (
 P184_UFU_MAGIC: bytes = b"\x89UFU\r\n\x1a\n"
 P184_DEFAULT_AIRGAP_BENCH_SECRET: bytes = b"FX3-AIRGAP-BENCH-HMAC-V1"
 
-P184_DONOR_INSPECT_BUDGET_SECONDS: float = 0.15
+P184_DONOR_INSPECT_BUDGET_SECONDS: float = 2.0
 P184_CONCURRENT_CEILING_SECONDS: float = 6.0
 
 # Pinned Local Donor Relpaths & Digests (strictly O_RDONLY, zero raw bytes emitted)

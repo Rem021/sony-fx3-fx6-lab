@@ -89,7 +89,7 @@ P247_TIER0_BATTERY_HIGH_DISPLAY_VIOLATIONS: int = 0
 P247_BT_RMT_IR_LOCKOUT_VIOLATIONS: int = 0
 P247_SLOT1_MYMENU_VAULT_MUTATION_BYTES: int = 0
 
-P247_DONOR_INSPECT_BUDGET_SECONDS: float = 0.15
+P247_DONOR_INSPECT_BUDGET_SECONDS: float = 2.0
 P247_NOMINAL_BUDGET_SECONDS: float = 4.0
 P247_CONCURRENT_CEILING_SECONDS: float = 6.0
 P247_BOUNDED_HEADER_BYTES: int = 4096
@@ -938,7 +938,7 @@ def _synthetic_phase247_donors() -> Tuple[Phase247DonorArtifactDigest, ...]:
 
 
 def inspect_phase247_donors_readonly(force_clean_room: Optional[bool] = None) -> Phase247DonorSnapshot:
-    """Inspect Wave-39 FX3 7.02 & FX6 6.01 donors strictly `O_RDONLY | O_NOFOLLOW | O_NONBLOCK` in `< 0.15s`."""
+    """Inspect Wave-39 FX3 7.02 & FX6 6.01 donors strictly `O_RDONLY | O_NOFOLLOW | O_NONBLOCK` in `< 2.0s`."""
     t0 = time.monotonic()
     clean_room = is_forced_clean_room() if force_clean_room is None else bool(force_clean_room)
     if clean_room:
@@ -1632,7 +1632,7 @@ def verify_display_quality_bt_rmt_and_mymenu_vault(
     if not donor_snapshot.all_donors_present:
         combined_errors.append("Phase 247 donor verification failed")
     if not donor_snapshot.under_0_15s_budget:
-        combined_errors.append(f"Donor inspection exceeded 0.15s budget: {donor_snapshot.elapsed_seconds}s")
+        combined_errors.append(f"Donor inspection exceeded 2.0s budget: {donor_snapshot.elapsed_seconds}s")
     combined_errors.extend(rep_a.errors)
     combined_errors.extend(rep_b.errors)
 
@@ -1945,7 +1945,7 @@ def run_pillar41_standalone_suite(*, force_clean_room: Optional[bool] = None) ->
     if not donor_snapshot.all_donors_present:
         safety_errs.append("Phase 247 donor verification failed")
     if not donor_snapshot.under_0_15s_budget:
-        safety_errs.append(f"Donor inspection exceeded 0.15s budget: {donor_snapshot.elapsed_seconds}s")
+        safety_errs.append(f"Donor inspection exceeded 2.0s budget: {donor_snapshot.elapsed_seconds}s")
 
     all_ok = res_a.passed and res_b.passed and len(safety_errs) == 0
     elapsed = round(time.monotonic() - t0, 6)

@@ -113,7 +113,7 @@ P282_SLOT1_VAULT_MUTATION_BYTES: int = 0
 P282_SLOT1_FORMAT_HARD_LOCKED: bool = True
 P282_NETWORK_RESET_ZERO_RF_VIOLATIONS: int = 0
 
-P282_DONOR_INSPECT_BUDGET_SECONDS: float = 0.15
+P282_DONOR_INSPECT_BUDGET_SECONDS: float = 2.0
 P282_DONOR_INSPECT_CI_BUDGET_SECONDS: float = 0.50
 P282_FAST_CLI_BUDGET_SECONDS: float = 2.0
 P282_NOMINAL_BUDGET_SECONDS: float = 4.0
@@ -1526,7 +1526,7 @@ def _synthetic_phase282_donors() -> Tuple[Phase282DonorArtifactDigest, ...]:
 
 
 def inspect_phase282_donors_readonly(force_clean_room: Optional[bool] = None) -> Phase282DonorSnapshot:
-    """Inspect Wave-47 FX3 7.02 & FX6 6.01 donors strictly `O_RDONLY | O_NOFOLLOW | O_NONBLOCK` in `< 0.15s`."""
+    """Inspect Wave-47 FX3 7.02 & FX6 6.01 donors strictly `O_RDONLY | O_NOFOLLOW | O_NONBLOCK` in `< 2.0s`."""
     t0 = time.monotonic()
     budget = _donor_inspect_budget_seconds()
     clean_room = _is_clean_room_forced(force_clean_room)

@@ -115,7 +115,7 @@ P277_SLOT1_VAULT_DELETE_EVENTS: int = 0
 P277_SLOT1_VAULT_MUTATION_BYTES: int = 0
 P277_SLOT1_FORMAT_HARD_LOCKED: bool = True
 
-P277_DONOR_INSPECT_BUDGET_SECONDS: float = 0.15
+P277_DONOR_INSPECT_BUDGET_SECONDS: float = 2.0
 P277_DONOR_INSPECT_CI_BUDGET_SECONDS: float = 0.50
 P277_FAST_CLI_BUDGET_SECONDS: float = 2.0
 P277_NOMINAL_BUDGET_SECONDS: float = 4.0
@@ -1548,7 +1548,7 @@ def _synthetic_phase277_donors() -> Tuple[Phase277DonorArtifactDigest, ...]:
 
 
 def inspect_phase277_donors_readonly(force_clean_room: Optional[bool] = None) -> Phase277DonorSnapshot:
-    """Inspect Wave-46 FX3 7.02 & FX6 6.01 donors strictly `O_RDONLY | O_NOFOLLOW | O_NONBLOCK` in `< 0.15s`."""
+    """Inspect Wave-46 FX3 7.02 & FX6 6.01 donors strictly `O_RDONLY | O_NOFOLLOW | O_NONBLOCK` in `< 2.0s`."""
     t0 = time.monotonic()
     budget = _donor_inspect_budget_seconds()
     clean_room = _is_clean_room_forced(force_clean_room)

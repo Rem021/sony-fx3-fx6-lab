@@ -4009,10 +4009,346 @@ def _cmd_preflight_lens_comp_af_illuminator_copy_slot_and_evf_absence(
     return 0 if ok else 2
 
 
+def _cmd_preflight_dial_customize_lut_embed_steadyshot_and_streaming(
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    force_clean_room: bool,
+    simulate_bench_dry_run: bool,
+    json_output: bool,
+    summary_output: bool,
+    markdown_out: Optional[Path],
+    output_path: Optional[Path],
+    sony_help_guide_id: str,
+    reset_action: str,
+    shoot_mode: str,
+    exposed_dial_customize_items: Optional[str],
+    dormant_dial_setup_or_wheel_lock_requested: bool,
+    av_tv_rotate: str,
+    function_ring_lens: str,
+    lock_operation_parts: str,
+    claimed_dial_customize_wiped_by_camera_reset: bool,
+    fx6_dial_topology_claimed: bool,
+    exposed_physical_dials: Optional[str],
+    fx3_four_dial_rear_lr_present: bool,
+    dormant_rear_dial_lr_requested: bool,
+    my_dial_slot: int,
+    my_dial_active_recalled: bool,
+    expect_lock_blocks_recalled_my_dial: bool,
+    fn_menu_still_slots: int,
+    fn_menu_movie_slots: int,
+    fn_menu_all_not_set_claimed: bool,
+    exposed_live_view_subitems: Optional[str],
+    live_view_display: str,
+    exposure_effect: str,
+    frame_rate_low_limit: str,
+    bright_monitoring_active: bool,
+    expect_setting_effect_on_during_bright_monitoring: bool,
+    claimed_live_view_two_items_wiped_by_camera_reset: bool,
+    grid_line_display: str,
+    grid_line_type: str,
+    hdmi_info_display: str,
+    hdmi_raw_output: bool,
+    rec_media_dur_hdmi_output: str,
+    expect_grid_line_on_clean_hdmi: bool,
+    dormant_fx6_custom_png_grid_requested: bool,
+    user_lut_slot: int,
+    user_lut_import_requested: bool,
+    user_lut_source_media_type: str,
+    user_lut_source_dir: str,
+    user_lut_filename: str,
+    user_lut_cube_size: int,
+    user_lut_config_writeback_to_slot1: bool,
+    log_shooting_mode: str,
+    embed_lut_file: str,
+    embed_lut_media_type: str,
+    claimed_embed_lut_under_color_tone: bool,
+    expect_embed_lut_bakes_pixels: bool,
+    picture_profile: str,
+    expect_pplut_preserves_unbaked_slog3: bool,
+    claimed_pplut_survives_reset: bool,
+    slot1_contains_tier0_dump: bool,
+    slot1_wp_locked: bool,
+    embed_lut_or_pplut_rec_requested: bool,
+    rec_target_slot: int,
+    steadyshot_mode: str,
+    dormant_dynamic_active_requested: bool,
+    steadyshot_adjust: str,
+    steadyshot_focal_mm: int,
+    exposed_focal_length_table: Optional[str],
+    rec_fps: float,
+    sq_mode_enabled: bool,
+    sq_fps: float,
+    desqueeze_display: str,
+    distortion_comp: str,
+    fx3_builtin_5axis_ibis_present: bool,
+    fx6_builtin_ibis_claimed: bool,
+    dormant_movie_selftimer_requested: bool,
+    still_drive_mode: str,
+    front_led8_selftimer_blink_expected: bool,
+    silent_mode: str,
+    audio_signals: str,
+    dormant_audio_signal_volume_requested: bool,
+    claimed_audio_signals_wiped_by_camera_reset: bool,
+    fx6_picture_cache_or_interval_rec_in_fx3_claimed: bool,
+    zebra_display: str,
+    zebra_preset: str,
+    zebra_custom_slot: str,
+    zebra_custom_type: str,
+    zebra_level_ire: int,
+    zebra_range_plus_minus: int,
+    peaking_display: str,
+    peaking_level: str,
+    peaking_color: str,
+    expect_zebra_or_peaking_on_clean_hdmi: bool,
+    fx6_zebra_both_mode_claimed: bool,
+    claimed_zebra_peaking_wiped_by_camera_reset: bool,
+    streaming_protocol: str,
+    streaming_resolution: str,
+    streaming_fps: float,
+    movie_rec_during_streaming: str,
+    internal_rec_resolution_class: str,
+    internal_rec_fps: float,
+    movie_rec_during_streaming_slot: int,
+    fx6_builtin_rtmp_srt_claimed: bool,
+    ftp_transfer_func: str,
+    ftp_active_mode_requested: bool,
+    ftp_slot1_write_requested: bool,
+    claimed_network_wiped_by_camera_reset: bool,
+    claimed_network_survives_reset_network_set: bool,
+    airplane_mode: str,
+    network_transport: str,
+    wireless_streaming_requested: bool,
+    wireless_ftp_requested: bool,
+    wireless_rf_packets_emitted: int,
+    rf_nvs_p12_p13_writes_requested: bool,
+    simulated_passive_tx_bytes: int,
+    simulated_h0_h3_drifted_surfaces: int,
+    claim_hardware_live_attach_authorized: bool,
+    claim_persistent_emmc_writes_authorized: bool,
+    claim_cross_model_flash_authorized: bool,
+    receipt_a: Optional[Path],
+    receipt_b: Optional[Path],
+    model_id: Optional[str],
+    body_fw: str,
+    body_serial: Optional[str],
+    emmc_cid: Optional[str],
+) -> int:
+    from .realhw_card_insert_readiness_verifier import (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        TARGET_MODEL_ID_INT,
+        build_default_h0_baselines,
+    )
+    from .realhw_dial_customize_lut_embed_steadyshot_and_streaming_verifier import (
+        P307_DIAL_CUSTOMIZE_FIVE_ITEMS,
+        P307_FX3_THREE_PHYSICAL_DIALS,
+        P307_GO_NO_GO_DIAL_CUSTOMIZE_LUT_EMBED_STEADYSHOT_STREAMING_VERIFIED,
+        P307_LIVE_VIEW_DISPLAY_SUBITEMS,
+        P307_STEADYSHOT_47_FOCAL_LENGTHS_MM,
+        evaluate_realhw_dial_customize_lut_embed_steadyshot_and_streaming_readiness,
+        render_phase307_markdown,
+        verify_phase307_report,
+    )
+
+    parsed_model_id = int(model_id, 0) if model_id else TARGET_MODEL_ID_INT
+    h0_a = None
+    h0_b = None
+    if (receipt_a is not None or receipt_b is not None) and body_serial and emmc_cid:
+        h0_a = build_default_h0_baselines(body_serial=body_serial, emmc_cid=emmc_cid)
+        h0_b = dict(h0_a)
+
+    dial_items = (
+        tuple(x.strip() for x in exposed_dial_customize_items.split(",") if x.strip())
+        if exposed_dial_customize_items is not None
+        else P307_DIAL_CUSTOMIZE_FIVE_ITEMS
+    )
+    physical_dials = (
+        tuple(x.strip() for x in exposed_physical_dials.split(",") if x.strip())
+        if exposed_physical_dials is not None
+        else P307_FX3_THREE_PHYSICAL_DIALS
+    )
+    liveview_items = (
+        tuple(x.strip() for x in exposed_live_view_subitems.split(",") if x.strip())
+        if exposed_live_view_subitems is not None
+        else P307_LIVE_VIEW_DISPLAY_SUBITEMS
+    )
+    focal_table = (
+        tuple(int(x.strip()) for x in exposed_focal_length_table.split(",") if x.strip())
+        if exposed_focal_length_table is not None
+        else P307_STEADYSHOT_47_FOCAL_LENGTHS_MM
+    )
+
+    rep = evaluate_realhw_dial_customize_lut_embed_steadyshot_and_streaming_readiness(
+        simulate_bench_dry_run=simulate_bench_dry_run,
+        force_clean_room=True if force_clean_room else None,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        body_model_id=parsed_model_id,
+        body_fw=body_fw,
+        sony_help_guide_id=sony_help_guide_id,
+        reset_action=reset_action,
+        shoot_mode=shoot_mode,
+        exposed_dial_customize_items=dial_items,
+        dormant_dial_setup_or_wheel_lock_requested=dormant_dial_setup_or_wheel_lock_requested,
+        av_tv_rotate=av_tv_rotate,
+        function_ring_lens=function_ring_lens,
+        lock_operation_parts=lock_operation_parts,
+        claimed_dial_customize_wiped_by_camera_reset=claimed_dial_customize_wiped_by_camera_reset,
+        fx6_dial_topology_claimed=fx6_dial_topology_claimed,
+        exposed_physical_dials=physical_dials,
+        fx3_four_dial_rear_lr_present=fx3_four_dial_rear_lr_present,
+        dormant_rear_dial_lr_requested=dormant_rear_dial_lr_requested,
+        my_dial_slot=my_dial_slot,
+        my_dial_active_recalled=my_dial_active_recalled,
+        expect_lock_blocks_recalled_my_dial=expect_lock_blocks_recalled_my_dial,
+        fn_menu_still_slots=fn_menu_still_slots,
+        fn_menu_movie_slots=fn_menu_movie_slots,
+        fn_menu_all_not_set_claimed=fn_menu_all_not_set_claimed,
+        exposed_live_view_subitems=liveview_items,
+        live_view_display=live_view_display,
+        exposure_effect=exposure_effect,
+        frame_rate_low_limit=frame_rate_low_limit,
+        bright_monitoring_active=bright_monitoring_active,
+        expect_setting_effect_on_during_bright_monitoring=expect_setting_effect_on_during_bright_monitoring,
+        claimed_live_view_two_items_wiped_by_camera_reset=claimed_live_view_two_items_wiped_by_camera_reset,
+        grid_line_display=grid_line_display,
+        grid_line_type=grid_line_type,
+        hdmi_info_display=hdmi_info_display,
+        hdmi_raw_output=hdmi_raw_output,
+        rec_media_dur_hdmi_output=rec_media_dur_hdmi_output,
+        expect_grid_line_on_clean_hdmi=expect_grid_line_on_clean_hdmi,
+        dormant_fx6_custom_png_grid_requested=dormant_fx6_custom_png_grid_requested,
+        user_lut_slot=user_lut_slot,
+        user_lut_import_requested=user_lut_import_requested,
+        user_lut_source_media_type=user_lut_source_media_type,
+        user_lut_source_dir=user_lut_source_dir,
+        user_lut_filename=user_lut_filename,
+        user_lut_cube_size=user_lut_cube_size,
+        user_lut_config_writeback_to_slot1=user_lut_config_writeback_to_slot1,
+        log_shooting_mode=log_shooting_mode,
+        embed_lut_file=embed_lut_file,
+        embed_lut_media_type=embed_lut_media_type,
+        claimed_embed_lut_under_color_tone=claimed_embed_lut_under_color_tone,
+        expect_embed_lut_bakes_pixels=expect_embed_lut_bakes_pixels,
+        picture_profile=picture_profile,
+        expect_pplut_preserves_unbaked_slog3=expect_pplut_preserves_unbaked_slog3,
+        claimed_pplut_survives_reset=claimed_pplut_survives_reset,
+        slot1_contains_tier0_dump=slot1_contains_tier0_dump,
+        slot1_wp_locked=slot1_wp_locked,
+        embed_lut_or_pplut_rec_requested=embed_lut_or_pplut_rec_requested,
+        rec_target_slot=rec_target_slot,
+        steadyshot_mode=steadyshot_mode,
+        dormant_dynamic_active_requested=dormant_dynamic_active_requested,
+        steadyshot_adjust=steadyshot_adjust,
+        steadyshot_focal_mm=steadyshot_focal_mm,
+        exposed_focal_length_table=focal_table,
+        rec_fps=rec_fps,
+        sq_mode_enabled=sq_mode_enabled,
+        sq_fps=sq_fps,
+        desqueeze_display=desqueeze_display,
+        distortion_comp=distortion_comp,
+        fx3_builtin_5axis_ibis_present=fx3_builtin_5axis_ibis_present,
+        fx6_builtin_ibis_claimed=fx6_builtin_ibis_claimed,
+        dormant_movie_selftimer_requested=dormant_movie_selftimer_requested,
+        still_drive_mode=still_drive_mode,
+        front_led8_selftimer_blink_expected=front_led8_selftimer_blink_expected,
+        silent_mode=silent_mode,
+        audio_signals=audio_signals,
+        dormant_audio_signal_volume_requested=dormant_audio_signal_volume_requested,
+        claimed_audio_signals_wiped_by_camera_reset=claimed_audio_signals_wiped_by_camera_reset,
+        fx6_picture_cache_or_interval_rec_in_fx3_claimed=fx6_picture_cache_or_interval_rec_in_fx3_claimed,
+        zebra_display=zebra_display,
+        zebra_preset=zebra_preset,
+        zebra_custom_slot=zebra_custom_slot,
+        zebra_custom_type=zebra_custom_type,
+        zebra_level_ire=zebra_level_ire,
+        zebra_range_plus_minus=zebra_range_plus_minus,
+        peaking_display=peaking_display,
+        peaking_level=peaking_level,
+        peaking_color=peaking_color,
+        expect_zebra_or_peaking_on_clean_hdmi=expect_zebra_or_peaking_on_clean_hdmi,
+        fx6_zebra_both_mode_claimed=fx6_zebra_both_mode_claimed,
+        claimed_zebra_peaking_wiped_by_camera_reset=claimed_zebra_peaking_wiped_by_camera_reset,
+        streaming_protocol=streaming_protocol,
+        streaming_resolution=streaming_resolution,
+        streaming_fps=streaming_fps,
+        movie_rec_during_streaming=movie_rec_during_streaming,
+        internal_rec_resolution_class=internal_rec_resolution_class,
+        internal_rec_fps=internal_rec_fps,
+        movie_rec_during_streaming_slot=movie_rec_during_streaming_slot,
+        fx6_builtin_rtmp_srt_claimed=fx6_builtin_rtmp_srt_claimed,
+        ftp_transfer_func=ftp_transfer_func,
+        ftp_active_mode_requested=ftp_active_mode_requested,
+        ftp_slot1_write_requested=ftp_slot1_write_requested,
+        claimed_network_wiped_by_camera_reset=claimed_network_wiped_by_camera_reset,
+        claimed_network_survives_reset_network_set=claimed_network_survives_reset_network_set,
+        airplane_mode=airplane_mode,
+        network_transport=network_transport,
+        wireless_streaming_requested=wireless_streaming_requested,
+        wireless_ftp_requested=wireless_ftp_requested,
+        wireless_rf_packets_emitted=wireless_rf_packets_emitted,
+        rf_nvs_p12_p13_writes_requested=rf_nvs_p12_p13_writes_requested,
+        simulated_passive_tx_bytes=simulated_passive_tx_bytes,
+        simulated_h0_h3_drifted_surfaces=simulated_h0_h3_drifted_surfaces,
+        claim_hardware_live_attach_authorized=claim_hardware_live_attach_authorized,
+        claim_persistent_emmc_writes_authorized=claim_persistent_emmc_writes_authorized,
+        claim_cross_model_flash_authorized=claim_cross_model_flash_authorized,
+        receipt_a_path=receipt_a,
+        receipt_b_path=receipt_b,
+        body_serial=body_serial,
+        emmc_cid=emmc_cid,
+        h0_baselines_a=h0_a,
+        h0_baselines_b=h0_b,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    if markdown_out is not None:
+        markdown_out.parent.mkdir(parents=True, exist_ok=True)
+        markdown_out.write_text(render_phase307_markdown(rep), encoding="utf-8")
+    v_res = verify_phase307_report(rep.to_dict())
+    ok = v_res.valid and rep.go_no_go in (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        P307_GO_NO_GO_DIAL_CUSTOMIZE_LUT_EMBED_STEADYSHOT_STREAMING_VERIFIED,
+    )
+    try:
+        if json_output and not summary_output:
+            sys.stdout.write(rendered)
+        else:
+            summary = (
+                f"OVERALL={rep.overall_status} "
+                f"go_no_go={rep.go_no_go} "
+                f"mode={rep.verification_mode} "
+                f"simulate_dry_run={rep.simulate_bench_dry_run} "
+                f"check_groups={rep.check_groups_passed}/{rep.check_group_count} "
+                f"tier0={rep.tier0_receipt_verified} "
+                f"h0_eq_h3={rep.h0_equals_h3_count}/{rep.h0_h3_surface_count} "
+                f"ready_attach={rep.overall_ready_for_hardware_attach} "
+                f"live_attach_auth={rep.hardware_live_attachment_authorized} "
+                f"emmc_writes_auth={rep.persistent_emmc_writes_authorized} "
+                f"cross_model_flash={rep.cross_model_flash_authorized} "
+                f"rear_lr={rep.fx3_four_dial_rear_lr_present} "
+                f"movie_selftimer={rep.fx3_movie_selftimer_present} "
+                f"fx6_ibis={rep.fx6_builtin_ibis_present} "
+                f"slot1_mutated={rep.slot1_tier0_vault_mutated} "
+                f"rf_pkts={rep.wireless_rf_packets_emitted} "
+                f"slot1_writes={rep.slot1_data_sector_writes} "
+                f"usb_pkts={rep.usb_packets_transmitted} "
+                f"passive_tx={rep.passive_tx_bytes_emitted} "
+                f"leaked_bytes={rep.raw_firmware_bytes_leaked} "
+                f"report_sha256={rep.report_sha256[:16]}...\n"
+            )
+            sys.stdout.write(summary)
+        sys.stdout.flush()
+    except BrokenPipeError:
+        pass
+    return 0 if ok else 2
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 295/264/254/233/221/209/193/175/147 Real-Hardware Master Gates, Phase 302/291/284/279/275/261/248/227/216/204/186/154 Bench & Pre-Shoot Readiness Verifiers, Phase 130/110/90 Milestone Master Gates, U1-U6 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor, Stage-B R0..R6 Rehearsal, Unified Stage-B Release Dossier v3 & Capstone 22-Gate Verifier CLI",
+        description="FX6-on-FX3 Phase 295/264/254/233/221/209/193/175/147 Real-Hardware Master Gates, Phase 307/302/291/284/279/275/261/248/227/216/204/186/154 Bench & Pre-Shoot Readiness Verifiers, Phase 130/110/90 Milestone Master Gates, U1-U6 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor, Stage-B R0..R6 Rehearsal, Unified Stage-B Release Dossier v3 & Capstone 22-Gate Verifier CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -4071,6 +4407,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("preflight-pp-scinetone-wb-metering-and-shutter-type", "Run Phase 284 9th physical bench readiness verifier (Waves 48-49 ilc/2210: Stock PP11 S-Cinetone & [Different Set] vs Creative Look/DRO/Log lockout + PPLUT1..4 1080p clamp + PP1..11 reset trap, WB Cine EI restrictions + Custom 1..3 reset survival / CAMSET exclusion + 6-mode Metering M.M. & Face Priority/De-Squeeze, 2-option Still RAW vs dormant Lossless Comp 0x6b56 + HLG Still HEIF P/A/S/M + DCF 2.0 AdobeRGB _DSC, and 2-option Shutter Type no-Auto + 1/250 s flash sync + Electronic 5-lockout + Hi+ 10fps / >F11 AF-lock + Tier-0 gate)"),
         ("preflight-focus-area-zoom-dci4k-and-sensor-cleaning", "Run Phase 291 10th physical bench readiness verifier (Waves 50-52 ilc/2210: Still-only 7 Tracking Focus Areas & AF Area Registration vs handle-less XLR-H1 + body W/T zoom 1..8 + ISO Range Limit/Still P/A ISO AUTO Min. SS vs Cine EI + Flash Mech-Still gate, XAVC S-I DCI 4K 4096x2160 + 24.00p reboot quarantine + 4-mode Aspect Ratio + 11 Hold checkboxes + SONY/SETTING/FX3 path + Photo Capture DCI 4K/Slot-1 firewall, Sensor Cleaning >=51%% & mandatory OFF vs FX6 e-ND + EV Comp. Cine EI lockout + Focus Mode 5-vs-2 + 9/25 Image Index & Slot-1 Rotate firewall, and Tier-0 16/16 H0==H3 redlines)"),
         ("preflight-lens-comp-af-illuminator-copy-slot-and-evf-absence", "Run Phase 302 11th physical bench readiness verifier (Waves 53-55 ilc/2210: 2-option Shading Auto/Off vs dormant 0x6c9c Auto:Low EOPNOTSUPP=95 + built-in FX3 AF illuminator LED #8 vs FX6 absence + 5 Initialize-only AF params + Slot-1 Folder/Rating EROFS=30 firewall, Switch V/H AF Area Still AF-C + 14-item Focus Area Limit + 5-mode Exposure Std. Adjust + TC Format NDF/PAL + CRITICAL Playback [Copy] Slot 2->1 Tier-0 reverse-write EROFS=30 firewall, 3-mode Touch Func. in Shooting + 4-mode Monitor DISP & CRITICAL Zero-EVF Black-Screen Lockout Firewall + Still AEL/Wireless Flash + Interval Play Speed 1..9 & dormant Edit trap rejection, and 16/16 H0==H3 Tier-0 gate)"),
+        ("preflight-dial-customize-lut-embed-steadyshot-and-streaming", "Run Phase 307 12th physical bench readiness verifier (Waves 56-57 ilc/2210: 5-item [Dial Customize] & 3-dial truth vs dormant Rear Dial L/R 0x6a5c/0x680d + My Dial Lock override + 12+12 Fn Menu split, 3-item [Live View Display Set.] & clean-HDMI [Grid Line], O_RDONLY [Manage User LUTs] vs [Embed LUT File] SDHC lock 0x61a0 vs PPLUT1..4 + Slot-1 EROFS=30 firewall, 4-lock Movie [SteadyShot]=Active vs dormant Dynamic active 0x741c + 47-entry Focal Length & IBIS-less FX6 split, dormant Movie Self-timer 0x7192 rejection + LED #8/Audio signals, Custom 1/2 Zebra 0..109%% +-1..10%% + 4-color Peaking, and CRITICAL Zero-RF [Airplane Mode]=On + Slot-1 [Network Streaming]/[FTP] EROFS=30 firewall + 16/16 H0==H3 Tier-0 gate)"),
         ("verify-milestone-295", "Verify Grand Milestone Phase 295 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Master Gate (>=124-Gate + >=50 Recovery + >=45 Auditors + >=58 VM + Decuple 10/10 Bench Preflights Ph186..Ph291 + FX3 7.02 QEMU R28..R58+, realhw_milestone295_master_gate_v1)"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
@@ -4095,10 +4432,129 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force clean-room synthetic offline verification mode")
         if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "verify-sd-stageb-bundle-uninstaller"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight", "preflight-usb-mode-hdmi-info-protect-and-network-reset", "preflight-pp-scinetone-wb-metering-and-shutter-type", "preflight-focus-area-zoom-dci4k-and-sensor-cleaning", "preflight-lens-comp-af-illuminator-copy-slot-and-evf-absence", "verify-milestone-295"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight", "preflight-usb-mode-hdmi-info-protect-and-network-reset", "preflight-pp-scinetone-wb-metering-and-shutter-type", "preflight-focus-area-zoom-dci4k-and-sensor-cleaning", "preflight-lens-comp-af-illuminator-copy-slot-and-evf-absence", "preflight-dial-customize-lut-embed-steadyshot-and-streaming", "verify-milestone-295"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
-        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight", "preflight-usb-mode-hdmi-info-protect-and-network-reset", "preflight-pp-scinetone-wb-metering-and-shutter-type", "preflight-focus-area-zoom-dci4k-and-sensor-cleaning", "preflight-lens-comp-af-illuminator-copy-slot-and-evf-absence", "verify-milestone-295"):
+        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight", "preflight-usb-mode-hdmi-info-protect-and-network-reset", "preflight-pp-scinetone-wb-metering-and-shutter-type", "preflight-focus-area-zoom-dci4k-and-sensor-cleaning", "preflight-lens-comp-af-illuminator-copy-slot-and-evf-absence", "preflight-dial-customize-lut-embed-steadyshot-and-streaming", "verify-milestone-295"):
             p.add_argument("--markdown-out", type=Path, default=None, help="Optional Markdown report path to write certificate/dossier")
+        if cmd_name == "preflight-dial-customize-lut-embed-steadyshot-and-streaming":
+            p.add_argument("--output", "--out", dest="output", type=Path, default=None, help="Optional JSON file path to write Phase 307 preflight report")
+            p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
+            p.add_argument("--simulate-bench-dry-run", "--simulate-ready-bench", dest="simulate_bench_dry_run", action="store_true", help="Synthesize deterministic dry-run Tier-0 dual-media receipts without authorizing live hardware attachment")
+            p.add_argument("--summary", action="store_true", help="Emit compact one-line summary to stdout even when --json is passed")
+            p.add_argument("--sony-help-guide-id", default="ilc/2210", help="Official Sony Help Guide identifier (must remain ilc/2210)")
+            p.add_argument("--reset-action", default="NONE", help="Reset operation modeled: NONE, CAMERA_SETTINGS_RESET, RESET_NETWORK_SET, INITIALIZE")
+            p.add_argument("--shoot-mode", default="MOVIE", help="[Shoot Mode]: PHOTO, MOVIE, S_AND_Q")
+            p.add_argument("--exposed-dial-customize-items", default=None, help="Comma-separated [Dial Customize] 5 menu items override")
+            p.add_argument("--dormant-dial-setup-or-wheel-lock-requested", action="store_true", help="Request Ver. 1.xx legacy [Dial Setup] / [Dial / Wheel Lock] (rejected with EOPNOTSUPP=95)")
+            p.add_argument("--av-tv-rotate", default="NORMAL", help="[Av/Tv Rotate]: NORMAL or REVERSE")
+            p.add_argument("--function-ring-lens", default="POWER_FOCUS", help="[Function Ring(Lens)]: POWER_FOCUS or APSC_S35_FF")
+            p.add_argument("--lock-operation-parts", default="OFF", help="[Lock Operation Parts]: OFF, MULTISELECTOR_ONLY, DIAL_PLUS_WHEEL, ALL")
+            p.add_argument("--claimed-dial-customize-wiped-by-camera-reset", action="store_true", help="Claim Initialize-only [Dial Customize] items were wiped by Camera Settings Reset (invalid)")
+            p.add_argument("--fx6-dial-topology-claimed", action="store_true", help="Claim FX3 adopts FX6 Multi Function / Grip / Handle / HOLD topology (invalid)")
+            p.add_argument("--exposed-physical-dials", default=None, help="Comma-separated FX3 3 physical dials override")
+            p.add_argument("--fx3-four-dial-rear-lr-present", action="store_true", help="Claim FX3 carries 4 physical dials with Rear Dial L/R (invalid)")
+            p.add_argument("--dormant-rear-dial-lr-requested", action="store_true", help="Request dormant Alpha Rear Dial L/R bindings (_f.uxc 0x6a5c/0x680d, rejected with EOPNOTSUPP=95)")
+            p.add_argument("--my-dial-slot", type=int, default=1, help="[My Dial Settings] bank index (1..3)")
+            p.add_argument("--my-dial-active-recalled", action="store_true", help="Indicate My Dial 1..3 bank is actively recalled")
+            p.add_argument("--expect-lock-blocks-recalled-my-dial", action="store_true", help="Claim Lock Operation Parts blocks an actively recalled My Dial (invalid: My Dial temporarily overrides lock)")
+            p.add_argument("--fn-menu-still-slots", type=int, default=12, help="[Fn Menu Settings] Still slot count (must be 12)")
+            p.add_argument("--fn-menu-movie-slots", type=int, default=12, help="[Fn Menu Settings] Movie slot count (must be 12)")
+            p.add_argument("--fn-menu-all-not-set-claimed", action="store_true", help="Claim all 12 Fn slots are Not set (_f.uxc 0x6220 error trap)")
+            p.add_argument("--exposed-live-view-subitems", default=None, help="Comma-separated [Live View Display Set.] 3 sub-items override")
+            p.add_argument("--live-view-display", default="SETTING_EFFECT_ON", help="[Live View Display]: SETTING_EFFECT_ON or SETTING_EFFECT_OFF")
+            p.add_argument("--exposure-effect", default="EXPOSURE_SET_AND_FLASH", help="[Exposure Effect]: EXPOSURE_SET_AND_FLASH or EXPOSURE_SETTING_ONLY")
+            p.add_argument("--frame-rate-low-limit", default="OFF", help="[Frame Rate Low Limit]: ON or OFF")
+            p.add_argument("--bright-monitoring-active", action="store_true", help="Indicate [Bright Monitoring] is active (forces Setting Effect OFF)")
+            p.add_argument("--expect-setting-effect-on-during-bright-monitoring", action="store_true", help="Claim Setting Effect ON remains active during Bright Monitoring (invalid)")
+            p.add_argument("--claimed-live-view-two-items-wiped-by-camera-reset", action="store_true", help="Claim Initialize-only Live View Display / Exposure Effect were wiped by Camera Settings Reset (invalid)")
+            p.add_argument("--grid-line-display", default="OFF", help="[Grid Line Display]: ON or OFF")
+            p.add_argument("--grid-line-type", default="RULE_OF_3RDS", help="[Grid Line Type]: RULE_OF_3RDS, SQUARE_GRID, DIAG_SQUARE_GRID")
+            p.add_argument("--hdmi-info-display", default="OFF", help="[HDMI Info. Display]: ON or OFF")
+            p.add_argument("--hdmi-raw-output", action="store_true", help="Enable HDMI RAW Output (locks out SteadyShot Active)")
+            p.add_argument("--rec-media-dur-hdmi-output", default="ON", help="[Rec. Media dur HDMI Output]: ON or OFF_HDMI_ONLY")
+            p.add_argument("--expect-grid-line-on-clean-hdmi", action="store_true", help="Claim [Grid Line] overlays leak onto clean HDMI output (invalid)")
+            p.add_argument("--dormant-fx6-custom-png-grid-requested", action="store_true", help="Request FX6 dormant custom PNG grid line (rejected with EOPNOTSUPP=95)")
+            p.add_argument("--user-lut-slot", type=int, default=1, help="[Manage User LUTs] slot index (1..16)")
+            p.add_argument("--user-lut-import-requested", action="store_true", help="Simulate O_RDONLY [Manage User LUTs] .cube import")
+            p.add_argument("--user-lut-source-media-type", default="CFEXPRESS_A", help="User LUT source card type: CFEXPRESS_A, SDXC, SDHC")
+            p.add_argument("--user-lut-source-dir", default="/Sony/PRO/LUT", help="User LUT source directory (/Private/Sony/PRO/LUT on SD or /Sony/PRO/LUT on CFexpress)")
+            p.add_argument("--user-lut-filename", default="FX3_BENCH_S709.cube", help="User LUT filename (<= 63 chars ending in .cube)")
+            p.add_argument("--user-lut-cube-size", type=int, default=33, help="3D LUT cube dimension (17 or 33)")
+            p.add_argument("--user-lut-config-writeback-to-slot1", action="store_true", help="Attempt LUT config writeback onto Slot-1 Tier-0 Vault (blocked with EROFS=30)")
+            p.add_argument("--log-shooting-mode", default="CINE_EI", help="[Log Shooting]: OFF, FLEXIBLE_ISO, CINE_EI_QUICK, CINE_EI")
+            p.add_argument("--embed-lut-file", default="ON", help="[Embed LUT File] under [Log Shooting Setting]: ON or OFF")
+            p.add_argument("--embed-lut-media-type", default="CFEXPRESS_A", help="Recording media for [Embed LUT File]: CFEXPRESS_A, SDXC, SDHC (locked Off on SDHC)")
+            p.add_argument("--claimed-embed-lut-under-color-tone", action="store_true", help="Claim [Embed LUT File] lives under [Color/Tone] instead of [Log Shooting Setting] (invalid)")
+            p.add_argument("--expect-embed-lut-bakes-pixels", action="store_true", help="Claim [Embed LUT File]=On bakes pixels instead of embedding container metadata (invalid)")
+            p.add_argument("--picture-profile", default="OFF", help="[Picture Profile]: OFF, PP1..PP11, PPLUT1..PPLUT4")
+            p.add_argument("--expect-pplut-preserves-unbaked-slog3", action="store_true", help="Claim PPLUT1..4 leaves unbaked S-Log3 pixels (invalid: irreversible pixel bake)")
+            p.add_argument("--claimed-pplut-survives-reset", action="store_true", help="Claim PPLUT1..4 survives Camera Settings Reset / Initialize (invalid)")
+            p.add_argument("--no-slot1-tier0-dump", dest="slot1_contains_tier0_dump", action="store_false", help="Indicate Slot 1 does NOT hold a Tier-0 recovery vault")
+            p.add_argument("--no-slot1-wp-locked", dest="slot1_wp_locked", action="store_false", help="Indicate Slot 1 physical write-protect switch is not locked")
+            p.add_argument("--embed-lut-or-pplut-rec-requested", action="store_true", help="Attempt recording with Embed LUT / PPLUT onto rec_target_slot")
+            p.add_argument("--rec-target-slot", type=int, default=2, help="Target recording slot for LUT/PPLUT rec (1 blocked when Slot 1 holds Tier-0 vault)")
+            p.add_argument("--steadyshot-mode", default="STANDARD", help="Movie [SteadyShot]: ACTIVE, STANDARD, OFF")
+            p.add_argument("--dormant-dynamic-active-requested", action="store_true", help="Request dormant [Dynamic active] (_f.uxc 0x741c, rejected with EOPNOTSUPP=95)")
+            p.add_argument("--steadyshot-adjust", default="AUTO", help="[SteadyShot Adjust.]: AUTO or MANUAL")
+            p.add_argument("--steadyshot-focal-mm", type=int, default=8, help="Manual SteadyShot [Focal Length] from exact 47-entry 8..1000mm table")
+            p.add_argument("--exposed-focal-length-table", default=None, help="Comma-separated 47 focal lengths override")
+            p.add_argument("--rec-fps", type=float, default=23.98, help="Movie [Rec Frame Rate] fps (119.88/100p locks out SteadyShot Active)")
+            p.add_argument("--sq-mode-enabled", action="store_true", help="Enable S&Q motion shoot mode")
+            p.add_argument("--sq-fps", type=float, default=60.0, help="S&Q frame rate (>= 100/120fps locks out SteadyShot Active)")
+            p.add_argument("--desqueeze-display", default="OFF", help="[De-Squeeze Display]: OFF, 1.3x, 1.5x, 1.6x, 1.8x, 2.0x")
+            p.add_argument("--distortion-comp", default="OFF", help="[Distortion Comp.]: AUTO or OFF (forced AUTO under SteadyShot Active)")
+            p.add_argument("--no-fx3-builtin-5axis-ibis", dest="fx3_builtin_5axis_ibis_present", action="store_false", help="Claim FX3 lacks built-in 5-axis IBIS (invalid)")
+            p.add_argument("--fx6-builtin-ibis-claimed", action="store_true", help="Claim ILME-FX6 has built-in IBIS (invalid: TYPE_STEADYSHOT_EQUIP_WITH_BODY_UNSUPPORTED)")
+            p.add_argument("--dormant-movie-selftimer-requested", action="store_true", help="Request dormant Movie [Self-timer] (_f.uxc 0x7192 Rec Start delay, rejected)")
+            p.add_argument("--still-drive-mode", default="SINGLE_SHOOTING", help="Still [Drive Mode]: SINGLE_SHOOTING, CONT_HI_PLUS, CONT_HI, CONT_MID, CONT_LO, SELF_TIMER_SINGLE, SELF_TIMER_CONT, BRACKET")
+            p.add_argument("--front-led8-selftimer-blink-expected", action="store_true", help="Expect front LED #8 blinking during Still Self-timer countdown")
+            p.add_argument("--silent-mode", default="OFF", help="[Silent Mode]: ON or OFF (suppresses Audio signals when ON)")
+            p.add_argument("--audio-signals", default="ON", help="[Audio signals]: ON or OFF (Initialize-only)")
+            p.add_argument("--dormant-audio-signal-volume-requested", action="store_true", help="Request dormant [Audio Signal Volume] slider (_f.uxc 0x7af6, rejected)")
+            p.add_argument("--claimed-audio-signals-wiped-by-camera-reset", action="store_true", help="Claim Initialize-only [Audio signals] was wiped by Camera Settings Reset (invalid)")
+            p.add_argument("--fx6-picture-cache-or-interval-rec-in-fx3-claimed", action="store_true", help="Claim FX6 Picture Cache Rec / Interval Rec exists on FX3 (invalid)")
+            p.add_argument("--zebra-display", default="OFF", help="[Zebra Display]: ON or OFF")
+            p.add_argument("--zebra-preset", default="70", help="[Zebra Level] preset: 70, 75, 80, 85, 90, 95, 100, 100+, CUSTOM_1, CUSTOM_2")
+            p.add_argument("--zebra-custom-slot", default="CUSTOM_1", help="Zebra custom slot: CUSTOM_1 or CUSTOM_2")
+            p.add_argument("--zebra-custom-type", default="STD_RANGE", help="Zebra custom type: STD_RANGE or LOWER_LIMIT")
+            p.add_argument("--zebra-level-ire", type=int, default=70, help="Zebra IRE base/lower limit (0..109%%)")
+            p.add_argument("--zebra-range-plus-minus", type=int, default=5, help="Zebra Custom Std+Range tolerance (+-1..10%%)")
+            p.add_argument("--peaking-display", default="OFF", help="[Peaking Display]: ON or OFF")
+            p.add_argument("--peaking-level", default="MID", help="[Peaking Level]: HIGH, MID, LOW")
+            p.add_argument("--peaking-color", default="WHITE", help="[Peaking Color]: RED, YELLOW, BLUE, WHITE (vs FX6 B&W)")
+            p.add_argument("--expect-zebra-or-peaking-on-clean-hdmi", action="store_true", help="Claim Zebra/Peaking overlays leak onto clean HDMI output (invalid)")
+            p.add_argument("--fx6-zebra-both-mode-claimed", action="store_true", help="Claim FX6 supports simultaneous Both Zebra1+Zebra2 overlay (invalid)")
+            p.add_argument("--claimed-zebra-peaking-wiped-by-camera-reset", action="store_true", help="Claim Initialize-only Zebra/Peaking were wiped by Camera Settings Reset (invalid)")
+            p.add_argument("--streaming-protocol", default="DISABLED", help="[Network Streaming] protocol: DISABLED, RTMP, RTMPS, SRT")
+            p.add_argument("--streaming-resolution", default="HD_1080P", help="[Output Img. Quality Set] resolution: 4K_2160P, 2K_1440P, HD_1080P, HD_720P")
+            p.add_argument("--streaming-fps", type=float, default=29.97, help="Streaming fps: 59.94, 50.0, 29.97, 25.0 (23.98/24.00 forbidden)")
+            p.add_argument("--movie-rec-during-streaming", default="DISABLE", help="[Movie Rec During Streaming]: ENABLE or DISABLE")
+            p.add_argument("--internal-rec-resolution-class", default="HD", help="Internal rec resolution class during streaming: HD or 4K")
+            p.add_argument("--internal-rec-fps", type=float, default=29.97, help="Internal rec fps during streaming (must match streaming_fps)")
+            p.add_argument("--movie-rec-during-streaming-slot", type=int, default=2, help="Target slot for [Movie Rec During Streaming] (Slot 1 blocked EROFS=30 on Tier-0 vault)")
+            p.add_argument("--fx6-builtin-rtmp-srt-claimed", action="store_true", help="Claim FX6 exposes built-in RTMP/SRT Network Streaming menu (invalid)")
+            p.add_argument("--ftp-transfer-func", default="OFF", help="[FTP Transfer Func.]: OFF or ON (Passive mode only)")
+            p.add_argument("--ftp-active-mode-requested", action="store_true", help="Request FTP Active mode (rejected with EOPNOTSUPP=95)")
+            p.add_argument("--ftp-slot1-write-requested", action="store_true", help="Attempt FTP write onto Slot 1 Tier-0 Vault (blocked with EROFS=30)")
+            p.add_argument("--claimed-network-wiped-by-camera-reset", action="store_true", help="Claim (Network) settings were wiped by Camera Settings Reset (invalid)")
+            p.add_argument("--claimed-network-survives-reset-network-set", action="store_true", help="Claim streaming/FTP settings survive Reset Network Set. (invalid)")
+            p.add_argument("--airplane-mode", default="ON", help="[Airplane Mode]: ON or OFF (mandatory ON for zero-RF physical bench)")
+            p.add_argument("--network-transport", default="NONE", help="Network transport: NONE, USB_LAN_CDC_NCM, WIRELESS_RF")
+            p.add_argument("--wireless-streaming-requested", action="store_true", help="Attempt wireless streaming over Wi-Fi (blocked by Zero-RF bench firewall)")
+            p.add_argument("--wireless-ftp-requested", action="store_true", help="Attempt wireless FTP transfer (blocked by Zero-RF bench firewall)")
+            p.add_argument("--wireless-rf-packets-emitted", type=int, default=0, help="Measured/simulated RF packets emitted (must remain 0)")
+            p.add_argument("--rf-nvs-p12-p13-writes-requested", action="store_true", help="Attempt write to p12/p13 RF NVRAM partitions (blocked)")
+            p.add_argument("--simulated-passive-tx-bytes", type=int, default=0, help="Simulated passive UART TX bytes emitted (must remain 0)")
+            p.add_argument("--simulated-h0-h3-drifted-surfaces", type=int, default=0, help="Simulated H0 vs H3 drifted surfaces (must remain 0)")
+            p.add_argument("--claim-hardware-live-attach-authorized", action="store_true", help="Claim live hardware attachment is authorized offline (fail-closed rejection)")
+            p.add_argument("--claim-persistent-emmc-writes-authorized", action="store_true", help="Claim persistent eMMC writes are authorized (fail-closed rejection)")
+            p.add_argument("--claim-cross-model-flash-authorized", action="store_true", help="Claim cross-model partition flashing is authorized (fail-closed rejection)")
+            p.add_argument("--receipt-a", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy A")
+            p.add_argument("--receipt-b", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy B (distinct st_dev)")
+            p.add_argument("--model-id", default=None, help="Expected Sony PRODUCT_MODEL hex/int (default 0x91030080)")
+            p.add_argument("--body-fw", default="7.02", help="Target FX3 body firmware version (7.02)")
+            p.add_argument("--body-serial", default=None, help="Target FX3 body serial identifier")
+            p.add_argument("--emmc-cid", default=None, help="Target FX3 128-bit eMMC CID hex identifier")
         if cmd_name == "preflight-lens-comp-af-illuminator-copy-slot-and-evf-absence":
             p.add_argument("--output", "--out", dest="output", type=Path, default=None, help="Optional JSON file path to write Phase 302 preflight report")
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
@@ -5968,6 +6424,131 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.dormant_trimming_requested,
             args.playback_photo_capture_requested,
             args.playback_rotate_requested,
+            args.receipt_a,
+            args.receipt_b,
+            args.model_id,
+            args.body_fw,
+            args.body_serial,
+            args.emmc_cid,
+        )
+    if args.cmd == "preflight-dial-customize-lut-embed-steadyshot-and-streaming":
+        return _cmd_preflight_dial_customize_lut_embed_steadyshot_and_streaming(
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.force_clean_room,
+            args.simulate_bench_dry_run,
+            args.json,
+            args.summary,
+            args.markdown_out,
+            args.output,
+            args.sony_help_guide_id,
+            args.reset_action,
+            args.shoot_mode,
+            args.exposed_dial_customize_items,
+            args.dormant_dial_setup_or_wheel_lock_requested,
+            args.av_tv_rotate,
+            args.function_ring_lens,
+            args.lock_operation_parts,
+            args.claimed_dial_customize_wiped_by_camera_reset,
+            args.fx6_dial_topology_claimed,
+            args.exposed_physical_dials,
+            args.fx3_four_dial_rear_lr_present,
+            args.dormant_rear_dial_lr_requested,
+            args.my_dial_slot,
+            args.my_dial_active_recalled,
+            args.expect_lock_blocks_recalled_my_dial,
+            args.fn_menu_still_slots,
+            args.fn_menu_movie_slots,
+            args.fn_menu_all_not_set_claimed,
+            args.exposed_live_view_subitems,
+            args.live_view_display,
+            args.exposure_effect,
+            args.frame_rate_low_limit,
+            args.bright_monitoring_active,
+            args.expect_setting_effect_on_during_bright_monitoring,
+            args.claimed_live_view_two_items_wiped_by_camera_reset,
+            args.grid_line_display,
+            args.grid_line_type,
+            args.hdmi_info_display,
+            args.hdmi_raw_output,
+            args.rec_media_dur_hdmi_output,
+            args.expect_grid_line_on_clean_hdmi,
+            args.dormant_fx6_custom_png_grid_requested,
+            args.user_lut_slot,
+            args.user_lut_import_requested,
+            args.user_lut_source_media_type,
+            args.user_lut_source_dir,
+            args.user_lut_filename,
+            args.user_lut_cube_size,
+            args.user_lut_config_writeback_to_slot1,
+            args.log_shooting_mode,
+            args.embed_lut_file,
+            args.embed_lut_media_type,
+            args.claimed_embed_lut_under_color_tone,
+            args.expect_embed_lut_bakes_pixels,
+            args.picture_profile,
+            args.expect_pplut_preserves_unbaked_slog3,
+            args.claimed_pplut_survives_reset,
+            args.slot1_contains_tier0_dump,
+            args.slot1_wp_locked,
+            args.embed_lut_or_pplut_rec_requested,
+            args.rec_target_slot,
+            args.steadyshot_mode,
+            args.dormant_dynamic_active_requested,
+            args.steadyshot_adjust,
+            args.steadyshot_focal_mm,
+            args.exposed_focal_length_table,
+            args.rec_fps,
+            args.sq_mode_enabled,
+            args.sq_fps,
+            args.desqueeze_display,
+            args.distortion_comp,
+            args.fx3_builtin_5axis_ibis_present,
+            args.fx6_builtin_ibis_claimed,
+            args.dormant_movie_selftimer_requested,
+            args.still_drive_mode,
+            args.front_led8_selftimer_blink_expected,
+            args.silent_mode,
+            args.audio_signals,
+            args.dormant_audio_signal_volume_requested,
+            args.claimed_audio_signals_wiped_by_camera_reset,
+            args.fx6_picture_cache_or_interval_rec_in_fx3_claimed,
+            args.zebra_display,
+            args.zebra_preset,
+            args.zebra_custom_slot,
+            args.zebra_custom_type,
+            args.zebra_level_ire,
+            args.zebra_range_plus_minus,
+            args.peaking_display,
+            args.peaking_level,
+            args.peaking_color,
+            args.expect_zebra_or_peaking_on_clean_hdmi,
+            args.fx6_zebra_both_mode_claimed,
+            args.claimed_zebra_peaking_wiped_by_camera_reset,
+            args.streaming_protocol,
+            args.streaming_resolution,
+            args.streaming_fps,
+            args.movie_rec_during_streaming,
+            args.internal_rec_resolution_class,
+            args.internal_rec_fps,
+            args.movie_rec_during_streaming_slot,
+            args.fx6_builtin_rtmp_srt_claimed,
+            args.ftp_transfer_func,
+            args.ftp_active_mode_requested,
+            args.ftp_slot1_write_requested,
+            args.claimed_network_wiped_by_camera_reset,
+            args.claimed_network_survives_reset_network_set,
+            args.airplane_mode,
+            args.network_transport,
+            args.wireless_streaming_requested,
+            args.wireless_ftp_requested,
+            args.wireless_rf_packets_emitted,
+            args.rf_nvs_p12_p13_writes_requested,
+            args.simulated_passive_tx_bytes,
+            args.simulated_h0_h3_drifted_surfaces,
+            args.claim_hardware_live_attach_authorized,
+            args.claim_persistent_emmc_writes_authorized,
+            args.claim_cross_model_flash_authorized,
             args.receipt_a,
             args.receipt_b,
             args.model_id,

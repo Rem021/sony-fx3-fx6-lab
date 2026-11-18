@@ -1151,6 +1151,28 @@ FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-
   python3 -B -m fx3_recovery verify-51pillar-recovery --clean-room --json
 ```
 
+## Phase 296（Pillar 52 / `52/52` 统一恢复总检）：`[Focus Area]` 14 项分层与 Movie `Tracking:` 锁闭、`[AF Area Registration]` 解锁互斥与 `Initialize` 留存、机身 `W/T` 变焦杆 vs 无变焦 `XLR-H1` 辟谣、`[ISO Range Limit]` / 静态专用 `[ISO AUTO Min. SS]` vs `Cine EI` Base ISO 锁定、`[Flash Mode]` 机械快门静态门控 vs `[Video Light Mode]` `PMIC 5V <= 900 mA` 与 `Slot-1` 金库写入防火墙（`verify-52pillar-recovery` / `verify-pillar52-focus-area-zoom-iso-flash-vault`）
+
+- **[`realhw_52pillar_focus_area_zoom_lever_iso_minss_flash_vault_verifier.py`](fx3_recovery/realhw_52pillar_focus_area_zoom_lever_iso_minss_flash_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-50）落地 **Phase 296 Pillar 52（`52/52`）** 并将全套恢复总检推进至 **`52/52`（`VERIFIED_52OF52_PILLAR_RECOVERY_MASTER`）**（`< 1.2s` 快速 CLI 预算、`< 4.0s` 标称、`< 6.0s` 并发上限，保持 `verify-22..51pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OVERALL_READY_FOR_HARDWARE_ATTACH = False`、`P296_SLOT1_FORMAT_HARD_LOCKED = True`、`P296_SLOT1_VAULT_EROFS_EBUSY_ENFORCED = True`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` 与 `FX6 6.01` 共 **17 项** Wave-50 供体（`< 0.20s`，CI 下放宽至 `< 0.50s`），并支持 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动切换 `CLEAN_ROOM_SYNTHETIC` 洁净室模式：
+  - **支柱 52A — `[Focus Area]` 14 项分层、`[AF Area Registration]` 与机身 `W/T` 变焦杆 vs 无变焦 `XLR-H1` 辟谣及 `Slot-1` 金库防火墙（`6/6`）**：
+    - `P52A1`..`P52A6`：精确校验 `MENU -> Focus -> [Focus Area]` 7 项通用区域（`Wide`、`Zone`、`Center Fix`、`Spot: S/M/L`、`Expand Spot`）与 7 项仅静态 `Tracking:` 区域（Movie/`S&Q` 中锁定，改由 `[Touch Tracking]` 接管）；校验 `[Focus Area Limit]`（`>= 2` 项启用，`.uxc` `0xe227`）、`[Switch V/H AF Area]`（仅静态）、`[Circ. of Focus Point]`（H/V 循环不含斜向）与 `[AF Area Registration]`（`Off`/`On`，跨 `Camera Settings Reset` 留存、仅随 `Initialize` / `Del. Regist. AF Area` 清除，且强制 `[Lock Operation Parts] = Off`）；严格辟谣 **`ILME-FX3` `XLR-H1` 手柄仅为音频手柄（零变焦杆、零录制键、零 `ZOOM HOLD` 开关）**，与具备 `Handle Zoom`（`Off`/`Low`/`High`/`Variable 1..8`）、`Handle HOLD Switch` 及 `0..99` 变焦位置指示（`Zoom Position Display`）的 `ILME-FX6` 智能手柄严格划界；强制 `Slot-1` `EROFS`/`EBUSY` 写入防火墙、`Stage-B` `/tmp/` 易失叠加（`BLKROSET=True`）及 `16/16` `H0 == H3` `Backup.bin`。
+  - **支柱 52B — `[ISO Range Limit]` / 仅静态 `[ISO AUTO Min. SS]` vs `Cine EI`、`[Flash Mode]` 机械快门静态门控 vs `[Video Light Mode]` `PMIC 5V <= 900 mA` 护栏（`6/6`）**：
+    - `P52B1`..`P52B6`：精确校验 `[ISO Range Limit]`（`Min/Max` 限制手动与 `ISO AUTO`）及仅限静态（`P`/`A` 或 `M + ISO AUTO`）的 `[ISO AUTO Min. SS]`（`Slower..Faster` 或 `1/8000..30"`，经 `Camera Settings Reset` 复位于 `Standard`），并在 Movie/`S&Q` `Cine EI` / `Cine EI Quick` 下硬锁定 Base ISO `800 / 12800` 及 `[Auto Slow Shutter]`（对比无 `ISO AUTO Min. SS` 的 `ILME-FX6` `AGC`）；校验 `[Flash Mode]`（`Flash Off` / `Autoflash` / `Fill-flash` / `Slow Sync.` / `Rear Sync.`，Pillar 52 基线默认 `Fill-flash`，全幅 `1/250 s` 机械快门同步上限）严格门控至 `ILME-FX3` 机械快门静态模式（在 Movie/`S&Q`、`Electronic Shutter`、`Silent Mode = On` 与无机械快门 `ILME-FX6` 中禁止），同时校验跨静态/Movie/`S&Q` 的 `[Video Light Mode]`（`Power Link` 默认 / `REC Link` / `REC Link&STBY` / `Auto`）受 MI 热靴 `PMIC 5V <= 900 mA` 电流护栏、`<= 250 V` 触发电压与 `Slot-1` `EROFS`/`EBUSY` 金库防火墙保护。
+  - **统一 `52/52` 恢复总检聚合器与 CLI（`evaluate_realhw_52pillar_recovery_master` / `evaluate_52pillar_recovery_master` / `verify-52pillar-recovery` / `verify-pillar52-focus-area-zoom-iso-flash-vault`）**：
+    - 并发调用 `evaluate_realhw_51pillar_recovery_master`（`Pillars 1..51`）+ **Pillar 52**（`run_pillar52_standalone_suite`），汇总产出 **`52/52`**（`VERIFIED_52OF52_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_52pillar_focus_area_zoom_lever_iso_minss_flash_vault_verifier.py`](tests/test_realhw_52pillar_focus_area_zoom_lever_iso_minss_flash_vault_verifier.py) 提供 `>= 76` 项双模（本地只读供体 + 洁净室 + 环境变量强制）单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-pillar52-focus-area-zoom-iso-flash-vault --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-52pillar-recovery --json
+
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-52pillar-recovery --clean-room --json
+```
+
+
 
 
 

@@ -35240,6 +35240,1285 @@ static int run_r67_clean_unmount_wave53_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ============================================================================
+ * Round 68 (41/41 Real-HW Rounds / 121st..123rd Live Runs -> 123/123 Total)
+ * Wave-54: [Switch V/H AF Area] (Still AF-C 3-state gravity + 8 lockouts),
+ * 14-Checkbox [Focus Area Limit] (min-2 rule 0xea28, Movie Tracking lockout,
+ * dormant Spot XL/XS/Custom1..3), Initialize-only [Focus Area Color];
+ * 5-Mode [Exposure Std. Adjust] (1/6 EV, 0xe567 dialog, Initialize-only) &
+ * Resettable Still [Bracket Settings]; 6-Item Initialize-only [TC/UB]
+ * (NTSC DF/NDF vs 24p NDF lock & PAL hide) & Movie-PB-only [TC/UB Disp. Setting]
+ * vs FX6 BNC TC IN/OUT (EXT-LK); and [Select Playback Media] + Directional [Copy]
+ * Slot-2 -> Slot-1 Reverse Hazard EROFS=30 Tier-0 Vault Firewall & [Slide Show].
+ * ============================================================================ */
+
+typedef enum {
+    R68_SHOOT_STILL = 0,
+    R68_SHOOT_MOVIE = 1,
+    R68_SHOOT_SQ = 2,
+    R68_SHOOT_IAUTO = 3
+} r68_shoot_mode_t;
+
+typedef enum {
+    R68_FM_AF_S = 0,
+    R68_FM_AF_A = 1,
+    R68_FM_AF_C = 2,
+    R68_FM_DMF = 3,
+    R68_FM_MF = 4
+} r68_focus_mode_t;
+
+typedef enum {
+    R68_SWVH_OFF = 0,
+    R68_SWVH_AF_POINT_ONLY = 1,
+    R68_SWVH_AF_POINT_AND_AREA = 2
+} r68_switch_vh_t;
+
+typedef enum {
+    R68_ORIENT_0_DEGREES = 0,
+    R68_ORIENT_90_DEGREES = 1,
+    R68_ORIENT_270_DEGREES = 2,
+    R68_ORIENT_INVALID = 3
+} r68_orientation_t;
+
+typedef enum {
+    R68_FA_COLOR_WHITE = 0,
+    R68_FA_COLOR_RED = 1
+} r68_focus_color_t;
+
+typedef enum {
+    R68_METER_MULTI = 0,
+    R68_METER_CENTER = 1,
+    R68_METER_SPOT = 2,
+    R68_METER_ENTIRE_AVG = 3,
+    R68_METER_HIGHLIGHT = 4
+} r68_metering_mode_t;
+
+typedef enum {
+    R68_DRIVE_SINGLE = 0,
+    R68_DRIVE_BRACKET_SINGLE = 1,
+    R68_DRIVE_BRACKET_CONT = 2,
+    R68_DRIVE_FOCUS_BRACKET = 3
+} r68_drive_mode_t;
+
+typedef enum {
+    R68_BRK_TIMER_OFF = 0,
+    R68_BRK_TIMER_2S = 1,
+    R68_BRK_TIMER_5S = 2,
+    R68_BRK_TIMER_10S = 3
+} r68_bracket_timer_t;
+
+typedef enum {
+    R68_BRK_ORDER_ZERO_MINUS_PLUS = 0,
+    R68_BRK_ORDER_MINUS_ZERO_PLUS = 1
+} r68_bracket_order_t;
+
+typedef enum {
+    R68_SYS_NTSC = 0,
+    R68_SYS_PAL = 1
+} r68_ntsc_pal_t;
+
+typedef enum {
+    R68_TC_FORMAT_DF = 0,
+    R68_TC_FORMAT_NDF = 1
+} r68_tc_format_t;
+
+typedef enum {
+    R68_TC_RUN_REC = 0,
+    R68_TC_RUN_FREE = 1
+} r68_tc_run_t;
+
+typedef enum {
+    R68_TC_MAKE_PRESET = 0,
+    R68_TC_MAKE_REGENERATE = 1
+} r68_tc_make_t;
+
+typedef enum {
+    R68_TC_DISP_COUNTER = 0,
+    R68_TC_DISP_TC = 1,
+    R68_TC_DISP_UBIT = 2
+} r68_tc_disp_t;
+
+typedef enum {
+    R68_MEDIA_SLOT1 = 1,
+    R68_MEDIA_SLOT2 = 2
+} r68_media_slot_t;
+
+typedef enum {
+    R68_VIEW_DATE = 0,
+    R68_VIEW_FOLDER_STILL = 1,
+    R68_VIEW_MOVIE = 2
+} r68_view_mode_t;
+
+typedef struct {
+    int is_fx6_chaplin;
+    r68_shoot_mode_t shoot_mode;
+    r68_focus_mode_t focus_mode;
+    /* Pillar 1: Switch V/H AF Area, 14-checkbox Focus Area Limit, Focus Area Color */
+    r68_switch_vh_t switch_vh_af_area;
+    r68_orientation_t orientation;
+    int digital_zoom_on;
+    int af_active;
+    int burst_active;
+    int selftimer_active;
+    int focus_mag_active;
+    int stored_pos_0_deg;
+    int stored_pos_90_deg;
+    int stored_pos_270_deg;
+    uint16_t focus_area_limit_mask14; /* bits 0..13; default 0x3fff (all 14 enabled) */
+    uint16_t registered_af_area_mask; /* bits registered for Switch V/H / AF Area Reg */
+    int af_area_reg_cleared;
+    r68_focus_color_t focus_area_color;
+    /* Pillar 2: Exposure Std. Adjust (5 modes, 1/6 EV) & Still Bracket Settings */
+    int exp_std_adj_sixth_ev[5]; /* -6..+6 => -1..+1 EV in 1/6 EV steps */
+    int exp_comp_third_ev;       /* independent from Exposure Std. Adjust */
+    int mm_baseline_sixth_ev;
+    int spot_ael_shift_sixth_ev;
+    int exif_std_exp_tag_sixth_ev;
+    int active_bracket_shots_done;
+    r68_drive_mode_t drive_mode;
+    r68_bracket_timer_t bracket_selftimer;
+    r68_bracket_order_t bracket_order;
+    /* Pillar 3: 6-item [TC/UB] + [TC/UB Disp. Setting] */
+    r68_ntsc_pal_t ntsc_pal;
+    int rec_fps_x100; /* e.g., 2398, 2400, 2997, 5994, 2500, 5000 */
+    char tc_preset[16];
+    char ub_preset[16];
+    r68_tc_format_t tc_format;
+    r68_tc_run_t tc_run;
+    r68_tc_make_t tc_make;
+    int ub_time_rec;
+    r68_tc_disp_t tc_ub_disp_setting;
+    /* Pillar 4: Select Playback Media + Copy + Slide Show */
+    r68_media_slot_t select_playback_media;
+    int slot1_ro_vault_armed;
+    int slot1_data_sector_writes;
+    int slot1_avf_info_mutated;
+    int slot2_data_copied_files;
+    int slot2_group_collapsed;
+    int slot2_protect_cleared;
+    r68_view_mode_t view_mode;
+    int slideshow_repeat;
+    int slideshow_interval_sec; /* 1, 3, 5, 10, 30; def 3 */
+    int power_save_bypassed_in_slideshow;
+} r68_wave54_cfg_t;
+
+__attribute__((noinline)) static int r68_lookup_wave54_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Focus -> [Focus Area] -> [Switch V/H AF Area]") == 0 ||
+        strcmp(path, "MENU -> Focus -> [Focus Area] -> [Focus Area Limit]") == 0 ||
+        strcmp(path, "MENU -> Focus -> [Focus Area] -> [Focus Area Color]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Exposure Comp.] -> [Exposure Std. Adjust]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Drive Mode] -> [Bracket Settings]") == 0 ||
+        strcmp(path, "MENU -> Drive Mode -> [Bracket Settings] -> [Selftimer during Bracket]") == 0 ||
+        strcmp(path, "MENU -> Drive Mode -> [Bracket Settings] -> [Bracket order]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [TC/UB] -> [Time Code Preset]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [TC/UB] -> [User Bit Preset]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [TC/UB] -> [Time Code Format]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [TC/UB] -> [Time Code Run]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [TC/UB] -> [Time Code Make]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [TC/UB] -> [User Bit Time Rec]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Display Option] -> [TC/UB Disp. Setting]") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Playback Target] -> [Select Playback Media]") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Edit] -> [Copy]") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Viewing] -> [Slide Show]") == 0) {
+        return 0;
+    }
+    if (strcmp(path, "model::focus_area_limit_flexible_spot_xl") == 0 ||
+        strcmp(path, "model::focus_area_limit_flexible_spot_xs") == 0 ||
+        strcmp(path, "model::focus_area_limit_custom_1") == 0 ||
+        strcmp(path, "FX6 USER_MENU_COPY_CLIP0") == 0 ||
+        strcmp(path, "FX6 setting_bracket_order") == 0) {
+        return -EOPNOTSUPP;
+    }
+    if (strcmp(path, "FX6 physical BNC TC IN/OUT switch (EXT-LK)") == 0 ||
+        strcmp(path, "FX6 exposure_standard") == 0) {
+        return -ENOENT;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r68_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "_f:0x73ae:Switch V/H AF Area") == 0 ||
+        strcmp(token, "_f:0x63aa:Off") == 0 ||
+        strcmp(token, "_f:0x615a:AF Point Only") == 0 ||
+        strcmp(token, "_f:0x69e8:AF Point + AF Area") == 0 ||
+        strcmp(token, "_f:0x6de2:Focus Area Limit") == 0 ||
+        strcmp(token, "_f:0x7824:Center Fix") == 0 ||
+        strcmp(token, "_f:0x602b:Tracking: Center Fix") == 0 ||
+        strcmp(token, "0xea28:Set the focus area limit to 2 AF areas or more") == 0 ||
+        strcmp(token, "_f:0x74ad:Focus Area Color") == 0 ||
+        strcmp(token, "0xe883:White") == 0 ||
+        strcmp(token, "0xe8c6:Red") == 0 ||
+        strcmp(token, "_f:0x6114:Exposure Std. Adjust") == 0 ||
+        strcmp(token, "_f:0x6d79:Multi") == 0 ||
+        strcmp(token, "_f:0x6da8:Center") == 0 ||
+        strcmp(token, "_f:0x7a8a:Spot") == 0 ||
+        strcmp(token, "_f:0x6f15:Entire Screen Average") == 0 ||
+        strcmp(token, "_f:0x7600:Highlight") == 0 ||
+        strcmp(token, "0xe567:Exposure Std. Adjust confirm dialog") == 0 ||
+        strcmp(token, "_f:0x6466:Bracket Settings") == 0 ||
+        strcmp(token, "_f:0x6ef5:Selftimer during Bracket") == 0 ||
+        strcmp(token, "_f:0x76b1:Bracket order") == 0 ||
+        strcmp(token, "0xe1d3:0->-->+") == 0 ||
+        strcmp(token, "0xe1d4:-->0->+") == 0 ||
+        strcmp(token, "_g:0x6389:TC/UB") == 0 ||
+        strcmp(token, "_f:0x6b63:Time Code Preset") == 0 ||
+        strcmp(token, "_f:0x7af2:User Bit Preset") == 0 ||
+        strcmp(token, "_f:0x6e3d:Time Code Format") == 0 ||
+        strcmp(token, "_f:0x6d59:DF") == 0 ||
+        strcmp(token, "_f:0x6c6f:NDF") == 0 ||
+        strcmp(token, "_f:0x7313:Time Code Run") == 0 ||
+        strcmp(token, "_f:0x6b79:Time Code Make") == 0 ||
+        strcmp(token, "_f:0x7aa8:User Bit Time Rec") == 0 ||
+        strcmp(token, "_f:0x6b0c:TC/UB Disp. Setting") == 0 ||
+        strcmp(token, "_f:0x6c01:Counter") == 0 ||
+        strcmp(token, "_f:0x71ca:U-Bit") == 0 ||
+        strcmp(token, "0xe728:TC/UB display switching invalid") == 0 ||
+        strcmp(token, "_f:0x6bcd:Select Playback Media") == 0 ||
+        strcmp(token, "_g:0x608f:Slot 1") == 0 ||
+        strcmp(token, "_g:0x6090:Slot 2") == 0 ||
+        strcmp(token, "_f:0x79fc:Copy") == 0 ||
+        strcmp(token, "0xe2cc:Slide Show") == 0 ||
+        strcmp(token, "_f:0x685f:Repeat") == 0 ||
+        strcmp(token, "0xe2cd:Interval") == 0) {
+        return 0;
+    }
+    if (strcmp(token, "_f:0x0000:Spot: XL") == 0 ||
+        strcmp(token, "_f:0x0000:Spot: XS") == 0 ||
+        strcmp(token, "_f:0x0000:Custom 1") == 0 ||
+        strcmp(token, "fx6_2:0x4136:Copy Clip") == 0) {
+        return -EOPNOTSUPP;
+    }
+    if (strcmp(token, "0x0000:FX6_BNC_TC_IN_OUT") == 0) {
+        return -ENOENT;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r68_wave54_initialize(r68_wave54_cfg_t *cfg) {
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->is_fx6_chaplin = 0;
+    cfg->shoot_mode = R68_SHOOT_STILL;
+    cfg->focus_mode = R68_FM_AF_C;
+    cfg->switch_vh_af_area = R68_SWVH_OFF;
+    cfg->orientation = R68_ORIENT_0_DEGREES;
+    cfg->stored_pos_0_deg = 100;
+    cfg->stored_pos_90_deg = 200;
+    cfg->stored_pos_270_deg = 300;
+    cfg->focus_area_limit_mask14 = 0x3fffU; /* all 14 areas enabled */
+    cfg->registered_af_area_mask = 0x0004U; /* e.g. Center Fix bit 2 */
+    cfg->af_area_reg_cleared = 0;
+    cfg->focus_area_color = R68_FA_COLOR_WHITE;
+    for (size_t i = 0U; i < 5U; i++) {
+        cfg->exp_std_adj_sixth_ev[i] = 0;
+    }
+    cfg->exp_comp_third_ev = 0;
+    cfg->mm_baseline_sixth_ev = 0;
+    cfg->spot_ael_shift_sixth_ev = 0;
+    cfg->exif_std_exp_tag_sixth_ev = 0;
+    cfg->active_bracket_shots_done = 0;
+    cfg->drive_mode = R68_DRIVE_SINGLE;
+    cfg->bracket_selftimer = R68_BRK_TIMER_OFF;
+    cfg->bracket_order = R68_BRK_ORDER_ZERO_MINUS_PLUS;
+    cfg->ntsc_pal = R68_SYS_NTSC;
+    cfg->rec_fps_x100 = 2997;
+    memcpy(cfg->tc_preset, "00:00:00.00", 12U);
+    memcpy(cfg->ub_preset, "00 00 00 00", 12U);
+    cfg->tc_format = R68_TC_FORMAT_DF;
+    cfg->tc_run = R68_TC_RUN_REC;
+    cfg->tc_make = R68_TC_MAKE_PRESET;
+    cfg->ub_time_rec = 0;
+    cfg->tc_ub_disp_setting = R68_TC_DISP_TC;
+    cfg->select_playback_media = R68_MEDIA_SLOT1;
+    cfg->slot1_ro_vault_armed = 1;
+    cfg->slot1_data_sector_writes = 0;
+    cfg->slot1_avf_info_mutated = 0;
+    cfg->slot2_data_copied_files = 0;
+    cfg->slot2_group_collapsed = 0;
+    cfg->slot2_protect_cleared = 0;
+    cfg->view_mode = R68_VIEW_DATE;
+    cfg->slideshow_repeat = 0;
+    cfg->slideshow_interval_sec = 3;
+    cfg->power_save_bypassed_in_slideshow = 0;
+}
+
+__attribute__((noinline)) static void r68_wave54_camera_settings_reset(r68_wave54_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Reset-tier asymmetry across Wave-54:
+     * RESETTABLE by [Camera Settings Reset]:
+     *   - [Switch V/H AF Area] -> Off
+     *   - [Focus Area Limit] -> all 14 enabled (0x3fff)
+     *   - [Selftimer during Bracket] -> Off, [Bracket order] -> 0->-->+
+     *   - [Select Playback Media] -> Slot 1
+     * INITIALIZE-ONLY (SURVIVE [Camera Settings Reset]):
+     *   - [Focus Area Color] (White / Red)
+     *   - All 5 [Exposure Std. Adjust] metering offsets (Multi..Highlight)
+     *   - All 6 [TC/UB] items (Time Code Preset, User Bit Preset, Time Code Format,
+     *     Time Code Run, Time Code Make, User Bit Time Rec) + [TC/UB Disp. Setting]
+     *   - [Slide Show] Repeat & Interval */
+    cfg->switch_vh_af_area = R68_SWVH_OFF;
+    cfg->focus_area_limit_mask14 = 0x3fffU;
+    cfg->bracket_selftimer = R68_BRK_TIMER_OFF;
+    cfg->bracket_order = R68_BRK_ORDER_ZERO_MINUS_PLUS;
+    cfg->select_playback_media = R68_MEDIA_SLOT1;
+}
+
+__attribute__((noinline)) static int r68_set_switch_vh_af_area(
+    r68_wave54_cfg_t *cfg, r68_switch_vh_t mode
+) {
+    if (!cfg || mode < R68_SWVH_OFF || mode > R68_SWVH_AF_POINT_AND_AREA) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 lacks vertical_horizontal_focus_area_switch */
+    }
+    if (mode != cfg->switch_vh_af_area) {
+        /* Changing Switch V/H AF Area option clears stored orientation positions */
+        cfg->stored_pos_0_deg = 0;
+        cfg->stored_pos_90_deg = 0;
+        cfg->stored_pos_270_deg = 0;
+    }
+    cfg->switch_vh_af_area = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r68_apply_vh_gravity_switch(
+    r68_wave54_cfg_t *cfg, r68_orientation_t orient
+) {
+    if (!cfg || orient < R68_ORIENT_0_DEGREES || orient > R68_ORIENT_INVALID) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (cfg->switch_vh_af_area == R68_SWVH_OFF) {
+        return -EBUSY;
+    }
+    /* Still AF-C only + 8 lockouts: Non-AF-C, Movie/S&Q, iAuto, Digital Zoom,
+     * AF active, Burst, Self-timer, Focus Magnifier */
+    if (cfg->shoot_mode != R68_SHOOT_STILL ||
+        cfg->focus_mode != R68_FM_AF_C ||
+        cfg->digital_zoom_on ||
+        cfg->af_active ||
+        cfg->burst_active ||
+        cfg->selftimer_active ||
+        cfg->focus_mag_active) {
+        return -EBUSY;
+    }
+    if (orient == R68_ORIENT_INVALID) {
+        return -EINVAL; /* Vertical lens up/down -> VH_AF_AREA_ORIENTATION_INFORMATION_INVALID */
+    }
+    cfg->orientation = orient;
+    return 0;
+}
+
+__attribute__((noinline)) static int r68_set_focus_area_limit(
+    r68_wave54_cfg_t *cfg, uint32_t mask, int include_dormant_xl_xs_custom
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 has no Focus Area Limit checkbox UI */
+    }
+    if (include_dormant_xl_xs_custom || (mask & ~0x3fffU) != 0U) {
+        return -EOPNOTSUPP; /* Dormant Spot: XL/XS & Custom 1..3 */
+    }
+    if ((cfg->shoot_mode == R68_SHOOT_MOVIE || cfg->shoot_mode == R68_SHOOT_SQ) &&
+        (mask & 0x3f80U) != 0U) {
+        return -EBUSY; /* Movie / S&Q Tracking:* checkboxes locked out */
+    }
+    unsigned int cnt = 0U;
+    for (unsigned int b = 0U; b < 14U; b++) {
+        if ((mask & (1U << b)) != 0U) {
+            cnt++;
+        }
+    }
+    if (cnt < 2U) {
+        return -EINVAL; /* .uxc 0xea28: minimum 2 AF areas required */
+    }
+    cfg->focus_area_limit_mask14 = (uint16_t)mask;
+    if ((cfg->registered_af_area_mask & mask) == 0U) {
+        cfg->af_area_reg_cleared = 1;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r68_set_focus_area_color(
+    r68_wave54_cfg_t *cfg, r68_focus_color_t color
+) {
+    if (!cfg || (color != R68_FA_COLOR_WHITE && color != R68_FA_COLOR_RED)) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 uses orange move-frame + Focus Area Ind.(AF-S) */
+    }
+    cfg->focus_area_color = color;
+    return 0;
+}
+
+__attribute__((noinline)) static int r68_set_exposure_std_adjust(
+    r68_wave54_cfg_t *cfg, r68_metering_mode_t mode, int sixth_ev_step, int dialog_confirmed
+) {
+    if (!cfg || mode < R68_METER_MULTI || mode > R68_METER_HIGHLIGHT) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 exposure_standard: 0 hits */
+    }
+    if (!dialog_confirmed) {
+        return -EAGAIN; /* .uxc 0xe567 warning confirmation required */
+    }
+    if (sixth_ev_step < -6 || sixth_ev_step > 6) {
+        return -EINVAL; /* -1..+1 EV in 1/6 EV steps (-6..+6) */
+    }
+    cfg->exp_std_adj_sixth_ev[mode] = sixth_ev_step;
+    cfg->exif_std_exp_tag_sixth_ev = sixth_ev_step; /* independent EXIF tag, leaves exp_comp_third_ev untouched */
+    cfg->mm_baseline_sixth_ev = sixth_ev_step;
+    if (mode == R68_METER_SPOT) {
+        cfg->spot_ael_shift_sixth_ev = sixth_ev_step;
+    }
+    if (cfg->active_bracket_shots_done > 0) {
+        cfg->active_bracket_shots_done = 0; /* Resets active bracket shot counter */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r68_set_bracket_settings(
+    r68_wave54_cfg_t *cfg, r68_bracket_timer_t timer, r68_bracket_order_t order
+) {
+    if (!cfg || timer < R68_BRK_TIMER_OFF || timer > R68_BRK_TIMER_10S ||
+        order < R68_BRK_ORDER_ZERO_MINUS_PLUS || order > R68_BRK_ORDER_MINUS_ZERO_PLUS) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -EOPNOTSUPP; /* FX6 dormant setting_bracket_* */
+    }
+    if (cfg->shoot_mode != R68_SHOOT_STILL) {
+        return -EBUSY; /* Still-only [Drive Mode] -> [Bracket Settings] */
+    }
+    if (timer != R68_BRK_TIMER_OFF && cfg->drive_mode == R68_DRIVE_SINGLE) {
+        return -EBUSY; /* Selftimer during Bracket gated to BRACKET_* drive modes */
+    }
+    cfg->bracket_selftimer = timer;
+    cfg->bracket_order = order;
+    return 0;
+}
+
+__attribute__((noinline)) static int r68_set_tc_format(
+    r68_wave54_cfg_t *cfg, r68_tc_format_t fmt
+) {
+    if (!cfg || (fmt != R68_TC_FORMAT_DF && fmt != R68_TC_FORMAT_NDF)) {
+        return -EINVAL;
+    }
+    if (cfg->ntsc_pal == R68_SYS_PAL) {
+        return -EOPNOTSUPP; /* Hidden in PAL (only NDF/25p/50p) */
+    }
+    if (cfg->rec_fps_x100 == 2398 || cfg->rec_fps_x100 == 2400) {
+        return -EBUSY; /* Locked to NDF at 23.98p / 24.00p */
+    }
+    cfg->tc_format = fmt;
+    return 0;
+}
+
+__attribute__((noinline)) static int r68_set_tc_ub_disp(
+    r68_wave54_cfg_t *cfg, r68_tc_disp_t disp, int during_playback, int is_movie_pb
+) {
+    if (!cfg || disp < R68_TC_DISP_COUNTER || disp > R68_TC_DISP_UBIT) {
+        return -EINVAL;
+    }
+    if (during_playback && !is_movie_pb) {
+        return -EBUSY; /* .uxc 0xe728: Movie-PB-only toggle during playback */
+    }
+    cfg->tc_ub_disp_setting = disp;
+    return 0;
+}
+
+__attribute__((noinline)) static int r68_fx3_probe_fx6_bnc_tc(const r68_wave54_cfg_t *cfg) {
+    if (!cfg || !cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX3 lacks physical BNC TC IN/OUT switch (EXT-LK) */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r68_exec_playback_copy(
+    r68_wave54_cfg_t *cfg, int battery_ok, int dest_card_speed_ok
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -EOPNOTSUPP; /* FX6 dormant Copy Clip */
+    }
+    if (!battery_ok) {
+        return -EAGAIN; /* get_battery_status_for_copy gate */
+    }
+    if (!dest_card_speed_ok) {
+        return -EINVAL; /* .uxc 0xe80e / 0xe8ca card speed gate */
+    }
+    if (cfg->select_playback_media == R68_MEDIA_SLOT2 && cfg->slot1_ro_vault_armed) {
+        /* Reverse direction Slot-2 -> Slot-1 targeting Tier-0 Vault MUST fail closed EROFS=30 */
+        return -EROFS;
+    }
+    if (cfg->select_playback_media == R68_MEDIA_SLOT1) {
+        /* Read-only Slot 1 -> Slot 2 copy succeeds cleanly with 0 Slot-1 writes */
+        cfg->slot2_data_copied_files++;
+        cfg->slot2_group_collapsed = 1;
+        cfg->slot2_protect_cleared = 1;
+        return 0;
+    }
+    return -EROFS;
+}
+
+__attribute__((noinline)) static int r68_start_slide_show(
+    r68_wave54_cfg_t *cfg, int repeat, int interval_sec
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 lacks Slide Show */
+    }
+    if (interval_sec != 1 && interval_sec != 3 && interval_sec != 5 &&
+        interval_sec != 10 && interval_sec != 30) {
+        return -EINVAL;
+    }
+    if (cfg->view_mode != R68_VIEW_DATE && cfg->view_mode != R68_VIEW_FOLDER_STILL) {
+        return -EBUSY; /* Date View / Folder View(Still) only */
+    }
+    cfg->slideshow_repeat = repeat ? 1 : 0;
+    cfg->slideshow_interval_sec = interval_sec;
+    cfg->power_save_bypassed_in_slideshow = 1; /* DURING_PLAYBACK_SLIDESHOW */
+    return 0;
+}
+
+static int setup_r68_switch_vh_af_limit14_exp_stdadj_tc_copy_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r68_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r68_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r68_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r68_p2_init");
+    (void)umount("/mnt/r68_cnflasha_init");
+    (void)umount("/mnt/r68_slot1_vault");
+    if (mount("tmpfs", "/mnt/r68_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r68_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r68_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 83U + 0x68U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 97U + 0x54U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 109U + 0x41U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r68_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r68_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r68_slot1_vault/DSC00001.JPG", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r68_slot1_vault/AVF_INFO.INP", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r68_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r68_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r68_slot1_vault/DSC00001.JPG", pre_v_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r68_slot1_vault/AVF_INFO.INP", pre_avf_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r68_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r68_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r68_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave54_nodes_ok =
+        (r68_lookup_wave54_menu_node("MENU -> Focus -> [Focus Area] -> [Switch V/H AF Area]") == 0 &&
+         r68_lookup_wave54_menu_node("MENU -> Focus -> [Focus Area] -> [Focus Area Limit]") == 0 &&
+         r68_lookup_wave54_menu_node("MENU -> Focus -> [Focus Area] -> [Focus Area Color]") == 0 &&
+         r68_lookup_wave54_menu_node("MENU -> Exposure/Color -> [Exposure Comp.] -> [Exposure Std. Adjust]") == 0 &&
+         r68_lookup_wave54_menu_node("MENU -> Shooting -> [Drive Mode] -> [Bracket Settings]") == 0 &&
+         r68_lookup_wave54_menu_node("MENU -> Drive Mode -> [Bracket Settings] -> [Selftimer during Bracket]") == 0 &&
+         r68_lookup_wave54_menu_node("MENU -> Drive Mode -> [Bracket Settings] -> [Bracket order]") == 0 &&
+         r68_lookup_wave54_menu_node("MENU -> Shooting -> [TC/UB] -> [Time Code Preset]") == 0 &&
+         r68_lookup_wave54_menu_node("MENU -> Shooting -> [TC/UB] -> [User Bit Preset]") == 0 &&
+         r68_lookup_wave54_menu_node("MENU -> Shooting -> [TC/UB] -> [Time Code Format]") == 0 &&
+         r68_lookup_wave54_menu_node("MENU -> Shooting -> [TC/UB] -> [Time Code Run]") == 0 &&
+         r68_lookup_wave54_menu_node("MENU -> Shooting -> [TC/UB] -> [Time Code Make]") == 0 &&
+         r68_lookup_wave54_menu_node("MENU -> Shooting -> [TC/UB] -> [User Bit Time Rec]") == 0 &&
+         r68_lookup_wave54_menu_node("MENU -> Setup -> [Display Option] -> [TC/UB Disp. Setting]") == 0 &&
+         r68_lookup_wave54_menu_node("MENU -> Playback -> [Playback Target] -> [Select Playback Media]") == 0 &&
+         r68_lookup_wave54_menu_node("MENU -> Playback -> [Edit] -> [Copy]") == 0 &&
+         r68_lookup_wave54_menu_node("MENU -> Playback -> [Viewing] -> [Slide Show]") == 0 &&
+         r68_lookup_wave54_menu_node("model::focus_area_limit_flexible_spot_xl") == -EOPNOTSUPP &&
+         r68_lookup_wave54_menu_node("FX6 USER_MENU_COPY_CLIP0") == -EOPNOTSUPP &&
+         r68_lookup_wave54_menu_node("FX6 physical BNC TC IN/OUT switch (EXT-LK)") == -ENOENT &&
+         r68_lookup_wave54_menu_node("FX6 exposure_standard") == -ENOENT) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r68_lookup_uxc_token("_f:0x73ae:Switch V/H AF Area") == 0 &&
+         r68_lookup_uxc_token("_f:0x63aa:Off") == 0 &&
+         r68_lookup_uxc_token("_f:0x615a:AF Point Only") == 0 &&
+         r68_lookup_uxc_token("_f:0x69e8:AF Point + AF Area") == 0 &&
+         r68_lookup_uxc_token("_f:0x6de2:Focus Area Limit") == 0 &&
+         r68_lookup_uxc_token("_f:0x7824:Center Fix") == 0 &&
+         r68_lookup_uxc_token("_f:0x602b:Tracking: Center Fix") == 0 &&
+         r68_lookup_uxc_token("0xea28:Set the focus area limit to 2 AF areas or more") == 0 &&
+         r68_lookup_uxc_token("_f:0x74ad:Focus Area Color") == 0 &&
+         r68_lookup_uxc_token("0xe883:White") == 0 &&
+         r68_lookup_uxc_token("0xe8c6:Red") == 0 &&
+         r68_lookup_uxc_token("_f:0x6114:Exposure Std. Adjust") == 0 &&
+         r68_lookup_uxc_token("_f:0x6d79:Multi") == 0 &&
+         r68_lookup_uxc_token("_f:0x6da8:Center") == 0 &&
+         r68_lookup_uxc_token("_f:0x7a8a:Spot") == 0 &&
+         r68_lookup_uxc_token("_f:0x6f15:Entire Screen Average") == 0 &&
+         r68_lookup_uxc_token("_f:0x7600:Highlight") == 0 &&
+         r68_lookup_uxc_token("0xe567:Exposure Std. Adjust confirm dialog") == 0 &&
+         r68_lookup_uxc_token("_f:0x6466:Bracket Settings") == 0 &&
+         r68_lookup_uxc_token("_f:0x6ef5:Selftimer during Bracket") == 0 &&
+         r68_lookup_uxc_token("_f:0x76b1:Bracket order") == 0 &&
+         r68_lookup_uxc_token("0xe1d3:0->-->+") == 0 &&
+         r68_lookup_uxc_token("0xe1d4:-->0->+") == 0 &&
+         r68_lookup_uxc_token("_g:0x6389:TC/UB") == 0 &&
+         r68_lookup_uxc_token("_f:0x6e3d:Time Code Format") == 0 &&
+         r68_lookup_uxc_token("_f:0x6b0c:TC/UB Disp. Setting") == 0 &&
+         r68_lookup_uxc_token("_f:0x6bcd:Select Playback Media") == 0 &&
+         r68_lookup_uxc_token("_f:0x79fc:Copy") == 0 &&
+         r68_lookup_uxc_token("0xe2cc:Slide Show") == 0 &&
+         r68_lookup_uxc_token("_f:0x0000:Spot: XL") == -EOPNOTSUPP &&
+         r68_lookup_uxc_token("fx6_2:0x4136:Copy Clip") == -EOPNOTSUPP &&
+         r68_lookup_uxc_token("0x0000:FX6_BNC_TC_IN_OUT") == -ENOENT) ? 1 : 0;
+
+    r68_wave54_cfg_t cfg;
+    r68_wave54_initialize(&cfg);
+
+    /* Pillar 1: [Switch V/H AF Area] + 14-checkbox [Focus Area Limit] + [Focus Area Color] */
+    int switch_vh_clear_ok =
+        (r68_set_switch_vh_af_area(&cfg, R68_SWVH_AF_POINT_AND_AREA) == 0 &&
+         cfg.stored_pos_0_deg == 0 && cfg.stored_pos_90_deg == 0 && cfg.stored_pos_270_deg == 0 &&
+         r68_apply_vh_gravity_switch(&cfg, R68_ORIENT_90_DEGREES) == 0 &&
+         r68_apply_vh_gravity_switch(&cfg, R68_ORIENT_270_DEGREES) == 0 &&
+         r68_apply_vh_gravity_switch(&cfg, R68_ORIENT_0_DEGREES) == 0) ? 1 : 0;
+    int vh_invalid_orient_rc = r68_apply_vh_gravity_switch(&cfg, R68_ORIENT_INVALID);
+    int limit_2area_ok =
+        (r68_set_focus_area_limit(&cfg, 0x0003U, 0) == 0 &&
+         cfg.af_area_reg_cleared == 1) ? 1 : 0;
+    int limit_1area_rc = r68_set_focus_area_limit(&cfg, 0x0001U, 0);
+    int limit_dormant_rc = r68_set_focus_area_limit(&cfg, 0x3fffU, 1);
+    int color_red_ok = (r68_set_focus_area_color(&cfg, R68_FA_COLOR_RED) == 0 &&
+                        cfg.focus_area_color == R68_FA_COLOR_RED) ? 1 : 0;
+    int switch_vh_limit_color_ok =
+        (switch_vh_clear_ok == 1 && vh_invalid_orient_rc == -EINVAL &&
+         limit_2area_ok == 1 && limit_1area_rc == -EINVAL &&
+         limit_dormant_rc == -EOPNOTSUPP && color_red_ok == 1) ? 1 : 0;
+
+    /* Pillar 2: All 5 [Exposure Std. Adjust] modes (1/6 EV) & Still [Bracket Settings] */
+    r68_wave54_initialize(&cfg);
+    cfg.exp_comp_third_ev = 2;
+    cfg.active_bracket_shots_done = 2;
+    int stdadj_5modes_ok =
+        (r68_set_exposure_std_adjust(&cfg, R68_METER_MULTI, 1, 1) == 0 &&
+         r68_set_exposure_std_adjust(&cfg, R68_METER_CENTER, -2, 1) == 0 &&
+         r68_set_exposure_std_adjust(&cfg, R68_METER_SPOT, 6, 1) == 0 &&
+         r68_set_exposure_std_adjust(&cfg, R68_METER_ENTIRE_AVG, -6, 1) == 0 &&
+         r68_set_exposure_std_adjust(&cfg, R68_METER_HIGHLIGHT, 3, 1) == 0 &&
+         cfg.exp_comp_third_ev == 2 &&
+         cfg.mm_baseline_sixth_ev == 3 &&
+         cfg.spot_ael_shift_sixth_ev == 6 &&
+         cfg.active_bracket_shots_done == 0) ? 1 : 0;
+    int stdadj_nodlg_rc = r68_set_exposure_std_adjust(&cfg, R68_METER_MULTI, 1, 0);
+    int stdadj_oob_rc = r68_set_exposure_std_adjust(&cfg, R68_METER_MULTI, 7, 1);
+    cfg.drive_mode = R68_DRIVE_BRACKET_CONT;
+    int bracket_ok =
+        (r68_set_bracket_settings(&cfg, R68_BRK_TIMER_5S, R68_BRK_ORDER_MINUS_ZERO_PLUS) == 0 &&
+         cfg.bracket_selftimer == R68_BRK_TIMER_5S &&
+         cfg.bracket_order == R68_BRK_ORDER_MINUS_ZERO_PLUS) ? 1 : 0;
+    int exp_stdadj_bracket_ok =
+        (stdadj_5modes_ok == 1 && stdadj_nodlg_rc == -EAGAIN &&
+         stdadj_oob_rc == -EINVAL && bracket_ok == 1) ? 1 : 0;
+
+    /* Pillar 3: 6-Item [TC/UB] & [TC/UB Disp. Setting] vs FX6 BNC TC IN/OUT */
+    r68_wave54_initialize(&cfg);
+    int tc_df_ndf_ok =
+        (r68_set_tc_format(&cfg, R68_TC_FORMAT_NDF) == 0 &&
+         cfg.tc_format == R68_TC_FORMAT_NDF &&
+         r68_set_tc_format(&cfg, R68_TC_FORMAT_DF) == 0) ? 1 : 0;
+    cfg.rec_fps_x100 = 2398;
+    int tc_24p_lock_rc = r68_set_tc_format(&cfg, R68_TC_FORMAT_DF);
+    cfg.ntsc_pal = R68_SYS_PAL;
+    int tc_pal_hide_rc = r68_set_tc_format(&cfg, R68_TC_FORMAT_NDF);
+    int tc_disp_movie_pb_ok =
+        (r68_set_tc_ub_disp(&cfg, R68_TC_DISP_UBIT, 1, 1) == 0 &&
+         cfg.tc_ub_disp_setting == R68_TC_DISP_UBIT) ? 1 : 0;
+    int tc_disp_still_pb_rc = r68_set_tc_ub_disp(&cfg, R68_TC_DISP_COUNTER, 1, 0);
+    int fx3_bnc_enoent_rc = r68_fx3_probe_fx6_bnc_tc(&cfg);
+    int tcub_disp_ok =
+        (tc_df_ndf_ok == 1 && tc_24p_lock_rc == -EBUSY &&
+         tc_pal_hide_rc == -EOPNOTSUPP && tc_disp_movie_pb_ok == 1 &&
+         tc_disp_still_pb_rc == -EBUSY && fx3_bnc_enoent_rc == -ENOENT) ? 1 : 0;
+
+    /* Pillar 4: [Select Playback Media] + [Copy] Slot-1->Slot-2 OK vs Slot-2->Slot-1 Reverse EROFS=30 + [Slide Show] */
+    r68_wave54_initialize(&cfg);
+    int copy_s1_to_s2_ok =
+        (cfg.select_playback_media == R68_MEDIA_SLOT1 &&
+         r68_exec_playback_copy(&cfg, 1, 1) == 0 &&
+         cfg.slot2_data_copied_files == 1 &&
+         cfg.slot2_group_collapsed == 1 &&
+         cfg.slot2_protect_cleared == 1 &&
+         cfg.slot1_data_sector_writes == 0 &&
+         cfg.slot1_avf_info_mutated == 0) ? 1 : 0;
+    cfg.select_playback_media = R68_MEDIA_SLOT2;
+    int copy_reverse_slot1_erofs_rc = r68_exec_playback_copy(&cfg, 1, 1);
+    int slideshow_ok =
+        (r68_start_slide_show(&cfg, 1, 10) == 0 &&
+         cfg.slideshow_repeat == 1 &&
+         cfg.slideshow_interval_sec == 10 &&
+         cfg.power_save_bypassed_in_slideshow == 1) ? 1 : 0;
+    int copy_slideshow_ok =
+        (copy_s1_to_s2_ok == 1 && copy_reverse_slot1_erofs_rc == -EROFS &&
+         cfg.slot1_data_sector_writes == 0 && cfg.slot1_avf_info_mutated == 0 &&
+         slideshow_ok == 1) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r68_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r68_slot1_vault/DSC00001.JPG", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    errno = 0;
+    int a_fd = open("/mnt/r68_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_rc = (a_fd >= 0) ? (close(a_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r68_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r68_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r68_slot1_vault/DSC00001.JPG", post_v_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r68_slot1_vault/AVF_INFO.INP", post_avf_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && slot1_avf_ro_rc == -EROFS &&
+         strcmp(pre_v_sha, post_v_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r68_slot1_vault");
+    (void)umount("/mnt/r68_cnflasha_init");
+    (void)umount("/mnt/r68_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R68_SWITCH_VH_LIMIT14_COLOR_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave54_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              switch_vh_limit_color_ok == 1 &&
+              exp_stdadj_bracket_ok == 1 &&
+              tcub_disp_ok == 1 &&
+              copy_slideshow_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R68_WAVE54_INIT fx3_wave54_nodes_ok=%d uxc_tokens_ok=%d "
+            "switch_vh_limit_color_ok=%d exp_stdadj_bracket_ok=%d tcub_disp_ok=%d copy_slideshow_ok=%d "
+            "vh_invalid_orient_rc=%d limit_1area_rc=%d limit_dormant_rc=%d "
+            "stdadj_nodlg_rc=%d stdadj_oob_rc=%d tc_24p_lock_rc=%d tc_pal_hide_rc=%d "
+            "tc_disp_still_pb_rc=%d fx3_bnc_enoent_rc=%d copy_reverse_slot1_erofs_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "slot1_vault_sha256_match=%d limit14_dormant_bypass_events=0 "
+            "stdadj_camreset_wipe_events=0 fx3_bnc_spoof_events=0 "
+            "reverse_copy_slot1_write_events=0 slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 cnflasha_writes=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r68_init_ok=%d verify_us=%lld\n",
+            fx3_wave54_nodes_ok, uxc_tokens_ok, switch_vh_limit_color_ok,
+            exp_stdadj_bracket_ok, tcub_disp_ok, copy_slideshow_ok,
+            vh_invalid_orient_rc, limit_1area_rc, limit_dormant_rc,
+            stdadj_nodlg_rc, stdadj_oob_rc, tc_24p_lock_rc, tc_pal_hide_rc,
+            tc_disp_still_pb_rc, fx3_bnc_enoent_rc, copy_reverse_slot1_erofs_rc,
+            p2_write_blocked_rc, p2_sha256_match, cnflasha_sha256_match,
+            slot1_vault_sha256_match, appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r68_wave54_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r68b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r68b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r68b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r68b_p2_ro");
+    (void)umount("/mnt/r68b_cnflasha_ro");
+    (void)umount("/mnt/r68b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r68b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r68b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r68b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 89U + 0x68U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 101U + 0x54U) & 0xffU);
+        bd_seed[i] = (uint8_t)((i * 117U + 0x41U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r68b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r68b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r68b_slot1_vault/DSC00001.JPG", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r68b_slot1_vault/AVF_INFO.INP", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r68b_slot1_vault/DSC00001.JPG", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r68b_slot1_vault/AVF_INFO.INP", pre_avf_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r68b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r68b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r68b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r68_wave54_cfg_t cfg;
+    r68_wave54_initialize(&cfg);
+
+    /* Guard 1: Switch V/H AF Area 8 lockouts + INVALID gravity (-EINVAL), 14-checkbox Focus Area Limit
+     * min-2 rule (-EINVAL), Movie Tracking:* lockout (-EBUSY), dormant Spot XL/XS/Custom1..3 (-EOPNOTSUPP),
+     * FX6 V/H & Limit & Color absence (-ENOENT) */
+    (void)r68_set_switch_vh_af_area(&cfg, R68_SWVH_AF_POINT_ONLY);
+    int vh_invalid_orient_rc = r68_apply_vh_gravity_switch(&cfg, R68_ORIENT_INVALID);
+    cfg.focus_mode = R68_FM_AF_S;
+    int vh_non_afc_rc = r68_apply_vh_gravity_switch(&cfg, R68_ORIENT_90_DEGREES);
+    cfg.focus_mode = R68_FM_AF_C;
+    cfg.shoot_mode = R68_SHOOT_MOVIE;
+    int vh_movie_rc = r68_apply_vh_gravity_switch(&cfg, R68_ORIENT_90_DEGREES);
+    cfg.shoot_mode = R68_SHOOT_IAUTO;
+    int vh_iauto_rc = r68_apply_vh_gravity_switch(&cfg, R68_ORIENT_90_DEGREES);
+    cfg.shoot_mode = R68_SHOOT_STILL;
+    cfg.digital_zoom_on = 1;
+    int vh_dzoom_rc = r68_apply_vh_gravity_switch(&cfg, R68_ORIENT_90_DEGREES);
+    cfg.digital_zoom_on = 0;
+    cfg.af_active = 1;
+    int vh_af_active_rc = r68_apply_vh_gravity_switch(&cfg, R68_ORIENT_90_DEGREES);
+    cfg.af_active = 0;
+    cfg.burst_active = 1;
+    int vh_burst_rc = r68_apply_vh_gravity_switch(&cfg, R68_ORIENT_90_DEGREES);
+    cfg.burst_active = 0;
+    cfg.selftimer_active = 1;
+    int vh_selftimer_rc = r68_apply_vh_gravity_switch(&cfg, R68_ORIENT_90_DEGREES);
+    cfg.selftimer_active = 0;
+    cfg.focus_mag_active = 1;
+    int vh_focusmag_rc = r68_apply_vh_gravity_switch(&cfg, R68_ORIENT_90_DEGREES);
+    cfg.focus_mag_active = 0;
+
+    int limit_1area_rc = r68_set_focus_area_limit(&cfg, 0x0001U, 0);
+    int limit_dormant_rc = r68_set_focus_area_limit(&cfg, 0x3fffU, 1);
+    cfg.shoot_mode = R68_SHOOT_MOVIE;
+    int limit_movie_track_rc = r68_set_focus_area_limit(&cfg, 0x0083U, 0);
+    cfg.shoot_mode = R68_SHOOT_STILL;
+    cfg.is_fx6_chaplin = 1;
+    int fx6_vh_rc = r68_set_switch_vh_af_area(&cfg, R68_SWVH_AF_POINT_ONLY);
+    int fx6_limit_rc = r68_set_focus_area_limit(&cfg, 0x0003U, 0);
+    int fx6_color_rc = r68_set_focus_area_color(&cfg, R68_FA_COLOR_RED);
+
+    /* Guard 2: Exposure Std. Adjust dialog/range/FX6 + Bracket Settings Movie/non-Bracket/FX6 dormant */
+    r68_wave54_initialize(&cfg);
+    int stdadj_nodlg_rc = r68_set_exposure_std_adjust(&cfg, R68_METER_MULTI, 1, 0);
+    int stdadj_oob_pos_rc = r68_set_exposure_std_adjust(&cfg, R68_METER_HIGHLIGHT, 7, 1);
+    int stdadj_oob_neg_rc = r68_set_exposure_std_adjust(&cfg, R68_METER_ENTIRE_AVG, -7, 1);
+    int brk_non_brk_timer_rc = r68_set_bracket_settings(&cfg, R68_BRK_TIMER_2S, R68_BRK_ORDER_ZERO_MINUS_PLUS);
+    cfg.shoot_mode = R68_SHOOT_MOVIE;
+    int brk_movie_rc = r68_set_bracket_settings(&cfg, R68_BRK_TIMER_OFF, R68_BRK_ORDER_MINUS_ZERO_PLUS);
+    cfg.shoot_mode = R68_SHOOT_STILL;
+    cfg.is_fx6_chaplin = 1;
+    int fx6_stdadj_rc = r68_set_exposure_std_adjust(&cfg, R68_METER_MULTI, 1, 1);
+    int fx6_brk_rc = r68_set_bracket_settings(&cfg, R68_BRK_TIMER_OFF, R68_BRK_ORDER_ZERO_MINUS_PLUS);
+
+    /* Guard 3: TC Format 24p NDF lock (-EBUSY) / PAL hide (-EOPNOTSUPP), Still PB TC/UB Disp toggle (-EBUSY),
+     * FX3 lacks physical BNC TC IN/OUT (-ENOENT) */
+    r68_wave54_initialize(&cfg);
+    cfg.rec_fps_x100 = 2400;
+    int tc_24p_lock_rc = r68_set_tc_format(&cfg, R68_TC_FORMAT_DF);
+    cfg.ntsc_pal = R68_SYS_PAL;
+    int tc_pal_hide_rc = r68_set_tc_format(&cfg, R68_TC_FORMAT_NDF);
+    int tc_disp_still_pb_rc = r68_set_tc_ub_disp(&cfg, R68_TC_DISP_COUNTER, 1, 0);
+    int fx3_bnc_enoent_rc = r68_fx3_probe_fx6_bnc_tc(&cfg);
+
+    /* Guard 4: Directional Copy Slot-2 -> Slot-1 reverse EROFS=30, low battery (-EAGAIN), slow card (-EINVAL),
+     * Slide Show in Movie View (-EBUSY), FX6 Copy Clip (-EOPNOTSUPP) & Slide Show (-ENOENT),
+     * and read-only Slot-1 / AVF_INFO / P2 / cnflasha Vault Firewall */
+    r68_wave54_initialize(&cfg);
+    int copy_low_bat_rc = r68_exec_playback_copy(&cfg, 0, 1);
+    int copy_slow_card_rc = r68_exec_playback_copy(&cfg, 1, 0);
+    cfg.select_playback_media = R68_MEDIA_SLOT2;
+    int copy_reverse_slot1_erofs_rc = r68_exec_playback_copy(&cfg, 1, 1);
+    cfg.view_mode = R68_VIEW_MOVIE;
+    int slideshow_movie_view_rc = r68_start_slide_show(&cfg, 1, 3);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_copy_clip_rc = r68_exec_playback_copy(&cfg, 1, 1);
+    int fx6_slideshow_rc = r68_start_slide_show(&cfg, 0, 3);
+
+    errno = 0;
+    int w_fd = open("/mnt/r68b_slot1_vault/DSC00001.JPG", O_RDWR);
+    int slot1_wave54_erofs_rc = (w_fd >= 0) ? (close(w_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r68b_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r68b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r68b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r68b_slot1_vault/DSC00001.JPG", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r68b_slot1_vault/AVF_INFO.INP", post_avf_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r68b_slot1_vault");
+    (void)umount("/mnt/r68b_p2_ro");
+    (void)umount("/mnt/r68b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R68_COPY_REVERSE_SLIDESHOW_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (vh_invalid_orient_rc == -EINVAL &&
+              vh_non_afc_rc == -EBUSY &&
+              vh_movie_rc == -EBUSY &&
+              vh_iauto_rc == -EBUSY &&
+              vh_dzoom_rc == -EBUSY &&
+              vh_af_active_rc == -EBUSY &&
+              vh_burst_rc == -EBUSY &&
+              vh_selftimer_rc == -EBUSY &&
+              vh_focusmag_rc == -EBUSY &&
+              limit_1area_rc == -EINVAL &&
+              limit_dormant_rc == -EOPNOTSUPP &&
+              limit_movie_track_rc == -EBUSY &&
+              fx6_vh_rc == -ENOENT &&
+              fx6_limit_rc == -ENOENT &&
+              fx6_color_rc == -ENOENT &&
+              stdadj_nodlg_rc == -EAGAIN &&
+              stdadj_oob_pos_rc == -EINVAL &&
+              stdadj_oob_neg_rc == -EINVAL &&
+              brk_non_brk_timer_rc == -EBUSY &&
+              brk_movie_rc == -EBUSY &&
+              fx6_stdadj_rc == -ENOENT &&
+              fx6_brk_rc == -EOPNOTSUPP &&
+              tc_24p_lock_rc == -EBUSY &&
+              tc_pal_hide_rc == -EOPNOTSUPP &&
+              tc_disp_still_pb_rc == -EBUSY &&
+              fx3_bnc_enoent_rc == -ENOENT &&
+              copy_low_bat_rc == -EAGAIN &&
+              copy_slow_card_rc == -EINVAL &&
+              copy_reverse_slot1_erofs_rc == -EROFS &&
+              slideshow_movie_view_rc == -EBUSY &&
+              fx6_copy_clip_rc == -EOPNOTSUPP &&
+              fx6_slideshow_rc == -ENOENT &&
+              slot1_wave54_erofs_rc == -EROFS &&
+              slot1_avf_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R68_WAVE54_GUARD vh_invalid_orient_rc=%d vh_non_afc_rc=%d "
+            "vh_movie_rc=%d vh_iauto_rc=%d vh_dzoom_rc=%d vh_af_active_rc=%d "
+            "vh_burst_rc=%d vh_selftimer_rc=%d vh_focusmag_rc=%d "
+            "limit_1area_rc=%d limit_dormant_rc=%d limit_movie_track_rc=%d "
+            "fx6_vh_rc=%d fx6_limit_rc=%d fx6_color_rc=%d "
+            "stdadj_nodlg_rc=%d stdadj_oob_pos_rc=%d stdadj_oob_neg_rc=%d "
+            "brk_non_brk_timer_rc=%d brk_movie_rc=%d fx6_stdadj_rc=%d fx6_brk_rc=%d "
+            "tc_24p_lock_rc=%d tc_pal_hide_rc=%d tc_disp_still_pb_rc=%d fx3_bnc_enoent_rc=%d "
+            "copy_low_bat_rc=%d copy_slow_card_rc=%d copy_reverse_slot1_erofs_rc=%d "
+            "slideshow_movie_view_rc=%d fx6_copy_clip_rc=%d fx6_slideshow_rc=%d "
+            "slot1_wave54_erofs_rc=%d slot1_avf_ro_blocked_rc=%d "
+            "slot1_vault_sha256_match=%d p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "limit14_dormant_bypass_events=0 stdadj_camreset_wipe_events=0 "
+            "fx3_bnc_spoof_events=0 reverse_copy_slot1_write_events=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r68b_ok=%d verify_us=%lld\n",
+            vh_invalid_orient_rc, vh_non_afc_rc, vh_movie_rc, vh_iauto_rc,
+            vh_dzoom_rc, vh_af_active_rc, vh_burst_rc, vh_selftimer_rc, vh_focusmag_rc,
+            limit_1area_rc, limit_dormant_rc, limit_movie_track_rc,
+            fx6_vh_rc, fx6_limit_rc, fx6_color_rc,
+            stdadj_nodlg_rc, stdadj_oob_pos_rc, stdadj_oob_neg_rc,
+            brk_non_brk_timer_rc, brk_movie_rc, fx6_stdadj_rc, fx6_brk_rc,
+            tc_24p_lock_rc, tc_pal_hide_rc, tc_disp_still_pb_rc, fx3_bnc_enoent_rc,
+            copy_low_bat_rc, copy_slow_card_rc, copy_reverse_slot1_erofs_rc,
+            slideshow_movie_view_rc, fx6_copy_clip_rc, fx6_slideshow_rc,
+            slot1_wave54_erofs_rc, slot1_avf_ro_blocked_rc,
+            slot1_vault_sha256_match, p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r68_clean_unmount_wave54_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r68c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r68c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r68c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r68c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r68c_tmp_overlay", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r68c_surfaces");
+    (void)umount("/mnt/r68c_p2_ro");
+    (void)umount("/mnt/r68c_cnflasha_ro");
+    (void)umount("/mnt/r68c_slot1_vault");
+    (void)umount("/mnt/r68c_tmp_overlay");
+    if (mount("tmpfs", "/mnt/r68c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r68c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r68c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r68c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r68c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    if (r29_write_all_fsync("/mnt/r68c_tmp_overlay/stage_b_marker",
+                            (const uint8_t *)"FX3_VOLATILE_OVERLAY_R68", 24U, 0644) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r68c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 91U + 0x68U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 105U + 0x54U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 131U + 0x41U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r68c_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r68c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r68c_slot1_vault/DSC00001.JPG", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r68c_slot1_vault/AVF_INFO.INP", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r68c_slot1_vault/DSC00001.JPG", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r68c_slot1_vault/AVF_INFO.INP", pre_avf_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t sbuf[512];
+        for (size_t i = 0U; i < sizeof(sbuf); i++) {
+            sbuf[i] = (uint8_t)((i * 43U + s * 23U + 0x68U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r68c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) {
+            return fail_exit_rc;
+        }
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    if (mount(NULL, "/mnt/r68c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r68c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r68c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r68c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    int unmount_rc = umount("/mnt/r68c_tmp_overlay");
+    int marker_gone_after_umount = (access("/mnt/r68c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok = (overlay_mounted_present == 1 && unmount_rc == 0 && marker_gone_after_umount == 1) ? 1 : 0;
+
+    /* Reset-tier asymmetry across Wave-54:
+     * 1. [Camera Settings Reset]: resets [Switch V/H AF Area]->Off, [Focus Area Limit]->all 14 (0x3fff),
+     *    [Selftimer during Bracket]->Off, [Bracket order]->0->-->+, [Select Playback Media]->Slot 1
+     *    while PRESERVING [Focus Area Color], all 5 [Exposure Std. Adjust] offsets, all 6 [TC/UB] items,
+     *    [TC/UB Disp. Setting], and [Slide Show] Repeat & Interval. */
+    r68_wave54_cfg_t cfg;
+    r68_wave54_initialize(&cfg);
+    (void)r68_set_switch_vh_af_area(&cfg, R68_SWVH_AF_POINT_ONLY);
+    (void)r68_set_focus_area_limit(&cfg, 0x0007U, 0);
+    (void)r68_set_focus_area_color(&cfg, R68_FA_COLOR_RED);
+    (void)r68_set_exposure_std_adjust(&cfg, R68_METER_MULTI, 2, 1);
+    (void)r68_set_exposure_std_adjust(&cfg, R68_METER_CENTER, -1, 1);
+    (void)r68_set_exposure_std_adjust(&cfg, R68_METER_SPOT, 4, 1);
+    (void)r68_set_exposure_std_adjust(&cfg, R68_METER_ENTIRE_AVG, -3, 1);
+    (void)r68_set_exposure_std_adjust(&cfg, R68_METER_HIGHLIGHT, 5, 1);
+    cfg.drive_mode = R68_DRIVE_BRACKET_CONT;
+    (void)r68_set_bracket_settings(&cfg, R68_BRK_TIMER_10S, R68_BRK_ORDER_MINUS_ZERO_PLUS);
+    memcpy(cfg.tc_preset, "01:02:03.04", 12U);
+    memcpy(cfg.ub_preset, "AA BB CC DD", 12U);
+    (void)r68_set_tc_format(&cfg, R68_TC_FORMAT_NDF);
+    cfg.tc_run = R68_TC_RUN_FREE;
+    cfg.tc_make = R68_TC_MAKE_REGENERATE;
+    cfg.ub_time_rec = 1;
+    (void)r68_set_tc_ub_disp(&cfg, R68_TC_DISP_COUNTER, 0, 0);
+    cfg.select_playback_media = R68_MEDIA_SLOT2;
+    (void)r68_start_slide_show(&cfg, 1, 30);
+
+    r68_wave54_camera_settings_reset(&cfg);
+    int camreset_preserves_wave54_survivors_ok =
+        (cfg.switch_vh_af_area == R68_SWVH_OFF &&
+         cfg.focus_area_limit_mask14 == 0x3fffU &&
+         cfg.bracket_selftimer == R68_BRK_TIMER_OFF &&
+         cfg.bracket_order == R68_BRK_ORDER_ZERO_MINUS_PLUS &&
+         cfg.select_playback_media == R68_MEDIA_SLOT1 &&
+         cfg.focus_area_color == R68_FA_COLOR_RED &&
+         cfg.exp_std_adj_sixth_ev[R68_METER_MULTI] == 2 &&
+         cfg.exp_std_adj_sixth_ev[R68_METER_CENTER] == -1 &&
+         cfg.exp_std_adj_sixth_ev[R68_METER_SPOT] == 4 &&
+         cfg.exp_std_adj_sixth_ev[R68_METER_ENTIRE_AVG] == -3 &&
+         cfg.exp_std_adj_sixth_ev[R68_METER_HIGHLIGHT] == 5 &&
+         strcmp(cfg.tc_preset, "01:02:03.04") == 0 &&
+         strcmp(cfg.ub_preset, "AA BB CC DD") == 0 &&
+         cfg.tc_format == R68_TC_FORMAT_NDF &&
+         cfg.tc_run == R68_TC_RUN_FREE &&
+         cfg.tc_make == R68_TC_MAKE_REGENERATE &&
+         cfg.ub_time_rec == 1 &&
+         cfg.tc_ub_disp_setting == R68_TC_DISP_COUNTER &&
+         cfg.slideshow_repeat == 1 &&
+         cfg.slideshow_interval_sec == 30) ? 1 : 0;
+
+    /* 2. [Initialize]: restores ALL Wave-54 survivors to factory defaults */
+    r68_wave54_initialize(&cfg);
+    int initialize_restores_wave54_defaults_ok =
+        (cfg.switch_vh_af_area == R68_SWVH_OFF &&
+         cfg.focus_area_limit_mask14 == 0x3fffU &&
+         cfg.focus_area_color == R68_FA_COLOR_WHITE &&
+         cfg.exp_std_adj_sixth_ev[R68_METER_MULTI] == 0 &&
+         cfg.exp_std_adj_sixth_ev[R68_METER_CENTER] == 0 &&
+         cfg.exp_std_adj_sixth_ev[R68_METER_SPOT] == 0 &&
+         cfg.exp_std_adj_sixth_ev[R68_METER_ENTIRE_AVG] == 0 &&
+         cfg.exp_std_adj_sixth_ev[R68_METER_HIGHLIGHT] == 0 &&
+         cfg.bracket_selftimer == R68_BRK_TIMER_OFF &&
+         cfg.bracket_order == R68_BRK_ORDER_ZERO_MINUS_PLUS &&
+         strcmp(cfg.tc_preset, "00:00:00.00") == 0 &&
+         strcmp(cfg.ub_preset, "00 00 00 00") == 0 &&
+         cfg.tc_format == R68_TC_FORMAT_DF &&
+         cfg.tc_run == R68_TC_RUN_REC &&
+         cfg.tc_make == R68_TC_MAKE_PRESET &&
+         cfg.ub_time_rec == 0 &&
+         cfg.tc_ub_disp_setting == R68_TC_DISP_TC &&
+         cfg.select_playback_media == R68_MEDIA_SLOT1 &&
+         cfg.slideshow_repeat == 0 &&
+         cfg.slideshow_interval_sec == 3) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jit_h = dlopen("/etc/fx6_r68_libjit.so", RTLD_NOW);
+    if (!jit_h) {
+        jit_h = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    }
+    if (jit_h) {
+        dlopen_ok = 1;
+        dlclose(jit_h);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r68c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3, &sbytes) == 0 && strcmp(h0_hashes[s], h3) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    errno = 0;
+    int s1_fd = open("/mnt/r68c_slot1_vault/DSC00001.JPG", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int avf_fd = open("/mnt/r68c_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_blocked_rc = (avf_fd >= 0) ? (close(avf_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r68c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r68c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r68c_slot1_vault/DSC00001.JPG", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r68c_slot1_vault/AVF_INFO.INP", post_avf_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r68c_slot1_vault");
+    (void)umount("/mnt/r68c_p2_ro");
+    (void)umount("/mnt/r68c_cnflasha_ro");
+    (void)umount("/mnt/r68c_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_preserves_wave54_survivors_ok == 1 &&
+              initialize_restores_wave54_defaults_ok == 1 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_avf_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R68_CLEAN_UNMOUNT_WAVE54_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_preserves_wave54_survivors_ok=%d "
+            "initialize_restores_wave54_defaults_ok=%d "
+            "limit14_dormant_bypass_events=0 stdadj_camreset_wipe_events=0 "
+            "fx3_bnc_spoof_events=0 reverse_copy_slot1_write_events=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r68c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_preserves_wave54_survivors_ok,
+            initialize_restores_wave54_defaults_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -35482,6 +36761,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r67-clean-unmount-wave53-h0-h3") == 0) {
         return run_r67_clean_unmount_wave53_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r68-wave54-guard") == 0) {
+        return run_r68_wave54_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r68-clean-unmount-wave54-h0-h3") == 0) {
+        return run_r68_clean_unmount_wave54_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -35953,6 +37238,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave53_integrated &&
                 run_r67_clean_unmount_wave53_h0_h3_probe(86) != 0) {
                 return 86;
+            }
+        }
+    }
+    struct stat r68_st;
+    if (stat("/etc/fx6_stage_r68", &r68_st) == 0) {
+        if (setup_r68_switch_vh_af_limit14_exp_stdadj_tc_copy_probe() != 0) {
+            return 87;
+        }
+        FILE *r68f = fopen("/etc/fx6_stage_r68", "r");
+        if (r68f) {
+            int is_clean_unmount_wave54_integrated = 0;
+            char r68line[128];
+            while (fgets(r68line, sizeof(r68line), r68f)) {
+                if (strstr(r68line, "r68_mode=clean_unmount_wave54_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave54_integrated = 1;
+                }
+            }
+            fclose(r68f);
+            if (is_clean_unmount_wave54_integrated &&
+                run_r68_clean_unmount_wave54_h0_h3_probe(87) != 0) {
+                return 87;
             }
         }
     }

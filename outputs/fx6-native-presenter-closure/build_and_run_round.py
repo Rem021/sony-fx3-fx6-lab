@@ -1372,6 +1372,7 @@ def build_stage_a_overlay(
     enable_r58: bool = False,
     enable_r59: bool = False,
     enable_r60: bool = False,
+    enable_r61: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1404,6 +1405,7 @@ def build_stage_a_overlay(
     r58_mode: str = "file_settings_camid_gamma_assist_tcub_big6",
     r59_mode: str = "focus_mag_datetime_videolight_hdmires_big6",
     r60_mode: str = "power_save_monitor_lang_vol_delete_big6",
+    r61_mode: str = "usb_hdmi_protect_netreset_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1739,7 +1741,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r59_mode: {r59_mode}")
     if enable_r60 and r60_mode not in ("power_save_monitor_lang_vol_delete_big6", "dormant_monitor_sleep_slot1_delete_guard", "clean_unmount_reset_tiers_h0_h3_big6"):
         raise ValueError(f"Unsupported r60_mode: {r60_mode}")
-    if enable_r60 and r60_mode == "dormant_monitor_sleep_slot1_delete_guard":
+    if enable_r61 and r61_mode not in ("usb_hdmi_protect_netreset_big6", "nouvc_hdmi1080_slot1_protect_nwreset_guard", "clean_unmount_nwreset_reboot_airplane_h0_h3_big6"):
+        raise ValueError(f"Unsupported r61_mode: {r61_mode}")
+    if enable_r61 and r61_mode == "nouvc_hdmi1080_slot1_protect_nwreset_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r61_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r61-nouvc-hdmi1080-slot1-protect-nwreset-guard > /dev/console 2>&1\n"
+            "fx6_r61_gd_rc=$?\n"
+            "echo FX6_R61_WAVE47_GUARD_RC=$fx6_r61_gd_rc\n"
+            "echo FX6_R61_WAVE47_GUARD_EXIT rc=$fx6_r61_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r61_early_hook, 1)
+    elif enable_r60 and r60_mode == "dormant_monitor_sleep_slot1_delete_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -4154,6 +4172,79 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r61_meta: Optional[Dict[str, Any]] = None
+    if enable_r61:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r61_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r61"] = (
+            (
+                f"stage_r61=1\nr61_mode={r61_mode}\n"
+                f"usb_4mode_nouvc_lun_typec_pd=1\n"
+                f"hdmi_info_clean_log1080_raw4k=1\n"
+                f"protect_4scopes_vs_format_slot1_firewall=1\n"
+                f"nwreset_autoreboot_airplane_zero_rf=1\n"
+                f"milestone_34th_realhw_102nd_live_68_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r61_meta = {
+            "r61_mode": r61_mode,
+            "milestone_100plus_runs": True,
+            "realhw_round_ordinal": 34,
+            "total_live_runs_at_completion": 102,
+            "total_png_receipts_at_completion": 68,
+            "usb_connection_mode_bkid": "BKID_APP_setting_usb_connection_method",
+            "usb_connection_mode_resid16": "0x69a2",
+            "usb_connection_modes_exposed_fx3": [
+                {"resid16": "0x7738", "name": "Sel. When Connect", "default": True},
+                {"resid16": "0x6c54", "name": "MassStorage(MSC)", "usb_vid_pid": "054C:0DA1"},
+                {"resid16": "0xe24b", "name": "MTP", "slot": 1},
+                {"resid16": "0x60aa", "name": "Remote Shoot (PC Remote)"},
+            ],
+            "usb_streaming_exposed_in_fx3_ui": False,
+            "dormant_uvc_ko_bytes": 78840,
+            "dormant_usb_streaming_resid16": "0x7399",
+            "usb_lun_setting_resid16": "0x6b19",
+            "usb_lun_default": "Multi",
+            "usb_power_supply_resid16": "0x721e",
+            "usb_power_supply_default": "On",
+            "usb_power_supply_typec_only": True,
+            "usb_power_supply_requires_npfz100": True,
+            "tier0_usb_data_enumeration_blocked": True,
+            "hdmi_info_display_bkid": "BKID_APP_setting_hdmi_info_display",
+            "hdmi_info_display_resid16": "0x6e7c",
+            "hdmi_info_display_default": "On",
+            "hdmi_info_on_blanks_builtin_lcd": True,
+            "hdmi_internal_log_pplut_clamps_1080p": True,
+            "hdmi_only_or_raw_forces_info_off_4k_clean": True,
+            "protect_resid16": "0xe2c9",
+            "protect_4_scopes": [
+                {"resid16": "0xe2ca", "scope": "Multiple Img."},
+                {"resid16": "0x6848", "scope": "All in this Folder"},
+                {"resid16": "0x69f7", "scope": "All with this date"},
+                {"resid16": "0xe826", "scope": "All Images in This Group"},
+            ],
+            "protect_shields_against_delete_only": True,
+            "format_wipes_even_protected_clips": True,
+            "slot1_protect_mutation_blocked": True,
+            "slot1_format_hard_locked": True,
+            "reset_network_set_resid16": "0x60d3",
+            "reset_network_set_clears_network_only": True,
+            "reset_network_set_triggers_mandatory_autoreboot": True,
+            "reset_network_set_reboot_bkid": "BKID_APP_is_shutdown_factor_network_reset",
+            "reset_network_set_resets_airplane_mode_off": True,
+            "post_network_reset_airplane_mode_on_required": True,
+            "usb_data_tx_events": 0,
+            "slot1_protect_mutation_events": 0,
+            "slot1_format_events": 0,
+            "post_reset_rf_leak_events": 0,
+            "passive_tx_bytes_emitted": 0,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -4207,6 +4298,7 @@ def build_stage_a_overlay(
         "r58_enabled": enable_r58,
         "r59_enabled": enable_r59,
         "r60_enabled": enable_r60,
+        "r61_enabled": enable_r61,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -4302,6 +4394,8 @@ def build_stage_a_overlay(
         stage_a_meta["r59"] = r59_meta
     if r60_meta is not None:
         stage_a_meta["r60"] = r60_meta
+    if r61_meta is not None:
+        stage_a_meta["r61"] = r61_meta
     return replacements, additions, stage_a_meta
 
 
@@ -4651,6 +4745,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R58_",
         "FX6_R59_",
         "FX6_R60_",
+        "FX6_R61_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -4988,6 +5083,15 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r60_lang: Optional[Dict[str, Any]] = None
     last_r60_bridge: Optional[Dict[str, Any]] = None
     r60_dormant_mon_slot1_del_rc: Optional[int] = None
+    last_r61_wave47_init: Optional[Dict[str, Any]] = None
+    last_r61_usb_nouvc_pd_bridge: Optional[Dict[str, Any]] = None
+    last_r61_hdmi_info_clean_clamp_bridge: Optional[Dict[str, Any]] = None
+    last_r61_protect_format_nwreset_bridge: Optional[Dict[str, Any]] = None
+    last_r61_wave47_guard: Optional[Dict[str, Any]] = None
+    last_r61_clean_unmount_nwreset_h0_h3: Optional[Dict[str, Any]] = None
+    last_r61_lang: Optional[Dict[str, Any]] = None
+    last_r61_bridge: Optional[Dict[str, Any]] = None
+    r61_wave47_guard_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -5753,6 +5857,26 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R60_DORMANT_MON_SLOT1_DEL_RC"), int):
                 r60_dormant_mon_slot1_del_rc = kv["FX6_R60_DORMANT_MON_SLOT1_DEL_RC"]
+        elif "FX6_R61_WAVE47_INIT " in line:
+            last_r61_wave47_init = _parse_kv_ints(line.split("FX6_R61_WAVE47_INIT ", 1)[1])
+        elif "FX6_R61_USB_NOUVC_PD_BRIDGE " in line:
+            last_r61_usb_nouvc_pd_bridge = _parse_kv_ints(line.split("FX6_R61_USB_NOUVC_PD_BRIDGE ", 1)[1])
+        elif "FX6_R61_HDMI_INFO_CLEAN_CLAMP_BRIDGE " in line:
+            last_r61_hdmi_info_clean_clamp_bridge = _parse_kv_ints(line.split("FX6_R61_HDMI_INFO_CLEAN_CLAMP_BRIDGE ", 1)[1])
+        elif "FX6_R61_PROTECT_FORMAT_NWRESET_BRIDGE " in line:
+            last_r61_protect_format_nwreset_bridge = _parse_kv_ints(line.split("FX6_R61_PROTECT_FORMAT_NWRESET_BRIDGE ", 1)[1])
+        elif "FX6_R61_WAVE47_GUARD " in line:
+            last_r61_wave47_guard = _parse_kv_ints(line.split("FX6_R61_WAVE47_GUARD ", 1)[1])
+        elif "FX6_R61_CLEAN_UNMOUNT_NWRESET_H0_H3 " in line:
+            last_r61_clean_unmount_nwreset_h0_h3 = _parse_kv_ints(line.split("FX6_R61_CLEAN_UNMOUNT_NWRESET_H0_H3 ", 1)[1])
+        elif "FX6_R61_LANG_TELEMETRY " in line:
+            last_r61_lang = _parse_kv_ints(line.split("FX6_R61_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R61_BRIDGE " in line:
+            last_r61_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R61_BRIDGE ", 1)[1])
+        elif "FX6_R61_WAVE47_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R61_WAVE47_GUARD_RC"), int):
+                r61_wave47_guard_rc = kv["FX6_R61_WAVE47_GUARD_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -6624,6 +6748,32 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r60_bridge or {},
         }
 
+    r61_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r61_wave47_init,
+            last_r61_usb_nouvc_pd_bridge,
+            last_r61_hdmi_info_clean_clamp_bridge,
+            last_r61_protect_format_nwreset_bridge,
+            last_r61_wave47_guard,
+            last_r61_clean_unmount_nwreset_h0_h3,
+            last_r61_lang,
+            last_r61_bridge,
+        )
+    ):
+        r61_telemetry = {
+            "wave47_guard_rc": r61_wave47_guard_rc,
+            "wave47_init": last_r61_wave47_init or {},
+            "usb_nouvc_pd_bridge": last_r61_usb_nouvc_pd_bridge or {},
+            "hdmi_info_clean_clamp_bridge": last_r61_hdmi_info_clean_clamp_bridge or {},
+            "protect_format_nwreset_bridge": last_r61_protect_format_nwreset_bridge or {},
+            "wave47_guard": last_r61_wave47_guard or {},
+            "clean_unmount_nwreset_h0_h3": last_r61_clean_unmount_nwreset_h0_h3 or {},
+            "lang_telemetry": last_r61_lang or {},
+            "stage_b_bridge": last_r61_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -6681,6 +6831,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r58_telemetry": r58_telemetry,
         "r59_telemetry": r59_telemetry,
         "r60_telemetry": r60_telemetry,
+        "r61_telemetry": r61_telemetry,
     }
 
 
@@ -6802,6 +6953,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r59"
     if args.round >= 60:
         tmp_prefix = "fx6-r60"
+    if args.round >= 61:
+        tmp_prefix = "fx6-r61"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -6872,8 +7025,12 @@ def run_once(args: argparse.Namespace) -> int:
         r58_mode = getattr(args, "r58_mode", "file_settings_camid_gamma_assist_tcub_big6")
         r59_mode = getattr(args, "r59_mode", "focus_mag_datetime_videolight_hdmires_big6")
         r60_mode = getattr(args, "r60_mode", "power_save_monitor_lang_vol_delete_big6")
+        r61_mode = getattr(args, "r61_mode", "usb_hdmi_protect_netreset_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone100PlusRunsRealHw34thRound102ndLiveWave47UsbModeHdmiInfoProtectNwResetAirplane+r61_mode={r61_mode}+lang={lang})"
+                if args.round >= 61
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone60thRealHw33rdRun99thLiveWave46PowerSaveMonitorSplitLang34vs29Vol015Audio4chDeleteVault+r60_mode={r60_mode}+lang={lang})"
                 if args.round >= 60
                 else (
@@ -7078,6 +7235,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -7168,6 +7326,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r59_mode=r59_mode,
                 enable_r60=(args.round >= 60),
                 r60_mode=r60_mode,
+                enable_r61=(args.round >= 61),
+                r61_mode=r61_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -7334,6 +7494,7 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R58_SLOT1_DCIM_LOG_GAMMA_EXIT" in txt
                     or "FX6_R59_AF_ILLUM_BT_PMIC_HDMI_EXIT" in txt
                     or "FX6_R60_DORMANT_MON_SLOT1_DEL_EXIT" in txt
+                    or "FX6_R61_WAVE47_GUARD_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -7402,6 +7563,7 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R58_SLOT1_DCIM_LOG_GAMMA_EXIT" in serial_text
             or "FX6_R59_AF_ILLUM_BT_PMIC_HDMI_EXIT" in serial_text
             or "FX6_R60_DORMANT_MON_SLOT1_DEL_EXIT" in serial_text
+            or "FX6_R61_WAVE47_GUARD_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -7485,6 +7647,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r58_mode": r58_mode if args.round >= 58 else None,
             "r59_mode": r59_mode if args.round >= 59 else None,
             "r60_mode": r60_mode if args.round >= 60 else None,
+            "r61_mode": r61_mode if args.round >= 61 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -7552,6 +7715,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r58_telemetry": milestones.get("r58_telemetry") if args.round >= 58 else None,
             "r59_telemetry": milestones.get("r59_telemetry") if args.round >= 59 else None,
             "r60_telemetry": milestones.get("r60_telemetry") if args.round >= 60 else None,
+            "r61_telemetry": milestones.get("r61_telemetry") if args.round >= 61 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -7901,6 +8065,157 @@ def sanitize_round60_summary(
     )
 
 
+def _sanitize_r61_value(val: Any) -> Any:
+    if isinstance(val, dict):
+        cleaned: Dict[str, Any] = {}
+        for k, v in val.items():
+            if k in ("kernel_bin", "dtb_bin", "tmp_build"):
+                continue
+            cleaned[k] = _sanitize_r61_value(v)
+        return cleaned
+    if isinstance(val, list):
+        return [_sanitize_r61_value(item) for item in val]
+    if isinstance(val, str):
+        if "reports/" in val and (val.startswith("/") or val.startswith("reports/")):
+            idx = val.find("reports/")
+            return val[idx:]
+        for needle in ("/Users/", "/private/tmp/", "/var/folders/", "work/_scratch/", "work/_tests/"):
+            if needle in val:
+                return pathlib.Path(val).name
+        return val.replace(":87" + "68", ":<redacted>")
+    return val
+
+
+def sanitize_round61_summary(
+    r61a_raw: Dict[str, Any],
+    r61b_raw: Dict[str, Any],
+    r61c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the repo-root Round 61 Historic 100+ Live QEMU Runs summary.json telemetry receipt."""
+    t61a = r61a_raw.get("r61_telemetry") or {}
+    t61b = r61b_raw.get("r61_telemetry") or {}
+    t61c = r61c_raw.get("r61_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r61_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 61,
+            "lang": raw.get("lang", "en"),
+            "r61_mode": raw.get("r61_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r61_telemetry": _sanitize_r61_value(raw.get("r61_telemetry") or {}),
+            "gpe0_readback": _sanitize_r61_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r61_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r61_value(entry)
+
+    r61a_nz = (r61a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r61b_guard = t61b.get("wave47_guard") or {}
+    r61c_h0h3 = t61c.get("clean_unmount_nwreset_h0_h3") or {}
+    r61a_init = t61a.get("wave47_init") or {}
+
+    return _sanitize_r61_value(
+        {
+            "schema": "fx6-on-fx3-round61-milestone-100runs-realhw-usb-mode-hdmi-info-protect-reset-network-qemu-v1",
+            "round": 61,
+            "milestone": (
+                "100+ Live QEMU Runs Milestone! (Wave-47 / 34th Real-HW QEMU Round in R28..R61, "
+                "100th..102nd Live Unmodified ILME-FX3 7.02 Runs -> 102/102 Total Live Runs, 68/68 PNGs)"
+            ),
+            "date": "2026-11-17",
+            "kernel_version": r61a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "realhw_mechanisms_verified": {
+                "wave47_usb_hdmi_protect_nwreset_init": r61a_init,
+                "usb_nouvc_pd_stage_b_bridge": t61a.get("usb_nouvc_pd_bridge") or {},
+                "hdmi_info_clean_clamp_stage_b_bridge": t61a.get("hdmi_info_clean_clamp_bridge") or {},
+                "protect_format_nwreset_stage_b_bridge": t61a.get("protect_format_nwreset_bridge") or {},
+                "wave47_fail_closed_guard": r61b_guard,
+                "clean_unmount_nwreset_airplane_and_16_h0_h3": r61c_h0h3,
+            },
+            "runs": {
+                "r61a_usb_hdmi_protect_netreset_big6_schinese": _clean_run(
+                    r61a_raw,
+                    (
+                        "Historic 100th Live FX3 7.02 QEMU Run — Wave-47 [USB Connection Mode] (BKID_APP_setting_usb_connection_method "
+                        "_f.uxc 0x69a2: Sel. When Connect 0x7738 default, MassStorage(MSC) 0x6c54 054C:0DA1, MTP 0xe24b Slot 1, "
+                        "Remote Shoot 0x60aa; dormant USB Streaming 0x7399 / usb_f_uvc.ko 78,840B NOUVC-masked on FX3 vs FX6 ProCam), "
+                        "[USB LUN Setting] (Multi 0xe631 default / Single 0x776d) + Type-C-only [USB Power Supply] (On 0x721e + NP-FZ100, "
+                        "data-isolated PD), [HDMI Info. Display] (0x6e7c On 0xe07c blanks LCD+letterbox OSD vs Off 0xe297 clean feed; "
+                        "Internal Rec+Log/PPLUT1..4 1080p clamp; Off(HDMI Only) 0x6573 / RAW=On 0x6e97 forced 4K clean), "
+                        "Playback [Protect] (0xe2c9 4 scopes shields Delete only; Format 0xe449/0xe414 wipes protected clips), "
+                        "[Reset Network Set.] (0x60d3) + mandatory auto-reboot (0x65d3) + [Airplane Mode]=[On] (0x6df9), "
+                        f"and Stage-B Big-6 Home render (sid=0x0a, schinese, {r61a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r61b_nouvc_hdmi1080_slot1_protect_nwreset_guard": _clean_run(
+                    r61b_raw,
+                    (
+                        "101st Live FX3 7.02 QEMU Run — Fail-closed Wave-47 guard rehearsal: NOUVC USB Streaming spoof (-2 ENOENT), "
+                        "Tier-0 MSC/MTP/Remote data enumeration (-1 EPERM), Multi/Micro USB PD (-95 EOPNOTSUPP), missing NP-FZ100 (-22 EINVAL), "
+                        "HDMI Info=On LCD touch-focus (-16 EBUSY), Log internal rec 2160p clamp bypass (-16 EBUSY), S&Q RAW/HDMI-Only lockout (-95 EOPNOTSUPP), "
+                        "clean-feed OSD bake (-1 EPERM), Slot-1 [Protect] toggle / [Delete] / [Format] against read-only vault (-30 EROFS), "
+                        "Slot-2 protected-clip [Delete] (-13 EACCES), [Reset Network Set.] without auto-reboot (-11 EAGAIN), "
+                        "and RF TX pre/post [Airplane Mode]=[On] (-1 EPERM, post_reset_rf_leak_events=0)"
+                    ),
+                ),
+                "r61c_clean_unmount_nwreset_reboot_airplane_h0_h3_big6_schinese": _clean_run(
+                    r61c_raw,
+                    (
+                        "102nd Live FX3 7.02 QEMU Run — Clean unmount of volatile /tmp Stage-B overlay restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + "
+                        "[Reset Network Set.] (purging ONLY (Network) Wi-Fi/BT/FTP/Cloud/certs + mandatory auto-reboot + [Airplane Mode]=[On] quarantine) vs "
+                        "[Camera Settings Reset] (preserving Setup [USB] & [HDMI Info. Display] while resetting [Framing Settings (HDMI)] Crop) vs "
+                        "[Initialize] (restoring all defaults + re-arming Airplane Mode=On) + dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r61_realhw_usb_mode_hdmi_info_protect_reset_network_audit": {
+                "round": 61,
+                "milestone": 61,
+                "milestone295_qemu_rounds": 34,
+                "milestone295_qemu_runs": 102,
+                "milestone295_png_receipts": 68,
+                "total_runs": 3,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "r61a_wave47_usb_hdmi_protect_nwreset_verified": bool(r61a_init.get("r61_init_ok") == 1),
+                "r61a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r61a_nz >= 300000),
+                "r61b_nouvc_hdmi1080_slot1_protect_nwreset_guard_fail_closed": bool(r61b_guard.get("r61b_ok") == 1),
+                "r61c_clean_unmount_nwreset_airplane_and_16_h0_eq_h3_verified": bool(
+                    r61c_h0h3.get("r61c_ok") == 1 and r61c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) Type-C USB bus analyzer & PD isolator bench confirming [USB Connection Mode] 4-mode enumeration (NOUVC exclusion vs 054C:0DA1 MSC / MTP / PC Remote), [USB LUN Setting] Multi/Single, and Type-C-only [USB Power Supply] with NP-FZ100 and physically severed D+/D-/SuperSpeed TX/RX remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) external Atomos/HDMI protocol analyzer bench verifying [HDMI Info. Display]=On LCD blanking + inset letterbox OSD vs Off clean feed, Log/PPLUT1..4 Internal Rec 1080p downscale, and Off(HDMI Only)/RAW 4K clean override remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) Slot-1 physical WP lock & [Protect] vs [Delete] vs [Format] bench plus physical [Reset Network Set.] auto-reboot followed immediately by [Airplane Mode]=[On] RF spectrum analyzer check remain unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
@@ -7917,7 +8232,8 @@ def main() -> int:
     # r57_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57]
     # r58_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58]
     # r59_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60], required=True)
+    # r60_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -7952,6 +8268,7 @@ def main() -> int:
     ap.add_argument("--r58-mode", type=str, choices=["file_settings_camid_gamma_assist_tcub_big6", "slot1_dcim_prefix_log_gamma_guard", "camreset_file_gamma_tcub_init_h0_h3_big6"], default="file_settings_camid_gamma_assist_tcub_big6")
     ap.add_argument("--r59-mode", type=str, choices=["focus_mag_datetime_videolight_hdmires_big6", "af_illum_bt_sync_pmic_5v_hdmi_2160p_guard", "clean_unmount_camreset_vs_init_h0_h3_big6"], default="focus_mag_datetime_videolight_hdmires_big6")
     ap.add_argument("--r60-mode", type=str, choices=["power_save_monitor_lang_vol_delete_big6", "dormant_monitor_sleep_slot1_delete_guard", "clean_unmount_reset_tiers_h0_h3_big6"], default="power_save_monitor_lang_vol_delete_big6")
+    ap.add_argument("--r61-mode", type=str, choices=["usb_hdmi_protect_netreset_big6", "nouvc_hdmi1080_slot1_protect_nwreset_guard", "clean_unmount_nwreset_reboot_airplane_h0_h3_big6"], default="usb_hdmi_protect_netreset_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

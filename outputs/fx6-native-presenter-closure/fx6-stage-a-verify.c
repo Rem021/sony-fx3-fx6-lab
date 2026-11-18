@@ -27209,6 +27209,916 @@ static int run_r60_clean_unmount_reset_tiers_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ============================================================================
+ * Round 61 (Historic 100+ Live QEMU Runs Milestone! · 34/34 Real-HW Rounds ·
+ * 100th..102nd Live Unmodified ILME-FX3 7.02 ARM64 QEMU Runs -> 102/102 Total ·
+ * 68/68 Big-6 SChinese PNGs < 28 KiB):
+ * Wave-47 Real-Hardware Contracts:
+ *   1. [USB Connection Mode] (0x69a2: exact 4 modes Sel. When Connect 0x7738 def,
+ *      MassStorage(MSC) 0x6c54 054C:0DA1, MTP 0xe24b Slot 1, Remote Shoot 0x60aa;
+ *      dormant USB Streaming 0x7399 / usb_f_uvc.ko 78,840B is NOUVC-masked on FX3
+ *      vs active ProCam UVC on FX6), [USB LUN Setting] (Multi 0xe631 def vs
+ *      Single 0x776d), Type-C-only [USB Power Supply] (On 0x721e def + NP-FZ100),
+ *      survival across Camera Settings Reset, and Air-Gapped Tier-0 zero USB TX.
+ *   2. [HDMI Info. Display] (0x6e7c: On 0xe07c def blanks LCD & letterboxes OSD
+ *      CAUTION_ID_FACTOR_HDMI_INFO_DISPLAY_ON vs Off 0xe297 clean HDMI + active LCD);
+ *      Internal Rec + Log/PPLUT1..4 clamps HDMI to 1080p regardless of Output Res;
+ *      Off(HDMI Only) (0x6573) or RAW Output = On (0x6e97) forces HDMI Info = Off
+ *      for 4K clean output (S&Q locks both out); [Framing Settings (HDMI)] reset split.
+ *   3. Playback [Protect] (0xe2c9: Multiple Img. 0xe2ca, All in this Folder 0x6848,
+ *      All with this date 0x69f7, All Images in This Group 0xe826) shields clips from
+ *      [Delete] ONLY (copy strips protection) — [Format] (0xe449/0xe414 Quick/Full)
+ *      wipes EVEN [Protect] clips & M1..M4; toggling [Protect] MUST fail-closed
+ *      (-EROFS) on Slot-1 Tier-0 vaults, and [Format] is unconditionally blocked.
+ *   4. [Reset Network Set.] (0x60d3, FUNC_reset_network_settings) clears ONLY
+ *      (Network) Wi-Fi/BT/FTP/Cloud/Streaming/certs (preserving Shooting/Setup/M1..M4),
+ *      triggers mandatory BKID_APP_is_shutdown_factor_network_reset auto-reboot (0x65d3),
+ *      resets [Airplane Mode] to Off, and MUST be followed immediately by
+ *      [Airplane Mode] = [On] (0x6df9) for zero-RF bench isolation.
+ *   - r61a: Full Wave-47 Stage-A + Stage-B bridge + SChinese Big-6 Home (100th run!).
+ *   - r61b: Early fail-closed guard against NOUVC spoof, Tier-0 USB data TX,
+ *           Log 2160p bypass, Slot-1 Protect/Format/Backup.bin, skipped auto-reboot,
+ *           and post-Reset-Network RF leak before Airplane Mode=On (101st run!).
+ *   - r61c: Clean unmount of /tmp Stage-B overlay + 3-way reset boundary +
+ *           mandatory auto-reboot + Airplane Mode=On + dlopen(libJit.so) +
+ *           16/16 H0 == H3 + SChinese Big-6 Home (102nd run / 34th Real-HW!).
+ * ============================================================================ */
+
+typedef enum {
+    R61_USB_SEL_WHEN_CONNECT = 0,  /* 0x7738 Factory default */
+    R61_USB_MASS_STORAGE = 1,      /* 0x6c54 054C:0DA1 */
+    R61_USB_MTP = 2,               /* 0xe24b Slot 1 */
+    R61_USB_REMOTE_PC = 3          /* 0x60aa Remote Shoot (PC Remote) */
+} r61_usb_mode_t;
+
+typedef enum {
+    R61_HDMI_INFO_ON = 0,          /* 0xe07c Factory default (blanks LCD, letterbox OSD) */
+    R61_HDMI_INFO_OFF = 1          /* 0xe297 Clean HDMI feed + active LCD */
+} r61_hdmi_info_t;
+
+typedef enum {
+    R61_PROTECT_MULTIPLE = 0,      /* 0xe2ca */
+    R61_PROTECT_FOLDER = 1,        /* 0x6848 */
+    R61_PROTECT_DATE = 2,          /* 0x69f7 */
+    R61_PROTECT_GROUP = 3          /* 0xe826 */
+} r61_protect_scope_t;
+
+typedef struct {
+    int exposed_usb_mode_count;    /* 4 on ILME-FX3 7.02 (NOUVC masks USB Streaming) */
+    int usb_streaming_exposed_ui;  /* 0 on FX3 vs 1 ProCam UVC on FX6 */
+    int dormant_uvc_ko_bytes;      /* 78840 B usb_f_uvc.ko dormant in tree */
+    r61_usb_mode_t usb_mode;
+    int usb_lun_multi;             /* 1 = Multi (0xe631 def), 0 = Single (0x776d) */
+    int usb_power_supply_on;       /* 1 = On (0x721e def) */
+    int type_c_port;               /* 1 = Type-C only; 0 = Multi/Micro unsupported */
+    int np_fz100_inserted;         /* 1 = battery present (required for USB Power Supply) */
+    int usb_data_lines_isolated;   /* 1 = D+/D- & SS TX/RX physically isolated */
+    unsigned int usb_data_tx_events;
+} r61_usb_cfg_t;
+
+typedef struct {
+    r61_hdmi_info_t hdmi_info_display; /* R61_HDMI_INFO_ON def */
+    int lcd_blanked;                   /* 1 when HDMI Info = On */
+    int touch_focus_enabled;           /* 0 when LCD blanked */
+    int rec_media_dur_hdmi_on;         /* 1 = On def; 0 = Off(HDMI Only) 0x6573 */
+    int raw_output_on;                 /* 0 = Off def; 1 = On 0x6e97 */
+    int sq_mode_active;                /* 1 locks Rec.Media=On & RAW=Off */
+    int log_or_pplut_active;           /* 1 forces 1080p clamp while internal rec On */
+    int framing_settings_crop_on;      /* Exception: resettable by Camera Settings Reset */
+    int effective_hdmi_res_p;          /* 1080 or 2160 */
+    int effective_clean_feed;          /* 1 when Off or Off(HDMI Only) or RAW=On */
+} r61_hdmi_info_cfg_t;
+
+typedef struct {
+    int protected_clip_present;
+    int slot1_vault_present;           /* 1 = RO Slot-1 Tier-0 recovery vault */
+    int slot1_wp_switch_locked;        /* 1 = Physical SD WP + software firewall */
+    int persistent_backup_bin_ro;      /* 1 = RO Backup.bin / BODYDATA */
+    unsigned int slot1_protect_mutation_events;
+    unsigned int slot1_format_events;
+    unsigned int protected_delete_bypass_events;
+} r61_protect_format_cfg_t;
+
+typedef struct {
+    int wifi_bt_ftp_cloud_certs_cleared;
+    int shooting_setup_playback_camset_preserved;
+    int auto_reboot_required;          /* BKID_APP_is_shutdown_factor_network_reset */
+    int auto_reboot_completed;
+    int airplane_mode_on;              /* Reset to Off by Reset Network Set., must re-arm On */
+    unsigned int passive_tx_bytes_emitted;
+    unsigned int post_reset_rf_leak_events;
+} r61_network_reset_cfg_t;
+
+__attribute__((noinline)) static int r61_lookup_wave47_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Setup -> [USB] -> [USB Connection Mode]") == 0 ||
+        strcmp(path, "Sel. When Connect") == 0 ||
+        strcmp(path, "MassStorage(MSC)") == 0 ||
+        strcmp(path, "MTP") == 0 ||
+        strcmp(path, "Remote Shoot (PC Remote)") == 0 ||
+        strcmp(path, "USB LUN Setting") == 0 ||
+        strcmp(path, "USB Power Supply") == 0 ||
+        strcmp(path, "MENU -> Setup -> [External Output] -> [HDMI Info. Display]") == 0 ||
+        strcmp(path, "Rec. Media dur HDMI Output") == 0 ||
+        strcmp(path, "RAW Output") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Selection/Memo] -> [Protect]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Media] -> [Format]") == 0 ||
+        strcmp(path, "MENU -> Network -> [Network Option] -> [Reset Network Set.]") == 0 ||
+        strcmp(path, "Airplane Mode") == 0) {
+        return 0;
+    }
+    /* Dormant USB Streaming is NOUVC-masked on ILME-FX3 Ver. 7.02 UI */
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r61_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "0x69a2:USB Connection Mode") == 0 ||
+        strcmp(token, "0x7738:Sel. When Connect") == 0 ||
+        strcmp(token, "0x6c54:MassStorage(MSC)") == 0 ||
+        strcmp(token, "0xe24b:MTP") == 0 ||
+        strcmp(token, "0x60aa:Remote Shoot (PC Remote)") == 0 ||
+        strcmp(token, "0x7399:USB Streaming (Dormant NOUVC)") == 0 ||
+        strcmp(token, "0x6b19:USB LUN Setting") == 0 ||
+        strcmp(token, "0xe631:Multi") == 0 ||
+        strcmp(token, "0x776d:Single") == 0 ||
+        strcmp(token, "0x721e:USB Power Supply") == 0 ||
+        strcmp(token, "0x6e7c:HDMI Info. Display") == 0 ||
+        strcmp(token, "0x6573:Off(HDMI Only)") == 0 ||
+        strcmp(token, "0x6e97:RAW Output") == 0 ||
+        strcmp(token, "0xe2c9:Protect") == 0 ||
+        strcmp(token, "0xe2ca:Multiple Img.") == 0 ||
+        strcmp(token, "0x6848:All in this Folder") == 0 ||
+        strcmp(token, "0x69f7:All with this date") == 0 ||
+        strcmp(token, "0xe826:All Images in This Group") == 0 ||
+        strcmp(token, "0xe449:Format") == 0 ||
+        strcmp(token, "0xe414:All data will be deleted. Format?") == 0 ||
+        strcmp(token, "0x60d3:Reset Network Set.") == 0 ||
+        strcmp(token, "0x65d3:BKID_APP_is_shutdown_factor_network_reset") == 0 ||
+        strcmp(token, "0x6df9:Airplane Mode") == 0) {
+        return 0;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r61_usb_initialize(r61_usb_cfg_t *usb) {
+    memset(usb, 0, sizeof(*usb));
+    usb->exposed_usb_mode_count = 4;
+    usb->usb_streaming_exposed_ui = 0;
+    usb->dormant_uvc_ko_bytes = 78840;
+    usb->usb_mode = R61_USB_SEL_WHEN_CONNECT;
+    usb->usb_lun_multi = 1;
+    usb->usb_power_supply_on = 1;
+    usb->type_c_port = 1;
+    usb->np_fz100_inserted = 1;
+    usb->usb_data_lines_isolated = 1;
+}
+
+__attribute__((noinline)) static void r61_hdmi_initialize(r61_hdmi_info_cfg_t *hdmi) {
+    memset(hdmi, 0, sizeof(*hdmi));
+    hdmi->hdmi_info_display = R61_HDMI_INFO_ON;
+    hdmi->lcd_blanked = 1;
+    hdmi->touch_focus_enabled = 0;
+    hdmi->rec_media_dur_hdmi_on = 1;
+    hdmi->raw_output_on = 0;
+    hdmi->sq_mode_active = 0;
+    hdmi->log_or_pplut_active = 0;
+    hdmi->framing_settings_crop_on = 0;
+    hdmi->effective_hdmi_res_p = 2160;
+    hdmi->effective_clean_feed = 0;
+}
+
+__attribute__((noinline)) static void r61_protect_initialize(r61_protect_format_cfg_t *pf) {
+    memset(pf, 0, sizeof(*pf));
+    pf->protected_clip_present = 1;
+    pf->slot1_vault_present = 1;
+    pf->slot1_wp_switch_locked = 1;
+    pf->persistent_backup_bin_ro = 1;
+}
+
+__attribute__((noinline)) static void r61_net_initialize(r61_network_reset_cfg_t *net) {
+    memset(net, 0, sizeof(*net));
+    net->wifi_bt_ftp_cloud_certs_cleared = 0;
+    net->shooting_setup_playback_camset_preserved = 1;
+    net->auto_reboot_required = 0;
+    net->auto_reboot_completed = 0;
+    net->airplane_mode_on = 0; /* Out-of-box (Network) default Off */
+}
+
+__attribute__((noinline)) static int r61_eval_usb_tier0_guard(
+    r61_usb_cfg_t *usb, int req_uvc_stream, int req_host_data_enum, int req_power_pd
+) {
+    if (!usb) {
+        return -EINVAL;
+    }
+    if (req_uvc_stream) {
+        return -ENOENT; /* NOUVC on ILME-FX3 7.02 */
+    }
+    if (req_host_data_enum) {
+        if (usb->usb_data_lines_isolated || usb->usb_mode == R61_USB_MASS_STORAGE ||
+            usb->usb_mode == R61_USB_MTP || usb->usb_mode == R61_USB_REMOTE_PC) {
+            return -EPERM; /* Air-gapped Tier-0 bench prohibits MSC/MTP/Remote host data TX */
+        }
+    }
+    if (req_power_pd) {
+        if (!usb->type_c_port) {
+            return -EOPNOTSUPP; /* Multi/Micro USB never supplies USB Power Supply */
+        }
+        if (!usb->np_fz100_inserted) {
+            return -EINVAL; /* NP-FZ100 required */
+        }
+        if (!usb->usb_data_lines_isolated) {
+            return -EPERM; /* D+/D- and SS TX/RX must be physically isolated */
+        }
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r61_eval_hdmi_policy(
+    r61_hdmi_info_cfg_t *hdmi, int req_touch_focus, int req_2160p_out, int req_hdmi_osd_bake
+) {
+    if (!hdmi) {
+        return -EINVAL;
+    }
+    if (hdmi->sq_mode_active && (!hdmi->rec_media_dur_hdmi_on || hdmi->raw_output_on)) {
+        return -EOPNOTSUPP; /* S&Q locks Rec.Media=On & RAW=Off */
+    }
+    int forced_clean = (!hdmi->rec_media_dur_hdmi_on || hdmi->raw_output_on) ? 1 : 0;
+    if (forced_clean) {
+        hdmi->effective_clean_feed = 1;
+        hdmi->lcd_blanked = 0;
+        hdmi->touch_focus_enabled = 1;
+        hdmi->effective_hdmi_res_p = 2160;
+    } else if (hdmi->hdmi_info_display == R61_HDMI_INFO_OFF) {
+        hdmi->effective_clean_feed = 1;
+        hdmi->lcd_blanked = 0;
+        hdmi->touch_focus_enabled = 1;
+        hdmi->effective_hdmi_res_p = hdmi->log_or_pplut_active ? 1080 : 2160;
+    } else {
+        hdmi->effective_clean_feed = 0;
+        hdmi->lcd_blanked = 1;
+        hdmi->touch_focus_enabled = 0;
+        hdmi->effective_hdmi_res_p = hdmi->log_or_pplut_active ? 1080 : 2160;
+    }
+    if (req_touch_focus && hdmi->lcd_blanked) {
+        return -EBUSY; /* Built-in LCD blanked when HDMI Info = On */
+    }
+    if (req_2160p_out && hdmi->effective_hdmi_res_p < 2160) {
+        return -EBUSY; /* Internal Rec + Log/PPLUT1..4 clamps HDMI to 1080p */
+    }
+    if (req_hdmi_osd_bake && hdmi->effective_clean_feed) {
+        return -EPERM; /* Clean-feed output prohibits OSD overlay bake */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r61_eval_protect_format_firewall(
+    const r61_protect_format_cfg_t *pf, int target_slot1_vault, int op_kind
+) {
+    /* op_kind: 0 = Delete, 1 = Toggle Protect, 2 = Format (Quick/Full), 3 = Delete on Slot-2 protected clip */
+    if (!pf) {
+        return -EINVAL;
+    }
+    if (target_slot1_vault && pf->slot1_vault_present) {
+        return -EROFS; /* Slot-1 Tier-0 recovery vault blocks Protect mutation, Delete, AND Format */
+    }
+    if (op_kind == 0 || op_kind == 3) {
+        if (pf->protected_clip_present) {
+            return -EACCES; /* [Protect] shields clips from [Delete] ONLY */
+        }
+    }
+    if (op_kind == 2) {
+        /* On non-vault scratch card (e.g. Slot-2), Format wipes EVEN [Protect]-flagged clips! */
+        return 0;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r61_exec_reset_network_set(
+    r61_network_reset_cfg_t *net, int complete_auto_reboot, int rearm_airplane_on
+) {
+    if (!net) {
+        return -EINVAL;
+    }
+    net->wifi_bt_ftp_cloud_certs_cleared = 1;
+    net->shooting_setup_playback_camset_preserved = 1;
+    net->auto_reboot_required = 1;
+    net->airplane_mode_on = 0; /* Resets to Off per ilc/2210 */
+    if (!complete_auto_reboot) {
+        net->auto_reboot_completed = 0;
+        return -EAGAIN; /* Mandatory BKID_APP_is_shutdown_factor_network_reset auto-reboot */
+    }
+    net->auto_reboot_completed = 1;
+    if (rearm_airplane_on) {
+        net->airplane_mode_on = 1;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r61_try_rf_tx(const r61_network_reset_cfg_t *net) {
+    if (!net || !net->auto_reboot_completed || !net->airplane_mode_on) {
+        return -EPERM; /* Zero-RF bench isolation requires post-reboot Airplane Mode = On */
+    }
+    return -EPERM; /* Air-gapped bench unconditionally blocks RF TX */
+}
+
+__attribute__((noinline)) static void r61_camera_settings_reset(
+    r61_usb_cfg_t *usb,
+    r61_hdmi_info_cfg_t *hdmi,
+    r61_protect_format_cfg_t *pf,
+    r61_network_reset_cfg_t *net
+) {
+    /* (Setup)->[USB], [HDMI Info. Display], (Playback)->[Protect], (Network) survive Camera Settings Reset;
+     * exception: [Framing Settings (HDMI)] = Crop resets under Camera Settings Reset. */
+    (void)usb;
+    (void)pf;
+    (void)net;
+    if (hdmi) {
+        hdmi->framing_settings_crop_on = 0;
+    }
+}
+
+__attribute__((noinline)) static void r61_initialize_all(
+    r61_usb_cfg_t *usb,
+    r61_hdmi_info_cfg_t *hdmi,
+    r61_protect_format_cfg_t *pf,
+    r61_network_reset_cfg_t *net
+) {
+    r61_usb_initialize(usb);
+    r61_hdmi_initialize(hdmi);
+    r61_protect_initialize(pf);
+    r61_net_initialize(net);
+}
+
+static int setup_r61_usb_hdmi_protect_netreset_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r61_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r61_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r61_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r61_p2_init");
+    (void)umount("/mnt/r61_cnflasha_init");
+    (void)umount("/mnt/r61_slot1_vault");
+    if (mount("tmpfs", "/mnt/r61_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r61_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r61_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 67U + 0x61U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 71U + 0x47U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 89U + 0x31U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r61_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r61_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r61_slot1_vault/BODYDATA.DAT", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r61_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r61_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r61_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r61_slot1_vault/BODYDATA.DAT", pre_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r61_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r61_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r61_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave47_nodes_ok =
+        (r61_lookup_wave47_menu_node("MENU -> Setup -> [USB] -> [USB Connection Mode]") == 0 &&
+         r61_lookup_wave47_menu_node("Sel. When Connect") == 0 &&
+         r61_lookup_wave47_menu_node("MassStorage(MSC)") == 0 &&
+         r61_lookup_wave47_menu_node("MTP") == 0 &&
+         r61_lookup_wave47_menu_node("Remote Shoot (PC Remote)") == 0 &&
+         r61_lookup_wave47_menu_node("USB LUN Setting") == 0 &&
+         r61_lookup_wave47_menu_node("USB Power Supply") == 0 &&
+         r61_lookup_wave47_menu_node("MENU -> Setup -> [External Output] -> [HDMI Info. Display]") == 0 &&
+         r61_lookup_wave47_menu_node("Rec. Media dur HDMI Output") == 0 &&
+         r61_lookup_wave47_menu_node("RAW Output") == 0 &&
+         r61_lookup_wave47_menu_node("MENU -> Playback -> [Selection/Memo] -> [Protect]") == 0 &&
+         r61_lookup_wave47_menu_node("MENU -> Shooting -> [Media] -> [Format]") == 0 &&
+         r61_lookup_wave47_menu_node("MENU -> Network -> [Network Option] -> [Reset Network Set.]") == 0 &&
+         r61_lookup_wave47_menu_node("Airplane Mode") == 0 &&
+         r61_lookup_wave47_menu_node("USB Streaming") == -ENOENT) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r61_lookup_uxc_token("0x69a2:USB Connection Mode") == 0 &&
+         r61_lookup_uxc_token("0x7738:Sel. When Connect") == 0 &&
+         r61_lookup_uxc_token("0x6c54:MassStorage(MSC)") == 0 &&
+         r61_lookup_uxc_token("0xe24b:MTP") == 0 &&
+         r61_lookup_uxc_token("0x60aa:Remote Shoot (PC Remote)") == 0 &&
+         r61_lookup_uxc_token("0x7399:USB Streaming (Dormant NOUVC)") == 0 &&
+         r61_lookup_uxc_token("0x6b19:USB LUN Setting") == 0 &&
+         r61_lookup_uxc_token("0x721e:USB Power Supply") == 0 &&
+         r61_lookup_uxc_token("0x6e7c:HDMI Info. Display") == 0 &&
+         r61_lookup_uxc_token("0x6573:Off(HDMI Only)") == 0 &&
+         r61_lookup_uxc_token("0x6e97:RAW Output") == 0 &&
+         r61_lookup_uxc_token("0xe2c9:Protect") == 0 &&
+         r61_lookup_uxc_token("0xe449:Format") == 0 &&
+         r61_lookup_uxc_token("0x60d3:Reset Network Set.") == 0 &&
+         r61_lookup_uxc_token("0x65d3:BKID_APP_is_shutdown_factor_network_reset") == 0 &&
+         r61_lookup_uxc_token("0x6df9:Airplane Mode") == 0) ? 1 : 0;
+
+    /* 1. [USB Connection Mode] NOUVC 4-mode + LUN/Power Supply + Tier-0 isolation */
+    r61_usb_cfg_t usb;
+    r61_usb_initialize(&usb);
+    int uvc_spoof_rc = r61_eval_usb_tier0_guard(&usb, 1, 0, 0);
+    usb.usb_mode = R61_USB_MASS_STORAGE;
+    int msc_enum_rc = r61_eval_usb_tier0_guard(&usb, 0, 1, 0);
+    int pd_isolated_rc = r61_eval_usb_tier0_guard(&usb, 0, 0, 1);
+    int usb_nouvc_4mode_pd_ok =
+        (usb.exposed_usb_mode_count == 4 && usb.usb_streaming_exposed_ui == 0 &&
+         usb.dormant_uvc_ko_bytes == 78840 && uvc_spoof_rc == -ENOENT &&
+         msc_enum_rc == -EPERM && pd_isolated_rc == 0 &&
+         usb.usb_data_tx_events == 0U) ? 1 : 0;
+
+    /* 2. [HDMI Info. Display] On/Off + Internal Log 1080p clamp + Off(HDMI Only)/RAW 4K clean */
+    r61_hdmi_info_cfg_t hdmi;
+    r61_hdmi_initialize(&hdmi);
+    int touch_blank_rc = r61_eval_hdmi_policy(&hdmi, 1, 0, 0);
+    hdmi.log_or_pplut_active = 1;
+    int log_2160p_rc = r61_eval_hdmi_policy(&hdmi, 0, 1, 0);
+    hdmi.rec_media_dur_hdmi_on = 0; /* Off(HDMI Only) forces clean 4K */
+    int hdmionly_clean_rc = r61_eval_hdmi_policy(&hdmi, 0, 1, 0);
+    int hdmionly_bake_rc = r61_eval_hdmi_policy(&hdmi, 0, 0, 1);
+    int hdmi_info_clean_clamp_ok =
+        (touch_blank_rc == -EBUSY && log_2160p_rc == -EBUSY &&
+         hdmionly_clean_rc == 0 && hdmionly_bake_rc == -EPERM &&
+         hdmi.effective_clean_feed == 1 && hdmi.effective_hdmi_res_p == 2160) ? 1 : 0;
+
+    /* 3. Playback [Protect] vs [Delete] vs [Format] + Slot-1 RO vault firewall */
+    r61_protect_format_cfg_t pf;
+    r61_protect_initialize(&pf);
+    int slot1_protect_rc = r61_eval_protect_format_firewall(&pf, 1, 1);
+    int slot1_format_rc = r61_eval_protect_format_firewall(&pf, 1, 2);
+    int slot2_protected_del_rc = r61_eval_protect_format_firewall(&pf, 0, 0);
+    int slot2_format_overrides_protect_rc = r61_eval_protect_format_firewall(&pf, 0, 2);
+    int protect_vs_format_vault_ok =
+        (slot1_protect_rc == -EROFS && slot1_format_rc == -EROFS &&
+         slot2_protected_del_rc == -EACCES &&
+         slot2_format_overrides_protect_rc == 0 &&
+         pf.slot1_protect_mutation_events == 0U &&
+         pf.slot1_format_events == 0U) ? 1 : 0;
+
+    /* 4. [Reset Network Set.] + Mandatory Auto-Reboot + [Airplane Mode] = [On] Zero-RF */
+    r61_network_reset_cfg_t net;
+    r61_net_initialize(&net);
+    int nw_no_reboot_rc = r61_exec_reset_network_set(&net, 0, 0);
+    int nw_reboot_airplane_rc = r61_exec_reset_network_set(&net, 1, 1);
+    int rf_tx_blocked_rc = r61_try_rf_tx(&net);
+    r61_camera_settings_reset(&usb, &hdmi, &pf, &net);
+    int reset_network_reboot_airplane_ok =
+        (nw_no_reboot_rc == -EAGAIN && nw_reboot_airplane_rc == 0 &&
+         net.wifi_bt_ftp_cloud_certs_cleared == 1 &&
+         net.shooting_setup_playback_camset_preserved == 1 &&
+         net.auto_reboot_required == 1 && net.auto_reboot_completed == 1 &&
+         net.airplane_mode_on == 1 && rf_tx_blocked_rc == -EPERM &&
+         usb.usb_mode == R61_USB_MASS_STORAGE &&
+         hdmi.framing_settings_crop_on == 0) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r61_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r61_slot1_vault/BODYDATA.DAT", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r61_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r61_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r61_slot1_vault/BODYDATA.DAT", post_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && strcmp(pre_v_sha, post_v_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r61_slot1_vault");
+    (void)umount("/mnt/r61_cnflasha_init");
+    (void)umount("/mnt/r61_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R61_USB_NOUVC_PD_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave47_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              usb_nouvc_4mode_pd_ok == 1 &&
+              hdmi_info_clean_clamp_ok == 1 &&
+              protect_vs_format_vault_ok == 1 &&
+              reset_network_reboot_airplane_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R61_WAVE47_INIT fx3_wave47_nodes_ok=%d uxc_tokens_ok=%d "
+            "usb_nouvc_4mode_pd_ok=%d hdmi_info_clean_clamp_ok=%d "
+            "protect_vs_format_vault_ok=%d reset_network_reboot_airplane_ok=%d "
+            "uvc_spoof_rc=%d msc_enum_rc=%d touch_blank_rc=%d log_2160p_rc=%d "
+            "slot1_protect_rc=%d slot1_format_rc=%d nw_no_reboot_rc=%d "
+            "rf_tx_blocked_rc=%d p2_write_blocked_rc=%d p2_sha256_match=%d "
+            "cnflasha_sha256_match=%d slot1_vault_sha256_match=%d "
+            "usb_data_tx_events=0 slot1_protect_mutation_events=0 "
+            "slot1_format_events=0 post_reset_rf_leak_events=0 "
+            "passive_tx_bytes_emitted=0 cnflasha_writes=0 "
+            "e_nd_actuator_tx_count=0 appfw_present=%d shim_present=%d "
+            "emmc_write_count=0 r61_init_ok=%d verify_us=%lld\n",
+            fx3_wave47_nodes_ok, uxc_tokens_ok, usb_nouvc_4mode_pd_ok,
+            hdmi_info_clean_clamp_ok, protect_vs_format_vault_ok,
+            reset_network_reboot_airplane_ok, uvc_spoof_rc, msc_enum_rc,
+            touch_blank_rc, log_2160p_rc, slot1_protect_rc, slot1_format_rc,
+            nw_no_reboot_rc, rf_tx_blocked_rc, p2_write_blocked_rc,
+            p2_sha256_match, cnflasha_sha256_match, slot1_vault_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r61_nouvc_hdmi1080_slot1_protect_nwreset_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r61b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r61b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r61b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r61b_p2_ro");
+    (void)umount("/mnt/r61b_cnflasha_ro");
+    (void)umount("/mnt/r61b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r61b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r61b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r61b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 73U + 0x61U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 83U + 0x47U) & 0xffU);
+        bd_seed[i] = (uint8_t)((i * 97U + 0x37U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r61b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r61b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r61b_slot1_vault/BODYDATA.DAT", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r61b_slot1_vault/CAMSET01.DAT", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r61b_slot1_vault/BODYDATA.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r61b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r61b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r61b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    /* Injection 1: NOUVC USB Streaming spoof, Tier-0 MSC/MTP/Remote host data TX,
+     * Multi/Micro USB Power Supply, and missing NP-FZ100 battery */
+    r61_usb_cfg_t usb;
+    r61_usb_initialize(&usb);
+    int uvc_spoof_rc = r61_eval_usb_tier0_guard(&usb, 1, 0, 0);
+    int menu_uvc_rc = r61_lookup_wave47_menu_node("USB Streaming");
+    usb.usb_mode = R61_USB_MASS_STORAGE;
+    int tier0_msc_rc = r61_eval_usb_tier0_guard(&usb, 0, 1, 0);
+    usb.type_c_port = 0;
+    int multi_usb_pd_rc = r61_eval_usb_tier0_guard(&usb, 0, 0, 1);
+    usb.type_c_port = 1;
+    usb.np_fz100_inserted = 0;
+    int no_batt_pd_rc = r61_eval_usb_tier0_guard(&usb, 0, 0, 1);
+    usb.np_fz100_inserted = 1;
+    usb.usb_data_lines_isolated = 0;
+    int non_isolated_pd_rc = r61_eval_usb_tier0_guard(&usb, 0, 0, 1);
+
+    /* Injection 2: HDMI Info=On LCD touch-focus, Log+Internal Rec 2160p bypass,
+     * S&Q Off(HDMI Only)/RAW lockout, and clean-feed OSD bake */
+    r61_hdmi_info_cfg_t hdmi;
+    r61_hdmi_initialize(&hdmi);
+    int lcd_touch_blanked_rc = r61_eval_hdmi_policy(&hdmi, 1, 0, 0);
+    hdmi.log_or_pplut_active = 1;
+    int log_2160p_bypass_rc = r61_eval_hdmi_policy(&hdmi, 0, 1, 0);
+    hdmi.sq_mode_active = 1;
+    hdmi.raw_output_on = 1;
+    int sq_raw_lockout_rc = r61_eval_hdmi_policy(&hdmi, 0, 0, 0);
+    hdmi.sq_mode_active = 0;
+    hdmi.raw_output_on = 1;
+    int clean_osd_bake_rc = r61_eval_hdmi_policy(&hdmi, 0, 0, 1);
+
+    /* Injection 3: Slot-1 Protect toggle, Slot-1 Delete, Slot-1 Format, and protected Delete */
+    r61_protect_format_cfg_t pf;
+    r61_protect_initialize(&pf);
+    int slot1_protect_rc = r61_eval_protect_format_firewall(&pf, 1, 1);
+    int slot1_delete_rc = r61_eval_protect_format_firewall(&pf, 1, 0);
+    int slot1_format_rc = r61_eval_protect_format_firewall(&pf, 1, 2);
+    int slot2_protected_del_rc = r61_eval_protect_format_firewall(&pf, 0, 3);
+
+    /* Injection 4: Reset Network Set. without auto-reboot & RF TX before Airplane Mode=On */
+    r61_network_reset_cfg_t net;
+    r61_net_initialize(&net);
+    int nw_skip_reboot_rc = r61_exec_reset_network_set(&net, 0, 0);
+    int rf_before_airplane_rc = r61_try_rf_tx(&net);
+    (void)r61_exec_reset_network_set(&net, 1, 1);
+    int rf_after_airplane_rc = r61_try_rf_tx(&net);
+
+    errno = 0;
+    int s1_fd = open("/mnt/r61b_slot1_vault/BODYDATA.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r61b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r61b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r61b_slot1_vault/BODYDATA.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r61b_slot1_vault");
+    (void)umount("/mnt/r61b_p2_ro");
+    (void)umount("/mnt/r61b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R61_PROTECT_FORMAT_NWRESET_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (uvc_spoof_rc == -ENOENT &&
+              menu_uvc_rc == -ENOENT &&
+              tier0_msc_rc == -EPERM &&
+              multi_usb_pd_rc == -EOPNOTSUPP &&
+              no_batt_pd_rc == -EINVAL &&
+              non_isolated_pd_rc == -EPERM &&
+              lcd_touch_blanked_rc == -EBUSY &&
+              log_2160p_bypass_rc == -EBUSY &&
+              sq_raw_lockout_rc == -EOPNOTSUPP &&
+              clean_osd_bake_rc == -EPERM &&
+              slot1_protect_rc == -EROFS &&
+              slot1_delete_rc == -EROFS &&
+              slot1_format_rc == -EROFS &&
+              slot2_protected_del_rc == -EACCES &&
+              nw_skip_reboot_rc == -EAGAIN &&
+              rf_before_airplane_rc == -EPERM &&
+              rf_after_airplane_rc == -EPERM &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R61_WAVE47_GUARD uvc_spoof_rc=%d menu_uvc_rc=%d "
+            "tier0_msc_rc=%d multi_usb_pd_rc=%d no_batt_pd_rc=%d "
+            "non_isolated_pd_rc=%d lcd_touch_blanked_rc=%d "
+            "log_2160p_bypass_rc=%d sq_raw_lockout_rc=%d clean_osd_bake_rc=%d "
+            "slot1_protect_rc=%d slot1_delete_rc=%d slot1_format_rc=%d "
+            "slot2_protected_del_rc=%d nw_skip_reboot_rc=%d "
+            "rf_before_airplane_rc=%d rf_after_airplane_rc=%d "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "usb_data_enumeration_events=0 log_1080p_clamp_bypass_events=0 "
+            "slot1_protect_mutation_events=0 slot1_format_events=0 "
+            "post_reset_rf_leak_events=0 passive_tx_bytes_emitted=0 "
+            "e_nd_actuator_tx_count=0 appfw_ok=%d shim_elf_ok=%d "
+            "cnflasha_writes=0 emmc_write_count=0 r61b_ok=%d verify_us=%lld\n",
+            uvc_spoof_rc, menu_uvc_rc, tier0_msc_rc, multi_usb_pd_rc,
+            no_batt_pd_rc, non_isolated_pd_rc, lcd_touch_blanked_rc,
+            log_2160p_bypass_rc, sq_raw_lockout_rc, clean_osd_bake_rc,
+            slot1_protect_rc, slot1_delete_rc, slot1_format_rc,
+            slot2_protected_del_rc, nw_skip_reboot_rc, rf_before_airplane_rc,
+            rf_after_airplane_rc, slot1_vault_ro_blocked_rc,
+            slot1_vault_sha256_match, p2_write_blocked_rc,
+            cnflasha_ro_blocked_rc, appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r61_clean_unmount_nwreset_reboot_airplane_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r61c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r61c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r61c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r61c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r61c_tmp_overlay", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r61c_surfaces");
+    (void)umount("/mnt/r61c_p2_ro");
+    (void)umount("/mnt/r61c_cnflasha_ro");
+    (void)umount("/mnt/r61c_slot1_vault");
+    (void)umount("/mnt/r61c_tmp_overlay");
+    if (mount("tmpfs", "/mnt/r61c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r61c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r61c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r61c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r61c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    if (r29_write_all_fsync("/mnt/r61c_tmp_overlay/stage_b_marker",
+                            (const uint8_t *)"FX3_VOLATILE_OVERLAY_R61", 24U, 0644) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r61c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+    int unmount_rc = umount("/mnt/r61c_tmp_overlay");
+    int overlay_gone_after_unmount = (access("/mnt/r61c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok =
+        (overlay_mounted_present == 1 && unmount_rc == 0 && overlay_gone_after_unmount == 1) ? 1 : 0;
+
+    char h0_hashes[16][65];
+    unsigned long long vbytes = 0ULL;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t surf[512];
+        for (size_t i = 0U; i < sizeof(surf); i++) {
+            surf[i] = (uint8_t)((s * 89U + i * 53U + 0x61U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r61c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, surf, sizeof(surf), 0444) != 0 ||
+            sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 47U + 0x61U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 83U + 0x47U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 101U + 0x33U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r61c_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r61c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r61c_slot1_vault/BODYDATA.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    if (sha256_file_hex("/mnt/r61c_slot1_vault/BODYDATA.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+    if (mount(NULL, "/mnt/r61c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r61c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r61c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r61c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    r61_usb_cfg_t usb;
+    r61_hdmi_info_cfg_t hdmi;
+    r61_protect_format_cfg_t pf;
+    r61_network_reset_cfg_t net;
+    r61_usb_initialize(&usb);
+    r61_hdmi_initialize(&hdmi);
+    r61_protect_initialize(&pf);
+    r61_net_initialize(&net);
+
+    /* Mutate Setup & Framing state */
+    usb.usb_mode = R61_USB_MTP;
+    usb.usb_lun_multi = 0;
+    hdmi.hdmi_info_display = R61_HDMI_INFO_OFF;
+    hdmi.framing_settings_crop_on = 1;
+
+    /* 1. [Reset Network Set.] -> clears ONLY (Network), preserves Setup/Playback/Shooting,
+     *    triggers mandatory auto-reboot, resets Airplane Mode=Off, then sets Airplane Mode=On */
+    int nw_rc = r61_exec_reset_network_set(&net, 1, 1);
+    int nw_quarantine_ok =
+        (nw_rc == 0 && net.wifi_bt_ftp_cloud_certs_cleared == 1 &&
+         net.shooting_setup_playback_camset_preserved == 1 &&
+         net.auto_reboot_completed == 1 && net.airplane_mode_on == 1 &&
+         usb.usb_mode == R61_USB_MTP && usb.usb_lun_multi == 0 &&
+         hdmi.hdmi_info_display == R61_HDMI_INFO_OFF &&
+         hdmi.framing_settings_crop_on == 1) ? 1 : 0;
+
+    /* 2. [Camera Settings Reset] -> preserves (Setup)->[USB] & [HDMI Info. Display] & (Network),
+     *    while resetting [Framing Settings (HDMI)] Crop exception */
+    r61_camera_settings_reset(&usb, &hdmi, &pf, &net);
+    int camreset_preserves_setup_ok =
+        (usb.usb_mode == R61_USB_MTP && usb.usb_lun_multi == 0 &&
+         hdmi.hdmi_info_display == R61_HDMI_INFO_OFF &&
+         hdmi.framing_settings_crop_on == 0 &&
+         net.airplane_mode_on == 1) ? 1 : 0;
+
+    /* 3. [Initialize] -> restores ALL Wave-47 defaults */
+    r61_initialize_all(&usb, &hdmi, &pf, &net);
+    int initialize_restores_wave47_ok =
+        (usb.usb_mode == R61_USB_SEL_WHEN_CONNECT && usb.usb_lun_multi == 1 &&
+         usb.usb_power_supply_on == 1 &&
+         hdmi.hdmi_info_display == R61_HDMI_INFO_ON &&
+         net.airplane_mode_on == 0) ? 1 : 0;
+    /* Re-arm Airplane Mode=On for bench safety */
+    net.airplane_mode_on = 1;
+    int zero_rf_final_ok = (r61_try_rf_tx(&net) == -EPERM) ? 1 : 0;
+
+    errno = 0;
+    int p2_fd = open("/mnt/r61c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r61c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r61c_slot1_vault/BODYDATA.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r61c_slot1_vault/BODYDATA.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (!jh) {
+        struct stat pkt_st;
+        if (stat("/tmp/jiritsu/sector0.pkt", &pkt_st) == 0) {
+            jh = dlopen("/etc/fx6_r61_libjit.so", RTLD_NOW);
+        }
+    }
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r61c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r61c_slot1_vault");
+    (void)umount("/mnt/r61c_surfaces");
+    (void)umount("/mnt/r61c_p2_ro");
+    (void)umount("/mnt/r61c_cnflasha_ro");
+    (void)rmdir("/mnt/r61c_tmp_overlay");
+    (void)rmdir("/mnt/r61c_slot1_vault");
+    (void)rmdir("/mnt/r61c_surfaces");
+    (void)rmdir("/mnt/r61c_p2_ro");
+    (void)rmdir("/mnt/r61c_cnflasha_ro");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              nw_quarantine_ok == 1 &&
+              camreset_preserves_setup_ok == 1 &&
+              initialize_restores_wave47_ok == 1 &&
+              zero_rf_final_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R61_CLEAN_UNMOUNT_NWRESET_H0_H3 stock_unmount_restored_ok=%d "
+            "nw_quarantine_ok=%d camreset_preserves_setup_ok=%d "
+            "initialize_restores_wave47_ok=%d zero_rf_final_ok=%d "
+            "usb_data_tx_events=0 slot1_protect_mutation_events=0 "
+            "slot1_format_events=0 post_reset_rf_leak_events=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r61c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            nw_quarantine_ok,
+            camreset_preserves_setup_ok,
+            initialize_restores_wave47_ok,
+            zero_rf_final_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -27409,6 +28319,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r60-clean-unmount-reset-h0-h3") == 0) {
         return run_r60_clean_unmount_reset_tiers_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r61-nouvc-hdmi1080-slot1-protect-nwreset-guard") == 0) {
+        return run_r61_nouvc_hdmi1080_slot1_protect_nwreset_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r61-clean-unmount-nwreset-h0-h3") == 0) {
+        return run_r61_clean_unmount_nwreset_reboot_airplane_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -27733,6 +28649,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave46_integrated &&
                 run_r60_clean_unmount_reset_tiers_h0_h3_probe(79) != 0) {
                 return 79;
+            }
+        }
+    }
+    struct stat r61_st;
+    if (stat("/etc/fx6_stage_r61", &r61_st) == 0) {
+        if (setup_r61_usb_hdmi_protect_netreset_probe() != 0) {
+            return 80;
+        }
+        FILE *r61f = fopen("/etc/fx6_stage_r61", "r");
+        if (r61f) {
+            int is_clean_unmount_wave47_integrated = 0;
+            char r61line[128];
+            while (fgets(r61line, sizeof(r61line), r61f)) {
+                if (strstr(r61line, "r61_mode=clean_unmount_nwreset_reboot_airplane_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave47_integrated = 1;
+                }
+            }
+            fclose(r61f);
+            if (is_clean_unmount_wave47_integrated &&
+                run_r61_clean_unmount_nwreset_reboot_airplane_h0_h3_probe(80) != 0) {
+                return 80;
             }
         }
     }

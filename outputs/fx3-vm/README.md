@@ -2150,5 +2150,44 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 315：Stage 65（`65/65` 里程碑！）Wave-55 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` 4 项 `[Touch Operation]` & 休眠触摸陷阱防线、`[DISP (Screen Disp) Set]` & 零 EVF 黑屏陷阱拦截、Still-Only `[AEL w/ Shutter]` / `[Flash]` 子菜单，以及 9 档 `[Play Speed for Interval]` & `Slot-1` Tier-0 Vault 防火墙 HIL
+
+[`realhw_touch_shooting_disp_zero_evf_interval_pb_coemulator.py`](realhw_touch_shooting_disp_zero_evf_interval_pb_coemulator.py)（Schema `realhw_touch_shooting_disp_zero_evf_interval_pb_coemulator_v1`）作为 **Stage 65（`65/65` Milestone！）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase315` / `--skip-stage65` / `--no-include-stage65` 跳过，支持 `--include-stage65`），严格遵循 `os.O_RDONLY`、`<= 4096 B` 受界窗口、`physical_device_writes == 0` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 17 供体 `O_RDONLY` 字节与 SHA-256 精确锚定审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 通过受界 `os.O_RDONLY`（`<= 4096 B`）核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **17 份真实供体**：FX3 `string_*_f.uxc` 4 语种（`en_f=373,820 B`、`sc_f=322,652 B`、`tc_f=324,148 B`、`ja_f=447,840 B`）、FX3 `string_*.uxc` 4 语种（`en=165,740 B`、`sc=149,064 B`、`tc=151,908 B`、`ja=208,564 B`）、FX3 `string_*_g.uxc` 4 语种（`en_g=69,600 B`、`sc_g=61,296 B`、`tc_g=61,372 B`、`ja_g=89,428 B`）、FX6 `string_english.uxc`（`118,208 B`）与 `string_english_2.uxc`（`118,676 B`），以及 `FX3 appFw.so`（`79,015,712 B`）、`FX3 BK4`（`2,229,740 B`）与 `FX6 appFw.so`（`50,520,424 B`）；支持 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 与 CLI `--clean-room` 切换至确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 65A — 4 项 `[Touch Operation]`（`Initialize`-Only）vs 休眠 `Touch Shutter` / `Touch AE` / `Touch Panel/Pad` / `Footer Icon Touch` 防线**：
+   - `MENU -> Setup -> [Touch Operation]`（`_g.uxc 0x6345`）仅暴露 4 个有效子项且全部跨 `[Camera Settings Reset]` 留存（仅 `[Initialize]` 复位）：`[Touch Operation]`（`On` / `On: Playback Only` / `Off`）、`[Touch Sensitivity]`（`Standard` / `Sensitive`，拒绝 `"Responsive"` `EINVAL=22`）、`[Touch Func. in Shooting]`（`Touch Focus` / `Touch Tracking` / `Off`，Still/Movie/`S&Q` 三模一致）与 `[Swipe Up]`（`Open the Fn Menu` / `Off`，仅 `Touch Operation == On` 时生效）；
+   - 对休眠 BIONZ XR 符号 `Touch Shutter`（`0x6a80`）、`Touch AE`（`0x702a`）、`Touch Panel/Pad`（`0x76ec`）及 `Footer Icon Touch`（`0x70da`）fail-closed 返回 `EOPNOTSUPP=95`；对比 `ILME-FX6 Ver. 6.01`（`Technical > Touch Operation` + `Shooting > Focus > Touch Function in MF` `Spot Focus`/`Tracking AF`，无 `Touch Sensitivity` 与 `Swipe Up`）。
+3. **Sub-Model 65B — `[DISP (Screen Disp) Set]`（`Operation Customize`, 4 Shoot / 3 Play）& 零 EVF `Select Finder/Monitor` 黑屏陷阱拦截**：
+   - 位于 `Setup -> [Operation Customize] -> [DISP (Screen Disp) Set]`（`_g.uxc 0x61da`，非 `Display Option`，`Initialize`-only）：**4 个拍摄页面**（`Display All Info.`、`No Disp. Info.`、`Histogram`、`Level`，要求 `>= 1` 勾选）与 **3 个回放页面**（`Display Info.`、`Histogram`、`No Disp. Info.`）；
+   - `ILME-FX3` **无内置 EVF、无眼部传感器、无 `FINDER/MONITOR` 按键**（`fx3_has_builtin_evf = fx3_has_eye_sensor = fx3_has_finder_monitor_button = False`），对 `Select Finder/Monitor`（`_f 0x74f9`）/`BKID_APP_setting_finder_monitor`/`DISP Button:Finder` fail-closed 返回 `ENODEV=19`，对 `For viewfinder`/`Graphic Display`/`Monitor Off` 返回 `EOPNOTSUPP=95`，杜绝 LCD 黑屏假死；对比无内置 EVF 但标配可拆卸 3.5" `Viewfinder` + `Viewfinder Hood`（严禁 `"Loupe"`）的 `ILME-FX6`。
+4. **Sub-Model 65C — Still-Only `[AEL w/ Shutter]` & Flash 子菜单（`[Exp.comp.set]` / `[Wireless Flash]` / `[External Flash Set.]`）vs 无闪光 `FX6`**：
+   - 4 项全部严格限定 **Still-only**（在 `Movie`/`S&Q` 返回 `EBUSY=16`）；`[AEL w/ Shutter]`（`Auto`/`On`/`Off`，`[AEL toggle]` 覆盖半按快门）、`[Exp.comp.set]`（`[Flash]` 子菜单，`Ambient&flash`/`Ambient only`）与 `[External Flash Set.]`（仅限 MI 热靴直插，连线离机返回 `EINVAL=22`，拒绝菜单配对复位 `EOPNOTSUPP=95`）均 **`Initialize`-only**，**仅 `[Wireless Flash]`（`Off`/`On`）支持 `[Camera Settings Reset]`**；对比无机械快门与静态闪光灯栈的 `ILME-FX6`（`ENOENT=2`，仅具卷帘快门 `Flash Band Reduce` `_2.uxc 0x4215`）。
+5. **Sub-Model 65D & Redlines — 回放 `[Viewing]` 9 档 `[Play Speed for Interval]`（`1..9` 默认 `5`）& 活跃 `[Edit]` vs 休眠 `[Beauty Effect]`/`[Trimming]` + `Slot-1` Tier-0 Vault 防火墙**：
+   - `Playback -> [Viewing]`（`_g 0x6033`）下 `[Cont. Play for Interval]` & `[Play Speed for Interval]` 精确暴露 **`1..9` 九档速度**（`CONTINUOUS_PLAYBACK_SPEED_1..9`，**默认 `5`**，`Initialize`-only，纯只读浏览，机内无视频合成 `EOPNOTSUPP=95`）；
+   - 活跃 `Playback -> [Edit]`（`Rotate`、`Photo Capture`、`JPEG/HEIF Switch`、`Copy`）vs 休眠 `[Beauty Effect]`/`Trimming`（`EOPNOTSUPP=95`）；任何针对 `Slot 1` Tier-0 Vault 的写编辑/捕获/休眠操作均 **100% fail-closed 拦截（`EROFS=30`）**（`slot1_data_sector_writes == 0`、`slot1_avf_info_mutated == False`、`slot1_vault_pb_edit_mutation_bytes == 0`）。
+
+### Phase 315 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 315 Stage 65（65/65 里程碑！）自检
+PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_touch_shooting_disp_zero_evf_interval_pb_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_touch_shooting_disp_zero_evf_interval_pb_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_touch_shooting_disp_zero_evf_interval_pb_coemulator.py --self-test --json
+
+# 2. 全板 65 阶段（Stage 1..65, 65/65 里程碑！）统一校验（支持 --include-stage65 与 --skip-phase315 / --skip-stage65 / --no-include-stage65）
+PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage65 --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 315 三模式 88 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_touch_shooting_disp_zero_evf_interval_pb_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_touch_shooting_disp_zero_evf_interval_pb_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_touch_shooting_disp_zero_evf_interval_pb_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+
+
 
 

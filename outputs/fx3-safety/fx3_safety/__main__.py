@@ -192,6 +192,11 @@ from .realhw_dci4k_aspect_custom_hold_camset_photo_capture_and_122gate_guard imp
     evaluate_g121_dci4k_and_aspect_ratio_guard,
     evaluate_g122_custom_hold_camset_photo_capture_guard,
 )
+from .realhw_sensor_cleaning_ev_comp_focus_mode_playback_rotate_and_124gate_guard import (
+    evaluate_124gate_preflight,
+    evaluate_g123_sensor_cleaning_and_ev_comp_guard,
+    evaluate_g124_focus_mode_and_playback_rotate_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -3616,6 +3621,95 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G122 gates can be rehearsed offline",
     )
     p_122.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 143. verify-sensor-cleaning-and-ev-comp-guard
+    p_g123 = sub.add_parser(
+        "verify-sensor-cleaning-and-ev-comp-guard",
+        aliases=["verify-g123-sensor-cleaning-ev-comp"],
+        help="Verify Gate G123: [Sensor Cleaning] (>= 51%% NP-FZ100 Battery Gate & Mandatory Power-OFF vs FX6 e-ND Optical Block) + [Exposure Comp.] (+/-5.0 EV Still / +/-2.0 EV Movie, [Exposure step] 0.3EV/0.5EV, Manual M + Fixed ISO Disable, & Total [Cine EI]/[Cine EI Quick] Lockout)",
+    )
+    p_g123.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g123.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g123.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g123.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g123.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 144. verify-focus-mode-and-playback-rotate-guard
+    p_g124 = sub.add_parser(
+        "verify-focus-mode-and-playback-rotate-guard",
+        aliases=["verify-g124-focus-mode-playback-rotate"],
+        help="Verify Gate G124: [Focus Mode] Still 5-Mode (AF-S/AF-A/AF-C/DMF/MF) vs Movie/S&Q 2-Mode (AF-C [MOVIE_AUTO]/MF) + [Priority Set in AF-S/AF-C]/[AF Assist]/[AF Illuminator] + [Playback] [View Mode]/[Image Index] (9/25 vs Dormant 12/30)/[Display as Group]/[Display Rotation]/[Rotate] Slot-1 Read-Only Vault EROFS/EBUSY Firewall",
+    )
+    p_g124.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g124.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g124.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g124.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g124.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 145. verify-124-gates
+    p_124 = sub.add_parser(
+        "verify-124-gates",
+        help="Run Phase 290 (290th Phase Milestone) Unified 124-Gate Master Safety Preflight Engine (G01..G124)",
+    )
+    p_124.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_124.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_124.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G124 gates can be rehearsed offline",
+    )
+    p_124.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_124.add_argument("--summary", action="store_true", help="Emit concise summary output")
 
     args = parser.parse_args(argv)
 
@@ -7355,6 +7449,151 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_122_gates_verified if args.dry_run_simulated else report.offline_119_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-sensor-cleaning-and-ev-comp-guard",
+        "verify-g123-sensor-cleaning-ev-comp",
+    ):
+        verdict, res = evaluate_g123_sensor_cleaning_and_ev_comp_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "battery_pct": res.sensor_cleaning_ev_comp_guard["battery_pct"],
+                    "sensor_cleaning_allowed": res.sensor_cleaning_ev_comp_guard["sensor_cleaning_allowed"],
+                    "fx6_has_ibis": res.sensor_cleaning_ev_comp_guard["fx6_has_ibis"],
+                    "effective_ev_comp": res.sensor_cleaning_ev_comp_guard["effective_ev_comp"],
+                    "cine_ei_locks_ev_comp": res.sensor_cleaning_ev_comp_guard["cine_ei_locks_ev_comp"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.sensor_cleaning_ev_comp_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} clean_batt>={guard['battery_pct']}%(allowed={guard['sensor_cleaning_allowed']},"
+                f"pwr_off={guard['power_switch_off_after_cleaning']},fx6_ibis={guard['fx6_has_ibis']},"
+                f"fx6_end={guard['fx6_front_end_assembly_present']}) "
+                f"ev_comp={guard['effective_ev_comp']:+.1f}EV(range={tuple(guard['ev_comp_allowed_range'])},"
+                f"step={guard['effective_exposure_step']},cine_ei_lock={guard['cine_ei_locks_ev_comp']},"
+                f"fx3_dial={guard['fx3_has_physical_ev_dial']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-focus-mode-and-playback-rotate-guard",
+        "verify-g124-focus-mode-playback-rotate",
+    ):
+        verdict, res = evaluate_g124_focus_mode_and_playback_rotate_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_focus_mode": res.focus_mode_playback_rotate_guard["effective_focus_mode"],
+                    "internal_focus_enum": res.focus_mode_playback_rotate_guard["internal_focus_enum"],
+                    "effective_view_mode": res.focus_mode_playback_rotate_guard["effective_view_mode"],
+                    "effective_image_index": res.focus_mode_playback_rotate_guard["effective_image_index"],
+                    "slot_1_write_protected": res.focus_mode_playback_rotate_guard["slot_1_write_protected"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.focus_mode_playback_rotate_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} focus={guard['effective_focus_mode']}"
+                f"(enum={guard['internal_focus_enum']},illum={guard['effective_af_illuminator']},"
+                f"fx6_af={guard['fx6_supports_af_a_dmf_illuminator']}) "
+                f"playback=(view={guard['effective_view_mode']},idx={guard['effective_image_index']},"
+                f"group={guard['effective_display_as_group']},rot_disp={guard['effective_display_rotation']},"
+                f"slot1_wp={guard['slot_1_write_protected']},rotate_blk={guard['rotate_blocked']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-124-gates":
+        report = evaluate_124gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g123_status": report.g123_result["status"],
+                    "g124_status": report.g124_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/124 "
+                f"g123_to_g124_all_passed={report.g123_to_g124_all_passed} "
+                f"all_124_gates_verified={report.all_124_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_124_gates_verified if args.dry_run_simulated else report.offline_121_gates_verified
         return 0 if ok else 1
 
     return 2

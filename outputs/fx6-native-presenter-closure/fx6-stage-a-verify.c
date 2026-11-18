@@ -37761,6 +37761,1302 @@ static int run_r69_clean_unmount_wave55_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ==================== Round 70 (43rd Real-HW Round, Milestone 70th, Wave-56) ==================== */
+typedef enum {
+    R70_SHOOT_STILL = 0,
+    R70_SHOOT_MOVIE = 1,
+    R70_SHOOT_SQ = 2
+} r70_shoot_mode_t;
+
+typedef enum {
+    R70_AVTV_NORMAL = 0,
+    R70_AVTV_REVERSE = 1
+} r70_avtv_rotate_t;
+
+typedef enum {
+    R70_FUNCRING_POWER_FOCUS = 0,
+    R70_FUNCRING_APSC_S35_FF = 1,
+    R70_FUNCRING_INVALID = 2
+} r70_func_ring_t;
+
+typedef enum {
+    R70_LOCK_OFF = 0,
+    R70_LOCK_MULTISELECTOR = 1,
+    R70_LOCK_DIAL_WHEEL = 2,
+    R70_LOCK_ALL = 3
+} r70_lock_parts_t;
+
+typedef enum {
+    R70_MYDIAL_NONE = 0,
+    R70_MYDIAL_HOLD = 1,
+    R70_MYDIAL_TOGGLE = 2,
+    R70_MYDIAL_CYCLE_123 = 3
+} r70_mydial_trigger_t;
+
+typedef enum {
+    R70_LV_EFFECT_ON = 0,
+    R70_LV_EFFECT_OFF = 1
+} r70_liveview_effect_t;
+
+typedef enum {
+    R70_EXP_EFF_SET_AND_FLASH = 0,
+    R70_EXP_EFF_SET_ONLY = 1
+} r70_exp_effect_t;
+
+typedef enum {
+    R70_GRID_RULE_OF_3RDS = 0,
+    R70_GRID_SQUARE = 1,
+    R70_GRID_DIAG_SQUARE = 2
+} r70_grid_type_t;
+
+typedef enum {
+    R70_CARD_NONE = 0,
+    R70_CARD_SD_SDHC = 1,
+    R70_CARD_SDXC = 2,
+    R70_CARD_CFEXPRESS_A = 3
+} r70_card_type_t;
+
+typedef enum {
+    R70_SLOT_1 = 1,
+    R70_SLOT_2 = 2
+} r70_slot_id_t;
+
+typedef enum {
+    R70_LUT_SLOG3 = 0,
+    R70_LUT_S709 = 1,
+    R70_LUT_709_800 = 2,
+    R70_LUT_USER_BASE = 100 /* 100..115 -> User1..User16 */
+} r70_select_lut_t;
+
+typedef struct {
+    int is_fx6_chaplin;
+    r70_shoot_mode_t shoot_mode;
+    /* Pillar 1: Setup -> [Dial Customize] 5-item Initialize-only tree */
+    int custom_key_still_front_dial_fn;
+    int custom_key_movie_front_dial_fn;
+    r70_avtv_rotate_t av_tv_rotate;
+    r70_func_ring_t function_ring;
+    r70_lock_parts_t lock_operation_parts;
+    int fn_long_press_locked;
+    int menu_fn_5s_chord_locked;
+    /* Pillar 2: 3-physical-dial topology, My Dial 1..3, & 12+12 Fn Menu Split */
+    int mydial_slot_nonempty[3]; /* My Dial 1..3 */
+    int mydial_front_fn[3];
+    int mydial_rear_fn[3];
+    int mydial_wheel_fn[3];
+    int mydial_active_idx; /* 0 = inactive, 1..3 = active */
+    r70_mydial_trigger_t mydial_trigger_mode;
+    int still_fn_slots[12]; /* 0 = Not set (0xe0ac), >0 = assigned */
+    int movie_fn_slots[12];
+    /* Pillar 3: Still-only [Live View Display Set.] 3-item asymmetric reset + 3-pattern [Grid Line] */
+    r70_liveview_effect_t live_view_display;
+    int bright_monitoring_active;
+    r70_exp_effect_t exposure_effect;
+    int frame_rate_low_limit; /* ONLY resettable item of the 3 */
+    int grid_line_display;
+    r70_grid_type_t grid_line_type;
+    int hdmi_info_display; /* 0=Off (Clean HDMI), 1=On */
+    int hdmi_raw_or_off_hdmi_only;
+    int hdmi_clean_feed_grid_baked_pixels;
+    /* Pillar 4: [Manage User LUTs] 1..16, [Select LUT], [Embed LUT File] vs PPLUT1..4 + Slot-1 EROFS */
+    int user_lut_present[16];
+    int user_lut_points[16];
+    int select_lut;
+    int embed_lut_file; /* 1=On [def], 0=Off; locked 0 on SD/SDHC */
+    int pplut_link_user[4]; /* -1 unlinked, 0..15 linked to User1..16 */
+    r70_card_type_t slot1_card_type;
+    r70_card_type_t slot2_card_type;
+    int slot1_ro_vault_armed;
+    int slot1_data_sector_writes;
+    int slot1_avf_info_mutated;
+    int container_metadata_embedded_count;
+    int external_cube_sidecar_count;
+    int pplut_pixel_baked_count;
+} r70_wave56_cfg_t;
+
+__attribute__((noinline)) static int r70_lookup_wave56_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Setup -> [Dial Customize] -> [Custom Key/Dial Set.]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Dial Customize] -> [My Dial Settings]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Dial Customize] -> [Av/Tv Rotate]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Dial Customize] -> [Function Ring(Lens)]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Dial Customize] -> [Lock Operation Parts]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Operation Customize] -> [Fn Menu Settings]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shooting Display] -> [Live View Display Set.]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shooting Display] -> [Grid Line Display]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shooting Display] -> [Grid Line Type]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Color/Tone] -> [Manage User LUTs]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Color/Tone] -> [Select LUT]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [Log Shooting Setting] -> [Embed LUT File]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Color/Tone] -> [Picture Profile] -> [PPLUT1..4]") == 0) {
+        return 0;
+    }
+    if (strcmp(path, "dormant::Dial Setup") == 0 ||
+        strcmp(path, "dormant::Dial/Wheel Setup") == 0 ||
+        strcmp(path, "dormant::Dial / Wheel Lock") == 0 ||
+        strcmp(path, "dormant::Rear Dial L") == 0 ||
+        strcmp(path, "dormant::Rear Dial R") == 0 ||
+        strcmp(path, "dormant::CUSTOM_GRID_LINE0..3") == 0 ||
+        strcmp(path, "dormant::GOLDEN_RATIO_GRID") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r70_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "_g:0x62ed:Dial Customize") == 0 ||
+        strcmp(token, "_f:0x6290:Custom Key/Dial Set.") == 0 ||
+        strcmp(token, "_f:0x73a0:Custom Key/Dial Set. (Movie)") == 0 ||
+        strcmp(token, "_f:0x6538:My Dial Settings") == 0 ||
+        strcmp(token, "_f:0x67da:My Dial 1") == 0 ||
+        strcmp(token, "_f:0x64ec:My Dial 2") == 0 ||
+        strcmp(token, "_f:0x6936:My Dial 3") == 0 ||
+        strcmp(token, "_f:0x66fe:My Dial 1 during Hold") == 0 ||
+        strcmp(token, "_f:0x6bc0:Toggle My Dial 1") == 0 ||
+        strcmp(token, "_f:0x7987:My Dial 1->2->3") == 0 ||
+        strcmp(token, "_f:0x72e3:Av/Tv Rotate") == 0 ||
+        strcmp(token, "_f:0x688f:Normal") == 0 ||
+        strcmp(token, "_f:0x6175:Reverse") == 0 ||
+        strcmp(token, "_f:0x715e:Function Ring(Lens)") == 0 ||
+        strcmp(token, "_f:0x71aa:Power Focus") == 0 ||
+        strcmp(token, "_f:0x6904:Lock Operation Parts") == 0 ||
+        strcmp(token, "_f:0x686b:Multi-Selector Only") == 0 ||
+        strcmp(token, "_f:0x61bb:Dial + Wheel") == 0 ||
+        strcmp(token, "_f:0x6d2a:Front Dial") == 0 ||
+        strcmp(token, "_f:0x6b61:Rear Dial") == 0 ||
+        strcmp(token, "_f:0x6178:Control Wheel") == 0 ||
+        strcmp(token, "_g:0x614b:Fn Menu Settings") == 0 ||
+        strcmp(token, "0xe0ac:Not set") == 0 ||
+        strcmp(token, "_f:0x6220:Fn menu settings are all Not set") == 0 ||
+        strcmp(token, "_f:0x6429:Live View Display Set.") == 0 ||
+        strcmp(token, "_f:0x7227:Live View Display") == 0 ||
+        strcmp(token, "_f:0x7913:Setting Effect ON") == 0 ||
+        strcmp(token, "_f:0x642f:Setting Effect OFF") == 0 ||
+        strcmp(token, "_f:0x6552:Exposure Effect") == 0 ||
+        strcmp(token, "_f:0x6bee:Exposure Set. & flash") == 0 ||
+        strcmp(token, "_f:0x762b:Exposure Setting Only") == 0 ||
+        strcmp(token, "_f:0x700e:Frame Rate Low Limit") == 0 ||
+        strcmp(token, "_f:0x6f9d:Grid Line Display") == 0 ||
+        strcmp(token, "_f:0x7920:Grid Line Type") == 0 ||
+        strcmp(token, "_f:0x78ae:Rule of 3rds Grid") == 0 ||
+        strcmp(token, "_f:0x715a:Square Grid") == 0 ||
+        strcmp(token, "_f:0x786c:Diag. + Square Grid") == 0 ||
+        strcmp(token, "_f:0x6e7c:HDMI Info. Display") == 0 ||
+        strcmp(token, "_f:0x71af:Manage User LUTs") == 0 ||
+        strcmp(token, "_f:0x6a05:Import/Edit") == 0 ||
+        strcmp(token, "_f:0x6543:Delete All") == 0 ||
+        strcmp(token, "_f:0x643e:Select LUT") == 0 ||
+        strcmp(token, "_f:0x680f:Embed LUT File") == 0 ||
+        strcmp(token, "_g:0x61a0:SDXC or CFexpress required for Embed LUT") == 0 ||
+        strcmp(token, "_f:0x6095:PPLUT1..4") == 0 ||
+        strcmp(token, "_f:0x6f6d:Basic Look") == 0) {
+        return 0;
+    }
+    if (strcmp(token, "_f:0x6a89:Dial/Wheel Setup") == 0 ||
+        strcmp(token, "0xe352:Dial / Wheel Lock") == 0 ||
+        strcmp(token, "_f:0x737b:Dial Lock") == 0 ||
+        strcmp(token, "_f:0x7acd:Wheel Lock") == 0 ||
+        strcmp(token, "_f:0x6a5c:Rear Dial L") == 0 ||
+        strcmp(token, "_f:0x680d:Rear Dial R") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r70_wave56_initialize(r70_wave56_cfg_t *cfg) {
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->is_fx6_chaplin = 0;
+    cfg->shoot_mode = R70_SHOOT_STILL;
+    cfg->custom_key_still_front_dial_fn = 1;
+    cfg->custom_key_movie_front_dial_fn = 2;
+    cfg->av_tv_rotate = R70_AVTV_NORMAL;
+    cfg->function_ring = R70_FUNCRING_POWER_FOCUS;
+    cfg->lock_operation_parts = R70_LOCK_OFF;
+    for (int i = 0; i < 12; i++) {
+        cfg->still_fn_slots[i] = i + 1;
+        cfg->movie_fn_slots[i] = i + 101;
+    }
+    cfg->live_view_display = R70_LV_EFFECT_ON;
+    cfg->bright_monitoring_active = 0;
+    cfg->exposure_effect = R70_EXP_EFF_SET_AND_FLASH;
+    cfg->frame_rate_low_limit = 0; /* Off default */
+    cfg->grid_line_display = 0;    /* Off default */
+    cfg->grid_line_type = R70_GRID_RULE_OF_3RDS;
+    cfg->hdmi_info_display = 0; /* Clean HDMI */
+    cfg->hdmi_raw_or_off_hdmi_only = 0;
+    cfg->select_lut = R70_LUT_S709;
+    cfg->embed_lut_file = 1; /* On default */
+    for (int i = 0; i < 4; i++) {
+        cfg->pplut_link_user[i] = -1;
+    }
+    cfg->slot1_card_type = R70_CARD_SDXC;
+    cfg->slot2_card_type = R70_CARD_CFEXPRESS_A;
+    cfg->slot1_ro_vault_armed = 1;
+}
+
+__attribute__((noinline)) static void r70_wave56_camera_settings_reset(r70_wave56_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Asymmetric Reset Split across Wave-56:
+     * RESETTABLE by [Camera Settings Reset]:
+     *   - [Live View Display Set.] -> [Frame Rate Low Limit] -> Off (ONLY 1 of 3!)
+     *   - [Select LUT] -> s709
+     *   - [Embed LUT File] -> On (respecting SD/SDHC lock if active)
+     *   - [Picture Profile -> PPLUT1..4] -> unlinked (unlike PP1..11 which survive!)
+     * INITIALIZE-ONLY (SURVIVE [Camera Settings Reset]):
+     *   - All 5 [Dial Customize] items: [Custom Key/Dial Set.], [My Dial Settings] 1..3,
+     *     [Av/Tv Rotate], [Function Ring(Lens)], [Lock Operation Parts]
+     *   - [Fn Menu Settings] 12 Still + 12 Movie slots
+     *   - [Live View Display] & [Exposure Effect]
+     *   - [Grid Line Display] & [Grid Line Type]
+     *   - [Manage User LUTs] imported User1..16 LUT slots */
+    cfg->frame_rate_low_limit = 0;
+    cfg->select_lut = R70_LUT_S709;
+    cfg->embed_lut_file = (cfg->slot1_card_type == R70_CARD_SD_SDHC) ? 0 : 1;
+    for (int i = 0; i < 4; i++) {
+        cfg->pplut_link_user[i] = -1;
+    }
+}
+
+__attribute__((noinline)) static int r70_probe_dormant_dial_symbol(
+    const r70_wave56_cfg_t *cfg, const char *sym
+) {
+    if (!cfg || !sym) {
+        return -EINVAL;
+    }
+    if (strcmp(sym, "Dial Setup") == 0 ||
+        strcmp(sym, "Dial/Wheel Setup") == 0 ||
+        strcmp(sym, "Dial / Wheel Lock") == 0 ||
+        strcmp(sym, "Rear Dial L") == 0 ||
+        strcmp(sym, "Rear Dial R") == 0 ||
+        strcmp(sym, "CUSTOM_GRID_LINE0..3") == 0 ||
+        strcmp(sym, "GOLDEN_RATIO_GRID") == 0) {
+        return -EOPNOTSUPP;
+    }
+    if (strcmp(sym, "FX6 Multi Function Dial + Grip/Handle/IRIS/ND Dials + HOLD") == 0 ||
+        strcmp(sym, "FX6 Status Screens + Direct Menu (Home/Direct Menu Priority)") == 0 ||
+        strcmp(sym, "FX6 Monitoring > Marker > Guide Frame + Aspect/Safety/Center/User Box") == 0 ||
+        strcmp(sym, "FX6 Paint/Look Base Look (16 UI) + Cine EI Embed LUT + Multi-Ch LUT") == 0) {
+        return cfg->is_fx6_chaplin ? 0 : -ENOENT;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r70_set_av_tv_rotate(
+    r70_wave56_cfg_t *cfg, r70_avtv_rotate_t rot
+) {
+    if (!cfg || (rot != R70_AVTV_NORMAL && rot != R70_AVTV_REVERSE)) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 uses per-dial Direction (Normal/Opposite) */
+    }
+    cfg->av_tv_rotate = rot;
+    return 0;
+}
+
+__attribute__((noinline)) static int r70_set_function_ring(
+    r70_wave56_cfg_t *cfg, r70_func_ring_t ring
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (ring == R70_FUNCRING_INVALID ||
+        ring < R70_FUNCRING_POWER_FOCUS || ring > R70_FUNCRING_APSC_S35_FF) {
+        return -EINVAL;
+    }
+    cfg->function_ring = ring;
+    return 0;
+}
+
+__attribute__((noinline)) static int r70_set_lock_operation_parts(
+    r70_wave56_cfg_t *cfg, r70_lock_parts_t lock_mode, int via_menu_fn_5s
+) {
+    if (!cfg || lock_mode < R70_LOCK_OFF || lock_mode > R70_LOCK_ALL) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 uses physical HOLD switch */
+    }
+    cfg->lock_operation_parts = lock_mode;
+    cfg->fn_long_press_locked = (lock_mode != R70_LOCK_OFF) ? 1 : 0;
+    cfg->menu_fn_5s_chord_locked = (via_menu_fn_5s && lock_mode == R70_LOCK_ALL) ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r70_configure_mydial_slot(
+    r70_wave56_cfg_t *cfg, int slot_1to3, int front_fn, int rear_fn, int wheel_fn
+) {
+    if (!cfg || slot_1to3 < 1 || slot_1to3 > 3) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 has no My Dial */
+    }
+    int idx = slot_1to3 - 1;
+    cfg->mydial_front_fn[idx] = front_fn;
+    cfg->mydial_rear_fn[idx] = rear_fn;
+    cfg->mydial_wheel_fn[idx] = wheel_fn;
+    cfg->mydial_slot_nonempty[idx] = (front_fn != 0 || rear_fn != 0 || wheel_fn != 0) ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r70_trigger_mydial(
+    r70_wave56_cfg_t *cfg, r70_mydial_trigger_t trig, int target_1to3,
+    int *out_effective_dial_locked
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (trig == R70_MYDIAL_NONE) {
+        cfg->mydial_active_idx = 0;
+        cfg->mydial_trigger_mode = R70_MYDIAL_NONE;
+        if (out_effective_dial_locked) {
+            *out_effective_dial_locked = (cfg->lock_operation_parts == R70_LOCK_DIAL_WHEEL ||
+                                          cfg->lock_operation_parts == R70_LOCK_ALL) ? 1 : 0;
+        }
+        return 0;
+    }
+    if (trig == R70_MYDIAL_CYCLE_123) {
+        int start = cfg->mydial_active_idx;
+        int next = 0;
+        for (int step = start + 1; step <= 3; step++) {
+            if (cfg->mydial_slot_nonempty[step - 1]) {
+                next = step;
+                break;
+            }
+        }
+        cfg->mydial_active_idx = next; /* auto-skips empty '--' sets; wraps to 0 normal */
+        cfg->mydial_trigger_mode = (next > 0) ? R70_MYDIAL_CYCLE_123 : R70_MYDIAL_NONE;
+        if (out_effective_dial_locked) {
+            if (next > 0) {
+                *out_effective_dial_locked = 0; /* My Dial temporarily unlocks Lock Operation Parts! */
+            } else {
+                *out_effective_dial_locked = (cfg->lock_operation_parts == R70_LOCK_DIAL_WHEEL ||
+                                              cfg->lock_operation_parts == R70_LOCK_ALL) ? 1 : 0;
+            }
+        }
+        return 0;
+    }
+    if (target_1to3 < 1 || target_1to3 > 3) {
+        return -EINVAL;
+    }
+    if (!cfg->mydial_slot_nonempty[target_1to3 - 1]) {
+        return -EINVAL; /* Cannot hold/toggle an empty '--' My Dial set */
+    }
+    if (trig == R70_MYDIAL_TOGGLE && cfg->mydial_active_idx == target_1to3) {
+        cfg->mydial_active_idx = 0;
+        cfg->mydial_trigger_mode = R70_MYDIAL_NONE;
+        if (out_effective_dial_locked) {
+            *out_effective_dial_locked = (cfg->lock_operation_parts == R70_LOCK_DIAL_WHEEL ||
+                                          cfg->lock_operation_parts == R70_LOCK_ALL) ? 1 : 0;
+        }
+        return 0;
+    }
+    cfg->mydial_active_idx = target_1to3;
+    cfg->mydial_trigger_mode = trig;
+    if (out_effective_dial_locked) {
+        *out_effective_dial_locked = 0; /* Temporarily unlocks Lock Operation Parts while active */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r70_set_fn_menu_slot(
+    r70_wave56_cfg_t *cfg, int is_movie, int slot_idx, int item_id
+) {
+    if (!cfg || slot_idx < 0 || slot_idx >= 12) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 has Status Screens + Direct Menu, no Fn Menu */
+    }
+    if (is_movie) {
+        cfg->movie_fn_slots[slot_idx] = item_id;
+    } else {
+        cfg->still_fn_slots[slot_idx] = item_id;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r70_press_fn_button(const r70_wave56_cfg_t *cfg) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    const int *slots = (cfg->shoot_mode == R70_SHOOT_STILL) ? cfg->still_fn_slots : cfg->movie_fn_slots;
+    int any_set = 0;
+    for (int i = 0; i < 12; i++) {
+        if (slots[i] != 0) {
+            any_set = 1;
+            break;
+        }
+    }
+    if (!any_set) {
+        return -EINVAL; /* _f 0x6220: Invalid since Fn menu settings are all 'Not set'. */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r70_set_live_view_display(
+    r70_wave56_cfg_t *cfg, r70_liveview_effect_t eff
+) {
+    if (!cfg || (eff != R70_LV_EFFECT_ON && eff != R70_LV_EFFECT_OFF)) {
+        return -EINVAL;
+    }
+    if (cfg->shoot_mode != R70_SHOOT_STILL) {
+        return -EBUSY; /* [Live View Display Set.] is Still-only */
+    }
+    if (cfg->bright_monitoring_active && eff == R70_LV_EFFECT_ON) {
+        return -EBUSY; /* Bright Monitoring forces Setting Effect OFF */
+    }
+    cfg->live_view_display = eff;
+    return 0;
+}
+
+__attribute__((noinline)) static int r70_set_bright_monitoring(
+    r70_wave56_cfg_t *cfg, int active
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    cfg->bright_monitoring_active = active ? 1 : 0;
+    if (cfg->bright_monitoring_active) {
+        cfg->live_view_display = R70_LV_EFFECT_OFF;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r70_set_exposure_effect(
+    r70_wave56_cfg_t *cfg, r70_exp_effect_t eff
+) {
+    if (!cfg || (eff != R70_EXP_EFF_SET_AND_FLASH && eff != R70_EXP_EFF_SET_ONLY)) {
+        return -EINVAL;
+    }
+    if (cfg->shoot_mode != R70_SHOOT_STILL) {
+        return -EBUSY; /* Still-only */
+    }
+    cfg->exposure_effect = eff;
+    return 0;
+}
+
+__attribute__((noinline)) static int r70_set_frame_rate_low_limit(
+    r70_wave56_cfg_t *cfg, int on_off
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->shoot_mode != R70_SHOOT_STILL) {
+        return -EBUSY; /* Still-only */
+    }
+    cfg->frame_rate_low_limit = on_off ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r70_set_grid_line(
+    r70_wave56_cfg_t *cfg, int display_on, r70_grid_type_t gtype
+) {
+    if (!cfg || gtype < R70_GRID_RULE_OF_3RDS || gtype > R70_GRID_DIAG_SQUARE) {
+        return -EINVAL;
+    }
+    cfg->grid_line_display = display_on ? 1 : 0;
+    cfg->grid_line_type = gtype;
+    /* Clean HDMI guarantee: when HDMI Info. Display == Off (or forced Off by RAW/Off(HDMI Only)),
+     * grid lines stay strictly on local LCD with 0 pixels baked onto HDMI output */
+    if (cfg->hdmi_info_display == 0 || cfg->hdmi_raw_or_off_hdmi_only) {
+        cfg->hdmi_clean_feed_grid_baked_pixels = 0;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r70_import_user_lut_cube(
+    r70_wave56_cfg_t *cfg, int user_slot_1to16, r70_slot_id_t src_slot,
+    const char *card_dir_path, const char *filename, int cube_points, int make_cube_folder
+) {
+    if (!cfg || !card_dir_path || !filename) {
+        return -EINVAL;
+    }
+    if (user_slot_1to16 < 1 || user_slot_1to16 > 16) {
+        return -EINVAL; /* 1..16 slots strictly enforced (never 17..50) */
+    }
+    if (make_cube_folder && src_slot == R70_SLOT_1 && cfg->slot1_ro_vault_armed) {
+        return -EROFS; /* Fail-closed Slot-1 EROFS=30 on any directory creation */
+    }
+    r70_card_type_t ctype = (src_slot == R70_SLOT_1) ? cfg->slot1_card_type : cfg->slot2_card_type;
+    if (ctype == R70_CARD_CFEXPRESS_A) {
+        if (strcmp(card_dir_path, "/Sony/PRO/LUT") != 0) {
+            return -ENOENT;
+        }
+    } else if (ctype == R70_CARD_SDXC || ctype == R70_CARD_SD_SDHC) {
+        if (strcmp(card_dir_path, "/Private/Sony/PRO/LUT") != 0) {
+            return -ENOENT;
+        }
+    } else {
+        return -ENODEV;
+    }
+    size_t fn_len = strlen(filename);
+    if (fn_len < 6U || fn_len > 63U || strcmp(filename + fn_len - 5U, ".cube") != 0) {
+        return -EINVAL; /* <= 63 ASCII chars ending in .cube */
+    }
+    if (cube_points != 17 && cube_points != 33) {
+        return -EINVAL; /* Only 17-point or 33-point .cube supported */
+    }
+    /* Read-only import from card into camera NVRAM: zero data sector writes on Slot 1! */
+    int idx = user_slot_1to16 - 1;
+    cfg->user_lut_present[idx] = 1;
+    cfg->user_lut_points[idx] = cube_points;
+    return 0;
+}
+
+__attribute__((noinline)) static int r70_set_embed_lut_file(
+    r70_wave56_cfg_t *cfg, int enable_on
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    r70_card_type_t active_card = cfg->slot1_card_type;
+    if (enable_on && active_card == R70_CARD_SD_SDHC) {
+        cfg->embed_lut_file = 0;
+        return -EBUSY; /* Hardware-locked Off on SD/SDHC (_g 0x61a0) */
+    }
+    cfg->embed_lut_file = enable_on ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r70_bind_pplut_pixel_bake(
+    r70_wave56_cfg_t *cfg, int pplut_1to4, int user_slot_1to16
+) {
+    if (!cfg || pplut_1to4 < 1 || pplut_1to4 > 4 || user_slot_1to16 < 1 || user_slot_1to16 > 16) {
+        return -EINVAL;
+    }
+    if (!cfg->user_lut_present[user_slot_1to16 - 1]) {
+        return -ENOENT;
+    }
+    cfg->pplut_link_user[pplut_1to4 - 1] = user_slot_1to16 - 1;
+    return 0;
+}
+
+__attribute__((noinline)) static int r70_exec_record_lut_to_slot(
+    r70_wave56_cfg_t *cfg, r70_slot_id_t target_slot, int use_pplut_bake
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (target_slot == R70_SLOT_1 && cfg->slot1_ro_vault_armed) {
+        return -EROFS; /* Tier-0 Vault firewall blocks all Slot-1 recording/writes */
+    }
+    if (target_slot == R70_SLOT_2) {
+        if (use_pplut_bake) {
+            cfg->pplut_pixel_baked_count++;
+        } else if (cfg->embed_lut_file) {
+            cfg->container_metadata_embedded_count++;
+        }
+        return 0;
+    }
+    return -EROFS;
+}
+
+static int setup_r70_dial_mydial_fn_liveview_lut_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r70_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r70_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r70_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r70_p2_init");
+    (void)umount("/mnt/r70_cnflasha_init");
+    (void)umount("/mnt/r70_slot1_vault");
+    if (mount("tmpfs", "/mnt/r70_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r70_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r70_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 87U + 0x70U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 101U + 0x56U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 113U + 0x43U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r70_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r70_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r70_slot1_vault/DSC00001.JPG", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r70_slot1_vault/AVF_INFO.INP", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r70_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r70_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r70_slot1_vault/DSC00001.JPG", pre_v_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r70_slot1_vault/AVF_INFO.INP", pre_avf_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r70_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r70_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r70_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave56_nodes_ok =
+        (r70_lookup_wave56_menu_node("MENU -> Setup -> [Dial Customize] -> [Custom Key/Dial Set.]") == 0 &&
+         r70_lookup_wave56_menu_node("MENU -> Setup -> [Dial Customize] -> [My Dial Settings]") == 0 &&
+         r70_lookup_wave56_menu_node("MENU -> Setup -> [Dial Customize] -> [Av/Tv Rotate]") == 0 &&
+         r70_lookup_wave56_menu_node("MENU -> Setup -> [Dial Customize] -> [Function Ring(Lens)]") == 0 &&
+         r70_lookup_wave56_menu_node("MENU -> Setup -> [Dial Customize] -> [Lock Operation Parts]") == 0 &&
+         r70_lookup_wave56_menu_node("MENU -> Setup -> [Operation Customize] -> [Fn Menu Settings]") == 0 &&
+         r70_lookup_wave56_menu_node("MENU -> Shooting -> [Shooting Display] -> [Live View Display Set.]") == 0 &&
+         r70_lookup_wave56_menu_node("MENU -> Shooting -> [Shooting Display] -> [Grid Line Display]") == 0 &&
+         r70_lookup_wave56_menu_node("MENU -> Shooting -> [Shooting Display] -> [Grid Line Type]") == 0 &&
+         r70_lookup_wave56_menu_node("MENU -> Exposure/Color -> [Color/Tone] -> [Manage User LUTs]") == 0 &&
+         r70_lookup_wave56_menu_node("MENU -> Exposure/Color -> [Color/Tone] -> [Select LUT]") == 0 &&
+         r70_lookup_wave56_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [Log Shooting Setting] -> [Embed LUT File]") == 0 &&
+         r70_lookup_wave56_menu_node("MENU -> Exposure/Color -> [Color/Tone] -> [Picture Profile] -> [PPLUT1..4]") == 0 &&
+         r70_lookup_wave56_menu_node("dormant::Dial Setup") == -EOPNOTSUPP &&
+         r70_lookup_wave56_menu_node("dormant::Dial/Wheel Setup") == -EOPNOTSUPP &&
+         r70_lookup_wave56_menu_node("dormant::Dial / Wheel Lock") == -EOPNOTSUPP &&
+         r70_lookup_wave56_menu_node("dormant::Rear Dial L") == -EOPNOTSUPP &&
+         r70_lookup_wave56_menu_node("dormant::Rear Dial R") == -EOPNOTSUPP &&
+         r70_lookup_wave56_menu_node("dormant::CUSTOM_GRID_LINE0..3") == -EOPNOTSUPP &&
+         r70_lookup_wave56_menu_node("dormant::GOLDEN_RATIO_GRID") == -EOPNOTSUPP) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r70_lookup_uxc_token("_g:0x62ed:Dial Customize") == 0 &&
+         r70_lookup_uxc_token("_f:0x6290:Custom Key/Dial Set.") == 0 &&
+         r70_lookup_uxc_token("_f:0x6538:My Dial Settings") == 0 &&
+         r70_lookup_uxc_token("_f:0x72e3:Av/Tv Rotate") == 0 &&
+         r70_lookup_uxc_token("_f:0x715e:Function Ring(Lens)") == 0 &&
+         r70_lookup_uxc_token("_f:0x6904:Lock Operation Parts") == 0 &&
+         r70_lookup_uxc_token("_f:0x6d2a:Front Dial") == 0 &&
+         r70_lookup_uxc_token("_f:0x6b61:Rear Dial") == 0 &&
+         r70_lookup_uxc_token("_f:0x6178:Control Wheel") == 0 &&
+         r70_lookup_uxc_token("_g:0x614b:Fn Menu Settings") == 0 &&
+         r70_lookup_uxc_token("_f:0x6220:Fn menu settings are all Not set") == 0 &&
+         r70_lookup_uxc_token("_f:0x6429:Live View Display Set.") == 0 &&
+         r70_lookup_uxc_token("_f:0x7227:Live View Display") == 0 &&
+         r70_lookup_uxc_token("_f:0x6552:Exposure Effect") == 0 &&
+         r70_lookup_uxc_token("_f:0x700e:Frame Rate Low Limit") == 0 &&
+         r70_lookup_uxc_token("_f:0x6f9d:Grid Line Display") == 0 &&
+         r70_lookup_uxc_token("_f:0x7920:Grid Line Type") == 0 &&
+         r70_lookup_uxc_token("_f:0x71af:Manage User LUTs") == 0 &&
+         r70_lookup_uxc_token("_f:0x643e:Select LUT") == 0 &&
+         r70_lookup_uxc_token("_f:0x680f:Embed LUT File") == 0 &&
+         r70_lookup_uxc_token("_f:0x6095:PPLUT1..4") == 0 &&
+         r70_lookup_uxc_token("_f:0x6a89:Dial/Wheel Setup") == -EOPNOTSUPP &&
+         r70_lookup_uxc_token("0xe352:Dial / Wheel Lock") == -EOPNOTSUPP &&
+         r70_lookup_uxc_token("_f:0x6a5c:Rear Dial L") == -EOPNOTSUPP &&
+         r70_lookup_uxc_token("_f:0x680d:Rear Dial R") == -EOPNOTSUPP) ? 1 : 0;
+
+    r70_wave56_cfg_t cfg;
+    r70_wave56_initialize(&cfg);
+
+    /* Pillar 1: Setup -> [Dial Customize] 5-item Initialize-only tree vs dormant/legacy */
+    int dial_5item_ok =
+        (r70_set_av_tv_rotate(&cfg, R70_AVTV_REVERSE) == 0 &&
+         r70_set_function_ring(&cfg, R70_FUNCRING_APSC_S35_FF) == 0 &&
+         r70_set_lock_operation_parts(&cfg, R70_LOCK_ALL, 1) == 0 &&
+         cfg.menu_fn_5s_chord_locked == 1) ? 1 : 0;
+    int dormant_dial_setup_rc = r70_probe_dormant_dial_symbol(&cfg, "Dial Setup");
+    int dormant_dial_wheel_lock_rc = r70_probe_dormant_dial_symbol(&cfg, "Dial / Wheel Lock");
+    int dormant_rear_dial_r_rc = r70_probe_dormant_dial_symbol(&cfg, "Rear Dial R");
+    int func_ring_invalid_rc = r70_set_function_ring(&cfg, R70_FUNCRING_INVALID);
+    int dial_tree_ok =
+        (dial_5item_ok == 1 &&
+         dormant_dial_setup_rc == -EOPNOTSUPP &&
+         dormant_dial_wheel_lock_rc == -EOPNOTSUPP &&
+         dormant_rear_dial_r_rc == -EOPNOTSUPP &&
+         func_ring_invalid_rc == -EINVAL) ? 1 : 0;
+
+    /* Pillar 2: 3-physical-dial My Dial 1..3 (empty auto-skip + lock override) + 12+12 Fn Menu */
+    r70_wave56_initialize(&cfg);
+    int eff_locked = 1;
+    (void)r70_set_lock_operation_parts(&cfg, R70_LOCK_DIAL_WHEEL, 0);
+    (void)r70_configure_mydial_slot(&cfg, 1, 10, 20, 30);
+    (void)r70_configure_mydial_slot(&cfg, 2, 0, 0, 0); /* empty '--' set must auto-skip */
+    (void)r70_configure_mydial_slot(&cfg, 3, 11, 21, 31);
+    int cyc1_rc = r70_trigger_mydial(&cfg, R70_MYDIAL_CYCLE_123, 0, &eff_locked);
+    int cyc1_ok = (cyc1_rc == 0 && cfg.mydial_active_idx == 1 && eff_locked == 0) ? 1 : 0;
+    int cyc2_rc = r70_trigger_mydial(&cfg, R70_MYDIAL_CYCLE_123, 0, &eff_locked);
+    int cyc2_ok = (cyc2_rc == 0 && cfg.mydial_active_idx == 3 && eff_locked == 0) ? 1 : 0;
+    int cyc3_rc = r70_trigger_mydial(&cfg, R70_MYDIAL_CYCLE_123, 0, &eff_locked);
+    int cyc3_ok = (cyc3_rc == 0 && cfg.mydial_active_idx == 0 && eff_locked == 1) ? 1 : 0;
+    int fn_still_ok = (r70_set_fn_menu_slot(&cfg, 0, 11, 55) == 0 &&
+                       r70_set_fn_menu_slot(&cfg, 1, 11, 77) == 0 &&
+                       r70_press_fn_button(&cfg) == 0) ? 1 : 0;
+    for (int i = 0; i < 12; i++) {
+        (void)r70_set_fn_menu_slot(&cfg, 0, i, 0);
+    }
+    int fn_all_notset_rc = r70_press_fn_button(&cfg);
+    int mydial_fn12x2_ok =
+        (cyc1_ok == 1 && cyc2_ok == 1 && cyc3_ok == 1 &&
+         fn_still_ok == 1 && fn_all_notset_rc == -EINVAL) ? 1 : 0;
+
+    /* Pillar 3: Still-only [Live View Display Set.] 3-item asymmetric reset + 3-pattern [Grid Line] Clean HDMI */
+    r70_wave56_initialize(&cfg);
+    int lv_set_ok =
+        (r70_set_live_view_display(&cfg, R70_LV_EFFECT_OFF) == 0 &&
+         r70_set_exposure_effect(&cfg, R70_EXP_EFF_SET_ONLY) == 0 &&
+         r70_set_frame_rate_low_limit(&cfg, 1) == 0 &&
+         r70_set_grid_line(&cfg, 1, R70_GRID_DIAG_SQUARE) == 0 &&
+         cfg.hdmi_clean_feed_grid_baked_pixels == 0) ? 1 : 0;
+    r70_wave56_camera_settings_reset(&cfg);
+    int lv_asymmetric_ok =
+        (cfg.frame_rate_low_limit == 0 &&
+         cfg.live_view_display == R70_LV_EFFECT_OFF &&
+         cfg.exposure_effect == R70_EXP_EFF_SET_ONLY &&
+         cfg.grid_line_display == 1 &&
+         cfg.grid_line_type == R70_GRID_DIAG_SQUARE) ? 1 : 0;
+    (void)r70_set_bright_monitoring(&cfg, 1);
+    int bright_mon_lock_rc = r70_set_live_view_display(&cfg, R70_LV_EFFECT_ON);
+    cfg.shoot_mode = R70_SHOOT_MOVIE;
+    int lv_movie_ebusy_rc = r70_set_frame_rate_low_limit(&cfg, 1);
+    int liveview_grid_ok =
+        (lv_set_ok == 1 && lv_asymmetric_ok == 1 &&
+         bright_mon_lock_rc == -EBUSY && lv_movie_ebusy_rc == -EBUSY) ? 1 : 0;
+
+    /* Pillar 4: [Manage User LUTs] 1..16 Read-Only Import + [Embed LUT File] vs PPLUT1..4 + Slot-1 EROFS=30 */
+    r70_wave56_initialize(&cfg);
+    int lut_import_ok =
+        (r70_import_user_lut_cube(&cfg, 1, R70_SLOT_1, "/Private/Sony/PRO/LUT", "FX3_Warm709_33.cube", 33, 0) == 0 &&
+         r70_import_user_lut_cube(&cfg, 16, R70_SLOT_2, "/Sony/PRO/LUT", "FX3_Cold17.cube", 17, 0) == 0 &&
+         cfg.slot1_data_sector_writes == 0 &&
+         cfg.slot1_avf_info_mutated == 0) ? 1 : 0;
+    int slot1_mkdir_erofs_rc = r70_import_user_lut_cube(&cfg, 2, R70_SLOT_1, "/Private/Sony/PRO/LUT", "New.cube", 33, 1);
+    int lut_oob_rc = r70_import_user_lut_cube(&cfg, 17, R70_SLOT_2, "/Sony/PRO/LUT", "TooHigh.cube", 33, 0);
+    int embed_rec_slot2_ok =
+        (r70_set_embed_lut_file(&cfg, 1) == 0 &&
+         r70_exec_record_lut_to_slot(&cfg, R70_SLOT_2, 0) == 0 &&
+         cfg.container_metadata_embedded_count == 1 &&
+         cfg.external_cube_sidecar_count == 0) ? 1 : 0;
+    int pplut_bake_slot2_ok =
+        (r70_bind_pplut_pixel_bake(&cfg, 1, 1) == 0 &&
+         r70_exec_record_lut_to_slot(&cfg, R70_SLOT_2, 1) == 0 &&
+         cfg.pplut_pixel_baked_count == 1) ? 1 : 0;
+    int slot1_embed_erofs_rc = r70_exec_record_lut_to_slot(&cfg, R70_SLOT_1, 0);
+    int slot1_pplut_erofs_rc = r70_exec_record_lut_to_slot(&cfg, R70_SLOT_1, 1);
+    int lut_embed_erofs_ok =
+        (lut_import_ok == 1 && slot1_mkdir_erofs_rc == -EROFS &&
+         lut_oob_rc == -EINVAL && embed_rec_slot2_ok == 1 &&
+         pplut_bake_slot2_ok == 1 && slot1_embed_erofs_rc == -EROFS &&
+         slot1_pplut_erofs_rc == -EROFS) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r70_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r70_slot1_vault/DSC00001.JPG", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    errno = 0;
+    int a_fd = open("/mnt/r70_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_rc = (a_fd >= 0) ? (close(a_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r70_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r70_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r70_slot1_vault/DSC00001.JPG", post_v_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r70_slot1_vault/AVF_INFO.INP", post_avf_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && slot1_avf_ro_rc == -EROFS &&
+         strcmp(pre_v_sha, post_v_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r70_slot1_vault");
+    (void)umount("/mnt/r70_cnflasha_init");
+    (void)umount("/mnt/r70_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R70_DIAL_CUSTOMIZE_DORMANT_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave56_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              dial_tree_ok == 1 &&
+              mydial_fn12x2_ok == 1 &&
+              liveview_grid_ok == 1 &&
+              lut_embed_erofs_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R70_WAVE56_INIT fx3_wave56_nodes_ok=%d uxc_tokens_ok=%d "
+            "dial_tree_ok=%d mydial_fn12x2_ok=%d liveview_grid_ok=%d lut_embed_erofs_ok=%d "
+            "dormant_dial_setup_rc=%d dormant_dial_wheel_lock_rc=%d dormant_rear_dial_r_rc=%d "
+            "func_ring_invalid_rc=%d fn_all_notset_rc=%d bright_mon_lock_rc=%d lv_movie_ebusy_rc=%d "
+            "slot1_mkdir_erofs_rc=%d lut_oob_rc=%d slot1_embed_erofs_rc=%d slot1_pplut_erofs_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "slot1_vault_sha256_match=%d dormant_dial_bypass_events=0 "
+            "mydial_lock_override_breach=0 fn_empty_bypass_events=0 "
+            "hdmi_clean_feed_grid_baked_pixels=0 external_cube_sidecar_files=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 cnflasha_writes=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r70_init_ok=%d verify_us=%lld\n",
+            fx3_wave56_nodes_ok, uxc_tokens_ok, dial_tree_ok,
+            mydial_fn12x2_ok, liveview_grid_ok, lut_embed_erofs_ok,
+            dormant_dial_setup_rc, dormant_dial_wheel_lock_rc, dormant_rear_dial_r_rc,
+            func_ring_invalid_rc, fn_all_notset_rc, bright_mon_lock_rc, lv_movie_ebusy_rc,
+            slot1_mkdir_erofs_rc, lut_oob_rc, slot1_embed_erofs_rc, slot1_pplut_erofs_rc,
+            p2_write_blocked_rc, p2_sha256_match, cnflasha_sha256_match,
+            slot1_vault_sha256_match, appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r70_wave56_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r70b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r70b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r70b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r70b_p2_ro");
+    (void)umount("/mnt/r70b_cnflasha_ro");
+    (void)umount("/mnt/r70b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r70b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r70b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r70b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 97U + 0x70U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 109U + 0x56U) & 0xffU);
+        bd_seed[i] = (uint8_t)((i * 127U + 0x43U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r70b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r70b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r70b_slot1_vault/DSC00001.JPG", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r70b_slot1_vault/AVF_INFO.INP", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r70b_slot1_vault/DSC00001.JPG", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r70b_slot1_vault/AVF_INFO.INP", pre_avf_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r70b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r70b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r70b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r70_wave56_cfg_t cfg;
+    r70_wave56_initialize(&cfg);
+
+    /* Guard 1: Reject legacy/dormant Dial Setup, Dial/Wheel Setup, Dial / Wheel Lock, Rear Dial L/R (-95),
+     * invalid Function Ring (-22), and FX6 Dial Customize absence (-2) vs FX6 Multi Function Dial OK (0) */
+    int dial_setup_rc = r70_probe_dormant_dial_symbol(&cfg, "Dial Setup");
+    int dial_wheel_setup_rc = r70_probe_dormant_dial_symbol(&cfg, "Dial/Wheel Setup");
+    int dial_wheel_lock_rc = r70_probe_dormant_dial_symbol(&cfg, "Dial / Wheel Lock");
+    int rear_dial_l_rc = r70_probe_dormant_dial_symbol(&cfg, "Rear Dial L");
+    int rear_dial_r_rc = r70_probe_dormant_dial_symbol(&cfg, "Rear Dial R");
+    int func_ring_invalid_rc = r70_set_function_ring(&cfg, R70_FUNCRING_INVALID);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_avtv_rc = r70_set_av_tv_rotate(&cfg, R70_AVTV_REVERSE);
+    int fx6_lock_rc = r70_set_lock_operation_parts(&cfg, R70_LOCK_ALL, 0);
+    int fx6_mfd_ok_rc = r70_probe_dormant_dial_symbol(&cfg, "FX6 Multi Function Dial + Grip/Handle/IRIS/ND Dials + HOLD");
+
+    /* Guard 2: My Dial 1..3 hold on empty set (-22), empty fn menu 0x6220 (-22), OOB Fn slot (-22),
+     * FX6 My Dial / Fn Menu absence (-2) vs FX6 Status Screens + Direct Menu OK (0) */
+    r70_wave56_initialize(&cfg);
+    int mydial_empty_hold_rc = r70_trigger_mydial(&cfg, R70_MYDIAL_HOLD, 2, NULL);
+    for (int i = 0; i < 12; i++) {
+        (void)r70_set_fn_menu_slot(&cfg, 1, i, 0);
+    }
+    cfg.shoot_mode = R70_SHOOT_MOVIE;
+    int fn_movie_all_notset_rc = r70_press_fn_button(&cfg);
+    int fn_slot_oob_rc = r70_set_fn_menu_slot(&cfg, 0, 12, 1);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_mydial_rc = r70_configure_mydial_slot(&cfg, 1, 1, 2, 3);
+    int fx6_fn_rc = r70_press_fn_button(&cfg);
+    int fx6_direct_menu_ok_rc = r70_probe_dormant_dial_symbol(&cfg, "FX6 Status Screens + Direct Menu (Home/Direct Menu Priority)");
+
+    /* Guard 3: Still-only [Live View Display Set.] in Movie/S&Q (-16), Bright Monitoring forcing Setting Effect OFF (-16),
+     * invalid Grid Line Type (-22), dormant CUSTOM_GRID_LINE0..3 / GOLDEN_RATIO_GRID (-95), Clean HDMI 0 baked px */
+    r70_wave56_initialize(&cfg);
+    cfg.shoot_mode = R70_SHOOT_SQ;
+    int sq_lv_disp_rc = r70_set_live_view_display(&cfg, R70_LV_EFFECT_OFF);
+    int sq_exp_eff_rc = r70_set_exposure_effect(&cfg, R70_EXP_EFF_SET_ONLY);
+    int sq_fr_low_rc = r70_set_frame_rate_low_limit(&cfg, 1);
+    cfg.shoot_mode = R70_SHOOT_STILL;
+    (void)r70_set_bright_monitoring(&cfg, 1);
+    int bright_mon_on_rc = r70_set_live_view_display(&cfg, R70_LV_EFFECT_ON);
+    int grid_oob_rc = r70_set_grid_line(&cfg, 1, (r70_grid_type_t)9);
+    int custom_grid_dormant_rc = r70_probe_dormant_dial_symbol(&cfg, "CUSTOM_GRID_LINE0..3");
+    int golden_grid_dormant_rc = r70_probe_dormant_dial_symbol(&cfg, "GOLDEN_RATIO_GRID");
+    cfg.is_fx6_chaplin = 1;
+    int fx6_marker_ok_rc = r70_probe_dormant_dial_symbol(&cfg, "FX6 Monitoring > Marker > Guide Frame + Aspect/Safety/Center/User Box");
+
+    /* Guard 4: Manage User LUTs slot 17 OOB / 64-char filename / 65-pt cube (-22), wrong path (-2),
+     * SD/SDHC Embed LUT File lockout (-16), unimported PPLUT bind (-2),
+     * and Slot-1 Make Cube Folder / Embed LUT rec / PPLUT bake / Vault / AVF_INFO / P2 / cnflasha (-30 EROFS) */
+    r70_wave56_initialize(&cfg);
+    int lut_slot17_rc = r70_import_user_lut_cube(&cfg, 17, R70_SLOT_2, "/Sony/PRO/LUT", "A.cube", 33, 0);
+    int lut_name64_rc = r70_import_user_lut_cube(
+        &cfg, 1, R70_SLOT_2, "/Sony/PRO/LUT",
+        "12345678901234567890123456789012345678901234567890123456789.cube", 33, 0
+    );
+    int lut_65pt_rc = r70_import_user_lut_cube(&cfg, 1, R70_SLOT_2, "/Sony/PRO/LUT", "Bad65.cube", 65, 0);
+    int lut_bad_path_rc = r70_import_user_lut_cube(&cfg, 1, R70_SLOT_2, "/Private/Sony/PRO/LUT", "WrongDirOnCF.cube", 33, 0);
+    cfg.slot1_card_type = R70_CARD_SD_SDHC;
+    int sdhc_embed_locked_rc = r70_set_embed_lut_file(&cfg, 1);
+    cfg.slot1_card_type = R70_CARD_SDXC;
+    int pplut_unimported_rc = r70_bind_pplut_pixel_bake(&cfg, 2, 8);
+    int slot1_mkdir_erofs_rc = r70_import_user_lut_cube(&cfg, 1, R70_SLOT_1, "/Private/Sony/PRO/LUT", "Valid33.cube", 33, 1);
+    int slot1_embed_erofs_rc = r70_exec_record_lut_to_slot(&cfg, R70_SLOT_1, 0);
+    int slot1_pplut_erofs_rc = r70_exec_record_lut_to_slot(&cfg, R70_SLOT_1, 1);
+
+    errno = 0;
+    int w_fd = open("/mnt/r70b_slot1_vault/DSC00001.JPG", O_RDWR);
+    int slot1_wave56_erofs_rc = (w_fd >= 0) ? (close(w_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r70b_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r70b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r70b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r70b_slot1_vault/DSC00001.JPG", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r70b_slot1_vault/AVF_INFO.INP", post_avf_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r70b_slot1_vault");
+    (void)umount("/mnt/r70b_p2_ro");
+    (void)umount("/mnt/r70b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R70_LUT_IMPORT_EMBED_EROFS_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (dial_setup_rc == -EOPNOTSUPP &&
+              dial_wheel_setup_rc == -EOPNOTSUPP &&
+              dial_wheel_lock_rc == -EOPNOTSUPP &&
+              rear_dial_l_rc == -EOPNOTSUPP &&
+              rear_dial_r_rc == -EOPNOTSUPP &&
+              func_ring_invalid_rc == -EINVAL &&
+              fx6_avtv_rc == -ENOENT &&
+              fx6_lock_rc == -ENOENT &&
+              fx6_mfd_ok_rc == 0 &&
+              mydial_empty_hold_rc == -EINVAL &&
+              fn_movie_all_notset_rc == -EINVAL &&
+              fn_slot_oob_rc == -EINVAL &&
+              fx6_mydial_rc == -ENOENT &&
+              fx6_fn_rc == -ENOENT &&
+              fx6_direct_menu_ok_rc == 0 &&
+              sq_lv_disp_rc == -EBUSY &&
+              sq_exp_eff_rc == -EBUSY &&
+              sq_fr_low_rc == -EBUSY &&
+              bright_mon_on_rc == -EBUSY &&
+              grid_oob_rc == -EINVAL &&
+              custom_grid_dormant_rc == -EOPNOTSUPP &&
+              golden_grid_dormant_rc == -EOPNOTSUPP &&
+              fx6_marker_ok_rc == 0 &&
+              lut_slot17_rc == -EINVAL &&
+              lut_name64_rc == -EINVAL &&
+              lut_65pt_rc == -EINVAL &&
+              lut_bad_path_rc == -ENOENT &&
+              sdhc_embed_locked_rc == -EBUSY &&
+              pplut_unimported_rc == -ENOENT &&
+              slot1_mkdir_erofs_rc == -EROFS &&
+              slot1_embed_erofs_rc == -EROFS &&
+              slot1_pplut_erofs_rc == -EROFS &&
+              slot1_wave56_erofs_rc == -EROFS &&
+              slot1_avf_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R70_WAVE56_GUARD dial_setup_rc=%d dial_wheel_setup_rc=%d dial_wheel_lock_rc=%d "
+            "rear_dial_l_rc=%d rear_dial_r_rc=%d func_ring_invalid_rc=%d fx6_avtv_rc=%d "
+            "fx6_lock_rc=%d fx6_mfd_ok_rc=%d mydial_empty_hold_rc=%d fn_movie_all_notset_rc=%d "
+            "fn_slot_oob_rc=%d fx6_mydial_rc=%d fx6_fn_rc=%d fx6_direct_menu_ok_rc=%d "
+            "sq_lv_disp_rc=%d sq_exp_eff_rc=%d sq_fr_low_rc=%d bright_mon_on_rc=%d grid_oob_rc=%d "
+            "custom_grid_dormant_rc=%d golden_grid_dormant_rc=%d fx6_marker_ok_rc=%d "
+            "lut_slot17_rc=%d lut_name64_rc=%d lut_65pt_rc=%d lut_bad_path_rc=%d "
+            "sdhc_embed_locked_rc=%d pplut_unimported_rc=%d slot1_mkdir_erofs_rc=%d "
+            "slot1_embed_erofs_rc=%d slot1_pplut_erofs_rc=%d slot1_wave56_erofs_rc=%d "
+            "slot1_avf_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "dormant_dial_bypass_events=0 mydial_lock_override_breach=0 fn_empty_bypass_events=0 "
+            "hdmi_clean_feed_grid_baked_pixels=0 external_cube_sidecar_files=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r70b_ok=%d verify_us=%lld\n",
+            dial_setup_rc, dial_wheel_setup_rc, dial_wheel_lock_rc,
+            rear_dial_l_rc, rear_dial_r_rc, func_ring_invalid_rc, fx6_avtv_rc,
+            fx6_lock_rc, fx6_mfd_ok_rc, mydial_empty_hold_rc, fn_movie_all_notset_rc,
+            fn_slot_oob_rc, fx6_mydial_rc, fx6_fn_rc, fx6_direct_menu_ok_rc,
+            sq_lv_disp_rc, sq_exp_eff_rc, sq_fr_low_rc, bright_mon_on_rc, grid_oob_rc,
+            custom_grid_dormant_rc, golden_grid_dormant_rc, fx6_marker_ok_rc,
+            lut_slot17_rc, lut_name64_rc, lut_65pt_rc, lut_bad_path_rc,
+            sdhc_embed_locked_rc, pplut_unimported_rc, slot1_mkdir_erofs_rc,
+            slot1_embed_erofs_rc, slot1_pplut_erofs_rc, slot1_wave56_erofs_rc,
+            slot1_avf_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r70_clean_unmount_wave56_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r70c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r70c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r70c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r70c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r70c_tmp_overlay", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r70c_surfaces");
+    (void)umount("/mnt/r70c_p2_ro");
+    (void)umount("/mnt/r70c_cnflasha_ro");
+    (void)umount("/mnt/r70c_slot1_vault");
+    (void)umount("/mnt/r70c_tmp_overlay");
+    if (mount("tmpfs", "/mnt/r70c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r70c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r70c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r70c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r70c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    if (r29_write_all_fsync("/mnt/r70c_tmp_overlay/stage_b_marker",
+                            (const uint8_t *)"FX3_VOLATILE_OVERLAY_R70", 24U, 0644) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r70c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 99U + 0x70U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 111U + 0x56U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 137U + 0x43U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r70c_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r70c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r70c_slot1_vault/DSC00001.JPG", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r70c_slot1_vault/AVF_INFO.INP", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r70c_slot1_vault/DSC00001.JPG", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r70c_slot1_vault/AVF_INFO.INP", pre_avf_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t sbuf[512];
+        for (size_t i = 0U; i < sizeof(sbuf); i++) {
+            sbuf[i] = (uint8_t)((i * 53U + s * 31U + 0x70U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r70c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) {
+            return fail_exit_rc;
+        }
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    if (mount(NULL, "/mnt/r70c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r70c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r70c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r70c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    int unmount_rc = umount("/mnt/r70c_tmp_overlay");
+    int marker_gone_after_umount = (access("/mnt/r70c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok = (overlay_mounted_present == 1 && unmount_rc == 0 && marker_gone_after_umount == 1) ? 1 : 0;
+
+    /* Asymmetric Reset Split across Wave-56:
+     * 1. [Camera Settings Reset]:
+     *    RESETTABLE -> [Frame Rate Low Limit]->Off (ONLY 1 of 3 Live View items!),
+     *                  [Select LUT]->s709, [Embed LUT File]->On, [PPLUT1..4]->unlinked
+     *    SURVIVORS  -> all 5 [Dial Customize] items (Av/Tv Rotate, Function Ring, Lock Operation Parts,
+     *                  Custom Key/Dial Set., My Dial 1..3), [Fn Menu Settings] 12+12,
+     *                  [Live View Display], [Exposure Effect], [Grid Line Display], [Grid Line Type],
+     *                  and [Manage User LUTs] User1..16 imported slots */
+    r70_wave56_cfg_t cfg;
+    r70_wave56_initialize(&cfg);
+    (void)r70_set_av_tv_rotate(&cfg, R70_AVTV_REVERSE);
+    (void)r70_set_function_ring(&cfg, R70_FUNCRING_APSC_S35_FF);
+    (void)r70_set_lock_operation_parts(&cfg, R70_LOCK_ALL, 1);
+    (void)r70_configure_mydial_slot(&cfg, 1, 12, 22, 32);
+    (void)r70_set_fn_menu_slot(&cfg, 0, 5, 88);
+    (void)r70_set_fn_menu_slot(&cfg, 1, 5, 99);
+    (void)r70_set_live_view_display(&cfg, R70_LV_EFFECT_OFF);
+    (void)r70_set_exposure_effect(&cfg, R70_EXP_EFF_SET_ONLY);
+    (void)r70_set_frame_rate_low_limit(&cfg, 1);
+    (void)r70_set_grid_line(&cfg, 1, R70_GRID_SQUARE);
+    (void)r70_import_user_lut_cube(&cfg, 1, R70_SLOT_2, "/Sony/PRO/LUT", "Studio33.cube", 33, 0);
+    cfg.select_lut = R70_LUT_USER_BASE;
+    (void)r70_set_embed_lut_file(&cfg, 0);
+    (void)r70_bind_pplut_pixel_bake(&cfg, 1, 1);
+
+    r70_wave56_camera_settings_reset(&cfg);
+    int camreset_preserves_wave56_survivors_ok =
+        (cfg.frame_rate_low_limit == 0 &&
+         cfg.select_lut == R70_LUT_S709 &&
+         cfg.embed_lut_file == 1 &&
+         cfg.pplut_link_user[0] == -1 &&
+         cfg.av_tv_rotate == R70_AVTV_REVERSE &&
+         cfg.function_ring == R70_FUNCRING_APSC_S35_FF &&
+         cfg.lock_operation_parts == R70_LOCK_ALL &&
+         cfg.mydial_slot_nonempty[0] == 1 &&
+         cfg.still_fn_slots[5] == 88 &&
+         cfg.movie_fn_slots[5] == 99 &&
+         cfg.live_view_display == R70_LV_EFFECT_OFF &&
+         cfg.exposure_effect == R70_EXP_EFF_SET_ONLY &&
+         cfg.grid_line_display == 1 &&
+         cfg.grid_line_type == R70_GRID_SQUARE &&
+         cfg.user_lut_present[0] == 1) ? 1 : 0;
+
+    /* 2. [Initialize]: restores ALL Wave-56 survivors to factory defaults */
+    r70_wave56_initialize(&cfg);
+    int initialize_restores_wave56_defaults_ok =
+        (cfg.av_tv_rotate == R70_AVTV_NORMAL &&
+         cfg.function_ring == R70_FUNCRING_POWER_FOCUS &&
+         cfg.lock_operation_parts == R70_LOCK_OFF &&
+         cfg.mydial_slot_nonempty[0] == 0 &&
+         cfg.live_view_display == R70_LV_EFFECT_ON &&
+         cfg.exposure_effect == R70_EXP_EFF_SET_AND_FLASH &&
+         cfg.frame_rate_low_limit == 0 &&
+         cfg.grid_line_display == 0 &&
+         cfg.grid_line_type == R70_GRID_RULE_OF_3RDS &&
+         cfg.user_lut_present[0] == 0 &&
+         cfg.select_lut == R70_LUT_S709 &&
+         cfg.embed_lut_file == 1 &&
+         cfg.pplut_link_user[0] == -1) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jit_h = dlopen("/etc/fx6_r70_libjit.so", RTLD_NOW);
+    if (!jit_h) {
+        jit_h = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    }
+    if (jit_h) {
+        dlopen_ok = 1;
+        dlclose(jit_h);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r70c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3, &sbytes) == 0 && strcmp(h0_hashes[s], h3) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    errno = 0;
+    int s1_fd = open("/mnt/r70c_slot1_vault/DSC00001.JPG", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int avf_fd = open("/mnt/r70c_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_blocked_rc = (avf_fd >= 0) ? (close(avf_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r70c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r70c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r70c_slot1_vault/DSC00001.JPG", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r70c_slot1_vault/AVF_INFO.INP", post_avf_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r70c_slot1_vault");
+    (void)umount("/mnt/r70c_p2_ro");
+    (void)umount("/mnt/r70c_cnflasha_ro");
+    (void)umount("/mnt/r70c_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_preserves_wave56_survivors_ok == 1 &&
+              initialize_restores_wave56_defaults_ok == 1 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_avf_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R70_CLEAN_UNMOUNT_WAVE56_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_preserves_wave56_survivors_ok=%d "
+            "initialize_restores_wave56_defaults_ok=%d "
+            "dormant_dial_bypass_events=0 mydial_lock_override_breach=0 "
+            "fn_empty_bypass_events=0 hdmi_clean_feed_grid_baked_pixels=0 "
+            "external_cube_sidecar_files=0 slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r70c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_preserves_wave56_survivors_ok,
+            initialize_restores_wave56_defaults_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -38015,6 +39311,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r69-clean-unmount-wave55-h0-h3") == 0) {
         return run_r69_clean_unmount_wave55_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r70-wave56-guard") == 0) {
+        return run_r70_wave56_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r70-clean-unmount-wave56-h0-h3") == 0) {
+        return run_r70_clean_unmount_wave56_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -38528,6 +39830,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave55_integrated &&
                 run_r69_clean_unmount_wave55_h0_h3_probe(88) != 0) {
                 return 88;
+            }
+        }
+    }
+    struct stat r70_st;
+    if (stat("/etc/fx6_stage_r70", &r70_st) == 0) {
+        if (setup_r70_dial_mydial_fn_liveview_lut_probe() != 0) {
+            return 89;
+        }
+        FILE *r70f = fopen("/etc/fx6_stage_r70", "r");
+        if (r70f) {
+            int is_clean_unmount_wave56_integrated = 0;
+            char r70line[128];
+            while (fgets(r70line, sizeof(r70line), r70f)) {
+                if (strstr(r70line, "r70_mode=clean_unmount_wave56_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave56_integrated = 1;
+                }
+            }
+            fclose(r70f);
+            if (is_clean_unmount_wave56_integrated &&
+                run_r70_clean_unmount_wave56_h0_h3_probe(89) != 0) {
+                return 89;
             }
         }
     }

@@ -1540,7 +1540,8 @@ class TestPhase327Milestone146Gates(unittest.TestCase):
             for m in [pat.match(attr)]
             if m and callable(getattr(fx3_safety, attr))
         ]
-        self.assertEqual(max(nums), 146)
+        self.assertIn(146, nums)
+        self.assertGreaterEqual(max(nums), 146)
 
     def test_89_aliases_evaluate_146_master_safety_gates_and_run_146_gate_preflight(self) -> None:
         r1 = evaluate_146_master_safety_gates(DEFAULT_REPO_ROOT, force_clean_room=True)

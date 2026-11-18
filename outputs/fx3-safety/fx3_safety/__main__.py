@@ -252,6 +252,11 @@ from .realhw_hdmi_raw_desqueeze_reclamp_varshutter_apsc_and_146gate_guard import
     evaluate_g145_hdmi_raw_co_rec_vault_and_desqueeze_4ratio_guard,
     evaluate_g146_reclamp_emph_remain_autoreview_and_dormant_varshutter_apsc_guard,
 )
+from .realhw_breathing_camid_copyright_powersave_ntscpal_and_148gate_guard import (
+    evaluate_148gate_preflight,
+    evaluate_g147_breathing_comp_120p_catalyst_and_camid_reel_sdhc_vault_guard,
+    evaluate_g148_copyright_46ch_serial_errata_and_powersave_ntscpal_vault_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -4744,6 +4749,95 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_146.add_argument("--json", action="store_true", help="Emit structured JSON report")
     p_146.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 179. verify-breathing-camid-reel-sdhc-guard
+    p_g147 = sub.add_parser(
+        "verify-breathing-camid-reel-sdhc-guard",
+        aliases=["verify-g147-breathing-camid-reel", "verify-g147"],
+        help="Verify Gate G147: Resettable [Breathing Comp.] Wave-41 120p/S&Q>=100fps/Macro-TC/HDMI-RAW/Catalyst-Prepare errata & Initialize-only [File Settings] ([File Number], [File Name Format], SDHC FAT32 Standard-only & 4GB split, [Cam ID + Reel#] C999->D001, 37-char [Title], Slot-1 EROFS=30)",
+    )
+    p_g147.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g147.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g147.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g147.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g147.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 180. verify-copyright-powersave-ntscpal-guard
+    p_g148 = sub.add_parser(
+        "verify-copyright-powersave-ntscpal-guard",
+        aliases=["verify-g148-copyright-powersave-ntscpal", "verify-g148"],
+        help="Verify Gate G148: Round-57 Reset Errata on [Copyright Info] (46-char ASCII, CAMSET excluded) + active Still+Movie [Write Serial Number], 2-item [Power Setting Option] (9 bypasses, Auto Power OFF Temp., dormant [Power Save by Monitor] EOPNOTSUPP=95), and [NTSC/PAL Selector] reboot + Slot-1 Format/SD-Erase/TRIM EROFS=30",
+    )
+    p_g148.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g148.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g148.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g148.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g148.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 181. verify-148-gates
+    p_148 = sub.add_parser(
+        "verify-148-gates",
+        help="Run Phase 331 (Task H400, Wave-64) Unified 148-Gate Master Safety Preflight Engine (G01..G148)",
+    )
+    p_148.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_148.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_148.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G148 gates can be rehearsed offline",
+    )
+    p_148.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_148.add_argument("--summary", action="store_true", help="Emit concise summary output")
 
     args = parser.parse_args(argv)
 
@@ -10335,6 +10429,168 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_146_gates_verified if args.dry_run_simulated else report.offline_143_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-breathing-camid-reel-sdhc-guard",
+        "verify-g147-breathing-camid-reel",
+        "verify-g147",
+    ):
+        verdict, res = evaluate_g147_breathing_comp_120p_catalyst_and_camid_reel_sdhc_vault_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.breathing_camid_reel_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_breathing_comp": guard["effective_breathing_comp"],
+                    "breathing_comp_resettable_by_camset_reset": guard["breathing_comp_resettable_by_camset_reset"],
+                    "effective_file_number_mode": guard["effective_file_number_mode"],
+                    "effective_file_name_format": guard["effective_file_name_format"],
+                    "effective_camera_id": guard["effective_camera_id"],
+                    "effective_reel_number": guard["effective_reel_number"],
+                    "effective_title_name": guard["effective_title_name"],
+                    "sample_output_clip_stem": guard["sample_output_clip_stem"],
+                    "sdhc_standard_format_locked": guard["sdhc_standard_format_locked"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.breathing_camid_reel_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} breathing={guard['effective_breathing_comp']} "
+                f"fmt={guard['effective_file_name_format']} "
+                f"stem={guard['sample_output_clip_stem']} "
+                f"sdhc_lock={guard['sdhc_standard_format_locked']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-copyright-powersave-ntscpal-guard",
+        "verify-g148-copyright-powersave-ntscpal",
+        "verify-g148",
+    ):
+        verdict, res = evaluate_g148_copyright_46ch_serial_errata_and_powersave_ntscpal_vault_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.copyright_powersave_ntscpal_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_write_copyright_info": guard["effective_write_copyright_info"],
+                    "effective_write_serial_number": guard["effective_write_serial_number"],
+                    "copyright_and_serial_resettable_by_camset_reset": guard["copyright_and_serial_resettable_by_camset_reset"],
+                    "copyright_excluded_from_camset_dat": guard["copyright_excluded_from_camset_dat"],
+                    "exact_2_power_setting_items_verified": guard["exact_2_power_setting_items_verified"],
+                    "effective_power_save_start_time": guard["effective_power_save_start_time"],
+                    "effective_auto_power_off_temp": guard["effective_auto_power_off_temp"],
+                    "effective_video_system": guard["effective_video_system"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.copyright_powersave_ntscpal_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} write_copy={guard['effective_write_copyright_info']} "
+                f"write_serial={guard['effective_write_serial_number']} "
+                f"ps={guard['effective_power_save_start_time']} "
+                f"temp={guard['effective_auto_power_off_temp']} "
+                f"vsys={guard['effective_video_system']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-148-gates":
+        report = evaluate_148gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "schema_version": report.schema_version,
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g147_status": report.g147_result["status"],
+                    "g148_status": report.g148_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/148 "
+                f"g147_to_g148_all_passed={report.g147_to_g148_all_passed} "
+                f"all_148_gates_verified={report.all_148_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_148_gates_verified if args.dry_run_simulated else report.offline_145_gates_verified
         return 0 if ok else 1
 
     return 2

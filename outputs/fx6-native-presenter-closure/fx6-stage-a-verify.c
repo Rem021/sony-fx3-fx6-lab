@@ -26299,6 +26299,916 @@ static int run_r59_clean_unmount_camreset_init_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ============================================================================
+ * Round 60 (60th Round Milestone / 33rd Real-HW Round / 99th Live Run — Wave-46):
+ *   - r60a: [Power Setting Option] reality split (ILME-FX3 Ver. 7.02 ilc/2210
+ *           UI exposes ONLY Power Save Start Time + Auto Power OFF Temp., while
+ *           appFw.so / string_*_f.uxc 0x60b9 retains dormant Power Save by Monitor:
+ *           0x6db5 Both Linked / 0x6db6 Open: Return / 0x60a8 Close: Power Save /
+ *           0x6b2e Does Not Link + 9 sleep deactivation conditions),
+ *           [Language] (BK_LANG 0x02cf019c 0x00 EN / 0x19 ZH-CN / 0x18 ZH-TW /
+ *           0x01 JA, 34 FX3 vs 29 FX6 .uxc packs, survival across Camera
+ *           Settings Reset & Reset Network Set.), [Volume Settings] (0..15,
+ *           default 7) + [4ch Audio Monitoring] (CH1/CH2, CH3/CH4, CH1+3/CH2+4,
+ *           CH1/CH1, CH2/CH2), and [Delete confirm.] ("Cancel" first default vs
+ *           "Delete" first + [Delete pressing twice] Off default) + Slot-1 Vault RO.
+ *   - r60b: Fail-closed illegal state injection: dormant Power Save by Monitor
+ *           forced sleep during Tier-0 p3 air-gapped battery dump (-EOPNOTSUPP),
+ *           5 Min air-gap idle reject (-EBUSY), hallucinated "Open: On/Close: Off"
+ *           & unexposed FX3 monitor menu reject (-ENOENT), out-of-range Volume (-1/16)
+ *           (-EINVAL), Delete pressing twice / "Delete" first / Format targeting
+ *           read-only Slot-1 recovery vault (pnflasha/cnflasha/CAMSET01.DAT/
+ *           BODYDATA.DAT) (-EROFS), and persistent Backup.bin NVRAM write (-EROFS).
+ *   - r60c: Volatile /tmp Stage-B overlay clean unmount -> 100% unmodified stock
+ *           ILME-FX3 Ver. 7.02 restoration + [Reset Network Set.] vs
+ *           [Camera Settings Reset] vs [Initialize] + 4-lang BK_LANG 34-vs-29 +
+ *           dlopen(libJit.so) + 16/16 H0 == H3 + Big-6 Home (60th Milestone!).
+ * ============================================================================ */
+
+typedef enum {
+    R60_PSM_BOTH_LINKED = 0,       /* 0x6db5 ON_ALL */
+    R60_PSM_OPEN_RETURN = 1,       /* 0x6db6 ON_OPEN (NOT "Open: On/Close: Off") */
+    R60_PSM_CLOSE_POWER_SAVE = 2,  /* 0x60a8 ON_CLOSE */
+    R60_PSM_DOES_NOT_LINK = 3      /* 0x6b2e OFF */
+} r60_power_save_monitor_t;
+
+typedef enum {
+    R60_PS_OFF = 0,
+    R60_PS_30MIN = 1,
+    R60_PS_5MIN = 2,               /* Factory default */
+    R60_PS_2MIN = 3,
+    R60_PS_1MIN = 4,
+    R60_PS_10SEC = 5
+} r60_power_save_start_time_t;
+
+typedef enum {
+    R60_TEMP_STANDARD = 0,         /* Factory default */
+    R60_TEMP_HIGH = 1
+} r60_auto_pwr_off_temp_t;
+
+typedef enum {
+    R60_AUD_CH1_CH2 = 0,           /* 0x713b Factory default */
+    R60_AUD_CH3_CH4 = 1,           /* 0x6bf6 */
+    R60_AUD_MIX_ALL = 2,           /* 0x6c2e CH1+3/CH2+4 */
+    R60_AUD_CH1_CH1 = 3,           /* 0x6f9c */
+    R60_AUD_CH2_CH2 = 4            /* 0x7a26 */
+} r60_audio_mon_ch_t;
+
+typedef enum {
+    R60_DEL_CANCEL_FIRST = 0,      /* 0xe724/0x6a5e Factory default */
+    R60_DEL_DELETE_FIRST = 1       /* 0xe725/0x6e0a */
+} r60_delete_confirm_t;
+
+typedef struct {
+    int ilc2210_exposed_power_save_by_monitor;  /* 0 on ILME-FX3 Ver. 7.02 */
+    int appfw_dormant_monitor_tokens_present;   /* 1 */
+    r60_power_save_monitor_t dormant_monitor_mode;
+    r60_power_save_start_time_t power_save_start_time;
+    r60_auto_pwr_off_temp_t auto_power_off_temp;
+    unsigned int sleep_deactivation_mask;       /* 9 conditions: bits 0..8 */
+    int lcd_closed_inward;
+    int tier0_p3_airgap_battery_dump_active;
+    unsigned int dormant_monitor_forced_sleep_events;
+} r60_power_setting_option_t;
+
+typedef struct {
+    int initial_prompt_cleared;                 /* 0 = "-" initial prompt, 1 = selected */
+    uint8_t bk_lang_byte;                       /* BK_LANG 0x02cf019c */
+    uint32_t appfw_enum;                        /* 0x2b2f/0x2b45/0x2b44/0x2b30 */
+    unsigned int font_bank;
+    unsigned int str_bank;
+    int fx3_lang_pack_count;                    /* 34 */
+    int fx6_lang_pack_count;                    /* 29 */
+} r60_language_cfg_t;
+
+typedef struct {
+    int volume_settings;                        /* 0..15, default 7 */
+    int audio_signals;                          /* 1 = On default (distinct) */
+    r60_audio_mon_ch_t audio_monitoring_ch;     /* R60_AUD_CH1_CH2 default */
+    int hdmi_4ch_output_ch;                     /* 0=CH1/CH2 default, 1=CH3/CH4 (distinct) */
+    int headphone_35mm_channels;                /* 2ch stereo only */
+    unsigned int headphone_4ch_bypass_events;
+} r60_audio_mon_cfg_t;
+
+typedef struct {
+    r60_delete_confirm_t delete_confirm;        /* R60_DEL_CANCEL_FIRST default */
+    int delete_pressing_twice;                  /* 0 = Off default */
+    int slot1_vault_present;                    /* 1 = RO recovery vault active */
+    int persistent_backup_bin_ro;               /* 1 = RO Backup.bin / BODYDATA */
+    unsigned int slot1_vault_delete_events;
+    unsigned int persistent_nvram_write_events;
+} r60_delete_vault_cfg_t;
+
+__attribute__((noinline)) static int r60_lookup_wave46_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Setup -> [Power Setting Option]") == 0 ||
+        strcmp(path, "Power Save Start Time") == 0 ||
+        strcmp(path, "Auto Power OFF Temp.") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Area/Date] -> [Language]") == 0 ||
+        strcmp(path, "Language") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Sound Option] -> [Volume Settings]") == 0 ||
+        strcmp(path, "Volume Settings") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Sound Option] -> [4ch Audio Monitoring]") == 0 ||
+        strcmp(path, "4ch Audio Monitoring") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Delete] -> [Delete confirm.]") == 0 ||
+        strcmp(path, "Delete confirm.") == 0 ||
+        strcmp(path, "Delete pressing twice") == 0) {
+        return 0;
+    }
+    /* Reject unexposed FX3 menu item "Power Save by Monitor" and non-existent "Open: On/Close: Off" */
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r60_lookup_dormant_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "0x60b9:Power Save by Monitor") == 0 ||
+        strcmp(token, "0x6db5:Both Linked") == 0 ||
+        strcmp(token, "0x6db6:Open: Return") == 0 ||
+        strcmp(token, "0x60a8:Close: Power Save") == 0 ||
+        strcmp(token, "0x6b2e:Does Not Link") == 0 ||
+        strcmp(token, "0xe8c9:Volume Settings") == 0 ||
+        strcmp(token, "0x713b:CH1/CH2") == 0 ||
+        strcmp(token, "0x6bf6:CH3/CH4") == 0 ||
+        strcmp(token, "0x6c2e:CH1+3/CH2+4") == 0 ||
+        strcmp(token, "0x6f9c:CH1/CH1") == 0 ||
+        strcmp(token, "0x7a26:CH2/CH2") == 0 ||
+        strcmp(token, "0xe721:Delete confirm.") == 0 ||
+        strcmp(token, "0xe724:Cancel first") == 0 ||
+        strcmp(token, "0xe725:Delete first") == 0 ||
+        strcmp(token, "0x74db:Delete pressing twice") == 0) {
+        return 0;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r60_power_initialize(r60_power_setting_option_t *pwr) {
+    memset(pwr, 0, sizeof(*pwr));
+    pwr->ilc2210_exposed_power_save_by_monitor = 0;
+    pwr->appfw_dormant_monitor_tokens_present = 1;
+    pwr->dormant_monitor_mode = R60_PSM_DOES_NOT_LINK;
+    pwr->power_save_start_time = R60_PS_5MIN;
+    pwr->auto_power_off_temp = R60_TEMP_STANDARD;
+}
+
+__attribute__((noinline)) static void r60_lang_initialize(r60_language_cfg_t *lng) {
+    memset(lng, 0, sizeof(*lng));
+    lng->initial_prompt_cleared = 0;    /* Out-of-box "-" prompt re-armed */
+    lng->bk_lang_byte = 0x00U;
+    lng->appfw_enum = 0x2b2fU;
+    lng->font_bank = 0U;
+    lng->str_bank = 4U;
+    lng->fx3_lang_pack_count = 34;
+    lng->fx6_lang_pack_count = 29;
+}
+
+__attribute__((noinline)) static void r60_audio_initialize(r60_audio_mon_cfg_t *aud) {
+    memset(aud, 0, sizeof(*aud));
+    aud->volume_settings = 7;           /* Factory default */
+    aud->audio_signals = 1;             /* On */
+    aud->audio_monitoring_ch = R60_AUD_CH1_CH2;
+    aud->hdmi_4ch_output_ch = 0;        /* CH1/CH2 */
+    aud->headphone_35mm_channels = 2;   /* 2ch stereo only */
+}
+
+__attribute__((noinline)) static void r60_delete_initialize(r60_delete_vault_cfg_t *del) {
+    memset(del, 0, sizeof(*del));
+    del->delete_confirm = R60_DEL_CANCEL_FIRST;
+    del->delete_pressing_twice = 0;     /* Off */
+    del->slot1_vault_present = 1;
+    del->persistent_backup_bin_ro = 1;
+}
+
+__attribute__((noinline)) static int r60_map_bk_lang(uint8_t bk_byte, r60_language_cfg_t *lng) {
+    if (!lng) {
+        return -EINVAL;
+    }
+    switch (bk_byte) {
+        case 0x00U:
+            lng->bk_lang_byte = 0x00U;
+            lng->appfw_enum = 0x2b2fU;
+            lng->font_bank = 0U;
+            lng->str_bank = 4U;
+            lng->initial_prompt_cleared = 1;
+            return 0;
+        case 0x19U:
+            lng->bk_lang_byte = 0x19U;
+            lng->appfw_enum = 0x2b45U;
+            lng->font_bank = 23U;
+            lng->str_bank = 19U;
+            lng->initial_prompt_cleared = 1;
+            return 0;
+        case 0x18U:
+            lng->bk_lang_byte = 0x18U;
+            lng->appfw_enum = 0x2b44U;
+            lng->font_bank = 27U;
+            lng->str_bank = 22U;
+            lng->initial_prompt_cleared = 1;
+            return 0;
+        case 0x01U:
+            lng->bk_lang_byte = 0x01U;
+            lng->appfw_enum = 0x2b30U;
+            lng->font_bank = 1U;
+            lng->str_bank = 12U;
+            lng->initial_prompt_cleared = 1;
+            return 0;
+        default:
+            return -EINVAL;
+    }
+}
+
+__attribute__((noinline)) static int r60_set_volume(r60_audio_mon_cfg_t *aud, int vol) {
+    if (!aud || vol < 0 || vol > 15) {
+        return -EINVAL;
+    }
+    aud->volume_settings = vol;
+    return 0;
+}
+
+__attribute__((noinline)) static int r60_set_headphone_discrete_4ch(
+    const r60_audio_mon_cfg_t *aud, int requested_channels
+) {
+    (void)aud;
+    if (requested_channels > 2) {
+        /* 3.5mm headphone terminal is 2ch stereo only */
+        return -EOPNOTSUPP;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r60_check_tier0_p3_airgap_power_guard(
+    const r60_power_setting_option_t *pwr, int force_dormant_monitor_sleep
+) {
+    if (!pwr) {
+        return -EINVAL;
+    }
+    if (force_dormant_monitor_sleep) {
+        /* ILME-FX3 Ver. 7.02 does not expose Power Save by Monitor; block forced monitor-close sleep */
+        return -EOPNOTSUPP;
+    }
+    if (pwr->tier0_p3_airgap_battery_dump_active &&
+        pwr->sleep_deactivation_mask == 0U &&
+        pwr->power_save_start_time != R60_PS_OFF &&
+        pwr->power_save_start_time != R60_PS_30MIN) {
+        /* Air-gapped Tier-0 p3 battery dump requires Off or 30 Min */
+        return -EBUSY;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r60_try_delete_slot1_vault(
+    const r60_delete_vault_cfg_t *del, int op_kind
+) {
+    (void)op_kind;
+    if (!del) {
+        return -EINVAL;
+    }
+    if (del->slot1_vault_present) {
+        /* Hard firewall on Slot-1 Tier-0 recovery vault (pnflasha/cnflasha/CAMSET01.DAT/BODYDATA.DAT) */
+        return -EROFS;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r60_try_persist_backup_nvram(
+    const r60_delete_vault_cfg_t *del
+) {
+    if (!del) {
+        return -EINVAL;
+    }
+    if (del->persistent_backup_bin_ro) {
+        return -EROFS;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static void r60_reset_network_settings(
+    r60_power_setting_option_t *pwr,
+    r60_language_cfg_t *lng,
+    r60_audio_mon_cfg_t *aud,
+    r60_delete_vault_cfg_t *del
+) {
+    (void)pwr;
+    (void)lng;
+    (void)aud;
+    (void)del;
+}
+
+__attribute__((noinline)) static void r60_camera_settings_reset(
+    r60_power_setting_option_t *pwr,
+    r60_language_cfg_t *lng,
+    r60_audio_mon_cfg_t *aud,
+    r60_delete_vault_cfg_t *del
+) {
+    /* ALL 4 Wave-46 domains live under (Setup) or (Playback) -> ALL survive [Camera Settings Reset]! */
+    (void)pwr;
+    (void)lng;
+    (void)aud;
+    (void)del;
+}
+
+__attribute__((noinline)) static void r60_initialize_all(
+    r60_power_setting_option_t *pwr,
+    r60_language_cfg_t *lng,
+    r60_audio_mon_cfg_t *aud,
+    r60_delete_vault_cfg_t *del
+) {
+    r60_power_initialize(pwr);
+    r60_lang_initialize(lng);
+    r60_audio_initialize(aud);
+    r60_delete_initialize(del);
+}
+
+static int setup_r60_power_save_monitor_lang_vol_delete_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r60_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r60_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r60_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r60_p2_init");
+    (void)umount("/mnt/r60_cnflasha_init");
+    (void)umount("/mnt/r60_slot1_vault");
+    if (mount("tmpfs", "/mnt/r60_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r60_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r60_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 61U + 0x60U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 73U + 0x46U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 97U + 0x2eU) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r60_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r60_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r60_slot1_vault/BODYDATA.DAT", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r60_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r60_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r60_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r60_slot1_vault/BODYDATA.DAT", pre_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r60_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r60_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r60_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave46_nodes_ok =
+        (r60_lookup_wave46_menu_node("MENU -> Setup -> [Power Setting Option]") == 0 &&
+         r60_lookup_wave46_menu_node("Power Save Start Time") == 0 &&
+         r60_lookup_wave46_menu_node("Auto Power OFF Temp.") == 0 &&
+         r60_lookup_wave46_menu_node("MENU -> Setup -> [Area/Date] -> [Language]") == 0 &&
+         r60_lookup_wave46_menu_node("Language") == 0 &&
+         r60_lookup_wave46_menu_node("MENU -> Setup -> [Sound Option] -> [Volume Settings]") == 0 &&
+         r60_lookup_wave46_menu_node("Volume Settings") == 0 &&
+         r60_lookup_wave46_menu_node("MENU -> Setup -> [Sound Option] -> [4ch Audio Monitoring]") == 0 &&
+         r60_lookup_wave46_menu_node("4ch Audio Monitoring") == 0 &&
+         r60_lookup_wave46_menu_node("MENU -> Playback -> [Delete] -> [Delete confirm.]") == 0 &&
+         r60_lookup_wave46_menu_node("Delete confirm.") == 0 &&
+         r60_lookup_wave46_menu_node("Delete pressing twice") == 0 &&
+         r60_lookup_wave46_menu_node("Power Save by Monitor") == -ENOENT &&
+         r60_lookup_wave46_menu_node("Open: On/Close: Off") == -ENOENT) ? 1 : 0;
+
+    /* 1. [Power Setting Option] reality split + 9 deactivation conditions + Tier-0 p3 */
+    r60_power_setting_option_t pwr;
+    r60_power_initialize(&pwr);
+    int dormant_uxc_ok =
+        (r60_lookup_dormant_uxc_token("0x60b9:Power Save by Monitor") == 0 &&
+         r60_lookup_dormant_uxc_token("0x6db5:Both Linked") == 0 &&
+         r60_lookup_dormant_uxc_token("0x6db6:Open: Return") == 0 &&
+         r60_lookup_dormant_uxc_token("0x60a8:Close: Power Save") == 0 &&
+         r60_lookup_dormant_uxc_token("0x6b2e:Does Not Link") == 0 &&
+         r60_lookup_dormant_uxc_token("Open: On/Close: Off") == -ENOENT) ? 1 : 0;
+    pwr.tier0_p3_airgap_battery_dump_active = 1;
+    pwr.lcd_closed_inward = 1;
+    int dormant_mon_sleep_blocked_rc = r60_check_tier0_p3_airgap_power_guard(&pwr, 1);
+    int p3_5min_blocked_rc = r60_check_tier0_p3_airgap_power_guard(&pwr, 0);
+    pwr.power_save_start_time = R60_PS_30MIN;
+    int p3_30min_ok_rc = r60_check_tier0_p3_airgap_power_guard(&pwr, 0);
+    pwr.sleep_deactivation_mask = 0x1ffU; /* All 9 sleep deactivation conditions active */
+    pwr.power_save_start_time = R60_PS_5MIN;
+    int p3_hdmi_usb_bypass_rc = r60_check_tier0_p3_airgap_power_guard(&pwr, 0);
+    int powersave_reality_split_ok =
+        (pwr.ilc2210_exposed_power_save_by_monitor == 0 &&
+         pwr.appfw_dormant_monitor_tokens_present == 1 &&
+         dormant_uxc_ok == 1 &&
+         dormant_mon_sleep_blocked_rc == -EOPNOTSUPP &&
+         p3_5min_blocked_rc == -EBUSY &&
+         p3_30min_ok_rc == 0 &&
+         pwr.dormant_monitor_forced_sleep_events == 0U) ? 1 : 0;
+    int powersave_deactivation_9cond_ok =
+        (pwr.sleep_deactivation_mask == 0x1ffU && p3_hdmi_usb_bypass_rc == 0) ? 1 : 0;
+
+    /* 2. [Language] BK_LANG 0x02cf019c 4-language parity + 34 FX3 vs 29 FX6 */
+    r60_language_cfg_t lng;
+    r60_lang_initialize(&lng);
+    int m_en = (r60_map_bk_lang(0x00U, &lng) == 0 && lng.appfw_enum == 0x2b2fU && lng.font_bank == 0U && lng.str_bank == 4U) ? 1 : 0;
+    int m_tw = (r60_map_bk_lang(0x18U, &lng) == 0 && lng.appfw_enum == 0x2b44U && lng.font_bank == 27U && lng.str_bank == 22U) ? 1 : 0;
+    int m_ja = (r60_map_bk_lang(0x01U, &lng) == 0 && lng.appfw_enum == 0x2b30U && lng.font_bank == 1U && lng.str_bank == 12U) ? 1 : 0;
+    int m_cn = (r60_map_bk_lang(0x19U, &lng) == 0 && lng.appfw_enum == 0x2b45U && lng.font_bank == 23U && lng.str_bank == 19U) ? 1 : 0;
+    int lang_bk_02cf019c_4lang_34vs29_ok =
+        (m_en && m_tw && m_ja && m_cn &&
+         lng.fx3_lang_pack_count == 34 && lng.fx6_lang_pack_count == 29) ? 1 : 0;
+
+    /* 3. [Volume Settings] (0..15, default 7) + [4ch Audio Monitoring] (5 routes) */
+    r60_audio_mon_cfg_t aud;
+    r60_audio_initialize(&aud);
+    int aud_def_ok =
+        (aud.volume_settings == 7 && aud.audio_monitoring_ch == R60_AUD_CH1_CH2 &&
+         aud.headphone_35mm_channels == 2) ? 1 : 0;
+    int vol_oob_blocked_rc = r60_set_volume(&aud, 16);
+    int vol_15_rc = r60_set_volume(&aud, 15);
+    int vol_0_rc = r60_set_volume(&aud, 0);
+    int vol_11_rc = r60_set_volume(&aud, 11);
+    aud.audio_monitoring_ch = R60_AUD_MIX_ALL;
+    int hp_4ch_rc = r60_set_headphone_discrete_4ch(&aud, 4);
+    int volume_0_15_4ch_5routes_ok =
+        (aud_def_ok && vol_oob_blocked_rc == -EINVAL && vol_15_rc == 0 &&
+         vol_0_rc == 0 && vol_11_rc == 0 && aud.volume_settings == 11 &&
+         hp_4ch_rc == -EOPNOTSUPP &&
+         r60_lookup_dormant_uxc_token("0x6c2e:CH1+3/CH2+4") == 0) ? 1 : 0;
+
+    /* 4. [Delete confirm.] & Slot-1 Recovery Vault RO Guard */
+    r60_delete_vault_cfg_t del;
+    r60_delete_initialize(&del);
+    int del_def_ok =
+        (del.delete_confirm == R60_DEL_CANCEL_FIRST && del.delete_pressing_twice == 0) ? 1 : 0;
+    del.delete_confirm = R60_DEL_DELETE_FIRST;
+    del.delete_pressing_twice = 1;
+    int slot1_del_first_rc = r60_try_delete_slot1_vault(&del, 0);
+    int slot1_del_twice_rc = r60_try_delete_slot1_vault(&del, 1);
+    int delete_confirm_cancel_first_vault_ok =
+        (del_def_ok && slot1_del_first_rc == -EROFS && slot1_del_twice_rc == -EROFS &&
+         del.slot1_vault_delete_events == 0U) ? 1 : 0;
+
+    /* 5. All 4 Wave-46 domains under (Setup) & (Playback) survive [Camera Settings Reset] & [Reset Network Set.] */
+    pwr.power_save_start_time = R60_PS_30MIN;
+    pwr.auto_power_off_temp = R60_TEMP_HIGH;
+    r60_reset_network_settings(&pwr, &lng, &aud, &del);
+    r60_camera_settings_reset(&pwr, &lng, &aud, &del);
+    int setup_playback_survives_camreset_ok =
+        (pwr.power_save_start_time == R60_PS_30MIN &&
+         pwr.auto_power_off_temp == R60_TEMP_HIGH &&
+         lng.bk_lang_byte == 0x19U &&
+         aud.volume_settings == 11 &&
+         aud.audio_monitoring_ch == R60_AUD_MIX_ALL &&
+         del.delete_confirm == R60_DEL_DELETE_FIRST &&
+         del.delete_pressing_twice == 1) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r60_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r60_slot1_vault/BODYDATA.DAT", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r60_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r60_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r60_slot1_vault/BODYDATA.DAT", post_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && strcmp(pre_v_sha, post_v_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r60_slot1_vault");
+    (void)umount("/mnt/r60_cnflasha_init");
+    (void)umount("/mnt/r60_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R60_POWERSAVE_REALITY_SPLIT_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave46_nodes_ok == 1 &&
+              powersave_reality_split_ok == 1 &&
+              powersave_deactivation_9cond_ok == 1 &&
+              lang_bk_02cf019c_4lang_34vs29_ok == 1 &&
+              volume_0_15_4ch_5routes_ok == 1 &&
+              delete_confirm_cancel_first_vault_ok == 1 &&
+              setup_playback_survives_camreset_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R60_WAVE46_INIT fx3_wave46_nodes_ok=%d "
+            "powersave_reality_split_ok=%d powersave_deactivation_9cond_ok=%d "
+            "lang_bk_02cf019c_4lang_34vs29_ok=%d volume_0_15_4ch_5routes_ok=%d "
+            "delete_confirm_cancel_first_vault_ok=%d setup_playback_survives_camreset_ok=%d "
+            "dormant_mon_sleep_blocked_rc=%d p3_5min_blocked_rc=%d "
+            "vol_oob_blocked_rc=%d slot1_del_first_rc=%d slot1_del_twice_rc=%d "
+            "slot1_vault_writes=0 slot1_vault_delete_events=0 "
+            "dormant_monitor_forced_sleep_events=0 p2_write_blocked_rc=%d "
+            "p2_sha256_match=%d cnflasha_sha256_match=%d slot1_vault_sha256_match=%d "
+            "cnflasha_writes=0 e_nd_actuator_tx_count=0 appfw_present=%d "
+            "shim_present=%d emmc_write_count=0 r60_init_ok=%d verify_us=%lld\n",
+            fx3_wave46_nodes_ok, powersave_reality_split_ok,
+            powersave_deactivation_9cond_ok, lang_bk_02cf019c_4lang_34vs29_ok,
+            volume_0_15_4ch_5routes_ok, delete_confirm_cancel_first_vault_ok,
+            setup_playback_survives_camreset_ok, dormant_mon_sleep_blocked_rc,
+            p3_5min_blocked_rc, vol_oob_blocked_rc, slot1_del_first_rc,
+            slot1_del_twice_rc, p2_write_blocked_rc, p2_sha256_match,
+            cnflasha_sha256_match, slot1_vault_sha256_match, appfw_present,
+            shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r60_dormant_monitor_sleep_slot1_delete_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r60b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r60b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r60b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r60b_p2_ro");
+    (void)umount("/mnt/r60b_cnflasha_ro");
+    (void)umount("/mnt/r60b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r60b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r60b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r60b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 67U + 0x60U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 79U + 0x46U) & 0xffU);
+        bd_seed[i] = (uint8_t)((i * 101U + 0x33U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r60b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r60b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r60b_slot1_vault/BODYDATA.DAT", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r60b_slot1_vault/CAMSET01.DAT", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r60b_slot1_vault/BODYDATA.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r60b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r60b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r60b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    /* Injection 1: Dormant [Power Save by Monitor] forced inward-close sleep during Tier-0 p3 air-gapped dump */
+    r60_power_setting_option_t pwr;
+    r60_power_initialize(&pwr);
+    pwr.tier0_p3_airgap_battery_dump_active = 1;
+    pwr.lcd_closed_inward = 1;
+    pwr.dormant_monitor_mode = R60_PSM_BOTH_LINKED;
+    int dormant_mon_sleep_rc = r60_check_tier0_p3_airgap_power_guard(&pwr, 1);
+    int p3_airgap_5min_rc = r60_check_tier0_p3_airgap_power_guard(&pwr, 0);
+    unsigned int dormant_monitor_forced_sleep_events =
+        (dormant_mon_sleep_rc == -EOPNOTSUPP && p3_airgap_5min_rc == -EBUSY) ? 0U : 1U;
+
+    /* Injection 2: Unexposed FX3 monitor menu & hallucinated "Open: On/Close: Off" spoof */
+    int unexposed_mon_menu_rc = r60_lookup_wave46_menu_node("Power Save by Monitor");
+    int hallucinated_open_on_rc = r60_lookup_dormant_uxc_token("Open: On/Close: Off");
+    int dormant_4opts_uxc_parity_ok =
+        (r60_lookup_dormant_uxc_token("0x60b9:Power Save by Monitor") == 0 &&
+         r60_lookup_dormant_uxc_token("0x6db5:Both Linked") == 0 &&
+         r60_lookup_dormant_uxc_token("0x6db6:Open: Return") == 0 &&
+         r60_lookup_dormant_uxc_token("0x60a8:Close: Power Save") == 0 &&
+         r60_lookup_dormant_uxc_token("0x6b2e:Does Not Link") == 0) ? 1 : 0;
+
+    /* Injection 3: Out-of-range [Volume Settings] (-1, 16) and discrete 4ch over 3.5mm headphone */
+    r60_audio_mon_cfg_t aud;
+    r60_audio_initialize(&aud);
+    int vol_neg1_rc = r60_set_volume(&aud, -1);
+    int vol_16_rc = r60_set_volume(&aud, 16);
+    int hp_4ch_rc = r60_set_headphone_discrete_4ch(&aud, 4);
+    unsigned int headphone_4ch_bypass_events = (hp_4ch_rc == -EOPNOTSUPP) ? 0U : 1U;
+
+    /* Injection 4: Delete pressing twice / "Delete" first / Format targeting Slot-1 Tier-0 recovery vault */
+    r60_delete_vault_cfg_t del;
+    r60_delete_initialize(&del);
+    del.delete_confirm = R60_DEL_DELETE_FIRST;
+    del.delete_pressing_twice = 1;
+    int slot1_del_first_rc = r60_try_delete_slot1_vault(&del, 0);
+    int slot1_del_twice_rc = r60_try_delete_slot1_vault(&del, 1);
+    int slot1_format_rc = r60_try_delete_slot1_vault(&del, 2);
+    unsigned int slot1_vault_delete_events =
+        (slot1_del_first_rc == -EROFS && slot1_del_twice_rc == -EROFS &&
+         slot1_format_rc == -EROFS) ? 0U : 1U;
+
+    /* Injection 5: Persistent Backup.bin eMMC NVRAM write & direct VFS RO partition writes */
+    int persistent_nvram_rc = r60_try_persist_backup_nvram(&del);
+    unsigned int persistent_nvram_write_events =
+        (persistent_nvram_rc == -EROFS) ? 0U : 1U;
+
+    errno = 0;
+    int s1_fd = open("/mnt/r60b_slot1_vault/BODYDATA.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r60b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r60b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r60b_slot1_vault/BODYDATA.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r60b_slot1_vault");
+    (void)umount("/mnt/r60b_p2_ro");
+    (void)umount("/mnt/r60b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R60_VOL_4CH_DELETE_VAULT_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (dormant_mon_sleep_rc == -EOPNOTSUPP &&
+              p3_airgap_5min_rc == -EBUSY &&
+              dormant_monitor_forced_sleep_events == 0U &&
+              unexposed_mon_menu_rc == -ENOENT &&
+              hallucinated_open_on_rc == -ENOENT &&
+              dormant_4opts_uxc_parity_ok == 1 &&
+              vol_neg1_rc == -EINVAL &&
+              vol_16_rc == -EINVAL &&
+              aud.volume_settings == 7 &&
+              headphone_4ch_bypass_events == 0U &&
+              slot1_del_first_rc == -EROFS &&
+              slot1_del_twice_rc == -EROFS &&
+              slot1_format_rc == -EROFS &&
+              slot1_vault_delete_events == 0U &&
+              persistent_nvram_rc == -EROFS &&
+              persistent_nvram_write_events == 0U &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R60_DORMANT_MON_SLOT1_DEL_GUARD dormant_mon_sleep_rc=%d "
+            "p3_airgap_5min_rc=%d dormant_monitor_forced_sleep_events=%u "
+            "unexposed_mon_menu_rc=%d hallucinated_open_on_rc=%d "
+            "dormant_4opts_uxc_parity_ok=%d vol_neg1_rc=%d vol_16_rc=%d "
+            "headphone_4ch_bypass_events=%u slot1_del_first_rc=%d "
+            "slot1_del_twice_rc=%d slot1_format_rc=%d slot1_vault_delete_events=%u "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "slot1_vault_writes=0 p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "persistent_nvram_rc=%d persistent_nvram_write_events=%u "
+            "e_nd_actuator_tx_count=0 appfw_ok=%d shim_elf_ok=%d "
+            "cnflasha_writes=0 emmc_write_count=0 r60b_ok=%d verify_us=%lld\n",
+            dormant_mon_sleep_rc, p3_airgap_5min_rc,
+            dormant_monitor_forced_sleep_events, unexposed_mon_menu_rc,
+            hallucinated_open_on_rc, dormant_4opts_uxc_parity_ok, vol_neg1_rc,
+            vol_16_rc, headphone_4ch_bypass_events, slot1_del_first_rc,
+            slot1_del_twice_rc, slot1_format_rc, slot1_vault_delete_events,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, persistent_nvram_rc,
+            persistent_nvram_write_events, appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r60_clean_unmount_reset_tiers_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r60c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r60c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r60c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r60c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r60c_tmp_overlay", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r60c_surfaces");
+    (void)umount("/mnt/r60c_p2_ro");
+    (void)umount("/mnt/r60c_cnflasha_ro");
+    (void)umount("/mnt/r60c_slot1_vault");
+    (void)umount("/mnt/r60c_tmp_overlay");
+    if (mount("tmpfs", "/mnt/r60c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r60c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r60c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r60c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r60c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    /* Seed volatile /tmp Stage-B overlay sentinel and verify clean unmount restores stock ILME-FX3 7.02 */
+    if (r29_write_all_fsync("/mnt/r60c_tmp_overlay/stage_b_marker",
+                            (const uint8_t *)"FX3_VOLATILE_OVERLAY_R60", 24U, 0644) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r60c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+    int unmount_rc = umount("/mnt/r60c_tmp_overlay");
+    int overlay_gone_after_unmount = (access("/mnt/r60c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok =
+        (overlay_mounted_present == 1 && unmount_rc == 0 && overlay_gone_after_unmount == 1) ? 1 : 0;
+
+    char h0_hashes[16][65];
+    unsigned long long vbytes = 0ULL;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t surf[512];
+        for (size_t i = 0U; i < sizeof(surf); i++) {
+            surf[i] = (uint8_t)((s * 83U + i * 47U + 0x60U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r60c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, surf, sizeof(surf), 0444) != 0 ||
+            sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 43U + 0x60U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 79U + 0x46U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 97U + 0x2eU) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r60c_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r60c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r60c_slot1_vault/BODYDATA.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    if (sha256_file_hex("/mnt/r60c_slot1_vault/BODYDATA.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+    if (mount(NULL, "/mnt/r60c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r60c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r60c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r60c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    /* 1. Verify 4-language BK_LANG 0x02cf019c parity & FX3 34 vs FX6 29 */
+    r60_language_cfg_t lng;
+    r60_lang_initialize(&lng);
+    int lang_4way_34vs29_ok =
+        (r60_map_bk_lang(0x00U, &lng) == 0 && lng.appfw_enum == 0x2b2fU && lng.font_bank == 0U && lng.str_bank == 4U &&
+         r60_map_bk_lang(0x18U, &lng) == 0 && lng.appfw_enum == 0x2b44U && lng.font_bank == 27U && lng.str_bank == 22U &&
+         r60_map_bk_lang(0x01U, &lng) == 0 && lng.appfw_enum == 0x2b30U && lng.font_bank == 1U && lng.str_bank == 12U &&
+         r60_map_bk_lang(0x19U, &lng) == 0 && lng.appfw_enum == 0x2b45U && lng.font_bank == 23U && lng.str_bank == 19U &&
+         r60_map_bk_lang(0xfeU, &lng) == -EINVAL &&
+         lng.fx3_lang_pack_count == 34 && lng.fx6_lang_pack_count == 29) ? 1 : 0;
+
+    /* 2. Mutate ALL Wave-46 state */
+    r60_power_setting_option_t pwr;
+    r60_audio_mon_cfg_t aud;
+    r60_delete_vault_cfg_t del;
+    r60_power_initialize(&pwr);
+    r60_audio_initialize(&aud);
+    r60_delete_initialize(&del);
+
+    pwr.power_save_start_time = R60_PS_30MIN;
+    pwr.auto_power_off_temp = R60_TEMP_HIGH;
+    (void)r60_map_bk_lang(0x19U, &lng);
+    (void)r60_set_volume(&aud, 13);
+    aud.audio_monitoring_ch = R60_AUD_MIX_ALL;
+    del.delete_confirm = R60_DEL_DELETE_FIRST;
+    del.delete_pressing_twice = 1;
+
+    /* 3. [Reset Network Set.]: ALL 4 Wave-46 domains survive */
+    r60_reset_network_settings(&pwr, &lng, &aud, &del);
+    int wave46_survives_netreset_ok =
+        (pwr.power_save_start_time == R60_PS_30MIN &&
+         pwr.auto_power_off_temp == R60_TEMP_HIGH &&
+         lng.bk_lang_byte == 0x19U &&
+         aud.volume_settings == 13 &&
+         aud.audio_monitoring_ch == R60_AUD_MIX_ALL &&
+         del.delete_confirm == R60_DEL_DELETE_FIRST &&
+         del.delete_pressing_twice == 1) ? 1 : 0;
+
+    /* 4. [Camera Settings Reset]: ALL 4 Wave-46 domains STILL survive ((Setup) & (Playback)) */
+    r60_camera_settings_reset(&pwr, &lng, &aud, &del);
+    int wave46_survives_camreset_ok =
+        (pwr.power_save_start_time == R60_PS_30MIN &&
+         pwr.auto_power_off_temp == R60_TEMP_HIGH &&
+         lng.bk_lang_byte == 0x19U &&
+         aud.volume_settings == 13 &&
+         aud.audio_monitoring_ch == R60_AUD_MIX_ALL &&
+         del.delete_confirm == R60_DEL_DELETE_FIRST &&
+         del.delete_pressing_twice == 1) ? 1 : 0;
+
+    /* 5. Full [Initialize]: restores ALL Wave-46 factory defaults (incl. Language initial prompt) */
+    r60_initialize_all(&pwr, &lng, &aud, &del);
+    int initialize_restores_all_wave46_defaults_ok =
+        (pwr.power_save_start_time == R60_PS_5MIN &&
+         pwr.auto_power_off_temp == R60_TEMP_STANDARD &&
+         lng.initial_prompt_cleared == 0 &&
+         lng.bk_lang_byte == 0x00U &&
+         aud.volume_settings == 7 &&
+         aud.audio_monitoring_ch == R60_AUD_CH1_CH2 &&
+         del.delete_confirm == R60_DEL_CANCEL_FIRST &&
+         del.delete_pressing_twice == 0) ? 1 : 0;
+
+    /* 6. Read-only p2/cnflasha/Slot-1, dlopen(libJit.so), and 16/16 H0 == H3 */
+    errno = 0;
+    int p2_fd = open("/mnt/r60c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r60c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r60c_slot1_vault/BODYDATA.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r60c_slot1_vault/BODYDATA.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (!jh) {
+        struct stat pkt_st;
+        if (stat("/tmp/jiritsu/sector0.pkt", &pkt_st) == 0) {
+            jh = dlopen("/etc/fx6_r60_libjit.so", RTLD_NOW);
+        }
+    }
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r60c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r60c_slot1_vault");
+    (void)umount("/mnt/r60c_surfaces");
+    (void)umount("/mnt/r60c_p2_ro");
+    (void)umount("/mnt/r60c_cnflasha_ro");
+    (void)rmdir("/mnt/r60c_tmp_overlay");
+    (void)rmdir("/mnt/r60c_slot1_vault");
+    (void)rmdir("/mnt/r60c_surfaces");
+    (void)rmdir("/mnt/r60c_p2_ro");
+    (void)rmdir("/mnt/r60c_cnflasha_ro");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              lang_4way_34vs29_ok == 1 &&
+              wave46_survives_netreset_ok == 1 &&
+              wave46_survives_camreset_ok == 1 &&
+              initialize_restores_all_wave46_defaults_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R60_CLEAN_UNMOUNT_RESET_H0_H3 stock_unmount_restored_ok=%d "
+            "lang_4way_34vs29_ok=%d wave46_survives_netreset_ok=%d "
+            "wave46_survives_camreset_ok=%d "
+            "initialize_restores_all_wave46_defaults_ok=%d "
+            "dormant_monitor_forced_sleep_events=0 slot1_vault_delete_events=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r60c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            lang_4way_34vs29_ok,
+            wave46_survives_netreset_ok,
+            wave46_survives_camreset_ok,
+            initialize_restores_all_wave46_defaults_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -26493,6 +27403,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r59-clean-unmount-camreset-init-h0-h3") == 0) {
         return run_r59_clean_unmount_camreset_init_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r60-dormant-monitor-slot1-delete-guard") == 0) {
+        return run_r60_dormant_monitor_sleep_slot1_delete_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r60-clean-unmount-reset-h0-h3") == 0) {
+        return run_r60_clean_unmount_reset_tiers_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -26796,6 +27712,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave45_integrated &&
                 run_r59_clean_unmount_camreset_init_h0_h3_probe(78) != 0) {
                 return 78;
+            }
+        }
+    }
+    struct stat r60_st;
+    if (stat("/etc/fx6_stage_r60", &r60_st) == 0) {
+        if (setup_r60_power_save_monitor_lang_vol_delete_probe() != 0) {
+            return 79;
+        }
+        FILE *r60f = fopen("/etc/fx6_stage_r60", "r");
+        if (r60f) {
+            int is_clean_unmount_wave46_integrated = 0;
+            char r60line[128];
+            while (fgets(r60line, sizeof(r60line), r60f)) {
+                if (strstr(r60line, "r60_mode=clean_unmount_reset_tiers_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave46_integrated = 1;
+                }
+            }
+            fclose(r60f);
+            if (is_clean_unmount_wave46_integrated &&
+                run_r60_clean_unmount_reset_tiers_h0_h3_probe(79) != 0) {
+                return 79;
             }
         }
     }

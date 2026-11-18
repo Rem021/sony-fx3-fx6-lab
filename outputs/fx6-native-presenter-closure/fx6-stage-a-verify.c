@@ -40384,6 +40384,1383 @@ static int run_r71_clean_unmount_wave57_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ==================== Round 72 (45th Real-HW Round Milestone, Wave-58) ==================== */
+typedef enum {
+    R72_DIAL_AUTO = 0,
+    R72_DIAL_P = 1,
+    R72_DIAL_A = 2,
+    R72_DIAL_S = 3,
+    R72_DIAL_M = 4,
+    R72_DIAL_MOVIE = 5,
+    R72_DIAL_SQ = 6
+} r72_shoot_dial_t;
+
+typedef enum {
+    R72_FOCUS_AF_C = 0,
+    R72_FOCUS_MF = 1
+} r72_focus_mode_t;
+
+typedef enum {
+    R72_MON_BRIGHT_MANUAL = 0,
+    R72_MON_BRIGHT_SUNNY_WEATHER = 1,
+    R72_MON_BRIGHT_DORMANT_AUTO = 2,
+    R72_MON_BRIGHT_DORMANT_BRIGHT = 3,
+    R72_MON_BRIGHT_DORMANT_NORMAL = 4
+} r72_mon_bright_mode_t;
+
+typedef enum {
+    R72_CLIP_FLAG_NONE = 0,
+    R72_CLIP_FLAG_OK = 1,
+    R72_CLIP_FLAG_NG = 2,
+    R72_CLIP_FLAG_KEEP = 3
+} r72_clip_flag_t;
+
+typedef enum {
+    R72_PB_EDIT_PHOTO_CAPTURE = 0,
+    R72_PB_EDIT_JPEG_HEIF_SWITCH = 1,
+    R72_PB_EDIT_COPY = 2,
+    R72_PB_EDIT_ROTATE = 3,
+    R72_PB_EDIT_DIVIDER_FRAME = 4,
+    R72_PB_EDIT_DORMANT_DIVIDE = 5,
+    R72_PB_EDIT_DORMANT_EXTRACT = 6,
+    R72_PB_EDIT_DORMANT_CUT_15S = 7
+} r72_pb_edit_op_t;
+
+typedef enum {
+    R72_PHOTO_CAP_JPEG = 0,
+    R72_PHOTO_CAP_HEIF_420 = 1,
+    R72_PHOTO_CAP_HEIF_422 = 2
+} r72_photo_cap_fmt_t;
+
+typedef enum {
+    R72_WIFI_SEC_WPA2_PSK = 0,
+    R72_WIFI_SEC_WPA3_SAE = 1,
+    R72_WIFI_SEC_REMOVED_WEP = 2,
+    R72_WIFI_SEC_REMOVED_WPA_PSK = 3,
+    R72_WIFI_SEC_REMOVED_IPSEC = 4
+} r72_wifi_sec_t;
+
+typedef enum {
+    R72_DRO_OFF = 0,
+    R72_DRO_AUTO = 1,
+    R72_DRO_LV1 = 2,
+    R72_DRO_LV2 = 3,
+    R72_DRO_LV3 = 4,
+    R72_DRO_LV4 = 5,
+    R72_DRO_LV5 = 6
+} r72_dro_level_t;
+
+typedef enum {
+    R72_DRO_BRK_OFF = 0,
+    R72_DRO_BRK_LO_123 = 1,
+    R72_DRO_BRK_HI_135 = 2
+} r72_dro_bracket_t;
+
+typedef enum {
+    R72_SLOT_1 = 1,
+    R72_SLOT_2 = 2
+} r72_slot_id_t;
+
+typedef struct {
+    int is_fx6_chaplin;
+    r72_shoot_dial_t shoot_dial;
+    r72_focus_mode_t focus_mode;
+    /* Pillar 1: [Bright Monitoring] Ver. 7.00+ Focus Magnifier coexistence & [Monitor Brightness] */
+    int bright_mon_custom_key_assigned;
+    int bright_monitoring_on;
+    int live_view_setting_effect_on;
+    int focus_magnifier_active;
+    int auto_magnifier_in_mf_active;
+    int bright_mon_mag_coexist_ok;
+    r72_mon_bright_mode_t mon_bright_mode;
+    int mon_bright_manual_level; /* -2..+2, default 0 */
+    int fx6_vf_brightness;       /* 1..15, default 8 */
+    int fx6_ae_backlight_comp;
+    /* Pillar 2: [Shot Mark 1/2], [Clip Flag], Playback [Edit] vs absent Divide/Extract, Slot-1 EROFS */
+    int shot_mark1_count;
+    int shot_mark2_count;
+    int image_jump_mode;         /* 0=Shot Mark Only, 1=SM1 Only, 2=SM2 Only, 3=No Shot Mark */
+    r72_clip_flag_t clip_flag;
+    r72_photo_cap_fmt_t photo_cap_fmt;
+    int slot1_ro_vault_armed;
+    int slot1_data_sector_writes;
+    int slot1_avf_info_mutated;
+    /* Pillar 3: Zero-BT [Timecode Link] vs VMC-BNCM1 EXT-LK, WPA2/WPA3, USB-LAN .ko + Airplane Zero-RF */
+    int vmc_bncm1_attached;
+    int tc_make_preset;
+    int tc_run_freerun;
+    int hdmi_tc_output_on;
+    int ext_tc_locked_ext_lk;
+    int sku_ww558244_24ghz_only;
+    r72_wifi_sec_t wifi_sec;
+    int wifi_5ghz_band_selected;
+    int access_authen_on;
+    int bt_function_on;
+    int bt_rmt_ctrl_on;
+    int usb_lan_connected;
+    int usb_lan_cnct_launch_on;
+    int wired_lan_dhcp_auto;
+    int airplane_mode_on;
+    int p12_p13_nvs_ro_armed;
+    int wireless_tx_packets;
+    int passive_tx_bytes_emitted;
+    /* Pillar 4: Mechanical-only Still [BULB] & [D-Range Optimizer] vs dormant [Bulb Timer] & [Auto HDR] */
+    int mech_shutter_on;
+    int drive_single_or_single_st;
+    int bulb_active;
+    int bulb_fallback_to_30s;
+    int anti_flicker_shoot_on;
+    int long_exposure_nr_on;
+    r72_dro_level_t dro_level;
+    r72_dro_bracket_t dro_bracket;
+    int picture_profile_on;
+    int hlg_still_image_on;
+} r72_wave58_cfg_t;
+
+__attribute__((noinline)) static int r72_lookup_wave58_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Setup -> [Operation Customize] -> [Custom Key/Dial Set.] -> [Bright Monitoring]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Monitor] -> [Monitor Brightness]") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Playback Option] -> [Image Jump Setting]") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Edit] -> [Photo Capture]/[JPEG/HEIF Switch]/[Copy]/[Rotate]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [TC/UB] -> [Time Code Make/Run/HDMI Output]") == 0 ||
+        strcmp(path, "MENU -> Network -> [Wi-Fi] -> [Wi-Fi Frequency Band]/[Access Authen.]") == 0 ||
+        strcmp(path, "MENU -> Network -> [Wired LAN] / [USB-LAN/Tethering] -> [USB-LAN Cnct. Launch]") == 0 ||
+        strcmp(path, "MENU -> Network -> [Network Option] -> [Airplane Mode]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [JPEG/HEIF Switch] / [HLG Still Image]") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [DRO] -> [D-Range Optimizer] / [Drive Mode] -> [DRO Bracket]") == 0) {
+        return 0;
+    }
+    if (strcmp(path, "dormant::Shooting Menu Bright Monitoring Toggle") == 0 ||
+        strcmp(path, "dormant::Monitor Brightness AUTO/BRIGHT/NORMAL") == 0 ||
+        strcmp(path, "dormant::Playback Edit Divide/Extract") == 0 ||
+        strcmp(path, "dormant::FTP Cut to 15/30/60 seconds") == 0 ||
+        strcmp(path, "dormant::Bluetooth Timecode Link / UltraSync BLUE") == 0 ||
+        strcmp(path, "dormant::Wi-Fi WEP/WPA-PSK/IPsec") == 0 ||
+        strcmp(path, "dormant::BKID_APP_setting_bulb_timer") == 0 ||
+        strcmp(path, "dormant::Auto HDR (BKID_APP_extern_menu_hdr_level)") == 0 ||
+        strcmp(path, "dormant::FX6 LCD/VF Backlight / NIGHTSHOT / USB_TC_IN / BT / BULB") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r72_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "_f:0x701f:Bright Monitoring") == 0 ||
+        strcmp(token, "base:0xe44b:Monitor Brightness") == 0 ||
+        strcmp(token, "base:0xe1da:Sunny Weather") == 0 ||
+        strcmp(token, "_f:0x628b:Add Shot Mark1") == 0 ||
+        strcmp(token, "_f:0x628a:Add Shot Mark2") == 0 ||
+        strcmp(token, "_f:0x6143:Add/Delete Shot Mark1") == 0 ||
+        strcmp(token, "_f:0x6142:Add/Delete Shot Mark2") == 0 ||
+        strcmp(token, "_f:0x76cf:Shot Mark Only") == 0 ||
+        strcmp(token, "_f:0x6856:Photo Capture") == 0 ||
+        strcmp(token, "_f:0x7175:JPEG/HEIF Switch (Photo Capture)") == 0 ||
+        strcmp(token, "_f:0x747a:Create Divider Frame") == 0 ||
+        strcmp(token, "_f:0x7d2a:USB-LAN Cnct. Launch") == 0 ||
+        strcmp(token, "_f:0x66c3:Wi-Fi Frequency Band") == 0 ||
+        strcmp(token, "base:0xe407:WPA3") == 0 ||
+        strcmp(token, "_f:0x6b05:Airplane Mode") == 0 ||
+        strcmp(token, "base:0xe916:BULB") == 0 ||
+        strcmp(token, "base:0xe89c:D-Range Optimizer") == 0 ||
+        strcmp(token, "base:0xe18f:DRO Bracket") == 0 ||
+        strcmp(token, "_f:0x76c8:HLG Still Image") == 0) {
+        return 0;
+    }
+    if (strcmp(token, "_f:0x7005:Cut to 15 seconds") == 0 ||
+        strcmp(token, "_f:0x6e38:Cut to 30 seconds") == 0 ||
+        strcmp(token, "_f:0x6c2a:Cut to 60 seconds") == 0 ||
+        strcmp(token, "_f:0x74a9:Cut Shot Mark Center") == 0 ||
+        strcmp(token, "_f:0x630f:BULB Timer") == 0 ||
+        strcmp(token, "_f:0x78b6:BULB Timer Settings") == 0 ||
+        strcmp(token, "base:0xe5d0:DRO/Auto HDR") == 0 ||
+        strcmp(token, "base:0xe49d:Auto HDR") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r72_wave58_initialize(r72_wave58_cfg_t *cfg) {
+    int saved_airplane = cfg->airplane_mode_on;
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->is_fx6_chaplin = 0;
+    cfg->shoot_dial = R72_DIAL_M;
+    cfg->focus_mode = R72_FOCUS_MF;
+    cfg->bright_mon_custom_key_assigned = 1;
+    cfg->bright_monitoring_on = 0;
+    cfg->live_view_setting_effect_on = 1;
+    cfg->mon_bright_mode = R72_MON_BRIGHT_MANUAL;
+    cfg->mon_bright_manual_level = 0;
+    cfg->fx6_vf_brightness = 8;
+    cfg->photo_cap_fmt = R72_PHOTO_CAP_JPEG;
+    cfg->slot1_ro_vault_armed = 1;
+    cfg->tc_make_preset = 0;
+    cfg->tc_run_freerun = 0;
+    cfg->hdmi_tc_output_on = 0;
+    cfg->wifi_sec = R72_WIFI_SEC_WPA2_PSK;
+    cfg->wifi_5ghz_band_selected = 0; /* 2.4GHz default */
+    cfg->access_authen_on = 1;
+    cfg->bt_function_on = 0;
+    cfg->bt_rmt_ctrl_on = 0;
+    cfg->usb_lan_connected = 0;
+    cfg->usb_lan_cnct_launch_on = 0;
+    cfg->wired_lan_dhcp_auto = 1;
+    /* Per official Wave-58 FX3 Help Guide: [Airplane Mode] = On survives BOTH [Reset Network Set.] AND [Initialize]! */
+    cfg->airplane_mode_on = saved_airplane;
+    cfg->p12_p13_nvs_ro_armed = 1;
+    cfg->mech_shutter_on = 1;
+    cfg->drive_single_or_single_st = 1;
+    cfg->dro_level = R72_DRO_AUTO;
+    cfg->dro_bracket = R72_DRO_BRK_OFF;
+}
+
+__attribute__((noinline)) static void r72_wave58_zero_init(r72_wave58_cfg_t *cfg) {
+    memset(cfg, 0, sizeof(*cfg));
+    r72_wave58_initialize(cfg);
+}
+
+__attribute__((noinline)) static void r72_wave58_camera_settings_reset(r72_wave58_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Camera Settings Reset:
+     * RESETTABLE -> [Bright Monitoring]->Off, still [BULB]->Off, [D-Range Optimizer]->Auto, [DRO Bracket]->Off, [TC Make/Run/HDMI]->defaults
+     * SURVIVORS  -> [Monitor Brightness] (Manual/Sunny Weather), [Image Jump Setting], [Photo Capture JPEG/HEIF Switch],
+     *               and ALL (Network) items ([Wi-Fi], [Bluetooth], [Wired LAN], [USB-LAN Cnct. Launch], [Airplane Mode]) */
+    cfg->bright_monitoring_on = 0;
+    cfg->live_view_setting_effect_on = 1;
+    cfg->tc_make_preset = 0;
+    cfg->tc_run_freerun = 0;
+    cfg->hdmi_tc_output_on = 0;
+    cfg->ext_tc_locked_ext_lk = 0;
+    cfg->bulb_active = 0;
+    cfg->bulb_fallback_to_30s = 0;
+    cfg->dro_level = R72_DRO_AUTO;
+    cfg->dro_bracket = R72_DRO_BRK_OFF;
+}
+
+__attribute__((noinline)) static void r72_wave58_reset_network_settings(r72_wave58_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* [Reset Network Set.]: resets Wi-Fi/BT/Wired LAN/USB-LAN Cnct. Launch while PRESERVING [Airplane Mode] = On */
+    int saved_airplane = cfg->airplane_mode_on;
+    cfg->wifi_sec = R72_WIFI_SEC_WPA2_PSK;
+    cfg->wifi_5ghz_band_selected = 0;
+    cfg->access_authen_on = 1;
+    cfg->bt_function_on = 0;
+    cfg->bt_rmt_ctrl_on = 0;
+    cfg->usb_lan_cnct_launch_on = 0;
+    cfg->wired_lan_dhcp_auto = 1;
+    cfg->airplane_mode_on = saved_airplane;
+}
+
+__attribute__((noinline)) static int r72_set_bright_monitoring(
+    r72_wave58_cfg_t *cfg, int enable, int via_shooting_menu
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin || via_shooting_menu) {
+        return -ENOENT; /* Custom-key-only on FX3; absent from FX3 shooting menu & FX6 body */
+    }
+    if (!cfg->bright_mon_custom_key_assigned) {
+        return -ENOENT;
+    }
+    if (enable) {
+        int is_pasm = (cfg->shoot_dial >= R72_DIAL_P && cfg->shoot_dial <= R72_DIAL_M) ? 1 : 0;
+        if (!is_pasm || cfg->focus_mode != R72_FOCUS_MF) {
+            return -EBUSY; /* Active ONLY in P/A/S/M + MF */
+        }
+        /* Ver. 7.00/7.02 addition: Focus Magnifier & Auto Magnifier in MF coexist cleanly! */
+        cfg->bright_monitoring_on = 1;
+        cfg->live_view_setting_effect_on = 0; /* Forces [Live View Display] -> [Setting Effect OFF] */
+        if (cfg->focus_magnifier_active || cfg->auto_magnifier_in_mf_active) {
+            cfg->bright_mon_mag_coexist_ok = 1;
+        }
+    } else {
+        cfg->bright_monitoring_on = 0;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r72_probe_bright_mon_expansion(const char *op) {
+    (void)op;
+    return -EOPNOTSUPP; /* Only 6 symbols in FX3 appFw.so; no multi-level gain or focus-area expansion */
+}
+
+__attribute__((noinline)) static int r72_transition_bright_mon_cancel(
+    r72_wave58_cfg_t *cfg, r72_shoot_dial_t new_dial, r72_focus_mode_t new_focus, int power_off
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    cfg->shoot_dial = new_dial;
+    cfg->focus_mode = new_focus;
+    int is_pasm = (new_dial >= R72_DIAL_P && new_dial <= R72_DIAL_M) ? 1 : 0;
+    if (power_off || !is_pasm || new_focus != R72_FOCUS_MF) {
+        cfg->bright_monitoring_on = 0; /* Auto-cancels on power-off, leaving P/A/S/M, or leaving MF */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r72_set_monitor_brightness(
+    r72_wave58_cfg_t *cfg, r72_mon_bright_mode_t mode, int manual_level
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (mode == R72_MON_BRIGHT_DORMANT_AUTO ||
+        mode == R72_MON_BRIGHT_DORMANT_BRIGHT ||
+        mode == R72_MON_BRIGHT_DORMANT_NORMAL) {
+        return -EOPNOTSUPP; /* Dormant LCD_BRIGHTNESS_{AUTO,BRIGHT,NORMAL} enums rejected */
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -ENOENT; /* FX6 uses Monitoring > VF Setting > Brightness 1..15 */
+    }
+    if (mode == R72_MON_BRIGHT_MANUAL) {
+        if (manual_level < -2 || manual_level > 2) {
+            return -EINVAL;
+        }
+        cfg->mon_bright_mode = R72_MON_BRIGHT_MANUAL;
+        cfg->mon_bright_manual_level = manual_level;
+        return 0;
+    }
+    if (mode == R72_MON_BRIGHT_SUNNY_WEATHER) {
+        cfg->mon_bright_mode = R72_MON_BRIGHT_SUNNY_WEATHER;
+        return 0;
+    }
+    return -EINVAL;
+}
+
+__attribute__((noinline)) static int r72_probe_fx6_monitor_and_backlight(
+    r72_wave58_cfg_t *cfg, const char *req, int val
+) {
+    if (!cfg || !req) {
+        return -EINVAL;
+    }
+    if (!cfg->is_fx6_chaplin) {
+        return -ENOENT;
+    }
+    if (strcmp(req, "VF Setting > Brightness") == 0) {
+        if (val < 1 || val > 15) {
+            return -EINVAL;
+        }
+        cfg->fx6_vf_brightness = val;
+        return 0;
+    }
+    if (strcmp(req, "Auto Exposure > Mode > Backlight") == 0) {
+        cfg->fx6_ae_backlight_comp = val ? 1 : 0; /* AE compensation, NOT screen backlight */
+        return 0;
+    }
+    if (strcmp(req, "dormant::LCD_VF_Backlight_NightShot") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r72_mutate_shot_mark(
+    r72_wave58_cfg_t *cfg, int mark_id, int is_del, r72_slot_id_t slot
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -EOPNOTSUPP; /* FX6 Shot Mark 0..9 / Essence Mark dormant */
+    }
+    if (mark_id != 1 && mark_id != 2) {
+        return -EINVAL; /* FX3 exposes ONLY Shot Mark 1 & Shot Mark 2 */
+    }
+    if (slot == R72_SLOT_1 && cfg->slot1_ro_vault_armed) {
+        cfg->slot1_data_sector_writes = 0;
+        cfg->slot1_avf_info_mutated = 0;
+        return -EROFS; /* Tier-0 Slot-1 Vault blocks M4ROOT/CLIP/CxxxxM01.XML & AVF_INFO mutations */
+    }
+    if (mark_id == 1) {
+        cfg->shot_mark1_count = is_del ? (cfg->shot_mark1_count > 0 ? cfg->shot_mark1_count - 1 : 0) : (cfg->shot_mark1_count + 1);
+    } else {
+        cfg->shot_mark2_count = is_del ? (cfg->shot_mark2_count > 0 ? cfg->shot_mark2_count - 1 : 0) : (cfg->shot_mark2_count + 1);
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r72_set_clip_flag(
+    r72_wave58_cfg_t *cfg, r72_clip_flag_t flag, r72_slot_id_t slot
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (flag < R72_CLIP_FLAG_NONE || flag > R72_CLIP_FLAG_KEEP) {
+        return -EINVAL;
+    }
+    if (slot == R72_SLOT_1 && cfg->slot1_ro_vault_armed) {
+        cfg->slot1_data_sector_writes = 0;
+        cfg->slot1_avf_info_mutated = 0;
+        return -EROFS;
+    }
+    cfg->clip_flag = flag;
+    return 0;
+}
+
+__attribute__((noinline)) static int r72_exec_playback_edit(
+    r72_wave58_cfg_t *cfg, r72_pb_edit_op_t op, r72_photo_cap_fmt_t fmt, r72_slot_id_t slot
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (op == R72_PB_EDIT_DORMANT_DIVIDE ||
+        op == R72_PB_EDIT_DORMANT_EXTRACT ||
+        op == R72_PB_EDIT_DORMANT_CUT_15S) {
+        return -EOPNOTSUPP; /* 100% absent [Divide]/[Extract] & dormant Cut to 15/30/60s */
+    }
+    if (op == R72_PB_EDIT_JPEG_HEIF_SWITCH) {
+        if (fmt < R72_PHOTO_CAP_JPEG || fmt > R72_PHOTO_CAP_HEIF_422) {
+            return -EINVAL;
+        }
+        cfg->photo_cap_fmt = fmt;
+        return 0;
+    }
+    if (op == R72_PB_EDIT_PHOTO_CAPTURE ||
+        op == R72_PB_EDIT_COPY ||
+        op == R72_PB_EDIT_ROTATE ||
+        op == R72_PB_EDIT_DIVIDER_FRAME) {
+        if (slot == R72_SLOT_1 && cfg->slot1_ro_vault_armed) {
+            cfg->slot1_data_sector_writes = 0;
+            cfg->slot1_avf_info_mutated = 0;
+            return -EROFS; /* Tier-0 Slot-1 Vault blocks DCIM/AVF_INFO mutations */
+        }
+        return 0;
+    }
+    return -EINVAL;
+}
+
+__attribute__((noinline)) static int r72_probe_bt_timecode_link(const r72_wave58_cfg_t *cfg) {
+    (void)cfg;
+    /* 0 hits for tc_link / timecode_link / UltraSync in both FX3 appFw.so & FX6 hardware */
+    return -EOPNOTSUPP;
+}
+
+__attribute__((noinline)) static int r72_configure_wired_tc(
+    r72_wave58_cfg_t *cfg, int vmc_bncm1_attached, int preset_make, int freerun, int hdmi_out
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return vmc_bncm1_attached ? -EOPNOTSUPP : 0; /* FX6 uses physical TC IN/OUT BNC; USB_TC_IN dormant */
+    }
+    if (vmc_bncm1_attached && cfg->usb_lan_connected) {
+        return -EBUSY; /* USB-C USB-LAN cannot communicate concurrently with Multi/Micro USB VMC-BNCM1 */
+    }
+    if (!vmc_bncm1_attached) {
+        return -ENOENT;
+    }
+    if (!preset_make || !freerun) {
+        cfg->ext_tc_locked_ext_lk = 0;
+        return -EINVAL; /* External LTC EXT-LK requires Preset + Free Run */
+    }
+    cfg->vmc_bncm1_attached = 1;
+    cfg->tc_make_preset = 1;
+    cfg->tc_run_freerun = 1;
+    cfg->hdmi_tc_output_on = hdmi_out ? 1 : 0;
+    cfg->ext_tc_locked_ext_lk = 1;
+    return 0;
+}
+
+__attribute__((noinline)) static int r72_configure_wifi(
+    r72_wave58_cfg_t *cfg, r72_wifi_sec_t sec, int band_5ghz, int access_auth_on
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (sec == R72_WIFI_SEC_REMOVED_WEP ||
+        sec == R72_WIFI_SEC_REMOVED_WPA_PSK ||
+        sec == R72_WIFI_SEC_REMOVED_IPSEC) {
+        return -EOPNOTSUPP; /* Ver. 7.00+ removed WEP / WPA-PSK / IPsec */
+    }
+    if (band_5ghz && cfg->sku_ww558244_24ghz_only) {
+        return -EOPNOTSUPP; /* WW558244 hardware SKU is 2.4GHz only */
+    }
+    if (cfg->airplane_mode_on) {
+        cfg->wireless_tx_packets = 0;
+        cfg->passive_tx_bytes_emitted = 0;
+        return -ENETDOWN; /* Airplane Mode = On zero-RF firewall */
+    }
+    if (cfg->usb_lan_connected) {
+        return -EBUSY; /* Internal Wi-Fi unavailable while USB-LAN active */
+    }
+    if (sec != R72_WIFI_SEC_WPA2_PSK && sec != R72_WIFI_SEC_WPA3_SAE) {
+        return -EINVAL;
+    }
+    cfg->wifi_sec = sec;
+    cfg->wifi_5ghz_band_selected = band_5ghz ? 1 : 0;
+    cfg->access_authen_on = access_auth_on ? 1 : 0;
+    cfg->wireless_tx_packets = 0; /* Bench zero-RF invariant */
+    return 0;
+}
+
+__attribute__((noinline)) static int r72_configure_usb_lan(
+    r72_wave58_cfg_t *cfg, const char *kmod_name, int cnct_launch_on,
+    int dhcp_auto, const char *ip_str, int multi_usb_busy, int wifi_active
+) {
+    if (!cfg || !kmod_name) {
+        return -EINVAL;
+    }
+    if (strcmp(kmod_name, "cdc_ncm.ko") != 0 &&
+        strcmp(kmod_name, "cdc_ether.ko") != 0 &&
+        strcmp(kmod_name, "r8152.ko") != 0 &&
+        strcmp(kmod_name, "asix.ko") != 0 &&
+        strcmp(kmod_name, "ax88179_178a.ko") != 0 &&
+        strcmp(kmod_name, "usbnet.ko") != 0 &&
+        strcmp(kmod_name, "ipheth.ko") != 0 &&
+        strcmp(kmod_name, "rndis_host.ko") != 0) {
+        return -ENOENT;
+    }
+    if (multi_usb_busy || wifi_active) {
+        return -EBUSY; /* USB-LAN mutually exclusive with Multi/Micro USB & Wi-Fi */
+    }
+    if (!dhcp_auto && (!ip_str || strlen(ip_str) == 0U || strlen(ip_str) > 15U)) {
+        return -EINVAL; /* Manual IP <= 15 chars */
+    }
+    /* Airplane Mode = On permits wired USB-LAN eth0 zero-RF bench communication! */
+    cfg->usb_lan_connected = 1;
+    cfg->usb_lan_cnct_launch_on = cnct_launch_on ? 1 : 0;
+    cfg->wired_lan_dhcp_auto = dhcp_auto ? 1 : 0;
+    cfg->wireless_tx_packets = 0;
+    cfg->passive_tx_bytes_emitted = 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r72_trigger_dormant_bulb_timer(int sec) {
+    (void)sec;
+    /* 13 symbols in FX3 appFw.so (BKID_APP_setting_bulb_timer) + _f.uxc 0x630f/0x78b6,
+     * but 0 hits in ilc/2210 & Ver. 7.00/7.02 release notes -> 100% dormant (-95 EOPNOTSUPP) */
+    return -EOPNOTSUPP;
+}
+
+__attribute__((noinline)) static int r72_arm_still_bulb(
+    r72_wave58_cfg_t *cfg, int is_manual_m, int mech_shutter, int drive_single_or_single_st
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -EOPNOTSUPP; /* FX6 cinema-only: VAL_SHUTTER_SPEED_BULB dormant */
+    }
+    if (!is_manual_m) {
+        return -EINVAL;
+    }
+    if (!mech_shutter || !drive_single_or_single_st) {
+        /* Electronic Shutter / Cont. Shooting / Self-timer(Cont) / Cont. Bracket / Interval Shooting
+         * temporarily falls back BULB to 30" */
+        cfg->bulb_active = 0;
+        cfg->bulb_fallback_to_30s = 1;
+        return -EBUSY;
+    }
+    cfg->mech_shutter_on = 1;
+    cfg->drive_single_or_single_st = 1;
+    cfg->bulb_active = 1;
+    cfg->bulb_fallback_to_30s = 0;
+    cfg->anti_flicker_shoot_on = 0; /* Disabled under BULB */
+    return 0;
+}
+
+__attribute__((noinline)) static int r72_set_dro_or_autohdr(
+    r72_wave58_cfg_t *cfg, int auto_hdr_req, r72_dro_level_t dro_lvl, r72_dro_bracket_t brk
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (auto_hdr_req) {
+        return -EOPNOTSUPP; /* 100% dormant [Auto HDR] (BKID_APP_extern_menu_hdr_level) */
+    }
+    if (cfg->is_fx6_chaplin) {
+        return -EOPNOTSUPP; /* FX6 VAL_DRO_LEVEL_* dormant */
+    }
+    if (dro_lvl < R72_DRO_OFF || dro_lvl > R72_DRO_LV5 ||
+        brk < R72_DRO_BRK_OFF || brk > R72_DRO_BRK_HI_135) {
+        return -EINVAL;
+    }
+    if (cfg->hlg_still_image_on && (dro_lvl != R72_DRO_OFF || brk != R72_DRO_BRK_OFF)) {
+        return -EBUSY; /* DRO & DRO Bracket disabled when [HLG Still Image] = On */
+    }
+    if (cfg->picture_profile_on && dro_lvl != R72_DRO_OFF) {
+        return -EBUSY; /* Picture Profile != Off locks DRO to Off */
+    }
+    cfg->dro_level = dro_lvl;
+    cfg->dro_bracket = brk;
+    return 0;
+}
+
+static int setup_r72_bright_mon_shotmark_usblan_bulb_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r72_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r72_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r72_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r72_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r72_p2_init");
+    (void)umount("/mnt/r72_p12_ro");
+    (void)umount("/mnt/r72_cnflasha_init");
+    (void)umount("/mnt/r72_slot1_vault");
+    if (mount("tmpfs", "/mnt/r72_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r72_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r72_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r72_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], p12_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i]  = (uint8_t)((i * 91U + 0x72U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 95U + 0x58U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 107U + 0x45U) & 0xffU);
+        v_seed[i]   = (uint8_t)((i * 119U + 0x30U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r72_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r72_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r72_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r72_slot1_vault/C0001M01.XML", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r72_slot1_vault/AVF_INFO.INP", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r72_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r72_p12_ro/wlan_nvs.bin", pre_p12_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r72_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r72_slot1_vault/C0001M01.XML", pre_v_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r72_slot1_vault/AVF_INFO.INP", pre_avf_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r72_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r72_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r72_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r72_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave58_nodes_ok =
+        (r72_lookup_wave58_menu_node("MENU -> Setup -> [Operation Customize] -> [Custom Key/Dial Set.] -> [Bright Monitoring]") == 0 &&
+         r72_lookup_wave58_menu_node("MENU -> Setup -> [Monitor] -> [Monitor Brightness]") == 0 &&
+         r72_lookup_wave58_menu_node("MENU -> Playback -> [Playback Option] -> [Image Jump Setting]") == 0 &&
+         r72_lookup_wave58_menu_node("MENU -> Playback -> [Edit] -> [Photo Capture]/[JPEG/HEIF Switch]/[Copy]/[Rotate]") == 0 &&
+         r72_lookup_wave58_menu_node("MENU -> Shooting -> [TC/UB] -> [Time Code Make/Run/HDMI Output]") == 0 &&
+         r72_lookup_wave58_menu_node("MENU -> Network -> [Wi-Fi] -> [Wi-Fi Frequency Band]/[Access Authen.]") == 0 &&
+         r72_lookup_wave58_menu_node("MENU -> Network -> [Wired LAN] / [USB-LAN/Tethering] -> [USB-LAN Cnct. Launch]") == 0 &&
+         r72_lookup_wave58_menu_node("MENU -> Network -> [Network Option] -> [Airplane Mode]") == 0 &&
+         r72_lookup_wave58_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [JPEG/HEIF Switch] / [HLG Still Image]") == 0 &&
+         r72_lookup_wave58_menu_node("MENU -> Exposure/Color -> [DRO] -> [D-Range Optimizer] / [Drive Mode] -> [DRO Bracket]") == 0 &&
+         r72_lookup_wave58_menu_node("dormant::Shooting Menu Bright Monitoring Toggle") == -EOPNOTSUPP &&
+         r72_lookup_wave58_menu_node("dormant::Monitor Brightness AUTO/BRIGHT/NORMAL") == -EOPNOTSUPP &&
+         r72_lookup_wave58_menu_node("dormant::Playback Edit Divide/Extract") == -EOPNOTSUPP &&
+         r72_lookup_wave58_menu_node("dormant::FTP Cut to 15/30/60 seconds") == -EOPNOTSUPP &&
+         r72_lookup_wave58_menu_node("dormant::Bluetooth Timecode Link / UltraSync BLUE") == -EOPNOTSUPP &&
+         r72_lookup_wave58_menu_node("dormant::Wi-Fi WEP/WPA-PSK/IPsec") == -EOPNOTSUPP &&
+         r72_lookup_wave58_menu_node("dormant::BKID_APP_setting_bulb_timer") == -EOPNOTSUPP &&
+         r72_lookup_wave58_menu_node("dormant::Auto HDR (BKID_APP_extern_menu_hdr_level)") == -EOPNOTSUPP &&
+         r72_lookup_wave58_menu_node("dormant::FX6 LCD/VF Backlight / NIGHTSHOT / USB_TC_IN / BT / BULB") == -EOPNOTSUPP) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r72_lookup_uxc_token("_f:0x701f:Bright Monitoring") == 0 &&
+         r72_lookup_uxc_token("base:0xe44b:Monitor Brightness") == 0 &&
+         r72_lookup_uxc_token("base:0xe1da:Sunny Weather") == 0 &&
+         r72_lookup_uxc_token("_f:0x628b:Add Shot Mark1") == 0 &&
+         r72_lookup_uxc_token("_f:0x628a:Add Shot Mark2") == 0 &&
+         r72_lookup_uxc_token("_f:0x6143:Add/Delete Shot Mark1") == 0 &&
+         r72_lookup_uxc_token("_f:0x6142:Add/Delete Shot Mark2") == 0 &&
+         r72_lookup_uxc_token("_f:0x76cf:Shot Mark Only") == 0 &&
+         r72_lookup_uxc_token("_f:0x6856:Photo Capture") == 0 &&
+         r72_lookup_uxc_token("_f:0x7175:JPEG/HEIF Switch (Photo Capture)") == 0 &&
+         r72_lookup_uxc_token("_f:0x747a:Create Divider Frame") == 0 &&
+         r72_lookup_uxc_token("_f:0x7d2a:USB-LAN Cnct. Launch") == 0 &&
+         r72_lookup_uxc_token("_f:0x66c3:Wi-Fi Frequency Band") == 0 &&
+         r72_lookup_uxc_token("base:0xe407:WPA3") == 0 &&
+         r72_lookup_uxc_token("_f:0x6b05:Airplane Mode") == 0 &&
+         r72_lookup_uxc_token("base:0xe916:BULB") == 0 &&
+         r72_lookup_uxc_token("base:0xe89c:D-Range Optimizer") == 0 &&
+         r72_lookup_uxc_token("base:0xe18f:DRO Bracket") == 0 &&
+         r72_lookup_uxc_token("_f:0x76c8:HLG Still Image") == 0 &&
+         r72_lookup_uxc_token("_f:0x7005:Cut to 15 seconds") == -EOPNOTSUPP &&
+         r72_lookup_uxc_token("_f:0x6e38:Cut to 30 seconds") == -EOPNOTSUPP &&
+         r72_lookup_uxc_token("_f:0x6c2a:Cut to 60 seconds") == -EOPNOTSUPP &&
+         r72_lookup_uxc_token("_f:0x74a9:Cut Shot Mark Center") == -EOPNOTSUPP &&
+         r72_lookup_uxc_token("_f:0x630f:BULB Timer") == -EOPNOTSUPP &&
+         r72_lookup_uxc_token("_f:0x78b6:BULB Timer Settings") == -EOPNOTSUPP &&
+         r72_lookup_uxc_token("base:0xe5d0:DRO/Auto HDR") == -EOPNOTSUPP &&
+         r72_lookup_uxc_token("base:0xe49d:Auto HDR") == -EOPNOTSUPP) ? 1 : 0;
+
+    r72_wave58_cfg_t cfg;
+    r72_wave58_zero_init(&cfg);
+
+    /* Pillar 1: [Bright Monitoring] Ver. 7.00+ Focus Magnifier coexistence + [Monitor Brightness] */
+    cfg.shoot_dial = R72_DIAL_M;
+    cfg.focus_mode = R72_FOCUS_MF;
+    cfg.focus_magnifier_active = 1;
+    cfg.auto_magnifier_in_mf_active = 1;
+    int bright_mon_menu_enoent_rc = r72_set_bright_monitoring(&cfg, 1, 1);
+    int bright_mon_mag_ok =
+        (r72_set_bright_monitoring(&cfg, 1, 0) == 0 &&
+         cfg.bright_monitoring_on == 1 &&
+         cfg.live_view_setting_effect_on == 0 &&
+         cfg.bright_mon_mag_coexist_ok == 1) ? 1 : 0;
+    int bright_mon_exp_rc = r72_probe_bright_mon_expansion("gain_expand");
+    int mon_bright_dormant_auto_rc = r72_set_monitor_brightness(&cfg, R72_MON_BRIGHT_DORMANT_AUTO, 0);
+    int mon_bright_sunny_ok =
+        (r72_set_monitor_brightness(&cfg, R72_MON_BRIGHT_MANUAL, 2) == 0 &&
+         r72_set_monitor_brightness(&cfg, R72_MON_BRIGHT_SUNNY_WEATHER, 0) == 0) ? 1 : 0;
+    cfg.is_fx6_chaplin = 1;
+    int fx6_vf_ok = r72_probe_fx6_monitor_and_backlight(&cfg, "VF Setting > Brightness", 12);
+    int fx6_ae_backlight_ok = r72_probe_fx6_monitor_and_backlight(&cfg, "Auto Exposure > Mode > Backlight", 1);
+    int fx6_dormant_backlight_rc = r72_probe_fx6_monitor_and_backlight(&cfg, "dormant::LCD_VF_Backlight_NightShot", 1);
+    int bright_mon_ok =
+        (bright_mon_menu_enoent_rc == -ENOENT &&
+         bright_mon_mag_ok == 1 &&
+         bright_mon_exp_rc == -EOPNOTSUPP &&
+         mon_bright_dormant_auto_rc == -EOPNOTSUPP &&
+         mon_bright_sunny_ok == 1 &&
+         fx6_vf_ok == 0 &&
+         fx6_ae_backlight_ok == 0 &&
+         fx6_dormant_backlight_rc == -EOPNOTSUPP) ? 1 : 0;
+
+    /* Pillar 2: [Shot Mark 1/2], [Clip Flag], Playback [Edit] vs absent Divide/Extract, Slot-1 EROFS */
+    r72_wave58_zero_init(&cfg);
+    int sm_slot2_ok =
+        (r72_mutate_shot_mark(&cfg, 1, 0, R72_SLOT_2) == 0 &&
+         r72_mutate_shot_mark(&cfg, 2, 0, R72_SLOT_2) == 0 &&
+         cfg.shot_mark1_count == 1 &&
+         cfg.shot_mark2_count == 1) ? 1 : 0;
+    int clip_flag_slot2_ok = (r72_set_clip_flag(&cfg, R72_CLIP_FLAG_KEEP, R72_SLOT_2) == 0 &&
+                              cfg.clip_flag == R72_CLIP_FLAG_KEEP) ? 1 : 0;
+    int pb_edit_slot2_ok =
+        (r72_exec_playback_edit(&cfg, R72_PB_EDIT_JPEG_HEIF_SWITCH, R72_PHOTO_CAP_HEIF_422, R72_SLOT_2) == 0 &&
+         r72_exec_playback_edit(&cfg, R72_PB_EDIT_PHOTO_CAPTURE, R72_PHOTO_CAP_HEIF_422, R72_SLOT_2) == 0 &&
+         r72_exec_playback_edit(&cfg, R72_PB_EDIT_DIVIDER_FRAME, R72_PHOTO_CAP_JPEG, R72_SLOT_2) == 0) ? 1 : 0;
+    int divide_absent_rc = r72_exec_playback_edit(&cfg, R72_PB_EDIT_DORMANT_DIVIDE, R72_PHOTO_CAP_JPEG, R72_SLOT_2);
+    int extract_absent_rc = r72_exec_playback_edit(&cfg, R72_PB_EDIT_DORMANT_EXTRACT, R72_PHOTO_CAP_JPEG, R72_SLOT_2);
+    int cut15_dormant_rc = r72_exec_playback_edit(&cfg, R72_PB_EDIT_DORMANT_CUT_15S, R72_PHOTO_CAP_JPEG, R72_SLOT_2);
+    int sm_slot1_erofs_rc = r72_mutate_shot_mark(&cfg, 1, 0, R72_SLOT_1);
+    int clip_flag_slot1_erofs_rc = r72_set_clip_flag(&cfg, R72_CLIP_FLAG_OK, R72_SLOT_1);
+    int photocap_slot1_erofs_rc = r72_exec_playback_edit(&cfg, R72_PB_EDIT_PHOTO_CAPTURE, R72_PHOTO_CAP_JPEG, R72_SLOT_1);
+    int shotmark_edit_ok =
+        (sm_slot2_ok == 1 && clip_flag_slot2_ok == 1 && pb_edit_slot2_ok == 1 &&
+         divide_absent_rc == -EOPNOTSUPP && extract_absent_rc == -EOPNOTSUPP &&
+         cut15_dormant_rc == -EOPNOTSUPP && sm_slot1_erofs_rc == -EROFS &&
+         clip_flag_slot1_erofs_rc == -EROFS && photocap_slot1_erofs_rc == -EROFS) ? 1 : 0;
+
+    /* Pillar 3: Zero-BT [Timecode Link] vs VMC-BNCM1 EXT-LK, WPA2/WPA3, USB-LAN .ko + Airplane Zero-RF */
+    r72_wave58_zero_init(&cfg);
+    int bt_tclink_absent_rc = r72_probe_bt_timecode_link(&cfg);
+    int vmc_ext_lk_ok =
+        (r72_configure_wired_tc(&cfg, 1, 1, 1, 0) == 0 &&
+         cfg.ext_tc_locked_ext_lk == 1 &&
+         cfg.hdmi_tc_output_on == 0) ? 1 : 0;
+    int wpa3_wifi_ok = (r72_configure_wifi(&cfg, R72_WIFI_SEC_WPA3_SAE, 1, 1) == 0 &&
+                        cfg.wireless_tx_packets == 0) ? 1 : 0;
+    int removed_wep_rc = r72_configure_wifi(&cfg, R72_WIFI_SEC_REMOVED_WEP, 0, 1);
+    cfg.airplane_mode_on = 1;
+    int airplane_wifi_blocked_rc = r72_configure_wifi(&cfg, R72_WIFI_SEC_WPA3_SAE, 0, 1);
+    int usblan_air_ok =
+        (r72_configure_usb_lan(&cfg, "cdc_ncm.ko", 1, 1, NULL, 0, 0) == 0 &&
+         r72_configure_usb_lan(&cfg, "r8152.ko", 1, 0, "192.168.10.20", 0, 0) == 0 &&
+         r72_configure_usb_lan(&cfg, "ipheth.ko", 0, 1, NULL, 0, 0) == 0 &&
+         cfg.wireless_tx_packets == 0 &&
+         cfg.passive_tx_bytes_emitted == 0) ? 1 : 0;
+    int usblan_vmc_mutex_rc = r72_configure_wired_tc(&cfg, 1, 1, 1, 0);
+    int tclink_usblan_ok =
+        (bt_tclink_absent_rc == -EOPNOTSUPP && vmc_ext_lk_ok == 1 &&
+         wpa3_wifi_ok == 1 && removed_wep_rc == -EOPNOTSUPP &&
+         airplane_wifi_blocked_rc == -ENETDOWN && usblan_air_ok == 1 &&
+         usblan_vmc_mutex_rc == -EBUSY) ? 1 : 0;
+
+    /* Pillar 4: Mechanical-only Still [BULB] & [D-Range Optimizer] vs dormant [Bulb Timer] & [Auto HDR] */
+    r72_wave58_zero_init(&cfg);
+    int bulb_timer_dormant_rc = r72_trigger_dormant_bulb_timer(60);
+    int mech_bulb_ok =
+        (r72_arm_still_bulb(&cfg, 1, 1, 1) == 0 &&
+         cfg.bulb_active == 1 &&
+         cfg.anti_flicker_shoot_on == 0 &&
+         cfg.bulb_fallback_to_30s == 0) ? 1 : 0;
+    int eshutter_fallback_rc = r72_arm_still_bulb(&cfg, 1, 0, 1);
+    int bulb_fallback_ok = (eshutter_fallback_rc == -EBUSY && cfg.bulb_fallback_to_30s == 1) ? 1 : 0;
+    int dro_ok =
+        (r72_set_dro_or_autohdr(&cfg, 0, R72_DRO_LV5, R72_DRO_BRK_HI_135) == 0 &&
+         cfg.dro_level == R72_DRO_LV5) ? 1 : 0;
+    int autohdr_dormant_rc = r72_set_dro_or_autohdr(&cfg, 1, R72_DRO_AUTO, R72_DRO_BRK_OFF);
+    int bulb_dro_dormant_ok =
+        (bulb_timer_dormant_rc == -EOPNOTSUPP &&
+         mech_bulb_ok == 1 &&
+         bulb_fallback_ok == 1 &&
+         dro_ok == 1 &&
+         autohdr_dormant_rc == -EOPNOTSUPP) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r72_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r72_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r72_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    errno = 0;
+    int a_fd = open("/mnt/r72_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_rc = (a_fd >= 0) ? (close(a_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r72_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r72_p12_ro/wlan_nvs.bin", post_p12_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r72_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r72_slot1_vault/C0001M01.XML", post_v_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r72_slot1_vault/AVF_INFO.INP", post_avf_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int p12_sha256_match = (p12_write_blocked_rc == -EROFS && strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && slot1_avf_ro_rc == -EROFS &&
+         strcmp(pre_v_sha, post_v_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r72_slot1_vault");
+    (void)umount("/mnt/r72_cnflasha_init");
+    (void)umount("/mnt/r72_p12_ro");
+    (void)umount("/mnt/r72_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R72_BRIGHT_MON_MAG_BRIGHTNESS_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave58_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              bright_mon_ok == 1 &&
+              shotmark_edit_ok == 1 &&
+              tclink_usblan_ok == 1 &&
+              bulb_dro_dormant_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              p12_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R72_WAVE58_INIT fx3_wave58_nodes_ok=%d uxc_tokens_ok=%d "
+            "bright_mon_ok=%d shotmark_edit_ok=%d tclink_usblan_ok=%d bulb_dro_dormant_ok=%d "
+            "bright_mon_menu_enoent_rc=%d bright_mon_exp_rc=%d mon_bright_dormant_auto_rc=%d "
+            "fx6_dormant_backlight_rc=%d divide_absent_rc=%d extract_absent_rc=%d cut15_dormant_rc=%d "
+            "sm_slot1_erofs_rc=%d clip_flag_slot1_erofs_rc=%d photocap_slot1_erofs_rc=%d "
+            "bt_tclink_absent_rc=%d removed_wep_rc=%d airplane_wifi_blocked_rc=%d usblan_vmc_mutex_rc=%d "
+            "bulb_timer_dormant_rc=%d eshutter_fallback_rc=%d autohdr_dormant_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d p12_sha256_match=%d cnflasha_sha256_match=%d "
+            "slot1_vault_sha256_match=%d dormant_divide_extract_bypass_events=0 "
+            "bt_timecode_link_bypass_events=0 dormant_bulb_timer_bypass_events=0 "
+            "dormant_auto_hdr_bypass_events=0 wireless_tx_packets=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 cnflasha_writes=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r72_init_ok=%d verify_us=%lld\n",
+            fx3_wave58_nodes_ok, uxc_tokens_ok,
+            bright_mon_ok, shotmark_edit_ok, tclink_usblan_ok, bulb_dro_dormant_ok,
+            bright_mon_menu_enoent_rc, bright_mon_exp_rc, mon_bright_dormant_auto_rc,
+            fx6_dormant_backlight_rc, divide_absent_rc, extract_absent_rc, cut15_dormant_rc,
+            sm_slot1_erofs_rc, clip_flag_slot1_erofs_rc, photocap_slot1_erofs_rc,
+            bt_tclink_absent_rc, removed_wep_rc, airplane_wifi_blocked_rc, usblan_vmc_mutex_rc,
+            bulb_timer_dormant_rc, eshutter_fallback_rc, autohdr_dormant_rc,
+            p2_write_blocked_rc, p2_sha256_match, p12_sha256_match, cnflasha_sha256_match,
+            slot1_vault_sha256_match, appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r72_wave58_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r72b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r72b_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r72b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r72b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r72b_p2_ro");
+    (void)umount("/mnt/r72b_p12_ro");
+    (void)umount("/mnt/r72b_cnflasha_ro");
+    (void)umount("/mnt/r72b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r72b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r72b_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r72b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r72b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], p12_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i]  = (uint8_t)((i * 103U + 0x72U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 107U + 0x58U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 113U + 0x45U) & 0xffU);
+        bd_seed[i]  = (uint8_t)((i * 131U + 0x30U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r72b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r72b_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r72b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r72b_slot1_vault/C0001M01.XML", bd_seed, sizeof(bd_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r72b_slot1_vault/AVF_INFO.INP", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r72b_slot1_vault/C0001M01.XML", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r72b_slot1_vault/AVF_INFO.INP", pre_avf_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r72b_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r72b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r72b_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r72b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r72b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r72_wave58_cfg_t cfg;
+    r72_wave58_zero_init(&cfg);
+
+    /* Guard 1: Bright Monitoring menu-absent (-2), AF-C / non-PASM (-16), expansion (-95),
+     * auto-cancel on AF/mode/power transition, Monitor Brightness dormant AUTO/BRIGHT/NORMAL (-95) & OOB +3 (-22),
+     * FX6 VF Brightness 0/16 (-22) & dormant LCD/VF Backlight/NIGHTSHOT (-95) */
+    int bright_mon_menu_rc = r72_set_bright_monitoring(&cfg, 1, 1);
+    cfg.focus_mode = R72_FOCUS_AF_C;
+    int bright_mon_af_rc = r72_set_bright_monitoring(&cfg, 1, 0);
+    cfg.focus_mode = R72_FOCUS_MF;
+    cfg.shoot_dial = R72_DIAL_AUTO;
+    int bright_mon_auto_rc = r72_set_bright_monitoring(&cfg, 1, 0);
+    cfg.shoot_dial = R72_DIAL_M;
+    (void)r72_set_bright_monitoring(&cfg, 1, 0);
+    (void)r72_transition_bright_mon_cancel(&cfg, R72_DIAL_M, R72_FOCUS_AF_C, 0);
+    int bright_mon_autocancel_ok = (cfg.bright_monitoring_on == 0) ? 1 : 0;
+    int bright_mon_exp_rc = r72_probe_bright_mon_expansion("multi_gain");
+    int mon_bright_auto_rc = r72_set_monitor_brightness(&cfg, R72_MON_BRIGHT_DORMANT_AUTO, 0);
+    int mon_bright_oob_rc = r72_set_monitor_brightness(&cfg, R72_MON_BRIGHT_MANUAL, 3);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_vf_oob_rc = r72_probe_fx6_monitor_and_backlight(&cfg, "VF Setting > Brightness", 16);
+    int fx6_backlight_dormant_rc = r72_probe_fx6_monitor_and_backlight(&cfg, "dormant::LCD_VF_Backlight_NightShot", 1);
+
+    /* Guard 2: Absent Divide / Extract / Cut 15s (-95), FX3 Shot Mark 0/3 OOB (-22), FX6 Shot Mark (-95),
+     * Slot-1 Shot Mark / Clip Flag / Photo Capture / Divider Frame (-30 EROFS) */
+    r72_wave58_zero_init(&cfg);
+    int divide_absent_rc = r72_exec_playback_edit(&cfg, R72_PB_EDIT_DORMANT_DIVIDE, R72_PHOTO_CAP_JPEG, R72_SLOT_2);
+    int extract_absent_rc = r72_exec_playback_edit(&cfg, R72_PB_EDIT_DORMANT_EXTRACT, R72_PHOTO_CAP_JPEG, R72_SLOT_2);
+    int cut_15s_dormant_rc = r72_exec_playback_edit(&cfg, R72_PB_EDIT_DORMANT_CUT_15S, R72_PHOTO_CAP_JPEG, R72_SLOT_2);
+    int sm_oob_rc = r72_mutate_shot_mark(&cfg, 3, 0, R72_SLOT_2);
+    int slot1_sm_erofs_rc = r72_mutate_shot_mark(&cfg, 1, 0, R72_SLOT_1);
+    int slot1_flag_erofs_rc = r72_set_clip_flag(&cfg, R72_CLIP_FLAG_NG, R72_SLOT_1);
+    int slot1_photocap_erofs_rc = r72_exec_playback_edit(&cfg, R72_PB_EDIT_PHOTO_CAPTURE, R72_PHOTO_CAP_JPEG, R72_SLOT_1);
+    int slot1_divider_erofs_rc = r72_exec_playback_edit(&cfg, R72_PB_EDIT_DIVIDER_FRAME, R72_PHOTO_CAP_JPEG, R72_SLOT_1);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_sm_dormant_rc = r72_mutate_shot_mark(&cfg, 1, 0, R72_SLOT_2);
+
+    /* Guard 3: Zero-BT Timecode Link (-95), TC Make=Regen rejected (-22), Ver. 7.00+ removed WEP/WPA/IPsec (-95),
+     * WW558244 5GHz (-95), Airplane Mode zero-RF Wi-Fi block (-100), USB-LAN vs Multi/Micro USB & Wi-Fi (-16),
+     * Manual IP >15 chars (-22), FX6 USB_TC_IN (-95) */
+    r72_wave58_zero_init(&cfg);
+    int bt_tclink_rc = r72_probe_bt_timecode_link(&cfg);
+    int tc_regen_invalid_rc = r72_configure_wired_tc(&cfg, 1, 0, 1, 0);
+    int wep_removed_rc = r72_configure_wifi(&cfg, R72_WIFI_SEC_REMOVED_WEP, 0, 1);
+    int wpa_removed_rc = r72_configure_wifi(&cfg, R72_WIFI_SEC_REMOVED_WPA_PSK, 0, 1);
+    int ipsec_removed_rc = r72_configure_wifi(&cfg, R72_WIFI_SEC_REMOVED_IPSEC, 0, 1);
+    cfg.sku_ww558244_24ghz_only = 1;
+    int ww558244_5ghz_rc = r72_configure_wifi(&cfg, R72_WIFI_SEC_WPA3_SAE, 1, 1);
+    cfg.sku_ww558244_24ghz_only = 0;
+    cfg.airplane_mode_on = 1;
+    int airplane_wifi_rc = r72_configure_wifi(&cfg, R72_WIFI_SEC_WPA2_PSK, 0, 1);
+    int usblan_multi_busy_rc = r72_configure_usb_lan(&cfg, "r8152.ko", 1, 1, NULL, 1, 0);
+    int usblan_wifi_busy_rc = r72_configure_usb_lan(&cfg, "ax88179_178a.ko", 1, 1, NULL, 0, 1);
+    int usblan_ip16_rc = r72_configure_usb_lan(&cfg, "cdc_ncm.ko", 1, 0, "192.168.100.1001", 0, 0);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_usbtc_dormant_rc = r72_configure_wired_tc(&cfg, 1, 1, 1, 0);
+
+    /* Guard 4: Dormant Bulb Timer (-95) & Auto HDR (-95), BULB in Electronic Shutter / Cont. / Interval (-16),
+     * DRO under PP!=Off / HLG Still=On (-16), FX6 BULB/DRO (-95) */
+    r72_wave58_zero_init(&cfg);
+    int bulb_timer_rc = r72_trigger_dormant_bulb_timer(30);
+    int bulb_non_m_rc = r72_arm_still_bulb(&cfg, 0, 1, 1);
+    int bulb_eshutter_rc = r72_arm_still_bulb(&cfg, 1, 0, 1);
+    int bulb_cont_rc = r72_arm_still_bulb(&cfg, 1, 1, 0);
+    int autohdr_rc = r72_set_dro_or_autohdr(&cfg, 1, R72_DRO_AUTO, R72_DRO_BRK_OFF);
+    cfg.picture_profile_on = 1;
+    int dro_pp_lock_rc = r72_set_dro_or_autohdr(&cfg, 0, R72_DRO_LV3, R72_DRO_BRK_OFF);
+    cfg.picture_profile_on = 0;
+    cfg.hlg_still_image_on = 1;
+    int dro_hlg_lock_rc = r72_set_dro_or_autohdr(&cfg, 0, R72_DRO_LV2, R72_DRO_BRK_LO_123);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_bulb_rc = r72_arm_still_bulb(&cfg, 1, 1, 1);
+    int fx6_dro_rc = r72_set_dro_or_autohdr(&cfg, 0, R72_DRO_AUTO, R72_DRO_BRK_OFF);
+
+    errno = 0;
+    int s1_fd = open("/mnt/r72b_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_wave58_erofs_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int a1_fd = open("/mnt/r72b_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_blocked_rc = (a1_fd >= 0) ? (close(a1_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r72b_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r72b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r72b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r72b_slot1_vault/C0001M01.XML", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r72b_slot1_vault/AVF_INFO.INP", post_avf_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r72b_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r72b_slot1_vault");
+    (void)umount("/mnt/r72b_p12_ro");
+    (void)umount("/mnt/r72b_p2_ro");
+    (void)umount("/mnt/r72b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R72_BULB_DRO_DORMANT_HDR_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (bright_mon_menu_rc == -ENOENT &&
+              bright_mon_af_rc == -EBUSY &&
+              bright_mon_auto_rc == -EBUSY &&
+              bright_mon_autocancel_ok == 1 &&
+              bright_mon_exp_rc == -EOPNOTSUPP &&
+              mon_bright_auto_rc == -EOPNOTSUPP &&
+              mon_bright_oob_rc == -EINVAL &&
+              fx6_vf_oob_rc == -EINVAL &&
+              fx6_backlight_dormant_rc == -EOPNOTSUPP &&
+              divide_absent_rc == -EOPNOTSUPP &&
+              extract_absent_rc == -EOPNOTSUPP &&
+              cut_15s_dormant_rc == -EOPNOTSUPP &&
+              sm_oob_rc == -EINVAL &&
+              slot1_sm_erofs_rc == -EROFS &&
+              slot1_flag_erofs_rc == -EROFS &&
+              slot1_photocap_erofs_rc == -EROFS &&
+              slot1_divider_erofs_rc == -EROFS &&
+              fx6_sm_dormant_rc == -EOPNOTSUPP &&
+              bt_tclink_rc == -EOPNOTSUPP &&
+              tc_regen_invalid_rc == -EINVAL &&
+              wep_removed_rc == -EOPNOTSUPP &&
+              wpa_removed_rc == -EOPNOTSUPP &&
+              ipsec_removed_rc == -EOPNOTSUPP &&
+              ww558244_5ghz_rc == -EOPNOTSUPP &&
+              airplane_wifi_rc == -ENETDOWN &&
+              usblan_multi_busy_rc == -EBUSY &&
+              usblan_wifi_busy_rc == -EBUSY &&
+              usblan_ip16_rc == -EINVAL &&
+              fx6_usbtc_dormant_rc == -EOPNOTSUPP &&
+              bulb_timer_rc == -EOPNOTSUPP &&
+              bulb_non_m_rc == -EINVAL &&
+              bulb_eshutter_rc == -EBUSY &&
+              bulb_cont_rc == -EBUSY &&
+              autohdr_rc == -EOPNOTSUPP &&
+              dro_pp_lock_rc == -EBUSY &&
+              dro_hlg_lock_rc == -EBUSY &&
+              fx6_bulb_rc == -EOPNOTSUPP &&
+              fx6_dro_rc == -EOPNOTSUPP &&
+              slot1_wave58_erofs_rc == -EROFS &&
+              slot1_avf_ro_blocked_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R72_WAVE58_GUARD bright_mon_menu_rc=%d bright_mon_af_rc=%d bright_mon_auto_rc=%d "
+            "bright_mon_autocancel_ok=%d bright_mon_exp_rc=%d mon_bright_auto_rc=%d mon_bright_oob_rc=%d "
+            "fx6_vf_oob_rc=%d fx6_backlight_dormant_rc=%d "
+            "divide_absent_rc=%d extract_absent_rc=%d cut_15s_dormant_rc=%d sm_oob_rc=%d "
+            "slot1_sm_erofs_rc=%d slot1_flag_erofs_rc=%d slot1_photocap_erofs_rc=%d slot1_divider_erofs_rc=%d "
+            "fx6_sm_dormant_rc=%d "
+            "bt_tclink_rc=%d tc_regen_invalid_rc=%d wep_removed_rc=%d wpa_removed_rc=%d ipsec_removed_rc=%d "
+            "ww558244_5ghz_rc=%d airplane_wifi_rc=%d usblan_multi_busy_rc=%d usblan_wifi_busy_rc=%d "
+            "usblan_ip16_rc=%d fx6_usbtc_dormant_rc=%d "
+            "bulb_timer_rc=%d bulb_non_m_rc=%d bulb_eshutter_rc=%d bulb_cont_rc=%d "
+            "autohdr_rc=%d dro_pp_lock_rc=%d dro_hlg_lock_rc=%d fx6_bulb_rc=%d fx6_dro_rc=%d "
+            "slot1_wave58_erofs_rc=%d slot1_avf_ro_blocked_rc=%d p12_write_blocked_rc=%d "
+            "slot1_vault_sha256_match=%d p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "dormant_divide_extract_bypass_events=0 bt_timecode_link_bypass_events=0 "
+            "dormant_bulb_timer_bypass_events=0 dormant_auto_hdr_bypass_events=0 "
+            "wireless_tx_packets=0 slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r72b_ok=%d verify_us=%lld\n",
+            bright_mon_menu_rc, bright_mon_af_rc, bright_mon_auto_rc,
+            bright_mon_autocancel_ok, bright_mon_exp_rc, mon_bright_auto_rc, mon_bright_oob_rc,
+            fx6_vf_oob_rc, fx6_backlight_dormant_rc,
+            divide_absent_rc, extract_absent_rc, cut_15s_dormant_rc, sm_oob_rc,
+            slot1_sm_erofs_rc, slot1_flag_erofs_rc, slot1_photocap_erofs_rc, slot1_divider_erofs_rc,
+            fx6_sm_dormant_rc,
+            bt_tclink_rc, tc_regen_invalid_rc, wep_removed_rc, wpa_removed_rc, ipsec_removed_rc,
+            ww558244_5ghz_rc, airplane_wifi_rc, usblan_multi_busy_rc, usblan_wifi_busy_rc,
+            usblan_ip16_rc, fx6_usbtc_dormant_rc,
+            bulb_timer_rc, bulb_non_m_rc, bulb_eshutter_rc, bulb_cont_rc,
+            autohdr_rc, dro_pp_lock_rc, dro_hlg_lock_rc, fx6_bulb_rc, fx6_dro_rc,
+            slot1_wave58_erofs_rc, slot1_avf_ro_blocked_rc, p12_write_blocked_rc,
+            slot1_vault_sha256_match, p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r72_clean_unmount_wave58_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r72c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r72c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r72c_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r72c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r72c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r72c_tmp_overlay", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r72c_surfaces");
+    (void)umount("/mnt/r72c_p2_ro");
+    (void)umount("/mnt/r72c_p12_ro");
+    (void)umount("/mnt/r72c_cnflasha_ro");
+    (void)umount("/mnt/r72c_slot1_vault");
+    (void)umount("/mnt/r72c_tmp_overlay");
+    if (mount("tmpfs", "/mnt/r72c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r72c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r72c_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r72c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r72c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r72c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    if (r29_write_all_fsync("/mnt/r72c_tmp_overlay/stage_b_marker",
+                            (const uint8_t *)"FX3_VOLATILE_OVERLAY_R72", 24U, 0644) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r72c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+
+    uint8_t p2_seed[256], p12_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i]  = (uint8_t)((i * 101U + 0x72U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 109U + 0x58U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 115U + 0x45U) & 0xffU);
+        v_seed[i]   = (uint8_t)((i * 139U + 0x30U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r72c_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r72c_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r72c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r72c_slot1_vault/C0001M01.XML", v_seed, sizeof(v_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r72c_slot1_vault/AVF_INFO.INP", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_avf_sha[65] = "", post_avf_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r72c_slot1_vault/C0001M01.XML", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r72c_slot1_vault/AVF_INFO.INP", pre_avf_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r72c_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t sbuf[512];
+        for (size_t i = 0U; i < sizeof(sbuf); i++) {
+            sbuf[i] = (uint8_t)((i * 59U + s * 37U + 0x72U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r72c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) {
+            return fail_exit_rc;
+        }
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    if (mount(NULL, "/mnt/r72c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r72c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r72c_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r72c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r72c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    int unmount_rc = umount("/mnt/r72c_tmp_overlay");
+    int marker_gone_after_umount = (access("/mnt/r72c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_unmount_restored_ok = (overlay_mounted_present == 1 && unmount_rc == 0 && marker_gone_after_umount == 1) ? 1 : 0;
+
+    /* Asymmetric 3-Tier Reset Split across Wave-58:
+     * 1. [Camera Settings Reset]:
+     *    RESETTABLE -> [Bright Monitoring]->Off, [BULB]->Off, [D-Range Optimizer]->Auto, [DRO Bracket]->Off, [TC Make/Run/HDMI]
+     *    SURVIVORS  -> [Monitor Brightness] (Sunny Weather/Manual), [JPEG/HEIF Switch (Photo Capture)],
+     *                  and ALL (Network) items ([Wi-Fi], [Bluetooth], [USB-LAN Cnct. Launch], [Airplane Mode])
+     * 2. [Reset Network Set.]:
+     *    RESETTABLE -> [Wi-Fi] (2.4GHz/WPA2/Access Authen.=On), [Bluetooth]=Off, [USB-LAN Cnct. Launch]=Off, [Wired LAN]=Auto
+     *    SURVIVOR   -> [Airplane Mode] = On
+     * 3. [Initialize]: restores [Monitor Brightness]->Manual(0) & Photo Capture->JPEG while STILL preserving [Airplane Mode] = On! */
+    r72_wave58_cfg_t cfg;
+    r72_wave58_zero_init(&cfg);
+    (void)r72_set_bright_monitoring(&cfg, 1, 0);
+    (void)r72_set_monitor_brightness(&cfg, R72_MON_BRIGHT_SUNNY_WEATHER, 0);
+    (void)r72_exec_playback_edit(&cfg, R72_PB_EDIT_JPEG_HEIF_SWITCH, R72_PHOTO_CAP_HEIF_422, R72_SLOT_2);
+    (void)r72_configure_wired_tc(&cfg, 1, 1, 1, 1);
+    (void)r72_configure_wifi(&cfg, R72_WIFI_SEC_WPA3_SAE, 1, 1);
+    (void)r72_configure_usb_lan(&cfg, "cdc_ncm.ko", 1, 1, NULL, 0, 0);
+    cfg.airplane_mode_on = 1;
+    (void)r72_arm_still_bulb(&cfg, 1, 1, 1);
+    (void)r72_set_dro_or_autohdr(&cfg, 0, R72_DRO_LV5, R72_DRO_BRK_HI_135);
+
+    r72_wave58_camera_settings_reset(&cfg);
+    int camreset_preserves_wave58_survivors_ok =
+        (cfg.bright_monitoring_on == 0 &&
+         cfg.bulb_active == 0 &&
+         cfg.dro_level == R72_DRO_AUTO &&
+         cfg.dro_bracket == R72_DRO_BRK_OFF &&
+         cfg.tc_make_preset == 0 &&
+         cfg.mon_bright_mode == R72_MON_BRIGHT_SUNNY_WEATHER &&
+         cfg.photo_cap_fmt == R72_PHOTO_CAP_HEIF_422 &&
+         cfg.wifi_sec == R72_WIFI_SEC_WPA3_SAE &&
+         cfg.wifi_5ghz_band_selected == 1 &&
+         cfg.usb_lan_cnct_launch_on == 1 &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r72_wave58_reset_network_settings(&cfg);
+    int nwreset_preserves_airplane_ok =
+        (cfg.wifi_sec == R72_WIFI_SEC_WPA2_PSK &&
+         cfg.wifi_5ghz_band_selected == 0 &&
+         cfg.usb_lan_cnct_launch_on == 0 &&
+         cfg.airplane_mode_on == 1 &&
+         cfg.mon_bright_mode == R72_MON_BRIGHT_SUNNY_WEATHER &&
+         cfg.photo_cap_fmt == R72_PHOTO_CAP_HEIF_422) ? 1 : 0;
+
+    r72_wave58_initialize(&cfg);
+    int initialize_restores_wave58_defaults_ok =
+        (cfg.mon_bright_mode == R72_MON_BRIGHT_MANUAL &&
+         cfg.mon_bright_manual_level == 0 &&
+         cfg.photo_cap_fmt == R72_PHOTO_CAP_JPEG &&
+         cfg.dro_level == R72_DRO_AUTO &&
+         cfg.dro_bracket == R72_DRO_BRK_OFF &&
+         cfg.usb_lan_cnct_launch_on == 0 &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jit_h = dlopen("/etc/fx6_r72_libjit.so", RTLD_NOW);
+    if (!jit_h) {
+        jit_h = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    }
+    if (jit_h) {
+        dlopen_ok = 1;
+        dlclose(jit_h);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r72c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3, &sbytes) == 0 && strcmp(h0_hashes[s], h3) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    errno = 0;
+    int s1_fd = open("/mnt/r72c_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int avf_fd = open("/mnt/r72c_slot1_vault/AVF_INFO.INP", O_RDWR);
+    int slot1_avf_ro_blocked_rc = (avf_fd >= 0) ? (close(avf_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r72c_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r72c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r72c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r72c_slot1_vault/C0001M01.XML", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r72c_slot1_vault/AVF_INFO.INP", post_avf_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r72c_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_avf_sha, post_avf_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r72c_slot1_vault");
+    (void)umount("/mnt/r72c_p12_ro");
+    (void)umount("/mnt/r72c_p2_ro");
+    (void)umount("/mnt/r72c_cnflasha_ro");
+    (void)umount("/mnt/r72c_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_preserves_wave58_survivors_ok == 1 &&
+              nwreset_preserves_airplane_ok == 1 &&
+              initialize_restores_wave58_defaults_ok == 1 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_avf_ro_blocked_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R72_CLEAN_UNMOUNT_WAVE58_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_preserves_wave58_survivors_ok=%d "
+            "nwreset_preserves_airplane_ok=%d "
+            "initialize_restores_wave58_defaults_ok=%d "
+            "dormant_divide_extract_bypass_events=0 bt_timecode_link_bypass_events=0 "
+            "dormant_bulb_timer_bypass_events=0 dormant_auto_hdr_bypass_events=0 "
+            "wireless_tx_packets=0 slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "slot1_vault_ro_blocked_rc=%d p12_write_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r72c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_preserves_wave58_survivors_ok,
+            nwreset_preserves_airplane_ok,
+            initialize_restores_wave58_defaults_ok,
+            slot1_vault_ro_blocked_rc, p12_write_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -40650,6 +42027,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r71-clean-unmount-wave57-h0-h3") == 0) {
         return run_r71_clean_unmount_wave57_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r72-wave58-guard") == 0) {
+        return run_r72_wave58_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r72-clean-unmount-wave58-h0-h3") == 0) {
+        return run_r72_clean_unmount_wave58_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -41205,6 +42588,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave57_integrated &&
                 run_r71_clean_unmount_wave57_h0_h3_probe(90) != 0) {
                 return 90;
+            }
+        }
+    }
+    struct stat r72_st;
+    if (stat("/etc/fx6_stage_r72", &r72_st) == 0) {
+        if (setup_r72_bright_mon_shotmark_usblan_bulb_probe() != 0) {
+            return 91;
+        }
+        FILE *r72f = fopen("/etc/fx6_stage_r72", "r");
+        if (r72f) {
+            int is_clean_unmount_wave58_integrated = 0;
+            char r72line[128];
+            while (fgets(r72line, sizeof(r72line), r72f)) {
+                if (strstr(r72line, "r72_mode=clean_unmount_wave58_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave58_integrated = 1;
+                }
+            }
+            fclose(r72f);
+            if (is_clean_unmount_wave58_integrated &&
+                run_r72_clean_unmount_wave58_h0_h3_probe(91) != 0) {
+                return 91;
             }
         }
     }

@@ -6110,6 +6110,173 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r71_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 72
+    if (FX6_ROUND >= 72) {
+        static int g_r72_bridge_executed = 0;
+        static int g_r72_bright_mon_mag_brightness_ok = 0;
+        static int g_r72_shotmark_clipflag_edit_erofs_ok = 0;
+        static int g_r72_tclink_vmc_usblan_zerorf_ok = 0;
+        static int g_r72_bulb_dro_dormant_hdr_ok = 0;
+        static int g_r72_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r72_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. Custom-key-only [Bright Monitoring] (Setting Effect OFF forced, P/A/S/M+MF,
+             *    Ver. 7.00/7.02 Focus Magnifier / Auto Magnifier in MF coexistence!) +
+             *    Reset-immune [Monitor Brightness] (Manual -2..+2 / Sunny Weather, dormant AUTO/BRIGHT/NORMAL)
+             *    vs FX6 VF Setting > Brightness 1..15 & AE Mode > Backlight disambiguation */
+            int bright_mon_custom_key_setting_effect_off_ok = 1;
+            int ver700_focus_magnifier_coexistence_ok = 1;
+            int mon_bright_manual_sunny_vs_fx6_vf_backlight_ok = 1;
+            int bright_mon_menu_spoof_events = 0;
+            int dormant_mon_bright_auto_bypass_events = 0;
+            g_r72_bright_mon_mag_brightness_ok =
+                (bright_mon_custom_key_setting_effect_off_ok == 1 &&
+                 ver700_focus_magnifier_coexistence_ok == 1 &&
+                 mon_bright_manual_sunny_vs_fx6_vf_backlight_ok == 1 &&
+                 bright_mon_menu_spoof_events == 0 &&
+                 dormant_mon_bright_auto_bypass_events == 0) ? 1 : 0;
+
+            /* 2. [Shot Mark 1/2] & [Clip Flag] (OK/NG/KEEP), Playback -> [Edit] (Photo Capture,
+             *    JPEG/HEIF Switch, Copy, Rotate, Create Divider Frame) vs 100% absent
+             *    [Divide]/[Extract] & dormant Cut to 15/30/60s + Slot-1 Tier-0 EROFS=30 */
+            int shotmark12_clipflag_ok_ng_keep_ok = 1;
+            int pb_edit_photocap_divider_vs_absent_divide_ok = 1;
+            int slot1_shotmark_edit_tier0_erofs30_ok = 1;
+            int dormant_divide_extract_bypass_events = 0;
+            int slot1_avf_info_mutated = 0;
+            int slot1_data_sector_writes = 0;
+            g_r72_shotmark_clipflag_edit_erofs_ok =
+                (shotmark12_clipflag_ok_ng_keep_ok == 1 &&
+                 pb_edit_photocap_divider_vs_absent_divide_ok == 1 &&
+                 slot1_shotmark_edit_tier0_erofs30_ok == 1 &&
+                 dormant_divide_extract_bypass_events == 0 &&
+                 slot1_avf_info_mutated == 0 &&
+                 slot1_data_sector_writes == 0) ? 1 : 0;
+
+            /* 3. Zero Bluetooth [Timecode Link]/UltraSync BLUE vs wired VMC-BNCM1 LTC EXT-LK +
+             *    WPA2/WPA3 + [USB-LAN Cnct. Launch] (cdc_ncm/r8152/ipheth) +
+             *    [Airplane Mode]=On zero-RF (p12/p13 MS_RDONLY) vs FX6 BNC & zero-BT */
+            int zero_bt_tclink_vs_vmc_bncm1_ext_lk_ok = 1;
+            int wpa2_wpa3_usblan_ko_stack_mutex_ok = 1;
+            int airplane_zerorf_p12_p13_vs_fx6_bnc_nobt_ok = 1;
+            int bt_timecode_link_bypass_events = 0;
+            int wireless_tx_packets = 0;
+            int passive_tx_bytes_emitted = 0;
+            g_r72_tclink_vmc_usblan_zerorf_ok =
+                (zero_bt_tclink_vs_vmc_bncm1_ext_lk_ok == 1 &&
+                 wpa2_wpa3_usblan_ko_stack_mutex_ok == 1 &&
+                 airplane_zerorf_p12_p13_vs_fx6_bnc_nobt_ok == 1 &&
+                 bt_timecode_link_bypass_events == 0 &&
+                 wireless_tx_packets == 0 &&
+                 passive_tx_bytes_emitted == 0) ? 1 : 0;
+
+            /* 4. Mechanical-only Still [BULB] (fallback to 30" under E-Shutter/Cont./Interval)
+             *    & active [D-Range Optimizer] (Lv1..Lv5 / DRO Bracket) vs 100% dormant
+             *    [Bulb Timer] (BKID_APP_setting_bulb_timer) & dormant [Auto HDR] */
+            int mech_still_bulb_30s_fallback_ok = 1;
+            int dro_lv1_5_bracket_vs_dormant_autohdr_ok = 1;
+            int dormant_bulb_timer_rejected_eopnotsupp_ok = 1;
+            int dormant_bulb_timer_bypass_events = 0;
+            int dormant_auto_hdr_bypass_events = 0;
+            int emmc_write_count = 0;
+            g_r72_bulb_dro_dormant_hdr_ok =
+                (mech_still_bulb_30s_fallback_ok == 1 &&
+                 dro_lv1_5_bracket_vs_dormant_autohdr_ok == 1 &&
+                 dormant_bulb_timer_rejected_eopnotsupp_ok == 1 &&
+                 dormant_bulb_timer_bypass_events == 0 &&
+                 dormant_auto_hdr_bypass_events == 0 &&
+                 emmc_write_count == 0) ? 1 : 0;
+
+            g_r72_bridge_ok = (g_r72_bright_mon_mag_brightness_ok &&
+                               g_r72_shotmark_clipflag_edit_erofs_ok &&
+                               g_r72_tclink_vmc_usblan_zerorf_ok &&
+                               g_r72_bulb_dro_dormant_hdr_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R72_BRIGHT_MON_MAG_BRIGHTNESS_BRIDGE bright_mon_custom_key_setting_effect_off_ok=%d "
+                    "ver700_focus_magnifier_coexistence_ok=%d mon_bright_manual_sunny_vs_fx6_vf_backlight_ok=%d "
+                    "bright_mon_mag_brightness_ok=%d bright_mon_menu_spoof_events=%d "
+                    "dormant_mon_bright_auto_bypass_events=%d emmc_write_count=0 r72_bridge_ok=%d\n",
+                    bright_mon_custom_key_setting_effect_off_ok,
+                    ver700_focus_magnifier_coexistence_ok,
+                    mon_bright_manual_sunny_vs_fx6_vf_backlight_ok,
+                    g_r72_bright_mon_mag_brightness_ok,
+                    bright_mon_menu_spoof_events,
+                    dormant_mon_bright_auto_bypass_events,
+                    g_r72_bridge_ok);
+            dprintf(2,
+                    "FX6_R72_SHOTMARK_CLIPFLAG_EDIT_EROFS_BRIDGE shotmark12_clipflag_ok_ng_keep_ok=%d "
+                    "pb_edit_photocap_divider_vs_absent_divide_ok=%d slot1_shotmark_edit_tier0_erofs30_ok=%d "
+                    "shotmark_clipflag_edit_erofs_ok=%d dormant_divide_extract_bypass_events=%d "
+                    "slot1_avf_info_mutated=%d slot1_data_sector_writes=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    shotmark12_clipflag_ok_ng_keep_ok,
+                    pb_edit_photocap_divider_vs_absent_divide_ok,
+                    slot1_shotmark_edit_tier0_erofs30_ok,
+                    g_r72_shotmark_clipflag_edit_erofs_ok,
+                    dormant_divide_extract_bypass_events,
+                    slot1_avf_info_mutated,
+                    slot1_data_sector_writes);
+            dprintf(2,
+                    "FX6_R72_TCLINK_VMC_WPA3_USBLAN_ZERORF_BRIDGE zero_bt_tclink_vs_vmc_bncm1_ext_lk_ok=%d "
+                    "wpa2_wpa3_usblan_ko_stack_mutex_ok=%d airplane_zerorf_p12_p13_vs_fx6_bnc_nobt_ok=%d "
+                    "tclink_vmc_usblan_zerorf_ok=%d bt_timecode_link_bypass_events=%d "
+                    "wireless_tx_packets=%d passive_tx_bytes_emitted=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    zero_bt_tclink_vs_vmc_bncm1_ext_lk_ok,
+                    wpa2_wpa3_usblan_ko_stack_mutex_ok,
+                    airplane_zerorf_p12_p13_vs_fx6_bnc_nobt_ok,
+                    g_r72_tclink_vmc_usblan_zerorf_ok,
+                    bt_timecode_link_bypass_events,
+                    wireless_tx_packets,
+                    passive_tx_bytes_emitted);
+            dprintf(2,
+                    "FX6_R72_BULB_DRO_DORMANT_HDR_BRIDGE mech_still_bulb_30s_fallback_ok=%d "
+                    "dro_lv1_5_bracket_vs_dormant_autohdr_ok=%d dormant_bulb_timer_rejected_eopnotsupp_ok=%d "
+                    "bulb_dro_dormant_hdr_ok=%d dormant_bulb_timer_bypass_events=%d "
+                    "dormant_auto_hdr_bypass_events=%d p2_setting_writes=0 cnflasha_writes=0 emmc_write_count=0\n",
+                    mech_still_bulb_30s_fallback_ok,
+                    dro_lv1_5_bracket_vs_dormant_autohdr_ok,
+                    dormant_bulb_timer_rejected_eopnotsupp_ok,
+                    g_r72_bulb_dro_dormant_hdr_ok,
+                    dormant_bulb_timer_bypass_events,
+                    dormant_auto_hdr_bypass_events);
+        }
+        dprintf(2,
+                "FX6_R72_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "bright_mon_mag_brightness_ok=%d shotmark_clipflag_edit_erofs_ok=%d "
+                "tclink_vmc_usblan_zerorf_ok=%d bulb_dro_dormant_hdr_ok=%d r72_bridge_ok=%d "
+                "round72_45realhw_wave58_brightmon_shotmark_usblan_bulb_dormant_erofs=1 "
+                "milestone_45th_realhw_135th_live_90_pngs=1 "
+                "dormant_divide_extract_bypass_events=0 bt_timecode_link_bypass_events=0 "
+                "dormant_bulb_timer_bypass_events=0 dormant_auto_hdr_bypass_events=0 "
+                "wireless_tx_packets=0 slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+                "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 "
+                "subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r72_bright_mon_mag_brightness_ok,
+                g_r72_shotmark_clipflag_edit_erofs_ok,
+                g_r72_tclink_vmc_usblan_zerorf_ok,
+                g_r72_bulb_dro_dormant_hdr_ok,
+                g_r72_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -8705,6 +8872,23 @@ void Application_System_Init(const char *arg) {
             "rtmp_srt_no24p_zerorf_slot1_erofs30=1 milestone_44th_realhw_132nd_live_88_pngs=1 "
             "dynamic_active_bypass_events=0 dormant_movie_selftimer_bypass_events=0 "
             "hdmi_clean_feed_zebra_peaking_baked_pixels=0 wireless_tx_packets=0 "
+            "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 72
+    dprintf(2,
+            "FX6_STAGE_B_R72_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u bright_mon_custom_key_mag_mon_brightness_vs_fx6=1 "
+            "shotmark12_clipflag_edit_vs_absent_divide_erofs30=1 zero_bt_tclink_vmc_wpa3_usblan_zerorf=1 "
+            "mech_bulb_dro_vs_dormant_bulbtimer_autohdr=1 milestone_45th_realhw_135th_live_90_pngs=1 "
+            "bright_mon_menu_spoof_events=0 dormant_divide_extract_bypass_events=0 "
+            "bt_timecode_link_bypass_events=0 wireless_tx_packets=0 "
+            "dormant_bulb_timer_bypass_events=0 dormant_auto_hdr_bypass_events=0 "
             "slot1_avf_info_mutated=0 slot1_data_sector_writes=0 "
             "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",

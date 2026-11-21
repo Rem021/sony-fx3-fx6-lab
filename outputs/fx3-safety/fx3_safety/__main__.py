@@ -287,6 +287,11 @@ from .realhw_peaking_audio_wind_usbpd_ntscpal_and_160gate_guard import (
     evaluate_g159_peaking_audio_wind_guard,
     evaluate_g160_usbpd_ntscpal_avfinfo_guard,
 )
+from .realhw_antidust_focusmag_expstd_usbtether_and_162gate_guard import (
+    evaluate_162gate_preflight,
+    evaluate_g161_antidust_focusmag_guard,
+    evaluate_g162_expstd_usbtether_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -5402,6 +5407,95 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_160.add_argument("--json", action="store_true", help="Emit structured JSON report")
     p_160.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 200. verify-antidust-focusmag-guard
+    p_g161 = sub.add_parser(
+        "verify-antidust-focusmag-guard",
+        aliases=["verify-g161-antidust-focusmag", "verify-g161"],
+        help="Verify Gate G161: FX3 Dormant [Anti-Dust Function]/[Shutter When Pwr OFF] Open-Shutter Safety & Active [Sensor Cleaning] >=51%% vs FX6 Sealed e-ND/APR, plus [Focus Magnifier] Full-Pipeline (12.1MP Ratios, Still-Only AF/Auto-Mag, REC Continuity, Clean-HDMI Zero-Crop) vs FX6 VF/HDMI Target",
+    )
+    p_g161.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g161.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g161.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g161.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g161.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 201. verify-expstd-usbtether-guard
+    p_g162 = sub.add_parser(
+        "verify-expstd-usbtether-guard",
+        aliases=["verify-g162-expstd-usbtether", "verify-g162"],
+        help="Verify Gate G162: FX3 [Exposure Std. Adjust] 5-Mode +-1EV 1/6-EV Reset-Resistant Hidden Bias vs FX6 +-3.0 0.25-Step AE Level, plus Wired Smartphone USB Tethering (Zero-RF Airplane Mode Bypass, Dual-Port Mutex, Stripped CUsbGadgetIAP, M&C USB Limits) and Tier-0 Slot 1 MSC/MTP EROFS=30 Firewall",
+    )
+    p_g162.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g162.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g162.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g162.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g162.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 202. verify-162-gates
+    p_162 = sub.add_parser(
+        "verify-162-gates",
+        help="Run Phase 378 (Task H480, Wave-71) Unified 162-Gate Master Safety Preflight Engine (G01..G162)",
+    )
+    p_162.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_162.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_162.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G162 gates can be rehearsed offline",
+    )
+    p_162.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_162.add_argument("--summary", action="store_true", help="Emit concise summary output")
 
     args = parser.parse_args(argv)
 
@@ -12096,6 +12190,159 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_160_gates_verified if args.dry_run_simulated else report.offline_157_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-antidust-focusmag-guard",
+        "verify-g161-antidust-focusmag",
+        "verify-g161",
+    ):
+        verdict, res = evaluate_g161_antidust_focusmag_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.antidust_focusmag_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_power_off_shutter_state": guard["effective_power_off_shutter_state"],
+                    "sensor_cleaning_min_soc_pct": guard["sensor_cleaning_min_soc_pct"],
+                    "effective_active_focus_mag_ratio": guard["effective_active_focus_mag_ratio"],
+                    "hdmi_output_cropped": guard["hdmi_output_cropped"],
+                    "internal_recording_cropped": guard["internal_recording_cropped"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.antidust_focusmag_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} shutter_pwroff={guard['effective_power_off_shutter_state']} "
+                f"clean_min_soc={guard['sensor_cleaning_min_soc_pct']}% "
+                f"mag_ratio={guard['effective_active_focus_mag_ratio']} "
+                f"hdmi_crop={guard['hdmi_output_cropped']} "
+                f"rec_crop={guard['internal_recording_cropped']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-expstd-usbtether-guard",
+        "verify-g162-expstd-usbtether",
+        "verify-g162",
+    ):
+        verdict, res = evaluate_g162_expstd_usbtether_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.expstd_usbtether_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_exposure_std_sixths": guard["effective_exposure_std_sixths"],
+                    "alters_exif_exposure_bias_value": guard["alters_exif_exposure_bias_value"],
+                    "usb_tethering_driver": guard["usb_tethering_driver"],
+                    "airplane_mode": guard["airplane_mode"],
+                    "rf_tx_packets": guard["rf_tx_packets"],
+                    "slot1_writes": guard["slot1_writes"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.expstd_usbtether_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} exp_std={guard['effective_exposure_std_sixths']}/6EV "
+                f"drv={guard['usb_tethering_driver']} "
+                f"airplane={guard['airplane_mode']} "
+                f"rf_tx={guard['rf_tx_packets']} "
+                f"s1_writes={guard['slot1_writes']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-162-gates":
+        report = evaluate_162gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "schema_version": report.schema_version,
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g161_status": report.g161_result["status"],
+                    "g162_status": report.g162_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/162 "
+                f"g161_to_g162_all_passed={report.g161_to_g162_all_passed} "
+                f"all_162_gates_verified={report.all_162_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_162_gates_verified if args.dry_run_simulated else report.offline_159_gates_verified
         return 0 if ok else 1
 
     return 2

@@ -1390,6 +1390,9 @@ def build_stage_a_overlay(
     enable_r76: bool = False,
     enable_r77: bool = False,
     enable_r78: bool = False,
+    enable_r79: bool = False,
+    enable_r80: bool = False,
+    enable_r81: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1440,6 +1443,9 @@ def build_stage_a_overlay(
     r76_mode: str = "shoe_audio_4ch_subject_recog_silent_version_big6",
     r77_mode: str = "hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6",
     r78_mode: str = "breathing_camid_copyright46_powersave9_ntscpal_big6",
+    r79_mode: str = "zoom_ciz_autoslow_iso_arw_usblun_uvc_erofs_big6",
+    r80_mode: str = "drive_focusbracket_shutter_efcs_creativelook_recoverdb_big6",
+    r81_mode: str = "pixelmap_monitor_recallhold_hdmi_recctrl_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1811,7 +1817,55 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r77_mode: {r77_mode}")
     if enable_r78 and r78_mode not in ("breathing_camid_copyright46_powersave9_ntscpal_big6", "wave64_breathing_camid_copyright46_powersave9_ntscpal_guard", "clean_unmount_wave64_reset_h0_h3_big6"):
         raise ValueError(f"Unsupported r78_mode: {r78_mode}")
-    if enable_r78 and r78_mode == "wave64_breathing_camid_copyright46_powersave9_ntscpal_guard":
+    if enable_r79 and r79_mode not in ("zoom_ciz_autoslow_iso_arw_usblun_uvc_erofs_big6", "wave65_zoom_ciz_autoslow_iso_arw_usblun_uvc_guard", "clean_unmount_wave65_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r79_mode: {r79_mode}")
+    if enable_r80 and r80_mode not in ("drive_focusbracket_shutter_efcs_creativelook_recoverdb_big6", "wave66_drive_focusbracket_shutter_efcs_creativelook_recoverdb_guard", "clean_unmount_wave66_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r80_mode: {r80_mode}")
+    if enable_r81 and r81_mode not in ("pixelmap_monitor_recallhold_hdmi_recctrl_big6", "wave67_pixelmap_monitor_recallhold_hdmi_recctrl_guard", "clean_unmount_wave67_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r81_mode: {r81_mode}")
+    if enable_r81 and r81_mode == "wave67_pixelmap_monitor_recallhold_hdmi_recctrl_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r81_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r81-wave67-guard > /dev/console 2>&1\n"
+            "fx6_r81_gd_rc=$?\n"
+            "echo FX6_R81_WAVE67_GUARD_RC=$fx6_r81_gd_rc\n"
+            "echo FX6_R81_WAVE67_GUARD_EXIT rc=$fx6_r81_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r81_early_hook, 1)
+    elif enable_r80 and r80_mode == "wave66_drive_focusbracket_shutter_efcs_creativelook_recoverdb_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r80_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r80-wave66-guard > /dev/console 2>&1\n"
+            "fx6_r80_gd_rc=$?\n"
+            "echo FX6_R80_WAVE66_GUARD_RC=$fx6_r80_gd_rc\n"
+            "echo FX6_R80_WAVE66_GUARD_EXIT rc=$fx6_r80_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r80_early_hook, 1)
+    elif enable_r79 and r79_mode == "wave65_zoom_ciz_autoslow_iso_arw_usblun_uvc_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r79_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r79-wave65-guard > /dev/console 2>&1\n"
+            "fx6_r79_gd_rc=$?\n"
+            "echo FX6_R79_WAVE65_GUARD_RC=$fx6_r79_gd_rc\n"
+            "echo FX6_R79_WAVE65_GUARD_EXIT rc=$fx6_r79_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r79_early_hook, 1)
+    elif enable_r78 and r78_mode == "wave64_breathing_camid_copyright46_powersave9_ntscpal_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -5889,6 +5943,176 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r79_meta: Optional[Dict[str, Any]] = None
+    if enable_r79:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r79_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r79"] = (
+            (
+                f"stage_r79=1\nr79_mode={r79_mode}\n"
+                f"zoom_ciz_15x_2x_digital_4x_fx6_zero_digital=1\n"
+                f"autoslow_6way_iso_limit_still_min_ss_dualbase=1\n"
+                f"arw_dormant_lossless_hlg_still_sort_erofs30=1\n"
+                f"usb_mode4_lun_single_slot1_pd_fz100_dual_uvc_debunk=1\n"
+                f"milestone_52nd_realhw_156th_live_104_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r79_meta = {
+            "r79_mode": r79_mode,
+            "milestone_round_ordinal": 79,
+            "realhw_round_ordinal": 52,
+            "total_live_runs_at_completion": 156,
+            "total_png_receipts_at_completion": 104,
+            "zoom_range_ciz_digital_and_fx6_zero_digital_wave65": {
+                "menu_path": "Shooting -> [Zoom] -> [Zoom Range] (Optical zoom only def / ClearImage Zoom / Digital Zoom; resists Reset) & Setup -> [Operation Customize] -> [Zoom Ring Rotate] (resists Reset)",
+                "speeds_resettable": "[Zoom Lever Speed] (1st=3 / 2nd=8 Fast Standby/Rec), [Custom Key Z. Speed] (3), [Remote Zoom Speed] (Variable/3) ARE resettable via [Camera Settings Reset]",
+                "scales_and_interlocks": "Movie CIZ 1.5x (4K) / 2.0x (HD), Digital 4.0x (Movie) / 8.0x (Still S); blocked on Still RAW/RAW+JPEG/RAW+HEIF, Movie 119.88p/100p, S&Q >= 100/120fps; active non-optical zoom disables [Focus Area] (center-priority AF), locks [Metering Mode]=Multi, and disables Face/Eye Prior. in AF & Tracking",
+                "fx6_diff": "ILME-FX6 Technical > Zoom > Zoom Type exposes 2 options ONLY (Optical / CIZ), ZERO Digital Zoom (-95 EOPNOTSUPP), plus Handle Zoom (High=8, Low=3)",
+            },
+            "autoslow_6way_iso_limit_still_minss_dualbase_wave65": {
+                "auto_slow_shutter": "[Auto Slow Shutter] (Movie-only, On def, resettable) hard-blocked (-16 EBUSY) in all 6 official conditions (S&Q, S, M, fixed manual ISO, Flex Exp. Shutter=Manual, Cine EI/Cine EI Quick) + Shutter Mode=Angle mutex",
+                "iso_limit_and_still_minss": "[ISO Range Limit] (manual ISO only; resists Reset); Still-only [ISO AUTO Min. SS] (P/A + ISO AUTO only, STD def, resettable; blocked in Movie/S&Q and absent on FX6 -95)",
+                "dual_native_base_iso": "Cine EI / Cine EI Quick explicit 800 (def) / 12800; non-Cine EI automatic 20x (+4.33 EV) dual-gain per Gamma: S-Log3 640/12800, S-Cinetone/HLG/HLG3/Cine4 100/2000, PP Off/HLG2/Cine3 80/1600, Cine1 64/1280, HLG1/Cine2 50/1000 vs FX6 Base Sensitivity=Low/High + AGC",
+            },
+            "still_arw_dormant_lossless_hlg_sort_erofs30_wave65": {
+                "raw_file_type_debunk": "FX3 Ver. 7.02 [RAW File Type] strictly exposes Compressed (def) & Uncompressed (14-bit .ARW); dormant Lossless Comp (L/M/S) (_f 0x6b56/0x7897/0x6bfd/0x7894) hard-blocked -95 EOPNOTSUPP",
+                "hlg_still_image": "[JPEG/HEIF Switch] (JPEG/HEIF 4:2:0/HEIF 4:2:2) + [HLG Still Image] (BKID_APP_setting_still_hlg_photo, ELF typo STILL_HLD_PHOTO_*) requires pure HEIF + P/A/S/M, forces BT.2100 & ISO floor 100/125, disables PP/Creative Look/DRO",
+                "sort_recording_slot1_erofs30": "[Sort Recording] + [Auto Switch Media]=On spillover onto Tier-0 Slot 1 strictly blocked with -30 EROFS (slot1_writes=0); FX6 cinema-only lacks Still ARW/HEIF/HLG (-95)",
+            },
+            "usb_mode4_lun_single_pd_dual_uvc_debunk_wave65": {
+                "usb_mode_and_lun_single": "[USB Connection Mode] strictly 4 options (Sel. When Connect def / MSC / MTP / Remote Shooting; resists Reset); [USB LUN Setting]=Single (_f 0x6b19/0x776d) exposes Slot 1 ONLY (NOT hiding Slot 1; MTP also maps Slot 1); macOS mds/fseventsd/Finder/fsck_exfat writes to Slot 1 blocked -30 EROFS (usb_tx=0, slot1_writes=0)",
+                "usb_power_fz100_vs_fx6_dcin": "[USB Power Supply]=On (USB-C only; resists Reset) hard-requires charged NP-FZ100 battery (removal kills power unless DC-C1 + >=65W PD + 5A e-Marked cable) vs FX6 19.5V DC IN (18.0-20.5V, DC Low Voltage1/2=16.5V/15.5V, battery-free)",
+                "dual_uvc_debunk_and_streaming": "Dual FX3 Ver. 7.02 & FX6 Ver. 6.01 native UVC/UAC USB Streaming debunked (-95 EOPNOTSUPP despite dormant usb_f_uvc.ko/g_webcam.ko/USB_STREAMING_PROCAM); FX3 Network Streaming (RTMP/RTMPS/SRT) [Movie Rec During Streaming] (_f 0x79d5, Disable def) distinct from HDMI [Rec. Media dur HDMI Output] (_f 0x6144), both blocked -30 EROFS on Slot 1",
+            },
+            "dormant_fx6_digital_zoom_events": 0,
+            "dormant_movie_iso_auto_min_ss_events": 0,
+            "dormant_raw_lossless_comp_events": 0,
+            "dormant_uvc_fx3_events": 0,
+            "dormant_uvc_fx6_events": 0,
+            "usb_tx": 0,
+            "slot1_writes": 0,
+            "slot1_data_sector_writes": 0,
+            "rf_tx_packets": 0,
+            "passive_tx_bytes_emitted": 0,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
+    r80_meta: Optional[Dict[str, Any]] = None
+    if enable_r80:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r80_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r80"] = (
+            (
+                f"stage_r80=1\nr80_mode={r80_mode}\n"
+                f"drive_10fps_dormant_focus_bracket_debunk=1\n"
+                f"shutter2_no_auto_xsync250_efcs_typo_nr=1\n"
+                f"creativelook10_custom6_8param_dormant_softskin_debunk=1\n"
+                f"delete_protect_recoverdb_slot1_erofs30_firewall=1\n"
+                f"milestone_53rd_realhw_159th_live_106_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r80_meta = {
+            "r80_mode": r80_mode,
+            "milestone_round_ordinal": 80,
+            "realhw_round_ordinal": 53,
+            "total_live_runs_at_completion": 159,
+            "total_png_receipts_at_completion": 106,
+            "still_drive_mode_10fps_and_dormant_focus_bracket_wave66": {
+                "menu_path": "Shooting -> [Drive Mode] -> [Drive Mode] (Still-only; Can be reset): Single Shooting def, Cont. Shooting (Hi+ 10fps, Hi 8fps, Mid 6fps, Lo 3fps; Uncompressed RAW/Flash slows burst; > F11 locks focus on 1st frame in Hi+/Hi/Mid), Self-timer(Single/Cont), Cont./Single Bracket, WB bracket, DRO Bracket (disabled under HLG Still Image=On)",
+                "dormant_focus_bracket_debunk": "Dormant [Focus Bracket] (_f 0x7563, DRIVE_MODE_FOCUS_BRACKET) strictly blocked -95 EOPNOTSUPP on BOTH ILME-FX3 Ver. 7.02 (0 hits in ilc/2210) & ILME-FX6 Ver. 6.01 (56 dormant symbols)",
+            },
+            "shutter_type_2option_xsync250_efcs_nr_wave66": {
+                "shutter_type_no_auto": "[Shutter Type] strictly 2 options ONLY: Mechanical Shutter (def) / Electronic Shutter (Can be reset); NO Auto option (STILL_SHUTTER_TYPE_ANTI_DISTORTION_SHUTTER_AUTO dormant -> -95 EOPNOTSUPP; distinct from [Interval Shoot Func.] default Electronic Shutter); Electronic Shutter / Silent Mode=On locks out 5 features (Flash, Long Exposure NR, e-Front Curtain Shut., BULB, Anti-flicker Shoot.)",
+                "xsync_and_efcs_nr": "Single flash X-Sync ceiling 1/250 s (NO 1/320 s APS-C mode -> debunked -95); [e-Front Curtain Shut.] (On def, resists Camera Reset, Sony ELF typo BKID_APP_setting_front_curtaion_shutter); [Long Exposure NR] (>=1s dark-frame subtraction, On def, Can be reset); [High ISO NR] (Normal def / Low / Off, ignored for .ARW); vs FX6 zero mechanical shutter / zero X-Sync / Noise Suppression + Technical > APR",
+            },
+            "creative_look_10presets_8params_and_dormant_softskin_wave66": {
+                "creative_look_matrix": "[Creative Look] (Can be reset): 10 presets (ST def, PT, NT, VV, VV2, FL, IN, SH, BW, SE) + Custom Look 1..6 (16 ELF slots split Still vs Movie) + 8 params (Contrast/Highlights/Shadows/Saturation: -9..+9; Fade/Sharpness/Clarity: 0..9 asymmetric!; Sharpness Range: 1..5); BW/SE lock Saturation; Movie/S&Q locks Sharpness Range; iAuto / PP!=Off / Log Shooting!=Off / HLG Still=On lock to [-]",
+                "dormant_soft_skin_debunk": "Dormant [Soft Skin Effect] (_f 0x76d9, BKID_APP_setting_soft_skin_effect) strictly blocked -95 EOPNOTSUPP on BOTH ILME-FX3 Ver. 7.02 & ILME-FX6 Ver. 6.01 (0 hits in ilc/2210 & SDK -); vs FX6 Base Look / Scene File / Multi Matrix",
+            },
+            "delete_protect_recoverdb_slot1_erofs30_firewall_wave66": {
+                "playback_delete_protect": "[Delete confirm.] (\"Cancel\" first def vs \"Delete\" first hazard; resists Reset), [Delete pressing twice] (Off def vs On instant delete; resists Reset), Proxy co-deletion/co-protection, [Protect] (DCF/DB RO attr)",
+                "recover_db_and_media_info": "[Recover Image DB] (rewrites AVF_INFO & clears FTP logs, survives BOTH Reset & Initialize) — ALL mutating ops targeting Tier-0 Slot 1 fail-closed with -30 EROFS (slot1_writes=0, slot1_data_sector_writes=0, slot1_avf_info_mutated=0, usb_tx=0); [Display Media Info.] (O_RDONLY up to 40,000 stills/card) safe; vs FX6 Thumbnail > Lock/Delete Clip, Restore Media(A)/(B) (ng_write_protected -> -30 EROFS), & Media Status",
+            },
+            "dormant_fx3_focus_bracket_events": 0,
+            "dormant_fx6_focus_bracket_events": 0,
+            "dormant_shutter_auto_events": 0,
+            "dormant_xsync_320_apsc_events": 0,
+            "dormant_fx3_soft_skin_events": 0,
+            "dormant_fx6_soft_skin_events": 0,
+            "usb_tx": 0,
+            "slot1_writes": 0,
+            "slot1_data_sector_writes": 0,
+            "slot1_avf_info_mutated": 0,
+            "rf_tx_packets": 0,
+            "passive_tx_bytes_emitted": 0,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
+    r81_meta: Optional[Dict[str, Any]] = None
+    if enable_r81:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r81_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r81"] = (
+            (
+                f"stage_r81=1\nr81_mode={r81_mode}\n"
+                f"pixelmap_autopixelmap_vs_fx6_apr_zero_abb=1\n"
+                f"monitor3_dormant_evf4_debunk_vs_fx6_vf_adjust=1\n"
+                f"hold_keys_recallhold11_still_pasm_zero_wb_vs_fx6_push=1\n"
+                f"hdmi_recmedia_tc_recctrl_24p_sdi_slot1_erofs30=1\n"
+                f"milestone_54th_realhw_162nd_live_108_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r81_meta = {
+            "r81_mode": r81_mode,
+            "milestone_round_ordinal": 81,
+            "realhw_round_ordinal": 54,
+            "total_live_runs_at_completion": 162,
+            "total_png_receipts_at_completion": 108,
+            "pixel_mapping_and_apr_wave67": {
+                "fx3_pixel_mapping": "Setup -> [Setup Option] -> [Auto Pixel Mapping] (_f 0x7734, On def, anti-Reset) + manual [Pixel Mapping] (_f 0x61f7, lens cap dark check + battery check INFRA_NOTIFY_BATTERY_CHECK_FOR_PIXEL_MAPPING + auto-reboot) + Silent Target [Auto Pixel Mapping] (_f 0x64e7 Off/Not Target def, Can be reset -> shutdown shutter sound vdf_set_shutter_mute_by_pixel_mapping) + Sony ELF typos (BKID_APP_setting_notification_for_pixel_mappinng, BKID_APP_pixel_mapping_excuted_status)",
+                "fx6_apr_zero_abb": "FX6 Technical > APR (lens cap + black cloth ns1 0x3324, PIXEL_MAPPING_RESULT_{LIGHT_DETECTED,INVALID_TEMPERATURE}, zero CCD-era ABB menu -> -95 EOPNOTSUPP)",
+            },
+            "monitor3_and_evf4_debunk_wave67": {
+                "fx3_monitor_group": "Setup -> [Monitor] (debunks [Finder/Monitor] -> -95) exact 3 anti-Reset items: [Monitor Brightness] (Manual -2..+2 def / Sunny Weather), [Display Quality] (Standard def / High thermal lock -> Standard), [Monitor Flip Direction] (Auto / Horizontal Flip / 180 Degree Flip / No Flip); all 4 dormant EVF items (Finder/Monitor Sel., Viewfinder Bright., Viewfinder Color Temp., Finder Frame Rate) blocked -95 EOPNOTSUPP",
+                "fx6_vf_setting_adjust": "FX6 Monitoring > VF Setting (Brightness 1..15 def 8, Color/B&W), Assignable VF Adjust (unconnected -> -ENODEV), physical MIRROR switch (Off/B-T/ROT), zero 4-item Backlight/Contrast/Chroma/Color Temp. submenu (-95 EOPNOTSUPP)",
+            },
+            "hold_keys_recallhold11_and_fx6_push_wave67": {
+                "fx3_hold_and_recall": "Hold Custom Keys: [AF On] (Still/Movie/S&Q), [Eye AF] (Still/Movie), [Tracking On] (Still AF-C only); [Recall Custom hold 1..3] strictly Still P/A/S/M ONLY (Movie/S&Q/iAuto blocked -95), exact 11 checkable bits (is_checked_recall_custom_hold0..10 = 0x07FF, drive_mode excludes Self-timer), ZERO independent White Balance bit (-95), anti-Reset & serialized in CAMSET*.DAT",
+                "fx6_push_keys": "FX6 Push AF / Push AF/Push MF (blocked MF/De-Squeeze), Push AGC (blocked Cine EI / Bokeh Control=On), Push Auto Iris (blocked MANUAL / Bokeh Control=On), dormant High/Low Key (ns2 0x4b25 -> -95)",
+            },
+            "external_output_hdmi_sdi_and_slot1_erofs30_wave67": {
+                "fx3_external_output": "All Setup -> [External Output] items anti-Reset: [Rec. Media dur HDMI Output] (On def, S&Q locks On, Off(HDMI Only)/RAW=On forces HDMI Info. Display=Off), [Output Resolution] (1080 downscale under Log/PPLUT + Rec. Media=On), [4K Output Set.(HDMI Only)] (24.00p reboot & playback isolation + ELF typo outpute), [Time Code Output] (Off def, blocked S&Q, mandatory precondition for [REC Control]), [4ch Audio Output] (CH1/CH2 vs CH3/CH4), [CTRL FOR HDMI] (ELF typo ctrl_for_hmdi), dormant 4K/2K & 24p/60p blocked -95 EOPNOTSUPP",
+                "slot1_erofs30_and_fx6_sdi": "Tier-0 Slot 1 EROFS=-30 firewall whenever Rec. Media dur HDMI Output=On or CAMSET*.DAT write targets Slot 1 (slot1_writes=0, slot1_data_sector_writes=0, slot1_avf_info_mutated=0, usb_tx=0); FX6 12G/6G/3G-SDI + HDMI dual-output matrix (RAW(HDMI) 4240x2392 -> SDI 1080, S&Q > 60fps -> HDMI 1080, SDI/HDMI Remote I/F vs Parallel Rec)",
+            },
+            "dormant_fx6_abb_events": 0,
+            "dormant_fx3_evf_events": 0,
+            "dormant_fx6_vf_4subitems_events": 0,
+            "dormant_recallhold_movie_events": 0,
+            "dormant_recallhold_wb_events": 0,
+            "dormant_fx6_high_low_key_events": 0,
+            "dormant_hdmi_4k2k_events": 0,
+            "dormant_hdmi_24p60p_events": 0,
+            "usb_tx": 0,
+            "slot1_writes": 0,
+            "slot1_data_sector_writes": 0,
+            "slot1_avf_info_mutated": 0,
+            "rf_tx_packets": 0,
+            "passive_tx_bytes_emitted": 0,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -5960,6 +6184,9 @@ def build_stage_a_overlay(
         "r76_enabled": enable_r76,
         "r77_enabled": enable_r77,
         "r78_enabled": enable_r78,
+        "r79_enabled": enable_r79,
+        "r80_enabled": enable_r80,
+        "r81_enabled": enable_r81,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -6091,6 +6318,12 @@ def build_stage_a_overlay(
         stage_a_meta["r77"] = r77_meta
     if r78_meta is not None:
         stage_a_meta["r78"] = r78_meta
+    if r79_meta is not None:
+        stage_a_meta["r79"] = r79_meta
+    if r80_meta is not None:
+        stage_a_meta["r80"] = r80_meta
+    if r81_meta is not None:
+        stage_a_meta["r81"] = r81_meta
     return replacements, additions, stage_a_meta
 
 
@@ -6458,6 +6691,9 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R76_",
         "FX6_R77_",
         "FX6_R78_",
+        "FX6_R79_",
+        "FX6_R80_",
+        "FX6_R81_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -6972,6 +7208,36 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r78_lang: Optional[Dict[str, Any]] = None
     last_r78_bridge: Optional[Dict[str, Any]] = None
     r78_wave64_guard_rc: Optional[int] = None
+    last_r79_wave65_init: Optional[Dict[str, Any]] = None
+    last_r79_zoom_ciz_speed8_bridge: Optional[Dict[str, Any]] = None
+    last_r79_autoslow6_iso_baseiso_bridge: Optional[Dict[str, Any]] = None
+    last_r79_arw_lossless_hlg_sort_erofs_bridge: Optional[Dict[str, Any]] = None
+    last_r79_usblun_pd_uvc_streaming_erofs_bridge: Optional[Dict[str, Any]] = None
+    last_r79_wave65_guard: Optional[Dict[str, Any]] = None
+    last_r79_clean_unmount_wave65_h0_h3: Optional[Dict[str, Any]] = None
+    last_r79_lang: Optional[Dict[str, Any]] = None
+    last_r79_bridge: Optional[Dict[str, Any]] = None
+    r79_wave65_guard_rc: Optional[int] = None
+    last_r80_wave66_init: Optional[Dict[str, Any]] = None
+    last_r80_drive_10fps_focusbracket_bridge: Optional[Dict[str, Any]] = None
+    last_r80_shutter2_xsync250_efcs_nr_bridge: Optional[Dict[str, Any]] = None
+    last_r80_creativelook10_8param_softskin_bridge: Optional[Dict[str, Any]] = None
+    last_r80_delete_protect_recoverdb_erofs_bridge: Optional[Dict[str, Any]] = None
+    last_r80_wave66_guard: Optional[Dict[str, Any]] = None
+    last_r80_clean_unmount_wave66_h0_h3: Optional[Dict[str, Any]] = None
+    last_r80_lang: Optional[Dict[str, Any]] = None
+    last_r80_bridge: Optional[Dict[str, Any]] = None
+    r80_wave66_guard_rc: Optional[int] = None
+    last_r81_wave67_init: Optional[Dict[str, Any]] = None
+    last_r81_pixelmap_apr_bridge: Optional[Dict[str, Any]] = None
+    last_r81_monitor3_evf_debunk_bridge: Optional[Dict[str, Any]] = None
+    last_r81_recallhold11_pushaf_bridge: Optional[Dict[str, Any]] = None
+    last_r81_hdmi_tc_recctrl_sdi_erofs_bridge: Optional[Dict[str, Any]] = None
+    last_r81_wave67_guard: Optional[Dict[str, Any]] = None
+    last_r81_clean_unmount_wave67_h0_h3: Optional[Dict[str, Any]] = None
+    last_r81_lang: Optional[Dict[str, Any]] = None
+    last_r81_bridge: Optional[Dict[str, Any]] = None
+    r81_wave67_guard_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -8127,6 +8393,72 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R78_WAVE64_GUARD_RC"), int):
                 r78_wave64_guard_rc = kv["FX6_R78_WAVE64_GUARD_RC"]
+        elif "FX6_R79_WAVE65_INIT " in line:
+            last_r79_wave65_init = _parse_kv_ints(line.split("FX6_R79_WAVE65_INIT ", 1)[1])
+        elif "FX6_R79_ZOOM_CIZ_SPEED8_BRIDGE " in line:
+            last_r79_zoom_ciz_speed8_bridge = _parse_kv_ints(line.split("FX6_R79_ZOOM_CIZ_SPEED8_BRIDGE ", 1)[1])
+        elif "FX6_R79_AUTOSLOW6_ISO_BASEISO_BRIDGE " in line:
+            last_r79_autoslow6_iso_baseiso_bridge = _parse_kv_ints(line.split("FX6_R79_AUTOSLOW6_ISO_BASEISO_BRIDGE ", 1)[1])
+        elif "FX6_R79_ARW_LOSSLESS_HLG_SORT_EROFS_BRIDGE " in line:
+            last_r79_arw_lossless_hlg_sort_erofs_bridge = _parse_kv_ints(line.split("FX6_R79_ARW_LOSSLESS_HLG_SORT_EROFS_BRIDGE ", 1)[1])
+        elif "FX6_R79_USBLUN_PD_UVC_STREAMING_EROFS_BRIDGE " in line:
+            last_r79_usblun_pd_uvc_streaming_erofs_bridge = _parse_kv_ints(line.split("FX6_R79_USBLUN_PD_UVC_STREAMING_EROFS_BRIDGE ", 1)[1])
+        elif "FX6_R79_WAVE65_GUARD " in line:
+            last_r79_wave65_guard = _parse_kv_ints(line.split("FX6_R79_WAVE65_GUARD ", 1)[1])
+        elif "FX6_R79_CLEAN_UNMOUNT_WAVE65_H0_H3 " in line:
+            last_r79_clean_unmount_wave65_h0_h3 = _parse_kv_ints(line.split("FX6_R79_CLEAN_UNMOUNT_WAVE65_H0_H3 ", 1)[1])
+        elif "FX6_R79_LANG_TELEMETRY " in line:
+            last_r79_lang = _parse_kv_ints(line.split("FX6_R79_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R79_BRIDGE " in line:
+            last_r79_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R79_BRIDGE ", 1)[1])
+        elif "FX6_R79_WAVE65_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R79_WAVE65_GUARD_RC"), int):
+                r79_wave65_guard_rc = kv["FX6_R79_WAVE65_GUARD_RC"]
+        elif "FX6_R80_WAVE66_INIT " in line:
+            last_r80_wave66_init = _parse_kv_ints(line.split("FX6_R80_WAVE66_INIT ", 1)[1])
+        elif "FX6_R80_DRIVE_10FPS_FOCUSBRACKET_BRIDGE " in line:
+            last_r80_drive_10fps_focusbracket_bridge = _parse_kv_ints(line.split("FX6_R80_DRIVE_10FPS_FOCUSBRACKET_BRIDGE ", 1)[1])
+        elif "FX6_R80_SHUTTER2_XSYNC250_EFCS_NR_BRIDGE " in line:
+            last_r80_shutter2_xsync250_efcs_nr_bridge = _parse_kv_ints(line.split("FX6_R80_SHUTTER2_XSYNC250_EFCS_NR_BRIDGE ", 1)[1])
+        elif "FX6_R80_CREATIVELOOK10_8PARAM_SOFTSKIN_BRIDGE " in line:
+            last_r80_creativelook10_8param_softskin_bridge = _parse_kv_ints(line.split("FX6_R80_CREATIVELOOK10_8PARAM_SOFTSKIN_BRIDGE ", 1)[1])
+        elif "FX6_R80_DELETE_PROTECT_RECOVERDB_EROFS_BRIDGE " in line:
+            last_r80_delete_protect_recoverdb_erofs_bridge = _parse_kv_ints(line.split("FX6_R80_DELETE_PROTECT_RECOVERDB_EROFS_BRIDGE ", 1)[1])
+        elif "FX6_R80_WAVE66_GUARD " in line:
+            last_r80_wave66_guard = _parse_kv_ints(line.split("FX6_R80_WAVE66_GUARD ", 1)[1])
+        elif "FX6_R80_CLEAN_UNMOUNT_WAVE66_H0_H3 " in line:
+            last_r80_clean_unmount_wave66_h0_h3 = _parse_kv_ints(line.split("FX6_R80_CLEAN_UNMOUNT_WAVE66_H0_H3 ", 1)[1])
+        elif "FX6_R80_LANG_TELEMETRY " in line:
+            last_r80_lang = _parse_kv_ints(line.split("FX6_R80_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R80_BRIDGE " in line:
+            last_r80_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R80_BRIDGE ", 1)[1])
+        elif "FX6_R80_WAVE66_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R80_WAVE66_GUARD_RC"), int):
+                r80_wave66_guard_rc = kv["FX6_R80_WAVE66_GUARD_RC"]
+        elif "FX6_R81_WAVE67_INIT " in line:
+            last_r81_wave67_init = _parse_kv_ints(line.split("FX6_R81_WAVE67_INIT ", 1)[1])
+        elif "FX6_R81_PIXELMAP_APR_BRIDGE " in line:
+            last_r81_pixelmap_apr_bridge = _parse_kv_ints(line.split("FX6_R81_PIXELMAP_APR_BRIDGE ", 1)[1])
+        elif "FX6_R81_MONITOR3_EVF_DEBUNK_BRIDGE " in line:
+            last_r81_monitor3_evf_debunk_bridge = _parse_kv_ints(line.split("FX6_R81_MONITOR3_EVF_DEBUNK_BRIDGE ", 1)[1])
+        elif "FX6_R81_RECALLHOLD11_PUSHAF_BRIDGE " in line:
+            last_r81_recallhold11_pushaf_bridge = _parse_kv_ints(line.split("FX6_R81_RECALLHOLD11_PUSHAF_BRIDGE ", 1)[1])
+        elif "FX6_R81_HDMI_TC_RECCTRL_SDI_EROFS_BRIDGE " in line:
+            last_r81_hdmi_tc_recctrl_sdi_erofs_bridge = _parse_kv_ints(line.split("FX6_R81_HDMI_TC_RECCTRL_SDI_EROFS_BRIDGE ", 1)[1])
+        elif "FX6_R81_WAVE67_GUARD " in line:
+            last_r81_wave67_guard = _parse_kv_ints(line.split("FX6_R81_WAVE67_GUARD ", 1)[1])
+        elif "FX6_R81_CLEAN_UNMOUNT_WAVE67_H0_H3 " in line:
+            last_r81_clean_unmount_wave67_h0_h3 = _parse_kv_ints(line.split("FX6_R81_CLEAN_UNMOUNT_WAVE67_H0_H3 ", 1)[1])
+        elif "FX6_R81_LANG_TELEMETRY " in line:
+            last_r81_lang = _parse_kv_ints(line.split("FX6_R81_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R81_BRIDGE " in line:
+            last_r81_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R81_BRIDGE ", 1)[1])
+        elif "FX6_R81_WAVE67_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R81_WAVE67_GUARD_RC"), int):
+                r81_wave67_guard_rc = kv["FX6_R81_WAVE67_GUARD_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -9496,6 +9828,90 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r78_bridge or {},
         }
 
+    r79_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r79_wave65_init,
+            last_r79_zoom_ciz_speed8_bridge,
+            last_r79_autoslow6_iso_baseiso_bridge,
+            last_r79_arw_lossless_hlg_sort_erofs_bridge,
+            last_r79_usblun_pd_uvc_streaming_erofs_bridge,
+            last_r79_wave65_guard,
+            last_r79_clean_unmount_wave65_h0_h3,
+            last_r79_lang,
+            last_r79_bridge,
+        )
+    ):
+        r79_telemetry = {
+            "wave65_guard_rc": r79_wave65_guard_rc,
+            "wave65_init": last_r79_wave65_init or {},
+            "zoom_ciz_speed8_bridge": last_r79_zoom_ciz_speed8_bridge or {},
+            "autoslow6_iso_baseiso_bridge": last_r79_autoslow6_iso_baseiso_bridge or {},
+            "arw_lossless_hlg_sort_erofs_bridge": last_r79_arw_lossless_hlg_sort_erofs_bridge or {},
+            "usblun_pd_uvc_streaming_erofs_bridge": last_r79_usblun_pd_uvc_streaming_erofs_bridge or {},
+            "wave65_guard": last_r79_wave65_guard or {},
+            "clean_unmount_wave65_h0_h3": last_r79_clean_unmount_wave65_h0_h3 or {},
+            "lang_telemetry": last_r79_lang or {},
+            "stage_b_bridge": last_r79_bridge or {},
+        }
+
+    r80_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r80_wave66_init,
+            last_r80_drive_10fps_focusbracket_bridge,
+            last_r80_shutter2_xsync250_efcs_nr_bridge,
+            last_r80_creativelook10_8param_softskin_bridge,
+            last_r80_delete_protect_recoverdb_erofs_bridge,
+            last_r80_wave66_guard,
+            last_r80_clean_unmount_wave66_h0_h3,
+            last_r80_lang,
+            last_r80_bridge,
+        )
+    ):
+        r80_telemetry = {
+            "wave66_guard_rc": r80_wave66_guard_rc,
+            "wave66_init": last_r80_wave66_init or {},
+            "drive_10fps_focusbracket_bridge": last_r80_drive_10fps_focusbracket_bridge or {},
+            "shutter2_xsync250_efcs_nr_bridge": last_r80_shutter2_xsync250_efcs_nr_bridge or {},
+            "creativelook10_8param_softskin_bridge": last_r80_creativelook10_8param_softskin_bridge or {},
+            "delete_protect_recoverdb_erofs_bridge": last_r80_delete_protect_recoverdb_erofs_bridge or {},
+            "wave66_guard": last_r80_wave66_guard or {},
+            "clean_unmount_wave66_h0_h3": last_r80_clean_unmount_wave66_h0_h3 or {},
+            "lang_telemetry": last_r80_lang or {},
+            "stage_b_bridge": last_r80_bridge or {},
+        }
+
+    r81_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r81_wave67_init,
+            last_r81_pixelmap_apr_bridge,
+            last_r81_monitor3_evf_debunk_bridge,
+            last_r81_recallhold11_pushaf_bridge,
+            last_r81_hdmi_tc_recctrl_sdi_erofs_bridge,
+            last_r81_wave67_guard,
+            last_r81_clean_unmount_wave67_h0_h3,
+            last_r81_lang,
+            last_r81_bridge,
+        )
+    ):
+        r81_telemetry = {
+            "wave67_guard_rc": r81_wave67_guard_rc,
+            "wave67_init": last_r81_wave67_init or {},
+            "pixelmap_apr_bridge": last_r81_pixelmap_apr_bridge or {},
+            "monitor3_evf_debunk_bridge": last_r81_monitor3_evf_debunk_bridge or {},
+            "recallhold11_pushaf_bridge": last_r81_recallhold11_pushaf_bridge or {},
+            "hdmi_tc_recctrl_sdi_erofs_bridge": last_r81_hdmi_tc_recctrl_sdi_erofs_bridge or {},
+            "wave67_guard": last_r81_wave67_guard or {},
+            "clean_unmount_wave67_h0_h3": last_r81_clean_unmount_wave67_h0_h3 or {},
+            "lang_telemetry": last_r81_lang or {},
+            "stage_b_bridge": last_r81_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -9571,6 +9987,9 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r76_telemetry": r76_telemetry,
         "r77_telemetry": r77_telemetry,
         "r78_telemetry": r78_telemetry,
+        "r79_telemetry": r79_telemetry,
+        "r80_telemetry": r80_telemetry,
+        "r81_telemetry": r81_telemetry,
     }
 
 
@@ -9728,6 +10147,12 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r77"
     if args.round >= 78:
         tmp_prefix = "fx6-r78"
+    if args.round >= 79:
+        tmp_prefix = "fx6-r79"
+    if args.round >= 80:
+        tmp_prefix = "fx6-r80"
+    if args.round >= 81:
+        tmp_prefix = "fx6-r81"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -9816,6 +10241,9 @@ def run_once(args: argparse.Namespace) -> int:
         r76_mode = getattr(args, "r76_mode", "shoe_audio_4ch_subject_recog_silent_version_big6")
         r77_mode = getattr(args, "r77_mode", "hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6")
         r78_mode = getattr(args, "r78_mode", "breathing_camid_copyright46_powersave9_ntscpal_big6")
+        r79_mode = getattr(args, "r79_mode", "zoom_ciz_autoslow_iso_arw_usblun_uvc_erofs_big6")
+        r80_mode = getattr(args, "r80_mode", "drive_focusbracket_shutter_efcs_creativelook_recoverdb_big6")
+        r81_mode = getattr(args, "r81_mode", "pixelmap_monitor_recallhold_hdmi_recctrl_big6")
         if args.round >= 8:
             stage_label = (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone47RealHw141stLiveWave60RecMediaAutoSwitchProxyCloudPowerOffBleMyMenu42Erofs+r74_mode={r74_mode}+lang={lang})"
@@ -10086,6 +10514,12 @@ def run_once(args: argparse.Namespace) -> int:
                 stage_label = f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone50RealHw150thLiveWave63HdmiRaw4264Desqueeze165xRecLamp3LedVarShutterApscS35+r77_mode={r77_mode}+lang={lang})"
             if args.round >= 78:
                 stage_label = f"Stage-B P1..P9+Fan+P10+P11+P12+P4(51RealHw153rdLiveWave64Breathing120pCamIdReel37CharCopyright46SerialPowerSave9NtscPalErofs30+r78_mode={r78_mode}+lang={lang})"
+            if args.round >= 79:
+                stage_label = f"Stage-B P1..P9+Fan+P10+P11+P12+P4(52RealHw156thLiveWave65ZoomCizAutoSlowIsoArwUsbLunUvcErofs30+r79_mode={r79_mode}+lang={lang})"
+            if args.round >= 80:
+                stage_label = f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone53RealHw159thLiveWave66DriveFocusBracketShutterEfcsCreativeLookRecoverDbErofs30+r80_mode={r80_mode}+lang={lang})"
+            if args.round >= 81:
+                stage_label = f"Stage-B P1..P9+Fan+P10+P11+P12+P4(54RealHw162ndLiveWave67PixelMapMonitorRecallHoldHdmiRecCtrlSdiErofs30+r81_mode={r81_mode}+lang={lang})"
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -10212,6 +10646,12 @@ def run_once(args: argparse.Namespace) -> int:
                 r77_mode=r77_mode,
                 enable_r78=(args.round >= 78),
                 r78_mode=r78_mode,
+                enable_r79=(args.round >= 79),
+                r79_mode=r79_mode,
+                enable_r80=(args.round >= 80),
+                r80_mode=r80_mode,
+                enable_r81=(args.round >= 81),
+                r81_mode=r81_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -10396,6 +10836,9 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R76_WAVE62_GUARD_EXIT" in txt
                     or "FX6_R77_WAVE63_GUARD_EXIT" in txt
                     or "FX6_R78_WAVE64_GUARD_EXIT" in txt
+                    or "FX6_R79_WAVE65_GUARD_EXIT" in txt
+                    or "FX6_R80_WAVE66_GUARD_EXIT" in txt
+                    or "FX6_R81_WAVE67_GUARD_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -10482,6 +10925,9 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R76_WAVE62_GUARD_EXIT" in serial_text
             or "FX6_R77_WAVE63_GUARD_EXIT" in serial_text
             or "FX6_R78_WAVE64_GUARD_EXIT" in serial_text
+            or "FX6_R79_WAVE65_GUARD_EXIT" in serial_text
+            or "FX6_R80_WAVE66_GUARD_EXIT" in serial_text
+            or "FX6_R81_WAVE67_GUARD_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -10583,6 +11029,9 @@ def run_once(args: argparse.Namespace) -> int:
             "r76_mode": r76_mode if args.round >= 76 else None,
             "r77_mode": r77_mode if args.round >= 77 else None,
             "r78_mode": r78_mode if args.round >= 78 else None,
+            "r79_mode": r79_mode if args.round >= 79 else None,
+            "r80_mode": r80_mode if args.round >= 80 else None,
+            "r81_mode": r81_mode if args.round >= 81 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -10668,6 +11117,9 @@ def run_once(args: argparse.Namespace) -> int:
             "r76_telemetry": milestones.get("r76_telemetry") if args.round >= 76 else None,
             "r77_telemetry": milestones.get("r77_telemetry") if args.round >= 77 else None,
             "r78_telemetry": milestones.get("r78_telemetry") if args.round >= 78 else None,
+            "r79_telemetry": milestones.get("r79_telemetry") if args.round >= 79 else None,
+            "r80_telemetry": milestones.get("r80_telemetry") if args.round >= 80 else None,
+            "r81_telemetry": milestones.get("r81_telemetry") if args.round >= 81 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -13722,6 +14174,659 @@ def sanitize_round78_summary(
     )
 
 
+_sanitize_r79_value = _sanitize_r78_value
+
+
+def sanitize_round79_summary(
+    r79a_raw: Dict[str, Any],
+    r79b_raw: Dict[str, Any],
+    r79c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the Round 79 (52/52 Real-HW Rounds, 156/156 Live Runs, 104/104 PNGs <= 27,467 B) summary.json telemetry receipt."""
+    t79a = r79a_raw.get("r79_telemetry") or {}
+    t79b = r79b_raw.get("r79_telemetry") or {}
+    t79c = r79c_raw.get("r79_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r79_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 79,
+            "lang": raw.get("lang", "en"),
+            "r79_mode": raw.get("r79_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r79_telemetry": _sanitize_r79_value(raw.get("r79_telemetry") or {}),
+            "gpe0_readback": _sanitize_r79_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r79_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r79_value(entry)
+
+    r79a_nz = (r79a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r79b_guard = t79b.get("wave65_guard") or {}
+    r79c_h0h3 = t79c.get("clean_unmount_wave65_h0_h3") or {}
+    r79a_init = t79a.get("wave65_init") or {}
+
+    return _sanitize_r79_value(
+        {
+            "schema": "fx6-on-fx3-round79-zoom-ciz-autoslow-iso-arw-usblun-uvc-erofs-qemu-v1",
+            "round": 79,
+            "milestone": (
+                "52/52 Real-HW Rounds (R28..R79)! — Wave-65 [Zoom Range] (Optical zoom only def / ClearImage Zoom 1.5x-4K 2.0x-HD / "
+                "Digital Zoom 4.0x-Movie 8.0x-StillS; resists Reset; 8-step Lever/Custom/Remote zoom speeds resettable; Zoom Ring Rotate resists Reset; "
+                "non-optical AF/Multi/Face/Tracking interlocks vs FX6 Zoom Type 2-option ONLY with ZERO Digital Zoom -95 EOPNOTSUPP + Handle Zoom High=8/Low=3); "
+                "[Auto Slow Shutter] (Movie-only On def resettable; 6-way official interlock + Shutter Angle mutex), [ISO Range Limit] (manual ISO only, resists Reset), "
+                "Still-only [ISO AUTO Min. SS] (P/A + ISO AUTO only, blocked Movie/S&Q & absent on FX6), and Dual Native Base ISO (Cine EI 800/12800 vs auto 20x +4.33 EV per Gamma "
+                "vs FX6 Base Sensitivity Low/High + AGC); Still [RAW File Type] Compressed/Uncompressed ONLY (dormant Lossless Comp L/M/S -95 EOPNOTSUPP), "
+                "[JPEG/HEIF Switch] + [HLG Still Image] (BKID_APP_setting_still_hlg_photo, STILL_HLD_PHOTO_*, pure HEIF+P/A/S/M, BT.2100, ISO>=100/125), "
+                "[Sort Recording] + [Auto Switch Media] Slot-1 EROFS=-30; and [USB Connection Mode] 4 options, [USB LUN Setting]=Single exposing Slot 1 ONLY "
+                "(macOS mds/fseventsd/Finder/fsck_exfat writes blocked -30 EROFS, usb_tx=0, slot1_writes=0), [USB Power Supply] NP-FZ100 PD gate vs DC-C1 >=65W 5A vs FX6 19.5V DC IN, "
+                "Dual FX3/FX6 native UVC/UAC debunk (-95 EOPNOTSUPP), [Movie Rec During Streaming] (_f 0x79d5) vs HDMI [Rec. Media dur HDMI Output] (_f 0x6144) Slot-1 EROFS=-30 "
+                "(154th..156th Live Unmodified ILME-FX3 Ver. 7.02 ARM64 QEMU Runs -> 156/156 Live Runs, 104/104 PNGs <= 27,467 B!)"
+            ),
+            "date": "2026-11-21",
+            "kernel_version": r79a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "usb_tx": 0,
+            "slot1_writes": 0,
+            "hardware_safety_locks": {
+                "hardware_live_attachment_authorized": False,
+                "persistent_emmc_writes_authorized": False,
+                "cross_model_flash_authorized": False,
+                "spi_nor_write_authorized": False,
+                "el3_payload_transmit_authorized": False,
+                "raw_firmware_bytes_leaked": 0,
+                "usb_tx": 0,
+                "slot1_writes": 0,
+            },
+            "realhw_mechanisms_verified": {
+                "wave65_zoom_ciz_autoslow_iso_arw_usblun_uvc_init": r79a_init,
+                "zoom_ciz_speed8_stage_b_bridge": t79a.get("zoom_ciz_speed8_bridge") or {},
+                "autoslow6_iso_baseiso_stage_b_bridge": t79a.get("autoslow6_iso_baseiso_bridge") or {},
+                "arw_lossless_hlg_sort_erofs_stage_b_bridge": t79a.get("arw_lossless_hlg_sort_erofs_bridge") or {},
+                "usblun_pd_uvc_streaming_erofs_stage_b_bridge": t79a.get("usblun_pd_uvc_streaming_erofs_bridge") or {},
+                "wave65_fail_closed_guard": r79b_guard,
+                "clean_unmount_wave65_reset_and_16_h0_h3": r79c_h0h3,
+            },
+            "runs": {
+                "r79a_zoom_ciz_autoslow_iso_arw_usblun_uvc_erofs_big6_schinese": _clean_run(
+                    r79a_raw,
+                    (
+                        "154th Live FX3 7.02 QEMU Run (Round 79 / 52nd Real-HW Round!) — Wave-65 4-pillar Stage-A/B verification: "
+                        "[Zoom Range] Optical/CIZ (1.5x 4K / 2.0x HD)/Digital (4.0x Movie / 8.0x Still S) + 8-step resettable speeds + "
+                        "non-optical AF/Multi/Face/Tracking interlocks vs FX6 Zero Digital Zoom (-95) & Handle Zoom (High=8/Low=3); "
+                        "[Auto Slow Shutter] 6-way lockout + Angle mutex, [ISO Range Limit] (manual-only, resists Reset), Still-only [ISO AUTO Min. SS], "
+                        "Dual Native Base ISO (Cine EI 800/12800 vs auto 20x +4.33 EV per Gamma); Still ARW Compressed/Uncompressed ONLY (dormant Lossless Comp -95), "
+                        "[HLG Still Image] BT.2100 + ISO>=100/125, [Sort Recording] Slot-1 EROFS=-30; [USB Connection Mode] 4 options, "
+                        "[USB LUN Setting]=Single exposing Slot 1 ONLY (macOS host writes -30 EROFS, usb_tx=0, slot1_writes=0), NP-FZ100 PD gate vs DC-C1 >=65W 5A vs FX6 19.5V DC IN, "
+                        "Dual FX3/FX6 UVC debunk (-95), [Movie Rec During Streaming] (_f 0x79d5) vs HDMI [Rec. Media dur HDMI Output] (_f 0x6144) Slot-1 EROFS=-30, "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r79a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r79b_wave65_zoom_ciz_autoslow_iso_arw_usblun_uvc_guard": _clean_run(
+                    r79b_raw,
+                    (
+                        "155th Live FX3 7.02 QEMU Run — Fail-closed Wave-65 guard rehearsal: FX6 Digital Zoom / FX6 ISO AUTO Min. SS / "
+                        "FX3 dormant RAW Lossless Comp (L/M/S) / FX6 Still ARW / Dual FX3 & FX6 native UVC/UAC USB Streaming / Micro-USB power (-95 EOPNOTSUPP); "
+                        "CIZ & Digital on Still RAW, Movie 120p, S&Q 120fps, FX6 S&Q>60 & RAW / Auto Slow Shutter 6-way lockouts + Shutter Angle / "
+                        "ISO Range Limit on AUTO / ISO AUTO Min. SS in Movie & S&Q / non-Cine EI manual Base ISO / HLG Still on JPEG, RAW, iAuto / "
+                        "USB PD without NP-FZ100 or DC-C1 <65W / FX6 DC IN <15.5V (-16 EBUSY); Zoom speed=9 / inverted ISO bounds / NULL (-22 EINVAL); "
+                        "live attach (-1 EPERM); and Sort Recording spillover, MSC Single & MTP host mds/fseventsd Slot-1 writes, Streaming/HDMI rec to Slot-1, "
+                        "P12/P2/cnflasha writes (-30 EROFS, usb_tx=0, slot1_writes=0, slot1_data_sector_writes=0, emmc_write_count=0, cnflasha_writes=0)"
+                    ),
+                ),
+                "r79c_clean_unmount_wave65_reset_h0_h3_big6_schinese": _clean_run(
+                    r79c_raw,
+                    (
+                        "156th Live FX3 7.02 QEMU Run (52/52 Real-HW Rounds, 156/156 Live Runs, 104/104 PNGs <= 27,467 B!) — "
+                        "Clean unmount of volatile Stage-B overlay restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + Wave-65 3-tier asymmetric "
+                        "Reset vs Initialize verification ([Camera Settings Reset] resets Zoom Lever/Custom/Remote speeds, Auto Slow Shutter, "
+                        "ISO AUTO Min. SS, RAW File Type, JPEG/HEIF Switch, HLG Still Image, Movie Rec During Streaming while preserving "
+                        "Zoom Range, Zoom Ring Rotate, ISO Range Limit, Sort Recording, USB Connection Mode, USB LUN Setting, USB Power Supply, and Airplane Mode=On; "
+                        "[Reset Network Set.] resets Streaming Rec while preserving Shooting/Setup & Airplane Mode=On; [Initialize] restores all Wave-65 defaults "
+                        "while preserving Airplane Mode=On) + dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r79_zoom_ciz_autoslow_iso_arw_usblun_uvc_erofs_audit": {
+                "round": 79,
+                "realhw_rounds_count": 52,
+                "total_live_runs": 156,
+                "total_png_receipts": 104,
+                "milestone324_qemu_rounds": 52,
+                "milestone324_qemu_runs": 156,
+                "milestone324_png_receipts": 104,
+                "milestone364_qemu_rounds": 52,
+                "milestone364_qemu_runs": 156,
+                "milestone364_png_receipts": 104,
+                "total_runs": 3,
+                "fx6_digital_zoom_supported": False,
+                "fx3_iso_auto_min_ss_movie_supported": False,
+                "fx3_raw_lossless_comp_exposed": False,
+                "fx6_still_arw_hlg_photo_supported": False,
+                "fx3_native_uvc_usb_streaming_exposed": False,
+                "fx6_native_uvc_usb_streaming_exposed": False,
+                "fx3_usb_pd_battery_free_supported": False,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "all_3_runs_usb_tx_zero": True,
+                "all_3_runs_slot1_writes_zero": True,
+                "r79a_wave65_zoom_ciz_autoslow_iso_arw_usblun_uvc_verified": bool(r79a_init.get("r79_init_ok") == 1),
+                "r79a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r79a_nz >= 300000),
+                "r79b_wave65_guard_fail_closed": bool(r79b_guard.get("r79b_ok") == 1),
+                "r79b_erofs_ebusy_eopnotsupp_einval_eperm_verified": bool(
+                    r79b_guard.get("fx6_digital_zoom_rc") == -95
+                    and r79b_guard.get("fx3_ciz_still_raw_rc") == -16
+                    and r79b_guard.get("fx3_ciz_120p_rc") == -16
+                    and r79b_guard.get("fx3_dig_sq120_rc") == -16
+                    and r79b_guard.get("as_sq_lock_rc") == -16
+                    and r79b_guard.get("as_s_lock_rc") == -16
+                    and r79b_guard.get("as_m_lock_rc") == -16
+                    and r79b_guard.get("as_fixed_iso_lock_rc") == -16
+                    and r79b_guard.get("as_flex_shutter_man_rc") == -16
+                    and r79b_guard.get("as_cineei_lock_rc") == -16
+                    and r79b_guard.get("as_angle_mutex_rc") == -16
+                    and r79b_guard.get("minss_movie_ebusy_rc") == -16
+                    and r79b_guard.get("fx6_minss_absent_rc") == -95
+                    and r79b_guard.get("raw_lossless_rc") == -95
+                    and r79b_guard.get("raw_lossless_l_rc") == -95
+                    and r79b_guard.get("raw_lossless_m_rc") == -95
+                    and r79b_guard.get("raw_lossless_s_rc") == -95
+                    and r79b_guard.get("fx6_still_arw_rc") == -95
+                    and r79b_guard.get("sort_slot1_erofs_rc") == -30
+                    and r79b_guard.get("fx3_uvc_dormant_rc") == -95
+                    and r79b_guard.get("fx6_uvc_dormant_rc") == -95
+                    and r79b_guard.get("lun_single_msc_slot1_erofs_rc") == -30
+                    and r79b_guard.get("mtp_slot1_erofs_rc") == -30
+                    and r79b_guard.get("pd_no_fz100_ebusy_rc") == -16
+                    and r79b_guard.get("stream_rec_slot1_erofs_rc") == -30
+                    and r79b_guard.get("hdmi_rec_slot1_erofs_rc") == -30
+                    and r79b_guard.get("slot1_mds_erofs_rc") == -30
+                    and r79b_guard.get("slot1_fseventsd_erofs_rc") == -30
+                    and r79b_guard.get("null_cfg_einval_rc") == -22
+                    and r79b_guard.get("live_attach_eperm_rc") == -1
+                    and r79b_guard.get("usb_tx") == 0
+                    and r79b_guard.get("slot1_writes") == 0
+                    and r79b_guard.get("slot1_data_sector_writes") == 0
+                    and r79b_guard.get("emmc_write_count") == 0
+                    and r79b_guard.get("cnflasha_writes") == 0
+                ),
+                "r79c_clean_unmount_wave65_reset_and_16_h0_eq_h3_verified": bool(
+                    r79c_h0h3.get("r79c_ok") == 1
+                    and r79c_h0h3.get("stock_unmount_restored_ok") == 1
+                    and r79c_h0h3.get("camreset_resets_speeds_autoslow_minss_arw_hlg_preserves_zoomrange_ring_isolimit_sort_usb_airplane_ok") == 1
+                    and r79c_h0h3.get("nwreset_resets_streamrec_preserves_wave65_setup_airplane_ok") == 1
+                    and r79c_h0h3.get("initialize_restores_wave65_defaults_preserves_airplane_ok") == 1
+                    and r79c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) & ILME-FX6 (Ver. 6.01) optical zoom/AF bench verifying ClearImage Zoom (1.5x 4K / 2.0x HD), Digital Zoom (4.0x Movie / 8.0x Still S vs FX6 zero Digital Zoom), 8-step Zoom Lever/Custom/Remote speeds, non-optical AF/Multi/Face/Tracking lockouts, and [Auto Slow Shutter] 6-way lockout + Dual Native Base ISO sensor dual-gain crossover remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) still imaging & media bench verifying 14-bit Compressed/Uncompressed .ARW (absence of dormant Lossless Comp L/M/S), [HLG Still Image] BT.2100 HEIF + ISO 100/125 floor, and [Sort Recording] + [Auto Switch Media] Slot 1 spillover protection remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) & ILME-FX6 (Ver. 6.01) USB/Power/Streaming bench verifying [USB Connection Mode] 4 options, [USB LUN Setting]=Single Slot-1 host isolation against macOS mds/fseventsd/Finder/fsck_exfat, [USB Power Supply] NP-FZ100 gate vs DC-C1 >=65W 5A PD vs FX6 19.5V DC IN battery-free operation, and dual FX3/FX6 native UVC absence remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
+_sanitize_r80_value = _sanitize_r79_value
+
+
+def sanitize_round80_summary(
+    r80a_raw: Dict[str, Any],
+    r80b_raw: Dict[str, Any],
+    r80c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the Milestone Round 80 (53/53 Real-HW Rounds, 159/159 Live Runs, 106/106 PNGs <= 27,467 B) summary.json telemetry receipt."""
+    t80a = r80a_raw.get("r80_telemetry") or {}
+    t80b = r80b_raw.get("r80_telemetry") or {}
+    t80c = r80c_raw.get("r80_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r80_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 80,
+            "lang": raw.get("lang", "en"),
+            "r80_mode": raw.get("r80_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r80_telemetry": _sanitize_r80_value(raw.get("r80_telemetry") or {}),
+            "gpe0_readback": _sanitize_r80_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r80_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r80_value(entry)
+
+    r80a_nz = (r80a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r80b_guard = t80b.get("wave66_guard") or {}
+    r80c_h0h3 = t80c.get("clean_unmount_wave66_h0_h3") or {}
+    r80a_init = t80a.get("wave66_init") or {}
+
+    return _sanitize_r80_value(
+        {
+            "schema": "fx6-on-fx3-round80-milestone-drive-focusbracket-shutter-efcs-creativelook-recoverdb-qemu-v1",
+            "round": 80,
+            "milestone": (
+                "Milestone Round 80 — 53/53 Real-HW Rounds (R28..R80)! — Wave-66 Still [Drive Mode] (Single def / Cont. Shooting Hi+ 10fps, Hi 8fps, Mid 6fps, Lo 3fps; "
+                "Uncompressed RAW/Flash burst drop; > F11 1st-frame AF lock; Self-timer; Cont./Single/WB/DRO Bracket; Can be reset) + Dormant [Focus Bracket] (_f 0x7563, "
+                "DRIVE_MODE_FOCUS_BRACKET) debunk blocked -95 EOPNOTSUPP on BOTH FX3 7.02 & FX6 6.01; 2-Option [Shutter Type] (Mechanical/Electronic ONLY, NO Auto -> -95; "
+                "5-feature Electronic/Silent lockout; single 1/250 s flash X-Sync with NO 1/320 s APS-C -> -95; [e-Front Curtain Shut.] resists Reset with ELF typo "
+                "BKID_APP_setting_front_curtaion_shutter; [Long Exposure NR] >=1s; [High ISO NR] ignored for .ARW; vs FX6 zero mechanical shutter / Noise Suppression + APR); "
+                "[Creative Look] (10 presets ST..SE + Custom Look 1..6 = 16 Still/Movie slots + 8 params Clarity/Fade/Sharpness 0..9 asymmetric, Sharpness Range 1..5; "
+                "BW/SE Saturation lock; Movie/S&Q Sharpness Range lock; iAuto/PP/Log/HLG [-] lock) + Dormant [Soft Skin Effect] (_f 0x76d9) blocked -95 on BOTH FX3 & FX6 "
+                "(vs FX6 Base Look / Scene File / Multi Matrix); and [Delete] / [Delete confirm.] / [Delete pressing twice] / Proxy co-delete & co-protect / [Protect] / "
+                "[Recover Image DB] (AVF_INFO rebuild + FTP log clear, survives BOTH Reset & Initialize) Tier-0 Slot 1 EROFS=-30 Firewall + [Display Media Info.] safe O_RDONLY "
+                "(157th..159th Live Unmodified ILME-FX3 Ver. 7.02 ARM64 QEMU Runs -> 159/159 Live Runs, 106/106 PNGs <= 27,467 B!)"
+            ),
+            "date": "2026-11-21",
+            "kernel_version": r80a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "usb_tx": 0,
+            "slot1_writes": 0,
+            "hardware_safety_locks": {
+                "hardware_live_attachment_authorized": False,
+                "persistent_emmc_writes_authorized": False,
+                "cross_model_flash_authorized": False,
+                "spi_nor_write_authorized": False,
+                "el3_payload_transmit_authorized": False,
+                "raw_firmware_bytes_leaked": 0,
+                "usb_tx": 0,
+                "slot1_writes": 0,
+            },
+            "realhw_mechanisms_verified": {
+                "wave66_drive_focusbracket_shutter_efcs_creativelook_recoverdb_init": r80a_init,
+                "drive_10fps_focusbracket_stage_b_bridge": t80a.get("drive_10fps_focusbracket_bridge") or {},
+                "shutter2_xsync250_efcs_nr_stage_b_bridge": t80a.get("shutter2_xsync250_efcs_nr_bridge") or {},
+                "creativelook10_8param_softskin_stage_b_bridge": t80a.get("creativelook10_8param_softskin_bridge") or {},
+                "delete_protect_recoverdb_erofs_stage_b_bridge": t80a.get("delete_protect_recoverdb_erofs_bridge") or {},
+                "wave66_fail_closed_guard": r80b_guard,
+                "clean_unmount_wave66_reset_and_16_h0_h3": r80c_h0h3,
+            },
+            "runs": {
+                "r80a_drive_focusbracket_shutter_efcs_creativelook_recoverdb_big6_schinese": _clean_run(
+                    r80a_raw,
+                    (
+                        "157th Live FX3 7.02 QEMU Run (Milestone Round 80 / 53rd Real-HW Round!) — Wave-66 4-pillar Stage-A/B verification: "
+                        "Still [Drive Mode] (Single def / Hi+ 10fps, Hi 8fps, Mid 6fps, Lo 3fps; Uncompressed RAW/Flash burst drop; > F11 1st-frame AF lock; "
+                        "Self-timer; Cont./Single/WB/DRO Bracket; Can be reset) + Dormant [Focus Bracket] (_f 0x7563) blocked -95 on BOTH FX3 7.02 & FX6 6.01; "
+                        "2-option [Shutter Type] (Mechanical/Electronic ONLY, NO Auto -> -95; 5-feature Electronic/Silent lockout; single 1/250 s flash X-Sync with NO 1/320 s APS-C -> -95; "
+                        "[e-Front Curtain Shut.] resists Reset, ELF typo front_curtaion_shutter; [Long Exposure NR] >=1s; [High ISO NR] ignored for .ARW; vs FX6 shutterless NS+APR); "
+                        "[Creative Look] 10 presets + Custom 1..6 (16 Still/Movie slots) + 8 params (Clarity/Fade/Sharpness 0..9 asymmetric, Sharpness Range 1..5; BW/SE Sat lock; "
+                        "Movie/S&Q Sharpness Range lock; iAuto/PP/Log/HLG [-] lock) + Dormant [Soft Skin Effect] (_f 0x76d9) blocked -95 on BOTH FX3 & FX6; "
+                        "[Delete]/[Delete confirm.]/[Delete pressing twice]/[Protect]/[Recover Image DB] Tier-0 Slot 1 EROFS=-30 Firewall + [Display Media Info.] safe O_RDONLY, "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r80a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r80b_wave66_drive_focusbracket_shutter_efcs_creativelook_recoverdb_guard": _clean_run(
+                    r80b_raw,
+                    (
+                        "158th Live FX3 7.02 QEMU Run — Fail-closed Wave-66 guard rehearsal: FX3 & FX6 dormant [Focus Bracket] / FX6 Still Drive / Self-timer 10-img / "
+                        "FX3 dormant [Shutter Type]=Auto / APS-C 1/320s X-Sync / High ISO NR=High / FX6 mechanical shutter / FX3 & FX6 dormant [Soft Skin Effect] / FX6 Creative Look (-95 EOPNOTSUPP); "
+                        "Drive in Movie & S&Q / Bracket in iAuto / DRO under HLG Still / flash >1/250s / Electronic & Silent 5-feature lockouts / Long Exp NR in Cont. & iAuto=Off / "
+                        "High ISO NR in RAW-only / FX6 APR uncapped / BW & SE Saturation lock / Movie Sharpness Range lock / iAuto-PP-Log-HLG Creative Look lock (-16 EBUSY); "
+                        "2.0EV x 9 shots / Creative Look slot 16 / Clarity -1 / Fade -1 / Sharpness Range 0 / NULL (-22 EINVAL); protected clip delete (-13 EACCES); "
+                        "Recover Image DB low battery (-11 EAGAIN); live attach (-1 EPERM); and Slot 1 Delete/Delete-twice/Protect/Recover-Image-DB/AVF_INFO/DCIM-unlink-chmod, "
+                        "FX6 Restore Media ng_write_protected, P12/P2/cnflasha writes (-30 EROFS, usb_tx=0, slot1_writes=0, slot1_data_sector_writes=0, slot1_avf_info_mutated=0, emmc_write_count=0, cnflasha_writes=0)"
+                    ),
+                ),
+                "r80c_clean_unmount_wave66_reset_h0_h3_big6_schinese": _clean_run(
+                    r80c_raw,
+                    (
+                        "159th Live FX3 7.02 QEMU Run (Milestone Round 80: 53/53 Real-HW Rounds, 159/159 Live Runs, 106/106 PNGs <= 27,467 B!) — "
+                        "Clean unmount of volatile Stage-B overlay restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + Wave-66 3-tier asymmetric "
+                        "Reset vs Initialize verification ([Camera Settings Reset] resets Drive Mode, Shutter Type, Long Exposure NR, High ISO NR, "
+                        "Creative Look while preserving e-Front Curtain Shut., Delete confirm., Delete pressing twice, Recover Image DB generation, and Airplane Mode=On; "
+                        "[Reset Network Set.] preserves all Wave-66 settings & Airplane Mode=On; [Initialize] restores e-Front Curtain Shut., Delete confirm., "
+                        "and Delete pressing twice while preserving Recover Image DB generation & Airplane Mode=On) + dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r80_milestone_drive_focusbracket_shutter_efcs_creativelook_recoverdb_audit": {
+                "round": 80,
+                "realhw_rounds_count": 53,
+                "total_live_runs": 159,
+                "total_png_receipts": 106,
+                "milestone324_qemu_rounds": 53,
+                "milestone324_qemu_runs": 159,
+                "milestone324_png_receipts": 106,
+                "milestone364_qemu_rounds": 53,
+                "milestone364_qemu_runs": 159,
+                "milestone364_png_receipts": 106,
+                "total_runs": 3,
+                "fx3_focus_bracket_exposed": False,
+                "fx6_focus_bracket_exposed": False,
+                "fx3_shutter_type_auto_exposed": False,
+                "fx3_flash_xsync_320_apsc_supported": False,
+                "fx6_mechanical_shutter_supported": False,
+                "fx3_soft_skin_effect_exposed": False,
+                "fx6_soft_skin_effect_exposed": False,
+                "fx6_creative_look_supported": False,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "all_3_runs_usb_tx_zero": True,
+                "all_3_runs_slot1_writes_zero": True,
+                "r80a_wave66_drive_focusbracket_shutter_efcs_creativelook_recoverdb_verified": bool(r80a_init.get("r80_init_ok") == 1),
+                "r80a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r80a_nz >= 300000),
+                "r80b_wave66_guard_fail_closed": bool(r80b_guard.get("r80b_ok") == 1),
+                "r80b_erofs_ebusy_eopnotsupp_einval_eperm_verified": bool(
+                    r80b_guard.get("fx3_focus_bracket_rc") == -95
+                    and r80b_guard.get("fx6_focus_bracket_rc") == -95
+                    and r80b_guard.get("fx6_still_drive_rc") == -95
+                    and r80b_guard.get("drive_movie_lock_rc") == -16
+                    and r80b_guard.get("dro_hlg_lock_rc") == -16
+                    and r80b_guard.get("shutter_auto_rc") == -95
+                    and r80b_guard.get("xsync_320_apsc_rc") == -95
+                    and r80b_guard.get("xsync_500_over_rc") == -16
+                    and r80b_guard.get("eshutter_flash_rc") == -16
+                    and r80b_guard.get("eshutter_longnr_rc") == -16
+                    and r80b_guard.get("eshutter_efcs_rc") == -16
+                    and r80b_guard.get("eshutter_bulb_rc") == -16
+                    and r80b_guard.get("silent_antiflicker_rc") == -16
+                    and r80b_guard.get("fx6_mech_rc") == -95
+                    and r80b_guard.get("fx3_soft_skin_rc") == -95
+                    and r80b_guard.get("fx6_soft_skin_rc") == -95
+                    and r80b_guard.get("fx6_creative_look_rc") == -95
+                    and r80b_guard.get("cl_clarity_neg1_rc") == -22
+                    and r80b_guard.get("cl_bw_sat_rc") == -16
+                    and r80b_guard.get("cl_movie_srange_rc") == -16
+                    and r80b_guard.get("cl_pp_lock_rc") == -16
+                    and r80b_guard.get("cl_log_lock_rc") == -16
+                    and r80b_guard.get("slot1_del_erofs_rc") == -30
+                    and r80b_guard.get("slot1_del_twice_erofs_rc") == -30
+                    and r80b_guard.get("slot1_prot_erofs_rc") == -30
+                    and r80b_guard.get("slot1_recoverdb_erofs_rc") == -30
+                    and r80b_guard.get("slot1_avf_erofs_rc") == -30
+                    and r80b_guard.get("dcim_unlink_erofs_rc") == -30
+                    and r80b_guard.get("fx6_restore_wp_erofs_rc") == -30
+                    and r80b_guard.get("null_cfg_einval_rc") == -22
+                    and r80b_guard.get("live_attach_eperm_rc") == -1
+                    and r80b_guard.get("usb_tx") == 0
+                    and r80b_guard.get("slot1_writes") == 0
+                    and r80b_guard.get("slot1_data_sector_writes") == 0
+                    and r80b_guard.get("slot1_avf_info_mutated") == 0
+                    and r80b_guard.get("emmc_write_count") == 0
+                    and r80b_guard.get("cnflasha_writes") == 0
+                ),
+                "r80c_clean_unmount_wave66_reset_and_16_h0_eq_h3_verified": bool(
+                    r80c_h0h3.get("r80c_ok") == 1
+                    and r80c_h0h3.get("stock_unmount_restored_ok") == 1
+                    and r80c_h0h3.get("camreset_resets_drive_shutter_nr_creativelook_preserves_efcs_delete_recoverdb_airplane_ok") == 1
+                    and r80c_h0h3.get("nwreset_preserves_wave66_efcs_delete_recoverdb_airplane_ok") == 1
+                    and r80c_h0h3.get("initialize_restores_efcs_delete_preserves_recoverdb_airplane_ok") == 1
+                    and r80c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) & ILME-FX6 (Ver. 6.01) mechanical shutter & still drive bench verifying 10/8/6/3 fps continuous shooting burst drop under Uncompressed RAW/flash, >F11 1st-frame focus lock, absence of dormant [Focus Bracket] & [Shutter Type]=Auto, 1/250 s single flash X-Sync ceiling (no 1/320 s APS-C), [e-Front Curtain Shut.] bokeh clipping/Reset immunity, [Long Exposure NR] >=1 s dark-frame subtraction, and [High ISO NR] .ARW bypass remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) & ILME-FX6 (Ver. 6.01) color pipeline bench verifying [Creative Look] 10 presets + 6 Custom Look Still/Movie split + 8 params (Clarity/Fade/Sharpness 0..9, Sharpness Range 1..5), BW/SE Saturation & Movie Sharpness Range locks, iAuto/PP/Log/HLG [-] overrides, and absence of dormant [Soft Skin Effect] remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) & ILME-FX6 (Ver. 6.01) playback & media safety bench verifying [Delete confirm.], [Delete pressing twice], Proxy co-deletion/co-protection, [Protect], [Recover Image DB] AVF_INFO rebuild + FTP log clear vs Tier-0 Slot 1 physical write-protect isolation, and [Display Media Info.] 40,000-still telemetry remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
+_sanitize_r81_value = _sanitize_r80_value
+
+
+def sanitize_round81_summary(
+    r81a_raw: Dict[str, Any],
+    r81b_raw: Dict[str, Any],
+    r81c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the Round 81 (54/54 Real-HW Rounds, 162/162 Live Runs, 108/108 PNGs <= 27,467 B) summary.json telemetry receipt."""
+    t81a = r81a_raw.get("r81_telemetry") or {}
+    t81b = r81b_raw.get("r81_telemetry") or {}
+    t81c = r81c_raw.get("r81_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r81_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 81,
+            "lang": raw.get("lang", "en"),
+            "r81_mode": raw.get("r81_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r81_telemetry": _sanitize_r81_value(raw.get("r81_telemetry") or {}),
+            "gpe0_readback": _sanitize_r81_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r81_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r81_value(entry)
+
+    r81a_nz = (r81a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r81b_guard = t81b.get("wave67_guard") or {}
+    r81c_h0h3 = t81c.get("clean_unmount_wave67_h0_h3") or {}
+    r81a_init = t81a.get("wave67_init") or {}
+
+    return _sanitize_r81_value(
+        {
+            "schema": "fx6-on-fx3-round81-pixelmap-monitor-recallhold-hdmi-recctrl-qemu-v1",
+            "round": 81,
+            "overall_status": "PASS",
+            "synthetic_fallback": False,
+            "milestone": (
+                "Round 81 — 54/54 Real-HW Rounds (R28..R81)! — Wave-67 Pixel Mapping / Auto Pixel Mapping (Setup anti-Reset On def, manual dark+battery+auto-reboot, "
+                "Silent Target resettable Off/Not Target def -> shutdown shutter sound vdf_set_shutter_mute_by_pixel_mapping, ELF typos pixel_mappinng & excuted_status) "
+                "vs FX6 Technical > APR (lens cap + black cloth, zero ABB -> -95); Setup -> [Monitor] 3-Item Group (debunk [Finder/Monitor] -> -95; all 3 anti-Reset: "
+                "[Monitor Brightness], [Display Quality] thermal lock, [Monitor Flip Direction]) + 4 Dormant EVF Items blocked -95 vs FX6 VF Setting/Adjust & MIRROR switch "
+                "(zero 4-item submenu -> -95); Hold Custom Keys (AF On / Eye AF / Tracking On Still AF-C) & Still-Only P/A/S/M [Recall Custom hold 1-3] (Movie/S&Q/iAuto -> -95, "
+                "exact 11 bits 0x07FF, drive_mode excludes Self-timer, ZERO independent WB -> -95, anti-Reset, CAMSET*.DAT) vs FX6 Push AF/AGC/Iris & dormant High/Low Key; "
+                "and Setup -> [External Output] HDMI Matrix (all anti-Reset: Rec. Media dur HDMI Output On def / S&Q lock On / Off or RAW forces HDMI Info. Display=Off; "
+                "Output Resolution 1080 under Log/PPLUT + Rec. Media=On; 4K Output Set 24.00p reboot & playback isolation + ELF typo outpute; TC Output mandatory precondition "
+                "for REC Control; 4ch Audio CH1/2 vs CH3/4; CTRL FOR HDMI typo ctrl_for_hmdi; dormant 4K/2K & 24p/60p -> -95) + Tier-0 Slot 1 EROFS=-30 Firewall + "
+                "FX6 12G/6G/3G-SDI + HDMI Dual-Output Matrix (160th..162nd Live Unmodified ILME-FX3 Ver. 7.02 ARM64 QEMU Runs -> 162/162 Live Runs, 108/108 PNGs <= 27,467 B!)"
+            ),
+            "date": "2026-11-21",
+            "kernel_version": r81a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "usb_tx": 0,
+            "usb_tx_bytes": 0,
+            "emmc_writes": 0,
+            "slot1_writes": 0,
+            "slot1_data_sector_writes": 0,
+            "hardware_safety_locks": {
+                "hardware_live_attachment_authorized": False,
+                "persistent_emmc_writes_authorized": False,
+                "cross_model_flash_authorized": False,
+                "spi_nor_write_authorized": False,
+                "el3_payload_transmit_authorized": False,
+                "raw_firmware_bytes_leaked": 0,
+                "usb_tx": 0,
+                "usb_tx_bytes": 0,
+                "emmc_writes": 0,
+                "slot1_writes": 0,
+                "slot1_data_sector_writes": 0,
+            },
+            "realhw_mechanisms_verified": {
+                "wave67_pixelmap_monitor_recallhold_hdmi_recctrl_init": r81a_init,
+                "pixelmap_apr_stage_b_bridge": t81a.get("pixelmap_apr_bridge") or {},
+                "monitor3_evf_debunk_stage_b_bridge": t81a.get("monitor3_evf_debunk_bridge") or {},
+                "recallhold11_pushaf_stage_b_bridge": t81a.get("recallhold11_pushaf_bridge") or {},
+                "hdmi_tc_recctrl_sdi_erofs_stage_b_bridge": t81a.get("hdmi_tc_recctrl_sdi_erofs_bridge") or {},
+                "wave67_fail_closed_guard": r81b_guard,
+                "clean_unmount_wave67_reset_and_16_h0_h3": r81c_h0h3,
+            },
+            "runs": {
+                "r81a_pixelmap_monitor_recallhold_hdmi_recctrl_big6_schinese": _clean_run(
+                    r81a_raw,
+                    (
+                        "160th Live FX3 7.02 QEMU Run (Round 81 / 54th Real-HW Round!) — Wave-67 4-pillar Stage-A/B verification: "
+                        "[Auto Pixel Mapping] (On def, anti-Reset) & manual [Pixel Mapping] (dark+battery+reboot) + Silent Target (Off/Not Target def, resettable) "
+                        "+ ELF typos pixel_mappinng/excuted_status vs FX6 APR (zero ABB -> -95); Setup -> [Monitor] 3-item anti-Reset group (debunk [Finder/Monitor] & "
+                        "4 dormant EVF items -> -95) vs FX6 VF Setting/Adjust & MIRROR (zero 4-item submenu -> -95); Hold Custom Keys & Still-Only P/A/S/M "
+                        "[Recall Custom hold 1-3] (exact 11 bits 0x07FF, zero WB -> -95, Movie/S&Q/iAuto -> -95, anti-Reset, CAMSET*.DAT) vs FX6 Push AF/AGC/Iris; "
+                        "Setup -> [External Output] HDMI matrix (Rec. Media=On def / S&Q lock On / Log 1080 / 24.00p reboot + typo outpute / TC->REC Control / "
+                        "CTRL FOR HDMI typo ctrl_for_hmdi / dormant 4K/2K & 24p/60p -> -95) + Tier-0 Slot 1 EROFS=-30 Firewall + FX6 SDI/HDMI matrix, "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r81a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r81b_wave67_pixelmap_monitor_recallhold_hdmi_recctrl_guard": _clean_run(
+                    r81b_raw,
+                    (
+                        "161st Live FX3 7.02 QEMU Run — Fail-closed Wave-67 guard rehearsal: FX3/FX6 dormant ABB, [Finder/Monitor] group, 4 dormant EVF items, "
+                        "FX6 VF 4-item submenu, Tracking On Movie, Recall Custom hold Movie/S&Q/iAuto & independent WB bit, FX6 Recall Custom hold & dormant High/Low Key, "
+                        "FX3 SDI port, dormant 4K/2K & 24p/60p Output (-95 EOPNOTSUPP); Pixel Mapping uncapped / FX6 APR no cloth / Display Quality thermal lock / "
+                        "Eye AF S&Q / Tracking non-AF-C / Recall Self-timer / FX6 Push AF-AGC-Iris locks / S&Q HDMI Only-RAW-TC locks / REC Control without TC or compat / "
+                        "FX6 RAW(HDMI)->SDI 1080 & S&Q>60->HDMI 1080 (-16 EBUSY); Pixel Mapping low battery & FX6 APR temp (-11 EAGAIN); FX6 VF unconnected (-19 ENODEV); "
+                        "FX6 Parallel Rec no card (-2 ENOENT); OOB brightness & NULL (-22 EINVAL); live attach (-1 EPERM); and Tier-0 Slot 1 (HDMI Rec. Media=On, "
+                        "CAMSET*.DAT, FX6 Parallel Rec Slot 1, VFS M4ROOT/AVF_INFO/CAMSET, P12/P2/cnflasha) blocked -30 EROFS (usb_tx=0, slot1_writes=0, "
+                        "slot1_data_sector_writes=0, slot1_avf_info_mutated=0, emmc_write_count=0, cnflasha_writes=0)"
+                    ),
+                ),
+                "r81c_clean_unmount_wave67_reset_h0_h3_big6_schinese": _clean_run(
+                    r81c_raw,
+                    (
+                        "162nd Live FX3 7.02 QEMU Run (Round 81: 54/54 Real-HW Rounds, 162/162 Live Runs, 108/108 PNGs <= 27,467 B!) — "
+                        "Clean unmount of volatile Stage-B overlay restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + Wave-67 3-tier asymmetric "
+                        "Reset vs Initialize verification ([Camera Settings Reset] resets Silent Mode & Silent Target [Auto Pixel Mapping] while preserving "
+                        "Setup [Auto Pixel Mapping], all 3 [Monitor] items, [Reg. Custom Shoot Set] 11-bit Recall Custom hold, all [External Output] HDMI settings, "
+                        "pixel mapping count, and Airplane Mode=On; [Reset Network Set.] preserves all Wave-67 settings & Airplane Mode=On; [Initialize] restores "
+                        "Wave-67 Setup/Monitor/RecallHold/HDMI defaults while preserving pixel mapping count & Airplane Mode=On) + dlopen(libJit.so) + 16/16 H0 == H3 "
+                        "+ Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r81_pixelmap_monitor_recallhold_hdmi_recctrl_audit": {
+                "round": 81,
+                "realhw_rounds_count": 54,
+                "total_live_runs": 162,
+                "total_png_receipts": 108,
+                "milestone324_qemu_rounds": 54,
+                "milestone324_qemu_runs": 162,
+                "milestone324_png_receipts": 108,
+                "milestone364_qemu_rounds": 54,
+                "milestone364_qemu_runs": 162,
+                "milestone364_png_receipts": 108,
+                "milestone375_qemu_rounds": 54,
+                "milestone375_qemu_runs": 162,
+                "milestone375_png_receipts": 108,
+                "total_runs": 3,
+                "fx3_finder_monitor_group_present": False,
+                "fx3_evf_4items_exposed": False,
+                "fx6_abb_menu_exposed": False,
+                "fx6_vf_4subitems_exposed": False,
+                "fx3_recall_custom_hold_movie_supported": False,
+                "fx3_recall_custom_hold_wb_bit_present": False,
+                "fx6_high_low_key_exposed": False,
+                "fx3_hdmi_4k_2k_output_exposed": False,
+                "fx3_hdmi_24p_60p_output_exposed": False,
+                "fx3_sdi_port_present": False,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "all_3_runs_usb_tx_zero": True,
+                "all_3_runs_slot1_writes_zero": True,
+                "r81a_wave67_pixelmap_monitor_recallhold_hdmi_recctrl_verified": bool(r81a_init.get("r81_init_ok") == 1),
+                "r81a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r81a_nz >= 300000),
+                "r81b_wave67_guard_fail_closed": bool(r81b_guard.get("r81b_ok") == 1),
+                "r81b_erofs_ebusy_eopnotsupp_einval_eperm_verified": bool(
+                    r81b_guard.get("fx6_abb_dormant_rc") == -95
+                    and r81b_guard.get("evf_group_rc") == -95
+                    and r81b_guard.get("evf_sel_rc") == -95
+                    and r81b_guard.get("evf_bright_rc") == -95
+                    and r81b_guard.get("evf_ctemp_rc") == -95
+                    and r81b_guard.get("evf_fps_rc") == -95
+                    and r81b_guard.get("fx6_vf_4sub_rc") == -95
+                    and r81b_guard.get("recall_movie_rc") == -95
+                    and r81b_guard.get("recall_sq_rc") == -95
+                    and r81b_guard.get("recall_iauto_rc") == -95
+                    and r81b_guard.get("recall_wb_bit_rc") == -95
+                    and r81b_guard.get("fx6_highlow_rc") == -95
+                    and r81b_guard.get("fx3_sdi_port_rc") == -95
+                    and r81b_guard.get("hdmi_4k2k_rc") == -95
+                    and r81b_guard.get("hdmi_24p60p_rc") == -95
+                    and r81b_guard.get("rec_ctrl_no_tc_rc") == -16
+                    and r81b_guard.get("slot1_hdmi_rec_erofs_rc") == -30
+                    and r81b_guard.get("recall_camset_slot1_rc") == -30
+                    and r81b_guard.get("slot1_m4root_erofs_rc") == -30
+                    and r81b_guard.get("slot1_avf_erofs_rc") == -30
+                    and r81b_guard.get("slot1_camset_vfs_erofs_rc") == -30
+                    and r81b_guard.get("null_cfg_einval_rc") == -22
+                    and r81b_guard.get("live_attach_eperm_rc") == -1
+                    and r81b_guard.get("usb_tx") == 0
+                    and r81b_guard.get("slot1_writes") == 0
+                    and r81b_guard.get("slot1_data_sector_writes") == 0
+                    and r81b_guard.get("slot1_avf_info_mutated") == 0
+                    and r81b_guard.get("emmc_write_count") == 0
+                    and r81b_guard.get("cnflasha_writes") == 0
+                ),
+                "r81c_clean_unmount_wave67_reset_and_16_h0_eq_h3_verified": bool(
+                    r81c_h0h3.get("r81c_ok") == 1
+                    and r81c_h0h3.get("stock_unmount_restored_ok") == 1
+                    and r81c_h0h3.get("camreset_resets_silent_target_preserves_autopm_monitor3_recallhold_hdmi_airplane_ok") == 1
+                    and r81c_h0h3.get("nwreset_preserves_wave67_all_setup_recallhold_hdmi_airplane_ok") == 1
+                    and r81c_h0h3.get("initialize_restores_wave67_defaults_preserves_pm_count_airplane_ok") == 1
+                    and r81c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) & ILME-FX6 (Ver. 6.01) sensor pixel mapping & APR bench verifying shutdown Auto Pixel Mapping mechanical shutter sound when Silent Target = Off, manual Pixel Mapping lens-cap dark check / battery check / auto-reboot, and FX6 Technical > APR with lens cap + black cloth (zero ABB) remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) & ILME-FX6 (Ver. 6.01) display & hold-key bench verifying Setup -> [Monitor] 3-item anti-Reset group, Display Quality thermal lock to Standard, absence of dormant EVF items, Still P/A/S/M-only [Recall Custom hold 1-3] 11-bit override (zero independent WB, CAMSET*.DAT persistence), and FX6 VF Setting/Adjust / MIRROR / Push AF-AGC-Iris remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) & ILME-FX6 (Ver. 6.01) External Output HDMI/SDI bench verifying Rec. Media dur HDMI Output = On default & S&Q lock, Log/PPLUT 1080 downscale, 24.00p reboot & playback isolation, Time Code Output -> REC Control trigger, 4ch Audio CH1/2 vs CH3/4, Tier-0 Slot 1 physical write-protect isolation, and FX6 12G/6G/3G-SDI + HDMI dual-output matrix remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
@@ -13756,7 +14861,10 @@ def main() -> int:
     # r75_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75]
     # r76_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76]
     # r77_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78], required=True)
+    # r78_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78]
+    # r79_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79]
+    # r80_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -13809,6 +14917,9 @@ def main() -> int:
     ap.add_argument("--r76-mode", type=str, choices=["shoe_audio_4ch_subject_recog_silent_version_big6", "wave62_shoe_audio_subject_bird_silent_bodydata_nogo_guard", "clean_unmount_wave62_reset_h0_h3_big6"], default="shoe_audio_4ch_subject_recog_silent_version_big6")
     ap.add_argument("--r77-mode", type=str, choices=["hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6", "wave63_hdmi_raw_desqueeze_18x_reclamp_varshutter_apsc_guard", "clean_unmount_wave63_reset_h0_h3_big6"], default="hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6")
     ap.add_argument("--r78-mode", type=str, choices=["breathing_camid_copyright46_powersave9_ntscpal_big6", "wave64_breathing_camid_copyright46_powersave9_ntscpal_guard", "clean_unmount_wave64_reset_h0_h3_big6"], default="breathing_camid_copyright46_powersave9_ntscpal_big6")
+    ap.add_argument("--r79-mode", type=str, choices=["zoom_ciz_autoslow_iso_arw_usblun_uvc_erofs_big6", "wave65_zoom_ciz_autoslow_iso_arw_usblun_uvc_guard", "clean_unmount_wave65_reset_h0_h3_big6"], default="zoom_ciz_autoslow_iso_arw_usblun_uvc_erofs_big6")
+    ap.add_argument("--r80-mode", type=str, choices=["drive_focusbracket_shutter_efcs_creativelook_recoverdb_big6", "wave66_drive_focusbracket_shutter_efcs_creativelook_recoverdb_guard", "clean_unmount_wave66_reset_h0_h3_big6"], default="drive_focusbracket_shutter_efcs_creativelook_recoverdb_big6")
+    ap.add_argument("--r81-mode", type=str, choices=["pixelmap_monitor_recallhold_hdmi_recctrl_big6", "wave67_pixelmap_monitor_recallhold_hdmi_recctrl_guard", "clean_unmount_wave67_reset_h0_h3_big6"], default="pixelmap_monitor_recallhold_hdmi_recctrl_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

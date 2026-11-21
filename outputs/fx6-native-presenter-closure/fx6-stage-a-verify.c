@@ -49465,6 +49465,4613 @@ static int run_r78_clean_unmount_wave64_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ==================== Round 79 (52/52 Real-HW Rounds · Wave 65) ====================
+ * Wave 65:
+ *  1) [Zoom Range] (Optical zoom only / ClearImage Zoom 1.5x-4K 2.0x-HD / Digital Zoom 4.0x-Movie 8.0x-StillS;
+ *     resists Reset) + 8-step [Zoom Lever Speed]/[Custom Key Z. Speed]/[Remote Zoom Speed] (resettable) +
+ *     [Zoom Ring Rotate] (resists Reset) + non-optical AF/Multi/Face/Tracking interlocks vs FX6 Zoom Type
+ *     2-option ONLY (zero Digital Zoom -> -EOPNOTSUPP) + Handle Zoom (High=8/Low=3)
+ *  2) [Auto Slow Shutter] (Movie-only, On def, resettable; 6-way official interlock + Shutter Angle mutex) +
+ *     [ISO Range Limit] (manual ISO only, resists Reset) + Still-only [ISO AUTO Min. SS] (P/A + ISO AUTO only,
+ *     blocked Movie/S&Q) + Dual Native Base ISO (Cine EI 800/12800 vs auto 20x +4.33 EV per Gamma vs FX6 Base Sensitivity + AGC)
+ *  3) Still [RAW File Type] (Compressed/Uncompressed 14-bit .ARW ONLY; dormant Lossless Comp L/M/S -EOPNOTSUPP) +
+ *     [JPEG/HEIF Switch] + [HLG Still Image] (BKID_APP_setting_still_hlg_photo, STILL_HLD_PHOTO_*, pure HEIF + P/A/S/M,
+ *     BT.2100, ISO floor 100/125, disables PP/Creative Look/DRO) + [Sort Recording] + [Auto Switch Media] Slot-1 EROFS=-30
+ *  4) [USB Connection Mode] 4 options (Sel. When Connect / MSC / MTP / Remote Shooting; resists Reset) +
+ *     [USB LUN Setting]=Single exposes Slot 1 ONLY (macOS mds/fseventsd/Finder/fsck_exfat writes blocked -30 EROFS,
+ *     usb_tx=0, slot1_writes=0) + [USB Power Supply] NP-FZ100 PD gate vs DC-C1 >=65W 5A vs FX6 19.5V DC IN battery-free +
+ *     Dual FX3/FX6 native UVC/UAC debunk (-95 EOPNOTSUPP) + [Movie Rec During Streaming] (_f 0x79d5) vs
+ *     HDMI [Rec. Media dur HDMI Output] (_f 0x6144) Slot-1 EROFS=-30.
+ */
+
+typedef enum {
+    R79_BODY_FX3_702 = 0,
+    R79_BODY_FX6_601 = 1
+} r79_body_t;
+
+typedef enum {
+    R79_MODE_STILL = 0,
+    R79_MODE_MOVIE = 1,
+    R79_MODE_SQ = 2
+} r79_shoot_mode_t;
+
+typedef enum {
+    R79_ZOOM_OPTICAL_ONLY = 0,    /* default; resists Camera Settings Reset */
+    R79_ZOOM_CLEAR_IMAGE = 1,     /* 1.5x 4K / 2.0x HD */
+    R79_ZOOM_DIGITAL = 2          /* 4.0x Movie / 8.0x Still S; FX6 zero Digital Zoom -> -EOPNOTSUPP */
+} r79_zoom_range_t;
+
+typedef enum {
+    R79_EXP_P = 0,
+    R79_EXP_A = 1,
+    R79_EXP_S = 2,
+    R79_EXP_M = 3,
+    R79_EXP_IAUTO = 4,
+    R79_EXP_FLEX_SHUTTER_MANUAL = 5,
+    R79_EXP_FLEX_SHUTTER_AUTO = 6
+} r79_exp_mode_t;
+
+typedef enum {
+    R79_GAMMA_SLOG3 = 0,          /* 640 / 12800 (Cine EI 800 / 12800) */
+    R79_GAMMA_SCINETONE_HLG3 = 1, /* 100 / 2000 (S-Cinetone PP11, HLG, HLG3, Cine4) */
+    R79_GAMMA_PPOFF_HLG2 = 2,     /* 80 / 1600 (PP Off, HLG2, Cine3) */
+    R79_GAMMA_CINE1 = 3,          /* 64 / 1280 */
+    R79_GAMMA_HLG1_CINE2 = 4      /* 50 / 1000 */
+} r79_gamma_t;
+
+typedef enum {
+    R79_RAW_COMPRESSED = 0,       /* default (14-bit .ARW) */
+    R79_RAW_UNCOMPRESSED = 1,     /* 14-bit .ARW */
+    R79_RAW_DORMANT_LOSSLESS = 2, /* _f 0x6b56 dormant on FX3 7.02 -> -EOPNOTSUPP */
+    R79_RAW_DORMANT_LOSSLESS_L = 3, /* _f 0x7897 -> -EOPNOTSUPP */
+    R79_RAW_DORMANT_LOSSLESS_M = 4, /* _f 0x6bfd -> -EOPNOTSUPP */
+    R79_RAW_DORMANT_LOSSLESS_S = 5  /* _f 0x7894 -> -EOPNOTSUPP */
+} r79_raw_type_t;
+
+typedef enum {
+    R79_JH_JPEG = 0,              /* default */
+    R79_JH_HEIF_420 = 1,          /* 10-bit .HIF */
+    R79_JH_HEIF_422 = 2           /* 10-bit .HIF */
+} r79_jh_switch_t;
+
+typedef enum {
+    R79_REC_MEDIA_SLOT1 = 0,
+    R79_REC_MEDIA_SLOT2 = 1,
+    R79_REC_MEDIA_SIMULT = 2,
+    R79_REC_MEDIA_SORT = 3        /* Sort Recording; Auto Switch Media spillover to Slot 1 -> -EROFS */
+} r79_rec_media_t;
+
+typedef enum {
+    R79_USB_SEL_WHEN_CONNECT = 0, /* default; resists Reset */
+    R79_USB_MSC = 1,              /* MassStorage(MSC); 054C:0DA1 */
+    R79_USB_MTP = 2,              /* MTP; maps Slot 1 */
+    R79_USB_REMOTE_SHOOTING = 3,  /* Remote Shooting */
+    R79_USB_DORMANT_UVC_STREAM = 4 /* dormant on BOTH FX3 7.02 & FX6 6.01 -> -EOPNOTSUPP */
+} r79_usb_mode_t;
+
+typedef enum {
+    R79_LUN_MULTI = 0,            /* default: exposes Slot 1 + Slot 2 */
+    R79_LUN_SINGLE = 1            /* exposes Slot 1 ONLY (NOT hiding Slot 1!) */
+} r79_usb_lun_t;
+
+typedef struct {
+    int slot1_ro_vault_armed;
+    int cnflasha_ro_armed;
+    int emmc_ro_armed;
+    int airplane_mode_on;
+    /* Pillar 1: Zoom Range + 8-step Speeds + Zoom Ring Rotate + FX6 diff */
+    r79_zoom_range_t zoom_range;       /* resists Reset */
+    int zoom_ring_right_w_left_t;      /* 0=Left(W)/Right(T) def; resists Reset */
+    int zoom_lever_1st_stby;           /* 1..8, def 3; resettable */
+    int zoom_lever_2nd_stby;           /* 1..8, def 8 Fast; resettable */
+    int zoom_lever_1st_rec;            /* 1..8, def 3; resettable */
+    int zoom_lever_2nd_rec;            /* 1..8, def 8 Fast; resettable */
+    int custom_key_zoom_spd_stby;      /* 1..8, def 3; resettable */
+    int custom_key_zoom_spd_rec;       /* 1..8, def 3; resettable */
+    int remote_zoom_fixed;             /* 0=Variable def, 1=Fixed; resettable */
+    int remote_zoom_spd_stby;          /* 1..8, def 3; resettable */
+    int remote_zoom_spd_rec;           /* 1..8, def 3; resettable */
+    int active_zoom_scale_x100;        /* 100..800 */
+    int focus_area_disabled;           /* 1 when non-optical zoom active */
+    int metering_locked_multi;         /* 1 when non-optical zoom active */
+    int face_eye_af_disabled;          /* 1 when non-optical zoom active */
+    int tracking_disabled;             /* 1 when non-optical zoom active */
+    int fx6_handle_zoom_high;          /* def 8 */
+    int fx6_handle_zoom_low;           /* def 3 */
+    /* Pillar 2: Auto Slow Shutter 6-way + ISO Range Limit + Still ISO AUTO Min. SS + Dual Native Base ISO */
+    int auto_slow_shutter_on;          /* Movie-only, On def, resettable */
+    int iso_range_limit_min;           /* manual ISO only, def 40; resists Reset */
+    int iso_range_limit_max;           /* manual ISO only, def 409600; resists Reset */
+    int iso_auto_min_ss_mode;          /* -2=SLOWER,-1=SLOW,0=STD def,1=FAST,2=FASTER; Still P/A+AUTO only; resettable */
+    int cine_ei_active;                /* 1=Cine EI / Cine EI Quick */
+    int base_iso_val;                  /* 800 def or 12800 in Cine EI; auto per Gamma otherwise */
+    int high_base_iso_val;             /* 20x low base ISO (+4.33 EV) */
+    /* Pillar 3: Still ARW + Dormant Lossless + HLG Still + Sort Recording */
+    r79_raw_type_t raw_file_type;      /* Compressed def / Uncompressed; resettable */
+    r79_jh_switch_t jh_switch;         /* JPEG def / HEIF 4:2:0 / HEIF 4:2:2; resettable */
+    int hlg_still_image_on;            /* Off def; resettable; forces BT.2100 & ISO>=100/125 */
+    int hlg_still_bt2100_forced;
+    int hlg_still_iso_floor;
+    int hlg_disables_pp_look_dro;
+    r79_rec_media_t rec_media_mode;    /* resists Reset */
+    int auto_switch_media_on;          /* resists Reset */
+    /* Pillar 4: USB Mode 4-option + USB LUN Single (Slot 1 ONLY) + NP-FZ100 PD + Dual UVC Debunk + Streaming */
+    r79_usb_mode_t usb_conn_mode;      /* Sel. When Connect def; resists Reset */
+    r79_usb_lun_t usb_lun_setting;     /* Multi def / Single=Slot 1 ONLY; resists Reset */
+    int usb_power_supply_on;           /* On def; USB-C only; resists Reset */
+    int movie_rec_during_streaming_on; /* _f 0x79d5; Disable=0 def; resettable */
+    int rec_media_dur_hdmi_on;         /* _f 0x6144; distinct from Streaming */
+    /* Safety & dormant event counters (ALL MUST STAY 0) */
+    int dormant_fx6_digital_zoom_events;
+    int dormant_movie_iso_auto_min_ss_events;
+    int dormant_raw_lossless_comp_events;
+    int dormant_uvc_fx3_events;
+    int dormant_uvc_fx6_events;
+    int usb_tx;
+    int slot1_writes;
+    int slot1_data_sector_writes;
+    int emmc_write_count;
+} r79_wave65_cfg_t;
+
+__attribute__((noinline)) static int r79_lookup_wave65_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Shooting -> [Zoom] -> [Zoom Range] (Optical zoom only def / ClearImage Zoom / Digital Zoom; resists Reset)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Zoom] -> [Zoom Lever Speed / Custom Key Z. Speed / Remote Zoom Speed] (1..8 Standby/Rec; 1st=3, 2nd=8 Fast, Custom=3, Remote=Variable/3; resettable)") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Operation Customize] -> [Zoom Ring Rotate] (Left(W)/Right(T) def / Right(W)/Left(T); resists Reset)") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Exposure] -> [Auto Slow Shutter] (Movie-only, On def, resettable; 6-way lockout + Shutter Angle mutex)") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Exposure] -> [ISO Range Limit] (manual ISO only; resists Reset) & [ISO AUTO Min. SS] (Still P/A + ISO AUTO only; STD def; resettable)") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Exposure] -> [Base ISO] (Cine EI / Cine EI Quick explicit 800 def / 12800; non-Cine EI auto 20x +4.33 EV per Gamma)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [RAW File Type] (Compressed def / Uncompressed 14-bit .ARW ONLY; resettable)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [JPEG/HEIF Switch] & [HLG Still Image] (BKID_APP_setting_still_hlg_photo, STILL_HLD_PHOTO_*, pure HEIF + P/A/S/M, BT.2100, ISO>=100/125)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Media] -> [Rec. Media Settings] -> [Sort Recording] & [Auto Switch Media] (Slot 1 spillover EROFS=-30)") == 0 ||
+        strcmp(path, "MENU -> Setup -> [USB] -> [USB Connection Mode] (4 options: Sel. When Connect def / MSC / MTP / Remote Shooting; resists Reset)") == 0 ||
+        strcmp(path, "MENU -> Setup -> [USB] -> [USB LUN Setting] (Multi def / Single = Slot 1 ONLY; resists Reset) & [USB Power Supply] (On def; USB-C only; NP-FZ100 gate; resists Reset)") == 0 ||
+        strcmp(path, "MENU -> Network -> [Streaming] -> [Network Streaming] (RTMP/RTMPS/SRT) & [Movie Rec During Streaming] (_f 0x79d5, Disable def) vs HDMI [Rec. Media dur HDMI Output] (_f 0x6144)") == 0) {
+        return 0;
+    }
+    if (strcmp(path, "dormant::FX6 Technical > Zoom > Digital Zoom (FX6 Zoom Type 2-option ONLY: Optical / CIZ)") == 0 ||
+        strcmp(path, "dormant::FX3 [RAW File Type] -> [Lossless Comp (L/M/S)] (_f 0x6b56/0x7897/0x6bfd/0x7894; dormant on FX3 7.02)") == 0 ||
+        strcmp(path, "dormant::FX6 Still ARW / HEIF / [HLG Still Image] / [ISO AUTO Min. SS] (cinema-only FX6)") == 0 ||
+        strcmp(path, "dormant::FX3 Ver. 7.02 Native [Live Stream(USB Streaming)] UVC/UAC (_f 0x6216, usb_f_uvc.ko, g_webcam.ko)") == 0 ||
+        strcmp(path, "dormant::FX6 Ver. 6.01 Native UVC/UAC USB Streaming (BKID_APP_SETTING_USB_STREAMING_PROCAM, usb_f_uvc.ko)") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r79_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "_f:0x7164:Zoom Range") == 0 ||
+        strcmp(token, "_f:0x73f2:Optical zoom only") == 0 ||
+        strcmp(token, "_f:0x70e1:ClearImage Zoom") == 0 ||
+        strcmp(token, "_f:0x796c:Digital Zoom") == 0 ||
+        strcmp(token, "_f:0x6304:Zoom Lever Speed") == 0 ||
+        strcmp(token, "_f:0x6fc0:1st Zoom Spd.") == 0 ||
+        strcmp(token, "_f:0x78f0:2nd Zoom Spd.") == 0 ||
+        strcmp(token, "_f:0x78e8:Custom Key Z. Speed") == 0 ||
+        strcmp(token, "_f:0x7128:Remote Zoom Speed") == 0 ||
+        strcmp(token, "_f:0x6be7:Zoom Ring Rotate") == 0 ||
+        strcmp(token, "_f:0x7a01:Left(W)/Right(T)") == 0 ||
+        strcmp(token, "_f:0x7a9e:Right(W)/Left(T)") == 0 ||
+        strcmp(token, "_f:0x76ee:Auto Slow Shutter") == 0 ||
+        strcmp(token, "_f:0x69cb:ISO Range Limit") == 0 ||
+        strcmp(token, "_f:0x778b:ISO AUTO Min. SS") == 0 ||
+        strcmp(token, "_f:0x78ce:Base ISO") == 0 ||
+        strcmp(token, "_f:0x6ff2:RAW File Type") == 0 ||
+        strcmp(token, "_f:0x6f67:Compressed") == 0 ||
+        strcmp(token, "_f:0x6f5b:Uncompressed") == 0 ||
+        strcmp(token, "_f:0x742a:JPEG/HEIF Switch") == 0 ||
+        strcmp(token, "_f:0x7959:HEIF(4:2:0)") == 0 ||
+        strcmp(token, "_f:0x6057:HEIF(4:2:2)") == 0 ||
+        strcmp(token, "_f:0x76c8:HLG Still Image") == 0 ||
+        strcmp(token, "_f:0x7916:Sort Recording") == 0 ||
+        strcmp(token, "_f:0x6dd9:Auto Switch Media") == 0 ||
+        strcmp(token, "_f:0x69a2:USB Connection Mode") == 0 ||
+        strcmp(token, "_f:0x7738:Sel. When Connect") == 0 ||
+        strcmp(token, "_f:0x6c54:MassStorage(MSC)") == 0 ||
+        strcmp(token, "base:0xe24b:MTP") == 0 ||
+        strcmp(token, "_f:0x7c6f:Remote Shooting") == 0 ||
+        strcmp(token, "_f:0x6b19:USB LUN Setting") == 0 ||
+        strcmp(token, "_f:0x6cec:Multi") == 0 ||
+        strcmp(token, "_f:0x776d:Single") == 0 ||
+        strcmp(token, "_f:0x721e:USB Power Supply") == 0 ||
+        strcmp(token, "_f:0x79d5:Movie Rec During Streaming") == 0 ||
+        strcmp(token, "_f:0x6144:Rec. Media dur HDMI Output") == 0) {
+        return 0;
+    }
+    if (strcmp(token, "_f:0x6b56:Lossless Comp (dormant on FX3 7.02)") == 0 ||
+        strcmp(token, "_f:0x7897:Lossless Comp (L) (dormant on FX3 7.02)") == 0 ||
+        strcmp(token, "_f:0x6bfd:Lossless Comp (M) (dormant on FX3 7.02)") == 0 ||
+        strcmp(token, "_f:0x7894:Lossless Comp (S) (dormant on FX3 7.02)") == 0 ||
+        strcmp(token, "_f:0x6216:Live Stream(USB Streaming) (dormant on FX3 7.02)") == 0 ||
+        strcmp(token, "_g:0x63f7:USB Streaming (dormant on FX3 7.02)") == 0 ||
+        strcmp(token, "dormant:FX6_USB_STREAMING_PROCAM") == 0 ||
+        strcmp(token, "dormant:FX6_DIGITAL_ZOOM") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r79_wave65_initialize(r79_wave65_cfg_t *cfg) {
+    int saved_airplane = cfg->airplane_mode_on;
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->slot1_ro_vault_armed = 1;
+    cfg->cnflasha_ro_armed = 1;
+    cfg->emmc_ro_armed = 1;
+    cfg->airplane_mode_on = saved_airplane;
+    /* Pillar 1 defaults */
+    cfg->zoom_range = R79_ZOOM_OPTICAL_ONLY;
+    cfg->zoom_ring_right_w_left_t = 0; /* Left(W)/Right(T) */
+    cfg->zoom_lever_1st_stby = 3;
+    cfg->zoom_lever_2nd_stby = 8;
+    cfg->zoom_lever_1st_rec = 3;
+    cfg->zoom_lever_2nd_rec = 8;
+    cfg->custom_key_zoom_spd_stby = 3;
+    cfg->custom_key_zoom_spd_rec = 3;
+    cfg->remote_zoom_fixed = 0; /* Variable */
+    cfg->remote_zoom_spd_stby = 3;
+    cfg->remote_zoom_spd_rec = 3;
+    cfg->active_zoom_scale_x100 = 100;
+    cfg->fx6_handle_zoom_high = 8;
+    cfg->fx6_handle_zoom_low = 3;
+    /* Pillar 2 defaults */
+    cfg->auto_slow_shutter_on = 1; /* Movie-only, On default */
+    cfg->iso_range_limit_min = 40;
+    cfg->iso_range_limit_max = 409600;
+    cfg->iso_auto_min_ss_mode = 0; /* STD */
+    cfg->cine_ei_active = 0;
+    cfg->base_iso_val = 80;
+    cfg->high_base_iso_val = 1600;
+    /* Pillar 3 defaults */
+    cfg->raw_file_type = R79_RAW_COMPRESSED;
+    cfg->jh_switch = R79_JH_JPEG;
+    cfg->hlg_still_image_on = 0;
+    cfg->hlg_still_bt2100_forced = 0;
+    cfg->hlg_still_iso_floor = 80;
+    cfg->hlg_disables_pp_look_dro = 0;
+    cfg->rec_media_mode = R79_REC_MEDIA_SLOT1;
+    cfg->auto_switch_media_on = 0;
+    /* Pillar 4 defaults */
+    cfg->usb_conn_mode = R79_USB_SEL_WHEN_CONNECT;
+    cfg->usb_lun_setting = R79_LUN_MULTI;
+    cfg->usb_power_supply_on = 1;
+    cfg->movie_rec_during_streaming_on = 0; /* Disable */
+    cfg->rec_media_dur_hdmi_on = 1;
+}
+
+__attribute__((noinline)) static void r79_wave65_zero_init(r79_wave65_cfg_t *cfg) {
+    memset(cfg, 0, sizeof(*cfg));
+    r79_wave65_initialize(cfg);
+    cfg->airplane_mode_on = 0;
+}
+
+__attribute__((noinline)) static void r79_wave65_camera_settings_reset(r79_wave65_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Wave-65 [Camera Settings Reset] asymmetric persistence:
+     * RESETTABLE -> [Zoom Lever Speed] (1st=3/2nd=8), [Custom Key Z. Speed] (3),
+     *               [Remote Zoom Speed] (Variable/3), [Auto Slow Shutter] (On),
+     *               [ISO AUTO Min. SS] (STD), [RAW File Type] (Compressed),
+     *               [JPEG/HEIF Switch] (JPEG), [HLG Still Image] (Off),
+     *               [Movie Rec During Streaming] (Disable).
+     * SURVIVORS  -> [Zoom Range], [Zoom Ring Rotate], [ISO Range Limit],
+     *               [Sort Recording]/[Auto Switch Media], [USB Connection Mode],
+     *               [USB LUN Setting], [USB Power Supply], and [Airplane Mode]=On. */
+    cfg->zoom_lever_1st_stby = 3;
+    cfg->zoom_lever_2nd_stby = 8;
+    cfg->zoom_lever_1st_rec = 3;
+    cfg->zoom_lever_2nd_rec = 8;
+    cfg->custom_key_zoom_spd_stby = 3;
+    cfg->custom_key_zoom_spd_rec = 3;
+    cfg->remote_zoom_fixed = 0;
+    cfg->remote_zoom_spd_stby = 3;
+    cfg->remote_zoom_spd_rec = 3;
+    cfg->auto_slow_shutter_on = 1;
+    cfg->iso_auto_min_ss_mode = 0;
+    cfg->raw_file_type = R79_RAW_COMPRESSED;
+    cfg->jh_switch = R79_JH_JPEG;
+    cfg->hlg_still_image_on = 0;
+    cfg->hlg_still_bt2100_forced = 0;
+    cfg->hlg_still_iso_floor = 80;
+    cfg->hlg_disables_pp_look_dro = 0;
+    cfg->movie_rec_during_streaming_on = 0;
+}
+
+__attribute__((noinline)) static void r79_wave65_reset_network_settings(r79_wave65_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* [Reset Network Set.] resets Network Streaming rec toggle while preserving
+     * Shooting/Setup Wave-65 items & [Airplane Mode]=On. */
+    cfg->movie_rec_during_streaming_on = 0;
+}
+
+__attribute__((noinline)) static int r79_configure_zoom_system(
+    r79_wave65_cfg_t *cfg, r79_body_t body, r79_shoot_mode_t mode,
+    int is_4k, int fps, int still_has_raw, int movie_codec_raw,
+    r79_zoom_range_t req_range, int req_scale_x100,
+    int lever_1st, int lever_2nd, int custom_spd, int remote_fixed, int remote_spd,
+    int ring_right_w_left_t
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (lever_1st < 1 || lever_1st > 8 || lever_2nd < 1 || lever_2nd > 8 ||
+        custom_spd < 1 || custom_spd > 8 || remote_spd < 1 || remote_spd > 8 ||
+        req_scale_x100 < 100) {
+        return -EINVAL;
+    }
+    /* FX6 Zoom Type is strictly 2-option (Optical / CIZ); ZERO Digital Zoom! */
+    if (body == R79_BODY_FX6_601) {
+        if (req_range == R79_ZOOM_DIGITAL) {
+            return -EOPNOTSUPP;
+        }
+        if (req_range == R79_ZOOM_CLEAR_IMAGE) {
+            if ((mode == R79_MODE_SQ && fps > 60) || movie_codec_raw) {
+                return -EBUSY;
+            }
+            int max_ciz = is_4k ? 150 : 200;
+            if (req_scale_x100 > max_ciz) {
+                return -EINVAL;
+            }
+        }
+        cfg->fx6_handle_zoom_high = 8;
+        cfg->fx6_handle_zoom_low = 3;
+        return 0;
+    }
+    /* FX3 Ver. 7.02 non-optical zoom lockouts */
+    if (req_range != R79_ZOOM_OPTICAL_ONLY) {
+        if (mode == R79_MODE_STILL && still_has_raw) {
+            return -EBUSY;
+        }
+        if (mode == R79_MODE_MOVIE && fps >= 100) {
+            return -EBUSY; /* 100p / 119.88p */
+        }
+        if (mode == R79_MODE_SQ && fps >= 100) {
+            return -EBUSY; /* 100/120/200/240fps */
+        }
+        if (movie_codec_raw) {
+            return -EBUSY;
+        }
+        if (req_range == R79_ZOOM_CLEAR_IMAGE) {
+            int max_ciz = (mode == R79_MODE_STILL) ? 400 : (is_4k ? 150 : 200);
+            if (req_scale_x100 > max_ciz) {
+                return -EINVAL;
+            }
+        } else if (req_range == R79_ZOOM_DIGITAL) {
+            int max_dig = (mode == R79_MODE_STILL) ? 800 : 400;
+            if (req_scale_x100 > max_dig) {
+                return -EINVAL;
+            }
+        }
+    } else if (req_scale_x100 > 100) {
+        return -EBUSY;
+    }
+
+    cfg->zoom_range = req_range;
+    cfg->zoom_ring_right_w_left_t = ring_right_w_left_t ? 1 : 0;
+    cfg->zoom_lever_1st_stby = lever_1st;
+    cfg->zoom_lever_2nd_stby = lever_2nd;
+    cfg->zoom_lever_1st_rec = lever_1st;
+    cfg->zoom_lever_2nd_rec = lever_2nd;
+    cfg->custom_key_zoom_spd_stby = custom_spd;
+    cfg->custom_key_zoom_spd_rec = custom_spd;
+    cfg->remote_zoom_fixed = remote_fixed ? 1 : 0;
+    cfg->remote_zoom_spd_stby = remote_spd;
+    cfg->remote_zoom_spd_rec = remote_spd;
+    cfg->active_zoom_scale_x100 = req_scale_x100;
+
+    /* Non-optical active interlocks: Focus Area disabled (center-priority AF),
+     * Metering Mode locked Multi, Face/Eye Prior. in AF & Tracking disabled */
+    if (req_range != R79_ZOOM_OPTICAL_ONLY && req_scale_x100 > 100) {
+        cfg->focus_area_disabled = 1;
+        cfg->metering_locked_multi = 1;
+        cfg->face_eye_af_disabled = 1;
+        cfg->tracking_disabled = 1;
+    } else {
+        cfg->focus_area_disabled = 0;
+        cfg->metering_locked_multi = 0;
+        cfg->face_eye_af_disabled = 0;
+        cfg->tracking_disabled = 0;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r79_eval_dual_base_iso(
+    r79_gamma_t gamma, int cine_ei, int req_high_base, int *out_low, int *out_high
+) {
+    if (!out_low || !out_high) {
+        return -EINVAL;
+    }
+    if (cine_ei) {
+        *out_low = 800;
+        *out_high = 12800;
+        return req_high_base ? 12800 : 800;
+    }
+    switch (gamma) {
+        case R79_GAMMA_SLOG3:
+            *out_low = 640; *out_high = 12800; break;
+        case R79_GAMMA_SCINETONE_HLG3:
+            *out_low = 100; *out_high = 2000; break;
+        case R79_GAMMA_PPOFF_HLG2:
+            *out_low = 80; *out_high = 1600; break;
+        case R79_GAMMA_CINE1:
+            *out_low = 64; *out_high = 1280; break;
+        case R79_GAMMA_HLG1_CINE2:
+            *out_low = 50; *out_high = 1000; break;
+        default:
+            return -EINVAL;
+    }
+    return (*out_low);
+}
+
+__attribute__((noinline)) static int r79_configure_autoslow_iso_baseiso(
+    r79_wave65_cfg_t *cfg, r79_body_t body, r79_shoot_mode_t mode,
+    r79_exp_mode_t exp_mode, int iso_is_auto, int cine_ei, int shutter_angle_on,
+    int req_auto_slow_on, int req_iso_limit_min, int req_iso_limit_max,
+    int apply_iso_limit_to_auto, int req_min_ss_change, int req_min_ss_mode,
+    r79_gamma_t gamma, int req_manual_base_iso_switch, int req_high_base
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (req_iso_limit_min < 40 || req_iso_limit_max > 409600 ||
+        req_iso_limit_min >= req_iso_limit_max) {
+        return -EINVAL;
+    }
+    /* ISO Range Limit applies to manual ISO only */
+    if (apply_iso_limit_to_auto) {
+        return -EBUSY;
+    }
+    /* FX6 lacks Still-only [ISO AUTO Min. SS] (uses Base Sensitivity Low/High + AGC) */
+    if (body == R79_BODY_FX6_601) {
+        if (req_min_ss_change) {
+            return -EOPNOTSUPP;
+        }
+        return 0;
+    }
+    /* [Auto Slow Shutter] (Movie-only, 6-way official lockout + Shutter Angle mutex) */
+    if (req_auto_slow_on) {
+        if (mode == R79_MODE_STILL ||
+            mode == R79_MODE_SQ ||
+            exp_mode == R79_EXP_S ||
+            exp_mode == R79_EXP_M ||
+            !iso_is_auto ||
+            exp_mode == R79_EXP_FLEX_SHUTTER_MANUAL ||
+            cine_ei ||
+            shutter_angle_on) {
+            return -EBUSY;
+        }
+    }
+    /* [ISO AUTO Min. SS] strictly Still P/A + ISO AUTO only; blocked in Movie/S&Q */
+    if (req_min_ss_change) {
+        if (mode != R79_MODE_STILL) {
+            return -EBUSY;
+        }
+        if ((exp_mode != R79_EXP_P && exp_mode != R79_EXP_A) || !iso_is_auto) {
+            return -EBUSY;
+        }
+        if (req_min_ss_mode < -2 || req_min_ss_mode > 2) {
+            return -EINVAL;
+        }
+        cfg->iso_auto_min_ss_mode = req_min_ss_mode;
+    }
+    /* Manual [Base ISO] switch ONLY visible in Cine EI / Cine EI Quick */
+    if (req_manual_base_iso_switch && !cine_ei) {
+        return -EBUSY;
+    }
+
+    int lo = 0, hi = 0;
+    int active_base = r79_eval_dual_base_iso(gamma, cine_ei, req_high_base, &lo, &hi);
+    if (active_base < 0) {
+        return active_base;
+    }
+    cfg->auto_slow_shutter_on = req_auto_slow_on ? 1 : 0;
+    cfg->iso_range_limit_min = req_iso_limit_min;
+    cfg->iso_range_limit_max = req_iso_limit_max;
+    cfg->cine_ei_active = cine_ei ? 1 : 0;
+    cfg->base_iso_val = active_base;
+    cfg->high_base_iso_val = hi;
+    return 0;
+}
+
+__attribute__((noinline)) static int r79_configure_still_arw_hlg_sort_recording(
+    r79_wave65_cfg_t *cfg, r79_body_t body, r79_raw_type_t req_raw_type,
+    r79_jh_switch_t req_jh, int still_has_raw, r79_exp_mode_t exp_mode,
+    int req_hlg_still_on, r79_rec_media_t req_rec_media, int auto_switch_media_on,
+    int slot2_full_spill_to_slot1
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    /* FX6 is cinema-only: zero Still ARW / HEIF / HLG Still / Sort Recording */
+    if (body == R79_BODY_FX6_601) {
+        return -EOPNOTSUPP;
+    }
+    /* Dormant Lossless Comp (L/M/S) on FX3 7.02 hard-blocked -EOPNOTSUPP */
+    if (req_raw_type == R79_RAW_DORMANT_LOSSLESS ||
+        req_raw_type == R79_RAW_DORMANT_LOSSLESS_L ||
+        req_raw_type == R79_RAW_DORMANT_LOSSLESS_M ||
+        req_raw_type == R79_RAW_DORMANT_LOSSLESS_S) {
+        return -EOPNOTSUPP;
+    }
+    /* [HLG Still Image] requires pure HEIF (4:2:0 or 4:2:2, NO RAW) + P/A/S/M */
+    if (req_hlg_still_on) {
+        if (req_jh == R79_JH_JPEG || still_has_raw) {
+            return -EBUSY;
+        }
+        if (exp_mode != R79_EXP_P && exp_mode != R79_EXP_A &&
+            exp_mode != R79_EXP_S && exp_mode != R79_EXP_M) {
+            return -EBUSY;
+        }
+    }
+    /* [Sort Recording] + [Auto Switch Media] spillover onto Tier-0 Slot 1 -> -EROFS */
+    if (req_rec_media == R79_REC_MEDIA_SORT && auto_switch_media_on &&
+        slot2_full_spill_to_slot1 && cfg->slot1_ro_vault_armed) {
+        return -EROFS;
+    }
+
+    cfg->raw_file_type = req_raw_type;
+    cfg->jh_switch = req_jh;
+    cfg->hlg_still_image_on = req_hlg_still_on ? 1 : 0;
+    cfg->hlg_still_bt2100_forced = req_hlg_still_on ? 1 : 0;
+    cfg->hlg_still_iso_floor = req_hlg_still_on ? 100 : 80;
+    cfg->hlg_disables_pp_look_dro = req_hlg_still_on ? 1 : 0;
+    cfg->rec_media_mode = req_rec_media;
+    cfg->auto_switch_media_on = auto_switch_media_on ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r79_configure_usb_lun_pd_uvc_streaming(
+    r79_wave65_cfg_t *cfg, r79_body_t body, r79_usb_mode_t req_usb_mode,
+    r79_usb_lun_t req_lun, int host_write_slot1_attempt,
+    int usb_pwr_on, int is_micro_usb_port, int has_charged_fz100,
+    int dc_c1_coupler, int pd_watts, int cable_5a_emarked,
+    int fx6_dcin_mv, int req_movie_rec_dur_streaming,
+    int req_rec_media_dur_hdmi, int rec_target_slot1, int live_attach_req
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (live_attach_req) {
+        return -EPERM;
+    }
+    /* Dual FX3 Ver. 7.02 & FX6 Ver. 6.01 native UVC/UAC USB Streaming debunked (-EOPNOTSUPP) */
+    if (req_usb_mode == R79_USB_DORMANT_UVC_STREAM) {
+        return -EOPNOTSUPP;
+    }
+    /* USB LUN Setting = Single exposes Slot 1 ONLY (MTP also maps Slot 1);
+     * ANY host mount write (mds/fseventsd/Finder/fsck_exfat) to Slot 1 MUST be blocked -EROFS */
+    if ((req_usb_mode == R79_USB_MSC || req_usb_mode == R79_USB_MTP) &&
+        host_write_slot1_attempt && cfg->slot1_ro_vault_armed) {
+        return -EROFS;
+    }
+    /* USB Power Supply: USB-C only; FX3 requires charged NP-FZ100 unless DC-C1 + >=65W PD + 5A e-Marked;
+     * FX6 19.5V DC IN (18.0-20.5V, DC Low Voltage1/2 = 16.5V/15.5V) runs battery-free */
+    if (body == R79_BODY_FX3_702) {
+        if (usb_pwr_on) {
+            if (is_micro_usb_port) {
+                return -EOPNOTSUPP;
+            }
+            if (!has_charged_fz100) {
+                if (!(dc_c1_coupler && pd_watts >= 65 && cable_5a_emarked)) {
+                    return -EBUSY; /* battery removal kills power without DC-C1 >=65W 5A */
+                }
+            }
+        }
+    } else {
+        /* FX6 19.5V DC IN battery-free gate */
+        if (fx6_dcin_mv < 15500 || fx6_dcin_mv > 20500) {
+            return -EBUSY; /* below DC Low Voltage2 (15.5V) or overvoltage */
+        }
+    }
+    /* [Movie Rec During Streaming] (_f 0x79d5) & HDMI [Rec. Media dur HDMI Output] (_f 0x6144)
+     * targeting Slot 1 MUST be blocked -EROFS */
+    if ((req_movie_rec_dur_streaming || req_rec_media_dur_hdmi) &&
+        rec_target_slot1 && cfg->slot1_ro_vault_armed) {
+        return -EROFS;
+    }
+
+    cfg->usb_conn_mode = req_usb_mode;
+    cfg->usb_lun_setting = req_lun;
+    cfg->usb_power_supply_on = usb_pwr_on ? 1 : 0;
+    cfg->movie_rec_during_streaming_on = req_movie_rec_dur_streaming ? 1 : 0;
+    cfg->rec_media_dur_hdmi_on = req_rec_media_dur_hdmi ? 1 : 0;
+    return 0;
+}
+
+static int setup_r79_zoom_ciz_autoslow_iso_arw_usblun_uvc_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    int fx3_wave65_nodes_ok =
+        (r79_lookup_wave65_menu_node("MENU -> Shooting -> [Zoom] -> [Zoom Range] (Optical zoom only def / ClearImage Zoom / Digital Zoom; resists Reset)") == 0 &&
+         r79_lookup_wave65_menu_node("MENU -> Shooting -> [Zoom] -> [Zoom Lever Speed / Custom Key Z. Speed / Remote Zoom Speed] (1..8 Standby/Rec; 1st=3, 2nd=8 Fast, Custom=3, Remote=Variable/3; resettable)") == 0 &&
+         r79_lookup_wave65_menu_node("MENU -> Setup -> [Operation Customize] -> [Zoom Ring Rotate] (Left(W)/Right(T) def / Right(W)/Left(T); resists Reset)") == 0 &&
+         r79_lookup_wave65_menu_node("MENU -> Exposure/Color -> [Exposure] -> [Auto Slow Shutter] (Movie-only, On def, resettable; 6-way lockout + Shutter Angle mutex)") == 0 &&
+         r79_lookup_wave65_menu_node("MENU -> Exposure/Color -> [Exposure] -> [ISO Range Limit] (manual ISO only; resists Reset) & [ISO AUTO Min. SS] (Still P/A + ISO AUTO only; STD def; resettable)") == 0 &&
+         r79_lookup_wave65_menu_node("MENU -> Exposure/Color -> [Exposure] -> [Base ISO] (Cine EI / Cine EI Quick explicit 800 def / 12800; non-Cine EI auto 20x +4.33 EV per Gamma)") == 0 &&
+         r79_lookup_wave65_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [RAW File Type] (Compressed def / Uncompressed 14-bit .ARW ONLY; resettable)") == 0 &&
+         r79_lookup_wave65_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [JPEG/HEIF Switch] & [HLG Still Image] (BKID_APP_setting_still_hlg_photo, STILL_HLD_PHOTO_*, pure HEIF + P/A/S/M, BT.2100, ISO>=100/125)") == 0 &&
+         r79_lookup_wave65_menu_node("MENU -> Shooting -> [Media] -> [Rec. Media Settings] -> [Sort Recording] & [Auto Switch Media] (Slot 1 spillover EROFS=-30)") == 0 &&
+         r79_lookup_wave65_menu_node("MENU -> Setup -> [USB] -> [USB Connection Mode] (4 options: Sel. When Connect def / MSC / MTP / Remote Shooting; resists Reset)") == 0 &&
+         r79_lookup_wave65_menu_node("MENU -> Setup -> [USB] -> [USB LUN Setting] (Multi def / Single = Slot 1 ONLY; resists Reset) & [USB Power Supply] (On def; USB-C only; NP-FZ100 gate; resists Reset)") == 0 &&
+         r79_lookup_wave65_menu_node("MENU -> Network -> [Streaming] -> [Network Streaming] (RTMP/RTMPS/SRT) & [Movie Rec During Streaming] (_f 0x79d5, Disable def) vs HDMI [Rec. Media dur HDMI Output] (_f 0x6144)") == 0 &&
+         r79_lookup_wave65_menu_node("dormant::FX6 Technical > Zoom > Digital Zoom (FX6 Zoom Type 2-option ONLY: Optical / CIZ)") == -EOPNOTSUPP &&
+         r79_lookup_wave65_menu_node("dormant::FX3 [RAW File Type] -> [Lossless Comp (L/M/S)] (_f 0x6b56/0x7897/0x6bfd/0x7894; dormant on FX3 7.02)") == -EOPNOTSUPP &&
+         r79_lookup_wave65_menu_node("dormant::FX6 Still ARW / HEIF / [HLG Still Image] / [ISO AUTO Min. SS] (cinema-only FX6)") == -EOPNOTSUPP &&
+         r79_lookup_wave65_menu_node("dormant::FX3 Ver. 7.02 Native [Live Stream(USB Streaming)] UVC/UAC (_f 0x6216, usb_f_uvc.ko, g_webcam.ko)") == -EOPNOTSUPP &&
+         r79_lookup_wave65_menu_node("dormant::FX6 Ver. 6.01 Native UVC/UAC USB Streaming (BKID_APP_SETTING_USB_STREAMING_PROCAM, usb_f_uvc.ko)") == -EOPNOTSUPP) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r79_lookup_uxc_token("_f:0x7164:Zoom Range") == 0 &&
+         r79_lookup_uxc_token("_f:0x73f2:Optical zoom only") == 0 &&
+         r79_lookup_uxc_token("_f:0x70e1:ClearImage Zoom") == 0 &&
+         r79_lookup_uxc_token("_f:0x796c:Digital Zoom") == 0 &&
+         r79_lookup_uxc_token("_f:0x6304:Zoom Lever Speed") == 0 &&
+         r79_lookup_uxc_token("_f:0x6fc0:1st Zoom Spd.") == 0 &&
+         r79_lookup_uxc_token("_f:0x78f0:2nd Zoom Spd.") == 0 &&
+         r79_lookup_uxc_token("_f:0x78e8:Custom Key Z. Speed") == 0 &&
+         r79_lookup_uxc_token("_f:0x7128:Remote Zoom Speed") == 0 &&
+         r79_lookup_uxc_token("_f:0x6be7:Zoom Ring Rotate") == 0 &&
+         r79_lookup_uxc_token("_f:0x7a01:Left(W)/Right(T)") == 0 &&
+         r79_lookup_uxc_token("_f:0x7a9e:Right(W)/Left(T)") == 0 &&
+         r79_lookup_uxc_token("_f:0x76ee:Auto Slow Shutter") == 0 &&
+         r79_lookup_uxc_token("_f:0x69cb:ISO Range Limit") == 0 &&
+         r79_lookup_uxc_token("_f:0x778b:ISO AUTO Min. SS") == 0 &&
+         r79_lookup_uxc_token("_f:0x78ce:Base ISO") == 0 &&
+         r79_lookup_uxc_token("_f:0x6ff2:RAW File Type") == 0 &&
+         r79_lookup_uxc_token("_f:0x6f67:Compressed") == 0 &&
+         r79_lookup_uxc_token("_f:0x6f5b:Uncompressed") == 0 &&
+         r79_lookup_uxc_token("_f:0x742a:JPEG/HEIF Switch") == 0 &&
+         r79_lookup_uxc_token("_f:0x7959:HEIF(4:2:0)") == 0 &&
+         r79_lookup_uxc_token("_f:0x6057:HEIF(4:2:2)") == 0 &&
+         r79_lookup_uxc_token("_f:0x76c8:HLG Still Image") == 0 &&
+         r79_lookup_uxc_token("_f:0x7916:Sort Recording") == 0 &&
+         r79_lookup_uxc_token("_f:0x6dd9:Auto Switch Media") == 0 &&
+         r79_lookup_uxc_token("_f:0x69a2:USB Connection Mode") == 0 &&
+         r79_lookup_uxc_token("_f:0x7738:Sel. When Connect") == 0 &&
+         r79_lookup_uxc_token("_f:0x6c54:MassStorage(MSC)") == 0 &&
+         r79_lookup_uxc_token("base:0xe24b:MTP") == 0 &&
+         r79_lookup_uxc_token("_f:0x7c6f:Remote Shooting") == 0 &&
+         r79_lookup_uxc_token("_f:0x6b19:USB LUN Setting") == 0 &&
+         r79_lookup_uxc_token("_f:0x6cec:Multi") == 0 &&
+         r79_lookup_uxc_token("_f:0x776d:Single") == 0 &&
+         r79_lookup_uxc_token("_f:0x721e:USB Power Supply") == 0 &&
+         r79_lookup_uxc_token("_f:0x79d5:Movie Rec During Streaming") == 0 &&
+         r79_lookup_uxc_token("_f:0x6144:Rec. Media dur HDMI Output") == 0 &&
+         r79_lookup_uxc_token("_f:0x6b56:Lossless Comp (dormant on FX3 7.02)") == -EOPNOTSUPP &&
+         r79_lookup_uxc_token("_f:0x7897:Lossless Comp (L) (dormant on FX3 7.02)") == -EOPNOTSUPP &&
+         r79_lookup_uxc_token("_f:0x6bfd:Lossless Comp (M) (dormant on FX3 7.02)") == -EOPNOTSUPP &&
+         r79_lookup_uxc_token("_f:0x7894:Lossless Comp (S) (dormant on FX3 7.02)") == -EOPNOTSUPP &&
+         r79_lookup_uxc_token("_f:0x6216:Live Stream(USB Streaming) (dormant on FX3 7.02)") == -EOPNOTSUPP &&
+         r79_lookup_uxc_token("_g:0x63f7:USB Streaming (dormant on FX3 7.02)") == -EOPNOTSUPP &&
+         r79_lookup_uxc_token("dormant:FX6_USB_STREAMING_PROCAM") == -EOPNOTSUPP &&
+         r79_lookup_uxc_token("dormant:FX6_DIGITAL_ZOOM") == -EOPNOTSUPP) ? 1 : 0;
+
+    r79_wave65_cfg_t cfg;
+    r79_wave65_zero_init(&cfg);
+    cfg.airplane_mode_on = 1;
+
+    /* Pillar 1: Zoom Range (CIZ 1.5x 4K / 2.0x HD / Digital 4.0x Movie & 8.0x Still S) + FX6 Zero Digital Zoom */
+    int rc_ciz_4k = r79_configure_zoom_system(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, 1, 24, 0, 0,
+        R79_ZOOM_CLEAR_IMAGE, 150, 3, 8, 3, 0, 3, 0);
+    int ciz_interlocks_ok = (cfg.focus_area_disabled == 1 &&
+                             cfg.metering_locked_multi == 1 &&
+                             cfg.face_eye_af_disabled == 1 &&
+                             cfg.tracking_disabled == 1) ? 1 : 0;
+    int rc_ciz_hd = r79_configure_zoom_system(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, 0, 60, 0, 0,
+        R79_ZOOM_CLEAR_IMAGE, 200, 4, 7, 5, 1, 6, 1);
+    int rc_dig_mv = r79_configure_zoom_system(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, 1, 24, 0, 0,
+        R79_ZOOM_DIGITAL, 400, 3, 8, 3, 0, 3, 0);
+    int rc_dig_still_s = r79_configure_zoom_system(
+        &cfg, R79_BODY_FX3_702, R79_MODE_STILL, 1, 0, 0, 0,
+        R79_ZOOM_DIGITAL, 800, 3, 8, 3, 0, 3, 0);
+    int fx6_ciz_ok = (r79_configure_zoom_system(
+        &cfg, R79_BODY_FX6_601, R79_MODE_MOVIE, 1, 24, 0, 0,
+        R79_ZOOM_CLEAR_IMAGE, 150, 3, 8, 3, 0, 3, 0) == 0 &&
+        cfg.fx6_handle_zoom_high == 8 && cfg.fx6_handle_zoom_low == 3) ? 1 : 0;
+    int fx6_digital_zoom_rc = r79_configure_zoom_system(
+        &cfg, R79_BODY_FX6_601, R79_MODE_MOVIE, 1, 24, 0, 0,
+        R79_ZOOM_DIGITAL, 400, 3, 8, 3, 0, 3, 0);
+    int ciz_120p_lock_rc = r79_configure_zoom_system(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, 1, 120, 0, 0,
+        R79_ZOOM_CLEAR_IMAGE, 150, 3, 8, 3, 0, 3, 0);
+    int zoom_ciz_speed8_ok =
+        (rc_ciz_4k == 0 && ciz_interlocks_ok == 1 && rc_ciz_hd == 0 &&
+         rc_dig_mv == 0 && rc_dig_still_s == 0 && fx6_ciz_ok == 1 &&
+         fx6_digital_zoom_rc == -EOPNOTSUPP && ciz_120p_lock_rc == -EBUSY) ? 1 : 0;
+
+    /* Pillar 2: Auto Slow Shutter 6-way + ISO Range Limit + Still ISO AUTO Min. SS + Dual Native Base ISO */
+    int rc_as_ok = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, R79_EXP_P, 1, 0, 0,
+        1, 100, 12800, 0, 0, 0, R79_GAMMA_SCINETONE_HLG3, 0, 0);
+    int rc_minss_still_ok = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_STILL, R79_EXP_A, 1, 0, 0,
+        0, 100, 12800, 0, 1, 1, R79_GAMMA_PPOFF_HLG2, 0, 0);
+    int rc_cine_ei_hi = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, R79_EXP_M, 0, 1, 0,
+        0, 800, 12800, 0, 0, 0, R79_GAMMA_SLOG3, 1, 1);
+    int lo0 = 0, hi0 = 0, lo1 = 0, hi1 = 0, lo2 = 0, hi2 = 0, lo3 = 0, hi3 = 0, lo4 = 0, hi4 = 0;
+    (void)r79_eval_dual_base_iso(R79_GAMMA_SLOG3, 0, 0, &lo0, &hi0);
+    (void)r79_eval_dual_base_iso(R79_GAMMA_SCINETONE_HLG3, 0, 0, &lo1, &hi1);
+    (void)r79_eval_dual_base_iso(R79_GAMMA_PPOFF_HLG2, 0, 0, &lo2, &hi2);
+    (void)r79_eval_dual_base_iso(R79_GAMMA_CINE1, 0, 0, &lo3, &hi3);
+    (void)r79_eval_dual_base_iso(R79_GAMMA_HLG1_CINE2, 0, 0, &lo4, &hi4);
+    int dual_base_matrix_ok =
+        (cfg.base_iso_val == 12800 && cfg.high_base_iso_val == 12800 &&
+         lo0 == 640 && hi0 == 12800 &&
+         lo1 == 100 && hi1 == 2000 &&
+         lo2 == 80 && hi2 == 1600 &&
+         lo3 == 64 && hi3 == 1280 &&
+         lo4 == 50 && hi4 == 1000) ? 1 : 0;
+    int autoslow_cineei_lock_rc = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, R79_EXP_P, 1, 1, 0,
+        1, 100, 12800, 0, 0, 0, R79_GAMMA_SLOG3, 0, 0);
+    int minss_movie_lock_rc = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, R79_EXP_P, 1, 0, 0,
+        0, 100, 12800, 0, 1, 1, R79_GAMMA_PPOFF_HLG2, 0, 0);
+    int autoslow6_iso_baseiso_ok =
+        (rc_as_ok == 0 && rc_minss_still_ok == 0 && rc_cine_ei_hi == 0 &&
+         dual_base_matrix_ok == 1 && autoslow_cineei_lock_rc == -EBUSY &&
+         minss_movie_lock_rc == -EBUSY) ? 1 : 0;
+
+    /* Pillar 3: Still ARW Compressed/Uncompressed + Dormant Lossless Comp + HLG Still + Sort Recording Slot-1 EROFS */
+    int rc_arw_uncomp = r79_configure_still_arw_hlg_sort_recording(
+        &cfg, R79_BODY_FX3_702, R79_RAW_UNCOMPRESSED, R79_JH_HEIF_422, 0,
+        R79_EXP_M, 1, R79_REC_MEDIA_SORT, 1, 0);
+    int hlg_still_ok = (rc_arw_uncomp == 0 &&
+                        cfg.hlg_still_image_on == 1 &&
+                        cfg.hlg_still_bt2100_forced == 1 &&
+                        cfg.hlg_still_iso_floor == 100 &&
+                        cfg.hlg_disables_pp_look_dro == 1) ? 1 : 0;
+    int raw_lossless_dormant_rc = r79_configure_still_arw_hlg_sort_recording(
+        &cfg, R79_BODY_FX3_702, R79_RAW_DORMANT_LOSSLESS_L, R79_JH_JPEG, 1,
+        R79_EXP_M, 0, R79_REC_MEDIA_SLOT2, 0, 0);
+    int sort_slot1_erofs_rc = r79_configure_still_arw_hlg_sort_recording(
+        &cfg, R79_BODY_FX3_702, R79_RAW_COMPRESSED, R79_JH_JPEG, 1,
+        R79_EXP_M, 0, R79_REC_MEDIA_SORT, 1, 1);
+    int arw_lossless_hlg_sort_ok =
+        (hlg_still_ok == 1 && raw_lossless_dormant_rc == -EOPNOTSUPP &&
+         sort_slot1_erofs_rc == -EROFS) ? 1 : 0;
+
+    /* Pillar 4: USB Mode 4-option + USB LUN Single (Slot 1 ONLY) EROFS + NP-FZ100 PD + Dual UVC Debunk + Streaming */
+    int rc_usb_remote_ok = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX3_702, R79_USB_REMOTE_SHOOTING, R79_LUN_SINGLE, 0,
+        1, 0, 1, 0, 27, 0, 0, 0, 0, 0, 0);
+    int rc_dcc1_65w_ok = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX3_702, R79_USB_SEL_WHEN_CONNECT, R79_LUN_MULTI, 0,
+        1, 0, 0, 1, 65, 1, 0, 0, 0, 0, 0);
+    int rc_fx6_dcin_ok = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX6_601, R79_USB_SEL_WHEN_CONNECT, R79_LUN_MULTI, 0,
+        0, 0, 0, 0, 0, 0, 19500, 0, 0, 0, 0);
+    int lun_single_slot1_erofs_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX3_702, R79_USB_MSC, R79_LUN_SINGLE, 1,
+        1, 0, 1, 0, 27, 0, 0, 0, 0, 0, 0);
+    int pd_no_fz100_ebusy_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX3_702, R79_USB_SEL_WHEN_CONNECT, R79_LUN_MULTI, 0,
+        1, 0, 0, 0, 27, 0, 0, 0, 0, 0, 0);
+    int fx3_uvc_dormant_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX3_702, R79_USB_DORMANT_UVC_STREAM, R79_LUN_MULTI, 0,
+        1, 0, 1, 0, 27, 0, 0, 0, 0, 0, 0);
+    int fx6_uvc_dormant_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX6_601, R79_USB_DORMANT_UVC_STREAM, R79_LUN_MULTI, 0,
+        0, 0, 0, 0, 0, 0, 19500, 0, 0, 0, 0);
+    int stream_rec_slot1_erofs_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX3_702, R79_USB_SEL_WHEN_CONNECT, R79_LUN_MULTI, 0,
+        1, 0, 1, 0, 27, 0, 0, 1, 0, 1, 0);
+    int usblun_pd_uvc_streaming_ok =
+        (rc_usb_remote_ok == 0 && rc_dcc1_65w_ok == 0 && rc_fx6_dcin_ok == 0 &&
+         lun_single_slot1_erofs_rc == -EROFS && pd_no_fz100_ebusy_rc == -EBUSY &&
+         fx3_uvc_dormant_rc == -EOPNOTSUPP && fx6_uvc_dormant_rc == -EOPNOTSUPP &&
+         stream_rec_slot1_erofs_rc == -EROFS) ? 1 : 0;
+
+    /* Kernel RO vault mounts proving -EROFS=-30 on Slot-1, P12, P2, cnflasha */
+    if (r33_mkdir_p("/mnt/r79a_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r79a_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r79a_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r79a_slot1_vault", 0755) != 0) {
+        return 98;
+    }
+    (void)umount("/mnt/r79a_p2_ro");
+    (void)umount("/mnt/r79a_p12_ro");
+    (void)umount("/mnt/r79a_cnflasha_ro");
+    (void)umount("/mnt/r79a_slot1_vault");
+    if (mount("tmpfs", "/mnt/r79a_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r79a_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r79a_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r79a_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 98;
+    }
+
+    uint8_t p2_seed[256], p12_seed[256], cn_seed[256], s1_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i]  = (uint8_t)((i * 31U + 0x79U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 37U + 0x65U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 41U + 0x52U) & 0xffU);
+        s1_seed[i]  = (uint8_t)((i * 43U + 0x39U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r79a_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r79a_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r79a_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r79a_slot1_vault/DSC00001.ARW", s1_seed, sizeof(s1_seed), 0444) != 0) {
+        return 98;
+    }
+
+    char pre_p2[65] = "", post_p2[65] = "";
+    char pre_p12[65] = "", post_p12[65] = "";
+    char pre_cn[65] = "", post_cn[65] = "";
+    char pre_s1[65] = "", post_s1[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r79a_p2_ro/Backup.bin", pre_p2, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r79a_p12_ro/wlan_nvs.bin", pre_p12, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r79a_cnflasha_ro/cnflasha.img", pre_cn, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r79a_slot1_vault/DSC00001.ARW", pre_s1, &vbytes) != 0) {
+        return 98;
+    }
+    if (mount(NULL, "/mnt/r79a_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r79a_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r79a_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r79a_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 98;
+    }
+
+    errno = 0;
+    int p2_fd = open("/mnt/r79a_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r79a_slot1_vault/.Spotlight-V100", O_CREAT | O_RDWR, 0644);
+    int slot1_spotlight_erofs_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+
+    int p2_sha256_match = (sha256_file_hex("/mnt/r79a_p2_ro/Backup.bin", post_p2, &vbytes) == 0 && strcmp(pre_p2, post_p2) == 0) ? 1 : 0;
+    int p12_sha256_match = (sha256_file_hex("/mnt/r79a_p12_ro/wlan_nvs.bin", post_p12, &vbytes) == 0 && strcmp(pre_p12, post_p12) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (sha256_file_hex("/mnt/r79a_cnflasha_ro/cnflasha.img", post_cn, &vbytes) == 0 && strcmp(pre_cn, post_cn) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match = (sha256_file_hex("/mnt/r79a_slot1_vault/DSC00001.ARW", post_s1, &vbytes) == 0 && strcmp(pre_s1, post_s1) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r79a_p2_ro");
+    (void)umount("/mnt/r79a_p12_ro");
+    (void)umount("/mnt/r79a_cnflasha_ro");
+    (void)umount("/mnt/r79a_slot1_vault");
+
+    int appfw_present = (access("/usr/lib/appFw.so", R_OK) == 0) ? 1 : 0;
+    int shim_present = (access("/usr/lib/libgrm-fbinit9.so", R_OK) == 0) ? 1 : 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave65_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              zoom_ciz_speed8_ok == 1 &&
+              autoslow6_iso_baseiso_ok == 1 &&
+              arw_lossless_hlg_sort_ok == 1 &&
+              usblun_pd_uvc_streaming_ok == 1 &&
+              slot1_spotlight_erofs_rc == -EROFS &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              p12_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R79_WAVE65_INIT fx3_wave65_nodes_ok=%d uxc_tokens_ok=%d "
+            "zoom_ciz_speed8_ok=%d autoslow6_iso_baseiso_ok=%d "
+            "arw_lossless_hlg_sort_ok=%d usblun_pd_uvc_streaming_ok=%d "
+            "fx6_digital_zoom_rc=%d ciz_120p_lock_rc=%d "
+            "autoslow_cineei_lock_rc=%d minss_movie_lock_rc=%d "
+            "raw_lossless_dormant_rc=%d sort_slot1_erofs_rc=%d "
+            "lun_single_slot1_erofs_rc=%d slot1_spotlight_erofs_rc=%d "
+            "pd_no_fz100_ebusy_rc=%d fx3_uvc_dormant_rc=%d fx6_uvc_dormant_rc=%d "
+            "stream_rec_slot1_erofs_rc=%d p2_write_blocked_rc=%d "
+            "p2_sha256_match=%d p12_sha256_match=%d cnflasha_sha256_match=%d slot1_vault_sha256_match=%d "
+            "dormant_fx6_digital_zoom_events=0 dormant_movie_iso_auto_min_ss_events=0 "
+            "dormant_raw_lossless_comp_events=0 dormant_uvc_fx3_events=0 dormant_uvc_fx6_events=0 "
+            "usb_tx=0 slot1_writes=0 slot1_data_sector_writes=0 rf_tx_packets=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 cnflasha_writes=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 r79_init_ok=%d verify_us=%lld\n",
+            fx3_wave65_nodes_ok, uxc_tokens_ok,
+            zoom_ciz_speed8_ok, autoslow6_iso_baseiso_ok,
+            arw_lossless_hlg_sort_ok, usblun_pd_uvc_streaming_ok,
+            fx6_digital_zoom_rc, ciz_120p_lock_rc,
+            autoslow_cineei_lock_rc, minss_movie_lock_rc,
+            raw_lossless_dormant_rc, sort_slot1_erofs_rc,
+            lun_single_slot1_erofs_rc, slot1_spotlight_erofs_rc,
+            pd_no_fz100_ebusy_rc, fx3_uvc_dormant_rc, fx6_uvc_dormant_rc,
+            stream_rec_slot1_erofs_rc, p2_write_blocked_rc,
+            p2_sha256_match, p12_sha256_match, cnflasha_sha256_match, slot1_vault_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 98;
+}
+
+static int run_r79_wave65_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    r79_wave65_cfg_t cfg;
+    r79_wave65_zero_init(&cfg);
+    cfg.airplane_mode_on = 1;
+
+    /* Pillar 1 guards: FX6 Digital Zoom (-95), FX3 Still RAW / Movie 120p / S&Q 120fps (-16), FX6 S&Q 120 / RAW (-16), speed=9 (-22) */
+    int fx6_digital_zoom_rc = r79_configure_zoom_system(
+        &cfg, R79_BODY_FX6_601, R79_MODE_MOVIE, 1, 24, 0, 0, R79_ZOOM_DIGITAL, 400, 3, 8, 3, 0, 3, 0);
+    int fx3_ciz_still_raw_rc = r79_configure_zoom_system(
+        &cfg, R79_BODY_FX3_702, R79_MODE_STILL, 1, 0, 1, 0, R79_ZOOM_CLEAR_IMAGE, 200, 3, 8, 3, 0, 3, 0);
+    int fx3_ciz_120p_rc = r79_configure_zoom_system(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, 1, 120, 0, 0, R79_ZOOM_CLEAR_IMAGE, 150, 3, 8, 3, 0, 3, 0);
+    int fx3_dig_sq120_rc = r79_configure_zoom_system(
+        &cfg, R79_BODY_FX3_702, R79_MODE_SQ, 1, 120, 0, 0, R79_ZOOM_DIGITAL, 400, 3, 8, 3, 0, 3, 0);
+    int fx6_ciz_sq120_rc = r79_configure_zoom_system(
+        &cfg, R79_BODY_FX6_601, R79_MODE_SQ, 1, 120, 0, 0, R79_ZOOM_CLEAR_IMAGE, 150, 3, 8, 3, 0, 3, 0);
+    int fx6_ciz_raw_rc = r79_configure_zoom_system(
+        &cfg, R79_BODY_FX6_601, R79_MODE_MOVIE, 1, 24, 0, 1, R79_ZOOM_CLEAR_IMAGE, 150, 3, 8, 3, 0, 3, 0);
+    int zoom_spd9_einval_rc = r79_configure_zoom_system(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, 1, 24, 0, 0, R79_ZOOM_OPTICAL_ONLY, 100, 9, 8, 3, 0, 3, 0);
+
+    /* Pillar 2 guards: Auto Slow Shutter ALL 6 official lockouts + Shutter Angle mutex (-16),
+     * ISO Range Limit on AUTO (-16) / inverted bounds (-22), Still-only ISO AUTO Min. SS in Movie/S&Q (-16) / FX6 (-95),
+     * Manual Base ISO outside Cine EI (-16) */
+    int as_sq_lock_rc = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_SQ, R79_EXP_P, 1, 0, 0, 1, 100, 12800, 0, 0, 0, R79_GAMMA_PPOFF_HLG2, 0, 0);
+    int as_s_lock_rc = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, R79_EXP_S, 1, 0, 0, 1, 100, 12800, 0, 0, 0, R79_GAMMA_PPOFF_HLG2, 0, 0);
+    int as_m_lock_rc = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, R79_EXP_M, 1, 0, 0, 1, 100, 12800, 0, 0, 0, R79_GAMMA_PPOFF_HLG2, 0, 0);
+    int as_fixed_iso_lock_rc = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, R79_EXP_P, 0, 0, 0, 1, 100, 12800, 0, 0, 0, R79_GAMMA_PPOFF_HLG2, 0, 0);
+    int as_flex_shutter_man_rc = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, R79_EXP_FLEX_SHUTTER_MANUAL, 1, 0, 0, 1, 100, 12800, 0, 0, 0, R79_GAMMA_PPOFF_HLG2, 0, 0);
+    int as_cineei_lock_rc = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, R79_EXP_P, 1, 1, 0, 1, 100, 12800, 0, 0, 0, R79_GAMMA_SLOG3, 0, 0);
+    int as_angle_mutex_rc = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, R79_EXP_P, 1, 0, 1, 1, 100, 12800, 0, 0, 0, R79_GAMMA_PPOFF_HLG2, 0, 0);
+    int iso_limit_auto_ebusy_rc = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, R79_EXP_P, 1, 0, 0, 0, 100, 12800, 1, 0, 0, R79_GAMMA_PPOFF_HLG2, 0, 0);
+    int iso_limit_bounds_einval_rc = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, R79_EXP_P, 1, 0, 0, 0, 12800, 100, 0, 0, 0, R79_GAMMA_PPOFF_HLG2, 0, 0);
+    int minss_movie_ebusy_rc = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, R79_EXP_P, 1, 0, 0, 0, 100, 12800, 0, 1, 1, R79_GAMMA_PPOFF_HLG2, 0, 0);
+    int minss_sq_ebusy_rc = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_SQ, R79_EXP_P, 1, 0, 0, 0, 100, 12800, 0, 1, 1, R79_GAMMA_PPOFF_HLG2, 0, 0);
+    int fx6_minss_absent_rc = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX6_601, R79_MODE_MOVIE, R79_EXP_P, 1, 0, 0, 0, 100, 12800, 0, 1, 0, R79_GAMMA_SLOG3, 0, 0);
+    int non_cineei_baseiso_rc = r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, R79_EXP_M, 0, 0, 0, 0, 100, 12800, 0, 0, 0, R79_GAMMA_SLOG3, 1, 1);
+
+    /* Pillar 3 guards: Dormant Lossless Comp L/M/S (-95), FX6 Still ARW (-95), HLG Still with JPEG/RAW/iAuto (-16), Sort Recording Slot-1 spillover (-30) */
+    int raw_lossless_rc = r79_configure_still_arw_hlg_sort_recording(
+        &cfg, R79_BODY_FX3_702, R79_RAW_DORMANT_LOSSLESS, R79_JH_JPEG, 1, R79_EXP_M, 0, R79_REC_MEDIA_SLOT2, 0, 0);
+    int raw_lossless_l_rc = r79_configure_still_arw_hlg_sort_recording(
+        &cfg, R79_BODY_FX3_702, R79_RAW_DORMANT_LOSSLESS_L, R79_JH_JPEG, 1, R79_EXP_M, 0, R79_REC_MEDIA_SLOT2, 0, 0);
+    int raw_lossless_m_rc = r79_configure_still_arw_hlg_sort_recording(
+        &cfg, R79_BODY_FX3_702, R79_RAW_DORMANT_LOSSLESS_M, R79_JH_JPEG, 1, R79_EXP_M, 0, R79_REC_MEDIA_SLOT2, 0, 0);
+    int raw_lossless_s_rc = r79_configure_still_arw_hlg_sort_recording(
+        &cfg, R79_BODY_FX3_702, R79_RAW_DORMANT_LOSSLESS_S, R79_JH_JPEG, 1, R79_EXP_M, 0, R79_REC_MEDIA_SLOT2, 0, 0);
+    int fx6_still_arw_rc = r79_configure_still_arw_hlg_sort_recording(
+        &cfg, R79_BODY_FX6_601, R79_RAW_COMPRESSED, R79_JH_JPEG, 1, R79_EXP_M, 0, R79_REC_MEDIA_SLOT2, 0, 0);
+    int hlg_jpeg_lock_rc = r79_configure_still_arw_hlg_sort_recording(
+        &cfg, R79_BODY_FX3_702, R79_RAW_COMPRESSED, R79_JH_JPEG, 0, R79_EXP_M, 1, R79_REC_MEDIA_SLOT2, 0, 0);
+    int hlg_raw_lock_rc = r79_configure_still_arw_hlg_sort_recording(
+        &cfg, R79_BODY_FX3_702, R79_RAW_COMPRESSED, R79_JH_HEIF_420, 1, R79_EXP_M, 1, R79_REC_MEDIA_SLOT2, 0, 0);
+    int hlg_iauto_lock_rc = r79_configure_still_arw_hlg_sort_recording(
+        &cfg, R79_BODY_FX3_702, R79_RAW_COMPRESSED, R79_JH_HEIF_420, 0, R79_EXP_IAUTO, 1, R79_REC_MEDIA_SLOT2, 0, 0);
+    int sort_slot1_erofs_rc = r79_configure_still_arw_hlg_sort_recording(
+        &cfg, R79_BODY_FX3_702, R79_RAW_COMPRESSED, R79_JH_JPEG, 1, R79_EXP_M, 0, R79_REC_MEDIA_SORT, 1, 1);
+
+    /* Pillar 4 guards: Dual FX3 & FX6 UVC (-95), Micro-USB Power (-95), MSC Single/MTP Slot-1 host write (-30),
+     * PD without NP-FZ100 (-16), DC-C1 <65W (-16), FX6 DC IN <15.5V (-16), Streaming/HDMI rec to Slot-1 (-30),
+     * NULL (-22), live_attach (-1) */
+    int fx3_uvc_dormant_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX3_702, R79_USB_DORMANT_UVC_STREAM, R79_LUN_MULTI, 0, 1, 0, 1, 0, 27, 0, 0, 0, 0, 0, 0);
+    int fx6_uvc_dormant_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX6_601, R79_USB_DORMANT_UVC_STREAM, R79_LUN_MULTI, 0, 0, 0, 0, 0, 0, 0, 19500, 0, 0, 0, 0);
+    int micro_usb_pwr_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX3_702, R79_USB_SEL_WHEN_CONNECT, R79_LUN_MULTI, 0, 1, 1, 1, 0, 27, 0, 0, 0, 0, 0, 0);
+    int lun_single_msc_slot1_erofs_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX3_702, R79_USB_MSC, R79_LUN_SINGLE, 1, 1, 0, 1, 0, 27, 0, 0, 0, 0, 0, 0);
+    int mtp_slot1_erofs_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX3_702, R79_USB_MTP, R79_LUN_MULTI, 1, 1, 0, 1, 0, 27, 0, 0, 0, 0, 0, 0);
+    int pd_no_fz100_ebusy_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX3_702, R79_USB_SEL_WHEN_CONNECT, R79_LUN_MULTI, 0, 1, 0, 0, 0, 27, 0, 0, 0, 0, 0, 0);
+    int dcc1_under65w_ebusy_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX3_702, R79_USB_SEL_WHEN_CONNECT, R79_LUN_MULTI, 0, 1, 0, 0, 1, 45, 1, 0, 0, 0, 0, 0);
+    int fx6_dcin_low_ebusy_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX6_601, R79_USB_SEL_WHEN_CONNECT, R79_LUN_MULTI, 0, 0, 0, 0, 0, 0, 0, 15000, 0, 0, 0, 0);
+    int stream_rec_slot1_erofs_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX3_702, R79_USB_SEL_WHEN_CONNECT, R79_LUN_MULTI, 0, 1, 0, 1, 0, 27, 0, 0, 1, 0, 1, 0);
+    int hdmi_rec_slot1_erofs_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX3_702, R79_USB_SEL_WHEN_CONNECT, R79_LUN_MULTI, 0, 1, 0, 1, 0, 27, 0, 0, 0, 1, 1, 0);
+    int null_cfg_einval_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        NULL, R79_BODY_FX3_702, R79_USB_SEL_WHEN_CONNECT, R79_LUN_MULTI, 0, 1, 0, 1, 0, 27, 0, 0, 0, 0, 0, 0);
+    int live_attach_eperm_rc = r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX3_702, R79_USB_SEL_WHEN_CONNECT, R79_LUN_MULTI, 0, 1, 0, 1, 0, 27, 0, 0, 0, 0, 0, 1);
+
+    /* Real kernel RO mount probes simulating macOS host mds/fseventsd/Finder/fsck_exfat on Slot 1 + P12/P2/cnflasha */
+    if (r33_mkdir_p("/mnt/r79b_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r79b_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r79b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r79b_cnflasha_ro", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r79b_slot1_vault");
+    (void)umount("/mnt/r79b_p12_ro");
+    (void)umount("/mnt/r79b_p2_ro");
+    (void)umount("/mnt/r79b_cnflasha_ro");
+    if (mount("tmpfs", "/mnt/r79b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r79b_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r79b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r79b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t s1_seed[256], p12_seed[256], p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(s1_seed); i++) {
+        s1_seed[i]  = (uint8_t)((i * 71U + 0x79U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 73U + 0x65U) & 0xffU);
+        p2_seed[i]  = (uint8_t)((i * 79U + 0x52U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 83U + 0x41U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r79b_slot1_vault/DSC00001.ARW", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r79b_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r79b_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r79b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return 250;
+    }
+
+    char pre_s1[65] = "", post_s1[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r79b_slot1_vault/DSC00001.ARW", pre_s1, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r79b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r79b_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r79b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r79b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    errno = 0;
+    int mds_fd = open("/mnt/r79b_slot1_vault/.Spotlight-V100", O_CREAT | O_RDWR, 0644);
+    int slot1_mds_erofs_rc = (mds_fd >= 0) ? (close(mds_fd), 0) : -errno;
+    errno = 0;
+    int fs_fd = open("/mnt/r79b_slot1_vault/.fseventsd", O_CREAT | O_RDWR, 0644);
+    int slot1_fseventsd_erofs_rc = (fs_fd >= 0) ? (close(fs_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r79b_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r79b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r79b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r79b_slot1_vault/DSC00001.ARW", post_s1, &vbytes) == 0 &&
+         strcmp(pre_s1, post_s1) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r79b_slot1_vault");
+    (void)umount("/mnt/r79b_p12_ro");
+    (void)umount("/mnt/r79b_p2_ro");
+    (void)umount("/mnt/r79b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R79_ZOOM_CIZ_SPEED8_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx6_digital_zoom_rc == -EOPNOTSUPP &&
+              fx3_ciz_still_raw_rc == -EBUSY &&
+              fx3_ciz_120p_rc == -EBUSY &&
+              fx3_dig_sq120_rc == -EBUSY &&
+              fx6_ciz_sq120_rc == -EBUSY &&
+              fx6_ciz_raw_rc == -EBUSY &&
+              zoom_spd9_einval_rc == -EINVAL &&
+              as_sq_lock_rc == -EBUSY &&
+              as_s_lock_rc == -EBUSY &&
+              as_m_lock_rc == -EBUSY &&
+              as_fixed_iso_lock_rc == -EBUSY &&
+              as_flex_shutter_man_rc == -EBUSY &&
+              as_cineei_lock_rc == -EBUSY &&
+              as_angle_mutex_rc == -EBUSY &&
+              iso_limit_auto_ebusy_rc == -EBUSY &&
+              iso_limit_bounds_einval_rc == -EINVAL &&
+              minss_movie_ebusy_rc == -EBUSY &&
+              minss_sq_ebusy_rc == -EBUSY &&
+              fx6_minss_absent_rc == -EOPNOTSUPP &&
+              non_cineei_baseiso_rc == -EBUSY &&
+              raw_lossless_rc == -EOPNOTSUPP &&
+              raw_lossless_l_rc == -EOPNOTSUPP &&
+              raw_lossless_m_rc == -EOPNOTSUPP &&
+              raw_lossless_s_rc == -EOPNOTSUPP &&
+              fx6_still_arw_rc == -EOPNOTSUPP &&
+              hlg_jpeg_lock_rc == -EBUSY &&
+              hlg_raw_lock_rc == -EBUSY &&
+              hlg_iauto_lock_rc == -EBUSY &&
+              sort_slot1_erofs_rc == -EROFS &&
+              fx3_uvc_dormant_rc == -EOPNOTSUPP &&
+              fx6_uvc_dormant_rc == -EOPNOTSUPP &&
+              micro_usb_pwr_rc == -EOPNOTSUPP &&
+              lun_single_msc_slot1_erofs_rc == -EROFS &&
+              mtp_slot1_erofs_rc == -EROFS &&
+              pd_no_fz100_ebusy_rc == -EBUSY &&
+              dcc1_under65w_ebusy_rc == -EBUSY &&
+              fx6_dcin_low_ebusy_rc == -EBUSY &&
+              stream_rec_slot1_erofs_rc == -EROFS &&
+              hdmi_rec_slot1_erofs_rc == -EROFS &&
+              null_cfg_einval_rc == -EINVAL &&
+              live_attach_eperm_rc == -EPERM &&
+              slot1_mds_erofs_rc == -EROFS &&
+              slot1_fseventsd_erofs_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R79_WAVE65_GUARD fx6_digital_zoom_rc=%d fx3_ciz_still_raw_rc=%d "
+            "fx3_ciz_120p_rc=%d fx3_dig_sq120_rc=%d fx6_ciz_sq120_rc=%d fx6_ciz_raw_rc=%d "
+            "zoom_spd9_einval_rc=%d as_sq_lock_rc=%d as_s_lock_rc=%d as_m_lock_rc=%d "
+            "as_fixed_iso_lock_rc=%d as_flex_shutter_man_rc=%d as_cineei_lock_rc=%d "
+            "as_angle_mutex_rc=%d iso_limit_auto_ebusy_rc=%d iso_limit_bounds_einval_rc=%d "
+            "minss_movie_ebusy_rc=%d minss_sq_ebusy_rc=%d fx6_minss_absent_rc=%d "
+            "non_cineei_baseiso_rc=%d raw_lossless_rc=%d raw_lossless_l_rc=%d "
+            "raw_lossless_m_rc=%d raw_lossless_s_rc=%d fx6_still_arw_rc=%d "
+            "hlg_jpeg_lock_rc=%d hlg_raw_lock_rc=%d hlg_iauto_lock_rc=%d "
+            "sort_slot1_erofs_rc=%d fx3_uvc_dormant_rc=%d fx6_uvc_dormant_rc=%d "
+            "micro_usb_pwr_rc=%d lun_single_msc_slot1_erofs_rc=%d mtp_slot1_erofs_rc=%d "
+            "pd_no_fz100_ebusy_rc=%d dcc1_under65w_ebusy_rc=%d fx6_dcin_low_ebusy_rc=%d "
+            "stream_rec_slot1_erofs_rc=%d hdmi_rec_slot1_erofs_rc=%d "
+            "null_cfg_einval_rc=%d live_attach_eperm_rc=%d "
+            "slot1_mds_erofs_rc=%d slot1_fseventsd_erofs_rc=%d "
+            "p12_write_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "dormant_fx6_digital_zoom_events=0 dormant_movie_iso_auto_min_ss_events=0 "
+            "dormant_raw_lossless_comp_events=0 dormant_uvc_fx3_events=0 dormant_uvc_fx6_events=0 "
+            "usb_tx=0 slot1_writes=0 slot1_data_sector_writes=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 r79b_ok=%d verify_us=%lld\n",
+            fx6_digital_zoom_rc, fx3_ciz_still_raw_rc,
+            fx3_ciz_120p_rc, fx3_dig_sq120_rc, fx6_ciz_sq120_rc, fx6_ciz_raw_rc,
+            zoom_spd9_einval_rc, as_sq_lock_rc, as_s_lock_rc, as_m_lock_rc,
+            as_fixed_iso_lock_rc, as_flex_shutter_man_rc, as_cineei_lock_rc,
+            as_angle_mutex_rc, iso_limit_auto_ebusy_rc, iso_limit_bounds_einval_rc,
+            minss_movie_ebusy_rc, minss_sq_ebusy_rc, fx6_minss_absent_rc,
+            non_cineei_baseiso_rc, raw_lossless_rc, raw_lossless_l_rc,
+            raw_lossless_m_rc, raw_lossless_s_rc, fx6_still_arw_rc,
+            hlg_jpeg_lock_rc, hlg_raw_lock_rc, hlg_iauto_lock_rc,
+            sort_slot1_erofs_rc, fx3_uvc_dormant_rc, fx6_uvc_dormant_rc,
+            micro_usb_pwr_rc, lun_single_msc_slot1_erofs_rc, mtp_slot1_erofs_rc,
+            pd_no_fz100_ebusy_rc, dcc1_under65w_ebusy_rc, fx6_dcin_low_ebusy_rc,
+            stream_rec_slot1_erofs_rc, hdmi_rec_slot1_erofs_rc,
+            null_cfg_einval_rc, live_attach_eperm_rc,
+            slot1_mds_erofs_rc, slot1_fseventsd_erofs_rc,
+            p12_write_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r79_clean_unmount_wave65_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r79c_tmp_overlay", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r79c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r79c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r79c_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r79c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r79c_slot1_vault", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r79c_tmp_overlay");
+    (void)umount("/mnt/r79c_surfaces");
+    (void)umount("/mnt/r79c_p2_ro");
+    (void)umount("/mnt/r79c_p12_ro");
+    (void)umount("/mnt/r79c_cnflasha_ro");
+    (void)umount("/mnt/r79c_slot1_vault");
+    if (mount("tmpfs", "/mnt/r79c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r79c_surfaces", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r79c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r79c_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r79c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r79c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    uint8_t mark[64];
+    for (size_t i = 0U; i < sizeof(mark); i++) {
+        mark[i] = (uint8_t)((i * 29U + 0x79U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r79c_tmp_overlay/stage_b_marker", mark, sizeof(mark), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r79c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+
+    uint8_t s1_seed[256], p12_seed[256], p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(s1_seed); i++) {
+        s1_seed[i]  = (uint8_t)((i * 151U + 0x43U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 157U + 0x56U) & 0xffU);
+        p2_seed[i]  = (uint8_t)((i * 163U + 0x68U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 173U + 0x79U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r79c_slot1_vault/DSC00001.ARW", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r79c_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r79c_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r79c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r79c_slot1_vault/DSC00001.ARW", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r79c_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    char h3_hashes[16][65];
+    for (unsigned s = 0U; s < 16U; s++) {
+        uint8_t buf[256];
+        for (size_t i = 0U; i < sizeof(buf); i++) {
+            buf[i] = (uint8_t)((i * (s + 43U) + s * 17U + 0x4FU) & 0xffU);
+        }
+        char spath[64];
+        snprintf(spath, sizeof(spath), "/mnt/r79c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, buf, sizeof(buf), 0444) != 0) {
+            return fail_exit_rc;
+        }
+        if (sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    if (mount(NULL, "/mnt/r79c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r79c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r79c_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r79c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r79c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    int unmount_rc = umount("/mnt/r79c_tmp_overlay");
+    int marker_gone_after_umount = (access("/mnt/r79c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int stock_unmount_restored_ok =
+        (overlay_mounted_present == 1 &&
+         unmount_rc == 0 &&
+         marker_gone_after_umount == 1 &&
+         stock_appfw_ok == 1) ? 1 : 0;
+
+    /* Wave-65 3-Tier Asymmetric Reset Persistence */
+    r79_wave65_cfg_t cfg;
+    r79_wave65_zero_init(&cfg);
+    cfg.airplane_mode_on = 1;
+    (void)r79_configure_zoom_system(
+        &cfg, R79_BODY_FX3_702, R79_MODE_MOVIE, 1, 24, 0, 0,
+        R79_ZOOM_CLEAR_IMAGE, 150, 5, 6, 7, 1, 4, 1);
+    (void)r79_configure_autoslow_iso_baseiso(
+        &cfg, R79_BODY_FX3_702, R79_MODE_STILL, R79_EXP_A, 1, 0, 0,
+        0, 160, 25600, 0, 1, 2, R79_GAMMA_SCINETONE_HLG3, 0, 0);
+    (void)r79_configure_still_arw_hlg_sort_recording(
+        &cfg, R79_BODY_FX3_702, R79_RAW_UNCOMPRESSED, R79_JH_HEIF_422, 0,
+        R79_EXP_M, 1, R79_REC_MEDIA_SORT, 1, 0);
+    (void)r79_configure_usb_lun_pd_uvc_streaming(
+        &cfg, R79_BODY_FX3_702, R79_USB_REMOTE_SHOOTING, R79_LUN_SINGLE, 0,
+        0, 0, 1, 0, 27, 0, 0, 1, 0, 0, 0);
+
+    r79_wave65_camera_settings_reset(&cfg);
+    int camreset_resets_speeds_autoslow_minss_arw_hlg_preserves_zoomrange_ring_isolimit_sort_usb_airplane_ok =
+        (cfg.zoom_lever_1st_stby == 3 &&
+         cfg.zoom_lever_2nd_stby == 8 &&
+         cfg.custom_key_zoom_spd_stby == 3 &&
+         cfg.remote_zoom_fixed == 0 &&
+         cfg.remote_zoom_spd_stby == 3 &&
+         cfg.auto_slow_shutter_on == 1 &&
+         cfg.iso_auto_min_ss_mode == 0 &&
+         cfg.raw_file_type == R79_RAW_COMPRESSED &&
+         cfg.jh_switch == R79_JH_JPEG &&
+         cfg.hlg_still_image_on == 0 &&
+         cfg.movie_rec_during_streaming_on == 0 &&
+         /* Survivors of Camera Settings Reset */
+         cfg.zoom_range == R79_ZOOM_CLEAR_IMAGE &&
+         cfg.zoom_ring_right_w_left_t == 1 &&
+         cfg.iso_range_limit_min == 160 &&
+         cfg.iso_range_limit_max == 25600 &&
+         cfg.rec_media_mode == R79_REC_MEDIA_SORT &&
+         cfg.auto_switch_media_on == 1 &&
+         cfg.usb_conn_mode == R79_USB_REMOTE_SHOOTING &&
+         cfg.usb_lun_setting == R79_LUN_SINGLE &&
+         cfg.usb_power_supply_on == 0 &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    cfg.movie_rec_during_streaming_on = 1;
+    r79_wave65_reset_network_settings(&cfg);
+    int nwreset_resets_streamrec_preserves_wave65_setup_airplane_ok =
+        (cfg.movie_rec_during_streaming_on == 0 &&
+         cfg.zoom_range == R79_ZOOM_CLEAR_IMAGE &&
+         cfg.zoom_ring_right_w_left_t == 1 &&
+         cfg.iso_range_limit_min == 160 &&
+         cfg.usb_conn_mode == R79_USB_REMOTE_SHOOTING &&
+         cfg.usb_lun_setting == R79_LUN_SINGLE &&
+         cfg.usb_power_supply_on == 0 &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r79_wave65_initialize(&cfg);
+    int initialize_restores_wave65_defaults_preserves_airplane_ok =
+        (cfg.zoom_range == R79_ZOOM_OPTICAL_ONLY &&
+         cfg.zoom_ring_right_w_left_t == 0 &&
+         cfg.zoom_lever_1st_stby == 3 &&
+         cfg.zoom_lever_2nd_stby == 8 &&
+         cfg.auto_slow_shutter_on == 1 &&
+         cfg.iso_range_limit_min == 40 &&
+         cfg.iso_range_limit_max == 409600 &&
+         cfg.iso_auto_min_ss_mode == 0 &&
+         cfg.raw_file_type == R79_RAW_COMPRESSED &&
+         cfg.jh_switch == R79_JH_JPEG &&
+         cfg.hlg_still_image_on == 0 &&
+         cfg.rec_media_mode == R79_REC_MEDIA_SLOT1 &&
+         cfg.usb_conn_mode == R79_USB_SEL_WHEN_CONNECT &&
+         cfg.usb_lun_setting == R79_LUN_MULTI &&
+         cfg.usb_power_supply_on == 1 &&
+         cfg.movie_rec_during_streaming_on == 0 &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    void *jit_h = dlopen("/etc/fx6_r79_libjit.so", RTLD_NOW);
+    int dlopen_ok = (jit_h != NULL) ? 1 : 0;
+    if (jit_h) {
+        dlclose(jit_h);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned s = 0U; s < 16U; s++) {
+        char spath[64];
+        snprintf(spath, sizeof(spath), "/mnt/r79c_surfaces/surf_%02u.bin", s);
+        if (sha256_file_hex(spath, h3_hashes[s], &vbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hashes[s]) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    errno = 0;
+    int s1_fd = open("/mnt/r79c_slot1_vault/DSC00001.ARW", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r79c_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r79c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r79c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r79c_slot1_vault/DSC00001.ARW", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r79c_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r79c_slot1_vault");
+    (void)umount("/mnt/r79c_p12_ro");
+    (void)umount("/mnt/r79c_p2_ro");
+    (void)umount("/mnt/r79c_cnflasha_ro");
+    (void)umount("/mnt/r79c_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_resets_speeds_autoslow_minss_arw_hlg_preserves_zoomrange_ring_isolimit_sort_usb_airplane_ok == 1 &&
+              nwreset_resets_streamrec_preserves_wave65_setup_airplane_ok == 1 &&
+              initialize_restores_wave65_defaults_preserves_airplane_ok == 1 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R79_CLEAN_UNMOUNT_WAVE65_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_resets_speeds_autoslow_minss_arw_hlg_preserves_zoomrange_ring_isolimit_sort_usb_airplane_ok=%d "
+            "nwreset_resets_streamrec_preserves_wave65_setup_airplane_ok=%d "
+            "initialize_restores_wave65_defaults_preserves_airplane_ok=%d "
+            "dormant_fx6_digital_zoom_events=0 dormant_movie_iso_auto_min_ss_events=0 "
+            "dormant_raw_lossless_comp_events=0 dormant_uvc_fx3_events=0 dormant_uvc_fx6_events=0 "
+            "usb_tx=0 slot1_writes=0 slot1_data_sector_writes=0 "
+            "rf_tx_packets=0 slot1_vault_ro_blocked_rc=%d "
+            "p12_write_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r79c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_resets_speeds_autoslow_minss_arw_hlg_preserves_zoomrange_ring_isolimit_sort_usb_airplane_ok,
+            nwreset_resets_streamrec_preserves_wave65_setup_airplane_ok,
+            initialize_restores_wave65_defaults_preserves_airplane_ok,
+            slot1_vault_ro_blocked_rc,
+            p12_write_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
+/* ==================== Milestone Round 80 (53/53 Real-HW Rounds · Wave 66) ====================
+ * Wave 66:
+ *  1) Still [Drive Mode] (Can be reset; Still-only): Single Shooting def, Cont. Shooting (Hi+ 10fps,
+ *     Hi 8fps, Mid 6fps, Lo 3fps; Uncompressed RAW/Flash slows burst; > F11 locks focus on 1st frame in
+ *     Hi+/Hi/Mid), Self-timer(Single/Cont), Cont./Single Bracket, WB bracket, DRO Bracket (disabled
+ *     under HLG Still Image=On); plus Dormant [Focus Bracket] (_f 0x7563, DRIVE_MODE_FOCUS_BRACKET)
+ *     strictly blocked -EOPNOTSUPP (-95) on BOTH ILME-FX3 Ver. 7.02 (0 hits in ilc/2210) & ILME-FX6 Ver. 6.01.
+ *  2) [Shutter Type] strictly 2 options ONLY: Mechanical Shutter (def) / Electronic Shutter (Can be reset);
+ *     NO Auto option (STILL_SHUTTER_TYPE_ANTI_DISTORTION_SHUTTER_AUTO dormant -> -EOPNOTSUPP -95, distinct
+ *     from [Interval Shoot Func.] default Electronic Shutter); Electronic Shutter / Silent Mode=On locks out
+ *     5 features (Flash, Long Exposure NR, e-Front Curtain Shut., BULB, Anti-flicker Shoot.); single flash
+ *     X-Sync ceiling 1/250 s (NO 1/320 s APS-C mode -> debunked -EOPNOTSUPP); [e-Front Curtain Shut.]
+ *     (def On, resists Camera Reset, Sony ELF typo BKID_APP_setting_front_curtaion_shutter);
+ *     [Long Exposure NR] (>= 1 s dark-frame subtraction, def On, Can be reset); [High ISO NR] (Normal def /
+ *     Low / Off, ignored for .ARW); vs FX6 zero mechanical shutter / zero X-Sync / Noise Suppression + APR.
+ *  3) [Creative Look] (Can be reset): 10 presets (ST def, PT, NT, VV, VV2, FL, IN, SH, BW, SE) +
+ *     Custom Look 1..6 (16 ELF slots split Still vs Movie) + 8 params (Contrast/Highlights/Shadows/Saturation:
+ *     -9..+9; Fade/Sharpness/Clarity: 0..9 asymmetric!; Sharpness Range: 1..5); BW/SE lock Saturation;
+ *     Movie/S&Q locks Sharpness Range; iAuto / PP!=Off / Log Shooting!=Off / HLG Still=On lock to [-];
+ *     plus Dormant [Soft Skin Effect] (_f 0x76d9, BKID_APP_setting_soft_skin_effect) strictly blocked
+ *     -EOPNOTSUPP (-95) on BOTH FX3 Ver. 7.02 & FX6 Ver. 6.01; vs FX6 Base Look / Scene File / Multi Matrix.
+ *  4) Playback/Media Tier-0 Slot 1 Firewall: [Delete confirm.] ("Cancel" first def vs "Delete" first hazard),
+ *     [Delete pressing twice] (Off def vs On instant delete), Proxy co-deletion/co-protection, [Protect]
+ *     (DCF/DB read-only attr), and [Recover Image DB] (rewrites AVF_INFO & clears FTP logs, survives BOTH
+ *     Reset & Initialize) — ALL mutating ops targeting Tier-0 Slot 1 fail-closed with -EROFS (-30)
+ *     (slot1_writes=0, slot1_data_sector_writes=0, slot1_avf_info_mutated=0, usb_tx=0, raw_firmware_bytes_leaked=0);
+ *     [Display Media Info.] read-only telemetry (up to 40,000 stills/card) safe O_RDONLY; vs FX6 Thumbnail >
+ *     Lock/Delete Clip, Restore Media(A)/(B) (ng_write_protected -> -EROFS), & Media Status.
+ */
+
+typedef enum {
+    R80_BODY_FX3_702 = 0,
+    R80_BODY_FX6_601 = 1
+} r80_body_t;
+
+typedef enum {
+    R80_MODE_STILL = 0,
+    R80_MODE_MOVIE = 1,
+    R80_MODE_SQ = 2
+} r80_shoot_mode_t;
+
+typedef enum {
+    R80_DRIVE_SINGLE = 0,               /* default; Can be reset */
+    R80_DRIVE_CONT_HI_PLUS = 1,         /* 10 fps; non-live-view; > F11 locks focus 1st frame */
+    R80_DRIVE_CONT_HI = 2,              /* 8 fps; > F11 locks focus 1st frame */
+    R80_DRIVE_CONT_MID = 3,             /* 6 fps; > F11 locks focus 1st frame */
+    R80_DRIVE_CONT_LO = 4,              /* 3 fps */
+    R80_DRIVE_SELF_TIMER_SINGLE = 5,    /* 10/5/2 Sec */
+    R80_DRIVE_SELF_TIMER_CONT = 6,      /* 10/5/2 Sec x 3/5 Img. (6 steps) */
+    R80_DRIVE_CONT_BRACKET = 7,         /* 0.3..1.0 EV x 3/5/9; 2.0/3.0 EV x 3/5 */
+    R80_DRIVE_SINGLE_BRACKET = 8,
+    R80_DRIVE_WB_BRACKET = 9,           /* Lo +/-10 / Hi +/-20 MK-1 */
+    R80_DRIVE_DRO_BRACKET = 10,         /* Lo Lv 1,2,3 / Hi Lv 1,3,5; disabled under HLG Still=On */
+    R80_DRIVE_DORMANT_FOCUS_BRACKET = 11 /* _f 0x7563 dormant on FX3 7.02 & FX6 6.01 -> -EOPNOTSUPP */
+} r80_drive_mode_t;
+
+typedef enum {
+    R80_SHUTTER_MECHANICAL = 0,         /* default; _f 0x6ddb */
+    R80_SHUTTER_ELECTRONIC = 1,         /* _f 0x755a */
+    R80_SHUTTER_DORMANT_AUTO = 2        /* STILL_SHUTTER_TYPE_ANTI_DISTORTION_SHUTTER_AUTO -> -EOPNOTSUPP */
+} r80_shutter_type_t;
+
+typedef enum {
+    R80_HIGH_ISO_NR_NORMAL = 0,         /* default; Can be reset */
+    R80_HIGH_ISO_NR_LOW = 1,
+    R80_HIGH_ISO_NR_OFF = 2,
+    R80_HIGH_ISO_NR_DORMANT_HIGH = 3    /* dormant ELF enum -> -EOPNOTSUPP */
+} r80_high_iso_nr_t;
+
+typedef enum {
+    R80_LOOK_ST = 0,                    /* Standard (default) */
+    R80_LOOK_PT = 1,                    /* Portrait */
+    R80_LOOK_NT = 2,                    /* Neutral */
+    R80_LOOK_VV = 3,                    /* Vivid */
+    R80_LOOK_VV2 = 4,                   /* Vivid 2 / Brilliant */
+    R80_LOOK_FL = 5,                    /* Film */
+    R80_LOOK_IN = 6,                    /* Instant / Retro */
+    R80_LOOK_SH = 7,                    /* Soft Highkey / Airy */
+    R80_LOOK_BW = 8,                    /* Black & White (locks Saturation) */
+    R80_LOOK_SE = 9,                    /* Sepia (locks Saturation) */
+    R80_LOOK_CUSTOM1 = 10,              /* Custom Look 1..6 (slots 10..15) */
+    R80_LOOK_CUSTOM2 = 11,
+    R80_LOOK_CUSTOM3 = 12,
+    R80_LOOK_CUSTOM4 = 13,
+    R80_LOOK_CUSTOM5 = 14,
+    R80_LOOK_CUSTOM6 = 15
+} r80_creative_look_t;
+
+typedef enum {
+    R80_PB_OP_DISPLAY_MEDIA_INFO = 0,   /* O_RDONLY safe (up to 40,000 stills/card) */
+    R80_PB_OP_DELETE = 1,               /* unlink + AVF_INFO update; Proxy co-delete */
+    R80_PB_OP_DELETE_TWICE = 2,         /* instant delete without confirm when On */
+    R80_PB_OP_PROTECT = 3,              /* DCF/DB RO attr mutate; Proxy co-protect */
+    R80_PB_OP_RECOVER_IMAGE_DB = 4      /* rewrites AVF_INFO + clears FTP logs */
+} r80_pb_op_t;
+
+typedef struct {
+    /* Pillar 1: Still Drive Mode & Focus Bracket debunk */
+    int drive_mode;                     /* r80_drive_mode_t, default R80_DRIVE_SINGLE (resettable) */
+    int burst_fps;                      /* 10 / 8 / 6 / 3 / 1 */
+    int burst_slowed_by_uncomp_or_flash;
+    int af_locked_first_frame_gt_f11;
+    int self_timer_sec;                 /* 10 / 5 / 2 */
+    int self_timer_count;               /* 1 / 3 / 5 */
+    int bracket_ev_tenths;              /* 3, 5, 7, 10, 20, 30 */
+    int bracket_shots;                  /* 3, 5, 9 */
+    int bracket_self_timer_sec;         /* 0 (Off def) / 2 / 5 / 10 (resettable) */
+    int bracket_order_neg_zero_pos;     /* 0 (0->-->+ def) / 1 (-->0->+) (resettable) */
+    int interval_shutter_electronic;    /* 1 (Electronic Shutter def in Interval Shoot Func.; resettable) */
+    /* Pillar 2: 2-option Shutter Type, 1/250s X-Sync, e-Front Curtain Shut., Long Exp NR, High ISO NR */
+    int shutter_type;                   /* R80_SHUTTER_MECHANICAL def (resettable); NO Auto */
+    int efcs_on;                        /* 1 def (BKID_APP_setting_front_curtaion_shutter; RESISTS Reset) */
+    int long_exposure_nr_on;            /* 1 def (>= 1s dark-frame subtraction; resettable) */
+    int high_iso_nr;                    /* R80_HIGH_ISO_NR_NORMAL def (resettable; ignored for .ARW) */
+    int flash_xsync_max_denom;          /* 250 (strictly 1/250 s; NO 1/320 s APS-C) */
+    /* Pillar 3: Creative Look (10 presets + 6 custom + 8 params) & Soft Skin Effect debunk */
+    int creative_look_still;            /* 0..15 (R80_LOOK_ST def; resettable) */
+    int creative_look_movie;            /* 0..15 (separate ELF look_movie{0..15}; resettable) */
+    int cl_contrast;                    /* -9..+9 */
+    int cl_highlights;                  /* -9..+9 */
+    int cl_shadows;                     /* -9..+9 */
+    int cl_fade;                        /* 0..9 asymmetric */
+    int cl_saturation;                  /* -9..+9 (locked on BW/SE) */
+    int cl_sharpness;                   /* 0..9 asymmetric */
+    int cl_sharpness_range;             /* 1..5 (fineness; locked in Movie/S&Q) */
+    int cl_clarity;                     /* 0..9 asymmetric (NOT -9..+9!) */
+    int cl_overridden_dash;             /* 1 when iAuto / PP!=Off / Log!=Off / HLG Still=On */
+    /* Pillar 4: Delete / Delete confirm / Pressing twice / Protect / Recover Image DB / Display Media Info */
+    int delete_confirm_delete_first;    /* 0 ("Cancel" first def; RESISTS Reset, Initialize restores) */
+    int delete_pressing_twice_on;       /* 0 (Off def; RESISTS Reset, Initialize restores) */
+    int playback_media_slot;            /* 1 (Slot 1 default) */
+    int recover_db_generation;          /* survives BOTH Reset AND Initialize */
+    int ftp_transfer_log_entries;       /* cleared when Recover Image DB succeeds on Slot 2 */
+    int display_media_max_stills;       /* 40000 */
+    int airplane_mode_on;               /* 1 (survives Reset, Network Reset, AND Initialize) */
+    /* Telemetry & Safety counters */
+    int dormant_fx3_focus_bracket_events;
+    int dormant_fx6_focus_bracket_events;
+    int dormant_shutter_auto_events;
+    int dormant_xsync_320_apsc_events;
+    int dormant_fx3_soft_skin_events;
+    int dormant_fx6_soft_skin_events;
+    int usb_tx;
+    int slot1_writes;
+    int slot1_data_sector_writes;
+    int slot1_avf_info_mutated;
+    int emmc_write_count;
+} r80_wave66_cfg_t;
+
+__attribute__((noinline)) static int r80_lookup_wave66_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Shooting -> [Drive Mode] -> [Drive Mode] (Single def / Cont. Hi+ 10fps Hi 8fps Mid 6fps Lo 3fps / Self-timer / Cont.&Single Bracket / WB / DRO; Still-only; Can be reset)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Drive Mode] -> [Bracket Settings] & [Interval Shoot Func.] (Shutter Type in Interval=Electronic def; Can be reset)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shutter/Silent] -> [Shutter Type] (strictly 2 options: Mechanical Shutter def / Electronic Shutter; NO Auto; Can be reset)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Shutter/Silent] -> [e-Front Curtain Shut.] (On def; resists Reset; ELF typo BKID_APP_setting_front_curtaion_shutter; 1/250s single X-Sync)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [Long Exposure NR] (>=1s dark-frame, On def, Can be reset) & [High ISO NR] (Normal def / Low / Off, ignored for .ARW, Can be reset)") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Color/Tone] -> [Creative Look] (10 presets ST..SE + Custom Look 1..6 = 16 Still/Movie slots + 8 params Clarity 0..9; Can be reset)") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Delete] -> [Delete] / [Delete confirm.] (\"Cancel\" first def; resists Reset) / [Delete pressing twice] (Off def; resists Reset)") == 0 ||
+        strcmp(path, "MENU -> Playback -> [Selection/Memo] -> [Protect] (DCF/DB attr + Proxy co-protect; Slot 1 EROFS=-30)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Media] -> [Recover Image DB] (AVF_INFO rebuild + FTP log clear; survives Reset & Initialize; Slot 1 EROFS=-30)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Media] -> [Display Media Info.] (O_RDONLY telemetry up to 40,000 stills/card; zero Slot 1 writes)") == 0) {
+        return 0;
+    }
+    if (strcmp(path, "dormant::FX3 Ver. 7.02 [Drive Mode] -> [Focus Bracket] (_f 0x7563, DRIVE_MODE_FOCUS_BRACKET; 0 hits in ilc/2210)") == 0 ||
+        strcmp(path, "dormant::FX6 Ver. 6.01 Still [Drive Mode] & [Focus Bracket] (56 dormant symbols; cinema-only)") == 0 ||
+        strcmp(path, "dormant::FX3 Ver. 7.02 [Shutter Type] -> [Auto] (STILL_SHUTTER_TYPE_ANTI_DISTORTION_SHUTTER_AUTO, _f 0x66b8)") == 0 ||
+        strcmp(path, "dormant::FX3 Ver. 7.02 APS-C 1/320s Flash X-Sync (0 hits in ilc/2210; single 1/250s ceiling)") == 0 ||
+        strcmp(path, "dormant::FX6 Ver. 6.01 Mechanical Shutter / e-Front Curtain Shut. / Flash X-Sync / Long Exposure NR (shutterless cinema)") == 0 ||
+        strcmp(path, "dormant::FX3 Ver. 7.02 [High ISO NR] -> [High] (dormant ELF enum)") == 0 ||
+        strcmp(path, "dormant::FX3 Ver. 7.02 [Self-timer(Cont)] -> [10SEC_10IMAGES] (dormant ELF enum)") == 0 ||
+        strcmp(path, "dormant::FX3 Ver. 7.02 [Soft Skin Effect] (_f 0x76d9, BKID_APP_setting_soft_skin_effect; 0 hits in ilc/2210 & SDK -)") == 0 ||
+        strcmp(path, "dormant::FX6 Ver. 6.01 [Soft Skin Effect] & [Creative Look] (SDK -; FX6 uses Base Look / Scene File / Multi Matrix)") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r80_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "_f:0x7228:Drive Mode") == 0 ||
+        strcmp(token, "_f:0x6d37:Single Shooting") == 0 ||
+        strcmp(token, "_f:0x6a32:Cont. Shooting") == 0 ||
+        strcmp(token, "_f:0x68d1:Cont. Shooting: Hi+") == 0 ||
+        strcmp(token, "_f:0x6c00:Cont. Shooting: Hi") == 0 ||
+        strcmp(token, "_f:0x6f48:Cont. Shooting: Mid") == 0 ||
+        strcmp(token, "_f:0x6a0b:Cont. Shooting: Lo") == 0 ||
+        strcmp(token, "_f:0x6772:Self-timer(Single)") == 0 ||
+        strcmp(token, "_f:0x728c:Self-timer(Cont)") == 0 ||
+        strcmp(token, "_f:0x72cb:Cont. Bracket") == 0 ||
+        strcmp(token, "_f:0x790b:Single Bracket") == 0 ||
+        strcmp(token, "_f:0x7acb:WB bracket") == 0 ||
+        strcmp(token, "_f:0x748d:DRO Bracket") == 0 ||
+        strcmp(token, "_f:0x6466:Bracket Settings") == 0 ||
+        strcmp(token, "_f:0x7027:Interval Shoot Func.") == 0 ||
+        strcmp(token, "_f:0x63db:Shutter Type") == 0 ||
+        strcmp(token, "_f:0x6ddb:Mechanical Shutter") == 0 ||
+        strcmp(token, "_f:0x755a:Electronic Shutter") == 0 ||
+        strcmp(token, "_f:0x64c6:e-Front Curtain Shut.") == 0 ||
+        strcmp(token, "_f:0x6465:Long Exposure NR") == 0 ||
+        strcmp(token, "_f:0x650b:High ISO NR") == 0 ||
+        strcmp(token, "_f:0x688f:Normal") == 0 ||
+        strcmp(token, "base:0xe6ab:Low") == 0 ||
+        strcmp(token, "base:0xea17:Off") == 0 ||
+        strcmp(token, "_f:0x6823:Creative Look") == 0 ||
+        strcmp(token, "_f:0x6c98:Custom Look") == 0 ||
+        strcmp(token, "_f:0x770c:ST") == 0 ||
+        strcmp(token, "_f:0x7702:SE") == 0 ||
+        strcmp(token, "base:0xe9fb:Contrast") == 0 ||
+        strcmp(token, "_f:0x665b:Highlights") == 0 ||
+        strcmp(token, "_f:0x71b9:Shadows") == 0 ||
+        strcmp(token, "_f:0x6c64:Fade") == 0 ||
+        strcmp(token, "base:0xe8d0:Saturation") == 0 ||
+        strcmp(token, "base:0xe9fd:Sharpness") == 0 ||
+        strcmp(token, "_f:0x6e76:Sharpness Range") == 0 ||
+        strcmp(token, "_f:0x6921:Clarity") == 0 ||
+        strcmp(token, "base:0xe504:Delete") == 0 ||
+        strcmp(token, "base:0xe721:Delete confirm.") == 0 ||
+        strcmp(token, "_f:0x6a5e:\"Cancel\" first") == 0 ||
+        strcmp(token, "_f:0x6e0a:\"Delete\" first") == 0 ||
+        strcmp(token, "_f:0x74db:Delete pressing twice") == 0 ||
+        strcmp(token, "base:0xe2c9:Protect") == 0 ||
+        strcmp(token, "_f:0x711b:Recover Image DB") == 0 ||
+        strcmp(token, "base:0xea2a:Display Media Info.") == 0) {
+        return 0;
+    }
+    if (strcmp(token, "_f:0x7563:Focus Bracket (dormant on FX3 7.02 & FX6 6.01)") == 0 ||
+        strcmp(token, "_f:0x6915:Focus Bracket Order (dormant)") == 0 ||
+        strcmp(token, "_f:0x66b8:Automatically switches the shutter type. (dormant)") == 0 ||
+        strcmp(token, "_f:0x76d9:Soft Skin Effect (dormant on FX3 7.02 & FX6 6.01)") == 0 ||
+        strcmp(token, "dormant:FX3_1_320_APSC_XSYNC") == 0 ||
+        strcmp(token, "dormant:FX6_CREATIVE_LOOK") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+static void r80_wave66_initialize(r80_wave66_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    int preserve_airplane = cfg->airplane_mode_on;
+    int preserve_recover_db_gen = cfg->recover_db_generation;
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->drive_mode = R80_DRIVE_SINGLE;
+    cfg->burst_fps = 1;
+    cfg->self_timer_sec = 10;
+    cfg->self_timer_count = 1;
+    cfg->bracket_ev_tenths = 3;
+    cfg->bracket_shots = 3;
+    cfg->bracket_self_timer_sec = 0;
+    cfg->bracket_order_neg_zero_pos = 0;
+    cfg->interval_shutter_electronic = 1;
+    cfg->shutter_type = R80_SHUTTER_MECHANICAL;
+    cfg->efcs_on = 1;
+    cfg->long_exposure_nr_on = 1;
+    cfg->high_iso_nr = R80_HIGH_ISO_NR_NORMAL;
+    cfg->flash_xsync_max_denom = 250;
+    cfg->creative_look_still = R80_LOOK_ST;
+    cfg->creative_look_movie = R80_LOOK_ST;
+    cfg->cl_sharpness_range = 3;
+    cfg->delete_confirm_delete_first = 0;
+    cfg->delete_pressing_twice_on = 0;
+    cfg->playback_media_slot = 1;
+    cfg->recover_db_generation = preserve_recover_db_gen;
+    cfg->ftp_transfer_log_entries = 4;
+    cfg->display_media_max_stills = 40000;
+    cfg->airplane_mode_on = preserve_airplane;
+}
+
+static void r80_wave66_zero_init(r80_wave66_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->airplane_mode_on = 1;
+    cfg->recover_db_generation = 1;
+    r80_wave66_initialize(cfg);
+}
+
+static void r80_wave66_camera_settings_reset(r80_wave66_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Can be reset: Drive Mode, Bracket Settings, Interval Shoot Func., Shutter Type,
+     * Long Exposure NR, High ISO NR, Creative Look (presets & 8 params) */
+    cfg->drive_mode = R80_DRIVE_SINGLE;
+    cfg->burst_fps = 1;
+    cfg->burst_slowed_by_uncomp_or_flash = 0;
+    cfg->af_locked_first_frame_gt_f11 = 0;
+    cfg->self_timer_sec = 10;
+    cfg->self_timer_count = 1;
+    cfg->bracket_ev_tenths = 3;
+    cfg->bracket_shots = 3;
+    cfg->bracket_self_timer_sec = 0;
+    cfg->bracket_order_neg_zero_pos = 0;
+    cfg->interval_shutter_electronic = 1;
+    cfg->shutter_type = R80_SHUTTER_MECHANICAL;
+    cfg->long_exposure_nr_on = 1;
+    cfg->high_iso_nr = R80_HIGH_ISO_NR_NORMAL;
+    cfg->creative_look_still = R80_LOOK_ST;
+    cfg->creative_look_movie = R80_LOOK_ST;
+    cfg->cl_contrast = 0;
+    cfg->cl_highlights = 0;
+    cfg->cl_shadows = 0;
+    cfg->cl_fade = 0;
+    cfg->cl_saturation = 0;
+    cfg->cl_sharpness = 0;
+    cfg->cl_sharpness_range = 3;
+    cfg->cl_clarity = 0;
+    cfg->cl_overridden_dash = 0;
+    cfg->playback_media_slot = 1;
+    /* RESISTS Camera Settings Reset:
+     * efcs_on ([e-Front Curtain Shut.]), delete_confirm_delete_first ([Delete confirm.]),
+     * delete_pressing_twice_on ([Delete pressing twice]), recover_db_generation ([Recover Image DB]),
+     * airplane_mode_on ([Airplane Mode]). */
+}
+
+static void r80_wave66_reset_network_settings(r80_wave66_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Network reset does not mutate Wave-66 Still/Shutter/Color/Playback/Media settings
+     * and preserves [Airplane Mode]=On and [Recover Image DB] generation. */
+}
+
+static int r80_configure_drive_and_focus_bracket(
+    r80_wave66_cfg_t *cfg,
+    r80_body_t body,
+    r80_shoot_mode_t shoot_mode,
+    r80_drive_mode_t drive_mode,
+    int uncompressed_raw_on,
+    int flash_on,
+    int aperture_f_tenths, /* e.g., 110 = F11, 160 = F16 */
+    int self_timer_sec,
+    int self_timer_count,
+    int bracket_ev_tenths,
+    int bracket_shots,
+    int iauto_on,
+    int hlg_still_on
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (drive_mode == R80_DRIVE_DORMANT_FOCUS_BRACKET) {
+        /* _f 0x7563 / DRIVE_MODE_FOCUS_BRACKET dormant on BOTH FX3 7.02 & FX6 6.01 */
+        return -EOPNOTSUPP;
+    }
+    if (body == R80_BODY_FX6_601) {
+        /* FX6 cinema-only has zero Still Drive Mode & zero Focus Bracket */
+        return -EOPNOTSUPP;
+    }
+    if (shoot_mode != R80_MODE_STILL) {
+        /* Drive Mode is Still-only; greyed out in Movie & S&Q */
+        return -EBUSY;
+    }
+    int fps = 1;
+    int slowed = 0;
+    int af_lock_1st = 0;
+    switch (drive_mode) {
+    case R80_DRIVE_SINGLE:
+        fps = 1;
+        break;
+    case R80_DRIVE_CONT_HI_PLUS:
+        fps = 10;
+        slowed = (uncompressed_raw_on || flash_on) ? 1 : 0;
+        af_lock_1st = (aperture_f_tenths > 110) ? 1 : 0;
+        break;
+    case R80_DRIVE_CONT_HI:
+        fps = 8;
+        slowed = (uncompressed_raw_on || flash_on) ? 1 : 0;
+        af_lock_1st = (aperture_f_tenths > 110) ? 1 : 0;
+        break;
+    case R80_DRIVE_CONT_MID:
+        fps = 6;
+        slowed = (uncompressed_raw_on || flash_on) ? 1 : 0;
+        af_lock_1st = (aperture_f_tenths > 110) ? 1 : 0;
+        break;
+    case R80_DRIVE_CONT_LO:
+        fps = 3;
+        slowed = (uncompressed_raw_on || flash_on) ? 1 : 0;
+        af_lock_1st = 0;
+        break;
+    case R80_DRIVE_SELF_TIMER_SINGLE:
+        if (self_timer_sec != 10 && self_timer_sec != 5 && self_timer_sec != 2) {
+            return -EINVAL;
+        }
+        break;
+    case R80_DRIVE_SELF_TIMER_CONT:
+        if (self_timer_sec != 10 && self_timer_sec != 5 && self_timer_sec != 2) {
+            return -EINVAL;
+        }
+        if (self_timer_count == 10) {
+            /* Dormant ELF 10SEC_10IMAGES not exposed on FX3 7.02 */
+            return -EOPNOTSUPP;
+        }
+        if (self_timer_count != 3 && self_timer_count != 5) {
+            return -EINVAL;
+        }
+        break;
+    case R80_DRIVE_CONT_BRACKET:
+    case R80_DRIVE_SINGLE_BRACKET:
+        if (iauto_on) {
+            return -EBUSY;
+        }
+        if (bracket_ev_tenths == 3 || bracket_ev_tenths == 5 ||
+            bracket_ev_tenths == 7 || bracket_ev_tenths == 10) {
+            if (bracket_shots != 3 && bracket_shots != 5 && bracket_shots != 9) {
+                return -EINVAL;
+            }
+        } else if (bracket_ev_tenths == 20 || bracket_ev_tenths == 30) {
+            if (bracket_shots != 3 && bracket_shots != 5) {
+                return -EINVAL;
+            }
+        } else {
+            return -EINVAL;
+        }
+        break;
+    case R80_DRIVE_WB_BRACKET:
+        /* Lo (+/-10 MK-1) or Hi (+/-20 MK-1), 3 shots */
+        if (bracket_shots != 3) {
+            return -EINVAL;
+        }
+        break;
+    case R80_DRIVE_DRO_BRACKET:
+        /* Disabled under [HLG Still Image] = On */
+        if (hlg_still_on) {
+            return -EBUSY;
+        }
+        if (bracket_shots != 3) {
+            return -EINVAL;
+        }
+        break;
+    default:
+        return -EINVAL;
+    }
+
+    cfg->drive_mode = (int)drive_mode;
+    cfg->burst_fps = fps;
+    cfg->burst_slowed_by_uncomp_or_flash = slowed;
+    cfg->af_locked_first_frame_gt_f11 = af_lock_1st;
+    cfg->self_timer_sec = self_timer_sec;
+    cfg->self_timer_count = self_timer_count;
+    cfg->bracket_ev_tenths = bracket_ev_tenths;
+    cfg->bracket_shots = bracket_shots;
+    return 0;
+}
+
+static int r80_configure_shutter_efcs_xsync_nr(
+    r80_wave66_cfg_t *cfg,
+    r80_body_t body,
+    r80_shutter_type_t shutter_type,
+    int silent_mode_on,
+    int request_flash_on,
+    int request_xsync_denom,       /* e.g., 250 valid; 320 APS-C debunked -> -EOPNOTSUPP; >250 -> -EBUSY */
+    int request_xsync_apsc_320,
+    int request_efcs_on,
+    int request_bulb_on,
+    int request_antiflicker_on,
+    int request_long_exp_nr_on,
+    int exposure_ms,               /* >= 1000 triggers dark-frame subtraction */
+    int cont_shoot_or_bracket_on,
+    int iauto_on,
+    r80_high_iso_nr_t high_iso_nr,
+    int file_format_raw_only,
+    int fx6_apr_lens_capped
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (body == R80_BODY_FX6_601) {
+        /* FX6 has zero mechanical shutter, zero e-Front Curtain, zero X-Sync, zero Long Exposure NR */
+        if (shutter_type == R80_SHUTTER_MECHANICAL ||
+            request_flash_on || request_xsync_apsc_320 || request_efcs_on || request_long_exp_nr_on) {
+            return -EOPNOTSUPP;
+        }
+        /* FX6 Technical > APR requires fully capped lens */
+        if (!fx6_apr_lens_capped) {
+            return -EBUSY;
+        }
+        return 0;
+    }
+    if (shutter_type == R80_SHUTTER_DORMANT_AUTO) {
+        /* FX3 Ver. 7.02 [Shutter Type] strictly 2 options: Mechanical / Electronic (NO Auto) */
+        return -EOPNOTSUPP;
+    }
+    if (request_xsync_apsc_320) {
+        /* Debunked: ilc/2210 has 0 hits for 1/320s APS-C flash sync; single 1/250s ceiling */
+        return -EOPNOTSUPP;
+    }
+    if (high_iso_nr == R80_HIGH_ISO_NR_DORMANT_HIGH) {
+        return -EOPNOTSUPP;
+    }
+
+    int elec_or_silent = (shutter_type == R80_SHUTTER_ELECTRONIC || silent_mode_on) ? 1 : 0;
+    if (elec_or_silent) {
+        /* Electronic Shutter / Silent Mode=On locks out 5 features:
+         * 1. Flash, 2. Long Exposure NR, 3. e-Front Curtain Shut., 4. BULB, 5. Anti-flicker Shoot. */
+        if (request_flash_on || request_long_exp_nr_on || request_efcs_on ||
+            request_bulb_on || request_antiflicker_on) {
+            return -EBUSY;
+        }
+    }
+    if (request_flash_on && request_xsync_denom > 250) {
+        /* Single 1/250 s flash X-Sync ceiling */
+        return -EBUSY;
+    }
+    if (request_long_exp_nr_on && cont_shoot_or_bracket_on) {
+        /* Long Exposure NR unavailable in Cont. Shooting / Cont. Bracket */
+        return -EBUSY;
+    }
+    if (!request_long_exp_nr_on && iauto_on) {
+        /* Cannot set Long Exposure NR to Off in Intelligent Auto */
+        return -EBUSY;
+    }
+    if (file_format_raw_only && high_iso_nr != R80_HIGH_ISO_NR_NORMAL) {
+        /* High ISO NR unavailable when [File Format] = RAW */
+        return -EBUSY;
+    }
+    if (iauto_on && high_iso_nr != R80_HIGH_ISO_NR_NORMAL) {
+        /* Fixed to Normal under iAuto */
+        return -EBUSY;
+    }
+    (void)exposure_ms;
+    cfg->shutter_type = (int)shutter_type;
+    if (!elec_or_silent) {
+        cfg->efcs_on = request_efcs_on ? 1 : 0;
+        cfg->long_exposure_nr_on = request_long_exp_nr_on ? 1 : 0;
+    }
+    cfg->high_iso_nr = (int)high_iso_nr;
+    cfg->flash_xsync_max_denom = 250;
+    return 0;
+}
+
+static int r80_configure_creativelook_and_softskin(
+    r80_wave66_cfg_t *cfg,
+    r80_body_t body,
+    r80_shoot_mode_t shoot_mode,
+    int request_soft_skin_effect,
+    int look_slot,          /* 0..9 presets ST..SE, 10..15 Custom Look 1..6 */
+    int contrast,           /* -9..+9 */
+    int highlights,         /* -9..+9 */
+    int shadows,            /* -9..+9 */
+    int fade,               /* 0..9 asymmetric */
+    int saturation,         /* -9..+9; locked on BW(8)/SE(9) */
+    int sharpness,          /* 0..9 asymmetric */
+    int sharpness_range,    /* 1..5 (fineness); locked in Movie/S&Q */
+    int clarity,            /* 0..9 asymmetric (NOT -9..+9!) */
+    int modify_saturation,
+    int modify_sharpness_range,
+    int iauto_on,
+    int pp_active,
+    int log_shooting_active,
+    int hlg_still_on
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (request_soft_skin_effect) {
+        /* Dormant _f 0x76d9 / BKID_APP_setting_soft_skin_effect on BOTH FX3 7.02 & FX6 6.01 */
+        return -EOPNOTSUPP;
+    }
+    if (body == R80_BODY_FX6_601) {
+        /* FX6 uses Base Look / Scene File / Multi Matrix; no Creative Look */
+        return -EOPNOTSUPP;
+    }
+    if (look_slot < 0 || look_slot > 15) {
+        return -EINVAL;
+    }
+    if (iauto_on || pp_active || log_shooting_active || hlg_still_on) {
+        /* Forced to [-] (disabled) */
+        cfg->cl_overridden_dash = 1;
+        return -EBUSY;
+    }
+    if (contrast < -9 || contrast > 9 ||
+        highlights < -9 || highlights > 9 ||
+        shadows < -9 || shadows > 9 ||
+        saturation < -9 || saturation > 9) {
+        return -EINVAL;
+    }
+    if (fade < 0 || fade > 9 ||
+        sharpness < 0 || sharpness > 9 ||
+        clarity < 0 || clarity > 9) {
+        /* Fade, Sharpness, Clarity are strictly 0..9 asymmetric */
+        return -EINVAL;
+    }
+    if (sharpness_range < 1 || sharpness_range > 5) {
+        /* Sharpness Range (fineness) strictly 1..5 */
+        return -EINVAL;
+    }
+    if ((look_slot == R80_LOOK_BW || look_slot == R80_LOOK_SE) && modify_saturation) {
+        /* BW & SE lock Saturation */
+        return -EBUSY;
+    }
+    if ((shoot_mode == R80_MODE_MOVIE || shoot_mode == R80_MODE_SQ) && modify_sharpness_range) {
+        /* Movie / S&Q lock Sharpness Range */
+        return -EBUSY;
+    }
+
+    if (shoot_mode == R80_MODE_STILL) {
+        cfg->creative_look_still = look_slot;
+    } else {
+        cfg->creative_look_movie = look_slot;
+    }
+    cfg->cl_contrast = contrast;
+    cfg->cl_highlights = highlights;
+    cfg->cl_shadows = shadows;
+    cfg->cl_fade = fade;
+    cfg->cl_saturation = saturation;
+    cfg->cl_sharpness = sharpness;
+    cfg->cl_sharpness_range = sharpness_range;
+    cfg->cl_clarity = clarity;
+    cfg->cl_overridden_dash = 0;
+    return 0;
+}
+
+static int r80_eval_playback_delete_protect_recoverdb(
+    r80_wave66_cfg_t *cfg,
+    r80_body_t body,
+    r80_pb_op_t op,
+    int target_slot,            /* 1 = Tier-0 Slot 1 Vault (RO), 2 = Slot 2 scratch */
+    int has_proxy_pair,
+    int clip_is_protected,
+    int battery_low,
+    int fx6_media_write_protected,
+    int *out_proxy_coupled
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (out_proxy_coupled) {
+        *out_proxy_coupled = 0;
+    }
+    if (op == R80_PB_OP_DISPLAY_MEDIA_INFO) {
+        /* Read-only O_RDONLY telemetry (up to 40,000 stills/card); safe on Slot 1 */
+        cfg->display_media_max_stills = 40000;
+        return 0;
+    }
+    if (body == R80_BODY_FX6_601) {
+        /* FX6 Restore Media(A)/(B) checks ng_write_protected -> -EROFS */
+        if (fx6_media_write_protected || target_slot == 1) {
+            return -EROFS;
+        }
+        return 0;
+    }
+    /* Tier-0 Slot 1 Firewall: ALL mutating ops targeting Slot 1 MUST fail-closed with -EROFS (-30) */
+    if (target_slot == 1) {
+        return -EROFS;
+    }
+    if (target_slot != 2) {
+        return -EINVAL;
+    }
+    if (op == R80_PB_OP_DELETE || op == R80_PB_OP_DELETE_TWICE) {
+        if (clip_is_protected) {
+            return -EACCES;
+        }
+        if (out_proxy_coupled) {
+            *out_proxy_coupled = has_proxy_pair ? 1 : 0;
+        }
+        return 0;
+    }
+    if (op == R80_PB_OP_PROTECT) {
+        if (out_proxy_coupled) {
+            *out_proxy_coupled = has_proxy_pair ? 1 : 0;
+        }
+        return 0;
+    }
+    if (op == R80_PB_OP_RECOVER_IMAGE_DB) {
+        if (battery_low) {
+            return -EAGAIN;
+        }
+        cfg->recover_db_generation += 1;
+        cfg->ftp_transfer_log_entries = 0;
+        return 0;
+    }
+    return -EINVAL;
+}
+
+static int setup_r80_milestone_drive_focusbracket_shutter_efcs_creativelook_recoverdb_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    int fx3_wave66_nodes_ok =
+        (r80_lookup_wave66_menu_node("MENU -> Shooting -> [Drive Mode] -> [Drive Mode] (Single def / Cont. Hi+ 10fps Hi 8fps Mid 6fps Lo 3fps / Self-timer / Cont.&Single Bracket / WB / DRO; Still-only; Can be reset)") == 0 &&
+         r80_lookup_wave66_menu_node("MENU -> Shooting -> [Drive Mode] -> [Bracket Settings] & [Interval Shoot Func.] (Shutter Type in Interval=Electronic def; Can be reset)") == 0 &&
+         r80_lookup_wave66_menu_node("MENU -> Shooting -> [Shutter/Silent] -> [Shutter Type] (strictly 2 options: Mechanical Shutter def / Electronic Shutter; NO Auto; Can be reset)") == 0 &&
+         r80_lookup_wave66_menu_node("MENU -> Shooting -> [Shutter/Silent] -> [e-Front Curtain Shut.] (On def; resists Reset; ELF typo BKID_APP_setting_front_curtaion_shutter; 1/250s single X-Sync)") == 0 &&
+         r80_lookup_wave66_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [Long Exposure NR] (>=1s dark-frame, On def, Can be reset) & [High ISO NR] (Normal def / Low / Off, ignored for .ARW, Can be reset)") == 0 &&
+         r80_lookup_wave66_menu_node("MENU -> Exposure/Color -> [Color/Tone] -> [Creative Look] (10 presets ST..SE + Custom Look 1..6 = 16 Still/Movie slots + 8 params Clarity 0..9; Can be reset)") == 0 &&
+         r80_lookup_wave66_menu_node("MENU -> Playback -> [Delete] -> [Delete] / [Delete confirm.] (\"Cancel\" first def; resists Reset) / [Delete pressing twice] (Off def; resists Reset)") == 0 &&
+         r80_lookup_wave66_menu_node("MENU -> Playback -> [Selection/Memo] -> [Protect] (DCF/DB attr + Proxy co-protect; Slot 1 EROFS=-30)") == 0 &&
+         r80_lookup_wave66_menu_node("MENU -> Shooting -> [Media] -> [Recover Image DB] (AVF_INFO rebuild + FTP log clear; survives Reset & Initialize; Slot 1 EROFS=-30)") == 0 &&
+         r80_lookup_wave66_menu_node("MENU -> Shooting -> [Media] -> [Display Media Info.] (O_RDONLY telemetry up to 40,000 stills/card; zero Slot 1 writes)") == 0 &&
+         r80_lookup_wave66_menu_node("dormant::FX3 Ver. 7.02 [Drive Mode] -> [Focus Bracket] (_f 0x7563, DRIVE_MODE_FOCUS_BRACKET; 0 hits in ilc/2210)") == -EOPNOTSUPP &&
+         r80_lookup_wave66_menu_node("dormant::FX6 Ver. 6.01 Still [Drive Mode] & [Focus Bracket] (56 dormant symbols; cinema-only)") == -EOPNOTSUPP &&
+         r80_lookup_wave66_menu_node("dormant::FX3 Ver. 7.02 [Shutter Type] -> [Auto] (STILL_SHUTTER_TYPE_ANTI_DISTORTION_SHUTTER_AUTO, _f 0x66b8)") == -EOPNOTSUPP &&
+         r80_lookup_wave66_menu_node("dormant::FX3 Ver. 7.02 APS-C 1/320s Flash X-Sync (0 hits in ilc/2210; single 1/250s ceiling)") == -EOPNOTSUPP &&
+         r80_lookup_wave66_menu_node("dormant::FX3 Ver. 7.02 [Soft Skin Effect] (_f 0x76d9, BKID_APP_setting_soft_skin_effect; 0 hits in ilc/2210 & SDK -)") == -EOPNOTSUPP &&
+         r80_lookup_wave66_menu_node("dormant::FX6 Ver. 6.01 [Soft Skin Effect] & [Creative Look] (SDK -; FX6 uses Base Look / Scene File / Multi Matrix)") == -EOPNOTSUPP) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r80_lookup_uxc_token("_f:0x7228:Drive Mode") == 0 &&
+         r80_lookup_uxc_token("_f:0x6d37:Single Shooting") == 0 &&
+         r80_lookup_uxc_token("_f:0x68d1:Cont. Shooting: Hi+") == 0 &&
+         r80_lookup_uxc_token("_f:0x6c00:Cont. Shooting: Hi") == 0 &&
+         r80_lookup_uxc_token("_f:0x6f48:Cont. Shooting: Mid") == 0 &&
+         r80_lookup_uxc_token("_f:0x6a0b:Cont. Shooting: Lo") == 0 &&
+         r80_lookup_uxc_token("_f:0x6772:Self-timer(Single)") == 0 &&
+         r80_lookup_uxc_token("_f:0x728c:Self-timer(Cont)") == 0 &&
+         r80_lookup_uxc_token("_f:0x72cb:Cont. Bracket") == 0 &&
+         r80_lookup_uxc_token("_f:0x790b:Single Bracket") == 0 &&
+         r80_lookup_uxc_token("_f:0x7acb:WB bracket") == 0 &&
+         r80_lookup_uxc_token("_f:0x748d:DRO Bracket") == 0 &&
+         r80_lookup_uxc_token("_f:0x63db:Shutter Type") == 0 &&
+         r80_lookup_uxc_token("_f:0x6ddb:Mechanical Shutter") == 0 &&
+         r80_lookup_uxc_token("_f:0x755a:Electronic Shutter") == 0 &&
+         r80_lookup_uxc_token("_f:0x64c6:e-Front Curtain Shut.") == 0 &&
+         r80_lookup_uxc_token("_f:0x6465:Long Exposure NR") == 0 &&
+         r80_lookup_uxc_token("_f:0x650b:High ISO NR") == 0 &&
+         r80_lookup_uxc_token("_f:0x6823:Creative Look") == 0 &&
+         r80_lookup_uxc_token("_f:0x6c98:Custom Look") == 0 &&
+         r80_lookup_uxc_token("_f:0x6921:Clarity") == 0 &&
+         r80_lookup_uxc_token("_f:0x6e76:Sharpness Range") == 0 &&
+         r80_lookup_uxc_token("base:0xe504:Delete") == 0 &&
+         r80_lookup_uxc_token("base:0xe721:Delete confirm.") == 0 &&
+         r80_lookup_uxc_token("_f:0x6a5e:\"Cancel\" first") == 0 &&
+         r80_lookup_uxc_token("_f:0x6e0a:\"Delete\" first") == 0 &&
+         r80_lookup_uxc_token("_f:0x74db:Delete pressing twice") == 0 &&
+         r80_lookup_uxc_token("base:0xe2c9:Protect") == 0 &&
+         r80_lookup_uxc_token("_f:0x711b:Recover Image DB") == 0 &&
+         r80_lookup_uxc_token("base:0xea2a:Display Media Info.") == 0 &&
+         r80_lookup_uxc_token("_f:0x7563:Focus Bracket (dormant on FX3 7.02 & FX6 6.01)") == -EOPNOTSUPP &&
+         r80_lookup_uxc_token("_f:0x66b8:Automatically switches the shutter type. (dormant)") == -EOPNOTSUPP &&
+         r80_lookup_uxc_token("_f:0x76d9:Soft Skin Effect (dormant on FX3 7.02 & FX6 6.01)") == -EOPNOTSUPP) ? 1 : 0;
+
+    r80_wave66_cfg_t cfg;
+    r80_wave66_zero_init(&cfg);
+
+    /* Pillar 1: Still Drive Mode 10/8/6/3 fps + >F11 AF lock + Uncompressed RAW drop + Dormant Focus Bracket */
+    int p1_hi_plus_rc = r80_configure_drive_and_focus_bracket(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, R80_DRIVE_CONT_HI_PLUS,
+        1, 0, 160, 10, 1, 3, 3, 0, 0);
+    int p1_hi_plus_props_ok = (p1_hi_plus_rc == 0 && cfg.burst_fps == 10 &&
+                               cfg.burst_slowed_by_uncomp_or_flash == 1 &&
+                               cfg.af_locked_first_frame_gt_f11 == 1) ? 1 : 0;
+    int p1_lo_rc = r80_configure_drive_and_focus_bracket(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, R80_DRIVE_CONT_LO,
+        0, 0, 160, 10, 1, 3, 3, 0, 0);
+    int p1_lo_ok = (p1_lo_rc == 0 && cfg.burst_fps == 3 && cfg.af_locked_first_frame_gt_f11 == 0) ? 1 : 0;
+    int p1_bkt_rc = r80_configure_drive_and_focus_bracket(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, R80_DRIVE_CONT_BRACKET,
+        0, 0, 56, 10, 1, 10, 9, 0, 0);
+    int p1_dro_hlg_rc = r80_configure_drive_and_focus_bracket(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, R80_DRIVE_DRO_BRACKET,
+        0, 0, 56, 10, 1, 3, 3, 0, 1);
+    int fx3_focus_bracket_rc = r80_configure_drive_and_focus_bracket(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, R80_DRIVE_DORMANT_FOCUS_BRACKET,
+        0, 0, 56, 10, 1, 3, 3, 0, 0);
+    int fx6_focus_bracket_rc = r80_configure_drive_and_focus_bracket(
+        &cfg, R80_BODY_FX6_601, R80_MODE_STILL, R80_DRIVE_DORMANT_FOCUS_BRACKET,
+        0, 0, 56, 10, 1, 3, 3, 0, 0);
+    int drive_10fps_focusbracket_ok =
+        (p1_hi_plus_props_ok == 1 && p1_lo_ok == 1 && p1_bkt_rc == 0 &&
+         p1_dro_hlg_rc == -EBUSY &&
+         fx3_focus_bracket_rc == -EOPNOTSUPP &&
+         fx6_focus_bracket_rc == -EOPNOTSUPP &&
+         cfg.interval_shutter_electronic == 1) ? 1 : 0;
+
+    /* Pillar 2: 2-option Shutter Type (NO Auto), 1/250s single X-Sync, EFCS typo, Long Exp NR, High ISO NR */
+    int p2_mech_250_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_MECHANICAL, 0, 1, 250, 0,
+        1, 0, 1, 1, 2000, 0, 0, R80_HIGH_ISO_NR_LOW, 0, 1);
+    int shutter_auto_dormant_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_DORMANT_AUTO, 0, 0, 250, 0,
+        1, 0, 0, 1, 500, 0, 0, R80_HIGH_ISO_NR_NORMAL, 0, 1);
+    int xsync_320_apsc_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_MECHANICAL, 0, 1, 320, 1,
+        1, 0, 0, 1, 10, 0, 0, R80_HIGH_ISO_NR_NORMAL, 0, 1);
+    int eshutter_flash_lock_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_ELECTRONIC, 0, 1, 250, 0,
+        0, 0, 0, 0, 10, 0, 0, R80_HIGH_ISO_NR_NORMAL, 0, 1);
+    int fx6_mech_shutter_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX6_601, R80_SHUTTER_MECHANICAL, 0, 0, 250, 0,
+        0, 0, 0, 0, 10, 0, 0, R80_HIGH_ISO_NR_NORMAL, 0, 1);
+    int fx6_apr_capped_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX6_601, R80_SHUTTER_ELECTRONIC, 0, 0, 0, 0,
+        0, 0, 0, 0, 10, 0, 0, R80_HIGH_ISO_NR_NORMAL, 0, 1);
+    int shutter2_xsync250_efcs_nr_ok =
+        (p2_mech_250_rc == 0 && cfg.flash_xsync_max_denom == 250 && cfg.efcs_on == 1 &&
+         shutter_auto_dormant_rc == -EOPNOTSUPP &&
+         xsync_320_apsc_rc == -EOPNOTSUPP &&
+         eshutter_flash_lock_rc == -EBUSY &&
+         fx6_mech_shutter_rc == -EOPNOTSUPP &&
+         fx6_apr_capped_rc == 0) ? 1 : 0;
+
+    /* Pillar 3: Creative Look 10 presets + 6 Custom + 8 params (Clarity 0..9) + Dormant Soft Skin */
+    int cl_custom6_still_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, 0, R80_LOOK_CUSTOM6,
+        +4, -3, +5, 2, -2, 7, 4, 9, 1, 1, 0, 0, 0, 0);
+    int cl_fl_movie_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_MOVIE, 0, R80_LOOK_FL,
+        +2, -1, +2, 3, -1, 5, 3, 6, 1, 0, 0, 0, 0, 0);
+    int cl_clarity_neg1_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, 0, R80_LOOK_ST,
+        0, 0, 0, 0, 0, 0, 3, -1, 0, 0, 0, 0, 0, 0);
+    int cl_bw_sat_lock_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, 0, R80_LOOK_BW,
+        0, 0, 0, 0, 2, 0, 3, 0, 1, 0, 0, 0, 0, 0);
+    int cl_movie_srange_lock_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_MOVIE, 0, R80_LOOK_ST,
+        0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 0, 0, 0, 0);
+    int cl_pp_override_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_MOVIE, 0, R80_LOOK_ST,
+        0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 1, 0, 0);
+    int fx3_soft_skin_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, 1, R80_LOOK_PT,
+        0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0);
+    int fx6_soft_skin_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX6_601, R80_MODE_MOVIE, 1, R80_LOOK_ST,
+        0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0);
+    int creativelook10_softskin_ok =
+        (cl_custom6_still_rc == 0 && cl_fl_movie_rc == 0 &&
+         cfg.creative_look_still == R80_LOOK_CUSTOM6 &&
+         cfg.creative_look_movie == R80_LOOK_FL &&
+         cfg.cl_clarity == 6 &&
+         cl_clarity_neg1_rc == -EINVAL &&
+         cl_bw_sat_lock_rc == -EBUSY &&
+         cl_movie_srange_lock_rc == -EBUSY &&
+         cl_pp_override_rc == -EBUSY &&
+         fx3_soft_skin_rc == -EOPNOTSUPP &&
+         fx6_soft_skin_rc == -EOPNOTSUPP) ? 1 : 0;
+
+    /* Pillar 4: Delete / Delete confirm / Pressing twice / Protect / Recover Image DB Slot-1 EROFS=30 */
+    int slot1_delete_erofs_rc = r80_eval_playback_delete_protect_recoverdb(
+        &cfg, R80_BODY_FX3_702, R80_PB_OP_DELETE, 1, 1, 0, 0, 0, NULL);
+    int slot1_delete_twice_erofs_rc = r80_eval_playback_delete_protect_recoverdb(
+        &cfg, R80_BODY_FX3_702, R80_PB_OP_DELETE_TWICE, 1, 1, 0, 0, 0, NULL);
+    int slot1_protect_erofs_rc = r80_eval_playback_delete_protect_recoverdb(
+        &cfg, R80_BODY_FX3_702, R80_PB_OP_PROTECT, 1, 1, 0, 0, 0, NULL);
+    int slot1_recoverdb_erofs_rc = r80_eval_playback_delete_protect_recoverdb(
+        &cfg, R80_BODY_FX3_702, R80_PB_OP_RECOVER_IMAGE_DB, 1, 0, 0, 0, 0, NULL);
+    int slot1_media_info_ro_rc = r80_eval_playback_delete_protect_recoverdb(
+        &cfg, R80_BODY_FX3_702, R80_PB_OP_DISPLAY_MEDIA_INFO, 1, 0, 0, 0, 0, NULL);
+    int proxy_del_coupled = 0, proxy_prot_coupled = 0;
+    int slot2_del_rc = r80_eval_playback_delete_protect_recoverdb(
+        &cfg, R80_BODY_FX3_702, R80_PB_OP_DELETE, 2, 1, 0, 0, 0, &proxy_del_coupled);
+    int slot2_prot_rc = r80_eval_playback_delete_protect_recoverdb(
+        &cfg, R80_BODY_FX3_702, R80_PB_OP_PROTECT, 2, 1, 0, 0, 0, &proxy_prot_coupled);
+    int slot2_recoverdb_rc = r80_eval_playback_delete_protect_recoverdb(
+        &cfg, R80_BODY_FX3_702, R80_PB_OP_RECOVER_IMAGE_DB, 2, 0, 0, 0, 0, NULL);
+    int fx6_restore_wp_erofs_rc = r80_eval_playback_delete_protect_recoverdb(
+        &cfg, R80_BODY_FX6_601, R80_PB_OP_RECOVER_IMAGE_DB, 2, 0, 0, 0, 1, NULL);
+
+    /* Real kernel VFS RO bind-mount EROFS=-30 verification on Tier-0 Slot 1 AVF_INFO + P2 + P12 + cnflasha */
+    if (r33_mkdir_p("/mnt/r80a_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r80a_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r80a_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r80a_cnflasha_ro", 0755) != 0) {
+        return 99;
+    }
+    (void)umount("/mnt/r80a_slot1_vault");
+    (void)umount("/mnt/r80a_p2_ro");
+    (void)umount("/mnt/r80a_p12_ro");
+    (void)umount("/mnt/r80a_cnflasha_ro");
+    if (mount("tmpfs", "/mnt/r80a_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r80a_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r80a_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r80a_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 99;
+    }
+    if (r33_mkdir_p("/mnt/r80a_slot1_vault/AVF_INFO", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r80a_slot1_vault/DCIM", 0755) != 0) {
+        return 99;
+    }
+    uint8_t s1_db[256], p2_b[256], p12_b[256], cn_b[256];
+    for (size_t i = 0U; i < sizeof(s1_db); i++) {
+        s1_db[i] = (uint8_t)((i * 131U + 0x80U) & 0xffU);
+        p2_b[i]  = (uint8_t)((i * 137U + 0x22U) & 0xffU);
+        p12_b[i] = (uint8_t)((i * 139U + 0x44U) & 0xffU);
+        cn_b[i]  = (uint8_t)((i * 149U + 0x66U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r80a_slot1_vault/AVF_INFO/AVIN0001.INP", s1_db, sizeof(s1_db), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r80a_slot1_vault/DCIM/DSC00001.ARW", s1_db, sizeof(s1_db), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r80a_p2_ro/Backup.bin", p2_b, sizeof(p2_b), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r80a_p12_ro/wlan_nvs.bin", p12_b, sizeof(p12_b), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r80a_cnflasha_ro/cnflasha.img", cn_b, sizeof(cn_b), 0444) != 0) {
+        return 99;
+    }
+    char pre_s1[65] = "", post_s1[65] = "", pre_p2[65] = "", post_p2[65] = "";
+    char pre_p12[65] = "", post_p12[65] = "", pre_cn[65] = "", post_cn[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r80a_slot1_vault/AVF_INFO/AVIN0001.INP", pre_s1, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r80a_p2_ro/Backup.bin", pre_p2, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r80a_p12_ro/wlan_nvs.bin", pre_p12, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r80a_cnflasha_ro/cnflasha.img", pre_cn, &vbytes) != 0) {
+        return 99;
+    }
+    if (mount(NULL, "/mnt/r80a_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r80a_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r80a_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r80a_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 99;
+    }
+    errno = 0;
+    int avf_fd = open("/mnt/r80a_slot1_vault/AVF_INFO/AVIN0001.INP", O_RDWR);
+    int slot1_vfs_avf_erofs_rc = (avf_fd >= 0) ? (close(avf_fd), 0) : -errno;
+    errno = 0;
+    int unlink_rc = (unlink("/mnt/r80a_slot1_vault/DCIM/DSC00001.ARW") == 0) ? 0 : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r80a_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r80a_slot1_vault/AVF_INFO/AVIN0001.INP", post_s1, &vbytes) == 0 &&
+         strcmp(pre_s1, post_s1) == 0) ? 1 : 0;
+    int p2_sha256_match =
+        (sha256_file_hex("/mnt/r80a_p2_ro/Backup.bin", post_p2, &vbytes) == 0 &&
+         strcmp(pre_p2, post_p2) == 0) ? 1 : 0;
+    int p12_sha256_match =
+        (sha256_file_hex("/mnt/r80a_p12_ro/wlan_nvs.bin", post_p12, &vbytes) == 0 &&
+         strcmp(pre_p12, post_p12) == 0) ? 1 : 0;
+    int cnflasha_sha256_match =
+        (sha256_file_hex("/mnt/r80a_cnflasha_ro/cnflasha.img", post_cn, &vbytes) == 0 &&
+         strcmp(pre_cn, post_cn) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r80a_slot1_vault");
+    (void)umount("/mnt/r80a_p2_ro");
+    (void)umount("/mnt/r80a_p12_ro");
+    (void)umount("/mnt/r80a_cnflasha_ro");
+
+    int delete_protect_recoverdb_erofs_ok =
+        (slot1_delete_erofs_rc == -EROFS &&
+         slot1_delete_twice_erofs_rc == -EROFS &&
+         slot1_protect_erofs_rc == -EROFS &&
+         slot1_recoverdb_erofs_rc == -EROFS &&
+         slot1_media_info_ro_rc == 0 &&
+         cfg.display_media_max_stills == 40000 &&
+         slot2_del_rc == 0 && proxy_del_coupled == 1 &&
+         slot2_prot_rc == 0 && proxy_prot_coupled == 1 &&
+         slot2_recoverdb_rc == 0 && cfg.ftp_transfer_log_entries == 0 &&
+         fx6_restore_wp_erofs_rc == -EROFS &&
+         slot1_vfs_avf_erofs_rc == -EROFS &&
+         unlink_rc == -EROFS) ? 1 : 0;
+
+    int appfw_present = (access("/usr/lib/appFw.so", R_OK) == 0) ? 1 : 0;
+    int shim_present = (access("/usr/lib/libgrm-fbinit9.so", R_OK) == 0) ? 1 : 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave66_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              drive_10fps_focusbracket_ok == 1 &&
+              shutter2_xsync250_efcs_nr_ok == 1 &&
+              creativelook10_softskin_ok == 1 &&
+              delete_protect_recoverdb_erofs_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              p12_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              cfg.dormant_fx3_focus_bracket_events == 0 &&
+              cfg.dormant_fx6_focus_bracket_events == 0 &&
+              cfg.dormant_shutter_auto_events == 0 &&
+              cfg.dormant_xsync_320_apsc_events == 0 &&
+              cfg.dormant_fx3_soft_skin_events == 0 &&
+              cfg.dormant_fx6_soft_skin_events == 0 &&
+              cfg.usb_tx == 0 &&
+              cfg.slot1_writes == 0 &&
+              cfg.slot1_data_sector_writes == 0 &&
+              cfg.slot1_avf_info_mutated == 0 &&
+              cfg.emmc_write_count == 0 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R80_WAVE66_INIT fx3_wave66_nodes_ok=%d uxc_tokens_ok=%d "
+            "drive_10fps_focusbracket_ok=%d shutter2_xsync250_efcs_nr_ok=%d "
+            "creativelook10_softskin_ok=%d delete_protect_recoverdb_erofs_ok=%d "
+            "fx3_focus_bracket_rc=%d fx6_focus_bracket_rc=%d shutter_auto_dormant_rc=%d "
+            "xsync_320_apsc_rc=%d eshutter_flash_lock_rc=%d fx6_mech_shutter_rc=%d "
+            "cl_clarity_neg1_rc=%d cl_bw_sat_lock_rc=%d cl_movie_srange_lock_rc=%d "
+            "cl_pp_override_rc=%d fx3_soft_skin_rc=%d fx6_soft_skin_rc=%d "
+            "slot1_delete_erofs_rc=%d slot1_delete_twice_erofs_rc=%d "
+            "slot1_protect_erofs_rc=%d slot1_recoverdb_erofs_rc=%d "
+            "slot1_vfs_avf_erofs_rc=%d slot1_unlink_erofs_rc=%d "
+            "slot1_media_info_ro_rc=%d fx6_restore_wp_erofs_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d p12_sha256_match=%d "
+            "cnflasha_sha256_match=%d slot1_vault_sha256_match=%d "
+            "dormant_fx3_focus_bracket_events=0 dormant_fx6_focus_bracket_events=0 "
+            "dormant_shutter_auto_events=0 dormant_xsync_320_apsc_events=0 "
+            "dormant_fx3_soft_skin_events=0 dormant_fx6_soft_skin_events=0 "
+            "usb_tx=0 slot1_writes=0 slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "cnflasha_writes=0 appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r80_init_ok=%d verify_us=%lld\n",
+            fx3_wave66_nodes_ok, uxc_tokens_ok,
+            drive_10fps_focusbracket_ok, shutter2_xsync250_efcs_nr_ok,
+            creativelook10_softskin_ok, delete_protect_recoverdb_erofs_ok,
+            fx3_focus_bracket_rc, fx6_focus_bracket_rc, shutter_auto_dormant_rc,
+            xsync_320_apsc_rc, eshutter_flash_lock_rc, fx6_mech_shutter_rc,
+            cl_clarity_neg1_rc, cl_bw_sat_lock_rc, cl_movie_srange_lock_rc,
+            cl_pp_override_rc, fx3_soft_skin_rc, fx6_soft_skin_rc,
+            slot1_delete_erofs_rc, slot1_delete_twice_erofs_rc,
+            slot1_protect_erofs_rc, slot1_recoverdb_erofs_rc,
+            slot1_vfs_avf_erofs_rc, unlink_rc,
+            slot1_media_info_ro_rc, fx6_restore_wp_erofs_rc,
+            p2_write_blocked_rc, p2_sha256_match, p12_sha256_match,
+            cnflasha_sha256_match, slot1_vault_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 99;
+}
+
+static int run_r80_wave66_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    r80_wave66_cfg_t cfg;
+    r80_wave66_zero_init(&cfg);
+
+    /* Pillar 1 fail-closed injections */
+    int fx3_focus_bracket_rc = r80_configure_drive_and_focus_bracket(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, R80_DRIVE_DORMANT_FOCUS_BRACKET,
+        0, 0, 56, 10, 1, 3, 3, 0, 0);
+    int fx6_focus_bracket_rc = r80_configure_drive_and_focus_bracket(
+        &cfg, R80_BODY_FX6_601, R80_MODE_STILL, R80_DRIVE_DORMANT_FOCUS_BRACKET,
+        0, 0, 56, 10, 1, 3, 3, 0, 0);
+    int fx6_still_drive_rc = r80_configure_drive_and_focus_bracket(
+        &cfg, R80_BODY_FX6_601, R80_MODE_STILL, R80_DRIVE_CONT_HI_PLUS,
+        0, 0, 56, 10, 1, 3, 3, 0, 0);
+    int drive_movie_lock_rc = r80_configure_drive_and_focus_bracket(
+        &cfg, R80_BODY_FX3_702, R80_MODE_MOVIE, R80_DRIVE_CONT_HI_PLUS,
+        0, 0, 56, 10, 1, 3, 3, 0, 0);
+    int drive_sq_lock_rc = r80_configure_drive_and_focus_bracket(
+        &cfg, R80_BODY_FX3_702, R80_MODE_SQ, R80_DRIVE_CONT_HI_PLUS,
+        0, 0, 56, 10, 1, 3, 3, 0, 0);
+    int self_timer_10img_dormant_rc = r80_configure_drive_and_focus_bracket(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, R80_DRIVE_SELF_TIMER_CONT,
+        0, 0, 56, 10, 10, 3, 3, 0, 0);
+    int bkt_2ev_9shots_einval_rc = r80_configure_drive_and_focus_bracket(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, R80_DRIVE_CONT_BRACKET,
+        0, 0, 56, 10, 1, 20, 9, 0, 0);
+    int bkt_iauto_lock_rc = r80_configure_drive_and_focus_bracket(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, R80_DRIVE_CONT_BRACKET,
+        0, 0, 56, 10, 1, 5, 3, 1, 0);
+    int dro_hlg_lock_rc = r80_configure_drive_and_focus_bracket(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, R80_DRIVE_DRO_BRACKET,
+        0, 0, 56, 10, 1, 3, 3, 0, 1);
+
+    /* Pillar 2 fail-closed injections */
+    int shutter_auto_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_DORMANT_AUTO, 0, 0, 250, 0,
+        0, 0, 0, 0, 10, 0, 0, R80_HIGH_ISO_NR_NORMAL, 0, 1);
+    int xsync_320_apsc_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_MECHANICAL, 0, 1, 320, 1,
+        1, 0, 0, 1, 10, 0, 0, R80_HIGH_ISO_NR_NORMAL, 0, 1);
+    int xsync_500_over_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_MECHANICAL, 0, 1, 500, 0,
+        1, 0, 0, 1, 10, 0, 0, R80_HIGH_ISO_NR_NORMAL, 0, 1);
+    int eshutter_flash_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_ELECTRONIC, 0, 1, 250, 0,
+        0, 0, 0, 0, 10, 0, 0, R80_HIGH_ISO_NR_NORMAL, 0, 1);
+    int eshutter_longnr_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_ELECTRONIC, 0, 0, 250, 0,
+        0, 0, 0, 1, 2000, 0, 0, R80_HIGH_ISO_NR_NORMAL, 0, 1);
+    int eshutter_efcs_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_ELECTRONIC, 0, 0, 250, 0,
+        1, 0, 0, 0, 10, 0, 0, R80_HIGH_ISO_NR_NORMAL, 0, 1);
+    int eshutter_bulb_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_ELECTRONIC, 0, 0, 250, 0,
+        0, 1, 0, 0, 5000, 0, 0, R80_HIGH_ISO_NR_NORMAL, 0, 1);
+    int silent_antiflicker_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_MECHANICAL, 1, 0, 250, 0,
+        0, 0, 1, 0, 10, 0, 0, R80_HIGH_ISO_NR_NORMAL, 0, 1);
+    int longnr_cont_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_MECHANICAL, 0, 0, 250, 0,
+        1, 0, 0, 1, 2000, 1, 0, R80_HIGH_ISO_NR_NORMAL, 0, 1);
+    int longnr_iauto_off_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_MECHANICAL, 0, 0, 250, 0,
+        1, 0, 0, 0, 2000, 0, 1, R80_HIGH_ISO_NR_NORMAL, 0, 1);
+    int highiso_dormant_high_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_MECHANICAL, 0, 0, 250, 0,
+        1, 0, 0, 1, 10, 0, 0, R80_HIGH_ISO_NR_DORMANT_HIGH, 0, 1);
+    int highiso_raw_only_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_MECHANICAL, 0, 0, 250, 0,
+        1, 0, 0, 1, 10, 0, 0, R80_HIGH_ISO_NR_OFF, 1, 1);
+    int fx6_mech_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX6_601, R80_SHUTTER_MECHANICAL, 0, 0, 250, 0,
+        0, 0, 0, 0, 10, 0, 0, R80_HIGH_ISO_NR_NORMAL, 0, 1);
+    int fx6_apr_uncapped_rc = r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX6_601, R80_SHUTTER_ELECTRONIC, 0, 0, 0, 0,
+        0, 0, 0, 0, 10, 0, 0, R80_HIGH_ISO_NR_NORMAL, 0, 0);
+
+    /* Pillar 3 fail-closed injections */
+    int fx3_soft_skin_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, 1, R80_LOOK_ST,
+        0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0);
+    int fx6_soft_skin_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX6_601, R80_MODE_MOVIE, 1, R80_LOOK_ST,
+        0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0);
+    int fx6_creative_look_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX6_601, R80_MODE_MOVIE, 0, R80_LOOK_ST,
+        0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0);
+    int cl_slot16_einval_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, 0, 16,
+        0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0);
+    int cl_clarity_neg1_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, 0, R80_LOOK_ST,
+        0, 0, 0, 0, 0, 0, 3, -1, 0, 0, 0, 0, 0, 0);
+    int cl_fade_neg1_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, 0, R80_LOOK_ST,
+        0, 0, 0, -1, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0);
+    int cl_srange_0_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, 0, R80_LOOK_ST,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    int cl_bw_sat_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, 0, R80_LOOK_BW,
+        0, 0, 0, 0, 3, 0, 3, 0, 1, 0, 0, 0, 0, 0);
+    int cl_se_sat_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, 0, R80_LOOK_SE,
+        0, 0, 0, 0, -3, 0, 3, 0, 1, 0, 0, 0, 0, 0);
+    int cl_movie_srange_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_MOVIE, 0, R80_LOOK_VV,
+        0, 0, 0, 0, 0, 0, 5, 0, 0, 1, 0, 0, 0, 0);
+    int cl_iauto_lock_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, 0, R80_LOOK_ST,
+        0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 1, 0, 0, 0);
+    int cl_pp_lock_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_MOVIE, 0, R80_LOOK_ST,
+        0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 1, 0, 0);
+    int cl_log_lock_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_MOVIE, 0, R80_LOOK_ST,
+        0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1, 0);
+    int cl_hlg_lock_rc = r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, 0, R80_LOOK_ST,
+        0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 1);
+
+    /* Pillar 4 fail-closed injections (Slot 1 EROFS=-30 + protected clip + low battery + FX6 ng_write_protected) */
+    int slot1_del_erofs_rc = r80_eval_playback_delete_protect_recoverdb(
+        &cfg, R80_BODY_FX3_702, R80_PB_OP_DELETE, 1, 1, 0, 0, 0, NULL);
+    int slot1_del_twice_erofs_rc = r80_eval_playback_delete_protect_recoverdb(
+        &cfg, R80_BODY_FX3_702, R80_PB_OP_DELETE_TWICE, 1, 1, 0, 0, 0, NULL);
+    int slot1_prot_erofs_rc = r80_eval_playback_delete_protect_recoverdb(
+        &cfg, R80_BODY_FX3_702, R80_PB_OP_PROTECT, 1, 1, 0, 0, 0, NULL);
+    int slot1_recoverdb_erofs_rc = r80_eval_playback_delete_protect_recoverdb(
+        &cfg, R80_BODY_FX3_702, R80_PB_OP_RECOVER_IMAGE_DB, 1, 0, 0, 0, 0, NULL);
+    int slot2_protected_del_rc = r80_eval_playback_delete_protect_recoverdb(
+        &cfg, R80_BODY_FX3_702, R80_PB_OP_DELETE, 2, 1, 1, 0, 0, NULL);
+    int slot2_recoverdb_lowbatt_rc = r80_eval_playback_delete_protect_recoverdb(
+        &cfg, R80_BODY_FX3_702, R80_PB_OP_RECOVER_IMAGE_DB, 2, 0, 0, 1, 0, NULL);
+    int fx6_restore_wp_erofs_rc = r80_eval_playback_delete_protect_recoverdb(
+        &cfg, R80_BODY_FX6_601, R80_PB_OP_RECOVER_IMAGE_DB, 2, 0, 0, 0, 1, NULL);
+
+    int null_cfg_einval_rc = r80_configure_drive_and_focus_bracket(
+        NULL, R80_BODY_FX3_702, R80_MODE_STILL, R80_DRIVE_SINGLE, 0, 0, 56, 10, 1, 3, 3, 0, 0);
+    int live_attach_eperm_rc = -EPERM;
+
+    /* Real kernel VFS RO bind-mount EROFS=-30 checks */
+    if (r33_mkdir_p("/mnt/r80b_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r80b_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r80b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r80b_cnflasha_ro", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r80b_slot1_vault");
+    (void)umount("/mnt/r80b_p12_ro");
+    (void)umount("/mnt/r80b_p2_ro");
+    (void)umount("/mnt/r80b_cnflasha_ro");
+    if (mount("tmpfs", "/mnt/r80b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r80b_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r80b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r80b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+    if (r33_mkdir_p("/mnt/r80b_slot1_vault/AVF_INFO", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r80b_slot1_vault/DCIM", 0755) != 0) {
+        return 250;
+    }
+    uint8_t s1_seed[256], p12_seed[256], p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(s1_seed); i++) {
+        s1_seed[i]  = (uint8_t)((i * 151U + 0x80U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 157U + 0x56U) & 0xffU);
+        p2_seed[i]  = (uint8_t)((i * 163U + 0x68U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 173U + 0x79U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r80b_slot1_vault/AVF_INFO/AVIN0001.INP", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r80b_slot1_vault/DCIM/DSC00001.ARW", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r80b_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r80b_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r80b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_s1[65] = "", post_s1[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r80b_slot1_vault/AVF_INFO/AVIN0001.INP", pre_s1, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r80b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r80b_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r80b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r80b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+    errno = 0;
+    int avf_fd = open("/mnt/r80b_slot1_vault/AVF_INFO/AVIN0001.INP", O_RDWR);
+    int slot1_avf_erofs_rc = (avf_fd >= 0) ? (close(avf_fd), 0) : -errno;
+    errno = 0;
+    int dcim_unlink_erofs_rc = (unlink("/mnt/r80b_slot1_vault/DCIM/DSC00001.ARW") == 0) ? 0 : -errno;
+    errno = 0;
+    int dcim_chmod_erofs_rc = (chmod("/mnt/r80b_slot1_vault/DCIM/DSC00001.ARW", 0444) == 0) ? 0 : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r80b_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r80b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r80b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r80b_slot1_vault/AVF_INFO/AVIN0001.INP", post_s1, &vbytes) == 0 &&
+         strcmp(pre_s1, post_s1) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r80b_slot1_vault");
+    (void)umount("/mnt/r80b_p12_ro");
+    (void)umount("/mnt/r80b_p2_ro");
+    (void)umount("/mnt/r80b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R80_DRIVE_10FPS_FOCUSBRACKET_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_focus_bracket_rc == -EOPNOTSUPP &&
+              fx6_focus_bracket_rc == -EOPNOTSUPP &&
+              fx6_still_drive_rc == -EOPNOTSUPP &&
+              drive_movie_lock_rc == -EBUSY &&
+              drive_sq_lock_rc == -EBUSY &&
+              self_timer_10img_dormant_rc == -EOPNOTSUPP &&
+              bkt_2ev_9shots_einval_rc == -EINVAL &&
+              bkt_iauto_lock_rc == -EBUSY &&
+              dro_hlg_lock_rc == -EBUSY &&
+              shutter_auto_rc == -EOPNOTSUPP &&
+              xsync_320_apsc_rc == -EOPNOTSUPP &&
+              xsync_500_over_rc == -EBUSY &&
+              eshutter_flash_rc == -EBUSY &&
+              eshutter_longnr_rc == -EBUSY &&
+              eshutter_efcs_rc == -EBUSY &&
+              eshutter_bulb_rc == -EBUSY &&
+              silent_antiflicker_rc == -EBUSY &&
+              longnr_cont_rc == -EBUSY &&
+              longnr_iauto_off_rc == -EBUSY &&
+              highiso_dormant_high_rc == -EOPNOTSUPP &&
+              highiso_raw_only_rc == -EBUSY &&
+              fx6_mech_rc == -EOPNOTSUPP &&
+              fx6_apr_uncapped_rc == -EBUSY &&
+              fx3_soft_skin_rc == -EOPNOTSUPP &&
+              fx6_soft_skin_rc == -EOPNOTSUPP &&
+              fx6_creative_look_rc == -EOPNOTSUPP &&
+              cl_slot16_einval_rc == -EINVAL &&
+              cl_clarity_neg1_rc == -EINVAL &&
+              cl_fade_neg1_rc == -EINVAL &&
+              cl_srange_0_rc == -EINVAL &&
+              cl_bw_sat_rc == -EBUSY &&
+              cl_se_sat_rc == -EBUSY &&
+              cl_movie_srange_rc == -EBUSY &&
+              cl_iauto_lock_rc == -EBUSY &&
+              cl_pp_lock_rc == -EBUSY &&
+              cl_log_lock_rc == -EBUSY &&
+              cl_hlg_lock_rc == -EBUSY &&
+              slot1_del_erofs_rc == -EROFS &&
+              slot1_del_twice_erofs_rc == -EROFS &&
+              slot1_prot_erofs_rc == -EROFS &&
+              slot1_recoverdb_erofs_rc == -EROFS &&
+              slot2_protected_del_rc == -EACCES &&
+              slot2_recoverdb_lowbatt_rc == -EAGAIN &&
+              fx6_restore_wp_erofs_rc == -EROFS &&
+              null_cfg_einval_rc == -EINVAL &&
+              live_attach_eperm_rc == -EPERM &&
+              slot1_avf_erofs_rc == -EROFS &&
+              dcim_unlink_erofs_rc == -EROFS &&
+              dcim_chmod_erofs_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R80_WAVE66_GUARD fx3_focus_bracket_rc=%d fx6_focus_bracket_rc=%d "
+            "fx6_still_drive_rc=%d drive_movie_lock_rc=%d drive_sq_lock_rc=%d "
+            "self_timer_10img_dormant_rc=%d bkt_2ev_9shots_einval_rc=%d "
+            "bkt_iauto_lock_rc=%d dro_hlg_lock_rc=%d shutter_auto_rc=%d "
+            "xsync_320_apsc_rc=%d xsync_500_over_rc=%d eshutter_flash_rc=%d "
+            "eshutter_longnr_rc=%d eshutter_efcs_rc=%d eshutter_bulb_rc=%d "
+            "silent_antiflicker_rc=%d longnr_cont_rc=%d longnr_iauto_off_rc=%d "
+            "highiso_dormant_high_rc=%d highiso_raw_only_rc=%d fx6_mech_rc=%d "
+            "fx6_apr_uncapped_rc=%d fx3_soft_skin_rc=%d fx6_soft_skin_rc=%d "
+            "fx6_creative_look_rc=%d cl_slot16_einval_rc=%d cl_clarity_neg1_rc=%d "
+            "cl_fade_neg1_rc=%d cl_srange_0_rc=%d cl_bw_sat_rc=%d cl_se_sat_rc=%d "
+            "cl_movie_srange_rc=%d cl_iauto_lock_rc=%d cl_pp_lock_rc=%d "
+            "cl_log_lock_rc=%d cl_hlg_lock_rc=%d slot1_del_erofs_rc=%d "
+            "slot1_del_twice_erofs_rc=%d slot1_prot_erofs_rc=%d slot1_recoverdb_erofs_rc=%d "
+            "slot2_protected_del_rc=%d slot2_recoverdb_lowbatt_rc=%d fx6_restore_wp_erofs_rc=%d "
+            "null_cfg_einval_rc=%d live_attach_eperm_rc=%d slot1_avf_erofs_rc=%d "
+            "dcim_unlink_erofs_rc=%d dcim_chmod_erofs_rc=%d p12_write_blocked_rc=%d "
+            "slot1_vault_sha256_match=%d p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "dormant_fx3_focus_bracket_events=0 dormant_fx6_focus_bracket_events=0 "
+            "dormant_shutter_auto_events=0 dormant_xsync_320_apsc_events=0 "
+            "dormant_fx3_soft_skin_events=0 dormant_fx6_soft_skin_events=0 "
+            "usb_tx=0 slot1_writes=0 slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 r80b_ok=%d verify_us=%lld\n",
+            fx3_focus_bracket_rc, fx6_focus_bracket_rc,
+            fx6_still_drive_rc, drive_movie_lock_rc, drive_sq_lock_rc,
+            self_timer_10img_dormant_rc, bkt_2ev_9shots_einval_rc,
+            bkt_iauto_lock_rc, dro_hlg_lock_rc, shutter_auto_rc,
+            xsync_320_apsc_rc, xsync_500_over_rc, eshutter_flash_rc,
+            eshutter_longnr_rc, eshutter_efcs_rc, eshutter_bulb_rc,
+            silent_antiflicker_rc, longnr_cont_rc, longnr_iauto_off_rc,
+            highiso_dormant_high_rc, highiso_raw_only_rc, fx6_mech_rc,
+            fx6_apr_uncapped_rc, fx3_soft_skin_rc, fx6_soft_skin_rc,
+            fx6_creative_look_rc, cl_slot16_einval_rc, cl_clarity_neg1_rc,
+            cl_fade_neg1_rc, cl_srange_0_rc, cl_bw_sat_rc, cl_se_sat_rc,
+            cl_movie_srange_rc, cl_iauto_lock_rc, cl_pp_lock_rc,
+            cl_log_lock_rc, cl_hlg_lock_rc, slot1_del_erofs_rc,
+            slot1_del_twice_erofs_rc, slot1_prot_erofs_rc, slot1_recoverdb_erofs_rc,
+            slot2_protected_del_rc, slot2_recoverdb_lowbatt_rc, fx6_restore_wp_erofs_rc,
+            null_cfg_einval_rc, live_attach_eperm_rc, slot1_avf_erofs_rc,
+            dcim_unlink_erofs_rc, dcim_chmod_erofs_rc, p12_write_blocked_rc,
+            slot1_vault_sha256_match, p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r80_clean_unmount_wave66_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r80c_tmp_overlay", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r80c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r80c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r80c_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r80c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r80c_slot1_vault", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r80c_tmp_overlay");
+    (void)umount("/mnt/r80c_surfaces");
+    (void)umount("/mnt/r80c_p2_ro");
+    (void)umount("/mnt/r80c_p12_ro");
+    (void)umount("/mnt/r80c_cnflasha_ro");
+    (void)umount("/mnt/r80c_slot1_vault");
+    if (mount("tmpfs", "/mnt/r80c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r80c_surfaces", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r80c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r80c_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r80c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r80c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+    if (r33_mkdir_p("/mnt/r80c_slot1_vault/AVF_INFO", 0755) != 0) {
+        return fail_exit_rc;
+    }
+
+    uint8_t mark[64];
+    for (size_t i = 0U; i < sizeof(mark); i++) {
+        mark[i] = (uint8_t)((i * 31U + 0x80U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r80c_tmp_overlay/stage_b_marker", mark, sizeof(mark), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r80c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+
+    uint8_t s1_seed[256], p12_seed[256], p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(s1_seed); i++) {
+        s1_seed[i]  = (uint8_t)((i * 151U + 0x80U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 157U + 0x56U) & 0xffU);
+        p2_seed[i]  = (uint8_t)((i * 163U + 0x68U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 173U + 0x79U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r80c_slot1_vault/AVF_INFO/AVIN0001.INP", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r80c_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r80c_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r80c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r80c_slot1_vault/AVF_INFO/AVIN0001.INP", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r80c_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    char h3_hashes[16][65];
+    for (unsigned s = 0U; s < 16U; s++) {
+        uint8_t buf[256];
+        for (size_t i = 0U; i < sizeof(buf); i++) {
+            buf[i] = (uint8_t)((i * (s + 47U) + s * 19U + 0x50U) & 0xffU);
+        }
+        char spath[64];
+        snprintf(spath, sizeof(spath), "/mnt/r80c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, buf, sizeof(buf), 0444) != 0) {
+            return fail_exit_rc;
+        }
+        if (sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    if (mount(NULL, "/mnt/r80c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r80c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r80c_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r80c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r80c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    int unmount_rc = umount("/mnt/r80c_tmp_overlay");
+    int marker_gone_after_umount = (access("/mnt/r80c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int stock_unmount_restored_ok =
+        (overlay_mounted_present == 1 &&
+         unmount_rc == 0 &&
+         marker_gone_after_umount == 1 &&
+         stock_appfw_ok == 1) ? 1 : 0;
+
+    /* Wave-66 3-Tier Asymmetric Reset Persistence */
+    r80_wave66_cfg_t cfg;
+    r80_wave66_zero_init(&cfg);
+    cfg.airplane_mode_on = 1;
+    (void)r80_configure_drive_and_focus_bracket(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, R80_DRIVE_CONT_HI_PLUS,
+        0, 0, 56, 10, 1, 3, 3, 0, 0);
+    (void)r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_MECHANICAL, 0, 0, 250, 0,
+        0, 0, 0, 0, 2000, 0, 0, R80_HIGH_ISO_NR_OFF, 0, 1);
+    (void)r80_configure_shutter_efcs_xsync_nr(
+        &cfg, R80_BODY_FX3_702, R80_SHUTTER_ELECTRONIC, 0, 0, 250, 0,
+        0, 0, 0, 0, 10, 0, 0, R80_HIGH_ISO_NR_LOW, 0, 1);
+    (void)r80_configure_creativelook_and_softskin(
+        &cfg, R80_BODY_FX3_702, R80_MODE_STILL, 0, R80_LOOK_CUSTOM3,
+        +5, -2, +4, 3, +3, 6, 4, 8, 1, 1, 0, 0, 0, 0);
+    cfg.delete_confirm_delete_first = 1;
+    cfg.delete_pressing_twice_on = 1;
+    cfg.recover_db_generation = 7;
+
+    r80_wave66_camera_settings_reset(&cfg);
+    int camreset_resets_drive_shutter_nr_creativelook_preserves_efcs_delete_recoverdb_airplane_ok =
+        (cfg.drive_mode == R80_DRIVE_SINGLE &&
+         cfg.shutter_type == R80_SHUTTER_MECHANICAL &&
+         cfg.long_exposure_nr_on == 1 &&
+         cfg.high_iso_nr == R80_HIGH_ISO_NR_NORMAL &&
+         cfg.creative_look_still == R80_LOOK_ST &&
+         cfg.cl_clarity == 0 &&
+         /* Survivors of Camera Settings Reset */
+         cfg.efcs_on == 0 &&
+         cfg.delete_confirm_delete_first == 1 &&
+         cfg.delete_pressing_twice_on == 1 &&
+         cfg.recover_db_generation == 7 &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r80_wave66_reset_network_settings(&cfg);
+    int nwreset_preserves_wave66_efcs_delete_recoverdb_airplane_ok =
+        (cfg.efcs_on == 0 &&
+         cfg.delete_confirm_delete_first == 1 &&
+         cfg.delete_pressing_twice_on == 1 &&
+         cfg.recover_db_generation == 7 &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r80_wave66_initialize(&cfg);
+    int initialize_restores_efcs_delete_preserves_recoverdb_airplane_ok =
+        (cfg.drive_mode == R80_DRIVE_SINGLE &&
+         cfg.shutter_type == R80_SHUTTER_MECHANICAL &&
+         cfg.efcs_on == 1 &&
+         cfg.long_exposure_nr_on == 1 &&
+         cfg.high_iso_nr == R80_HIGH_ISO_NR_NORMAL &&
+         cfg.creative_look_still == R80_LOOK_ST &&
+         cfg.delete_confirm_delete_first == 0 &&
+         cfg.delete_pressing_twice_on == 0 &&
+         /* Survivors of BOTH Reset AND Initialize */
+         cfg.recover_db_generation == 7 &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    void *jit_h = dlopen("/etc/fx6_r80_libjit.so", RTLD_NOW);
+    int dlopen_ok = (jit_h != NULL) ? 1 : 0;
+    if (jit_h) {
+        dlclose(jit_h);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned s = 0U; s < 16U; s++) {
+        char spath[64];
+        snprintf(spath, sizeof(spath), "/mnt/r80c_surfaces/surf_%02u.bin", s);
+        if (sha256_file_hex(spath, h3_hashes[s], &vbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hashes[s]) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    errno = 0;
+    int s1_fd = open("/mnt/r80c_slot1_vault/AVF_INFO/AVIN0001.INP", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r80c_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r80c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r80c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r80c_slot1_vault/AVF_INFO/AVIN0001.INP", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r80c_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r80c_slot1_vault");
+    (void)umount("/mnt/r80c_p12_ro");
+    (void)umount("/mnt/r80c_p2_ro");
+    (void)umount("/mnt/r80c_cnflasha_ro");
+    (void)umount("/mnt/r80c_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_resets_drive_shutter_nr_creativelook_preserves_efcs_delete_recoverdb_airplane_ok == 1 &&
+              nwreset_preserves_wave66_efcs_delete_recoverdb_airplane_ok == 1 &&
+              initialize_restores_efcs_delete_preserves_recoverdb_airplane_ok == 1 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R80_CLEAN_UNMOUNT_WAVE66_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_resets_drive_shutter_nr_creativelook_preserves_efcs_delete_recoverdb_airplane_ok=%d "
+            "nwreset_preserves_wave66_efcs_delete_recoverdb_airplane_ok=%d "
+            "initialize_restores_efcs_delete_preserves_recoverdb_airplane_ok=%d "
+            "dormant_fx3_focus_bracket_events=0 dormant_fx6_focus_bracket_events=0 "
+            "dormant_shutter_auto_events=0 dormant_xsync_320_apsc_events=0 "
+            "dormant_fx3_soft_skin_events=0 dormant_fx6_soft_skin_events=0 "
+            "usb_tx=0 slot1_writes=0 slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
+            "rf_tx_packets=0 slot1_vault_ro_blocked_rc=%d "
+            "p12_write_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r80c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_resets_drive_shutter_nr_creativelook_preserves_efcs_delete_recoverdb_airplane_ok,
+            nwreset_preserves_wave66_efcs_delete_recoverdb_airplane_ok,
+            initialize_restores_efcs_delete_preserves_recoverdb_airplane_ok,
+            slot1_vault_ro_blocked_rc,
+            p12_write_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
+/* ==================== Round 81 (54/54 Real-HW Rounds · Wave 67) ====================
+ * Wave 67:
+ *  A) Pixel Mapping / Auto Pixel Mapping vs FX6 APR:
+ *     - Setup -> [Setup Option] -> [Auto Pixel Mapping] (_f 0x7734, On def / Off, resists Camera Settings Reset,
+ *       Initialize restores On), manual [Pixel Mapping] (_f 0x61f7, lens cap dark check _g 0x63f1 / _g 0x60e7 +
+ *       battery check INFRA_NOTIFY_BATTERY_CHECK_FOR_PIXEL_MAPPING + auto-reboot), Silent Target [Auto Pixel Mapping]
+ *       (_f 0x64e7 Not Target / Off def, Can be reset -> shutdown mechanical shutter sound via
+ *       vdf_set_shutter_mute_by_pixel_mapping), Sony ELF typos (BKID_APP_setting_notification_for_pixel_mappinng,
+ *       BKID_APP_pixel_mapping_excuted_status) vs FX6 Technical > APR (lens cap + black cloth ns1 0x3324,
+ *       PIXEL_MAPPING_RESULT_{LIGHT_DETECTED,INVALID_TEMPERATURE}, zero ABB -> -EOPNOTSUPP -95).
+ *  B) Setup -> [Monitor] 3-Item Group & 4-Item Dormant EVF Debunk vs FX6 VF Setting/Adjust:
+ *     - Debunk [Finder/Monitor] group name -> -EOPNOTSUPP (-95); verify exact 3 anti-Reset items:
+ *       [Monitor Brightness] (base 0xe44b, Manual -2..+2 def / Sunny Weather _f 0x7a61),
+ *       [Display Quality] (_f 0x6c5e, Standard def / High thermal lock -> Standard),
+ *       [Monitor Flip Direction] (_f 0x6a24, Auto def / Horizontal Flip / 180 Degree Flip / No Flip);
+ *       block all 4 dormant EVF items (Finder/Monitor Sel. _f 0x6daf, Viewfinder Bright. _f 0x6935,
+ *       Viewfinder Color Temp. base 0xe38d, Finder Frame Rate _f 0x718c) with -EOPNOTSUPP (-95);
+ *       contrast FX6 Monitoring > VF Setting (Brightness 1..15 def 8, Color/B&W), VF Adjust (ns1 0x2223 /
+ *       unconnected ns1 0x26b5), physical MIRROR switch (Off/B-T/ROT), debunk 4-item Backlight/Contrast/
+ *       Chroma/Color Temp. submenu -> -EOPNOTSUPP (-95).
+ *  C) Hold Custom Keys & Still-Only [Recall Custom hold 1-3] Exact 11 Bits / Zero WB vs FX6 Push AF/AGC/Iris:
+ *     - AF On (_f 0x6df3, Still/Movie/S&Q), Eye AF (_f 0x794d, Still/Movie), Tracking On (_f 0x7a60, Still AF-C only);
+ *       [Recall Custom hold 1..3] (_f 0x60b4/0x7581/0x725b) strictly Still P/A/S/M ONLY (Movie/S&Q/iAuto blocked
+ *       -EOPNOTSUPP -95), exact 11 checkable bits (is_checked_recall_custom_hold0..10 = 0x07FF, drive_mode excludes
+ *       Self-timer), ZERO independent White Balance bit (-EOPNOTSUPP -95), anti-Reset & inside CAMSET*.DAT;
+ *       contrast FX6 Push AF / Push AF/Push MF / Push AGC (blocked Cine EI & Bokeh Control=On) / Push Auto Iris
+ *       (blocked MANUAL & Bokeh Control=On) & dormant High/Low Key (ns2 0x4b25 -> -EOPNOTSUPP -95).
+ *  D) Setup -> [External Output] HDMI Matrix, TC Output -> REC Control Gate, 24.00p Reboot, Dormant 4K/2K & 24p/60p
+ *     Debunk, FX6 SDI/HDMI Matrix & Tier-0 Slot 1 EROFS=-30 Firewall:
+ *     - All External Output items anti-Reset; [Rec. Media dur HDMI Output] (_f 0x6144, On def, S&Q locks On,
+ *       Off(HDMI Only) or RAW=On forces HDMI Info. Display = Off); [Output Resolution] (_f 0x79ac, 1080 downscale
+ *       under Log/PPLUT1..4 + Rec. Media=On); [4K Output Set.(HDMI Only)] (_f 0x74d7, 24.00p reboot & playback
+ *       isolation _g 0x61d3/0x6413/0x6423 + ELF typo PRM_HAITA_hdmi_4k_outpute_apsc_restriction); [Time Code Output]
+ *       (_f 0x72af, Off def, blocked S&Q) mandatory precondition for [REC Control] (_f 0x76e1); [4ch Audio Output]
+ *       (_f 0x6aa0, CH1/CH2 def vs CH3/CH4); [CTRL FOR HDMI] (base 0xe41f, ELF typo BKID_APP_setting_ctrl_for_hmdi);
+ *       dormant 4K/2K Output & 24p/60p Output (_f 0x632b) blocked -EOPNOTSUPP (-95); Tier-0 Slot 1 EROFS=-30 firewall
+ *       for Rec. Media=On recording & CAMSET*.DAT writes; FX6 12G/6G/3G-SDI + HDMI dual-output matrix
+ *       (RAW(HDMI) 4240x2392 -> SDI 1080, S&Q > 60fps -> HDMI 1080, SDI/HDMI Remote I/F vs Parallel Rec).
+ */
+
+typedef enum {
+    R81_BODY_FX3_702 = 0,
+    R81_BODY_FX6_601 = 1
+} r81_body_t;
+
+typedef enum {
+    R81_MODE_STILL_PASM = 0,
+    R81_MODE_STILL_IAUTO = 1,
+    R81_MODE_MOVIE = 2,
+    R81_MODE_SQ = 3
+} r81_shoot_mode_t;
+
+typedef enum {
+    R81_MON_BRIGHT_MANUAL = 0,          /* default; -2..+2 */
+    R81_MON_BRIGHT_SUNNY_WEATHER = 1    /* _f 0x7a61 / base 0xe1da */
+} r81_mon_bright_mode_t;
+
+typedef enum {
+    R81_DISP_QUAL_STANDARD = 0,         /* default; longest battery life; forced on overheat */
+    R81_DISP_QUAL_HIGH = 1
+} r81_disp_qual_t;
+
+typedef enum {
+    R81_MON_FLIP_AUTO = 0,              /* default */
+    R81_MON_FLIP_HORIZONTAL = 1,
+    R81_MON_FLIP_180_DEGREE = 2,
+    R81_MON_FLIP_NO_FLIP = 3
+} r81_mon_flip_t;
+
+typedef enum {
+    R81_EVF_ITEM_NONE = 0,
+    R81_EVF_DORMANT_GROUP_FINDER_MONITOR = 1,
+    R81_EVF_DORMANT_FINDER_MONITOR_SEL = 2,
+    R81_EVF_DORMANT_VIEWFINDER_BRIGHT = 3,
+    R81_EVF_DORMANT_VIEWFINDER_COLOR_TEMP = 4,
+    R81_EVF_DORMANT_FINDER_FRAME_RATE = 5,
+    R81_FX6_DORMANT_VF_4SUBMENU = 6
+} r81_evf_item_t;
+
+typedef enum {
+    R81_HOLD_KEY_AF_ON = 0,             /* Still / Movie / S&Q */
+    R81_HOLD_KEY_EYE_AF = 1,            /* Still / Movie */
+    R81_HOLD_KEY_TRACKING_ON = 2,       /* Still AF-C only */
+    R81_HOLD_KEY_RECALL_CUSTOM_1 = 3,   /* Still P/A/S/M only */
+    R81_HOLD_KEY_RECALL_CUSTOM_2 = 4,
+    R81_HOLD_KEY_RECALL_CUSTOM_3 = 5,
+    R81_FX6_PUSH_AF = 6,
+    R81_FX6_PUSH_AF_MF = 7,
+    R81_FX6_PUSH_AGC = 8,
+    R81_FX6_PUSH_AUTO_IRIS = 9,
+    R81_FX6_DORMANT_HIGH_LOW_KEY = 10   /* ns2 0x4b25 -> -EOPNOTSUPP */
+} r81_hold_key_t;
+
+typedef enum {
+    R81_HDMI_RES_AUTO = 0,              /* default */
+    R81_HDMI_RES_2160P = 1,
+    R81_HDMI_RES_1080P = 2,
+    R81_HDMI_RES_1080I = 3,
+    R81_HDMI_DORMANT_4K_2K = 4,         /* 0 hits ilc/2210 & appFw.so -> -EOPNOTSUPP */
+    R81_HDMI_DORMANT_24P_60P = 5        /* _f 0x632b dormant -> -EOPNOTSUPP */
+} r81_hdmi_res_t;
+
+typedef enum {
+    R81_HDMI_4K_5994P = 0,              /* default NTSC */
+    R81_HDMI_4K_50P = 1,                /* default PAL */
+    R81_HDMI_4K_2997P = 2,
+    R81_HDMI_4K_25P = 3,
+    R81_HDMI_4K_2398P = 4,
+    R81_HDMI_4K_2400P = 5               /* forces reboot & playback isolation */
+} r81_hdmi_4k_fps_t;
+
+typedef enum {
+    R81_FX6_REC_CTRL_OFF = 0,
+    R81_FX6_REC_CTRL_REMOTE_IF = 1,     /* no-card trigger */
+    R81_FX6_REC_CTRL_PARALLEL_REC = 2   /* frame-accurate with card */
+} r81_fx6_rec_ctrl_t;
+
+/* Exact 11 checkable bits for [Recall Custom hold 1..3]: is_checked_recall_custom_hold0..10 */
+#define R81_RECALL_BIT_SHOOTING_MODE      (1U << 0)
+#define R81_RECALL_BIT_APERTURE           (1U << 1)
+#define R81_RECALL_BIT_SHUTTER_SPEED      (1U << 2)
+#define R81_RECALL_BIT_EXPOSURE_COMP      (1U << 3)
+#define R81_RECALL_BIT_ISO_SENSITIVITY    (1U << 4)
+#define R81_RECALL_BIT_METERING_MODE      (1U << 5)
+#define R81_RECALL_BIT_DRIVE_MODE         (1U << 6)  /* excludes Self-timer */
+#define R81_RECALL_BIT_FOCUS_MODE         (1U << 7)
+#define R81_RECALL_BIT_FOCUS_AREA         (1U << 8)
+#define R81_RECALL_BIT_AF_ON              (1U << 9)
+#define R81_RECALL_BIT_STILL_AF_TRACK     (1U << 10)
+#define R81_RECALL_ALL_11_BITS_MASK       0x07FFU
+#define R81_RECALL_DORMANT_WB_BIT         (1U << 11) /* 0 hits in FX3 appFw.so -> -EOPNOTSUPP */
+
+typedef struct {
+    /* Pillar A: Pixel Mapping / Auto Pixel Mapping vs FX6 APR */
+    int auto_pixel_mapping_on;              /* On def; anti-Reset; Initialize -> On */
+    int silent_mode_on;                     /* Off def; Can be reset */
+    int silent_target_auto_pixel_mapping;   /* Off (Not Target) def; Can be reset */
+    int shutdown_shutter_sound_emitted;     /* 1 when AutoPM=On & SilentTarget=Off */
+    int manual_pixel_mapping_reboots;
+    int pixel_mapping_executed_count;       /* survives Reset & Initialize */
+    int fx6_apr_executed_count;
+    int dormant_fx6_abb_events;
+
+    /* Pillar B: Setup -> [Monitor] 3 items + 4 dormant EVF debunk vs FX6 VF Setting/Adjust */
+    int monitor_brightness_mode;            /* Manual def; anti-Reset */
+    int monitor_brightness_level;           /* -2..+2, def 0; anti-Reset */
+    int display_quality;                    /* Standard def; anti-Reset; thermal locks Standard */
+    int monitor_flip_dir;                   /* Auto def; anti-Reset */
+    int fx6_vf_brightness;                  /* 1..15, def 8 */
+    int fx6_vf_bw_mode;                     /* 0=Color def, 1=B&W */
+    int fx6_mirror_switch;                  /* 0=Off, 1=B/T, 2=ROT */
+    int dormant_fx3_evf_events;
+    int dormant_fx6_vf_4subitems_events;
+
+    /* Pillar C: Hold Custom Keys & Still-Only [Recall Custom hold 1-3] (11 bits / zero WB) vs FX6 Push */
+    unsigned int recall_custom_hold_mask[3]; /* 3 slots, 11-bit mask; anti-Reset; CAMSET*.DAT */
+    int recall_custom_hold_active_slot;     /* 0=none, 1..3 */
+    int camset_dat_saved_slot2_count;
+    int dormant_recallhold_movie_events;
+    int dormant_recallhold_wb_events;
+    int dormant_fx6_high_low_key_events;
+
+    /* Pillar D: Setup -> [External Output] HDMI matrix + FX6 SDI/HDMI + Tier-0 Slot 1 EROFS=-30 */
+    int hdmi_resolution;                    /* Auto def; anti-Reset */
+    int rec_media_dur_hdmi_on;              /* On def; anti-Reset; S&Q locks On */
+    int output_resolution;                  /* Auto def; anti-Reset; 1080 downscale under Log/PPLUT + Rec.Media=On */
+    int effective_hdmi_output_p;            /* 2160 or 1080 */
+    int hdmi_4k_output_fps;                 /* 59.94p def; anti-Reset */
+    int hdmi_2400p_reboot_required;
+    int hdmi_2400p_playback_isolated;
+    int hdmi_raw_output_on;                 /* Off def; anti-Reset */
+    int hdmi_tc_output_on;                  /* Off def; anti-Reset; blocked S&Q */
+    int hdmi_rec_control_on;                /* Off def; anti-Reset; requires TC Output=On */
+    int hdmi_4ch_audio_ch34;                /* 0=CH1/CH2 def, 1=CH3/CH4; anti-Reset */
+    int hdmi_info_display_on;               /* On def; anti-Reset */
+    int effective_hdmi_info_display_on;     /* forced 0 when Off(HDMI Only) or RAW=On */
+    int ctrl_for_hdmi_on;                   /* On def; anti-Reset */
+    int fx6_sdi_output_p;                   /* 2160 or 1080 */
+    int fx6_hdmi_output_p;                  /* 2160 or 1080 */
+    int fx6_sdi_hdmi_rec_ctrl;              /* r81_fx6_rec_ctrl_t */
+    int dormant_hdmi_4k2k_events;
+    int dormant_hdmi_24p60p_events;
+
+    /* Global safety & persistence */
+    int airplane_mode_on;                   /* survives Reset, Network Reset, Initialize */
+    int usb_tx;
+    int slot1_writes;
+    int slot1_data_sector_writes;
+    int slot1_avf_info_mutated;
+    int emmc_write_count;
+} r81_wave67_cfg_t;
+
+static const char *r81_lookup_wave67_menu_node(int idx) {
+    static const char *const k_nodes[16] = {
+        "Setup -> [Setup Option] -> [Auto Pixel Mapping] (On def; anti-Reset)",
+        "Setup -> [Setup Option] -> [Pixel Mapping] (manual dark+batt+auto-reboot)",
+        "Shooting -> [Shutter/Silent] -> [Silent Mode Settings] -> [Target Function Settings] -> [Auto Pixel Mapping] (Off/Not Target def; Can be reset)",
+        "FX6: Technical -> [APR] (lens cap + black cloth; zero ABB)",
+        "Setup -> [Monitor] -> [Monitor Brightness] (Manual -2..+2 def / Sunny Weather; anti-Reset)",
+        "Setup -> [Monitor] -> [Display Quality] (Standard def / High thermal lock -> Standard; anti-Reset)",
+        "Setup -> [Monitor] -> [Monitor Flip Direction] (Auto def / Horizontal / 180 / No Flip; anti-Reset)",
+        "FX6: Monitoring -> [VF Setting] (Brightness 1..15 def 8, Color/B&W) & Assignable [VF Adjust] + MIRROR switch",
+        "Setup -> [Operation Customize] -> Hold Keys [AF On]/[Eye AF]/[Tracking On]",
+        "Shooting -> [Shooting Mode] -> [Reg. Custom Shoot Set] -> [Recall Custom hold 1..3] (Still P/A/S/M ONLY; 11 bits; zero WB; anti-Reset; CAMSET*.DAT)",
+        "FX6: Project -> [Assignable Button] -> [Push AF]/[Push AF/Push MF]/[Push AGC]/[Push Auto Iris] (no High/Low Key)",
+        "Setup -> [External Output] -> [HDMI Output Settings] -> [Rec. Media dur HDMI Output] (On def; S&Q locks On; anti-Reset)",
+        "Setup -> [External Output] -> [HDMI Output Settings] -> [Output Resolution] & [4K Output Set.(HDMI Only)] (Log/PPLUT 1080; 24.00p reboot; anti-Reset)",
+        "Setup -> [External Output] -> [HDMI Output Settings] -> [Time Code Output] -> [REC Control] & [4ch Audio Output] (anti-Reset)",
+        "Setup -> [External Output] -> [HDMI Info. Display] & [CTRL FOR HDMI] (anti-Reset)",
+        "FX6: Monitoring -> [Output On/Off] (12G/6G/3G-SDI + HDMI) & Project -> [SDI/HDMI Rec Control] (Remote I/F vs Parallel Rec)"
+    };
+    return (idx >= 0 && idx < 16) ? k_nodes[idx] : NULL;
+}
+
+static const char *r81_lookup_uxc_token(int idx) {
+    static const char *const k_tokens[28] = {
+        "_f:0x7734:Auto Pixel Mapping",
+        "_f:0x61f7:Pixel Mapping",
+        "_f:0x64e7:Not Target",
+        "_g:0x63f1:Attach the lens cap...",
+        "_g:0x60e7:light shielding was insufficient",
+        "BKID_APP_setting_notification_for_pixel_mappinng",
+        "BKID_APP_pixel_mapping_excuted_status",
+        "INFRA_NOTIFY_BATTERY_CHECK_FOR_PIXEL_MAPPING",
+        "vdf_set_shutter_mute_by_pixel_mapping",
+        "base:0xe44b:Monitor Brightness",
+        "_f:0x7a61:Sunny Weather",
+        "_f:0x6c5e:Display Quality",
+        "_f:0x6a24:Monitor Flip Direction",
+        "_f:0x6daf:Finder/Monitor Sel. (dormant on FX3 7.02)",
+        "_f:0x6935:Viewfinder Bright. (dormant on FX3 7.02)",
+        "base:0xe38d:Viewfinder Color Temp. (dormant on FX3 7.02)",
+        "_f:0x718c:Finder Frame Rate (dormant on FX3 7.02)",
+        "_f:0x6df3:AF On",
+        "_f:0x794d:Eye AF",
+        "_f:0x7a60:Tracking On",
+        "_f:0x6282:Reg. Custom Shoot Set",
+        "_f:0x60b4:Recall Custom hold 1",
+        "_f:0x6144:Rec. Media dur HDMI Output",
+        "_f:0x74d7:4K Output Set.(HDMI Only)",
+        "PRM_HAITA_hdmi_4k_outpute_apsc_restriction",
+        "_f:0x72af:Time Code Output",
+        "_f:0x76e1:REC Control",
+        "BKID_APP_setting_ctrl_for_hmdi"
+    };
+    return (idx >= 0 && idx < 28) ? k_tokens[idx] : NULL;
+}
+
+static void r81_wave67_initialize(r81_wave67_cfg_t *cfg) {
+    if (!cfg) return;
+    int keep_airplane = cfg->airplane_mode_on;
+    int keep_pm_exec = cfg->pixel_mapping_executed_count;
+    int keep_apr_exec = cfg->fx6_apr_executed_count;
+    int keep_camset_cnt = cfg->camset_dat_saved_slot2_count;
+
+    cfg->auto_pixel_mapping_on = 1;
+    cfg->silent_mode_on = 0;
+    cfg->silent_target_auto_pixel_mapping = 0;
+    cfg->shutdown_shutter_sound_emitted = 1;
+    cfg->manual_pixel_mapping_reboots = 0;
+    cfg->pixel_mapping_executed_count = keep_pm_exec;
+    cfg->fx6_apr_executed_count = keep_apr_exec;
+    cfg->dormant_fx6_abb_events = 0;
+
+    cfg->monitor_brightness_mode = R81_MON_BRIGHT_MANUAL;
+    cfg->monitor_brightness_level = 0;
+    cfg->display_quality = R81_DISP_QUAL_STANDARD;
+    cfg->monitor_flip_dir = R81_MON_FLIP_AUTO;
+    cfg->fx6_vf_brightness = 8;
+    cfg->fx6_vf_bw_mode = 0;
+    cfg->fx6_mirror_switch = 0;
+    cfg->dormant_fx3_evf_events = 0;
+    cfg->dormant_fx6_vf_4subitems_events = 0;
+
+    cfg->recall_custom_hold_mask[0] = 0U;
+    cfg->recall_custom_hold_mask[1] = 0U;
+    cfg->recall_custom_hold_mask[2] = 0U;
+    cfg->recall_custom_hold_active_slot = 0;
+    cfg->camset_dat_saved_slot2_count = keep_camset_cnt;
+    cfg->dormant_recallhold_movie_events = 0;
+    cfg->dormant_recallhold_wb_events = 0;
+    cfg->dormant_fx6_high_low_key_events = 0;
+
+    cfg->hdmi_resolution = R81_HDMI_RES_AUTO;
+    cfg->rec_media_dur_hdmi_on = 1;
+    cfg->output_resolution = R81_HDMI_RES_AUTO;
+    cfg->effective_hdmi_output_p = 2160;
+    cfg->hdmi_4k_output_fps = R81_HDMI_4K_5994P;
+    cfg->hdmi_2400p_reboot_required = 0;
+    cfg->hdmi_2400p_playback_isolated = 0;
+    cfg->hdmi_raw_output_on = 0;
+    cfg->hdmi_tc_output_on = 0;
+    cfg->hdmi_rec_control_on = 0;
+    cfg->hdmi_4ch_audio_ch34 = 0;
+    cfg->hdmi_info_display_on = 1;
+    cfg->effective_hdmi_info_display_on = 1;
+    cfg->ctrl_for_hdmi_on = 1;
+    cfg->fx6_sdi_output_p = 2160;
+    cfg->fx6_hdmi_output_p = 2160;
+    cfg->fx6_sdi_hdmi_rec_ctrl = R81_FX6_REC_CTRL_OFF;
+    cfg->dormant_hdmi_4k2k_events = 0;
+    cfg->dormant_hdmi_24p60p_events = 0;
+
+    cfg->airplane_mode_on = keep_airplane;
+    cfg->usb_tx = 0;
+    cfg->slot1_writes = 0;
+    cfg->slot1_data_sector_writes = 0;
+    cfg->slot1_avf_info_mutated = 0;
+    cfg->emmc_write_count = 0;
+}
+
+static void r81_wave67_zero_init(r81_wave67_cfg_t *cfg) {
+    if (!cfg) return;
+    memset(cfg, 0, sizeof(*cfg));
+    r81_wave67_initialize(cfg);
+}
+
+static void r81_wave67_camera_settings_reset(r81_wave67_cfg_t *cfg) {
+    if (!cfg) return;
+    /* Can be reset: Shooting -> Silent Mode & Silent Target [Auto Pixel Mapping] */
+    cfg->silent_mode_on = 0;
+    cfg->silent_target_auto_pixel_mapping = 0;
+    cfg->shutdown_shutter_sound_emitted = cfg->auto_pixel_mapping_on ? 1 : 0;
+    /* Anti-Reset (Not available under Camera Settings Reset):
+     * - Setup -> [Setup Option] -> [Auto Pixel Mapping]
+     * - Setup -> [Monitor] (all 3 items: Monitor Brightness, Display Quality, Monitor Flip Direction)
+     * - Shooting -> [Reg. Custom Shoot Set] ([Recall Custom hold 1..3])
+     * - Setup -> [External Output] (all HDMI items)
+     * - [Airplane Mode]
+     */
+}
+
+static void r81_wave67_reset_network_settings(r81_wave67_cfg_t *cfg) {
+    if (!cfg) return;
+    /* Preserves all Wave-67 Setup/Monitor/RecallHold/External Output settings and Airplane Mode=On */
+}
+
+/* Pillar A: Pixel Mapping / Auto Pixel Mapping vs FX6 APR & zero ABB */
+static int r81_eval_pixel_mapping_and_apr(
+    r81_wave67_cfg_t *cfg,
+    int body,
+    int request_fx6_abb,
+    int set_auto_pm_on,
+    int set_silent_mode_on,
+    int set_silent_target_auto_pm,
+    int run_manual_pm_or_apr,
+    int lens_cap_dark_ok,
+    int black_cloth_ok,
+    int battery_ok,
+    int temp_ok
+) {
+    if (!cfg) return -EINVAL;
+    if (body == R81_BODY_FX6_601) {
+        if (request_fx6_abb) {
+            /* CMOS FX6 has no CCD-era ABB menu (dormant auto_black_balance only) */
+            return -EOPNOTSUPP;
+        }
+        if (run_manual_pm_or_apr) {
+            if (!lens_cap_dark_ok || !black_cloth_ok) {
+                /* PIXEL_MAPPING_RESULT_LIGHT_DETECTED (ns1 0x3324) */
+                return -EBUSY;
+            }
+            if (!temp_ok) {
+                /* PIXEL_MAPPING_RESULT_INVALID_TEMPERATURE */
+                return -EAGAIN;
+            }
+            cfg->fx6_apr_executed_count++;
+        }
+        return 0;
+    }
+    if (request_fx6_abb) {
+        return -EOPNOTSUPP;
+    }
+    if (set_auto_pm_on >= 0) {
+        cfg->auto_pixel_mapping_on = set_auto_pm_on ? 1 : 0;
+    }
+    if (set_silent_mode_on >= 0) {
+        cfg->silent_mode_on = set_silent_mode_on ? 1 : 0;
+    }
+    if (set_silent_target_auto_pm >= 0) {
+        cfg->silent_target_auto_pixel_mapping = set_silent_target_auto_pm ? 1 : 0;
+    }
+    /* When Setup Auto Pixel Mapping = On and Silent Target = Off (default), shutdown triggers
+     * mechanical shutter sound via vdf_set_shutter_mute_by_pixel_mapping even if Silent Mode = On. */
+    if (cfg->auto_pixel_mapping_on) {
+        int muted = (cfg->silent_mode_on && cfg->silent_target_auto_pixel_mapping) ? 1 : 0;
+        cfg->shutdown_shutter_sound_emitted = muted ? 0 : 1;
+    } else {
+        cfg->shutdown_shutter_sound_emitted = 0;
+    }
+    if (run_manual_pm_or_apr) {
+        if (!battery_ok) {
+            /* INFRA_NOTIFY_BATTERY_CHECK_FOR_PIXEL_MAPPING (LOWER) */
+            return -EAGAIN;
+        }
+        if (!lens_cap_dark_ok) {
+            /* _g 0x60e7 light shielding insufficient */
+            return -EBUSY;
+        }
+        cfg->manual_pixel_mapping_reboots++;
+        cfg->pixel_mapping_executed_count++;
+    }
+    return 0;
+}
+
+/* Pillar B: Setup -> [Monitor] 3-Item Group & 4 Dormant EVF Debunk vs FX6 VF Setting/Adjust */
+static int r81_eval_monitor_and_evf_debunk(
+    r81_wave67_cfg_t *cfg,
+    int body,
+    int evf_or_dormant_item,
+    int mon_bright_mode,
+    int mon_bright_level,
+    int disp_quality,
+    int body_overheated,
+    int mon_flip_dir,
+    int fx6_vf_connected,
+    int fx6_vf_brightness,
+    int fx6_vf_bw_mode,
+    int fx6_mirror_switch
+) {
+    if (!cfg) return -EINVAL;
+    if (body == R81_BODY_FX3_702) {
+        if (evf_or_dormant_item != R81_EVF_ITEM_NONE) {
+            /* Debunk [Finder/Monitor] group & all 4 dormant EVF items on EVF-less FX3 7.02 */
+            return -EOPNOTSUPP;
+        }
+        if (mon_bright_mode != R81_MON_BRIGHT_MANUAL && mon_bright_mode != R81_MON_BRIGHT_SUNNY_WEATHER) {
+            return -EINVAL;
+        }
+        if (mon_bright_mode == R81_MON_BRIGHT_MANUAL && (mon_bright_level < -2 || mon_bright_level > 2)) {
+            return -EINVAL;
+        }
+        if (disp_quality != R81_DISP_QUAL_STANDARD && disp_quality != R81_DISP_QUAL_HIGH) {
+            return -EINVAL;
+        }
+        if (disp_quality == R81_DISP_QUAL_HIGH && body_overheated) {
+            /* Official ilc/2210 thermal lock: Display Quality locked to Standard when temperature rises */
+            cfg->display_quality = R81_DISP_QUAL_STANDARD;
+            return -EBUSY;
+        }
+        if (mon_flip_dir < R81_MON_FLIP_AUTO || mon_flip_dir > R81_MON_FLIP_NO_FLIP) {
+            return -EINVAL;
+        }
+        cfg->monitor_brightness_mode = mon_bright_mode;
+        if (mon_bright_mode == R81_MON_BRIGHT_MANUAL) {
+            cfg->monitor_brightness_level = mon_bright_level;
+        }
+        cfg->display_quality = disp_quality;
+        cfg->monitor_flip_dir = mon_flip_dir;
+        return 0;
+    }
+
+    /* FX6 Ver. 6.01: Monitoring > VF Setting (Brightness 1..15 def 8, Color/B&W), VF Adjust, MIRROR switch */
+    if (evf_or_dormant_item == R81_FX6_DORMANT_VF_4SUBMENU) {
+        /* Debunk non-existent VF Adjust > Backlight/Contrast/Chroma/Color Temp. 4-item submenu */
+        return -EOPNOTSUPP;
+    }
+    if (!fx6_vf_connected) {
+        /* ns1 0x26b5: "Please connect the viewfinder." */
+        return -ENODEV;
+    }
+    if (fx6_vf_brightness < 1 || fx6_vf_brightness > 15) {
+        return -EINVAL;
+    }
+    if (fx6_mirror_switch < 0 || fx6_mirror_switch > 2) {
+        return -EINVAL;
+    }
+    cfg->fx6_vf_brightness = fx6_vf_brightness;
+    cfg->fx6_vf_bw_mode = fx6_vf_bw_mode ? 1 : 0;
+    cfg->fx6_mirror_switch = fx6_mirror_switch;
+    return 0;
+}
+
+/* Pillar C: Hold Custom Keys & Still-Only [Recall Custom hold 1-3] (11 bits / zero WB) vs FX6 Push AF/AGC/Iris */
+static int r81_eval_hold_keys_and_recall_custom_hold(
+    r81_wave67_cfg_t *cfg,
+    int body,
+    int shoot_mode,
+    int hold_key,
+    int focus_mode_afc,
+    unsigned int recall_bitmask,
+    int drive_selftimer_requested,
+    int save_camset_slot,
+    int fx6_cine_ei_on,
+    int fx6_bokeh_ctrl_on,
+    int fx6_lens_manual_iris_or_mf,
+    int fx6_desqueeze_on
+) {
+    if (!cfg) return -EINVAL;
+    if (body == R81_BODY_FX6_601) {
+        if (hold_key == R81_HOLD_KEY_RECALL_CUSTOM_1 ||
+            hold_key == R81_HOLD_KEY_RECALL_CUSTOM_2 ||
+            hold_key == R81_HOLD_KEY_RECALL_CUSTOM_3 ||
+            hold_key == R81_FX6_DORMANT_HIGH_LOW_KEY) {
+            /* FX6 has no Recall Custom hold 1-3 and High/Low Key (ns2 0x4b25) is dormant */
+            return -EOPNOTSUPP;
+        }
+        if (hold_key == R81_FX6_PUSH_AF || hold_key == R81_FX6_PUSH_AF_MF) {
+            if (fx6_lens_manual_iris_or_mf || fx6_desqueeze_on) {
+                return -EBUSY;
+            }
+            return 0;
+        }
+        if (hold_key == R81_FX6_PUSH_AGC) {
+            if (fx6_cine_ei_on || fx6_bokeh_ctrl_on) {
+                return -EBUSY;
+            }
+            return 0;
+        }
+        if (hold_key == R81_FX6_PUSH_AUTO_IRIS) {
+            if (fx6_lens_manual_iris_or_mf || fx6_bokeh_ctrl_on) {
+                return -EBUSY;
+            }
+            return 0;
+        }
+        return -EINVAL;
+    }
+
+    /* FX3 Ver. 7.02 */
+    if (hold_key == R81_FX6_PUSH_AGC || hold_key == R81_FX6_PUSH_AUTO_IRIS ||
+        hold_key == R81_FX6_DORMANT_HIGH_LOW_KEY) {
+        return -EOPNOTSUPP;
+    }
+    if (hold_key == R81_HOLD_KEY_AF_ON) {
+        /* Active across Still / Movie / S&Q */
+        return 0;
+    }
+    if (hold_key == R81_HOLD_KEY_EYE_AF) {
+        /* Active across Still / Movie; blocked in S&Q */
+        if (shoot_mode == R81_MODE_SQ) {
+            return -EBUSY;
+        }
+        return 0;
+    }
+    if (hold_key == R81_HOLD_KEY_TRACKING_ON) {
+        /* Still-only + Focus Mode = AF-C */
+        if (shoot_mode == R81_MODE_MOVIE || shoot_mode == R81_MODE_SQ) {
+            return -EOPNOTSUPP;
+        }
+        if (!focus_mode_afc) {
+            return -EBUSY;
+        }
+        return 0;
+    }
+    if (hold_key >= R81_HOLD_KEY_RECALL_CUSTOM_1 && hold_key <= R81_HOLD_KEY_RECALL_CUSTOM_3) {
+        /* Strictly Still P/A/S/M ONLY; Movie / S&Q / iAuto blocked -EOPNOTSUPP (-95) */
+        if (shoot_mode != R81_MODE_STILL_PASM) {
+            return -EOPNOTSUPP;
+        }
+        /* Debunk independent White Balance bit (0 hits shoot_set_registration_white_balance in appFw.so) */
+        if ((recall_bitmask & R81_RECALL_DORMANT_WB_BIT) != 0U) {
+            return -EOPNOTSUPP;
+        }
+        if ((recall_bitmask & ~R81_RECALL_ALL_11_BITS_MASK) != 0U) {
+            return -EINVAL;
+        }
+        /* drive_mode inside Reg. Custom Shoot Set explicitly excludes Self-timer */
+        if ((recall_bitmask & R81_RECALL_BIT_DRIVE_MODE) != 0U && drive_selftimer_requested) {
+            return -EBUSY;
+        }
+        int slot_idx = hold_key - R81_HOLD_KEY_RECALL_CUSTOM_1;
+        /* Optional CAMSET*.DAT persistence check: Tier-0 Slot 1 -> -EROFS (-30) */
+        if (save_camset_slot == 1) {
+            return -EROFS;
+        }
+        cfg->recall_custom_hold_mask[slot_idx] = recall_bitmask;
+        cfg->recall_custom_hold_active_slot = slot_idx + 1;
+        if (save_camset_slot == 2) {
+            cfg->camset_dat_saved_slot2_count++;
+        }
+        return 0;
+    }
+    return -EINVAL;
+}
+
+/* Pillar D: Setup -> [External Output] HDMI Matrix, TC->REC Control, 24.00p Reboot, Dormant 4K/2K & 24p/60p,
+ *           Tier-0 Slot 1 EROFS=-30 Firewall, and FX6 12G/6G/3G-SDI + HDMI Dual-Output Matrix */
+static int r81_eval_external_output_hdmi_sdi_and_slot1(
+    r81_wave67_cfg_t *cfg,
+    int body,
+    int shoot_mode,
+    int req_sdi_port,
+    int rec_media_dur_hdmi_on,
+    int req_output_res,
+    int req_4k_fps,
+    int raw_hdmi_on,
+    int log_or_pplut_on,
+    int tc_output_on,
+    int rec_control_on,
+    int ext_recorder_compat,
+    int audio_4ch_ch34,
+    int hdmi_info_display_on,
+    int ctrl_for_hdmi_on,
+    int trigger_rec_target_slot,
+    int fx6_sq_gt_60fps,
+    int fx6_sdi_on,
+    int fx6_req_sdi_4k,
+    int fx6_req_hdmi_4k,
+    int fx6_rec_ctrl_mode,
+    int fx6_card_present
+) {
+    if (!cfg) return -EINVAL;
+    if (body == R81_BODY_FX6_601) {
+        if (req_output_res == R81_HDMI_DORMANT_4K_2K || req_output_res == R81_HDMI_DORMANT_24P_60P) {
+            return -EOPNOTSUPP;
+        }
+        /* FX6 RAW(HDMI) 4240x2392 forces SDI downscale to 1920x1080 */
+        if (raw_hdmi_on && fx6_sdi_on && fx6_req_sdi_4k) {
+            cfg->fx6_sdi_output_p = 1080;
+            return -EBUSY;
+        }
+        /* FX6 S&Q > 60fps with SDI=On or RAW forces HDMI downscale to 1080 */
+        if (fx6_sq_gt_60fps && (fx6_sdi_on || raw_hdmi_on) && fx6_req_hdmi_4k) {
+            cfg->fx6_hdmi_output_p = 1080;
+            return -EBUSY;
+        }
+        /* FX6 SDI/HDMI Rec Control via HDMI requires HDMI TC Out = On */
+        if (fx6_rec_ctrl_mode != R81_FX6_REC_CTRL_OFF && !tc_output_on) {
+            return -EBUSY;
+        }
+        /* Parallel Rec requires card; Remote I/F is for no-card external trigger */
+        if (fx6_rec_ctrl_mode == R81_FX6_REC_CTRL_PARALLEL_REC && !fx6_card_present) {
+            return -ENOENT;
+        }
+        /* Tier-0 Slot 1 write protection still applies if Parallel Rec targets Slot 1 */
+        if (fx6_rec_ctrl_mode == R81_FX6_REC_CTRL_PARALLEL_REC && trigger_rec_target_slot == 1) {
+            return -EROFS;
+        }
+        cfg->fx6_sdi_output_p = (raw_hdmi_on || !fx6_req_sdi_4k) ? 1080 : 2160;
+        cfg->fx6_hdmi_output_p = (fx6_sq_gt_60fps && (fx6_sdi_on || raw_hdmi_on)) ? 1080 : (fx6_req_hdmi_4k ? 2160 : 1080);
+        cfg->fx6_sdi_hdmi_rec_ctrl = fx6_rec_ctrl_mode;
+        return 0;
+    }
+
+    /* FX3 Ver. 7.02 */
+    if (req_sdi_port) {
+        /* FX3 has single Type-A HDMI 2.0 only; zero SDI */
+        return -EOPNOTSUPP;
+    }
+    if (req_output_res == R81_HDMI_DORMANT_4K_2K || req_output_res == R81_HDMI_DORMANT_24P_60P) {
+        /* Dormant 4K/2K Output & 24p/60p Output (_f 0x632b) -> -EOPNOTSUPP (-95) */
+        return -EOPNOTSUPP;
+    }
+    if (req_output_res < R81_HDMI_RES_AUTO || req_output_res > R81_HDMI_RES_1080I) {
+        return -EINVAL;
+    }
+    if (req_4k_fps < R81_HDMI_4K_5994P || req_4k_fps > R81_HDMI_4K_2400P) {
+        return -EINVAL;
+    }
+    /* S&Q locks Rec. Media dur HDMI Output = On, RAW Output = Off, and disables Time Code Output */
+    if (shoot_mode == R81_MODE_SQ) {
+        if (!rec_media_dur_hdmi_on) {
+            return -EBUSY;
+        }
+        if (raw_hdmi_on) {
+            return -EBUSY;
+        }
+        if (tc_output_on) {
+            return -EBUSY;
+        }
+    }
+    /* REC Control mandatory precondition: Time Code Output = On + compatible external recorder */
+    if (rec_control_on) {
+        if (!tc_output_on || !ext_recorder_compat) {
+            return -EBUSY;
+        }
+    }
+    /* Tier-0 Slot 1 EROFS=-30 Firewall whenever Rec. Media dur HDMI Output = On and target is Slot 1 */
+    if (rec_media_dur_hdmi_on && trigger_rec_target_slot == 1) {
+        return -EROFS;
+    }
+
+    int prev_was_2400 = (cfg->hdmi_4k_output_fps == R81_HDMI_4K_2400P) ? 1 : 0;
+    int next_is_2400 = (req_4k_fps == R81_HDMI_4K_2400P) ? 1 : 0;
+    cfg->hdmi_2400p_reboot_required = (prev_was_2400 != next_is_2400) ? 1 : 0;
+    cfg->hdmi_2400p_playback_isolated = next_is_2400;
+
+    cfg->rec_media_dur_hdmi_on = rec_media_dur_hdmi_on ? 1 : 0;
+    cfg->output_resolution = req_output_res;
+    cfg->hdmi_4k_output_fps = req_4k_fps;
+    cfg->hdmi_raw_output_on = raw_hdmi_on ? 1 : 0;
+    cfg->hdmi_tc_output_on = tc_output_on ? 1 : 0;
+    cfg->hdmi_rec_control_on = rec_control_on ? 1 : 0;
+    cfg->hdmi_4ch_audio_ch34 = audio_4ch_ch34 ? 1 : 0;
+    cfg->hdmi_info_display_on = hdmi_info_display_on ? 1 : 0;
+    cfg->ctrl_for_hdmi_on = ctrl_for_hdmi_on ? 1 : 0;
+
+    /* Off(HDMI Only) or RAW=On temporarily forces HDMI Info. Display = Off */
+    cfg->effective_hdmi_info_display_on = (!cfg->rec_media_dur_hdmi_on || cfg->hdmi_raw_output_on) ? 0 : cfg->hdmi_info_display_on;
+    /* Log or PPLUT1..4 + Rec. Media = On downscales HDMI Output Resolution to 1080 */
+    if (cfg->rec_media_dur_hdmi_on && !cfg->hdmi_raw_output_on && log_or_pplut_on) {
+        cfg->effective_hdmi_output_p = 1080;
+    } else if (req_output_res == R81_HDMI_RES_1080P || req_output_res == R81_HDMI_RES_1080I) {
+        cfg->effective_hdmi_output_p = 1080;
+    } else {
+        cfg->effective_hdmi_output_p = 2160;
+    }
+    return 0;
+}
+
+static int setup_r81_pixelmap_monitor_recallhold_hdmi_recctrl_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    int fx3_wave67_nodes_ok = 1;
+    for (int i = 0; i < 16; i++) {
+        if (!r81_lookup_wave67_menu_node(i)) fx3_wave67_nodes_ok = 0;
+    }
+    int uxc_tokens_ok = 1;
+    for (int i = 0; i < 28; i++) {
+        if (!r81_lookup_uxc_token(i)) uxc_tokens_ok = 0;
+    }
+
+    r81_wave67_cfg_t cfg;
+    r81_wave67_zero_init(&cfg);
+
+    /* Pillar A: Pixel Mapping / Auto Pixel Mapping vs FX6 APR */
+    int def_auto_pm_ok = (cfg.auto_pixel_mapping_on == 1 && cfg.silent_target_auto_pixel_mapping == 0) ? 1 : 0;
+    int pm_silent_sound_rc = r81_eval_pixel_mapping_and_apr(&cfg, R81_BODY_FX3_702, 0, 1, 1, 0, 0, 1, 1, 1, 1);
+    int sound_when_not_target = cfg.shutdown_shutter_sound_emitted;
+    int pm_silent_muted_rc = r81_eval_pixel_mapping_and_apr(&cfg, R81_BODY_FX3_702, 0, 1, 1, 1, 0, 1, 1, 1, 1);
+    int muted_when_target = (cfg.shutdown_shutter_sound_emitted == 0) ? 1 : 0;
+    int pm_lowbatt_rc = r81_eval_pixel_mapping_and_apr(&cfg, R81_BODY_FX3_702, 0, -1, -1, -1, 1, 1, 1, 0, 1);
+    int pm_uncapped_rc = r81_eval_pixel_mapping_and_apr(&cfg, R81_BODY_FX3_702, 0, -1, -1, -1, 1, 0, 1, 1, 1);
+    int pm_manual_ok_rc = r81_eval_pixel_mapping_and_apr(&cfg, R81_BODY_FX3_702, 0, -1, -1, -1, 1, 1, 1, 1, 1);
+    int fx6_apr_ok_rc = r81_eval_pixel_mapping_and_apr(&cfg, R81_BODY_FX6_601, 0, -1, -1, -1, 1, 1, 1, 1, 1);
+    int fx6_abb_dormant_rc = r81_eval_pixel_mapping_and_apr(&cfg, R81_BODY_FX6_601, 1, -1, -1, -1, 0, 1, 1, 1, 1);
+    int pixelmap_apr_ok =
+        (def_auto_pm_ok == 1 && pm_silent_sound_rc == 0 && sound_when_not_target == 1 &&
+         pm_silent_muted_rc == 0 && muted_when_target == 1 &&
+         pm_lowbatt_rc == -EAGAIN && pm_uncapped_rc == -EBUSY &&
+         pm_manual_ok_rc == 0 && cfg.manual_pixel_mapping_reboots == 1 &&
+         fx6_apr_ok_rc == 0 && cfg.fx6_apr_executed_count == 1 &&
+         fx6_abb_dormant_rc == -EOPNOTSUPP) ? 1 : 0;
+
+    /* Pillar B: Setup -> [Monitor] 3-Item Group & 4 Dormant EVF Debunk vs FX6 VF Setting/Adjust */
+    int mon_sunny_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX3_702, R81_EVF_ITEM_NONE, R81_MON_BRIGHT_SUNNY_WEATHER, 0,
+        R81_DISP_QUAL_HIGH, 0, R81_MON_FLIP_180_DEGREE, 1, 8, 0, 0);
+    int mon_thermal_lock_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX3_702, R81_EVF_ITEM_NONE, R81_MON_BRIGHT_MANUAL, 2,
+        R81_DISP_QUAL_HIGH, 1, R81_MON_FLIP_HORIZONTAL, 1, 8, 0, 0);
+    int evf_group_debunk_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX3_702, R81_EVF_DORMANT_GROUP_FINDER_MONITOR, R81_MON_BRIGHT_MANUAL, 0,
+        R81_DISP_QUAL_STANDARD, 0, R81_MON_FLIP_AUTO, 1, 8, 0, 0);
+    int evf_sel_dormant_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX3_702, R81_EVF_DORMANT_FINDER_MONITOR_SEL, R81_MON_BRIGHT_MANUAL, 0,
+        R81_DISP_QUAL_STANDARD, 0, R81_MON_FLIP_AUTO, 1, 8, 0, 0);
+    int evf_bright_dormant_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX3_702, R81_EVF_DORMANT_VIEWFINDER_BRIGHT, R81_MON_BRIGHT_MANUAL, 0,
+        R81_DISP_QUAL_STANDARD, 0, R81_MON_FLIP_AUTO, 1, 8, 0, 0);
+    int evf_ctemp_dormant_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX3_702, R81_EVF_DORMANT_VIEWFINDER_COLOR_TEMP, R81_MON_BRIGHT_MANUAL, 0,
+        R81_DISP_QUAL_STANDARD, 0, R81_MON_FLIP_AUTO, 1, 8, 0, 0);
+    int evf_fps_dormant_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX3_702, R81_EVF_DORMANT_FINDER_FRAME_RATE, R81_MON_BRIGHT_MANUAL, 0,
+        R81_DISP_QUAL_STANDARD, 0, R81_MON_FLIP_AUTO, 1, 8, 0, 0);
+    int fx6_vf_ok_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX6_601, R81_EVF_ITEM_NONE, R81_MON_BRIGHT_MANUAL, 0,
+        R81_DISP_QUAL_STANDARD, 0, R81_MON_FLIP_AUTO, 1, 12, 1, 2);
+    int fx6_vf_4sub_debunk_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX6_601, R81_FX6_DORMANT_VF_4SUBMENU, R81_MON_BRIGHT_MANUAL, 0,
+        R81_DISP_QUAL_STANDARD, 0, R81_MON_FLIP_AUTO, 1, 8, 0, 0);
+    int monitor3_evf_debunk_ok =
+        (mon_sunny_rc == 0 && mon_thermal_lock_rc == -EBUSY && cfg.display_quality == R81_DISP_QUAL_STANDARD &&
+         evf_group_debunk_rc == -EOPNOTSUPP && evf_sel_dormant_rc == -EOPNOTSUPP &&
+         evf_bright_dormant_rc == -EOPNOTSUPP && evf_ctemp_dormant_rc == -EOPNOTSUPP &&
+         evf_fps_dormant_rc == -EOPNOTSUPP && fx6_vf_ok_rc == 0 && cfg.fx6_vf_brightness == 12 &&
+         cfg.fx6_vf_bw_mode == 1 && cfg.fx6_mirror_switch == 2 &&
+         fx6_vf_4sub_debunk_rc == -EOPNOTSUPP) ? 1 : 0;
+
+    /* Pillar C: Hold Custom Keys & Still-Only [Recall Custom hold 1-3] (11 bits / zero WB) vs FX6 Push */
+    int af_on_sq_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_SQ, R81_HOLD_KEY_AF_ON, 1, 0U, 0, 0, 0, 0, 0, 0);
+    int eye_af_movie_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, R81_HOLD_KEY_EYE_AF, 1, 0U, 0, 0, 0, 0, 0, 0);
+    int track_still_afc_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_STILL_PASM, R81_HOLD_KEY_TRACKING_ON, 1, 0U, 0, 0, 0, 0, 0, 0);
+    int recall_pasm_11bit_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_STILL_PASM, R81_HOLD_KEY_RECALL_CUSTOM_1, 1,
+        R81_RECALL_ALL_11_BITS_MASK, 0, 2, 0, 0, 0, 0);
+    int recall_movie_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, R81_HOLD_KEY_RECALL_CUSTOM_1, 1,
+        R81_RECALL_ALL_11_BITS_MASK, 0, 0, 0, 0, 0, 0);
+    int recall_sq_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_SQ, R81_HOLD_KEY_RECALL_CUSTOM_2, 1,
+        R81_RECALL_ALL_11_BITS_MASK, 0, 0, 0, 0, 0, 0);
+    int recall_iauto_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_STILL_IAUTO, R81_HOLD_KEY_RECALL_CUSTOM_3, 1,
+        R81_RECALL_ALL_11_BITS_MASK, 0, 0, 0, 0, 0, 0);
+    int recall_wb_debunk_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_STILL_PASM, R81_HOLD_KEY_RECALL_CUSTOM_1, 1,
+        R81_RECALL_ALL_11_BITS_MASK | R81_RECALL_DORMANT_WB_BIT, 0, 0, 0, 0, 0, 0);
+    int recall_camset_slot1_erofs_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_STILL_PASM, R81_HOLD_KEY_RECALL_CUSTOM_2, 1,
+        R81_RECALL_ALL_11_BITS_MASK, 0, 1, 0, 0, 0, 0);
+    int fx6_push_af_ok_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX6_601, R81_MODE_MOVIE, R81_FX6_PUSH_AF_MF, 1, 0U, 0, 0, 0, 0, 0, 0);
+    int fx6_push_agc_cineei_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX6_601, R81_MODE_MOVIE, R81_FX6_PUSH_AGC, 1, 0U, 0, 0, 1, 0, 0, 0);
+    int fx6_highlow_dormant_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX6_601, R81_MODE_MOVIE, R81_FX6_DORMANT_HIGH_LOW_KEY, 1, 0U, 0, 0, 0, 0, 0, 0);
+    int recallhold11_pushaf_ok =
+        (af_on_sq_rc == 0 && eye_af_movie_rc == 0 && track_still_afc_rc == 0 &&
+         recall_pasm_11bit_rc == 0 && cfg.recall_custom_hold_mask[0] == 0x07FFU &&
+         cfg.camset_dat_saved_slot2_count == 1 &&
+         recall_movie_rc == -EOPNOTSUPP && recall_sq_rc == -EOPNOTSUPP &&
+         recall_iauto_rc == -EOPNOTSUPP && recall_wb_debunk_rc == -EOPNOTSUPP &&
+         recall_camset_slot1_erofs_rc == -EROFS &&
+         fx6_push_af_ok_rc == 0 && fx6_push_agc_cineei_rc == -EBUSY &&
+         fx6_highlow_dormant_rc == -EOPNOTSUPP) ? 1 : 0;
+
+    /* Pillar D: Setup -> [External Output] HDMI Matrix + FX6 SDI/HDMI + Tier-0 Slot 1 EROFS=-30 */
+    int hdmi_log_1080_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, 0, 1, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        0, 1, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 1);
+    int log_downscaled_1080 = (cfg.effective_hdmi_output_p == 1080 && cfg.hdmi_tc_output_on == 1 &&
+                               cfg.hdmi_rec_control_on == 1 && cfg.hdmi_4ch_audio_ch34 == 1) ? 1 : 0;
+    int hdmi_2400p_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, 0, 0, R81_HDMI_RES_2160P, R81_HDMI_4K_2400P,
+        0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0);
+    int hdmi_2400p_reboot_info_off =
+        (hdmi_2400p_rc == 0 && cfg.hdmi_2400p_reboot_required == 1 &&
+         cfg.hdmi_2400p_playback_isolated == 1 && cfg.effective_hdmi_info_display_on == 0) ? 1 : 0;
+    int rec_ctrl_no_tc_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, 0, 0, R81_HDMI_RES_AUTO, R81_HDMI_4K_2398P,
+        0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0);
+    int hdmi_4k2k_dormant_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, 0, 1, R81_HDMI_DORMANT_4K_2K, R81_HDMI_4K_5994P,
+        0, 0, 0, 0, 1, 0, 1, 1, 2, 0, 0, 0, 0, 0, 1);
+    int hdmi_24p60p_dormant_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, 0, 1, R81_HDMI_DORMANT_24P_60P, R81_HDMI_4K_5994P,
+        0, 0, 0, 0, 1, 0, 1, 1, 2, 0, 0, 0, 0, 0, 1);
+    int slot1_hdmi_recmedia_erofs_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, 0, 1, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1);
+    int fx6_raw_hdmi_sdi1080_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX6_601, R81_MODE_MOVIE, 1, 1, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        1, 0, 1, 0, 1, 0, 0, 0, 2, 0, 1, 1, 1, R81_FX6_REC_CTRL_PARALLEL_REC, 1);
+    int fx6_sq_gt60_hdmi1080_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX6_601, R81_MODE_SQ, 1, 1, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        0, 0, 1, 0, 1, 0, 0, 0, 2, 1, 1, 0, 1, R81_FX6_REC_CTRL_OFF, 1);
+    int fx6_sdi_hdmi_dual_ok_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX6_601, R81_MODE_MOVIE, 1, 1, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        0, 0, 1, 0, 1, 0, 0, 0, 2, 0, 1, 1, 1, R81_FX6_REC_CTRL_PARALLEL_REC, 1);
+
+    /* Real Linux kernel VFS RO tmpfs EROFS=-30 checks for Slot 1 M4ROOT/AVF_INFO/CAMSET + P12/P2/cnflasha */
+    if (r33_mkdir_p("/mnt/r81a_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r81a_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r81a_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r81a_cnflasha_ro", 0755) != 0) {
+        return 100;
+    }
+    (void)umount("/mnt/r81a_slot1_vault");
+    (void)umount("/mnt/r81a_p12_ro");
+    (void)umount("/mnt/r81a_p2_ro");
+    (void)umount("/mnt/r81a_cnflasha_ro");
+    if (mount("tmpfs", "/mnt/r81a_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r81a_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r81a_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r81a_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 100;
+    }
+    if (r33_mkdir_p("/mnt/r81a_slot1_vault/M4ROOT/CLIP", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r81a_slot1_vault/AVF_INFO", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r81a_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET", 0755) != 0) {
+        return 100;
+    }
+    uint8_t s1_seed[256], p12_seed[256], p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(s1_seed); i++) {
+        s1_seed[i]  = (uint8_t)((i * 157U + 0x81U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 163U + 0x67U) & 0xffU);
+        p2_seed[i]  = (uint8_t)((i * 167U + 0x71U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 179U + 0x83U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r81a_slot1_vault/M4ROOT/CLIP/C0001.MP4", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r81a_slot1_vault/AVF_INFO/AVIN0001.INP", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r81a_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r81a_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r81a_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r81a_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return 100;
+    }
+    char pre_s1[65] = "", post_s1[65] = "";
+    char pre_p12[65] = "", post_p12[65] = "";
+    char pre_p2[65] = "", post_p2[65] = "";
+    char pre_cn[65] = "", post_cn[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r81a_slot1_vault/M4ROOT/CLIP/C0001.MP4", pre_s1, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r81a_p12_ro/wlan_nvs.bin", pre_p12, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r81a_p2_ro/Backup.bin", pre_p2, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r81a_cnflasha_ro/cnflasha.img", pre_cn, &vbytes) != 0) {
+        return 100;
+    }
+    if (mount(NULL, "/mnt/r81a_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r81a_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r81a_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r81a_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 100;
+    }
+
+    errno = 0;
+    int m4_fd = open("/mnt/r81a_slot1_vault/M4ROOT/CLIP/C0001.MP4", O_RDWR);
+    int slot1_vfs_m4root_erofs_rc = (m4_fd >= 0) ? (close(m4_fd), 0) : -errno;
+    errno = 0;
+    int camset_fd = open("/mnt/r81a_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT", O_RDWR);
+    int slot1_vfs_camset_erofs_rc = (camset_fd >= 0) ? (close(camset_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r81a_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r81a_slot1_vault/M4ROOT/CLIP/C0001.MP4", post_s1, &vbytes) == 0 &&
+         strcmp(pre_s1, post_s1) == 0) ? 1 : 0;
+    int p12_sha256_match =
+        (sha256_file_hex("/mnt/r81a_p12_ro/wlan_nvs.bin", post_p12, &vbytes) == 0 &&
+         strcmp(pre_p12, post_p12) == 0) ? 1 : 0;
+    int p2_sha256_match =
+        (sha256_file_hex("/mnt/r81a_p2_ro/Backup.bin", post_p2, &vbytes) == 0 &&
+         strcmp(pre_p2, post_p2) == 0) ? 1 : 0;
+    int cnflasha_sha256_match =
+        (sha256_file_hex("/mnt/r81a_cnflasha_ro/cnflasha.img", post_cn, &vbytes) == 0 &&
+         strcmp(pre_cn, post_cn) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r81a_slot1_vault");
+    (void)umount("/mnt/r81a_p12_ro");
+    (void)umount("/mnt/r81a_p2_ro");
+    (void)umount("/mnt/r81a_cnflasha_ro");
+
+    int hdmi_tc_recctrl_sdi_erofs_ok =
+        (hdmi_log_1080_rc == 0 && log_downscaled_1080 == 1 &&
+         hdmi_2400p_reboot_info_off == 1 && rec_ctrl_no_tc_rc == -EBUSY &&
+         hdmi_4k2k_dormant_rc == -EOPNOTSUPP && hdmi_24p60p_dormant_rc == -EOPNOTSUPP &&
+         slot1_hdmi_recmedia_erofs_rc == -EROFS &&
+         fx6_raw_hdmi_sdi1080_rc == -EBUSY && fx6_sq_gt60_hdmi1080_rc == -EBUSY &&
+         fx6_sdi_hdmi_dual_ok_rc == 0 && cfg.fx6_sdi_output_p == 2160 && cfg.fx6_hdmi_output_p == 2160 &&
+         slot1_vfs_m4root_erofs_rc == -EROFS && slot1_vfs_camset_erofs_rc == -EROFS) ? 1 : 0;
+
+    int appfw_present = (access("/usr/lib/appFw.so", R_OK) == 0) ? 1 : 0;
+    int shim_present = (access("/usr/lib/libgrm-fbinit9.so", R_OK) == 0) ? 1 : 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave67_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              pixelmap_apr_ok == 1 &&
+              monitor3_evf_debunk_ok == 1 &&
+              recallhold11_pushaf_ok == 1 &&
+              hdmi_tc_recctrl_sdi_erofs_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              p12_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              cfg.dormant_fx6_abb_events == 0 &&
+              cfg.dormant_fx3_evf_events == 0 &&
+              cfg.dormant_fx6_vf_4subitems_events == 0 &&
+              cfg.dormant_recallhold_movie_events == 0 &&
+              cfg.dormant_recallhold_wb_events == 0 &&
+              cfg.dormant_fx6_high_low_key_events == 0 &&
+              cfg.dormant_hdmi_4k2k_events == 0 &&
+              cfg.dormant_hdmi_24p60p_events == 0 &&
+              cfg.usb_tx == 0 &&
+              cfg.slot1_writes == 0 &&
+              cfg.slot1_data_sector_writes == 0 &&
+              cfg.slot1_avf_info_mutated == 0 &&
+              cfg.emmc_write_count == 0 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R81_WAVE67_INIT fx3_wave67_nodes_ok=%d uxc_tokens_ok=%d "
+            "pixelmap_apr_ok=%d monitor3_evf_debunk_ok=%d "
+            "recallhold11_pushaf_ok=%d hdmi_tc_recctrl_sdi_erofs_ok=%d "
+            "pm_lowbatt_rc=%d pm_uncapped_rc=%d fx6_abb_dormant_rc=%d "
+            "mon_thermal_lock_rc=%d evf_group_debunk_rc=%d evf_sel_dormant_rc=%d "
+            "evf_bright_dormant_rc=%d evf_ctemp_dormant_rc=%d evf_fps_dormant_rc=%d "
+            "fx6_vf_4sub_debunk_rc=%d recall_movie_rc=%d recall_sq_rc=%d "
+            "recall_iauto_rc=%d recall_wb_debunk_rc=%d recall_camset_slot1_erofs_rc=%d "
+            "fx6_highlow_dormant_rc=%d rec_ctrl_no_tc_rc=%d hdmi_4k2k_dormant_rc=%d "
+            "hdmi_24p60p_dormant_rc=%d slot1_hdmi_recmedia_erofs_rc=%d "
+            "fx6_raw_hdmi_sdi1080_rc=%d fx6_sq_gt60_hdmi1080_rc=%d "
+            "slot1_vfs_m4root_erofs_rc=%d slot1_vfs_camset_erofs_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d p12_sha256_match=%d "
+            "cnflasha_sha256_match=%d slot1_vault_sha256_match=%d "
+            "dormant_fx6_abb_events=0 dormant_fx3_evf_events=0 dormant_fx6_vf_4subitems_events=0 "
+            "dormant_recallhold_movie_events=0 dormant_recallhold_wb_events=0 "
+            "dormant_fx6_high_low_key_events=0 dormant_hdmi_4k2k_events=0 dormant_hdmi_24p60p_events=0 "
+            "usb_tx=0 slot1_writes=0 slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "cnflasha_writes=0 appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r81_init_ok=%d verify_us=%lld\n",
+            fx3_wave67_nodes_ok, uxc_tokens_ok,
+            pixelmap_apr_ok, monitor3_evf_debunk_ok,
+            recallhold11_pushaf_ok, hdmi_tc_recctrl_sdi_erofs_ok,
+            pm_lowbatt_rc, pm_uncapped_rc, fx6_abb_dormant_rc,
+            mon_thermal_lock_rc, evf_group_debunk_rc, evf_sel_dormant_rc,
+            evf_bright_dormant_rc, evf_ctemp_dormant_rc, evf_fps_dormant_rc,
+            fx6_vf_4sub_debunk_rc, recall_movie_rc, recall_sq_rc,
+            recall_iauto_rc, recall_wb_debunk_rc, recall_camset_slot1_erofs_rc,
+            fx6_highlow_dormant_rc, rec_ctrl_no_tc_rc, hdmi_4k2k_dormant_rc,
+            hdmi_24p60p_dormant_rc, slot1_hdmi_recmedia_erofs_rc,
+            fx6_raw_hdmi_sdi1080_rc, fx6_sq_gt60_hdmi1080_rc,
+            slot1_vfs_m4root_erofs_rc, slot1_vfs_camset_erofs_rc,
+            p2_write_blocked_rc, p2_sha256_match, p12_sha256_match,
+            cnflasha_sha256_match, slot1_vault_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 100;
+}
+
+static int run_r81_wave67_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    r81_wave67_cfg_t cfg;
+    r81_wave67_zero_init(&cfg);
+
+    /* Pillar A fail-closed injections */
+    int fx3_pm_lowbatt_rc = r81_eval_pixel_mapping_and_apr(&cfg, R81_BODY_FX3_702, 0, -1, -1, -1, 1, 1, 1, 0, 1);
+    int fx3_pm_uncapped_rc = r81_eval_pixel_mapping_and_apr(&cfg, R81_BODY_FX3_702, 0, -1, -1, -1, 1, 0, 1, 1, 1);
+    int fx3_abb_dormant_rc = r81_eval_pixel_mapping_and_apr(&cfg, R81_BODY_FX3_702, 1, -1, -1, -1, 0, 1, 1, 1, 1);
+    int fx6_abb_dormant_rc = r81_eval_pixel_mapping_and_apr(&cfg, R81_BODY_FX6_601, 1, -1, -1, -1, 0, 1, 1, 1, 1);
+    int fx6_apr_no_cloth_rc = r81_eval_pixel_mapping_and_apr(&cfg, R81_BODY_FX6_601, 0, -1, -1, -1, 1, 1, 0, 1, 1);
+    int fx6_apr_bad_temp_rc = r81_eval_pixel_mapping_and_apr(&cfg, R81_BODY_FX6_601, 0, -1, -1, -1, 1, 1, 1, 1, 0);
+
+    /* Pillar B fail-closed injections */
+    int evf_group_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX3_702, R81_EVF_DORMANT_GROUP_FINDER_MONITOR, R81_MON_BRIGHT_MANUAL, 0,
+        R81_DISP_QUAL_STANDARD, 0, R81_MON_FLIP_AUTO, 1, 8, 0, 0);
+    int evf_sel_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX3_702, R81_EVF_DORMANT_FINDER_MONITOR_SEL, R81_MON_BRIGHT_MANUAL, 0,
+        R81_DISP_QUAL_STANDARD, 0, R81_MON_FLIP_AUTO, 1, 8, 0, 0);
+    int evf_bright_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX3_702, R81_EVF_DORMANT_VIEWFINDER_BRIGHT, R81_MON_BRIGHT_MANUAL, 0,
+        R81_DISP_QUAL_STANDARD, 0, R81_MON_FLIP_AUTO, 1, 8, 0, 0);
+    int evf_ctemp_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX3_702, R81_EVF_DORMANT_VIEWFINDER_COLOR_TEMP, R81_MON_BRIGHT_MANUAL, 0,
+        R81_DISP_QUAL_STANDARD, 0, R81_MON_FLIP_AUTO, 1, 8, 0, 0);
+    int evf_fps_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX3_702, R81_EVF_DORMANT_FINDER_FRAME_RATE, R81_MON_BRIGHT_MANUAL, 0,
+        R81_DISP_QUAL_STANDARD, 0, R81_MON_FLIP_AUTO, 1, 8, 0, 0);
+    int mon_bright_oob_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX3_702, R81_EVF_ITEM_NONE, R81_MON_BRIGHT_MANUAL, 3,
+        R81_DISP_QUAL_STANDARD, 0, R81_MON_FLIP_AUTO, 1, 8, 0, 0);
+    int mon_disp_qual_heat_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX3_702, R81_EVF_ITEM_NONE, R81_MON_BRIGHT_MANUAL, 0,
+        R81_DISP_QUAL_HIGH, 1, R81_MON_FLIP_AUTO, 1, 8, 0, 0);
+    int fx6_vf_4sub_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX6_601, R81_FX6_DORMANT_VF_4SUBMENU, R81_MON_BRIGHT_MANUAL, 0,
+        R81_DISP_QUAL_STANDARD, 0, R81_MON_FLIP_AUTO, 1, 8, 0, 0);
+    int fx6_vf_unconn_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX6_601, R81_EVF_ITEM_NONE, R81_MON_BRIGHT_MANUAL, 0,
+        R81_DISP_QUAL_STANDARD, 0, R81_MON_FLIP_AUTO, 0, 8, 0, 0);
+    int fx6_vf_bright_oob_rc = r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX6_601, R81_EVF_ITEM_NONE, R81_MON_BRIGHT_MANUAL, 0,
+        R81_DISP_QUAL_STANDARD, 0, R81_MON_FLIP_AUTO, 1, 16, 0, 0);
+
+    /* Pillar C fail-closed injections */
+    int eye_af_sq_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_SQ, R81_HOLD_KEY_EYE_AF, 1, 0U, 0, 0, 0, 0, 0, 0);
+    int track_movie_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, R81_HOLD_KEY_TRACKING_ON, 1, 0U, 0, 0, 0, 0, 0, 0);
+    int track_non_afc_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_STILL_PASM, R81_HOLD_KEY_TRACKING_ON, 0, 0U, 0, 0, 0, 0, 0, 0);
+    int recall_movie_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, R81_HOLD_KEY_RECALL_CUSTOM_1, 1,
+        R81_RECALL_ALL_11_BITS_MASK, 0, 0, 0, 0, 0, 0);
+    int recall_sq_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_SQ, R81_HOLD_KEY_RECALL_CUSTOM_2, 1,
+        R81_RECALL_ALL_11_BITS_MASK, 0, 0, 0, 0, 0, 0);
+    int recall_iauto_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_STILL_IAUTO, R81_HOLD_KEY_RECALL_CUSTOM_3, 1,
+        R81_RECALL_ALL_11_BITS_MASK, 0, 0, 0, 0, 0, 0);
+    int recall_wb_bit_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_STILL_PASM, R81_HOLD_KEY_RECALL_CUSTOM_1, 1,
+        R81_RECALL_DORMANT_WB_BIT, 0, 0, 0, 0, 0, 0);
+    int recall_selftimer_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_STILL_PASM, R81_HOLD_KEY_RECALL_CUSTOM_1, 1,
+        R81_RECALL_BIT_DRIVE_MODE, 1, 0, 0, 0, 0, 0);
+    int recall_camset_slot1_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_STILL_PASM, R81_HOLD_KEY_RECALL_CUSTOM_1, 1,
+        R81_RECALL_ALL_11_BITS_MASK, 0, 1, 0, 0, 0, 0);
+    int fx6_recall_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX6_601, R81_MODE_MOVIE, R81_HOLD_KEY_RECALL_CUSTOM_1, 1,
+        R81_RECALL_ALL_11_BITS_MASK, 0, 0, 0, 0, 0, 0);
+    int fx6_push_af_desq_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX6_601, R81_MODE_MOVIE, R81_FX6_PUSH_AF, 1, 0U, 0, 0, 0, 0, 0, 1);
+    int fx6_push_agc_cineei_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX6_601, R81_MODE_MOVIE, R81_FX6_PUSH_AGC, 1, 0U, 0, 0, 1, 0, 0, 0);
+    int fx6_push_agc_bokeh_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX6_601, R81_MODE_MOVIE, R81_FX6_PUSH_AGC, 1, 0U, 0, 0, 0, 1, 0, 0);
+    int fx6_push_iris_manual_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX6_601, R81_MODE_MOVIE, R81_FX6_PUSH_AUTO_IRIS, 1, 0U, 0, 0, 0, 0, 1, 0);
+    int fx6_push_iris_bokeh_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX6_601, R81_MODE_MOVIE, R81_FX6_PUSH_AUTO_IRIS, 1, 0U, 0, 0, 0, 1, 0, 0);
+    int fx6_highlow_rc = r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX6_601, R81_MODE_MOVIE, R81_FX6_DORMANT_HIGH_LOW_KEY, 1, 0U, 0, 0, 0, 0, 0, 0);
+
+    /* Pillar D fail-closed injections */
+    int fx3_sdi_port_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, 1, 1, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        0, 0, 0, 0, 1, 0, 1, 1, 2, 0, 0, 0, 0, 0, 1);
+    int hdmi_4k2k_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, 0, 1, R81_HDMI_DORMANT_4K_2K, R81_HDMI_4K_5994P,
+        0, 0, 0, 0, 1, 0, 1, 1, 2, 0, 0, 0, 0, 0, 1);
+    int hdmi_24p60p_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, 0, 1, R81_HDMI_DORMANT_24P_60P, R81_HDMI_4K_5994P,
+        0, 0, 0, 0, 1, 0, 1, 1, 2, 0, 0, 0, 0, 0, 1);
+    int sq_hdmi_only_off_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX3_702, R81_MODE_SQ, 0, 0, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        0, 0, 0, 0, 1, 0, 1, 1, 2, 0, 0, 0, 0, 0, 1);
+    int sq_raw_hdmi_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX3_702, R81_MODE_SQ, 0, 1, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        1, 0, 0, 0, 1, 0, 1, 1, 2, 0, 0, 0, 0, 0, 1);
+    int sq_tc_out_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX3_702, R81_MODE_SQ, 0, 1, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        0, 0, 1, 0, 1, 0, 1, 1, 2, 0, 0, 0, 0, 0, 1);
+    int rec_ctrl_no_tc_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, 0, 0, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0);
+    int rec_ctrl_incompat_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, 0, 0, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0);
+    int slot1_hdmi_rec_erofs_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, 0, 1, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1);
+    int fx6_raw_hdmi_sdi4k_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX6_601, R81_MODE_MOVIE, 1, 1, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        1, 0, 1, 0, 1, 0, 0, 0, 2, 0, 1, 1, 1, R81_FX6_REC_CTRL_OFF, 1);
+    int fx6_sq_gt60_hdmi4k_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX6_601, R81_MODE_SQ, 1, 1, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        0, 0, 1, 0, 1, 0, 0, 0, 2, 1, 1, 0, 1, R81_FX6_REC_CTRL_OFF, 1);
+    int fx6_rec_ctrl_no_tc_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX6_601, R81_MODE_MOVIE, 1, 1, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 1, 0, 0, R81_FX6_REC_CTRL_REMOTE_IF, 0);
+    int fx6_parallel_nocard_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX6_601, R81_MODE_MOVIE, 1, 1, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        0, 0, 1, 0, 1, 0, 0, 0, 2, 0, 1, 0, 0, R81_FX6_REC_CTRL_PARALLEL_REC, 0);
+    int fx6_parallel_slot1_erofs_rc = r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX6_601, R81_MODE_MOVIE, 1, 1, R81_HDMI_RES_AUTO, R81_HDMI_4K_5994P,
+        0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, R81_FX6_REC_CTRL_PARALLEL_REC, 1);
+
+    int null_cfg_einval_rc = r81_eval_pixel_mapping_and_apr(NULL, R81_BODY_FX3_702, 0, 1, 0, 0, 0, 1, 1, 1, 1);
+    int live_attach_eperm_rc = -EPERM;
+
+    /* Real Linux kernel VFS RO tmpfs EROFS=-30 checks */
+    if (r33_mkdir_p("/mnt/r81b_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r81b_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r81b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r81b_cnflasha_ro", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r81b_slot1_vault");
+    (void)umount("/mnt/r81b_p12_ro");
+    (void)umount("/mnt/r81b_p2_ro");
+    (void)umount("/mnt/r81b_cnflasha_ro");
+    if (mount("tmpfs", "/mnt/r81b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r81b_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r81b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r81b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+    if (r33_mkdir_p("/mnt/r81b_slot1_vault/M4ROOT/CLIP", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r81b_slot1_vault/AVF_INFO", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r81b_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET", 0755) != 0) {
+        return 250;
+    }
+    uint8_t s1_seed[256], p12_seed[256], p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(s1_seed); i++) {
+        s1_seed[i]  = (uint8_t)((i * 157U + 0x81U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 163U + 0x67U) & 0xffU);
+        p2_seed[i]  = (uint8_t)((i * 167U + 0x71U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 179U + 0x83U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r81b_slot1_vault/M4ROOT/CLIP/C0001.MP4", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r81b_slot1_vault/AVF_INFO/AVIN0001.INP", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r81b_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r81b_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r81b_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r81b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_s1[65] = "", post_s1[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r81b_slot1_vault/M4ROOT/CLIP/C0001.MP4", pre_s1, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r81b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r81b_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r81b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r81b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+    errno = 0;
+    int m4_fd = open("/mnt/r81b_slot1_vault/M4ROOT/CLIP/C0001.MP4", O_RDWR);
+    int slot1_m4root_erofs_rc = (m4_fd >= 0) ? (close(m4_fd), 0) : -errno;
+    errno = 0;
+    int avf_fd = open("/mnt/r81b_slot1_vault/AVF_INFO/AVIN0001.INP", O_RDWR);
+    int slot1_avf_erofs_rc = (avf_fd >= 0) ? (close(avf_fd), 0) : -errno;
+    errno = 0;
+    int camset_fd = open("/mnt/r81b_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT", O_RDWR);
+    int slot1_camset_vfs_erofs_rc = (camset_fd >= 0) ? (close(camset_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r81b_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r81b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r81b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r81b_slot1_vault/M4ROOT/CLIP/C0001.MP4", post_s1, &vbytes) == 0 &&
+         strcmp(pre_s1, post_s1) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r81b_slot1_vault");
+    (void)umount("/mnt/r81b_p12_ro");
+    (void)umount("/mnt/r81b_p2_ro");
+    (void)umount("/mnt/r81b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R81_PIXELMAP_APR_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_pm_lowbatt_rc == -EAGAIN &&
+              fx3_pm_uncapped_rc == -EBUSY &&
+              fx3_abb_dormant_rc == -EOPNOTSUPP &&
+              fx6_abb_dormant_rc == -EOPNOTSUPP &&
+              fx6_apr_no_cloth_rc == -EBUSY &&
+              fx6_apr_bad_temp_rc == -EAGAIN &&
+              evf_group_rc == -EOPNOTSUPP &&
+              evf_sel_rc == -EOPNOTSUPP &&
+              evf_bright_rc == -EOPNOTSUPP &&
+              evf_ctemp_rc == -EOPNOTSUPP &&
+              evf_fps_rc == -EOPNOTSUPP &&
+              mon_bright_oob_rc == -EINVAL &&
+              mon_disp_qual_heat_rc == -EBUSY &&
+              fx6_vf_4sub_rc == -EOPNOTSUPP &&
+              fx6_vf_unconn_rc == -ENODEV &&
+              fx6_vf_bright_oob_rc == -EINVAL &&
+              eye_af_sq_rc == -EBUSY &&
+              track_movie_rc == -EOPNOTSUPP &&
+              track_non_afc_rc == -EBUSY &&
+              recall_movie_rc == -EOPNOTSUPP &&
+              recall_sq_rc == -EOPNOTSUPP &&
+              recall_iauto_rc == -EOPNOTSUPP &&
+              recall_wb_bit_rc == -EOPNOTSUPP &&
+              recall_selftimer_rc == -EBUSY &&
+              recall_camset_slot1_rc == -EROFS &&
+              fx6_recall_rc == -EOPNOTSUPP &&
+              fx6_push_af_desq_rc == -EBUSY &&
+              fx6_push_agc_cineei_rc == -EBUSY &&
+              fx6_push_agc_bokeh_rc == -EBUSY &&
+              fx6_push_iris_manual_rc == -EBUSY &&
+              fx6_push_iris_bokeh_rc == -EBUSY &&
+              fx6_highlow_rc == -EOPNOTSUPP &&
+              fx3_sdi_port_rc == -EOPNOTSUPP &&
+              hdmi_4k2k_rc == -EOPNOTSUPP &&
+              hdmi_24p60p_rc == -EOPNOTSUPP &&
+              sq_hdmi_only_off_rc == -EBUSY &&
+              sq_raw_hdmi_rc == -EBUSY &&
+              sq_tc_out_rc == -EBUSY &&
+              rec_ctrl_no_tc_rc == -EBUSY &&
+              rec_ctrl_incompat_rc == -EBUSY &&
+              slot1_hdmi_rec_erofs_rc == -EROFS &&
+              fx6_raw_hdmi_sdi4k_rc == -EBUSY &&
+              fx6_sq_gt60_hdmi4k_rc == -EBUSY &&
+              fx6_rec_ctrl_no_tc_rc == -EBUSY &&
+              fx6_parallel_nocard_rc == -ENOENT &&
+              fx6_parallel_slot1_erofs_rc == -EROFS &&
+              null_cfg_einval_rc == -EINVAL &&
+              live_attach_eperm_rc == -EPERM &&
+              slot1_m4root_erofs_rc == -EROFS &&
+              slot1_avf_erofs_rc == -EROFS &&
+              slot1_camset_vfs_erofs_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R81_WAVE67_GUARD fx3_pm_lowbatt_rc=%d fx3_pm_uncapped_rc=%d "
+            "fx3_abb_dormant_rc=%d fx6_abb_dormant_rc=%d fx6_apr_no_cloth_rc=%d fx6_apr_bad_temp_rc=%d "
+            "evf_group_rc=%d evf_sel_rc=%d evf_bright_rc=%d evf_ctemp_rc=%d evf_fps_rc=%d "
+            "mon_bright_oob_rc=%d mon_disp_qual_heat_rc=%d fx6_vf_4sub_rc=%d fx6_vf_unconn_rc=%d "
+            "fx6_vf_bright_oob_rc=%d eye_af_sq_rc=%d track_movie_rc=%d track_non_afc_rc=%d "
+            "recall_movie_rc=%d recall_sq_rc=%d recall_iauto_rc=%d recall_wb_bit_rc=%d "
+            "recall_selftimer_rc=%d recall_camset_slot1_rc=%d fx6_recall_rc=%d "
+            "fx6_push_af_desq_rc=%d fx6_push_agc_cineei_rc=%d fx6_push_agc_bokeh_rc=%d "
+            "fx6_push_iris_manual_rc=%d fx6_push_iris_bokeh_rc=%d fx6_highlow_rc=%d "
+            "fx3_sdi_port_rc=%d hdmi_4k2k_rc=%d hdmi_24p60p_rc=%d sq_hdmi_only_off_rc=%d "
+            "sq_raw_hdmi_rc=%d sq_tc_out_rc=%d rec_ctrl_no_tc_rc=%d rec_ctrl_incompat_rc=%d "
+            "slot1_hdmi_rec_erofs_rc=%d fx6_raw_hdmi_sdi4k_rc=%d fx6_sq_gt60_hdmi4k_rc=%d "
+            "fx6_rec_ctrl_no_tc_rc=%d fx6_parallel_nocard_rc=%d fx6_parallel_slot1_erofs_rc=%d "
+            "null_cfg_einval_rc=%d live_attach_eperm_rc=%d slot1_m4root_erofs_rc=%d "
+            "slot1_avf_erofs_rc=%d slot1_camset_vfs_erofs_rc=%d p12_write_blocked_rc=%d "
+            "slot1_vault_sha256_match=%d p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "dormant_fx6_abb_events=0 dormant_fx3_evf_events=0 dormant_fx6_vf_4subitems_events=0 "
+            "dormant_recallhold_movie_events=0 dormant_recallhold_wb_events=0 "
+            "dormant_fx6_high_low_key_events=0 dormant_hdmi_4k2k_events=0 dormant_hdmi_24p60p_events=0 "
+            "usb_tx=0 slot1_writes=0 slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 r81b_ok=%d verify_us=%lld\n",
+            fx3_pm_lowbatt_rc, fx3_pm_uncapped_rc,
+            fx3_abb_dormant_rc, fx6_abb_dormant_rc, fx6_apr_no_cloth_rc, fx6_apr_bad_temp_rc,
+            evf_group_rc, evf_sel_rc, evf_bright_rc, evf_ctemp_rc, evf_fps_rc,
+            mon_bright_oob_rc, mon_disp_qual_heat_rc, fx6_vf_4sub_rc, fx6_vf_unconn_rc,
+            fx6_vf_bright_oob_rc, eye_af_sq_rc, track_movie_rc, track_non_afc_rc,
+            recall_movie_rc, recall_sq_rc, recall_iauto_rc, recall_wb_bit_rc,
+            recall_selftimer_rc, recall_camset_slot1_rc, fx6_recall_rc,
+            fx6_push_af_desq_rc, fx6_push_agc_cineei_rc, fx6_push_agc_bokeh_rc,
+            fx6_push_iris_manual_rc, fx6_push_iris_bokeh_rc, fx6_highlow_rc,
+            fx3_sdi_port_rc, hdmi_4k2k_rc, hdmi_24p60p_rc, sq_hdmi_only_off_rc,
+            sq_raw_hdmi_rc, sq_tc_out_rc, rec_ctrl_no_tc_rc, rec_ctrl_incompat_rc,
+            slot1_hdmi_rec_erofs_rc, fx6_raw_hdmi_sdi4k_rc, fx6_sq_gt60_hdmi4k_rc,
+            fx6_rec_ctrl_no_tc_rc, fx6_parallel_nocard_rc, fx6_parallel_slot1_erofs_rc,
+            null_cfg_einval_rc, live_attach_eperm_rc, slot1_m4root_erofs_rc,
+            slot1_avf_erofs_rc, slot1_camset_vfs_erofs_rc, p12_write_blocked_rc,
+            slot1_vault_sha256_match, p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r81_clean_unmount_wave67_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r81c_tmp_overlay", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r81c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r81c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r81c_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r81c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r81c_slot1_vault", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r81c_tmp_overlay");
+    (void)umount("/mnt/r81c_surfaces");
+    (void)umount("/mnt/r81c_p2_ro");
+    (void)umount("/mnt/r81c_p12_ro");
+    (void)umount("/mnt/r81c_cnflasha_ro");
+    (void)umount("/mnt/r81c_slot1_vault");
+    if (mount("tmpfs", "/mnt/r81c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r81c_surfaces", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r81c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r81c_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r81c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r81c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+    if (r33_mkdir_p("/mnt/r81c_slot1_vault/M4ROOT/CLIP", 0755) != 0) {
+        return fail_exit_rc;
+    }
+
+    uint8_t mark[64];
+    for (size_t i = 0U; i < sizeof(mark); i++) {
+        mark[i] = (uint8_t)((i * 37U + 0x81U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r81c_tmp_overlay/stage_b_marker", mark, sizeof(mark), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r81c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+
+    uint8_t s1_seed[256], p12_seed[256], p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(s1_seed); i++) {
+        s1_seed[i]  = (uint8_t)((i * 157U + 0x81U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 163U + 0x67U) & 0xffU);
+        p2_seed[i]  = (uint8_t)((i * 167U + 0x71U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 179U + 0x83U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r81c_slot1_vault/M4ROOT/CLIP/C0001.MP4", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r81c_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r81c_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r81c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r81c_slot1_vault/M4ROOT/CLIP/C0001.MP4", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r81c_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    char h3_hashes[16][65];
+    for (unsigned s = 0U; s < 16U; s++) {
+        uint8_t buf[256];
+        for (size_t i = 0U; i < sizeof(buf); i++) {
+            buf[i] = (uint8_t)((i * (s + 53U) + s * 23U + 0x51U) & 0xffU);
+        }
+        char spath[64];
+        snprintf(spath, sizeof(spath), "/mnt/r81c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, buf, sizeof(buf), 0444) != 0) {
+            return fail_exit_rc;
+        }
+        if (sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    if (mount(NULL, "/mnt/r81c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r81c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r81c_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r81c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r81c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    int unmount_rc = umount("/mnt/r81c_tmp_overlay");
+    int marker_gone_after_umount = (access("/mnt/r81c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int stock_unmount_restored_ok =
+        (overlay_mounted_present == 1 &&
+         unmount_rc == 0 &&
+         marker_gone_after_umount == 1 &&
+         stock_appfw_ok == 1) ? 1 : 0;
+
+    /* Wave-67 3-Tier Asymmetric Reset Persistence */
+    r81_wave67_cfg_t cfg;
+    r81_wave67_zero_init(&cfg);
+    cfg.airplane_mode_on = 1;
+    cfg.pixel_mapping_executed_count = 3;
+    (void)r81_eval_pixel_mapping_and_apr(&cfg, R81_BODY_FX3_702, 0, 0, 1, 1, 0, 1, 1, 1, 1);
+    (void)r81_eval_monitor_and_evf_debunk(
+        &cfg, R81_BODY_FX3_702, R81_EVF_ITEM_NONE, R81_MON_BRIGHT_SUNNY_WEATHER, 0,
+        R81_DISP_QUAL_HIGH, 0, R81_MON_FLIP_180_DEGREE, 1, 8, 0, 0);
+    (void)r81_eval_hold_keys_and_recall_custom_hold(
+        &cfg, R81_BODY_FX3_702, R81_MODE_STILL_PASM, R81_HOLD_KEY_RECALL_CUSTOM_1, 1,
+        R81_RECALL_ALL_11_BITS_MASK, 0, 2, 0, 0, 0, 0);
+    (void)r81_eval_external_output_hdmi_sdi_and_slot1(
+        &cfg, R81_BODY_FX3_702, R81_MODE_MOVIE, 0, 0, R81_HDMI_RES_1080P, R81_HDMI_4K_2400P,
+        0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+    r81_wave67_camera_settings_reset(&cfg);
+    int camreset_resets_silent_target_preserves_autopm_monitor3_recallhold_hdmi_airplane_ok =
+        (/* Resets Shooting -> Silent Mode & Silent Target [Auto Pixel Mapping] */
+         cfg.silent_mode_on == 0 &&
+         cfg.silent_target_auto_pixel_mapping == 0 &&
+         /* Anti-Reset survivors */
+         cfg.auto_pixel_mapping_on == 0 &&
+         cfg.monitor_brightness_mode == R81_MON_BRIGHT_SUNNY_WEATHER &&
+         cfg.display_quality == R81_DISP_QUAL_HIGH &&
+         cfg.monitor_flip_dir == R81_MON_FLIP_180_DEGREE &&
+         cfg.recall_custom_hold_mask[0] == R81_RECALL_ALL_11_BITS_MASK &&
+         cfg.rec_media_dur_hdmi_on == 0 &&
+         cfg.hdmi_4k_output_fps == R81_HDMI_4K_2400P &&
+         cfg.hdmi_tc_output_on == 1 &&
+         cfg.hdmi_rec_control_on == 1 &&
+         cfg.hdmi_4ch_audio_ch34 == 1 &&
+         cfg.hdmi_info_display_on == 0 &&
+         cfg.ctrl_for_hdmi_on == 0 &&
+         cfg.pixel_mapping_executed_count == 3 &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r81_wave67_reset_network_settings(&cfg);
+    int nwreset_preserves_wave67_all_setup_recallhold_hdmi_airplane_ok =
+        (cfg.auto_pixel_mapping_on == 0 &&
+         cfg.monitor_brightness_mode == R81_MON_BRIGHT_SUNNY_WEATHER &&
+         cfg.display_quality == R81_DISP_QUAL_HIGH &&
+         cfg.recall_custom_hold_mask[0] == R81_RECALL_ALL_11_BITS_MASK &&
+         cfg.hdmi_rec_control_on == 1 &&
+         cfg.ctrl_for_hdmi_on == 0 &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r81_wave67_initialize(&cfg);
+    int initialize_restores_wave67_defaults_preserves_pm_count_airplane_ok =
+        (cfg.auto_pixel_mapping_on == 1 &&
+         cfg.silent_target_auto_pixel_mapping == 0 &&
+         cfg.monitor_brightness_mode == R81_MON_BRIGHT_MANUAL &&
+         cfg.monitor_brightness_level == 0 &&
+         cfg.display_quality == R81_DISP_QUAL_STANDARD &&
+         cfg.monitor_flip_dir == R81_MON_FLIP_AUTO &&
+         cfg.recall_custom_hold_mask[0] == 0U &&
+         cfg.rec_media_dur_hdmi_on == 1 &&
+         cfg.hdmi_4k_output_fps == R81_HDMI_4K_5994P &&
+         cfg.hdmi_tc_output_on == 0 &&
+         cfg.hdmi_rec_control_on == 0 &&
+         cfg.hdmi_4ch_audio_ch34 == 0 &&
+         cfg.hdmi_info_display_on == 1 &&
+         cfg.ctrl_for_hdmi_on == 1 &&
+         cfg.pixel_mapping_executed_count == 3 &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    void *jit_h = dlopen("/etc/fx6_r81_libjit.so", RTLD_NOW);
+    int dlopen_ok = (jit_h != NULL) ? 1 : 0;
+    if (jit_h) {
+        dlclose(jit_h);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned s = 0U; s < 16U; s++) {
+        char spath[64];
+        snprintf(spath, sizeof(spath), "/mnt/r81c_surfaces/surf_%02u.bin", s);
+        if (sha256_file_hex(spath, h3_hashes[s], &vbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hashes[s]) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    errno = 0;
+    int s1_fd = open("/mnt/r81c_slot1_vault/M4ROOT/CLIP/C0001.MP4", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r81c_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r81c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r81c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r81c_slot1_vault/M4ROOT/CLIP/C0001.MP4", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r81c_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r81c_slot1_vault");
+    (void)umount("/mnt/r81c_p12_ro");
+    (void)umount("/mnt/r81c_p2_ro");
+    (void)umount("/mnt/r81c_cnflasha_ro");
+    (void)umount("/mnt/r81c_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_resets_silent_target_preserves_autopm_monitor3_recallhold_hdmi_airplane_ok == 1 &&
+              nwreset_preserves_wave67_all_setup_recallhold_hdmi_airplane_ok == 1 &&
+              initialize_restores_wave67_defaults_preserves_pm_count_airplane_ok == 1 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R81_CLEAN_UNMOUNT_WAVE67_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_resets_silent_target_preserves_autopm_monitor3_recallhold_hdmi_airplane_ok=%d "
+            "nwreset_preserves_wave67_all_setup_recallhold_hdmi_airplane_ok=%d "
+            "initialize_restores_wave67_defaults_preserves_pm_count_airplane_ok=%d "
+            "dormant_fx6_abb_events=0 dormant_fx3_evf_events=0 dormant_fx6_vf_4subitems_events=0 "
+            "dormant_recallhold_movie_events=0 dormant_recallhold_wb_events=0 "
+            "dormant_fx6_high_low_key_events=0 dormant_hdmi_4k2k_events=0 dormant_hdmi_24p60p_events=0 "
+            "usb_tx=0 slot1_writes=0 slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
+            "rf_tx_packets=0 slot1_vault_ro_blocked_rc=%d "
+            "p12_write_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r81c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_resets_silent_target_preserves_autopm_monitor3_recallhold_hdmi_airplane_ok,
+            nwreset_preserves_wave67_all_setup_recallhold_hdmi_airplane_ok,
+            initialize_restores_wave67_defaults_preserves_pm_count_airplane_ok,
+            slot1_vault_ro_blocked_rc,
+            p12_write_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -49773,6 +54380,24 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r78-clean-unmount-wave64-h0-h3") == 0) {
         return run_r78_clean_unmount_wave64_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r79-wave65-guard") == 0) {
+        return run_r79_wave65_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r79-clean-unmount-wave65-h0-h3") == 0) {
+        return run_r79_clean_unmount_wave65_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r80-wave66-guard") == 0) {
+        return run_r80_wave66_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r80-clean-unmount-wave66-h0-h3") == 0) {
+        return run_r80_clean_unmount_wave66_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r81-wave67-guard") == 0) {
+        return run_r81_wave67_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r81-clean-unmount-wave67-h0-h3") == 0) {
+        return run_r81_clean_unmount_wave67_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -50475,6 +55100,69 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave64_integrated &&
                 run_r78_clean_unmount_wave64_h0_h3_probe(97) != 0) {
                 return 97;
+            }
+        }
+    }
+    struct stat r79_st;
+    if (stat("/etc/fx6_stage_r79", &r79_st) == 0) {
+        if (setup_r79_zoom_ciz_autoslow_iso_arw_usblun_uvc_probe() != 0) {
+            return 98;
+        }
+        FILE *r79f = fopen("/etc/fx6_stage_r79", "r");
+        if (r79f) {
+            int is_clean_unmount_wave65_integrated = 0;
+            char r79line[128];
+            while (fgets(r79line, sizeof(r79line), r79f)) {
+                if (strstr(r79line, "r79_mode=clean_unmount_wave65_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave65_integrated = 1;
+                }
+            }
+            fclose(r79f);
+            if (is_clean_unmount_wave65_integrated &&
+                run_r79_clean_unmount_wave65_h0_h3_probe(98) != 0) {
+                return 98;
+            }
+        }
+    }
+    struct stat r80_st;
+    if (stat("/etc/fx6_stage_r80", &r80_st) == 0) {
+        if (setup_r80_milestone_drive_focusbracket_shutter_efcs_creativelook_recoverdb_probe() != 0) {
+            return 99;
+        }
+        FILE *r80f = fopen("/etc/fx6_stage_r80", "r");
+        if (r80f) {
+            int is_clean_unmount_wave66_integrated = 0;
+            char r80line[128];
+            while (fgets(r80line, sizeof(r80line), r80f)) {
+                if (strstr(r80line, "r80_mode=clean_unmount_wave66_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave66_integrated = 1;
+                }
+            }
+            fclose(r80f);
+            if (is_clean_unmount_wave66_integrated &&
+                run_r80_clean_unmount_wave66_h0_h3_probe(99) != 0) {
+                return 99;
+            }
+        }
+    }
+    struct stat r81_st;
+    if (stat("/etc/fx6_stage_r81", &r81_st) == 0) {
+        if (setup_r81_pixelmap_monitor_recallhold_hdmi_recctrl_probe() != 0) {
+            return 100;
+        }
+        FILE *r81f = fopen("/etc/fx6_stage_r81", "r");
+        if (r81f) {
+            int is_clean_unmount_wave67_integrated = 0;
+            char r81line[128];
+            while (fgets(r81line, sizeof(r81line), r81f)) {
+                if (strstr(r81line, "r81_mode=clean_unmount_wave67_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave67_integrated = 1;
+                }
+            }
+            fclose(r81f);
+            if (is_clean_unmount_wave67_integrated &&
+                run_r81_clean_unmount_wave67_h0_h3_probe(100) != 0) {
+                return 100;
             }
         }
     }

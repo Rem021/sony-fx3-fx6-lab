@@ -2930,3 +2930,39 @@ FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTEC
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
 ```
+
+## Phase 372（Stage 85 — `85/85` Full-Board VM Co-Emulation Milestone!）：Wave-75 里程碑 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` 测光 6 档 / `[AEL w/ Shutter]` / `G96` `[Exposure step]` 勘误 vs FX6 `-3.0..+3.0` 25 档 AE Level、`PP1..11` 双免疫 vs `PPLUT1..4` 双复位与 MP4 `[Embed LUT File]` `/Private/Sony/PRO/LUT`、5 轴 IBIS `Active 1.1x` / 47 档焦距表与 Catalyst Gyro vs FX6 零 IBIS OSS，以及零写回放 Viewing vs Still DCF / Movie `Cam ID + Reel#` 17 字符 & `37` 字符 `[Title Name Settings]` `Slot 1 EROFS=30` HIL
+
+[`realhw_metering_pplut_ibis47_camid_pbfile_coemulator.py`](realhw_metering_pplut_ibis47_camid_pbfile_coemulator.py)（Schema `phase372_realhw_metering_pplut_ibis47_camid_pbfile_coemulation_v1`）作为 **Stage 85（`85/85` Full-Board VM Co-Emulation Milestone!）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase372` / `--skip-stage85` / `--no-include-stage85` 跳过，支持 `--include-stage85`），严格遵循 `os.O_RDONLY` + `<= 4096 B` 受界 `os.pread`、`ready_for_live_camera_attach == False`、`physical_device_writes == 0`、`emmc_writes_authorized == False`、`slot1_sector_writes == 0`、`slot1_data_sector_writes == 0`、`slot1_avf_info_mutated == False`、`rf_tx_packets == 0`、`emmc_nflasha_write_count == 0` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 19 供体 `O_RDONLY` + 受界 `os.pread` 审计（`LOCAL_O_RDONLY_REAL_DONORS` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` **19 份真实供体**（`15` 份紧凑供体：`4` 语言 FX3 `_f`/基础/`_g` `.uxc` + `FX3 libSaveLoadSettings.so` + FX6 `string_english.uxc`/`string_english_2.uxc`；以及 `4` 份受界窗口供体：`FX3 appFw.so`、`FX3 libmpr.so`、`FX3-CX95900_ALLLANG-Backup.bin`、`FX6 appFw.so`），在无供体环境（`work_root=None` / `FX3_CLEAN_ROOM_TEST=1` / `FX3_FX6_FORCE_CLEAN_ROOM=1` / `FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__`）无缝回退 `CLEAN_ROOM_SYNTHETIC`（`raw_firmware_bytes_leaked == 0`）。
+2. **Sub-Model 85A — 曝光/测光矩阵、`G96` `[Exposure step]` 持久化勘误与 FX6 `-3.0..+3.0` 25 档 AE Level 证伪**：
+   - FX3 `[Metering Mode]` 6 档（`Multi` 默认 / `Center` / `Spot: Standard` / `Spot: Large` / `Entire Screen Avg.` / `Highlight`，`Can be reset`；`CIZ`/`Digital Zoom` 下硬锁 `Multi`）、`[Face Priority in Multi Metering]`（`BKID_APP_setting_face_detection_in_multi`，`De-Squeeze != Off` 或非光学变焦硬锁 `Off`）、`[Spot Metering Point]`（`Center` / `Focus Point Link`，`Wide`/`Zone`/`Center Fix` 下强制按 `Center` 测光）、Still 独占且抗 Reset 的 `[AEL w/ Shutter]`（`Auto`/`On`/`Off`；Movie AE 锁严格经 Custom Key `AEL hold/toggle` 或 `Spot AEL hold/toggle`），以及 **`[Exposure step]`（`0.3EV` 默认 / `0.5EV`，Wave-75 `G96` 勘误：`Not available` 于 `[Camera Settings Reset]`、仅 `[Initialize]` 复位、`[Shutter Angle]` 免疫、`Cine EI` 测光表 `M.M.` 锁于 Base ISO）**。对比 FX6 `Shooting > Auto Exposure > Level`（**`-3.0..+3.0` 以 `0.25` 步进 = 精确 25 档**，证伪 `-2.0..+2.0EV` 传闻）+ `Speed -99..+99` + `Detect Window 1..6/Custom`。
+3. **Sub-Model 85B — `[Picture Profile]` `PP1..11` 双免疫 vs `PPLUT1..4` 双复位分裂 & User 3D LUT `/Private/Sony/PRO/LUT` MP4 内嵌**：
+   - FX3 `[Picture Profile]`（`Off`、`PP1..11` 默认 `PP11 S-Cinetone`、Movie 独占 `PPLUT1..4` 烘焙 `.cube` 且内录时迫使 HDMI 降档 `1080p`，除非 `Off(HDMI Only)` / `RAW = On`；开启 `[Log Shooting]` 时互斥强制 `Off`）。强制非对称 Reset/Initialize 分裂：`[Camera Settings Reset]` 复位当前编号至 `PP11` 并复位 `PPLUT1..4`，而 **`PP1..PP11` 内部自定义参数与 `[Different Set for Still/Mv]` PP 勾选项对 `[Camera Settings Reset]` 与 `[Initialize]` 均双免疫**（`User1..16` 抗常规 Reset，由 `[Delete All]`/`[Initialize]` 清空）。`[Embed LUT File]`（位于 `Log Shooting Setting`，默认 `On`，SD/SDHC 锁 `Off`，仅内嵌 **MP4** `XAVC` 容器，FX3 零 MXF / 零 `.cube` sidecar；`17`/`33`-pt `.cube` `<= 63` 字符来自 SD `/Private/Sony/PRO/LUT` 或 CFexpress `/Sony/PRO/LUT`）。对比 FX6 `Base Look` + 16 轴 `Multi Matrix` + 4 路 `MLUT` + MXF `Embed LUT File`。
+4. **Sub-Model 85C — 5 轴 IBIS `[SteadyShot]` `Active ~1.1x`、精确 47 档焦距表 `8..1000mm` & Catalyst Gyro vs FX6 零 IBIS 光学 OSS**：
+   - FX3 Movie `[SteadyShot]`（`Active` `~1.1x` 强制 `Distortion Comp. = Auto` / `Standard` 默认 / `Off`）、Still `On`/`Off`、`[SteadyShot Adjust.]` `Auto`/`Manual` 与 **`FX3 appFw.so` 精确 47 档 `[SteadyShot Focal Len.]` 离散表（`8..1000mm`，默认 `8mm`，4 项全可 Reset；硬拒休眠 `Dynamic active`/`Intelligent Active`/`Super Active`）**；`Active` 4 重硬禁区（`>=100p/119.88p`、`S&Q >= 100fps`、`HDMI RAW = On`、`De-Squeeze != Off`）；Catalyst Gyro 元数据仅于 `Off`/`Active`（非 `Standard`）+ E 卡口镜头记录，且在 `120p` 与全部 `S&Q` 中缺席。对比 FX6 零物理 IBIS（`TYPE_STEADYSHOT_EQUIP_WITH_BODY_UNSUPPORTED`，仅光学 OSS `On`/`Off`，拒绝对休眠 `SteadyShot Focal Length` 的激活）。
+5. **Sub-Model 85D — 零扇区写回放 Viewing vs Still DCF / Movie `Cam ID + Reel#` 17 字符 & `37` 字符 `[Title Name Settings]` `Slot 1 EROFS=30` 防火墙**：
+   - 零写卡回放 Viewing 5 项（`[Image Index]` `9`/`25` Images，拒休眠 `12`/`30`；`[Display Rotation]` Sony 错字 `BKID_APP_setting_display_rotatiton`；`[Focus Frame Display]`；`[Cont. PB for Interval]`；`[Play Speed for Interval]` `1..9` 默认 `5`）全部 `0` 卡扇区写且抗 `[Camera Settings Reset]`。精确分离 Movie `[Cam ID + Reel#]` **17 字符**主干（`A001C001_230101AB`，满 `999` 仅文件名位号进位 `C999 -> D001` 不改菜单 `Camera Position`，`SDHC` 硬锁 `Standard`）与 **`37` 字符 `[Title Name Settings]`**（默认 `"C"`），对比 FX6 `TC/Media > Clip Name Format`（`Title Prefix` `4..46` 字符默认 `nnn_` -> `/XDROOT/Clip/*.MXF`）。对靶向 Tier-0 `Slot 1` 的 `[Create New Folder]`、`[Forced File No. Reset]`、`[Select REC Folder]` 与 `[Series Counter Reset]` 强制 fail-closed 返回 **`EROFS (errno 30)`**（`slot1_sector_writes == 0`、`raw_firmware_bytes_leaked == 0`）。
+
+### Phase 372 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 372 Stage 85（85/85 Full-Board VM Co-Emulation Milestone!）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_metering_pplut_ibis47_camid_pbfile_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_metering_pplut_ibis47_camid_pbfile_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_metering_pplut_ibis47_camid_pbfile_coemulator.py --self-test --json
+
+# 2. 全板 85 阶段（Stage 1..85, 85/85 Full-Board VM Co-Emulation Milestone!）统一校验（支持 --include-stage85 与 --skip-phase372 / --skip-stage85 / --no-include-stage85）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage85 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 372 四模式 104 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_metering_pplut_ibis47_camid_pbfile_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_metering_pplut_ibis47_camid_pbfile_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_metering_pplut_ibis47_camid_pbfile_coemulator.py -v
+FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_metering_pplut_ibis47_camid_pbfile_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
+```

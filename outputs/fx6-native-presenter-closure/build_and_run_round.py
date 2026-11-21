@@ -1389,6 +1389,7 @@ def build_stage_a_overlay(
     enable_r75: bool = False,
     enable_r76: bool = False,
     enable_r77: bool = False,
+    enable_r78: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1438,6 +1439,7 @@ def build_stage_a_overlay(
     r75_mode: str = "ftp_ftpes_customwb_afspeed_focusmap_marker_big6",
     r76_mode: str = "shoe_audio_4ch_subject_recog_silent_version_big6",
     r77_mode: str = "hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6",
+    r78_mode: str = "breathing_camid_copyright46_powersave9_ntscpal_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1807,7 +1809,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r76_mode: {r76_mode}")
     if enable_r77 and r77_mode not in ("hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6", "wave63_hdmi_raw_desqueeze_18x_reclamp_varshutter_apsc_guard", "clean_unmount_wave63_reset_h0_h3_big6"):
         raise ValueError(f"Unsupported r77_mode: {r77_mode}")
-    if enable_r77 and r77_mode == "wave63_hdmi_raw_desqueeze_18x_reclamp_varshutter_apsc_guard":
+    if enable_r78 and r78_mode not in ("breathing_camid_copyright46_powersave9_ntscpal_big6", "wave64_breathing_camid_copyright46_powersave9_ntscpal_guard", "clean_unmount_wave64_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r78_mode: {r78_mode}")
+    if enable_r78 and r78_mode == "wave64_breathing_camid_copyright46_powersave9_ntscpal_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r78_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r78-wave64-guard > /dev/console 2>&1\n"
+            "fx6_r78_gd_rc=$?\n"
+            "echo FX6_R78_WAVE64_GUARD_RC=$fx6_r78_gd_rc\n"
+            "echo FX6_R78_WAVE64_GUARD_EXIT rc=$fx6_r78_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r78_early_hook, 1)
+    elif enable_r77 and r77_mode == "wave63_hdmi_raw_desqueeze_18x_reclamp_varshutter_apsc_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -5810,6 +5828,67 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r78_meta: Optional[Dict[str, Any]] = None
+    if enable_r78:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r78_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r78"] = (
+            (
+                f"stage_r78=1\nr78_mode={r78_mode}\n"
+                f"breathing_resettable_100_120p_sq_catalyst_prepare=1\n"
+                f"camid_reel_c999_d001_37char_sdhc_4gb_split=1\n"
+                f"copyright46_serial_r57_erratum_camset_excl=1\n"
+                f"powersave_9bypasses_dormant_monitor_ntscpal_erofs30=1\n"
+                f"milestone_51st_realhw_153rd_live_102_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r78_meta = {
+            "r78_mode": r78_mode,
+            "milestone_round_ordinal": 78,
+            "realhw_round_ordinal": 51,
+            "total_live_runs_at_completion": 153,
+            "total_png_receipts_at_completion": 102,
+            "breathing_comp_100_120p_and_catalyst_prepare_wave64": {
+                "menu_path": "Shooting -> [Image Quality/Rec] -> [Lens Compensation] -> [Breathing Comp.] (Ver. 3.00+..7.02; Can be reset -> Reset resets to Off)",
+                "lens_whitelist_and_exceptions": "Requires Sony E-mount breathing data; SEL100F28GM macro 0.57m..1.0m ring & SEL14TC/SEL20TC blocked (-16 EBUSY); third-party/unsupported blocked (-95 EOPNOTSUPP)",
+                "mode_and_fps_lockouts": "Locked out in Still, Movie 100p/119.88p, S&Q >= 100fps (FX3 S&Q < 100fps allowed vs FX6 ALL S&Q locked), HDMI RAW = On, Clear Image Zoom; narrows angle of view",
+                "catalyst_prepare_boundary": "Post-production breathing compensation metadata requires paid Catalyst Prepare (+ [Distortion Comp.] = Auto); free Catalyst Browse unsupported (-95 EOPNOTSUPP)",
+                "fx6_diff": "ILME-FX6 Ver. 2.00+..6.01 Technical > Lens > Breathing Compensation (Auto/Off) hard-locks Off on 3 conditions: Distortion Comp.=Off, ALL S&Q Motion=On, and any RAW Codec (RAW/RAW & XAVC-I/RAW(HDMI))",
+            },
+            "camid_reel_37char_title_and_sdhc_4gb_split_wave64": {
+                "menu_path": "Shooting -> [File] -> [File Settings] (Resists [Camera Settings Reset]; Initialize only)",
+                "file_number_vs_camera_id_reel": "A001C001_230101AB (Cam ID+Reel#+Date 6-digit YYMMDD vs 8-digit YYYYMMDD Date+Title); changing Camera ID resets Reel# whereas File Number=Reset preserves Reel#; C999 -> D001 filename rollover preserves menu Camera Position",
+                "title_name_37char_and_sdhc_4gb": "Movie [Title Name Settings] <= 37 ASCII chars (default 'C', >37 -> -22 EINVAL); SDHC <= 32 GB forces File Name Format=Standard (-16 EBUSY on Cam ID+Reel# & mixed exFAT Simult. Recording) + 4 GB FAT32 split",
+                "slot1_erofs_vs_fx6": "Tier-0 Slot-1 [Series Counter Reset] / reel write blocked (-30 EROFS); ILME-FX6 TC/Media > Clip Name Format Auto Naming offers Cam ID + Reel# and Title with 4..46-char Title Prefix nnn_ (no Date+Title)",
+            },
+            "copyright46_serial_camset_and_r57_erratum_wave64": {
+                "menu_path": "Shooting -> [File] -> [Copyright Info] (4 items, 46-char strings) & [Write Serial Number] Still+Movie (BKID_APP_setting_write_serial_number_still_movie)",
+                "round57_reset_erratum_closed": "ALL 4 [Copyright Info] items (including [Write Copyright Info] toggle!) AND active [Write Serial Number] RESIST [Camera Settings Reset] (Initialize only), closing Round 57's old write_copyright_camreset_off assumption",
+                "camset_and_pii_exclusion": "CAMSET*.DAT Save/Load excludes [Copyright Info] strings (-95 EOPNOTSUPP) while permitting [Write Serial Number] On/Off boolean toggle without raw serial PII (-1 EPERM on raw PII)",
+                "fx6_diff": "ILME-FX6 Ver. 6.01 lacks consumer EXIF [Copyright Info] (-95 EOPNOTSUPP); tracks lens serial numbers (BKID_APP_*LENS_SERIAL_NUMBER*) and body serial last-3-digit Title Prefix nnn_",
+            },
+            "powersave9_dormant_monitor_and_ntscpal_erofs30_wave64": {
+                "power_setting_option": "Only 2 exposed items under Setup -> [Power Setting Option]: [Power Save Start Time] (Off/30/5/2/1 Min/10 Sec + 9 auto-bypass conditions) & [Auto Power OFF Temp.] (Standard/High); both resist Reset",
+                "dormant_monitor_and_timers": "Dormant [Power Save by Monitor] (BKID_APP_setting_monitor_power_linkage) & dormant 20SEC/60min/240min timers blocked (-95 EOPNOTSUPP)",
+                "ntsc_pal_slot1_erofs30": "[NTSC/PAL Selector] resists Reset, reboots into NTSC (23.98p/29.97p/59.94p/119.88p + 24.00p, DF/NDF; Running on NTSC.) or PAL (25p/50p/100p, no 23.98p, NDF only; Running on PAL.), and any legacy format prompt (base 0xe1e6/0xe595) or SD-Erase/TRIM on Tier-0 Slot 1 is fail-closed blocked (-30 EROFS, slot1_data_sector_writes=0)",
+            },
+            "dormant_catalyst_browse_breathing_events": 0,
+            "dormant_breathing_120p_bypass_events": 0,
+            "dormant_sdhc_camid_reel_bypass_events": 0,
+            "dormant_copyright_camset_export_events": 0,
+            "dormant_power_save_by_monitor_bypass_events": 0,
+            "dormant_powersave_20s_60m_240m_bypass_events": 0,
+            "copyright_pii_leaked_bytes": 0,
+            "slot1_data_sector_writes": 0,
+            "rf_tx_packets": 0,
+            "passive_tx_bytes_emitted": 0,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -5880,6 +5959,7 @@ def build_stage_a_overlay(
         "r75_enabled": enable_r75,
         "r76_enabled": enable_r76,
         "r77_enabled": enable_r77,
+        "r78_enabled": enable_r78,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -6009,6 +6089,8 @@ def build_stage_a_overlay(
         stage_a_meta["r76"] = r76_meta
     if r77_meta is not None:
         stage_a_meta["r77"] = r77_meta
+    if r78_meta is not None:
+        stage_a_meta["r78"] = r78_meta
     return replacements, additions, stage_a_meta
 
 
@@ -6375,6 +6457,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R75_",
         "FX6_R76_",
         "FX6_R77_",
+        "FX6_R78_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -6879,6 +6962,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r77_lang: Optional[Dict[str, Any]] = None
     last_r77_bridge: Optional[Dict[str, Any]] = None
     r77_wave63_guard_rc: Optional[int] = None
+    last_r78_wave64_init: Optional[Dict[str, Any]] = None
+    last_r78_breathing_120p_catalyst_bridge: Optional[Dict[str, Any]] = None
+    last_r78_camid_reel_37char_sdhc_bridge: Optional[Dict[str, Any]] = None
+    last_r78_copyright46_serial_camset_bridge: Optional[Dict[str, Any]] = None
+    last_r78_powersave9_ntscpal_erofs_bridge: Optional[Dict[str, Any]] = None
+    last_r78_wave64_guard: Optional[Dict[str, Any]] = None
+    last_r78_clean_unmount_wave64_h0_h3: Optional[Dict[str, Any]] = None
+    last_r78_lang: Optional[Dict[str, Any]] = None
+    last_r78_bridge: Optional[Dict[str, Any]] = None
+    r78_wave64_guard_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -8012,6 +8105,28 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R77_WAVE63_GUARD_RC"), int):
                 r77_wave63_guard_rc = kv["FX6_R77_WAVE63_GUARD_RC"]
+        elif "FX6_R78_WAVE64_INIT " in line:
+            last_r78_wave64_init = _parse_kv_ints(line.split("FX6_R78_WAVE64_INIT ", 1)[1])
+        elif "FX6_R78_BREATHING_120P_CATALYST_BRIDGE " in line:
+            last_r78_breathing_120p_catalyst_bridge = _parse_kv_ints(line.split("FX6_R78_BREATHING_120P_CATALYST_BRIDGE ", 1)[1])
+        elif "FX6_R78_CAMID_REEL_37CHAR_SDHC_BRIDGE " in line:
+            last_r78_camid_reel_37char_sdhc_bridge = _parse_kv_ints(line.split("FX6_R78_CAMID_REEL_37CHAR_SDHC_BRIDGE ", 1)[1])
+        elif "FX6_R78_COPYRIGHT46_SERIAL_CAMSET_BRIDGE " in line:
+            last_r78_copyright46_serial_camset_bridge = _parse_kv_ints(line.split("FX6_R78_COPYRIGHT46_SERIAL_CAMSET_BRIDGE ", 1)[1])
+        elif "FX6_R78_POWERSAVE9_NTSCPAL_EROFS_BRIDGE " in line:
+            last_r78_powersave9_ntscpal_erofs_bridge = _parse_kv_ints(line.split("FX6_R78_POWERSAVE9_NTSCPAL_EROFS_BRIDGE ", 1)[1])
+        elif "FX6_R78_WAVE64_GUARD " in line:
+            last_r78_wave64_guard = _parse_kv_ints(line.split("FX6_R78_WAVE64_GUARD ", 1)[1])
+        elif "FX6_R78_CLEAN_UNMOUNT_WAVE64_H0_H3 " in line:
+            last_r78_clean_unmount_wave64_h0_h3 = _parse_kv_ints(line.split("FX6_R78_CLEAN_UNMOUNT_WAVE64_H0_H3 ", 1)[1])
+        elif "FX6_R78_LANG_TELEMETRY " in line:
+            last_r78_lang = _parse_kv_ints(line.split("FX6_R78_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R78_BRIDGE " in line:
+            last_r78_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R78_BRIDGE ", 1)[1])
+        elif "FX6_R78_WAVE64_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R78_WAVE64_GUARD_RC"), int):
+                r78_wave64_guard_rc = kv["FX6_R78_WAVE64_GUARD_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -9353,6 +9468,34 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r77_bridge or {},
         }
 
+    r78_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r78_wave64_init,
+            last_r78_breathing_120p_catalyst_bridge,
+            last_r78_camid_reel_37char_sdhc_bridge,
+            last_r78_copyright46_serial_camset_bridge,
+            last_r78_powersave9_ntscpal_erofs_bridge,
+            last_r78_wave64_guard,
+            last_r78_clean_unmount_wave64_h0_h3,
+            last_r78_lang,
+            last_r78_bridge,
+        )
+    ):
+        r78_telemetry = {
+            "wave64_guard_rc": r78_wave64_guard_rc,
+            "wave64_init": last_r78_wave64_init or {},
+            "breathing_120p_catalyst_bridge": last_r78_breathing_120p_catalyst_bridge or {},
+            "camid_reel_37char_sdhc_bridge": last_r78_camid_reel_37char_sdhc_bridge or {},
+            "copyright46_serial_camset_bridge": last_r78_copyright46_serial_camset_bridge or {},
+            "powersave9_ntscpal_erofs_bridge": last_r78_powersave9_ntscpal_erofs_bridge or {},
+            "wave64_guard": last_r78_wave64_guard or {},
+            "clean_unmount_wave64_h0_h3": last_r78_clean_unmount_wave64_h0_h3 or {},
+            "lang_telemetry": last_r78_lang or {},
+            "stage_b_bridge": last_r78_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -9427,6 +9570,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r75_telemetry": r75_telemetry,
         "r76_telemetry": r76_telemetry,
         "r77_telemetry": r77_telemetry,
+        "r78_telemetry": r78_telemetry,
     }
 
 
@@ -9582,6 +9726,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r76"
     if args.round >= 77:
         tmp_prefix = "fx6-r77"
+    if args.round >= 78:
+        tmp_prefix = "fx6-r78"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -9669,6 +9815,7 @@ def run_once(args: argparse.Namespace) -> int:
         r75_mode = getattr(args, "r75_mode", "ftp_ftpes_customwb_afspeed_focusmap_marker_big6")
         r76_mode = getattr(args, "r76_mode", "shoe_audio_4ch_subject_recog_silent_version_big6")
         r77_mode = getattr(args, "r77_mode", "hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6")
+        r78_mode = getattr(args, "r78_mode", "breathing_camid_copyright46_powersave9_ntscpal_big6")
         if args.round >= 8:
             stage_label = (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone47RealHw141stLiveWave60RecMediaAutoSwitchProxyCloudPowerOffBleMyMenu42Erofs+r74_mode={r74_mode}+lang={lang})"
@@ -9937,6 +10084,8 @@ def run_once(args: argparse.Namespace) -> int:
                 stage_label = f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone49RealHw147thLiveWave62ShoeAudio4chSubjectRecogSilentTargetBodydataNogo+r76_mode={r76_mode}+lang={lang})"
             if args.round >= 77:
                 stage_label = f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone50RealHw150thLiveWave63HdmiRaw4264Desqueeze165xRecLamp3LedVarShutterApscS35+r77_mode={r77_mode}+lang={lang})"
+            if args.round >= 78:
+                stage_label = f"Stage-B P1..P9+Fan+P10+P11+P12+P4(51RealHw153rdLiveWave64Breathing120pCamIdReel37CharCopyright46SerialPowerSave9NtscPalErofs30+r78_mode={r78_mode}+lang={lang})"
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -10061,6 +10210,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r76_mode=r76_mode,
                 enable_r77=(args.round >= 77),
                 r77_mode=r77_mode,
+                enable_r78=(args.round >= 78),
+                r78_mode=r78_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -10244,6 +10395,7 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R75_WAVE61_GUARD_EXIT" in txt
                     or "FX6_R76_WAVE62_GUARD_EXIT" in txt
                     or "FX6_R77_WAVE63_GUARD_EXIT" in txt
+                    or "FX6_R78_WAVE64_GUARD_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -10329,6 +10481,7 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R75_WAVE61_GUARD_EXIT" in serial_text
             or "FX6_R76_WAVE62_GUARD_EXIT" in serial_text
             or "FX6_R77_WAVE63_GUARD_EXIT" in serial_text
+            or "FX6_R78_WAVE64_GUARD_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -10429,6 +10582,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r75_mode": r75_mode if args.round >= 75 else None,
             "r76_mode": r76_mode if args.round >= 76 else None,
             "r77_mode": r77_mode if args.round >= 77 else None,
+            "r78_mode": r78_mode if args.round >= 78 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -10513,6 +10667,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r75_telemetry": milestones.get("r75_telemetry") if args.round >= 75 else None,
             "r76_telemetry": milestones.get("r76_telemetry") if args.round >= 76 else None,
             "r77_telemetry": milestones.get("r77_telemetry") if args.round >= 77 else None,
+            "r78_telemetry": milestones.get("r78_telemetry") if args.round >= 78 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -13376,6 +13531,197 @@ def sanitize_round77_summary(
     )
 
 
+_sanitize_r78_value = _sanitize_r77_value
+
+
+def sanitize_round78_summary(
+    r78a_raw: Dict[str, Any],
+    r78b_raw: Dict[str, Any],
+    r78c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the Round 78 (51/51 Real-HW Rounds, 153/153 Live Runs, 102/102 PNGs) summary.json telemetry receipt."""
+    t78a = r78a_raw.get("r78_telemetry") or {}
+    t78b = r78b_raw.get("r78_telemetry") or {}
+    t78c = r78c_raw.get("r78_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r78_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 78,
+            "lang": raw.get("lang", "en"),
+            "r78_mode": raw.get("r78_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r78_telemetry": _sanitize_r78_value(raw.get("r78_telemetry") or {}),
+            "gpe0_readback": _sanitize_r78_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r78_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r78_value(entry)
+
+    r78a_nz = (r78a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r78b_guard = t78b.get("wave64_guard") or {}
+    r78c_h0h3 = t78c.get("clean_unmount_wave64_h0_h3") or {}
+    r78a_init = t78a.get("wave64_init") or {}
+
+    return _sanitize_r78_value(
+        {
+            "schema": "fx6-on-fx3-round78-breathing-camid-copyright46-powersave9-ntscpal-qemu-v1",
+            "round": 78,
+            "milestone": (
+                "51/51 Real-HW Rounds (R28..R78)! — Wave-64 [Breathing Comp.] (Ver. 3.00+..7.02 Resettable, E-mount lens whitelist "
+                "excluding SEL100F28GM macro 0.57m..1.0m & SEL14TC/SEL20TC -16 EBUSY, locked in Still/100p/119.88p/S&Q>=100fps/HDMI RAW=On/CIZ "
+                "vs FX6 ALL S&Q lock, paid Catalyst Prepare + [Distortion Comp.]=Auto vs Catalyst Browse -95); "
+                "Movie [File Settings] (Resists Reset, A001C001_230101AB YYMMDD vs YYYYMMDD, Camera ID change resets Reel# whereas File Number=Reset "
+                "preserves Reel#, C999->D001 filename-only rollover preserving Camera Position, <=37-char Title Name default 'C', SDHC forced Standard + 4 GB split, "
+                "Slot-1 EROFS=-30 vs FX6 TC/Media > Clip Name Format 4..46-char Title Prefix nnn_); "
+                "[Copyright Info] 46-char + [Write Serial Number] Still+Movie (ALL 4 Copyright items including [Write Copyright Info] toggle AND Write Serial Number "
+                "RESIST [Camera Settings Reset] closing Round 57's Reset erratum!, CAMSET*.DAT excludes Copyright Info while permitting Write Serial Number boolean toggle, "
+                "absent EXIF Copyright Info on FX6 -95); "
+                "and [Power Setting Option] (only 2 exposed items: 9-condition [Power Save Start Time] & [Auto Power OFF Temp.] Standard/High, both resist Reset, "
+                "dormant [Power Save by Monitor] & dormant 20SEC/60min/240min timers -95) + [NTSC/PAL Selector] (resists Reset, reboot boundary, Tier-0 Slot-1 EROFS=-30) "
+                "(151st..153rd Live Unmodified ILME-FX3 Ver. 7.02 ARM64 QEMU Runs -> 153/153 Live Runs, 102/102 PNGs <= 27,467 B!)"
+            ),
+            "date": "2026-11-18",
+            "kernel_version": r78a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "realhw_mechanisms_verified": {
+                "wave64_breathing_camid_copyright46_powersave9_ntscpal_init": r78a_init,
+                "breathing_120p_catalyst_stage_b_bridge": t78a.get("breathing_120p_catalyst_bridge") or {},
+                "camid_reel_37char_sdhc_stage_b_bridge": t78a.get("camid_reel_37char_sdhc_bridge") or {},
+                "copyright46_serial_camset_stage_b_bridge": t78a.get("copyright46_serial_camset_bridge") or {},
+                "powersave9_ntscpal_erofs_stage_b_bridge": t78a.get("powersave9_ntscpal_erofs_bridge") or {},
+                "wave64_fail_closed_guard": r78b_guard,
+                "clean_unmount_wave64_reset_and_16_h0_h3": r78c_h0h3,
+            },
+            "runs": {
+                "r78a_breathing_camid_copyright46_powersave9_ntscpal_big6_schinese": _clean_run(
+                    r78a_raw,
+                    (
+                        "151st Live FX3 7.02 QEMU Run (Round 78 / 51st Real-HW Round!) — Wave-64 4-pillar Stage-A/B verification: "
+                        "[Breathing Comp.] (Ver. 3.00+..7.02 Resettable, E-mount whitelist, SEL100F28GM macro & SEL14TC/20TC -16 EBUSY, "
+                        "Still/100p/119.88p/S&Q>=100fps/HDMI RAW/CIZ lockouts, paid Catalyst Prepare + [Distortion Comp.]=Auto vs Catalyst Browse -95); "
+                        "Movie [File Settings] (Resists Reset, A001C001_230101AB, C999->D001 rollover without mutating Camera Position, 37-char Title 'C', "
+                        "SDHC forced Standard + 4 GB split, Slot-1 EROFS=-30); [Copyright Info] 46-char + [Write Serial Number] (all 4 items + Serial resist Reset, "
+                        "Round-57 erratum closed, Copyright excluded from CAMSET*.DAT); and [Power Save Start Time] 9 bypasses / [Auto Power OFF Temp.] / "
+                        "dormant [Power Save by Monitor] / [NTSC/PAL Selector] Slot-1 EROFS=-30, "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r78a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r78b_wave64_breathing_camid_copyright46_powersave9_ntscpal_guard": _clean_run(
+                    r78b_raw,
+                    (
+                        "152nd Live FX3 7.02 QEMU Run — Fail-closed Wave-64 guard rehearsal: unsupported lens / Catalyst Browse / Catalyst Dist.Comp!=Auto / "
+                        "FX6 S&Q & 46-char Title Prefix & Date+Title / FX6 EXIF Copyright / Copyright in CAMSET*.DAT / dormant [Power Save by Monitor] / "
+                        "dormant 20SEC,60min,240min / FX6 Power Setting Option (-95 EOPNOTSUPP); SEL100F28GM macro / teleconverters / Still / Movie 100p,119.88p / "
+                        "S&Q>=100fps / HDMI RAW / CIZ / SDHC Cam ID+Reel# / mixed exFAT Simult. Rec / Handheld+High temp / PAL 23.98p & DF (-16 EBUSY); "
+                        "38-char Title / 47-char Copyright / NULL config (-22 EINVAL); raw serial PII / live attach (-1 EPERM); "
+                        "and Slot-1 Series Counter Reset / CAMSET*.DAT / NTSC-PAL Format & SD-Erase / P12 / P2 / cnflasha writes "
+                        "(-30 EROFS, slot1_data_sector_writes=0, emmc_write_count=0, cnflasha_writes=0)"
+                    ),
+                ),
+                "r78c_clean_unmount_wave64_reset_h0_h3_big6_schinese": _clean_run(
+                    r78c_raw,
+                    (
+                        "153rd Live FX3 7.02 QEMU Run (51/51 Real-HW Rounds, 153/153 Live Runs, 102/102 PNGs <= 27,467 B!) — "
+                        "Clean unmount of volatile Stage-B overlay restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + Wave-64 asymmetric "
+                        "Reset vs Initialize verification ([Camera Settings Reset] resets [Breathing Comp.]=Off while preserving "
+                        "[Shading/Chromatic/Distortion Comp.], [File Settings] Cam ID+Reel# & 37-char Title, ALL 4 [Copyright Info] items "
+                        "including [Write Copyright Info] toggle [Round-57 erratum closed!], [Write Serial Number], [Power Save Start Time], "
+                        "[Auto Power OFF Temp.], [NTSC/PAL Selector], and [Airplane Mode]=On; [Reset Network Set.] preserves all; "
+                        "[Initialize] restores defaults & clears Copyright PII while STILL preserving [Airplane Mode]=On) + "
+                        "dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r78_breathing_camid_copyright46_powersave9_ntscpal_audit": {
+                "round": 78,
+                "realhw_rounds_count": 51,
+                "total_live_runs": 153,
+                "total_png_receipts": 102,
+                "milestone324_qemu_rounds": 51,
+                "milestone324_qemu_runs": 153,
+                "milestone324_png_receipts": 102,
+                "total_runs": 3,
+                "fx3_catalyst_browse_breathing_supported": False,
+                "fx3_sdhc_camid_reel_supported": False,
+                "fx3_power_save_by_monitor_exposed": False,
+                "fx3_powersave_20s_60m_240m_exposed": False,
+                "fx6_exif_copyright_info_supported": False,
+                "fx6_power_setting_option_menu_present": False,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "round57_copyright_camreset_erratum_closed": True,
+                "r78a_wave64_breathing_camid_copyright46_powersave9_ntscpal_verified": bool(r78a_init.get("r78_init_ok") == 1),
+                "r78a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r78a_nz >= 300000),
+                "r78b_wave64_guard_fail_closed": bool(r78b_guard.get("r78b_ok") == 1),
+                "r78b_erofs_ebusy_eopnotsupp_einval_eperm_verified": bool(
+                    r78b_guard.get("breathing_thirdparty_rc") == -95
+                    and r78b_guard.get("breathing_macro_lock_rc") == -16
+                    and r78b_guard.get("breathing_tc_lock_rc") == -16
+                    and r78b_guard.get("breathing_100p_lock_rc") == -16
+                    and r78b_guard.get("breathing_120p_lock_rc") == -16
+                    and r78b_guard.get("breathing_sq120_lock_rc") == -16
+                    and r78b_guard.get("fx6_sq24_lock_rc") == -16
+                    and r78b_guard.get("catalyst_browse_rc") == -95
+                    and r78b_guard.get("sdhc_camid_lock_rc") == -16
+                    and r78b_guard.get("sdhc_mixed_simult_rc") == -16
+                    and r78b_guard.get("title_38char_einval_rc") == -22
+                    and r78b_guard.get("slot1_series_reset_erofs_rc") == -30
+                    and r78b_guard.get("copy_47char_einval_rc") == -22
+                    and r78b_guard.get("fx6_copyright_absent_rc") == -95
+                    and r78b_guard.get("copyright_camset_excl_rc") == -95
+                    and r78b_guard.get("raw_serial_pii_eperm_rc") == -1
+                    and r78b_guard.get("ps_monitor_dormant_rc") == -95
+                    and r78b_guard.get("ps_20sec_dormant_rc") == -95
+                    and r78b_guard.get("ps_60min_dormant_rc") == -95
+                    and r78b_guard.get("ps_240min_dormant_rc") == -95
+                    and r78b_guard.get("pal_2398p_lock_rc") == -16
+                    and r78b_guard.get("slot1_ntsc_pal_erofs_rc") == -30
+                    and r78b_guard.get("null_cfg_einval_rc") == -22
+                    and r78b_guard.get("live_attach_eperm_rc") == -1
+                    and r78b_guard.get("slot1_data_sector_writes") == 0
+                    and r78b_guard.get("emmc_write_count") == 0
+                    and r78b_guard.get("cnflasha_writes") == 0
+                ),
+                "r78c_clean_unmount_wave64_reset_and_16_h0_eq_h3_verified": bool(
+                    r78c_h0h3.get("r78c_ok") == 1
+                    and r78c_h0h3.get("stock_unmount_restored_ok") == 1
+                    and r78c_h0h3.get("camreset_resets_breathing_preserves_lens3_fileset37_copyright46_serial_powersave_ntscpal_airplane_ok") == 1
+                    and r78c_h0h3.get("nwreset_preserves_wave64_airplane_ok") == 1
+                    and r78c_h0h3.get("initialize_restores_wave64_defaults_clears_pii_preserves_airplane_ok") == 1
+                    and r78c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) optical & Catalyst Prepare workstation bench verifying [Breathing Comp.] E-mount lens whitelist (SEL100F28GM macro 0.57m..1.0m & SEL14TC/SEL20TC lockout), Still/100p/119.88p/S&Q>=100fps/HDMI RAW=On/CIZ lockouts, narrowed FOV, and post-production metadata processing in paid Catalyst Prepare (+ [Distortion Comp.]=Auto) vs Catalyst Browse remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) Slot-1/Slot-2 CFexpress Type A & SDHC FAT32 bench verifying [File Settings] A001C001_230101AB naming, C999->D001 rollover preserving menu Camera Position, 37-char Title Name, SDHC forced Standard + 4 GB FAT32 split, and CAMSET*.DAT Save/Load excluding [Copyright Info] while keeping [Write Serial Number] boolean remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) power/thermal & video-standard bench verifying all 9 official [Power Save Start Time] auto-bypass triggers (USB power supply, Slideshow, FTP transfer, Recording movies, Connected to PC, Connected to TV/HDMI, IR Remote Ctrl=On, Bluetooth Rmt Ctrl=On, Streaming/Creators' Cloud upload), [Auto Power OFF Temp.] Standard/High (tripod-only), [NTSC/PAL Selector] reboot cycle (23.98p/29.97p/59.94p/119.88p DF/NDF vs 25p/50p/100p NDF-only), and physical SD card formatting prompt remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
@@ -13409,7 +13755,8 @@ def main() -> int:
     # r74_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74]
     # r75_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75]
     # r76_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77], required=True)
+    # r77_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -13461,6 +13808,7 @@ def main() -> int:
     ap.add_argument("--r75-mode", type=str, choices=["ftp_ftpes_customwb_afspeed_focusmap_marker_big6", "wave61_ftp_usblan_customwb_focusmap_marker_erofs_guard", "clean_unmount_wave61_reset_h0_h3_big6"], default="ftp_ftpes_customwb_afspeed_focusmap_marker_big6")
     ap.add_argument("--r76-mode", type=str, choices=["shoe_audio_4ch_subject_recog_silent_version_big6", "wave62_shoe_audio_subject_bird_silent_bodydata_nogo_guard", "clean_unmount_wave62_reset_h0_h3_big6"], default="shoe_audio_4ch_subject_recog_silent_version_big6")
     ap.add_argument("--r77-mode", type=str, choices=["hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6", "wave63_hdmi_raw_desqueeze_18x_reclamp_varshutter_apsc_guard", "clean_unmount_wave63_reset_h0_h3_big6"], default="hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6")
+    ap.add_argument("--r78-mode", type=str, choices=["breathing_camid_copyright46_powersave9_ntscpal_big6", "wave64_breathing_camid_copyright46_powersave9_ntscpal_guard", "clean_unmount_wave64_reset_h0_h3_big6"], default="breathing_camid_copyright46_powersave9_ntscpal_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

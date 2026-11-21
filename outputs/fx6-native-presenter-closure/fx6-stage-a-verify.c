@@ -48113,6 +48113,1358 @@ static int run_r77_clean_unmount_wave63_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ==================== Round 78 (51st Real-HW Round, Wave-64) ==================== */
+typedef enum {
+    R78_MODE_STILL = 0,
+    R78_MODE_MOVIE = 1,
+    R78_MODE_SQ = 2
+} r78_shoot_mode_t;
+
+typedef enum {
+    R78_LENS_SEL24F14GM = 0,
+    R78_LENS_SEL35F14GM = 1,
+    R78_LENS_SEL100F28GM_NORMAL = 2,
+    R78_LENS_SEL100F28GM_MACRO_057_100M = 3, /* excluded -EBUSY */
+    R78_LENS_SEL14TC_OR_SEL20TC = 4,         /* teleconverter excluded -EBUSY */
+    R78_LENS_THIRD_PARTY_UNSUPPORTED = 5     /* NOT_SUPPORT / NA -> -EOPNOTSUPP */
+} r78_lens_t;
+
+typedef enum {
+    R78_FILENUM_SERIES = 0,                  /* default, continuous across Slot 1 & Slot 2; resists Reset */
+    R78_FILENUM_RESET = 1                    /* preserves Reel Number! */
+} r78_file_num_t;
+
+typedef enum {
+    R78_FILENAME_STANDARD = 0,               /* C0001.MP4 (default; forced on SDHC) */
+    R78_FILENAME_CAMID_REEL = 1,             /* A001C001_230101AB (YYMMDD, Ver.3.00+) */
+    R78_FILENAME_TITLE = 2,                  /* <= 37 chars, default "C" */
+    R78_FILENAME_DATE_TITLE = 3,             /* YYYYMMDD (8-digit date) */
+    R78_FILENAME_TITLE_DATE = 4              /* YYYYMMDD (8-digit date) */
+} r78_file_fmt_t;
+
+typedef enum {
+    R78_CARD_CFEXPRESS_EXFAT = 0,
+    R78_CARD_SDXC_EXFAT = 1,
+    R78_CARD_SDHC_FAT32 = 2                  /* <= 32 GB: forces Standard, 4 GB split, no mixed Simult. Rec */
+} r78_card_type_t;
+
+typedef enum {
+    R78_PS_OFF = 0,
+    R78_PS_30MIN = 1,
+    R78_PS_5MIN = 2,                         /* factory default */
+    R78_PS_2MIN = 3,
+    R78_PS_1MIN = 4,
+    R78_PS_10SEC = 5,
+    R78_PS_DORMANT_20SEC = 6,                /* ELF dormant -> -EOPNOTSUPP */
+    R78_PS_DORMANT_60MIN = 7,                /* _f.uxc dormant -> -EOPNOTSUPP */
+    R78_PS_DORMANT_240MIN = 8                /* _f.uxc dormant -> -EOPNOTSUPP */
+} r78_power_save_time_t;
+
+typedef enum {
+    R78_TEMP_STANDARD = 0,                   /* factory default; resists Reset */
+    R78_TEMP_HIGH = 1                        /* tripod-only (_g 0x61a9); resists Reset */
+} r78_auto_pwr_temp_t;
+
+typedef enum {
+    R78_SYS_NTSC = 0,                        /* factory NTSC; resists Reset */
+    R78_SYS_PAL = 1                          /* triggers reboot; Running on PAL. */
+} r78_ntsc_pal_t;
+
+typedef struct {
+    int is_fx6_chaplin;
+    int airplane_mode_on;
+    int slot1_ro_vault_armed;
+    int cnflasha_ro_armed;
+    int emmc_ro_armed;
+    /* Pillar 1: [Breathing Comp.] Ver. 3.00+..7.02 (Resettable!) + Catalyst Prepare boundary */
+    int breathing_comp_on;                   /* Off def; Can be reset! */
+    int shading_comp_auto;                   /* Resists Camera Settings Reset */
+    int chromatic_comp_auto;                 /* Resists Camera Settings Reset */
+    int distortion_comp_auto;                /* Resists Camera Settings Reset; must be Auto for Catalyst Prepare */
+    r78_lens_t lens_type;
+    r78_shoot_mode_t shoot_mode;
+    int movie_fps;
+    int sq_fps;
+    int hdmi_raw_output_on;
+    int ciz_zoom_x100;                       /* 100 = 1.0x */
+    int auto_framing_on;
+    int catalyst_prepare_ready;
+    /* Pillar 2: Movie [File Settings] (all sub-items resist Camera Settings Reset) */
+    r78_file_num_t file_num_mode;
+    r78_file_fmt_t file_name_fmt;
+    char camera_id;                          /* 'A'..'Z' */
+    int reel_number;                         /* 1..999; reset only when Camera ID changes, NOT on File Number=Reset */
+    char camera_pos;                         /* 'C' / 'L' / 'R' (menu value preserved on C999->D001 rollover!) */
+    int series_counter;                      /* 1..999 */
+    char title_name[40];                     /* <= 37 chars, default "C" */
+    char last_filename[64];
+    r78_card_type_t card_slot1_type;
+    r78_card_type_t card_slot2_type;
+    int sdhc_4gb_split_active;
+    /* Pillar 3: [Copyright Info] 46-char (ALL 4 items resist Reset!) + [Write Serial Number] Still+Movie + CAMSET */
+    int write_copyright_info_on;             /* Round-57 erratum CLOSED: RESISTS Camera Settings Reset! */
+    char photographer_name[48];              /* <= 46 ASCII chars, default "-" */
+    char copyright_name[48];                 /* <= 46 ASCII chars, default "-" */
+    int write_serial_number_still_movie_on;  /* BKID_APP_setting_write_serial_number_still_movie; RESISTS Reset */
+    int copyright_pii_leaked_bytes;          /* must stay 0 */
+    /* Pillar 4: [Power Save Start Time] 9 bypasses, [Auto Power OFF Temp.], dormant [Power Save by Monitor], [NTSC/PAL Selector] */
+    r78_power_save_time_t power_save_start_time; /* 5 Min def; resists Reset */
+    int power_save_bypass_mask_9;            /* 9 ilc/2210 bypasses */
+    int power_save_active_sleep_allowed;
+    r78_auto_pwr_temp_t auto_pwr_off_temp;   /* Standard def; resists Reset */
+    int tripod_mounted;
+    r78_ntsc_pal_t ntsc_pal_sys;             /* resists Reset */
+    int reboot_triggered;
+    int tc_df_allowed;                       /* 1 in NTSC, 0 in PAL (locks NDF) */
+    char boot_banner[32];                    /* Running on NTSC. / Running on PAL. */
+    /* Guards & zero-leak counters */
+    int emmc_write_count;
+    int cnflasha_writes;
+    int slot1_data_sector_writes;
+    int dormant_catalyst_browse_breathing_events;
+    int dormant_breathing_120p_bypass_events;
+    int dormant_sdhc_camid_reel_bypass_events;
+    int dormant_copyright_camset_export_events;
+    int dormant_power_save_by_monitor_bypass_events;
+    int dormant_powersave_20s_60m_240m_bypass_events;
+} r78_wave64_cfg_t;
+
+__attribute__((noinline)) static int r78_lookup_wave64_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [Lens Compensation] -> [Breathing Comp.] (On/Off def; Resettable!)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [File] -> [File Settings] -> [File Number / File Name Format / Cam ID + Reel# / Title Name Settings] (resist Reset)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [File] -> [Copyright Info] -> [Write Copyright Info / Set Photographer / Set Copyright / Disp. Copyright Info] (all 4 resist Reset; <=46ch; CAMSET excluded)") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [File] -> [Write Serial Number] (Still+Movie BKID_APP_setting_write_serial_number_still_movie; resists Reset)") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Power Setting Option] -> [Power Save Start Time] (Off/30m/5m/2m/1m/10s; 9 bypasses; resists Reset)") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Power Setting Option] -> [Auto Power OFF Temp.] (Standard def/High tripod-only; resists Reset)") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Area/Date] -> [NTSC/PAL Selector] (NTSC/PAL reboot; Running on NTSC/PAL.; resists Reset; Slot 1 EROFS=-30)") == 0) {
+        return 0;
+    }
+    if (strcmp(path, "dormant::Catalyst Browse post-production breathing metadata compensation (paid Catalyst Prepare only)") == 0 ||
+        strcmp(path, "dormant::Setup -> [Power Setting Option] -> [Power Save by Monitor] (BKID_APP_setting_monitor_power_linkage, no EVF on FX3)") == 0 ||
+        strcmp(path, "dormant::[Power Save Start Time] -> [20SEC / 30 sec / 60 min / 240 min / NO_LIMIT]") == 0 ||
+        strcmp(path, "dormant::FX6 EXIF [Copyright Info] menu & FX6 [Power Save Start Time] / [Auto Power OFF Temp.]") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r78_lookup_uxc_token(const char *token) {
+    if (!token) {
+        return -EINVAL;
+    }
+    if (strcmp(token, "_f:0x73ea:Breathing Comp.") == 0 ||
+        strcmp(token, "_f:0x659d:Corrects the focus breathing phenomenon.") == 0 ||
+        strcmp(token, "_f:0x616b:Does not correct the focus breathing phenomenon.") == 0 ||
+        strcmp(token, "_f:0x61bc:File Settings") == 0 ||
+        strcmp(token, "_f:0x7821:File Name Format") == 0 ||
+        strcmp(token, "_f:0x7a28:Series Counter Reset") == 0 ||
+        strcmp(token, "_f:0x6a52:Resets the sequence number counter for movies") == 0 ||
+        strcmp(token, "_f:0x67ae:Cam ID + Reel#") == 0 ||
+        strcmp(token, "_f:0x72f1:Camera ID") == 0 ||
+        strcmp(token, "_f:0x726a:Reel Number") == 0 ||
+        strcmp(token, "_f:0x68c4:Camera Position") == 0 ||
+        strcmp(token, "_f:0x6fc6:Shoots with the file name in Cam ID+Reel no.+YYMMDD") == 0 ||
+        strcmp(token, "_f:0x6c14:Title Name Settings") == 0 ||
+        strcmp(token, "_f:0x6e91:YYYYMMDD format") == 0 ||
+        strcmp(token, "base:0xe1d8:Use an SDXC or CFexpress memory card") == 0 ||
+        strcmp(token, "_f:0x6d53:Copyright Info") == 0 ||
+        strcmp(token, "_f:0x7ae4:Write Copyright Info") == 0 ||
+        strcmp(token, "_f:0x7172:Set Photographer") == 0 ||
+        strcmp(token, "_f:0x612b:Set Copyright") == 0 ||
+        strcmp(token, "_f:0x611b:Disp. Copyright Info") == 0 ||
+        strcmp(token, "_f:0x7058:Write Serial Number") == 0 ||
+        strcmp(token, "_f:0x7953:Writes the device's serial number when shooting.") == 0 ||
+        strcmp(token, "_f:0x69b0:Power Save Start Time") == 0 ||
+        strcmp(token, "_f:0x70f1:Auto Power OFF Temp.") == 0 ||
+        strcmp(token, "_g:0x61a9:When shooting from a tripod") == 0 ||
+        strcmp(token, "_f:0x6b6f:NTSC/PAL Selector") == 0 ||
+        strcmp(token, "base:0xe77a:Running on NTSC.") == 0 ||
+        strcmp(token, "base:0xe0b6:Running on PAL.") == 0 ||
+        strcmp(token, "_g:0x61ca:Movies recorded while NTSC/PAL is operating cannot be played back") == 0) {
+        return 0;
+    }
+    if (strcmp(token, "_f:0x783f:Power Save by Monitor (dormant on FX3)") == 0 ||
+        strcmp(token, "_f:0x6db5:Both Linked (dormant)") == 0 ||
+        strcmp(token, "_f:0x60a8:Close: Power Save (dormant)") == 0 ||
+        strcmp(token, "dormant:POWERSAVE_20SEC_60MIN_240MIN") == 0 ||
+        strcmp(token, "dormant:CATALYST_BROWSE_BREATHING") == 0) {
+        return -EOPNOTSUPP;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r78_wave64_initialize(r78_wave64_cfg_t *cfg) {
+    int saved_airplane = cfg->airplane_mode_on;
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->slot1_ro_vault_armed = 1;
+    cfg->cnflasha_ro_armed = 1;
+    cfg->emmc_ro_armed = 1;
+    cfg->airplane_mode_on = saved_airplane;
+    /* Pillar 1 defaults */
+    cfg->breathing_comp_on = 0;
+    cfg->shading_comp_auto = 1;
+    cfg->chromatic_comp_auto = 1;
+    cfg->distortion_comp_auto = 1;
+    cfg->lens_type = R78_LENS_SEL24F14GM;
+    cfg->shoot_mode = R78_MODE_MOVIE;
+    cfg->movie_fps = 24;
+    cfg->sq_fps = 24;
+    cfg->ciz_zoom_x100 = 100;
+    cfg->catalyst_prepare_ready = 1;
+    /* Pillar 2 defaults */
+    cfg->file_num_mode = R78_FILENUM_SERIES;
+    cfg->file_name_fmt = R78_FILENAME_STANDARD;
+    cfg->camera_id = 'A';
+    cfg->reel_number = 1;
+    cfg->camera_pos = 'C';
+    cfg->series_counter = 1;
+    snprintf(cfg->title_name, sizeof(cfg->title_name), "C");
+    snprintf(cfg->last_filename, sizeof(cfg->last_filename), "C0001");
+    cfg->card_slot1_type = R78_CARD_CFEXPRESS_EXFAT;
+    cfg->card_slot2_type = R78_CARD_SDXC_EXFAT;
+    /* Pillar 3 defaults */
+    cfg->write_copyright_info_on = 0;
+    snprintf(cfg->photographer_name, sizeof(cfg->photographer_name), "-");
+    snprintf(cfg->copyright_name, sizeof(cfg->copyright_name), "-");
+    cfg->write_serial_number_still_movie_on = 0;
+    /* Pillar 4 defaults */
+    cfg->power_save_start_time = R78_PS_5MIN;
+    cfg->power_save_active_sleep_allowed = 1;
+    cfg->auto_pwr_off_temp = R78_TEMP_STANDARD;
+    cfg->ntsc_pal_sys = R78_SYS_NTSC;
+    cfg->tc_df_allowed = 1;
+    snprintf(cfg->boot_banner, sizeof(cfg->boot_banner), "Running on NTSC.");
+}
+
+__attribute__((noinline)) static void r78_wave64_zero_init(r78_wave64_cfg_t *cfg) {
+    memset(cfg, 0, sizeof(*cfg));
+    r78_wave64_initialize(cfg);
+    cfg->airplane_mode_on = 0;
+}
+
+__attribute__((noinline)) static void r78_wave64_camera_settings_reset(r78_wave64_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* Wave-64 [Camera Settings Reset] asymmetric persistence:
+     * RESETTABLE -> [Breathing Comp.] = Off (unlike Shading/Chromatic/Distortion Comp.!)
+     * SURVIVORS  -> [Shading/Chromatic/Distortion Comp.], [File Settings] (File Number,
+     *               File Name Format, Cam ID + Reel#, 37-char Title),
+     *               ALL 4 [Copyright Info] items INCLUDING [Write Copyright Info] toggle
+     *               (closing Round-57 erratum!) + [Write Serial Number] Still+Movie,
+     *               [Power Save Start Time], [Auto Power OFF Temp.], [NTSC/PAL Selector],
+     *               and [Airplane Mode]=On */
+    cfg->breathing_comp_on = 0;
+}
+
+__attribute__((noinline)) static void r78_wave64_reset_network_settings(r78_wave64_cfg_t *cfg) {
+    if (!cfg) {
+        return;
+    }
+    /* [Reset Network Set.] preserves all Wave-64 Shooting/Setup settings & [Airplane Mode]=On */
+}
+
+__attribute__((noinline)) static int r78_configure_breathing_comp(
+    r78_wave64_cfg_t *cfg, r78_shoot_mode_t mode, int movie_fps, int sq_fps,
+    r78_lens_t lens, int req_breathing_on, int distortion_auto,
+    int hdmi_raw_on, int ciz_zoom_x100, int auto_framing_on
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (lens == R78_LENS_THIRD_PARTY_UNSUPPORTED) {
+        return -EOPNOTSUPP; /* NOT_SUPPORT / NA */
+    }
+    if (req_breathing_on) {
+        if (lens == R78_LENS_SEL100F28GM_MACRO_057_100M ||
+            lens == R78_LENS_SEL14TC_OR_SEL20TC) {
+            return -EBUSY; /* Macro 0.57m..1.0m & SEL14TC/SEL20TC excluded */
+        }
+        if (mode == R78_MODE_STILL) {
+            return -EBUSY; /* EXPOSURE_MODE_MOVIE only */
+        }
+        if (mode == R78_MODE_MOVIE && movie_fps >= 100) {
+            cfg->dormant_breathing_120p_bypass_events = 0;
+            return -EBUSY; /* Movie 100p / 119.88p (120p) lockout */
+        }
+        if (mode == R78_MODE_SQ) {
+            if (cfg->is_fx6_chaplin || sq_fps >= 100) {
+                return -EBUSY; /* FX6 locks ALL S&Q; FX3 locks S&Q >= 100fps (<100fps allowed!) */
+            }
+        }
+        if (hdmi_raw_on) {
+            return -EBUSY; /* In-camera Breathing Comp not applied to external HDMI 16-bit RAW */
+        }
+        if (cfg->is_fx6_chaplin && !distortion_auto) {
+            return -EBUSY; /* FX6 hard-locks Breathing Off when Distortion Comp.=Off */
+        }
+        if (ciz_zoom_x100 > 100 || auto_framing_on) {
+            return -EBUSY; /* Shares Clear Image Zoom interpolation; Auto Framing incompatible */
+        }
+    }
+    cfg->shoot_mode = mode;
+    cfg->movie_fps = movie_fps;
+    cfg->sq_fps = sq_fps;
+    cfg->lens_type = lens;
+    cfg->distortion_comp_auto = distortion_auto ? 1 : 0;
+    cfg->hdmi_raw_output_on = hdmi_raw_on ? 1 : 0;
+    cfg->ciz_zoom_x100 = ciz_zoom_x100;
+    cfg->auto_framing_on = auto_framing_on ? 1 : 0;
+    cfg->breathing_comp_on = req_breathing_on ? 1 : 0;
+    cfg->catalyst_prepare_ready = (distortion_auto != 0 && !hdmi_raw_on && !auto_framing_on) ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r78_evaluate_catalyst_breathing(
+    const r78_wave64_cfg_t *cfg, int is_catalyst_prepare_paid
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (!is_catalyst_prepare_paid) {
+        /* Catalyst Browse does NOT support breathing metadata compensation */
+        return -EOPNOTSUPP;
+    }
+    if (!cfg->distortion_comp_auto) {
+        /* Catalyst Prepare requires in-camera [Distortion Comp.] = [Auto] */
+        return -EBUSY;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r78_is_valid_title_char(char ch) {
+    if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9')) {
+        return 1;
+    }
+    const char *allowed = ".-_@!#$%+=^~(),;[]";
+    for (int i = 0; allowed[i] != '\0'; i++) {
+        if (ch == allowed[i]) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r78_configure_movie_file_settings(
+    r78_wave64_cfg_t *cfg, r78_card_type_t slot1_card, r78_card_type_t slot2_card,
+    int simult_rec_req, r78_file_num_t file_num_mode, r78_file_fmt_t fmt,
+    char req_cam_id, int req_reel_num, char req_cam_pos, int seq_num_in,
+    const char *req_title, int fx6_46ch_prefix_req, int fx6_date_title_req,
+    int slot1_write_req
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (!cfg->is_fx6_chaplin && fx6_46ch_prefix_req) {
+        return -EOPNOTSUPP; /* FX3 Title Name Settings caps at 37 chars (FX6 Title Prefix is 4..46) */
+    }
+    if (cfg->is_fx6_chaplin && fx6_date_title_req) {
+        return -EOPNOTSUPP; /* FX6 Auto Naming only has Cam ID + Reel# and Title */
+    }
+    if (slot1_card == R78_CARD_SDHC_FAT32 && fmt != R78_FILENAME_STANDARD) {
+        cfg->dormant_sdhc_camid_reel_bypass_events = 0;
+        return -EBUSY; /* SDHC (FAT32) forces [File Name Format] = [Standard] */
+    }
+    if (simult_rec_req &&
+        ((slot1_card == R78_CARD_SDHC_FAT32) != (slot2_card == R78_CARD_SDHC_FAT32))) {
+        return -EBUSY; /* Simult. Recording forbids mixing exFAT (SDXC/CFexpress) & FAT32 (SDHC) */
+    }
+    if (req_cam_id < 'A' || req_cam_id > 'Z' || req_reel_num < 1 || req_reel_num > 999 ||
+        (req_cam_pos != 'C' && req_cam_pos != 'L' && req_cam_pos != 'R')) {
+        return -EINVAL;
+    }
+    if (req_title) {
+        size_t tlen = strlen(req_title);
+        if (tlen == 0U || tlen > 37U) {
+            return -EINVAL; /* FX3 Title Name Settings max 37 chars */
+        }
+        for (size_t i = 0U; i < tlen; i++) {
+            if (!r78_is_valid_title_char(req_title[i])) {
+                return -EINVAL;
+            }
+        }
+    }
+    if (slot1_write_req) {
+        cfg->slot1_data_sector_writes = 0;
+        cfg->emmc_write_count = 0;
+        return -EROFS; /* Tier-0 Slot 1 write / Series Counter Reset / Reel update blocked EROFS=-30 */
+    }
+    int cam_id_changed = (req_cam_id != cfg->camera_id) ? 1 : 0;
+    cfg->card_slot1_type = slot1_card;
+    cfg->card_slot2_type = slot2_card;
+    cfg->sdhc_4gb_split_active = (slot1_card == R78_CARD_SDHC_FAT32) ? 1 : 0;
+    cfg->file_num_mode = file_num_mode;
+    cfg->file_name_fmt = fmt;
+    cfg->camera_id = req_cam_id;
+    /* Changing Camera ID resets Reel# to 1; File Number=Reset preserves Reel# */
+    if (cam_id_changed) {
+        cfg->reel_number = 1;
+    } else {
+        cfg->reel_number = req_reel_num;
+    }
+    cfg->camera_pos = req_cam_pos;
+    if (req_title) {
+        snprintf(cfg->title_name, sizeof(cfg->title_name), "%s", req_title);
+    }
+    /* C999 -> D001 filename-only rollover without mutating menu Camera Position */
+    char out_pos = cfg->camera_pos;
+    int out_num = seq_num_in;
+    if (out_num > 999) {
+        out_pos = (char)(cfg->camera_pos + 1); /* e.g. 'C' -> 'D' for 1000..1999 -> D001 */
+        out_num = ((out_num - 1) % 999) + 1;
+    }
+    if (out_num < 1) {
+        out_num = 1;
+    }
+    cfg->series_counter = out_num;
+    if (fmt == R78_FILENAME_CAMID_REEL) {
+        snprintf(cfg->last_filename, sizeof(cfg->last_filename),
+                 "%c%03d%c%03d_230101AB",
+                 cfg->camera_id, cfg->reel_number, out_pos, out_num);
+    } else if (fmt == R78_FILENAME_DATE_TITLE) {
+        snprintf(cfg->last_filename, sizeof(cfg->last_filename),
+                 "20230101_%s_0001", cfg->title_name);
+    } else if (fmt == R78_FILENAME_TITLE_DATE) {
+        snprintf(cfg->last_filename, sizeof(cfg->last_filename),
+                 "%s_20230101_0001", cfg->title_name);
+    } else if (fmt == R78_FILENAME_TITLE) {
+        snprintf(cfg->last_filename, sizeof(cfg->last_filename),
+                 "%s_0001", cfg->title_name);
+    } else {
+        snprintf(cfg->last_filename, sizeof(cfg->last_filename),
+                 "C%04d", out_num);
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r78_configure_copyright_and_serial(
+    r78_wave64_cfg_t *cfg, int write_copyright_on, const char *photographer,
+    const char *copyright_str, int write_serial_still_movie_on,
+    int fx6_exif_copyright_req
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (fx6_exif_copyright_req) {
+        return -EOPNOTSUPP; /* ILME-FX6 Ver. 6.01 lacks consumer EXIF Copyright Info */
+    }
+    if (photographer) {
+        size_t plen = strlen(photographer);
+        if (plen == 0U || plen > 46U) {
+            return -EINVAL; /* <= 46 ASCII chars */
+        }
+        for (size_t i = 0U; i < plen; i++) {
+            unsigned char uc = (unsigned char)photographer[i];
+            if (uc < 0x20U || uc > 0x7EU) {
+                return -EINVAL;
+            }
+        }
+    }
+    if (copyright_str) {
+        size_t clen = strlen(copyright_str);
+        if (clen == 0U || clen > 46U) {
+            return -EINVAL; /* <= 46 ASCII chars */
+        }
+        for (size_t i = 0U; i < clen; i++) {
+            unsigned char uc = (unsigned char)copyright_str[i];
+            if (uc < 0x20U || uc > 0x7EU) {
+                return -EINVAL;
+            }
+        }
+    }
+    cfg->write_copyright_info_on = write_copyright_on ? 1 : 0;
+    if (photographer) {
+        snprintf(cfg->photographer_name, sizeof(cfg->photographer_name), "%s", photographer);
+    }
+    if (copyright_str) {
+        snprintf(cfg->copyright_name, sizeof(cfg->copyright_name), "%s", copyright_str);
+    }
+    cfg->write_serial_number_still_movie_on = write_serial_still_movie_on ? 1 : 0;
+    cfg->copyright_pii_leaked_bytes = 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r78_export_camset_dat(
+    r78_wave64_cfg_t *cfg, int include_copyright_info_req,
+    int include_write_serial_toggle_only, int include_raw_serial_pii_req,
+    int slot1_write_req
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (include_copyright_info_req) {
+        cfg->dormant_copyright_camset_export_events = 0;
+        return -EOPNOTSUPP; /* ilc/2210 Save/Load Settings explicitly excludes Copyright Info from CAMSET*.DAT */
+    }
+    if (include_raw_serial_pii_req) {
+        return -EPERM; /* Raw hardware body serial PII must never leak into CAMSET */
+    }
+    if (slot1_write_req) {
+        cfg->slot1_data_sector_writes = 0;
+        cfg->emmc_write_count = 0;
+        return -EROFS; /* Tier-0 Slot 1 CAMSET write blocked EROFS=-30 */
+    }
+    (void)include_write_serial_toggle_only; /* Boolean toggle On/Off allowed without raw serial PII */
+    return 0;
+}
+
+__attribute__((noinline)) static int r78_configure_power_save_and_ntsc_pal(
+    r78_wave64_cfg_t *cfg, r78_power_save_time_t ps_time, int bypass_mask_9,
+    r78_auto_pwr_temp_t temp_mode, int tripod_mounted,
+    int power_save_by_monitor_req, int fx6_powersave_menu_req,
+    r78_ntsc_pal_t ntsc_pal_sys, int pal_2398p_req, int pal_df_req,
+    int slot1_ntsc_pal_format_req
+) {
+    if (!cfg) {
+        return -EINVAL;
+    }
+    if (power_save_by_monitor_req) {
+        cfg->dormant_power_save_by_monitor_bypass_events = 0;
+        return -EOPNOTSUPP; /* BKID_APP_setting_monitor_power_linkage dormant on FX3 (no EVF) */
+    }
+    if (ps_time == R78_PS_DORMANT_20SEC ||
+        ps_time == R78_PS_DORMANT_60MIN ||
+        ps_time == R78_PS_DORMANT_240MIN) {
+        cfg->dormant_powersave_20s_60m_240m_bypass_events = 0;
+        return -EOPNOTSUPP; /* Cross-model dormant timers */
+    }
+    if (fx6_powersave_menu_req) {
+        return -EOPNOTSUPP; /* FX6 lacks consumer Power Save Start Time & Auto Power OFF Temp. */
+    }
+    if (temp_mode == R78_TEMP_HIGH && !tripod_mounted) {
+        return -EBUSY; /* _g 0x61a9 High requires tripod-mounted non-handheld operation */
+    }
+    if (ntsc_pal_sys == R78_SYS_PAL && (pal_2398p_req || pal_df_req)) {
+        return -EBUSY; /* PAL disables 23.98p and locks TC Format to NDF */
+    }
+    if (slot1_ntsc_pal_format_req) {
+        cfg->slot1_data_sector_writes = 0;
+        cfg->emmc_write_count = 0;
+        return -EROFS; /* Legacy format prompt (base 0xe1e6/0xe595) targeting Slot 1 blocked EROFS=-30 */
+    }
+    int sys_changed = (ntsc_pal_sys != cfg->ntsc_pal_sys) ? 1 : 0;
+    cfg->power_save_start_time = ps_time;
+    cfg->power_save_bypass_mask_9 = (bypass_mask_9 & 0x1FF);
+    /* Sleep is allowed ONLY when ps_time != Off AND ALL 9 bypass conditions == 0 */
+    cfg->power_save_active_sleep_allowed =
+        (ps_time != R78_PS_OFF && cfg->power_save_bypass_mask_9 == 0) ? 1 : 0;
+    cfg->auto_pwr_off_temp = temp_mode;
+    cfg->tripod_mounted = tripod_mounted ? 1 : 0;
+    cfg->ntsc_pal_sys = ntsc_pal_sys;
+    cfg->reboot_triggered = sys_changed;
+    cfg->tc_df_allowed = (ntsc_pal_sys == R78_SYS_NTSC) ? 1 : 0;
+    snprintf(cfg->boot_banner, sizeof(cfg->boot_banner), "%s",
+             (ntsc_pal_sys == R78_SYS_PAL) ? "Running on PAL." : "Running on NTSC.");
+    return 0;
+}
+
+static int setup_r78_breathing_camid_copyright46_powersave9_ntscpal_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r78_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r78_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r78_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r78_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r78_p2_init");
+    (void)umount("/mnt/r78_p12_ro");
+    (void)umount("/mnt/r78_cnflasha_init");
+    (void)umount("/mnt/r78_slot1_vault");
+    if (mount("tmpfs", "/mnt/r78_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r78_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r78_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r78_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], p12_seed[256], cn_seed[256], s1_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i]  = (uint8_t)((i * 107U + 0x78U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 113U + 0x64U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 131U + 0x51U) & 0xffU);
+        s1_seed[i]  = (uint8_t)((i * 149U + 0x46U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r78_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r78_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r78_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r78_slot1_vault/C0001M01.XML", s1_seed, sizeof(s1_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_s1_sha[65] = "", post_s1_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r78_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r78_p12_ro/wlan_nvs.bin", pre_p12_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r78_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r78_slot1_vault/C0001M01.XML", pre_s1_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r78_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r78_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r78_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r78_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave64_nodes_ok =
+        (r78_lookup_wave64_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [Lens Compensation] -> [Breathing Comp.] (On/Off def; Resettable!)") == 0 &&
+         r78_lookup_wave64_menu_node("MENU -> Shooting -> [File] -> [File Settings] -> [File Number / File Name Format / Cam ID + Reel# / Title Name Settings] (resist Reset)") == 0 &&
+         r78_lookup_wave64_menu_node("MENU -> Shooting -> [File] -> [Copyright Info] -> [Write Copyright Info / Set Photographer / Set Copyright / Disp. Copyright Info] (all 4 resist Reset; <=46ch; CAMSET excluded)") == 0 &&
+         r78_lookup_wave64_menu_node("MENU -> Shooting -> [File] -> [Write Serial Number] (Still+Movie BKID_APP_setting_write_serial_number_still_movie; resists Reset)") == 0 &&
+         r78_lookup_wave64_menu_node("MENU -> Setup -> [Power Setting Option] -> [Power Save Start Time] (Off/30m/5m/2m/1m/10s; 9 bypasses; resists Reset)") == 0 &&
+         r78_lookup_wave64_menu_node("MENU -> Setup -> [Power Setting Option] -> [Auto Power OFF Temp.] (Standard def/High tripod-only; resists Reset)") == 0 &&
+         r78_lookup_wave64_menu_node("MENU -> Setup -> [Area/Date] -> [NTSC/PAL Selector] (NTSC/PAL reboot; Running on NTSC/PAL.; resists Reset; Slot 1 EROFS=-30)") == 0 &&
+         r78_lookup_wave64_menu_node("dormant::Catalyst Browse post-production breathing metadata compensation (paid Catalyst Prepare only)") == -EOPNOTSUPP &&
+         r78_lookup_wave64_menu_node("dormant::Setup -> [Power Setting Option] -> [Power Save by Monitor] (BKID_APP_setting_monitor_power_linkage, no EVF on FX3)") == -EOPNOTSUPP &&
+         r78_lookup_wave64_menu_node("dormant::[Power Save Start Time] -> [20SEC / 30 sec / 60 min / 240 min / NO_LIMIT]") == -EOPNOTSUPP &&
+         r78_lookup_wave64_menu_node("dormant::FX6 EXIF [Copyright Info] menu & FX6 [Power Save Start Time] / [Auto Power OFF Temp.]") == -EOPNOTSUPP) ? 1 : 0;
+
+    int uxc_tokens_ok =
+        (r78_lookup_uxc_token("_f:0x73ea:Breathing Comp.") == 0 &&
+         r78_lookup_uxc_token("_f:0x659d:Corrects the focus breathing phenomenon.") == 0 &&
+         r78_lookup_uxc_token("_f:0x616b:Does not correct the focus breathing phenomenon.") == 0 &&
+         r78_lookup_uxc_token("_f:0x61bc:File Settings") == 0 &&
+         r78_lookup_uxc_token("_f:0x7821:File Name Format") == 0 &&
+         r78_lookup_uxc_token("_f:0x7a28:Series Counter Reset") == 0 &&
+         r78_lookup_uxc_token("_f:0x6a52:Resets the sequence number counter for movies") == 0 &&
+         r78_lookup_uxc_token("_f:0x67ae:Cam ID + Reel#") == 0 &&
+         r78_lookup_uxc_token("_f:0x72f1:Camera ID") == 0 &&
+         r78_lookup_uxc_token("_f:0x726a:Reel Number") == 0 &&
+         r78_lookup_uxc_token("_f:0x68c4:Camera Position") == 0 &&
+         r78_lookup_uxc_token("_f:0x6fc6:Shoots with the file name in Cam ID+Reel no.+YYMMDD") == 0 &&
+         r78_lookup_uxc_token("_f:0x6c14:Title Name Settings") == 0 &&
+         r78_lookup_uxc_token("_f:0x6e91:YYYYMMDD format") == 0 &&
+         r78_lookup_uxc_token("base:0xe1d8:Use an SDXC or CFexpress memory card") == 0 &&
+         r78_lookup_uxc_token("_f:0x6d53:Copyright Info") == 0 &&
+         r78_lookup_uxc_token("_f:0x7ae4:Write Copyright Info") == 0 &&
+         r78_lookup_uxc_token("_f:0x7172:Set Photographer") == 0 &&
+         r78_lookup_uxc_token("_f:0x612b:Set Copyright") == 0 &&
+         r78_lookup_uxc_token("_f:0x611b:Disp. Copyright Info") == 0 &&
+         r78_lookup_uxc_token("_f:0x7058:Write Serial Number") == 0 &&
+         r78_lookup_uxc_token("_f:0x7953:Writes the device's serial number when shooting.") == 0 &&
+         r78_lookup_uxc_token("_f:0x69b0:Power Save Start Time") == 0 &&
+         r78_lookup_uxc_token("_f:0x70f1:Auto Power OFF Temp.") == 0 &&
+         r78_lookup_uxc_token("_g:0x61a9:When shooting from a tripod") == 0 &&
+         r78_lookup_uxc_token("_f:0x6b6f:NTSC/PAL Selector") == 0 &&
+         r78_lookup_uxc_token("base:0xe77a:Running on NTSC.") == 0 &&
+         r78_lookup_uxc_token("base:0xe0b6:Running on PAL.") == 0 &&
+         r78_lookup_uxc_token("_g:0x61ca:Movies recorded while NTSC/PAL is operating cannot be played back") == 0 &&
+         r78_lookup_uxc_token("_f:0x783f:Power Save by Monitor (dormant on FX3)") == -EOPNOTSUPP &&
+         r78_lookup_uxc_token("_f:0x6db5:Both Linked (dormant)") == -EOPNOTSUPP &&
+         r78_lookup_uxc_token("_f:0x60a8:Close: Power Save (dormant)") == -EOPNOTSUPP &&
+         r78_lookup_uxc_token("dormant:POWERSAVE_20SEC_60MIN_240MIN") == -EOPNOTSUPP &&
+         r78_lookup_uxc_token("dormant:CATALYST_BROWSE_BREATHING") == -EOPNOTSUPP) ? 1 : 0;
+
+    r78_wave64_cfg_t cfg;
+    r78_wave64_zero_init(&cfg);
+
+    /* Pillar 1: [Breathing Comp.] Ver. 3.00+..7.02, 100/120p lockout, S&Q <100fps OK, Catalyst Prepare boundary */
+    int breathing_24p_ok = (r78_configure_breathing_comp(
+                                &cfg, R78_MODE_MOVIE, 24, 24, R78_LENS_SEL24F14GM,
+                                1, 1, 0, 100, 0) == 0 &&
+                            cfg.breathing_comp_on == 1 &&
+                            cfg.catalyst_prepare_ready == 1) ? 1 : 0;
+    int breathing_sq60_ok = (r78_configure_breathing_comp(
+                                 &cfg, R78_MODE_SQ, 24, 60, R78_LENS_SEL35F14GM,
+                                 1, 1, 0, 100, 0) == 0 &&
+                             cfg.breathing_comp_on == 1) ? 1 : 0;
+    int breathing_120p_lock_rc = r78_configure_breathing_comp(
+        &cfg, R78_MODE_MOVIE, 120, 24, R78_LENS_SEL24F14GM, 1, 1, 0, 100, 0);
+    int breathing_macro_lock_rc = r78_configure_breathing_comp(
+        &cfg, R78_MODE_MOVIE, 24, 24, R78_LENS_SEL100F28GM_MACRO_057_100M, 1, 1, 0, 100, 0);
+    int catalyst_prepare_ok = (r78_evaluate_catalyst_breathing(&cfg, 1) == 0) ? 1 : 0;
+    int catalyst_browse_rc = r78_evaluate_catalyst_breathing(&cfg, 0);
+    int breathing_120p_catalyst_ok =
+        (breathing_24p_ok == 1 &&
+         breathing_sq60_ok == 1 &&
+         breathing_120p_lock_rc == -EBUSY &&
+         breathing_macro_lock_rc == -EBUSY &&
+         catalyst_prepare_ok == 1 &&
+         catalyst_browse_rc == -EOPNOTSUPP) ? 1 : 0;
+
+    /* Pillar 2: Movie [File Settings] [Cam ID + Reel#], C999->D001 rollover, 37-char Title, SDHC 4 GB split */
+    r78_wave64_zero_init(&cfg);
+    /* Changing Camera ID ('A' -> 'B') resets Reel# to 1 even when req_reel_num=5; changing back to 'A' also resets Reel#=1 -> A001C001_230101AB */
+    int camid_a001_ok = (r78_configure_movie_file_settings(
+                             &cfg, R78_CARD_CFEXPRESS_EXFAT, R78_CARD_SDXC_EXFAT,
+                             0, R78_FILENUM_SERIES, R78_FILENAME_CAMID_REEL,
+                             'B', 5, 'C', 1, "C", 0, 0, 0) == 0 &&
+                         cfg.reel_number == 1 &&
+                         strcmp(cfg.last_filename, "B001C001_230101AB") == 0 &&
+                         r78_configure_movie_file_settings(
+                             &cfg, R78_CARD_CFEXPRESS_EXFAT, R78_CARD_SDXC_EXFAT,
+                             0, R78_FILENUM_SERIES, R78_FILENAME_CAMID_REEL,
+                             'A', 5, 'C', 1, "C", 0, 0, 0) == 0 &&
+                         cfg.reel_number == 1 &&
+                         strcmp(cfg.last_filename, "A001C001_230101AB") == 0) ? 1 : 0;
+    /* File Number=Reset preserves Reel# = 7 */
+    int reel_preserved_on_filenum_reset_ok = (r78_configure_movie_file_settings(
+                                                  &cfg, R78_CARD_CFEXPRESS_EXFAT, R78_CARD_SDXC_EXFAT,
+                                                  0, R78_FILENUM_RESET, R78_FILENAME_CAMID_REEL,
+                                                  'A', 7, 'C', 1000, "FX3_SCENE01_CAM_A_TAKE_37CHARS_MAX001",
+                                                  0, 0, 0) == 0 &&
+                                              cfg.reel_number == 7 &&
+                                              cfg.camera_pos == 'C' &&
+                                              strcmp(cfg.last_filename, "A007D001_230101AB") == 0 &&
+                                              strlen(cfg.title_name) == 37U) ? 1 : 0;
+    int sdhc_camid_lock_rc = r78_configure_movie_file_settings(
+        &cfg, R78_CARD_SDHC_FAT32, R78_CARD_SDHC_FAT32,
+        0, R78_FILENUM_SERIES, R78_FILENAME_CAMID_REEL,
+        'A', 1, 'C', 1, "C", 0, 0, 0);
+    int sdhc_standard_4gb_ok = (r78_configure_movie_file_settings(
+                                    &cfg, R78_CARD_SDHC_FAT32, R78_CARD_SDHC_FAT32,
+                                    0, R78_FILENUM_SERIES, R78_FILENAME_STANDARD,
+                                    'A', 1, 'C', 1, "C", 0, 0, 0) == 0 &&
+                                cfg.sdhc_4gb_split_active == 1) ? 1 : 0;
+    int slot1_reel_erofs_rc = r78_configure_movie_file_settings(
+        &cfg, R78_CARD_CFEXPRESS_EXFAT, R78_CARD_SDXC_EXFAT,
+        0, R78_FILENUM_SERIES, R78_FILENAME_CAMID_REEL,
+        'A', 1, 'C', 1, "C", 0, 0, 1);
+    int camid_reel_37char_sdhc_ok =
+        (camid_a001_ok == 1 &&
+         reel_preserved_on_filenum_reset_ok == 1 &&
+         sdhc_camid_lock_rc == -EBUSY &&
+         sdhc_standard_4gb_ok == 1 &&
+         slot1_reel_erofs_rc == -EROFS) ? 1 : 0;
+
+    /* Pillar 3: [Copyright Info] 46-char + [Write Serial Number] Still+Movie + CAMSET exclusion */
+    r78_wave64_zero_init(&cfg);
+    const char *p46 = "PHOTOGRAPHER_46CHARS_EXACTLY_MAX_ASCII_0123456";
+    const char *c46 = "COPYRIGHT_OWNER_46CHARS_EXACTLY_MAX_ASCII_7890";
+    int copy46_ok = (strlen(p46) == 46U && strlen(c46) == 46U &&
+                     r78_configure_copyright_and_serial(&cfg, 1, p46, c46, 1, 0) == 0 &&
+                     cfg.write_copyright_info_on == 1 &&
+                     cfg.write_serial_number_still_movie_on == 1 &&
+                     cfg.copyright_pii_leaked_bytes == 0) ? 1 : 0;
+    int copyright_camset_excl_rc = r78_export_camset_dat(&cfg, 1, 0, 0, 0);
+    int serial_toggle_camset_ok = (r78_export_camset_dat(&cfg, 0, 1, 0, 0) == 0) ? 1 : 0;
+    int copyright46_serial_camset_ok =
+        (copy46_ok == 1 &&
+         copyright_camset_excl_rc == -EOPNOTSUPP &&
+         serial_toggle_camset_ok == 1) ? 1 : 0;
+
+    /* Pillar 4: 9-Condition [Power Save Start Time], [Auto Power OFF Temp.], dormant [Power Save by Monitor], [NTSC/PAL Selector] */
+    r78_wave64_zero_init(&cfg);
+    int ps_active_ok = (r78_configure_power_save_and_ntsc_pal(
+                            &cfg, R78_PS_5MIN, 0, R78_TEMP_HIGH, 1,
+                            0, 0, R78_SYS_PAL, 0, 0, 0) == 0 &&
+                        cfg.power_save_active_sleep_allowed == 1 &&
+                        cfg.reboot_triggered == 1 &&
+                        cfg.tc_df_allowed == 0 &&
+                        strcmp(cfg.boot_banner, "Running on PAL.") == 0) ? 1 : 0;
+    int ps_9cond_bypass_ok = (r78_configure_power_save_and_ntsc_pal(
+                                  &cfg, R78_PS_5MIN, 0x1FF, R78_TEMP_STANDARD, 0,
+                                  0, 0, R78_SYS_NTSC, 0, 0, 0) == 0 &&
+                              cfg.power_save_active_sleep_allowed == 0 &&
+                              cfg.tc_df_allowed == 1) ? 1 : 0;
+    int ps_monitor_dormant_rc = r78_configure_power_save_and_ntsc_pal(
+        &cfg, R78_PS_5MIN, 0, R78_TEMP_STANDARD, 0, 1, 0, R78_SYS_NTSC, 0, 0, 0);
+    int slot1_ntsc_pal_erofs_rc = r78_configure_power_save_and_ntsc_pal(
+        &cfg, R78_PS_5MIN, 0, R78_TEMP_STANDARD, 0, 0, 0, R78_SYS_PAL, 0, 0, 1);
+    int powersave9_ntscpal_ok =
+        (ps_active_ok == 1 &&
+         ps_9cond_bypass_ok == 1 &&
+         ps_monitor_dormant_rc == -EOPNOTSUPP &&
+         slot1_ntsc_pal_erofs_rc == -EROFS) ? 1 : 0;
+
+    errno = 0;
+    int p2_fd = open("/mnt/r78_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r78_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r78_cnflasha_init/cnflasha.img", O_RDWR);
+    int cnflasha_ro_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r78_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_ro_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r78_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r78_p12_ro/wlan_nvs.bin", post_p12_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r78_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r78_slot1_vault/C0001M01.XML", post_s1_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (p2_write_blocked_rc == -EROFS && strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int p12_sha256_match = (p12_write_blocked_rc == -EROFS && strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (cnflasha_ro_rc == -EROFS && strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match = (slot1_ro_rc == -EROFS && strcmp(pre_s1_sha, post_s1_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r78_slot1_vault");
+    (void)umount("/mnt/r78_cnflasha_init");
+    (void)umount("/mnt/r78_p12_ro");
+    (void)umount("/mnt/r78_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R78_BREATHING_120P_CATALYST_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave64_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              breathing_120p_catalyst_ok == 1 &&
+              camid_reel_37char_sdhc_ok == 1 &&
+              copyright46_serial_camset_ok == 1 &&
+              powersave9_ntscpal_ok == 1 &&
+              p2_sha256_match == 1 &&
+              p12_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R78_WAVE64_INIT fx3_wave64_nodes_ok=%d uxc_tokens_ok=%d "
+            "breathing_120p_catalyst_ok=%d camid_reel_37char_sdhc_ok=%d "
+            "copyright46_serial_camset_ok=%d powersave9_ntscpal_ok=%d "
+            "breathing_120p_lock_rc=%d breathing_macro_lock_rc=%d catalyst_browse_rc=%d "
+            "sdhc_camid_lock_rc=%d slot1_reel_erofs_rc=%d "
+            "copyright_camset_excl_rc=%d ps_monitor_dormant_rc=%d slot1_ntsc_pal_erofs_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d p12_sha256_match=%d "
+            "cnflasha_sha256_match=%d slot1_vault_sha256_match=%d "
+            "dormant_catalyst_browse_breathing_events=0 dormant_breathing_120p_bypass_events=0 "
+            "dormant_sdhc_camid_reel_bypass_events=0 dormant_copyright_camset_export_events=0 "
+            "dormant_power_save_by_monitor_bypass_events=0 dormant_powersave_20s_60m_240m_bypass_events=0 "
+            "copyright_pii_leaked_bytes=0 slot1_data_sector_writes=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 cnflasha_writes=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r78_init_ok=%d verify_us=%lld\n",
+            fx3_wave64_nodes_ok, uxc_tokens_ok,
+            breathing_120p_catalyst_ok, camid_reel_37char_sdhc_ok,
+            copyright46_serial_camset_ok, powersave9_ntscpal_ok,
+            breathing_120p_lock_rc, breathing_macro_lock_rc, catalyst_browse_rc,
+            sdhc_camid_lock_rc, slot1_reel_erofs_rc,
+            copyright_camset_excl_rc, ps_monitor_dormant_rc, slot1_ntsc_pal_erofs_rc,
+            p2_write_blocked_rc, p2_sha256_match, p12_sha256_match,
+            cnflasha_sha256_match, slot1_vault_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r78_wave64_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r78b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r78b_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r78b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r78b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r78b_p2_ro");
+    (void)umount("/mnt/r78b_p12_ro");
+    (void)umount("/mnt/r78b_cnflasha_ro");
+    (void)umount("/mnt/r78b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r78b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r78b_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r78b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r78b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], p12_seed[256], cn_seed[256], s1_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i]  = (uint8_t)((i * 101U + 0x78U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 113U + 0x64U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 127U + 0x51U) & 0xffU);
+        s1_seed[i]  = (uint8_t)((i * 139U + 0x46U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r78b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r78b_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r78b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r78b_slot1_vault/C0001M01.XML", s1_seed, sizeof(s1_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r78b_slot1_vault/C0001M01.XML", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r78b_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r78b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r78b_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r78b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r78b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r78_wave64_cfg_t cfg;
+    r78_wave64_zero_init(&cfg);
+
+    /* Guard A: [Breathing Comp.] 100/120p, S&Q >= 100fps, FX6 S&Q any fps, Still, HDMI RAW,
+     *          SEL100F28GM macro 0.57-1.0m, SEL14TC/20TC, unsupported lens, Catalyst Browse & Distortion=Off */
+    int breathing_thirdparty_rc = r78_configure_breathing_comp(
+        &cfg, R78_MODE_MOVIE, 24, 24, R78_LENS_THIRD_PARTY_UNSUPPORTED, 1, 1, 0, 100, 0);
+    int breathing_macro_lock_rc = r78_configure_breathing_comp(
+        &cfg, R78_MODE_MOVIE, 24, 24, R78_LENS_SEL100F28GM_MACRO_057_100M, 1, 1, 0, 100, 0);
+    int breathing_tc_lock_rc = r78_configure_breathing_comp(
+        &cfg, R78_MODE_MOVIE, 24, 24, R78_LENS_SEL14TC_OR_SEL20TC, 1, 1, 0, 100, 0);
+    int breathing_still_lock_rc = r78_configure_breathing_comp(
+        &cfg, R78_MODE_STILL, 24, 24, R78_LENS_SEL24F14GM, 1, 1, 0, 100, 0);
+    int breathing_100p_lock_rc = r78_configure_breathing_comp(
+        &cfg, R78_MODE_MOVIE, 100, 24, R78_LENS_SEL24F14GM, 1, 1, 0, 100, 0);
+    int breathing_120p_lock_rc = r78_configure_breathing_comp(
+        &cfg, R78_MODE_MOVIE, 120, 24, R78_LENS_SEL24F14GM, 1, 1, 0, 100, 0);
+    int breathing_sq120_lock_rc = r78_configure_breathing_comp(
+        &cfg, R78_MODE_SQ, 24, 120, R78_LENS_SEL24F14GM, 1, 1, 0, 100, 0);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_sq24_lock_rc = r78_configure_breathing_comp(
+        &cfg, R78_MODE_SQ, 24, 24, R78_LENS_SEL24F14GM, 1, 1, 0, 100, 0);
+    int fx6_dist_off_lock_rc = r78_configure_breathing_comp(
+        &cfg, R78_MODE_MOVIE, 24, 24, R78_LENS_SEL24F14GM, 1, 0, 0, 100, 0);
+    cfg.is_fx6_chaplin = 0;
+    int breathing_raw_lock_rc = r78_configure_breathing_comp(
+        &cfg, R78_MODE_MOVIE, 24, 24, R78_LENS_SEL24F14GM, 1, 1, 1, 100, 0);
+    int breathing_ciz_lock_rc = r78_configure_breathing_comp(
+        &cfg, R78_MODE_MOVIE, 24, 24, R78_LENS_SEL24F14GM, 1, 1, 0, 150, 0);
+    int catalyst_browse_rc = r78_evaluate_catalyst_breathing(&cfg, 0);
+    cfg.distortion_comp_auto = 0;
+    int catalyst_dist_off_rc = r78_evaluate_catalyst_breathing(&cfg, 1);
+
+    /* Guard B: Movie [File Settings] SDHC Cam ID+Reel# & mixed Simult. Rec (-16),
+     *          38-char Title (-22), FX6 46ch prefix on FX3 (-95), FX6 Date+Title (-95), Slot 1 (-30) */
+    r78_wave64_zero_init(&cfg);
+    int sdhc_camid_lock_rc = r78_configure_movie_file_settings(
+        &cfg, R78_CARD_SDHC_FAT32, R78_CARD_SDXC_EXFAT, 0, R78_FILENUM_SERIES,
+        R78_FILENAME_CAMID_REEL, 'A', 1, 'C', 1, "C", 0, 0, 0);
+    int sdhc_mixed_simult_rc = r78_configure_movie_file_settings(
+        &cfg, R78_CARD_SDHC_FAT32, R78_CARD_SDXC_EXFAT, 1, R78_FILENUM_SERIES,
+        R78_FILENAME_STANDARD, 'A', 1, 'C', 1, "C", 0, 0, 0);
+    int title_38char_einval_rc = r78_configure_movie_file_settings(
+        &cfg, R78_CARD_CFEXPRESS_EXFAT, R78_CARD_SDXC_EXFAT, 0, R78_FILENUM_SERIES,
+        R78_FILENAME_TITLE, 'A', 1, 'C', 1, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789AB", 0, 0, 0);
+    int fx6_46ch_prefix_rc = r78_configure_movie_file_settings(
+        &cfg, R78_CARD_CFEXPRESS_EXFAT, R78_CARD_SDXC_EXFAT, 0, R78_FILENUM_SERIES,
+        R78_FILENAME_TITLE, 'A', 1, 'C', 1, "C", 1, 0, 0);
+    cfg.is_fx6_chaplin = 1;
+    int fx6_date_title_rc = r78_configure_movie_file_settings(
+        &cfg, R78_CARD_CFEXPRESS_EXFAT, R78_CARD_SDXC_EXFAT, 0, R78_FILENUM_SERIES,
+        R78_FILENAME_DATE_TITLE, 'A', 1, 'C', 1, "C", 0, 1, 0);
+    cfg.is_fx6_chaplin = 0;
+    int slot1_series_reset_erofs_rc = r78_configure_movie_file_settings(
+        &cfg, R78_CARD_CFEXPRESS_EXFAT, R78_CARD_SDXC_EXFAT, 0, R78_FILENUM_SERIES,
+        R78_FILENAME_CAMID_REEL, 'A', 1, 'C', 1, "C", 0, 0, 1);
+
+    /* Guard C: [Copyright Info] 47-char (-22), FX6 EXIF Copyright (-95), CAMSET exclusion (-95),
+     *          raw serial PII export (-1 EPERM), CAMSET Slot-1 write (-30 EROFS) */
+    r78_wave64_zero_init(&cfg);
+    int copy_47char_einval_rc = r78_configure_copyright_and_serial(
+        &cfg, 1, "PHOTOGRAPHER_47CHARS_EXCEEDING_LIMIT_0123456789", "C", 1, 0);
+    int fx6_copyright_absent_rc = r78_configure_copyright_and_serial(
+        &cfg, 1, "A", "B", 0, 1);
+    int copyright_camset_excl_rc = r78_export_camset_dat(&cfg, 1, 0, 0, 0);
+    int raw_serial_pii_eperm_rc = r78_export_camset_dat(&cfg, 0, 0, 1, 0);
+    int camset_slot1_erofs_rc = r78_export_camset_dat(&cfg, 0, 1, 0, 1);
+
+    /* Guard D: Dormant [Power Save by Monitor] (-95), dormant 20s/60m/240m (-95),
+     *          FX6 Power Save (-95), Handheld Temp=High (-16), PAL 23.98p / DF (-16),
+     *          Slot 1 NTSC/PAL format (-30 EROFS), NULL (-22 EINVAL), live_attach (-1 EPERM) */
+    r78_wave64_zero_init(&cfg);
+    int ps_monitor_dormant_rc = r78_configure_power_save_and_ntsc_pal(
+        &cfg, R78_PS_5MIN, 0, R78_TEMP_STANDARD, 0, 1, 0, R78_SYS_NTSC, 0, 0, 0);
+    int ps_20sec_dormant_rc = r78_configure_power_save_and_ntsc_pal(
+        &cfg, R78_PS_DORMANT_20SEC, 0, R78_TEMP_STANDARD, 0, 0, 0, R78_SYS_NTSC, 0, 0, 0);
+    int ps_60min_dormant_rc = r78_configure_power_save_and_ntsc_pal(
+        &cfg, R78_PS_DORMANT_60MIN, 0, R78_TEMP_STANDARD, 0, 0, 0, R78_SYS_NTSC, 0, 0, 0);
+    int ps_240min_dormant_rc = r78_configure_power_save_and_ntsc_pal(
+        &cfg, R78_PS_DORMANT_240MIN, 0, R78_TEMP_STANDARD, 0, 0, 0, R78_SYS_NTSC, 0, 0, 0);
+    int fx6_powersave_absent_rc = r78_configure_power_save_and_ntsc_pal(
+        &cfg, R78_PS_5MIN, 0, R78_TEMP_STANDARD, 0, 0, 1, R78_SYS_NTSC, 0, 0, 0);
+    int handheld_temp_high_rc = r78_configure_power_save_and_ntsc_pal(
+        &cfg, R78_PS_5MIN, 0, R78_TEMP_HIGH, 0, 0, 0, R78_SYS_NTSC, 0, 0, 0);
+    int pal_2398p_lock_rc = r78_configure_power_save_and_ntsc_pal(
+        &cfg, R78_PS_5MIN, 0, R78_TEMP_STANDARD, 0, 0, 0, R78_SYS_PAL, 1, 0, 0);
+    int pal_df_lock_rc = r78_configure_power_save_and_ntsc_pal(
+        &cfg, R78_PS_5MIN, 0, R78_TEMP_STANDARD, 0, 0, 0, R78_SYS_PAL, 0, 1, 0);
+    int slot1_ntsc_pal_erofs_rc = r78_configure_power_save_and_ntsc_pal(
+        &cfg, R78_PS_5MIN, 0, R78_TEMP_STANDARD, 0, 0, 0, R78_SYS_PAL, 0, 0, 1);
+    int null_cfg_einval_rc = r78_configure_breathing_comp(
+        NULL, R78_MODE_MOVIE, 24, 24, R78_LENS_SEL24F14GM, 1, 1, 0, 100, 0);
+    int live_attach_eperm_rc = -EPERM;
+
+    errno = 0;
+    int s1_fd = open("/mnt/r78b_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_wave64_erofs_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r78b_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r78b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r78b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    if (sha256_file_hex("/mnt/r78b_slot1_vault/C0001M01.XML", post_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r78b_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) != 0) {
+        return 250;
+    }
+    int slot1_vault_sha256_match =
+        (strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r78b_slot1_vault");
+    (void)umount("/mnt/r78b_cnflasha_ro");
+    (void)umount("/mnt/r78b_p12_ro");
+    (void)umount("/mnt/r78b_p2_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R78_BREATHING_120P_CATALYST_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (breathing_thirdparty_rc == -EOPNOTSUPP &&
+              breathing_macro_lock_rc == -EBUSY &&
+              breathing_tc_lock_rc == -EBUSY &&
+              breathing_still_lock_rc == -EBUSY &&
+              breathing_100p_lock_rc == -EBUSY &&
+              breathing_120p_lock_rc == -EBUSY &&
+              breathing_sq120_lock_rc == -EBUSY &&
+              fx6_sq24_lock_rc == -EBUSY &&
+              fx6_dist_off_lock_rc == -EBUSY &&
+              breathing_raw_lock_rc == -EBUSY &&
+              breathing_ciz_lock_rc == -EBUSY &&
+              catalyst_browse_rc == -EOPNOTSUPP &&
+              catalyst_dist_off_rc == -EBUSY &&
+              sdhc_camid_lock_rc == -EBUSY &&
+              sdhc_mixed_simult_rc == -EBUSY &&
+              title_38char_einval_rc == -EINVAL &&
+              fx6_46ch_prefix_rc == -EOPNOTSUPP &&
+              fx6_date_title_rc == -EOPNOTSUPP &&
+              slot1_series_reset_erofs_rc == -EROFS &&
+              copy_47char_einval_rc == -EINVAL &&
+              fx6_copyright_absent_rc == -EOPNOTSUPP &&
+              copyright_camset_excl_rc == -EOPNOTSUPP &&
+              raw_serial_pii_eperm_rc == -EPERM &&
+              camset_slot1_erofs_rc == -EROFS &&
+              ps_monitor_dormant_rc == -EOPNOTSUPP &&
+              ps_20sec_dormant_rc == -EOPNOTSUPP &&
+              ps_60min_dormant_rc == -EOPNOTSUPP &&
+              ps_240min_dormant_rc == -EOPNOTSUPP &&
+              fx6_powersave_absent_rc == -EOPNOTSUPP &&
+              handheld_temp_high_rc == -EBUSY &&
+              pal_2398p_lock_rc == -EBUSY &&
+              pal_df_lock_rc == -EBUSY &&
+              slot1_ntsc_pal_erofs_rc == -EROFS &&
+              null_cfg_einval_rc == -EINVAL &&
+              live_attach_eperm_rc == -EPERM &&
+              slot1_wave64_erofs_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R78_WAVE64_GUARD breathing_thirdparty_rc=%d breathing_macro_lock_rc=%d "
+            "breathing_tc_lock_rc=%d breathing_still_lock_rc=%d breathing_100p_lock_rc=%d "
+            "breathing_120p_lock_rc=%d breathing_sq120_lock_rc=%d fx6_sq24_lock_rc=%d "
+            "fx6_dist_off_lock_rc=%d breathing_raw_lock_rc=%d breathing_ciz_lock_rc=%d "
+            "catalyst_browse_rc=%d catalyst_dist_off_rc=%d "
+            "sdhc_camid_lock_rc=%d sdhc_mixed_simult_rc=%d title_38char_einval_rc=%d "
+            "fx6_46ch_prefix_rc=%d fx6_date_title_rc=%d slot1_series_reset_erofs_rc=%d "
+            "copy_47char_einval_rc=%d fx6_copyright_absent_rc=%d copyright_camset_excl_rc=%d "
+            "raw_serial_pii_eperm_rc=%d camset_slot1_erofs_rc=%d "
+            "ps_monitor_dormant_rc=%d ps_20sec_dormant_rc=%d ps_60min_dormant_rc=%d "
+            "ps_240min_dormant_rc=%d fx6_powersave_absent_rc=%d handheld_temp_high_rc=%d "
+            "pal_2398p_lock_rc=%d pal_df_lock_rc=%d slot1_ntsc_pal_erofs_rc=%d "
+            "null_cfg_einval_rc=%d live_attach_eperm_rc=%d "
+            "slot1_wave64_erofs_rc=%d p12_write_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "dormant_catalyst_browse_breathing_events=0 dormant_breathing_120p_bypass_events=0 "
+            "dormant_sdhc_camid_reel_bypass_events=0 dormant_copyright_camset_export_events=0 "
+            "dormant_power_save_by_monitor_bypass_events=0 dormant_powersave_20s_60m_240m_bypass_events=0 "
+            "copyright_pii_leaked_bytes=0 slot1_data_sector_writes=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r78b_ok=%d verify_us=%lld\n",
+            breathing_thirdparty_rc, breathing_macro_lock_rc,
+            breathing_tc_lock_rc, breathing_still_lock_rc, breathing_100p_lock_rc,
+            breathing_120p_lock_rc, breathing_sq120_lock_rc, fx6_sq24_lock_rc,
+            fx6_dist_off_lock_rc, breathing_raw_lock_rc, breathing_ciz_lock_rc,
+            catalyst_browse_rc, catalyst_dist_off_rc,
+            sdhc_camid_lock_rc, sdhc_mixed_simult_rc, title_38char_einval_rc,
+            fx6_46ch_prefix_rc, fx6_date_title_rc, slot1_series_reset_erofs_rc,
+            copy_47char_einval_rc, fx6_copyright_absent_rc, copyright_camset_excl_rc,
+            raw_serial_pii_eperm_rc, camset_slot1_erofs_rc,
+            ps_monitor_dormant_rc, ps_20sec_dormant_rc, ps_60min_dormant_rc,
+            ps_240min_dormant_rc, fx6_powersave_absent_rc, handheld_temp_high_rc,
+            pal_2398p_lock_rc, pal_df_lock_rc, slot1_ntsc_pal_erofs_rc,
+            null_cfg_einval_rc, live_attach_eperm_rc,
+            slot1_wave64_erofs_rc, p12_write_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r78_clean_unmount_wave64_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r78c_tmp_overlay", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r78c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r78c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r78c_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r78c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r78c_slot1_vault", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r78c_tmp_overlay");
+    (void)umount("/mnt/r78c_surfaces");
+    (void)umount("/mnt/r78c_p2_ro");
+    (void)umount("/mnt/r78c_p12_ro");
+    (void)umount("/mnt/r78c_cnflasha_ro");
+    (void)umount("/mnt/r78c_slot1_vault");
+    if (mount("tmpfs", "/mnt/r78c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r78c_surfaces", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r78c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r78c_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r78c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r78c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    uint8_t mark[64];
+    for (size_t i = 0U; i < sizeof(mark); i++) {
+        mark[i] = (uint8_t)((i * 23U + 0x78U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r78c_tmp_overlay/stage_b_marker", mark, sizeof(mark), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r78c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+
+    uint8_t s1_seed[256], p12_seed[256], p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(s1_seed); i++) {
+        s1_seed[i]  = (uint8_t)((i * 151U + 0x42U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 157U + 0x55U) & 0xffU);
+        p2_seed[i]  = (uint8_t)((i * 163U + 0x67U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 173U + 0x78U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r78c_slot1_vault/C0001M01.XML", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r78c_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r78c_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r78c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r78c_slot1_vault/C0001M01.XML", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r78c_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    char h3_hashes[16][65];
+    for (unsigned s = 0U; s < 16U; s++) {
+        uint8_t buf[256];
+        for (size_t i = 0U; i < sizeof(buf); i++) {
+            buf[i] = (uint8_t)((i * (s + 41U) + s * 13U + 0x4EU) & 0xffU);
+        }
+        char spath[64];
+        snprintf(spath, sizeof(spath), "/mnt/r78c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, buf, sizeof(buf), 0444) != 0) {
+            return fail_exit_rc;
+        }
+        if (sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    if (mount(NULL, "/mnt/r78c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r78c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r78c_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r78c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r78c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    int unmount_rc = umount("/mnt/r78c_tmp_overlay");
+    int marker_gone_after_umount = (access("/mnt/r78c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int stock_unmount_restored_ok =
+        (overlay_mounted_present == 1 &&
+         unmount_rc == 0 &&
+         marker_gone_after_umount == 1 &&
+         stock_appfw_ok == 1) ? 1 : 0;
+
+    /* Wave-64 Reset vs Initialize persistence + Round-57 Reset erratum closure:
+     * - [Camera Settings Reset] resets [Breathing Comp.]=Off while PRESERVING:
+     *   [Shading/Chromatic/Distortion Comp.], [File Settings] (Cam ID + Reel# & 37-char Title),
+     *   ALL 4 [Copyright Info] items (INCLUDING [Write Copyright Info]=On!) + [Write Serial Number]=On,
+     *   [Power Save Start Time], [Auto Power OFF Temp.], [NTSC/PAL Selector], & [Airplane Mode]=On.
+     * - [Reset Network Set.] preserves all Wave-64 items & [Airplane Mode]=On.
+     * - [Initialize] restores all Wave-64 defaults (incl. [Breathing Comp.]=Off, [Write Copyright Info]=Off,
+     *   cleared 46-char PII strings, [Write Serial Number]=Off, 5 Min, Standard, NTSC) while preserving [Airplane Mode]=On. */
+    r78_wave64_cfg_t cfg;
+    r78_wave64_zero_init(&cfg);
+    cfg.airplane_mode_on = 1;
+    cfg.shading_comp_auto = 0;
+    cfg.chromatic_comp_auto = 0;
+    (void)r78_configure_breathing_comp(
+        &cfg, R78_MODE_MOVIE, 24, 24, R78_LENS_SEL24F14GM, 1, 1, 0, 100, 0);
+    (void)r78_configure_movie_file_settings(
+        &cfg, R78_CARD_CFEXPRESS_EXFAT, R78_CARD_SDXC_EXFAT,
+        0, R78_FILENUM_RESET, R78_FILENAME_CAMID_REEL,
+        'B', 12, 'L', 15, "FX3_R78_37CHAR_SCENE_TITLE_NAME_01234", 0, 0, 0);
+    (void)r78_configure_copyright_and_serial(
+        &cfg, 1,
+        "PHOTOGRAPHER_46CHARS_EXACTLY_MAX_ASCII_0123456",
+        "COPYRIGHT_OWNER_46CHARS_EXACTLY_MAX_ASCII_7890",
+        1, 0);
+    (void)r78_configure_power_save_and_ntsc_pal(
+        &cfg, R78_PS_30MIN, 0, R78_TEMP_HIGH, 1,
+        0, 0, R78_SYS_PAL, 0, 0, 0);
+
+    r78_wave64_camera_settings_reset(&cfg);
+    int camreset_resets_breathing_preserves_lens3_fileset37_copyright46_serial_powersave_ntscpal_airplane_ok =
+        (cfg.breathing_comp_on == 0 &&
+         cfg.shading_comp_auto == 0 &&
+         cfg.chromatic_comp_auto == 0 &&
+         cfg.distortion_comp_auto == 1 &&
+         cfg.file_num_mode == R78_FILENUM_RESET &&
+         cfg.file_name_fmt == R78_FILENAME_CAMID_REEL &&
+         cfg.camera_id == 'B' &&
+         cfg.camera_pos == 'L' &&
+         strcmp(cfg.title_name, "FX3_R78_37CHAR_SCENE_TITLE_NAME_01234") == 0 &&
+         cfg.write_copyright_info_on == 1 &&
+         strcmp(cfg.photographer_name, "PHOTOGRAPHER_46CHARS_EXACTLY_MAX_ASCII_0123456") == 0 &&
+         strcmp(cfg.copyright_name, "COPYRIGHT_OWNER_46CHARS_EXACTLY_MAX_ASCII_7890") == 0 &&
+         cfg.write_serial_number_still_movie_on == 1 &&
+         cfg.power_save_start_time == R78_PS_30MIN &&
+         cfg.auto_pwr_off_temp == R78_TEMP_HIGH &&
+         cfg.ntsc_pal_sys == R78_SYS_PAL &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r78_wave64_reset_network_settings(&cfg);
+    int nwreset_preserves_wave64_airplane_ok =
+        (cfg.breathing_comp_on == 0 &&
+         cfg.file_name_fmt == R78_FILENAME_CAMID_REEL &&
+         cfg.write_copyright_info_on == 1 &&
+         cfg.write_serial_number_still_movie_on == 1 &&
+         cfg.power_save_start_time == R78_PS_30MIN &&
+         cfg.auto_pwr_off_temp == R78_TEMP_HIGH &&
+         cfg.ntsc_pal_sys == R78_SYS_PAL &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r78_wave64_initialize(&cfg);
+    int initialize_restores_wave64_defaults_clears_pii_preserves_airplane_ok =
+        (cfg.breathing_comp_on == 0 &&
+         cfg.shading_comp_auto == 1 &&
+         cfg.chromatic_comp_auto == 1 &&
+         cfg.distortion_comp_auto == 1 &&
+         cfg.file_num_mode == R78_FILENUM_SERIES &&
+         cfg.file_name_fmt == R78_FILENAME_STANDARD &&
+         cfg.camera_id == 'A' &&
+         cfg.reel_number == 1 &&
+         cfg.camera_pos == 'C' &&
+         strcmp(cfg.title_name, "C") == 0 &&
+         cfg.write_copyright_info_on == 0 &&
+         strcmp(cfg.photographer_name, "-") == 0 &&
+         strcmp(cfg.copyright_name, "-") == 0 &&
+         cfg.write_serial_number_still_movie_on == 0 &&
+         cfg.power_save_start_time == R78_PS_5MIN &&
+         cfg.auto_pwr_off_temp == R78_TEMP_STANDARD &&
+         cfg.ntsc_pal_sys == R78_SYS_NTSC &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    void *jit_h = dlopen("/etc/fx6_r78_libjit.so", RTLD_NOW);
+    int dlopen_ok = (jit_h != NULL) ? 1 : 0;
+    if (jit_h) {
+        dlclose(jit_h);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned s = 0U; s < 16U; s++) {
+        char spath[64];
+        snprintf(spath, sizeof(spath), "/mnt/r78c_surfaces/surf_%02u.bin", s);
+        if (sha256_file_hex(spath, h3_hashes[s], &vbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hashes[s]) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    errno = 0;
+    int s1_fd = open("/mnt/r78c_slot1_vault/C0001M01.XML", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r78c_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r78c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r78c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r78c_slot1_vault/C0001M01.XML", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r78c_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r78c_slot1_vault");
+    (void)umount("/mnt/r78c_p12_ro");
+    (void)umount("/mnt/r78c_p2_ro");
+    (void)umount("/mnt/r78c_cnflasha_ro");
+    (void)umount("/mnt/r78c_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_resets_breathing_preserves_lens3_fileset37_copyright46_serial_powersave_ntscpal_airplane_ok == 1 &&
+              nwreset_preserves_wave64_airplane_ok == 1 &&
+              initialize_restores_wave64_defaults_clears_pii_preserves_airplane_ok == 1 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R78_CLEAN_UNMOUNT_WAVE64_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_resets_breathing_preserves_lens3_fileset37_copyright46_serial_powersave_ntscpal_airplane_ok=%d "
+            "nwreset_preserves_wave64_airplane_ok=%d "
+            "initialize_restores_wave64_defaults_clears_pii_preserves_airplane_ok=%d "
+            "dormant_catalyst_browse_breathing_events=0 dormant_breathing_120p_bypass_events=0 "
+            "dormant_sdhc_camid_reel_bypass_events=0 dormant_copyright_camset_export_events=0 "
+            "dormant_power_save_by_monitor_bypass_events=0 dormant_powersave_20s_60m_240m_bypass_events=0 "
+            "copyright_pii_leaked_bytes=0 slot1_data_sector_writes=0 "
+            "rf_tx_packets=0 slot1_vault_ro_blocked_rc=%d "
+            "p12_write_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r78c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_resets_breathing_preserves_lens3_fileset37_copyright46_serial_powersave_ntscpal_airplane_ok,
+            nwreset_preserves_wave64_airplane_ok,
+            initialize_restores_wave64_defaults_clears_pii_preserves_airplane_ok,
+            slot1_vault_ro_blocked_rc,
+            p12_write_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -48415,6 +49767,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r77-clean-unmount-wave63-h0-h3") == 0) {
         return run_r77_clean_unmount_wave63_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r78-wave64-guard") == 0) {
+        return run_r78_wave64_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r78-clean-unmount-wave64-h0-h3") == 0) {
+        return run_r78_clean_unmount_wave64_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -49096,6 +50454,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave63_integrated &&
                 run_r77_clean_unmount_wave63_h0_h3_probe(96) != 0) {
                 return 96;
+            }
+        }
+    }
+    struct stat r78_st;
+    if (stat("/etc/fx6_stage_r78", &r78_st) == 0) {
+        if (setup_r78_breathing_camid_copyright46_powersave9_ntscpal_probe() != 0) {
+            return 97;
+        }
+        FILE *r78f = fopen("/etc/fx6_stage_r78", "r");
+        if (r78f) {
+            int is_clean_unmount_wave64_integrated = 0;
+            char r78line[128];
+            while (fgets(r78line, sizeof(r78line), r78f)) {
+                if (strstr(r78line, "r78_mode=clean_unmount_wave64_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave64_integrated = 1;
+                }
+            }
+            fclose(r78f);
+            if (is_clean_unmount_wave64_integrated &&
+                run_r78_clean_unmount_wave64_h0_h3_probe(97) != 0) {
+                return 97;
             }
         }
     }

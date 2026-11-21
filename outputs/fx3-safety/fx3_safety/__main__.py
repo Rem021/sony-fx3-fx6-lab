@@ -282,6 +282,11 @@ from .realhw_pbmag_varshutter_ecs_wifi5ghz_nvs_ir_lanc_cec_and_158gate_guard imp
     evaluate_g157_pbmag_varshutter_ecs_guard,
     evaluate_g158_wifi5ghz_nvs_ir_lanc_cec_guard,
 )
+from .realhw_peaking_audio_wind_usbpd_ntscpal_and_160gate_guard import (
+    evaluate_160gate_preflight,
+    evaluate_g159_peaking_audio_wind_guard,
+    evaluate_g160_usbpd_ntscpal_avfinfo_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -5308,6 +5313,95 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_158.add_argument("--json", action="store_true", help="Emit structured JSON report")
     p_158.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 197. verify-peaking-audio-wind-guard
+    p_g159 = sub.add_parser(
+        "verify-peaking-audio-wind-guard",
+        aliases=["verify-g159-peaking-audio-wind", "verify-g159"],
+        help="Verify Gate G159: FX3 Shooting -> [Focus] -> [Peaking Display] Clean-HDMI Isolation / Focus Magnifier / Dormant In-Body Focus Map vs FX6 Monitoring > Peaking (B&W, Zero Type/Freq) plus Ver. 2.00..7.02 [Audio Level Display] Removal, Exact 5-Item Audio Recording, Built-In-Only [Wind Noise Reduct.] (No Auto), and 3-Tier Audio Preemption vs FX6 Wind Filter & 6-Step Limiter",
+    )
+    p_g159.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g159.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g159.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g159.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g159.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 198. verify-usbpd-ntscpal-avfinfo-guard
+    p_g160 = sub.add_parser(
+        "verify-usbpd-ntscpal-avfinfo-guard",
+        aliases=["verify-g160-usbpd-ntscpal-avfinfo", "verify-g160"],
+        help="Verify Gate G160: FX3 [USB Power Supply] Type-C Only, 9V/3A PD vs 5V/1.5A, Mandatory Charged NP-FZ100 (Zero Hot-Swap), ON-No-Charge vs OFF-Charge (10-30C), DC-C1 (>=65W/5A) vs FX6 19.5V DC IN & Hot-Replug Hazard, plus [NTSC/PAL Selector] J1/CE/E33/U2 SKU Locks, Pure-XAVC Reboot Without Format, and Tier-0 Slot 1 EROFS=30 Firewall for AVF_INFO/Recover/Format",
+    )
+    p_g160.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g160.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g160.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g160.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g160.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 199. verify-160-gates
+    p_160 = sub.add_parser(
+        "verify-160-gates",
+        help="Run Phase 373 (Task H473, Wave-70 Milestone) Unified 160-Gate Milestone Master Safety Preflight Engine (G01..G160)",
+    )
+    p_160.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_160.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_160.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G160 gates can be rehearsed offline",
+    )
+    p_160.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_160.add_argument("--summary", action="store_true", help="Emit concise summary output")
 
     args = parser.parse_args(argv)
 
@@ -11845,6 +11939,163 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_158_gates_verified if args.dry_run_simulated else report.offline_155_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-peaking-audio-wind-guard",
+        "verify-g159-peaking-audio-wind",
+        "verify-g159",
+    ):
+        verdict, res = evaluate_g159_peaking_audio_wind_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.peaking_audio_wind_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "peaking_emitted_over_hdmi": guard["peaking_emitted_over_hdmi"],
+                    "fx3_inbody_focus_map_exposed": guard["fx3_inbody_focus_map_exposed"],
+                    "fx6_peaking_type_elf_hits": guard["fx6_peaking_type_elf_hits"],
+                    "fx6_peaking_freq_elf_hits": guard["fx6_peaking_freq_elf_hits"],
+                    "fx3_audio_recording_items_count": guard["fx3_audio_recording_items_count"],
+                    "fx3_wind_noise_auto_exposed": guard["fx3_wind_noise_auto_exposed"],
+                    "active_audio_input_source": guard["active_audio_input_source"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.peaking_audio_wind_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} peaking_hdmi={guard['peaking_emitted_over_hdmi']} "
+                f"fx6_type_freq={guard['fx6_peaking_type_elf_hits']}/{guard['fx6_peaking_freq_elf_hits']} "
+                f"audio_items={guard['fx3_audio_recording_items_count']} "
+                f"wind_auto={guard['fx3_wind_noise_auto_exposed']} "
+                f"audio_src={guard['active_audio_input_source']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-usbpd-ntscpal-avfinfo-guard",
+        "verify-g160-usbpd-ntscpal-avfinfo",
+        "verify-g160",
+    ):
+        verdict, res = evaluate_g160_usbpd_ntscpal_avfinfo_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.usbpd_ntscpal_avfinfo_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "power_source_mode": guard["power_source_mode"],
+                    "usb_pd_watts": guard["usb_pd_watts"],
+                    "np_fz100_inserted": guard["np_fz100_inserted"],
+                    "fx3_charges_while_camera_on": guard["fx3_charges_while_camera_on"],
+                    "sku_region_code": guard["sku_region_code"],
+                    "effective_video_standard": guard["effective_video_standard"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "cross_model_flash_authorized": res.cross_model_flash_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.usbpd_ntscpal_avfinfo_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} pwr={guard['power_source_mode']} "
+                f"pd_w={guard['usb_pd_watts']}W "
+                f"fz100={guard['np_fz100_inserted']} "
+                f"sku={guard['sku_region_code']} "
+                f"std={guard['effective_video_standard']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized} "
+                f"raw_firmware_bytes_leaked={res.raw_firmware_bytes_leaked}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-160-gates":
+        report = evaluate_160gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "schema_version": report.schema_version,
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g159_status": report.g159_result["status"],
+                    "g160_status": report.g160_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/160 "
+                f"g159_to_g160_all_passed={report.g159_to_g160_all_passed} "
+                f"all_160_gates_verified={report.all_160_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_160_gates_verified if args.dry_run_simulated else report.offline_157_gates_verified
         return 0 if ok else 1
 
     return 2

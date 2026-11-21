@@ -1634,7 +1634,10 @@ class TestRound71SteadyShot47FocalSelftimerZebraStreamingErofsQemu(unittest.Test
                     simulate_bench_dry_run=False,
                 )
                 self.assertEqual(report.verification_mode, "CLEAN_ROOM_SYNTHETIC")
-                self.assertTrue(report.all_pillars_milestone_ready)
+                self.assertTrue(
+                    report.all_pillars_milestone_ready,
+                    msg=str([(p.pillar_id, p.errors) for p in report.pillars if not p.passed]),
+                )
                 self.assertEqual(report.raw_firmware_bytes_leaked, 0)
                 self.assertGreaterEqual(report.qemu_rounds_verified, 44)
                 self.assertGreaterEqual(report.qemu_runs_verified, 132)

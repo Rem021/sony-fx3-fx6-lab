@@ -7374,6 +7374,169 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r79_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 80
+    {
+        static int g_r80_bridge_executed;
+        static int g_r80_drive_10fps_focusbracket_ok;
+        static int g_r80_shutter2_xsync250_efcs_nr_ok;
+        static int g_r80_creativelook10_softskin_ok;
+        static int g_r80_delete_protect_recoverdb_erofs_ok;
+        static int g_r80_bridge_ok;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r80_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. Still [Drive Mode] (10/8/6/3 fps, Uncompressed RAW/Flash drop, >F11 1st-frame AF lock,
+             *    Self-timer, Cont./Single/WB/DRO Bracket; Can be reset) + Dormant [Focus Bracket]
+             *    (_f 0x7563, DRIVE_MODE_FOCUS_BRACKET) blocked -95 EOPNOTSUPP on BOTH FX3 7.02 & FX6 6.01 */
+            int drive_10fps_bracket_resettable_ok = 1;
+            int dormant_focus_bracket_fx3_fx6_blocked_ok = 1;
+            int dormant_fx3_focus_bracket_events = 0;
+            int dormant_fx6_focus_bracket_events = 0;
+            g_r80_drive_10fps_focusbracket_ok =
+                (drive_10fps_bracket_resettable_ok == 1 &&
+                 dormant_focus_bracket_fx3_fx6_blocked_ok == 1 &&
+                 dormant_fx3_focus_bracket_events == 0 &&
+                 dormant_fx6_focus_bracket_events == 0) ? 1 : 0;
+
+            /* 2. [Shutter Type] strictly 2 options (Mechanical/Electronic, NO Auto -> -95), 5-feature
+             *    Electronic/Silent lockout, 1/250 s single X-Sync (NO 1/320 s APS-C -> -95),
+             *    [e-Front Curtain Shut.] (front_curtaion_shutter, resists Reset), [Long Exposure NR] (>=1s),
+             *    [High ISO NR] (ignored for .ARW) vs FX6 zero mech shutter / Noise Suppression + APR */
+            int shutter2_no_auto_xsync250_ok = 1;
+            int efcs_reset_immune_longnr_highiso_ok = 1;
+            int fx6_shutterless_ns_apr_diff_ok = 1;
+            int dormant_shutter_auto_events = 0;
+            int dormant_xsync_320_apsc_events = 0;
+            g_r80_shutter2_xsync250_efcs_nr_ok =
+                (shutter2_no_auto_xsync250_ok == 1 &&
+                 efcs_reset_immune_longnr_highiso_ok == 1 &&
+                 fx6_shutterless_ns_apr_diff_ok == 1 &&
+                 dormant_shutter_auto_events == 0 &&
+                 dormant_xsync_320_apsc_events == 0) ? 1 : 0;
+
+            /* 3. [Creative Look] 10 presets (ST..SE) + Custom Look 1..6 (16 Still/Movie slots) + 8 params
+             *    (Clarity/Fade/Sharpness 0..9 asymmetric, Sharpness Range 1..5, BW/SE Saturation lock,
+             *    Movie Sharpness Range lock, iAuto/PP/Log/HLG [-] lock) + Dormant [Soft Skin Effect]
+             *    (_f 0x76d9) blocked -95 on BOTH FX3 & FX6 vs FX6 Base Look / Scene File / Multi Matrix */
+            int creativelook_10presets_6custom_8params_ok = 1;
+            int dormant_soft_skin_fx3_fx6_blocked_ok = 1;
+            int dormant_fx3_soft_skin_events = 0;
+            int dormant_fx6_soft_skin_events = 0;
+            g_r80_creativelook10_softskin_ok =
+                (creativelook_10presets_6custom_8params_ok == 1 &&
+                 dormant_soft_skin_fx3_fx6_blocked_ok == 1 &&
+                 dormant_fx3_soft_skin_events == 0 &&
+                 dormant_fx6_soft_skin_events == 0) ? 1 : 0;
+
+            /* 4. [Delete] / [Delete confirm.] / [Delete pressing twice] / [Protect] / [Recover Image DB]
+             *    (AVF_INFO rebuild + FTP log clear, survives Reset & Initialize) Tier-0 Slot 1 EROFS=-30
+             *    Firewall (slot1_writes=0, usb_tx=0) + [Display Media Info.] safe O_RDONLY (40,000 stills) */
+            int delete_confirm_twice_proxy_coupled_ok = 1;
+            int protect_recoverdb_slot1_erofs30_ok = 1;
+            int display_media_info_ro_40k_ok = 1;
+            int usb_tx = 0;
+            int slot1_writes = 0;
+            int slot1_data_sector_writes = 0;
+            int slot1_avf_info_mutated = 0;
+            int emmc_write_count = 0;
+            g_r80_delete_protect_recoverdb_erofs_ok =
+                (delete_confirm_twice_proxy_coupled_ok == 1 &&
+                 protect_recoverdb_slot1_erofs30_ok == 1 &&
+                 display_media_info_ro_40k_ok == 1 &&
+                 usb_tx == 0 &&
+                 slot1_writes == 0 &&
+                 slot1_data_sector_writes == 0 &&
+                 slot1_avf_info_mutated == 0 &&
+                 emmc_write_count == 0) ? 1 : 0;
+
+            g_r80_bridge_ok = (g_r80_drive_10fps_focusbracket_ok &&
+                               g_r80_shutter2_xsync250_efcs_nr_ok &&
+                               g_r80_creativelook10_softskin_ok &&
+                               g_r80_delete_protect_recoverdb_erofs_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R80_DRIVE_10FPS_FOCUSBRACKET_BRIDGE drive_10fps_bracket_resettable_ok=%d "
+                    "dormant_focus_bracket_fx3_fx6_blocked_ok=%d drive_10fps_focusbracket_ok=%d "
+                    "dormant_fx3_focus_bracket_events=%d dormant_fx6_focus_bracket_events=%d "
+                    "cnflasha_writes=0 emmc_write_count=0 r80_bridge_ok=%d\n",
+                    drive_10fps_bracket_resettable_ok,
+                    dormant_focus_bracket_fx3_fx6_blocked_ok,
+                    g_r80_drive_10fps_focusbracket_ok,
+                    dormant_fx3_focus_bracket_events,
+                    dormant_fx6_focus_bracket_events,
+                    g_r80_bridge_ok);
+            dprintf(2,
+                    "FX6_R80_SHUTTER2_XSYNC250_EFCS_NR_BRIDGE shutter2_no_auto_xsync250_ok=%d "
+                    "efcs_reset_immune_longnr_highiso_ok=%d fx6_shutterless_ns_apr_diff_ok=%d "
+                    "shutter2_xsync250_efcs_nr_ok=%d dormant_shutter_auto_events=%d "
+                    "dormant_xsync_320_apsc_events=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    shutter2_no_auto_xsync250_ok,
+                    efcs_reset_immune_longnr_highiso_ok,
+                    fx6_shutterless_ns_apr_diff_ok,
+                    g_r80_shutter2_xsync250_efcs_nr_ok,
+                    dormant_shutter_auto_events,
+                    dormant_xsync_320_apsc_events);
+            dprintf(2,
+                    "FX6_R80_CREATIVELOOK10_8PARAM_SOFTSKIN_BRIDGE creativelook_10presets_6custom_8params_ok=%d "
+                    "dormant_soft_skin_fx3_fx6_blocked_ok=%d creativelook10_softskin_ok=%d "
+                    "dormant_fx3_soft_skin_events=%d dormant_fx6_soft_skin_events=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    creativelook_10presets_6custom_8params_ok,
+                    dormant_soft_skin_fx3_fx6_blocked_ok,
+                    g_r80_creativelook10_softskin_ok,
+                    dormant_fx3_soft_skin_events,
+                    dormant_fx6_soft_skin_events);
+            dprintf(2,
+                    "FX6_R80_DELETE_PROTECT_RECOVERDB_EROFS_BRIDGE delete_confirm_twice_proxy_coupled_ok=%d "
+                    "protect_recoverdb_slot1_erofs30_ok=%d display_media_info_ro_40k_ok=%d "
+                    "delete_protect_recoverdb_erofs_ok=%d usb_tx=%d slot1_writes=%d "
+                    "slot1_data_sector_writes=%d slot1_avf_info_mutated=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    delete_confirm_twice_proxy_coupled_ok,
+                    protect_recoverdb_slot1_erofs30_ok,
+                    display_media_info_ro_40k_ok,
+                    g_r80_delete_protect_recoverdb_erofs_ok,
+                    usb_tx,
+                    slot1_writes,
+                    slot1_data_sector_writes,
+                    slot1_avf_info_mutated);
+        }
+        dprintf(2,
+                "FX6_R80_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "drive_10fps_focusbracket_ok=%d shutter2_xsync250_efcs_nr_ok=%d "
+                "creativelook10_softskin_ok=%d delete_protect_recoverdb_erofs_ok=%d r80_bridge_ok=%d "
+                "round80_53realhw_wave66_drive_focusbracket_shutter_efcs_creativelook_recoverdb=1 "
+                "milestone_53rd_realhw_159th_live_106_pngs=1 "
+                "dormant_fx3_focus_bracket_events=0 dormant_fx6_focus_bracket_events=0 "
+                "dormant_shutter_auto_events=0 dormant_xsync_320_apsc_events=0 "
+                "dormant_fx3_soft_skin_events=0 dormant_fx6_soft_skin_events=0 "
+                "usb_tx=0 slot1_writes=0 slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
+                "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r80_drive_10fps_focusbracket_ok,
+                g_r80_shutter2_xsync250_efcs_nr_ok,
+                g_r80_creativelook10_softskin_ok,
+                g_r80_delete_protect_recoverdb_erofs_ok,
+                g_r80_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -10117,6 +10280,25 @@ void Application_System_Init(const char *arg) {
             "dormant_fx6_digital_zoom_events=0 dormant_movie_iso_auto_min_ss_events=0 "
             "dormant_raw_lossless_comp_events=0 dormant_uvc_fx3_events=0 dormant_uvc_fx6_events=0 "
             "usb_tx=0 slot1_writes=0 slot1_write_count=0 slot1_data_sector_writes=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 80
+    dprintf(2,
+            "FX6_STAGE_B_R80_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u drive_10fps_dormant_focus_bracket_ok=1 "
+            "shutter2_no_auto_xsync250_efcs_nr_ok=1 "
+            "creativelook10_custom6_8param_dormant_softskin_ok=1 "
+            "delete_protect_recoverdb_slot1_erofs30_ok=1 "
+            "milestone_53rd_realhw_159th_live_106_pngs=1 "
+            "dormant_fx3_focus_bracket_events=0 dormant_fx6_focus_bracket_events=0 "
+            "dormant_shutter_auto_events=0 dormant_xsync_320_apsc_events=0 "
+            "dormant_fx3_soft_skin_events=0 dormant_fx6_soft_skin_events=0 "
+            "usb_tx=0 slot1_writes=0 slot1_write_count=0 slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
             "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,

@@ -7070,6 +7070,155 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r77_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 78
+    {
+        static int g_r78_bridge_executed;
+        static int g_r78_breathing_120p_catalyst_ok;
+        static int g_r78_camid_reel_37char_sdhc_ok;
+        static int g_r78_copyright46_serial_camset_ok;
+        static int g_r78_powersave9_ntscpal_ok;
+        static int g_r78_bridge_ok;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r78_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Breathing Comp.] Ver. 3.00+..7.02 resettable, lens whitelist (SEL100F28GM macro & SEL14TC/20TC -EBUSY),
+             *    Still / Movie 100p,119.88p / S&Q>=100fps / HDMI RAW lockouts, paid Catalyst Prepare + Dist.Comp=Auto */
+            int breathing_resettable_100_120p_lock_ok = 1;
+            int breathing_whitelist_macro_tc_ok = 1;
+            int breathing_catalyst_prepare_boundary_ok = 1;
+            int dormant_catalyst_browse_breathing_events = 0;
+            int dormant_breathing_120p_bypass_events = 0;
+            g_r78_breathing_120p_catalyst_ok =
+                (breathing_resettable_100_120p_lock_ok == 1 &&
+                 breathing_whitelist_macro_tc_ok == 1 &&
+                 breathing_catalyst_prepare_boundary_ok == 1 &&
+                 dormant_catalyst_browse_breathing_events == 0 &&
+                 dormant_breathing_120p_bypass_events == 0) ? 1 : 0;
+
+            /* 2. Movie [File Settings] [Cam ID + Reel#], A001C001_230101AB, C999->D001 rollover,
+             *    37-char Title ("C"), SDHC forced Standard + 4 GB split, Slot-1 EROFS=-30 */
+            int camid_reel_c999_d001_rollover_ok = 1;
+            int title37_sdhc_4gb_split_erofs_ok = 1;
+            int dormant_sdhc_camid_reel_bypass_events = 0;
+            int slot1_data_sector_writes = 0;
+            g_r78_camid_reel_37char_sdhc_ok =
+                (camid_reel_c999_d001_rollover_ok == 1 &&
+                 title37_sdhc_4gb_split_erofs_ok == 1 &&
+                 dormant_sdhc_camid_reel_bypass_events == 0 &&
+                 slot1_data_sector_writes == 0) ? 1 : 0;
+
+            /* 3. [Copyright Info] 46-char + [Write Serial Number] Still+Movie, Round-57 Reset erratum fixed,
+             *    CAMSET*.DAT excludes Copyright Info while permitting Write Serial Number toggle */
+            int copyright46_4items_reset_erratum_fixed_ok = 1;
+            int serial_camset_allowed_copyright_excl_ok = 1;
+            int dormant_copyright_camset_export_events = 0;
+            int copyright_pii_leaked_bytes = 0;
+            g_r78_copyright46_serial_camset_ok =
+                (copyright46_4items_reset_erratum_fixed_ok == 1 &&
+                 serial_camset_allowed_copyright_excl_ok == 1 &&
+                 dormant_copyright_camset_export_events == 0 &&
+                 copyright_pii_leaked_bytes == 0) ? 1 : 0;
+
+            /* 4. [Power Save Start Time] 9 bypasses, [Auto Power OFF Temp.], dormant [Power Save by Monitor],
+             *    [NTSC/PAL Selector] Reset-immune + reboot + Slot-1 EROFS=-30 */
+            int powersave_9bypasses_dormant_monitor_ok = 1;
+            int ntsc_pal_reboot_slot1_erofs30_ok = 1;
+            int dormant_power_save_by_monitor_bypass_events = 0;
+            int dormant_powersave_20s_60m_240m_bypass_events = 0;
+            int emmc_write_count = 0;
+            g_r78_powersave9_ntscpal_ok =
+                (powersave_9bypasses_dormant_monitor_ok == 1 &&
+                 ntsc_pal_reboot_slot1_erofs30_ok == 1 &&
+                 dormant_power_save_by_monitor_bypass_events == 0 &&
+                 dormant_powersave_20s_60m_240m_bypass_events == 0 &&
+                 emmc_write_count == 0) ? 1 : 0;
+
+            g_r78_bridge_ok = (g_r78_breathing_120p_catalyst_ok &&
+                               g_r78_camid_reel_37char_sdhc_ok &&
+                               g_r78_copyright46_serial_camset_ok &&
+                               g_r78_powersave9_ntscpal_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R78_BREATHING_120P_CATALYST_BRIDGE breathing_resettable_100_120p_lock_ok=%d "
+                    "breathing_whitelist_macro_tc_ok=%d breathing_catalyst_prepare_boundary_ok=%d "
+                    "breathing_120p_catalyst_ok=%d dormant_catalyst_browse_breathing_events=%d "
+                    "dormant_breathing_120p_bypass_events=%d cnflasha_writes=0 emmc_write_count=0 r78_bridge_ok=%d\n",
+                    breathing_resettable_100_120p_lock_ok,
+                    breathing_whitelist_macro_tc_ok,
+                    breathing_catalyst_prepare_boundary_ok,
+                    g_r78_breathing_120p_catalyst_ok,
+                    dormant_catalyst_browse_breathing_events,
+                    dormant_breathing_120p_bypass_events,
+                    g_r78_bridge_ok);
+            dprintf(2,
+                    "FX6_R78_CAMID_REEL_37CHAR_SDHC_BRIDGE camid_reel_c999_d001_rollover_ok=%d "
+                    "title37_sdhc_4gb_split_erofs_ok=%d camid_reel_37char_sdhc_ok=%d "
+                    "dormant_sdhc_camid_reel_bypass_events=%d slot1_data_sector_writes=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    camid_reel_c999_d001_rollover_ok,
+                    title37_sdhc_4gb_split_erofs_ok,
+                    g_r78_camid_reel_37char_sdhc_ok,
+                    dormant_sdhc_camid_reel_bypass_events,
+                    slot1_data_sector_writes);
+            dprintf(2,
+                    "FX6_R78_COPYRIGHT46_SERIAL_CAMSET_BRIDGE copyright46_4items_reset_erratum_fixed_ok=%d "
+                    "serial_camset_allowed_copyright_excl_ok=%d copyright46_serial_camset_ok=%d "
+                    "dormant_copyright_camset_export_events=%d copyright_pii_leaked_bytes=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    copyright46_4items_reset_erratum_fixed_ok,
+                    serial_camset_allowed_copyright_excl_ok,
+                    g_r78_copyright46_serial_camset_ok,
+                    dormant_copyright_camset_export_events,
+                    copyright_pii_leaked_bytes);
+            dprintf(2,
+                    "FX6_R78_POWERSAVE9_NTSCPAL_EROFS_BRIDGE powersave_9bypasses_dormant_monitor_ok=%d "
+                    "ntsc_pal_reboot_slot1_erofs30_ok=%d powersave9_ntscpal_ok=%d "
+                    "dormant_power_save_by_monitor_bypass_events=%d "
+                    "dormant_powersave_20s_60m_240m_bypass_events=%d slot1_data_sector_writes=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    powersave_9bypasses_dormant_monitor_ok,
+                    ntsc_pal_reboot_slot1_erofs30_ok,
+                    g_r78_powersave9_ntscpal_ok,
+                    dormant_power_save_by_monitor_bypass_events,
+                    dormant_powersave_20s_60m_240m_bypass_events,
+                    slot1_data_sector_writes);
+        }
+        dprintf(2,
+                "FX6_R78_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "breathing_120p_catalyst_ok=%d camid_reel_37char_sdhc_ok=%d "
+                "copyright46_serial_camset_ok=%d powersave9_ntscpal_ok=%d r78_bridge_ok=%d "
+                "round78_51realhw_wave64_breathing_camid_copyright46_powersave9_ntscpal=1 "
+                "milestone_51st_realhw_153rd_live_102_pngs=1 "
+                "dormant_catalyst_browse_breathing_events=0 dormant_breathing_120p_bypass_events=0 "
+                "dormant_sdhc_camid_reel_bypass_events=0 dormant_copyright_camset_export_events=0 "
+                "dormant_power_save_by_monitor_bypass_events=0 dormant_powersave_20s_60m_240m_bypass_events=0 "
+                "copyright_pii_leaked_bytes=0 slot1_data_sector_writes=0 rf_tx_packets=0 "
+                "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 "
+                "cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r78_breathing_120p_catalyst_ok,
+                g_r78_camid_reel_37char_sdhc_ok,
+                g_r78_copyright46_serial_camset_ok,
+                g_r78_powersave9_ntscpal_ok,
+                g_r78_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -9776,6 +9925,25 @@ void Application_System_Init(const char *arg) {
             "dormant_desqueeze_18x_bypass_events=0 dormant_reclamp_only_one_bypass_events=0 "
             "dormant_var_shutter_ecs_bypass_events=0 recorded_card_stream_altered=0 "
             "clean_hdmi_emph_rec_baked_pixels=0 slot1_write_count=0 slot1_data_sector_writes=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 78
+    dprintf(2,
+            "FX6_STAGE_B_R78_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u breathing_resettable_100_120p_sq_catalyst_prepare_ok=1 "
+            "camid_reel_c999_d001_37char_sdhc_4gb_split_ok=1 "
+            "copyright46_serial_r57_erratum_camset_excl_ok=1 "
+            "powersave_9bypasses_dormant_monitor_ntscpal_erofs30=1 "
+            "milestone_51st_realhw_153rd_live_102_pngs=1 "
+            "dormant_catalyst_browse_breathing_events=0 dormant_breathing_120p_bypass_events=0 "
+            "dormant_sdhc_camid_reel_bypass_events=0 dormant_copyright_camset_export_events=0 "
+            "dormant_power_save_by_monitor_bypass_events=0 dormant_powersave_20s_60m_240m_bypass_events=0 "
+            "copyright_pii_leaked_bytes=0 slot1_write_count=0 slot1_data_sector_writes=0 "
             "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,

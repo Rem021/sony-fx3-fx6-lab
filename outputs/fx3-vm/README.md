@@ -2894,3 +2894,39 @@ FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTEC
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
 ```
+
+## Phase 369（Stage 84 — `84/84` Full-Board VM Co-Emulation Stages!）：Wave-74 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` `[AF Transition Speed]` `1..7` / `[AF Subj. Shift Sensitivity]` `1..5`（跨机共享 `5_RESPONSICE` 错字）/ `[Focus Area Color]` 零休眠色、`[Zebra Display]` `Custom1/2` & S-Log3 `41%/61%/94%` IRE 律与 FX6 单选 `0..109%` 证伪、`[Marker Display]` 15 比例 Clean-HDMI `0 px` 铁律，以及 `[Save/Load Settings]` `Slot 1` `CAMSET*.DAT`（`G92` 纠偏）vs `[Camera Set. Memory]` `CAMPR*.DAT` Tier-0 `EROFS=30` HIL
+
+[`realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_coemulator.py`](realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_coemulator.py)（Schema `phase369_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_coemulation_v1`）作为 **Stage 84（`84/84` Full-Board VM Co-Emulation Stages!）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase369` / `--skip-stage84` / `--no-include-stage84` 跳过，支持 `--include-stage84`），严格遵循 `os.O_RDONLY` + `<= 4096 B` 受界 `os.pread`、`ready_for_live_camera_attach == False`、`physical_device_writes == 0`、`emmc_writes_authorized == False`、`slot1_data_sector_writes == 0`、`rf_tx_packets == 0`、`emmc_nflasha_write_count == 0` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 18 供体 `O_RDONLY` + 受界 `os.pread` 审计（`LOCAL_O_RDONLY_REAL_DONORS` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` **18 份真实供体**（`15` 份紧凑供体：`4` 语言 FX3 `_f`/基础/`_g` `.uxc` + `FX3 libSaveLoadSettings.so` + FX6 `string_english.uxc`/`string_english_2.uxc`；以及 `3` 份受界窗口供体：`FX3 appFw.so`、`FX3-CX95900_ALLLANG-Backup.bin`、`FX6 appFw.so`），在无供体环境（`work_root=None` / `FX3_CLEAN_ROOM_TEST=1` / `FX3_FX6_FORCE_CLEAN_ROOM=1` / `FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__`）无缝回退 `CLEAN_ROOM_SYNTHETIC`（`raw_firmware_bytes_leaked == 0`）。
+2. **Sub-Model 84A — `Focus -> [AF/MF]` & `[Focus Area]` 5 项矩阵与跨机共享 `5_RESPONSICE` ELF 错字 vs FX6 `AF Speed/Sens.` & `PUSH AUTO`**：
+   - FX3 Movie/`S&Q` 独占且支持 Reset（`Can be reset`）：`[AF Transition Speed]`（`1..7`，默认 `5`）、`[AF Subj. Shift Sensitivity]`（`1..5`，默认 `5(Responsive)`，FX3 与 FX6 `appFw.so` 共同携带 `MOVIE_AF_SUBJ_SHIFT_SENS_5_RESPONSICE` 拼写错字）与 `[AF Assist]`（默认 `Off`/`On`，仅 `AF-C`，排除 `SELP1650`、`SEL18200LE` 与无触点纯手动镜头）；vs 全模式适用且抗 Reset（`Not available`）：`[Circ. of Focus Point]`（`Does Not Circulate` 默认 / `Circulate`，仅可移动框型且仅单轴环绕、禁止对角线环绕）与 `[Focus Area Color]` / `[Focus Frame Color]`（`White` 默认 / `Red`，实证 `FX3 appFw.so` **零休眠色** `Yellow`/`Green`/`Blue`，`EOPNOTSUPP=95`）。对比 FX6 `AF Transition Speed 1..7`、`AF Subj. Shift Sens. 1..5`（证伪 `1..7` 传闻）、可指派 `AF Speed/Sens.` 键 + 多功能拨轮、物理 `PUSH AUTO` 与 `Wide / Zone / Flexible Spot`。
+3. **Sub-Model 84B — `[Zebra Display]` `Custom1/2`（`Std+Range` vs `Lower Limit`）、S-Log3 `41%/61%/94%` IRE 律 & FX6 单选 `Off/Zebra1/Zebra2` `0..109%` 证伪**：
+   - FX3 抗 Reset（`Not available`）：`[Zebra Display]`（`Off` 默认/`On`）与 `[Zebra Level]`（`70..100+` 8 档 + `Custom1` 默认 `Std+Range` `0..109% ±1..10%` + `Custom2` 默认 `Lower Limit` `0..109+`），**零 HDMI 斑马线输出（`0 px`，即便 `HDMI Info. Display = On`）**；建模 S-Log3 原生 IRE 律（`Display LUT = Off`：`41%` 18% 灰、`48%..60%` 肤色、`61%` 90% 白、`~94%` 裁切；`Display LUT = On` 时切换采样 LUT 映射亮度）。对比 FX6 `Monitoring -> Zebra` **严格单选 `Off / Zebra1 / Zebra2`（零 `Both` 并发枚举 `EOPNOTSUPP=95`）**、真值 `0%..109%`（证伪 `50..107%` 传闻）、`Zebra1 Aperture 2%..20%` 及 `Output Display -> SDI/HDMI` 路由。
+4. **Sub-Model 84C — `Shooting -> [Marker Display]` Movie/`S&Q` 独占 15 比例矩阵 & Clean-HDMI `0 px` 铁律 vs FX6 `Aspect Mask 0..15` & 像素级 `User Box`**：
+   - FX3 抗 Reset（`Not available`）：`[Marker Display]`、`[Center Marker]`、`[Aspect Marker]`（`Off` + 精确 **15 种比例** = 16 态，含 `9:16`/`4:5`/`1:1`/`4:3`/`13:9`/`14:9`/`15:9`/`16:9` Ver.3.00+/`17:9`/`1.66:1`/`1.85:1`/`1.91:1`/`2:1`/`2.35:1`/`2.39:1`，纯线框无遮罩）、`[Safety Zone]`（`Off`/`80%`/`90%`）与 `[Guideframe]`；仅 Movie/`S&Q`（锁定 Still `EBUSY=16`）、`Focus Magnifier` 时自动隐藏，且**永不输出 HDMI（`0 px`）**，彻底区别于透传 HDMI 的 `[Grid Line Display]`。对比 FX6 `Monitoring -> Marker`（7 色、`Center Marker 1..4/Off`、`Safety Area 80/90/92.5/95%`、`Aspect Mask 0..15` 默认 `12`、`User Box` `Width 3..479`/`Height 3..269`/`H Pos -476..+476`/`V Pos -266..+266` 与 `Output Display -> SDI/HDMI`）。
+5. **Sub-Model 84D — `Setup -> [Reset/Save Settings] -> [Save/Load Settings]`（`Slot 1` 硬锁 `/SONY/SETTING/<model>/CAMSET/CAMSET01..10.DAT`，`G92` 纠偏！）vs `[Camera Set. Memory]`（`1..3` NVRAM + `M1..M4` `CAMPR*.DAT`）& Tier-0 `Slot 1 EROFS=30` 防火墙 vs FX6 `Project -> All File` `Media(B)` `*.ALL`**：
+   - 依 `libSaveLoadSettings.so`（`18,760 B`）与 `ilc/2210` 纠偏 `G92` 历史假设：`[Save/Load Settings]` 位于 **`Setup -> [Reset/Save Settings]`**、**硬锁定 `Slot 1`**（`%c:%s/SONY/SETTING/%s/CAMSET/%s.DAT`，FX3 `PRO/CAMERA` 零命中）、拒绝 `Ver. 1.01 -> Ver. 2.00+`、`MR` 下禁用、Load 后自动重启、强制 `15+` 项排除（含 Network/Cert/`FTPSET`、`WB Custom 1..3`、`Face Memory`、`IPTC`、`Copyright`、`.cube`）；严格区分 `[Camera Set. Memory]`（机身 NVRAM `1..3` + 可经 `[Memory/Recall Media]` 选 `Slot 1`/`Slot 2` 的 `M1..M4` `CAMPR%02d%c.DAT`，支持热召回不重启）。任何向 Tier-0 `Slot 1` 发起的 `Save`/`Delete` 均由 `EROFS=30` 硬拦截（`slot1_data_sector_writes == 0`、`emmc_nflasha_write_count == 0`）。对比 FX6 `Project -> All File`（`Media(B)` `64` 份 `*.ALL`，排除 4 位 `User Menu with Lock` PIN）。
+
+### Phase 369 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 369 Stage 84（84/84 Full-Board VM Co-Emulation Stages!）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_coemulator.py --self-test --json
+
+# 2. 全板 84 阶段（Stage 1..84, 84/84 Full-Board VM Co-Emulation Stages!）统一校验（支持 --include-stage84 与 --skip-phase369 / --skip-stage84 / --no-include-stage84）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage84 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 369 四模式 100 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_coemulator.py -v
+FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_afspeed_shift_zebra_custom_marker15_saveload_camset_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
+```

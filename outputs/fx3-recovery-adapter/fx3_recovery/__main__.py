@@ -271,6 +271,12 @@ from .realhw_69pillar_pixelmap_monitor_recallhold_hdmi_recctrl_vault_verifier im
     verify_69pillar_recovery_suite,
     verify_pixelmap_monitor_recallhold_hdmi_recctrl_and_vault,
 )
+from .realhw_70pillar_milestone_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_vault_verifier import (
+    P380_ENV_CLEAN_ROOM_TEST,
+    run_pillar70_standalone_suite,
+    verify_70pillar_recovery_suite,
+    verify_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_and_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -916,6 +922,27 @@ def main():
     p377_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p377_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p377_master.add_argument('--out', help='optional exclusive new output directory for 69pillar-recovery-master-report.json')
+    p380_p70 = sub.add_parser(
+        'verify-pillar70-areadate-dst-grid-cleanhdmi-saveload-camset-mishoe-vault',
+        help='Phase 380 Milestone Pillar 70 standalone verifier (Wave 68 Area/Date-DST 30-zone/RTC 24h vs FX6 Clock Set, Grid Line HDMI passthrough vs Marker Display/Guideframe Clean-HDMI 0px vs FX6 Marker 80/90/92.5/95%%, Save/Load Settings CAMSET01..10.DAT/libSaveLoadSettings.so/Camera Set. Memory 1..3 vs M1..M4 & Slot-1 EROFS=30 firewall, and Sync Terminal debunk/MI-Shoe Video Light vs XLR-H1 preemption vs FX6 TC IN/OUT & zero GENLOCK)',
+    )
+    p380_p70.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p380_p70.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p380_p70.add_argument('--out', help='optional exclusive new output directory for pillar70-areadate-dst-grid-cleanhdmi-saveload-camset-mishoe-vault-report.json')
+    p380_p70_alias = sub.add_parser(
+        'verify-pillar70-recovery',
+        help='Alias for verify-pillar70-areadate-dst-grid-cleanhdmi-saveload-camset-mishoe-vault (Phase 380 Milestone Pillar 70 standalone 12-scenario suite)',
+    )
+    p380_p70_alias.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p380_p70_alias.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p380_p70_alias.add_argument('--out', help='optional exclusive new output directory for pillar70-areadate-dst-grid-cleanhdmi-saveload-camset-mishoe-vault-report.json')
+    p380_master = sub.add_parser(
+        'verify-70pillar-recovery',
+        help='Phase 380 (70/70 Milestone) unified 70/70 real-hardware recovery master aggregator (Pillars 1..69 + Pillar 70)',
+    )
+    p380_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p380_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p380_master.add_argument('--out', help='optional exclusive new output directory for 70pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -5556,6 +5583,122 @@ def main():
                     f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_69pillar_sha256={report.master_69pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command in (
+            'verify-pillar70-areadate-dst-grid-cleanhdmi-saveload-camset-mishoe-vault',
+            'verify-pillar70-recovery',
+        ):
+            report = run_pillar70_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(
+                    args.out,
+                    {'pillar70-areadate-dst-grid-cleanhdmi-saveload-camset-mishoe-vault-report.json': encode(result)},
+                )
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_70a={report.pillar_70a_areadate_dst_grid_cleanhdmi_vault.scenarios_passed}/{report.pillar_70a_areadate_dst_grid_cleanhdmi_vault.scenarios_total} "
+                    f"pillar_70b={report.pillar_70b_saveload_camset_mishoe_sync_vault.scenarios_passed}/{report.pillar_70b_saveload_camset_mishoe_sync_vault.scenarios_total} "
+                    f"areadate_dst_or_rtc_backup_drift_events={report.areadate_dst_or_rtc_backup_drift_events} "
+                    f"grid_vs_marker_cleanhdmi_drift_events={report.grid_vs_marker_cleanhdmi_drift_events} "
+                    f"saveload_camset_or_campr_slot1_drift_events={report.saveload_camset_or_campr_slot1_drift_events} "
+                    f"sync_terminal_mishoe_or_genlock_drift_events={report.sync_terminal_mishoe_or_genlock_drift_events} "
+                    f"hdmi_marker_guideframe_leak_pixels={report.hdmi_marker_guideframe_leak_pixels} "
+                    f"camset_excluded_item_leak_events={report.camset_excluded_item_leak_events} "
+                    f"camset_excluded_item_leaked_bytes={report.camset_excluded_item_leaked_bytes} "
+                    f"slot1_writes={report.slot1_writes} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_sector_writes={report.slot1_sector_writes} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"cnflasha_writes={report.cnflasha_writes} "
+                    f"rf_packets_transmitted={report.rf_packets_transmitted} "
+                    f"rf_nvs_mutation_bytes={report.rf_nvs_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_eopnotsupp_enforced={report.slot1_vault_erofs_eopnotsupp_enforced} "
+                    f"slot1_vault_erofs_ebusy_enforced={report.slot1_vault_erofs_ebusy_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-70pillar-recovery':
+            report = verify_70pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'70pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_1_5s_fast_cli_budget={report.under_1_5s_fast_cli_budget} "
+                    f"under_2_5s_fast_cli_budget={report.under_2_5s_fast_cli_budget} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar70_a={report.pillar70_a_areadate_dst_grid_cleanhdmi_vault.scenarios_passed}/{report.pillar70_a_areadate_dst_grid_cleanhdmi_vault.scenarios_total} "
+                    f"pillar70_b={report.pillar70_b_saveload_camset_mishoe_sync_vault.scenarios_passed}/{report.pillar70_b_saveload_camset_mishoe_sync_vault.scenarios_total} "
+                    f"areadate_dst_or_rtc_backup_drift_events={report.areadate_dst_or_rtc_backup_drift_events} "
+                    f"grid_vs_marker_cleanhdmi_drift_events={report.grid_vs_marker_cleanhdmi_drift_events} "
+                    f"saveload_camset_or_campr_slot1_drift_events={report.saveload_camset_or_campr_slot1_drift_events} "
+                    f"sync_terminal_mishoe_or_genlock_drift_events={report.sync_terminal_mishoe_or_genlock_drift_events} "
+                    f"hdmi_marker_guideframe_leak_pixels={report.hdmi_marker_guideframe_leak_pixels} "
+                    f"camset_excluded_item_leak_events={report.camset_excluded_item_leak_events} "
+                    f"fx3_area_gmt_zone_count={report.fx3_area_gmt_zone_count} "
+                    f"fx3_has_user_cr2032_slot={report.fx3_has_user_cr2032_slot} "
+                    f"fx3_pro_camera_path_hits={report.fx3_pro_camera_path_hits} "
+                    f"fx3_has_physical_sync_terminal={report.fx3_has_physical_sync_terminal} "
+                    f"fx6_has_ui_dst_switch={report.fx6_has_ui_dst_switch} "
+                    f"fx6_has_physical_genlock_bnc={report.fx6_has_physical_genlock_bnc} "
+                    f"slot1_writes={report.slot1_writes} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_sector_writes={report.slot1_sector_writes} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"cnflasha_writes={report.cnflasha_writes} "
+                    f"rf_packets_transmitted={report.rf_packets_transmitted} "
+                    f"rf_nvs_mutation_bytes={report.rf_nvs_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_eopnotsupp_enforced={report.slot1_vault_erofs_eopnotsupp_enforced} "
+                    f"slot1_vault_erofs_ebusy_enforced={report.slot1_vault_erofs_ebusy_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_70pillar_sha256={report.master_70pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

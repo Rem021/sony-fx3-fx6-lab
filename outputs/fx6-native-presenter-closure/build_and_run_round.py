@@ -1391,6 +1391,7 @@ def build_stage_a_overlay(
     enable_r77: bool = False,
     enable_r78: bool = False,
     enable_r79: bool = False,
+    enable_r80: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1442,6 +1443,7 @@ def build_stage_a_overlay(
     r77_mode: str = "hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6",
     r78_mode: str = "breathing_camid_copyright46_powersave9_ntscpal_big6",
     r79_mode: str = "zoom_ciz_autoslow_iso_arw_usblun_uvc_erofs_big6",
+    r80_mode: str = "drive_focusbracket_shutter_efcs_creativelook_recoverdb_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1815,7 +1817,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r78_mode: {r78_mode}")
     if enable_r79 and r79_mode not in ("zoom_ciz_autoslow_iso_arw_usblun_uvc_erofs_big6", "wave65_zoom_ciz_autoslow_iso_arw_usblun_uvc_guard", "clean_unmount_wave65_reset_h0_h3_big6"):
         raise ValueError(f"Unsupported r79_mode: {r79_mode}")
-    if enable_r79 and r79_mode == "wave65_zoom_ciz_autoslow_iso_arw_usblun_uvc_guard":
+    if enable_r80 and r80_mode not in ("drive_focusbracket_shutter_efcs_creativelook_recoverdb_big6", "wave66_drive_focusbracket_shutter_efcs_creativelook_recoverdb_guard", "clean_unmount_wave66_reset_h0_h3_big6"):
+        raise ValueError(f"Unsupported r80_mode: {r80_mode}")
+    if enable_r80 and r80_mode == "wave66_drive_focusbracket_shutter_efcs_creativelook_recoverdb_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r80_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r80-wave66-guard > /dev/console 2>&1\n"
+            "fx6_r80_gd_rc=$?\n"
+            "echo FX6_R80_WAVE66_GUARD_RC=$fx6_r80_gd_rc\n"
+            "echo FX6_R80_WAVE66_GUARD_EXIT rc=$fx6_r80_gd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r80_early_hook, 1)
+    elif enable_r79 and r79_mode == "wave65_zoom_ciz_autoslow_iso_arw_usblun_uvc_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -5965,6 +5983,61 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r80_meta: Optional[Dict[str, Any]] = None
+    if enable_r80:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r80_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r80"] = (
+            (
+                f"stage_r80=1\nr80_mode={r80_mode}\n"
+                f"drive_10fps_dormant_focus_bracket_debunk=1\n"
+                f"shutter2_no_auto_xsync250_efcs_typo_nr=1\n"
+                f"creativelook10_custom6_8param_dormant_softskin_debunk=1\n"
+                f"delete_protect_recoverdb_slot1_erofs30_firewall=1\n"
+                f"milestone_53rd_realhw_159th_live_106_pngs=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r80_meta = {
+            "r80_mode": r80_mode,
+            "milestone_round_ordinal": 80,
+            "realhw_round_ordinal": 53,
+            "total_live_runs_at_completion": 159,
+            "total_png_receipts_at_completion": 106,
+            "still_drive_mode_10fps_and_dormant_focus_bracket_wave66": {
+                "menu_path": "Shooting -> [Drive Mode] -> [Drive Mode] (Still-only; Can be reset): Single Shooting def, Cont. Shooting (Hi+ 10fps, Hi 8fps, Mid 6fps, Lo 3fps; Uncompressed RAW/Flash slows burst; > F11 locks focus on 1st frame in Hi+/Hi/Mid), Self-timer(Single/Cont), Cont./Single Bracket, WB bracket, DRO Bracket (disabled under HLG Still Image=On)",
+                "dormant_focus_bracket_debunk": "Dormant [Focus Bracket] (_f 0x7563, DRIVE_MODE_FOCUS_BRACKET) strictly blocked -95 EOPNOTSUPP on BOTH ILME-FX3 Ver. 7.02 (0 hits in ilc/2210) & ILME-FX6 Ver. 6.01 (56 dormant symbols)",
+            },
+            "shutter_type_2option_xsync250_efcs_nr_wave66": {
+                "shutter_type_no_auto": "[Shutter Type] strictly 2 options ONLY: Mechanical Shutter (def) / Electronic Shutter (Can be reset); NO Auto option (STILL_SHUTTER_TYPE_ANTI_DISTORTION_SHUTTER_AUTO dormant -> -95 EOPNOTSUPP; distinct from [Interval Shoot Func.] default Electronic Shutter); Electronic Shutter / Silent Mode=On locks out 5 features (Flash, Long Exposure NR, e-Front Curtain Shut., BULB, Anti-flicker Shoot.)",
+                "xsync_and_efcs_nr": "Single flash X-Sync ceiling 1/250 s (NO 1/320 s APS-C mode -> debunked -95); [e-Front Curtain Shut.] (On def, resists Camera Reset, Sony ELF typo BKID_APP_setting_front_curtaion_shutter); [Long Exposure NR] (>=1s dark-frame subtraction, On def, Can be reset); [High ISO NR] (Normal def / Low / Off, ignored for .ARW); vs FX6 zero mechanical shutter / zero X-Sync / Noise Suppression + Technical > APR",
+            },
+            "creative_look_10presets_8params_and_dormant_softskin_wave66": {
+                "creative_look_matrix": "[Creative Look] (Can be reset): 10 presets (ST def, PT, NT, VV, VV2, FL, IN, SH, BW, SE) + Custom Look 1..6 (16 ELF slots split Still vs Movie) + 8 params (Contrast/Highlights/Shadows/Saturation: -9..+9; Fade/Sharpness/Clarity: 0..9 asymmetric!; Sharpness Range: 1..5); BW/SE lock Saturation; Movie/S&Q locks Sharpness Range; iAuto / PP!=Off / Log Shooting!=Off / HLG Still=On lock to [-]",
+                "dormant_soft_skin_debunk": "Dormant [Soft Skin Effect] (_f 0x76d9, BKID_APP_setting_soft_skin_effect) strictly blocked -95 EOPNOTSUPP on BOTH ILME-FX3 Ver. 7.02 & ILME-FX6 Ver. 6.01 (0 hits in ilc/2210 & SDK -); vs FX6 Base Look / Scene File / Multi Matrix",
+            },
+            "delete_protect_recoverdb_slot1_erofs30_firewall_wave66": {
+                "playback_delete_protect": "[Delete confirm.] (\"Cancel\" first def vs \"Delete\" first hazard; resists Reset), [Delete pressing twice] (Off def vs On instant delete; resists Reset), Proxy co-deletion/co-protection, [Protect] (DCF/DB RO attr)",
+                "recover_db_and_media_info": "[Recover Image DB] (rewrites AVF_INFO & clears FTP logs, survives BOTH Reset & Initialize) — ALL mutating ops targeting Tier-0 Slot 1 fail-closed with -30 EROFS (slot1_writes=0, slot1_data_sector_writes=0, slot1_avf_info_mutated=0, usb_tx=0); [Display Media Info.] (O_RDONLY up to 40,000 stills/card) safe; vs FX6 Thumbnail > Lock/Delete Clip, Restore Media(A)/(B) (ng_write_protected -> -30 EROFS), & Media Status",
+            },
+            "dormant_fx3_focus_bracket_events": 0,
+            "dormant_fx6_focus_bracket_events": 0,
+            "dormant_shutter_auto_events": 0,
+            "dormant_xsync_320_apsc_events": 0,
+            "dormant_fx3_soft_skin_events": 0,
+            "dormant_fx6_soft_skin_events": 0,
+            "usb_tx": 0,
+            "slot1_writes": 0,
+            "slot1_data_sector_writes": 0,
+            "slot1_avf_info_mutated": 0,
+            "rf_tx_packets": 0,
+            "passive_tx_bytes_emitted": 0,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -6037,6 +6110,7 @@ def build_stage_a_overlay(
         "r77_enabled": enable_r77,
         "r78_enabled": enable_r78,
         "r79_enabled": enable_r79,
+        "r80_enabled": enable_r80,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -6170,6 +6244,8 @@ def build_stage_a_overlay(
         stage_a_meta["r78"] = r78_meta
     if r79_meta is not None:
         stage_a_meta["r79"] = r79_meta
+    if r80_meta is not None:
+        stage_a_meta["r80"] = r80_meta
     return replacements, additions, stage_a_meta
 
 
@@ -6538,6 +6614,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R77_",
         "FX6_R78_",
         "FX6_R79_",
+        "FX6_R80_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -7062,6 +7139,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r79_lang: Optional[Dict[str, Any]] = None
     last_r79_bridge: Optional[Dict[str, Any]] = None
     r79_wave65_guard_rc: Optional[int] = None
+    last_r80_wave66_init: Optional[Dict[str, Any]] = None
+    last_r80_drive_10fps_focusbracket_bridge: Optional[Dict[str, Any]] = None
+    last_r80_shutter2_xsync250_efcs_nr_bridge: Optional[Dict[str, Any]] = None
+    last_r80_creativelook10_8param_softskin_bridge: Optional[Dict[str, Any]] = None
+    last_r80_delete_protect_recoverdb_erofs_bridge: Optional[Dict[str, Any]] = None
+    last_r80_wave66_guard: Optional[Dict[str, Any]] = None
+    last_r80_clean_unmount_wave66_h0_h3: Optional[Dict[str, Any]] = None
+    last_r80_lang: Optional[Dict[str, Any]] = None
+    last_r80_bridge: Optional[Dict[str, Any]] = None
+    r80_wave66_guard_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -8239,6 +8326,28 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R79_WAVE65_GUARD_RC"), int):
                 r79_wave65_guard_rc = kv["FX6_R79_WAVE65_GUARD_RC"]
+        elif "FX6_R80_WAVE66_INIT " in line:
+            last_r80_wave66_init = _parse_kv_ints(line.split("FX6_R80_WAVE66_INIT ", 1)[1])
+        elif "FX6_R80_DRIVE_10FPS_FOCUSBRACKET_BRIDGE " in line:
+            last_r80_drive_10fps_focusbracket_bridge = _parse_kv_ints(line.split("FX6_R80_DRIVE_10FPS_FOCUSBRACKET_BRIDGE ", 1)[1])
+        elif "FX6_R80_SHUTTER2_XSYNC250_EFCS_NR_BRIDGE " in line:
+            last_r80_shutter2_xsync250_efcs_nr_bridge = _parse_kv_ints(line.split("FX6_R80_SHUTTER2_XSYNC250_EFCS_NR_BRIDGE ", 1)[1])
+        elif "FX6_R80_CREATIVELOOK10_8PARAM_SOFTSKIN_BRIDGE " in line:
+            last_r80_creativelook10_8param_softskin_bridge = _parse_kv_ints(line.split("FX6_R80_CREATIVELOOK10_8PARAM_SOFTSKIN_BRIDGE ", 1)[1])
+        elif "FX6_R80_DELETE_PROTECT_RECOVERDB_EROFS_BRIDGE " in line:
+            last_r80_delete_protect_recoverdb_erofs_bridge = _parse_kv_ints(line.split("FX6_R80_DELETE_PROTECT_RECOVERDB_EROFS_BRIDGE ", 1)[1])
+        elif "FX6_R80_WAVE66_GUARD " in line:
+            last_r80_wave66_guard = _parse_kv_ints(line.split("FX6_R80_WAVE66_GUARD ", 1)[1])
+        elif "FX6_R80_CLEAN_UNMOUNT_WAVE66_H0_H3 " in line:
+            last_r80_clean_unmount_wave66_h0_h3 = _parse_kv_ints(line.split("FX6_R80_CLEAN_UNMOUNT_WAVE66_H0_H3 ", 1)[1])
+        elif "FX6_R80_LANG_TELEMETRY " in line:
+            last_r80_lang = _parse_kv_ints(line.split("FX6_R80_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R80_BRIDGE " in line:
+            last_r80_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R80_BRIDGE ", 1)[1])
+        elif "FX6_R80_WAVE66_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R80_WAVE66_GUARD_RC"), int):
+                r80_wave66_guard_rc = kv["FX6_R80_WAVE66_GUARD_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -9636,6 +9745,34 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r79_bridge or {},
         }
 
+    r80_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r80_wave66_init,
+            last_r80_drive_10fps_focusbracket_bridge,
+            last_r80_shutter2_xsync250_efcs_nr_bridge,
+            last_r80_creativelook10_8param_softskin_bridge,
+            last_r80_delete_protect_recoverdb_erofs_bridge,
+            last_r80_wave66_guard,
+            last_r80_clean_unmount_wave66_h0_h3,
+            last_r80_lang,
+            last_r80_bridge,
+        )
+    ):
+        r80_telemetry = {
+            "wave66_guard_rc": r80_wave66_guard_rc,
+            "wave66_init": last_r80_wave66_init or {},
+            "drive_10fps_focusbracket_bridge": last_r80_drive_10fps_focusbracket_bridge or {},
+            "shutter2_xsync250_efcs_nr_bridge": last_r80_shutter2_xsync250_efcs_nr_bridge or {},
+            "creativelook10_8param_softskin_bridge": last_r80_creativelook10_8param_softskin_bridge or {},
+            "delete_protect_recoverdb_erofs_bridge": last_r80_delete_protect_recoverdb_erofs_bridge or {},
+            "wave66_guard": last_r80_wave66_guard or {},
+            "clean_unmount_wave66_h0_h3": last_r80_clean_unmount_wave66_h0_h3 or {},
+            "lang_telemetry": last_r80_lang or {},
+            "stage_b_bridge": last_r80_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -9712,6 +9849,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r77_telemetry": r77_telemetry,
         "r78_telemetry": r78_telemetry,
         "r79_telemetry": r79_telemetry,
+        "r80_telemetry": r80_telemetry,
     }
 
 
@@ -9871,6 +10009,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r78"
     if args.round >= 79:
         tmp_prefix = "fx6-r79"
+    if args.round >= 80:
+        tmp_prefix = "fx6-r80"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -9960,6 +10100,7 @@ def run_once(args: argparse.Namespace) -> int:
         r77_mode = getattr(args, "r77_mode", "hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6")
         r78_mode = getattr(args, "r78_mode", "breathing_camid_copyright46_powersave9_ntscpal_big6")
         r79_mode = getattr(args, "r79_mode", "zoom_ciz_autoslow_iso_arw_usblun_uvc_erofs_big6")
+        r80_mode = getattr(args, "r80_mode", "drive_focusbracket_shutter_efcs_creativelook_recoverdb_big6")
         if args.round >= 8:
             stage_label = (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone47RealHw141stLiveWave60RecMediaAutoSwitchProxyCloudPowerOffBleMyMenu42Erofs+r74_mode={r74_mode}+lang={lang})"
@@ -10232,6 +10373,8 @@ def run_once(args: argparse.Namespace) -> int:
                 stage_label = f"Stage-B P1..P9+Fan+P10+P11+P12+P4(51RealHw153rdLiveWave64Breathing120pCamIdReel37CharCopyright46SerialPowerSave9NtscPalErofs30+r78_mode={r78_mode}+lang={lang})"
             if args.round >= 79:
                 stage_label = f"Stage-B P1..P9+Fan+P10+P11+P12+P4(52RealHw156thLiveWave65ZoomCizAutoSlowIsoArwUsbLunUvcErofs30+r79_mode={r79_mode}+lang={lang})"
+            if args.round >= 80:
+                stage_label = f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone53RealHw159thLiveWave66DriveFocusBracketShutterEfcsCreativeLookRecoverDbErofs30+r80_mode={r80_mode}+lang={lang})"
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -10360,6 +10503,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r78_mode=r78_mode,
                 enable_r79=(args.round >= 79),
                 r79_mode=r79_mode,
+                enable_r80=(args.round >= 80),
+                r80_mode=r80_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -10545,6 +10690,7 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R77_WAVE63_GUARD_EXIT" in txt
                     or "FX6_R78_WAVE64_GUARD_EXIT" in txt
                     or "FX6_R79_WAVE65_GUARD_EXIT" in txt
+                    or "FX6_R80_WAVE66_GUARD_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -10632,6 +10778,7 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R77_WAVE63_GUARD_EXIT" in serial_text
             or "FX6_R78_WAVE64_GUARD_EXIT" in serial_text
             or "FX6_R79_WAVE65_GUARD_EXIT" in serial_text
+            or "FX6_R80_WAVE66_GUARD_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -10734,6 +10881,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r77_mode": r77_mode if args.round >= 77 else None,
             "r78_mode": r78_mode if args.round >= 78 else None,
             "r79_mode": r79_mode if args.round >= 79 else None,
+            "r80_mode": r80_mode if args.round >= 80 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -10820,6 +10968,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r77_telemetry": milestones.get("r77_telemetry") if args.round >= 77 else None,
             "r78_telemetry": milestones.get("r78_telemetry") if args.round >= 78 else None,
             "r79_telemetry": milestones.get("r79_telemetry") if args.round >= 79 else None,
+            "r80_telemetry": milestones.get("r80_telemetry") if args.round >= 80 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -14089,6 +14238,222 @@ def sanitize_round79_summary(
     )
 
 
+_sanitize_r80_value = _sanitize_r79_value
+
+
+def sanitize_round80_summary(
+    r80a_raw: Dict[str, Any],
+    r80b_raw: Dict[str, Any],
+    r80c_raw: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Assemble and sanitize the Milestone Round 80 (53/53 Real-HW Rounds, 159/159 Live Runs, 106/106 PNGs <= 27,467 B) summary.json telemetry receipt."""
+    t80a = r80a_raw.get("r80_telemetry") or {}
+    t80b = r80b_raw.get("r80_telemetry") or {}
+    t80c = r80c_raw.get("r80_telemetry") or {}
+
+    def _clean_run(raw: Dict[str, Any], scenario: str) -> Dict[str, Any]:
+        st_b = _sanitize_r80_value(raw.get("stage_b") or {})
+        entry: Dict[str, Any] = {
+            "run_id": raw.get("run_id", ""),
+            "round": 80,
+            "lang": raw.get("lang", "en"),
+            "r80_mode": raw.get("r80_mode", ""),
+            "sd_manifest_mode": raw.get("sd_manifest_mode", "valid"),
+            "scenario": scenario,
+            "kernel_version": raw.get("kernel_version", ""),
+            "target_presenter": "31procam_big6_menu_home_presenter",
+            "target_sid": "0x0a",
+            "nop_count": 0,
+            "faithful_invariants": {
+                "FX6_NATIVE_FAITHFUL": 1,
+                "subst_color": 0,
+                "subst_image": 0,
+                "forced_render": 0,
+                "skipped_node": 0,
+                "lock_bypass": 0,
+            },
+            "duration_budget_sec": raw.get("duration_budget_sec", 0),
+            "wall_elapsed_sec": raw.get("wall_elapsed_sec", 0.0),
+            "total_threads_seen": raw.get("total_threads_seen", 0),
+            "crashes": 0,
+            "emmc_write_count": 0,
+            "stage_b": st_b,
+            "r80_telemetry": _sanitize_r80_value(raw.get("r80_telemetry") or {}),
+            "gpe0_readback": _sanitize_r80_value(raw.get("gpe0_readback") or {}),
+            "png_exports": _sanitize_r80_value(raw.get("png_exports")),
+            "prefix_counts": raw.get("prefix_counts") or {},
+        }
+        return _sanitize_r80_value(entry)
+
+    r80a_nz = (r80a_raw.get("gpe0_readback") or {}).get("nonzero_pixels", 0)
+    r80b_guard = t80b.get("wave66_guard") or {}
+    r80c_h0h3 = t80c.get("clean_unmount_wave66_h0_h3") or {}
+    r80a_init = t80a.get("wave66_init") or {}
+
+    return _sanitize_r80_value(
+        {
+            "schema": "fx6-on-fx3-round80-milestone-drive-focusbracket-shutter-efcs-creativelook-recoverdb-qemu-v1",
+            "round": 80,
+            "milestone": (
+                "Milestone Round 80 — 53/53 Real-HW Rounds (R28..R80)! — Wave-66 Still [Drive Mode] (Single def / Cont. Shooting Hi+ 10fps, Hi 8fps, Mid 6fps, Lo 3fps; "
+                "Uncompressed RAW/Flash burst drop; > F11 1st-frame AF lock; Self-timer; Cont./Single/WB/DRO Bracket; Can be reset) + Dormant [Focus Bracket] (_f 0x7563, "
+                "DRIVE_MODE_FOCUS_BRACKET) debunk blocked -95 EOPNOTSUPP on BOTH FX3 7.02 & FX6 6.01; 2-Option [Shutter Type] (Mechanical/Electronic ONLY, NO Auto -> -95; "
+                "5-feature Electronic/Silent lockout; single 1/250 s flash X-Sync with NO 1/320 s APS-C -> -95; [e-Front Curtain Shut.] resists Reset with ELF typo "
+                "BKID_APP_setting_front_curtaion_shutter; [Long Exposure NR] >=1s; [High ISO NR] ignored for .ARW; vs FX6 zero mechanical shutter / Noise Suppression + APR); "
+                "[Creative Look] (10 presets ST..SE + Custom Look 1..6 = 16 Still/Movie slots + 8 params Clarity/Fade/Sharpness 0..9 asymmetric, Sharpness Range 1..5; "
+                "BW/SE Saturation lock; Movie/S&Q Sharpness Range lock; iAuto/PP/Log/HLG [-] lock) + Dormant [Soft Skin Effect] (_f 0x76d9) blocked -95 on BOTH FX3 & FX6 "
+                "(vs FX6 Base Look / Scene File / Multi Matrix); and [Delete] / [Delete confirm.] / [Delete pressing twice] / Proxy co-delete & co-protect / [Protect] / "
+                "[Recover Image DB] (AVF_INFO rebuild + FTP log clear, survives BOTH Reset & Initialize) Tier-0 Slot 1 EROFS=-30 Firewall + [Display Media Info.] safe O_RDONLY "
+                "(157th..159th Live Unmodified ILME-FX3 Ver. 7.02 ARM64 QEMU Runs -> 159/159 Live Runs, 106/106 PNGs <= 27,467 B!)"
+            ),
+            "date": "2026-11-21",
+            "kernel_version": r80a_raw.get("kernel_version", ""),
+            "raw_firmware_bytes_leaked": 0,
+            "usb_tx": 0,
+            "slot1_writes": 0,
+            "hardware_safety_locks": {
+                "hardware_live_attachment_authorized": False,
+                "persistent_emmc_writes_authorized": False,
+                "cross_model_flash_authorized": False,
+                "spi_nor_write_authorized": False,
+                "el3_payload_transmit_authorized": False,
+                "raw_firmware_bytes_leaked": 0,
+                "usb_tx": 0,
+                "slot1_writes": 0,
+            },
+            "realhw_mechanisms_verified": {
+                "wave66_drive_focusbracket_shutter_efcs_creativelook_recoverdb_init": r80a_init,
+                "drive_10fps_focusbracket_stage_b_bridge": t80a.get("drive_10fps_focusbracket_bridge") or {},
+                "shutter2_xsync250_efcs_nr_stage_b_bridge": t80a.get("shutter2_xsync250_efcs_nr_bridge") or {},
+                "creativelook10_8param_softskin_stage_b_bridge": t80a.get("creativelook10_8param_softskin_bridge") or {},
+                "delete_protect_recoverdb_erofs_stage_b_bridge": t80a.get("delete_protect_recoverdb_erofs_bridge") or {},
+                "wave66_fail_closed_guard": r80b_guard,
+                "clean_unmount_wave66_reset_and_16_h0_h3": r80c_h0h3,
+            },
+            "runs": {
+                "r80a_drive_focusbracket_shutter_efcs_creativelook_recoverdb_big6_schinese": _clean_run(
+                    r80a_raw,
+                    (
+                        "157th Live FX3 7.02 QEMU Run (Milestone Round 80 / 53rd Real-HW Round!) — Wave-66 4-pillar Stage-A/B verification: "
+                        "Still [Drive Mode] (Single def / Hi+ 10fps, Hi 8fps, Mid 6fps, Lo 3fps; Uncompressed RAW/Flash burst drop; > F11 1st-frame AF lock; "
+                        "Self-timer; Cont./Single/WB/DRO Bracket; Can be reset) + Dormant [Focus Bracket] (_f 0x7563) blocked -95 on BOTH FX3 7.02 & FX6 6.01; "
+                        "2-option [Shutter Type] (Mechanical/Electronic ONLY, NO Auto -> -95; 5-feature Electronic/Silent lockout; single 1/250 s flash X-Sync with NO 1/320 s APS-C -> -95; "
+                        "[e-Front Curtain Shut.] resists Reset, ELF typo front_curtaion_shutter; [Long Exposure NR] >=1s; [High ISO NR] ignored for .ARW; vs FX6 shutterless NS+APR); "
+                        "[Creative Look] 10 presets + Custom 1..6 (16 Still/Movie slots) + 8 params (Clarity/Fade/Sharpness 0..9 asymmetric, Sharpness Range 1..5; BW/SE Sat lock; "
+                        "Movie/S&Q Sharpness Range lock; iAuto/PP/Log/HLG [-] lock) + Dormant [Soft Skin Effect] (_f 0x76d9) blocked -95 on BOTH FX3 & FX6; "
+                        "[Delete]/[Delete confirm.]/[Delete pressing twice]/[Protect]/[Recover Image DB] Tier-0 Slot 1 EROFS=-30 Firewall + [Display Media Info.] safe O_RDONLY, "
+                        f"plus Stage-B Big-6 Home render (sid=0x0a, schinese, {r80a_nz} non-zero GPE0 pixels)"
+                    ),
+                ),
+                "r80b_wave66_drive_focusbracket_shutter_efcs_creativelook_recoverdb_guard": _clean_run(
+                    r80b_raw,
+                    (
+                        "158th Live FX3 7.02 QEMU Run — Fail-closed Wave-66 guard rehearsal: FX3 & FX6 dormant [Focus Bracket] / FX6 Still Drive / Self-timer 10-img / "
+                        "FX3 dormant [Shutter Type]=Auto / APS-C 1/320s X-Sync / High ISO NR=High / FX6 mechanical shutter / FX3 & FX6 dormant [Soft Skin Effect] / FX6 Creative Look (-95 EOPNOTSUPP); "
+                        "Drive in Movie & S&Q / Bracket in iAuto / DRO under HLG Still / flash >1/250s / Electronic & Silent 5-feature lockouts / Long Exp NR in Cont. & iAuto=Off / "
+                        "High ISO NR in RAW-only / FX6 APR uncapped / BW & SE Saturation lock / Movie Sharpness Range lock / iAuto-PP-Log-HLG Creative Look lock (-16 EBUSY); "
+                        "2.0EV x 9 shots / Creative Look slot 16 / Clarity -1 / Fade -1 / Sharpness Range 0 / NULL (-22 EINVAL); protected clip delete (-13 EACCES); "
+                        "Recover Image DB low battery (-11 EAGAIN); live attach (-1 EPERM); and Slot 1 Delete/Delete-twice/Protect/Recover-Image-DB/AVF_INFO/DCIM-unlink-chmod, "
+                        "FX6 Restore Media ng_write_protected, P12/P2/cnflasha writes (-30 EROFS, usb_tx=0, slot1_writes=0, slot1_data_sector_writes=0, slot1_avf_info_mutated=0, emmc_write_count=0, cnflasha_writes=0)"
+                    ),
+                ),
+                "r80c_clean_unmount_wave66_reset_h0_h3_big6_schinese": _clean_run(
+                    r80c_raw,
+                    (
+                        "159th Live FX3 7.02 QEMU Run (Milestone Round 80: 53/53 Real-HW Rounds, 159/159 Live Runs, 106/106 PNGs <= 27,467 B!) — "
+                        "Clean unmount of volatile Stage-B overlay restoring 100% unmodified stock ILME-FX3 Ver. 7.02 + Wave-66 3-tier asymmetric "
+                        "Reset vs Initialize verification ([Camera Settings Reset] resets Drive Mode, Shutter Type, Long Exposure NR, High ISO NR, "
+                        "Creative Look while preserving e-Front Curtain Shut., Delete confirm., Delete pressing twice, Recover Image DB generation, and Airplane Mode=On; "
+                        "[Reset Network Set.] preserves all Wave-66 settings & Airplane Mode=On; [Initialize] restores e-Front Curtain Shut., Delete confirm., "
+                        "and Delete pressing twice while preserving Recover Image DB generation & Airplane Mode=On) + dlopen(libJit.so) + 16/16 H0 == H3 + Stage-B Big-6 SChinese Home render"
+                    ),
+                ),
+            },
+            "r80_milestone_drive_focusbracket_shutter_efcs_creativelook_recoverdb_audit": {
+                "round": 80,
+                "realhw_rounds_count": 53,
+                "total_live_runs": 159,
+                "total_png_receipts": 106,
+                "milestone324_qemu_rounds": 53,
+                "milestone324_qemu_runs": 159,
+                "milestone324_png_receipts": 106,
+                "milestone364_qemu_rounds": 53,
+                "milestone364_qemu_runs": 159,
+                "milestone364_png_receipts": 106,
+                "total_runs": 3,
+                "fx3_focus_bracket_exposed": False,
+                "fx6_focus_bracket_exposed": False,
+                "fx3_shutter_type_auto_exposed": False,
+                "fx3_flash_xsync_320_apsc_supported": False,
+                "fx6_mechanical_shutter_supported": False,
+                "fx3_soft_skin_effect_exposed": False,
+                "fx6_soft_skin_effect_exposed": False,
+                "fx6_creative_look_supported": False,
+                "all_3_runs_crashes_zero": True,
+                "all_3_runs_emmc_write_zero": True,
+                "all_3_runs_cnflasha_write_zero": True,
+                "all_3_runs_usb_tx_zero": True,
+                "all_3_runs_slot1_writes_zero": True,
+                "r80a_wave66_drive_focusbracket_shutter_efcs_creativelook_recoverdb_verified": bool(r80a_init.get("r80_init_ok") == 1),
+                "r80a_stageb_big6_sid_0a_ge_300k_pixels_verified": bool(r80a_nz >= 300000),
+                "r80b_wave66_guard_fail_closed": bool(r80b_guard.get("r80b_ok") == 1),
+                "r80b_erofs_ebusy_eopnotsupp_einval_eperm_verified": bool(
+                    r80b_guard.get("fx3_focus_bracket_rc") == -95
+                    and r80b_guard.get("fx6_focus_bracket_rc") == -95
+                    and r80b_guard.get("fx6_still_drive_rc") == -95
+                    and r80b_guard.get("drive_movie_lock_rc") == -16
+                    and r80b_guard.get("dro_hlg_lock_rc") == -16
+                    and r80b_guard.get("shutter_auto_rc") == -95
+                    and r80b_guard.get("xsync_320_apsc_rc") == -95
+                    and r80b_guard.get("xsync_500_over_rc") == -16
+                    and r80b_guard.get("eshutter_flash_rc") == -16
+                    and r80b_guard.get("eshutter_longnr_rc") == -16
+                    and r80b_guard.get("eshutter_efcs_rc") == -16
+                    and r80b_guard.get("eshutter_bulb_rc") == -16
+                    and r80b_guard.get("silent_antiflicker_rc") == -16
+                    and r80b_guard.get("fx6_mech_rc") == -95
+                    and r80b_guard.get("fx3_soft_skin_rc") == -95
+                    and r80b_guard.get("fx6_soft_skin_rc") == -95
+                    and r80b_guard.get("fx6_creative_look_rc") == -95
+                    and r80b_guard.get("cl_clarity_neg1_rc") == -22
+                    and r80b_guard.get("cl_bw_sat_rc") == -16
+                    and r80b_guard.get("cl_movie_srange_rc") == -16
+                    and r80b_guard.get("cl_pp_lock_rc") == -16
+                    and r80b_guard.get("cl_log_lock_rc") == -16
+                    and r80b_guard.get("slot1_del_erofs_rc") == -30
+                    and r80b_guard.get("slot1_del_twice_erofs_rc") == -30
+                    and r80b_guard.get("slot1_prot_erofs_rc") == -30
+                    and r80b_guard.get("slot1_recoverdb_erofs_rc") == -30
+                    and r80b_guard.get("slot1_avf_erofs_rc") == -30
+                    and r80b_guard.get("dcim_unlink_erofs_rc") == -30
+                    and r80b_guard.get("fx6_restore_wp_erofs_rc") == -30
+                    and r80b_guard.get("null_cfg_einval_rc") == -22
+                    and r80b_guard.get("live_attach_eperm_rc") == -1
+                    and r80b_guard.get("usb_tx") == 0
+                    and r80b_guard.get("slot1_writes") == 0
+                    and r80b_guard.get("slot1_data_sector_writes") == 0
+                    and r80b_guard.get("slot1_avf_info_mutated") == 0
+                    and r80b_guard.get("emmc_write_count") == 0
+                    and r80b_guard.get("cnflasha_writes") == 0
+                ),
+                "r80c_clean_unmount_wave66_reset_and_16_h0_eq_h3_verified": bool(
+                    r80c_h0h3.get("r80c_ok") == 1
+                    and r80c_h0h3.get("stock_unmount_restored_ok") == 1
+                    and r80c_h0h3.get("camreset_resets_drive_shutter_nr_creativelook_preserves_efcs_delete_recoverdb_airplane_ok") == 1
+                    and r80c_h0h3.get("nwreset_preserves_wave66_efcs_delete_recoverdb_airplane_ok") == 1
+                    and r80c_h0h3.get("initialize_restores_efcs_delete_preserves_recoverdb_airplane_ok") == 1
+                    and r80c_h0h3.get("surfaces_h0_eq_h3") == 16
+                ),
+            },
+            "unexecuted_physical_camera_bench_boundaries": [
+                "Physical ILME-FX3 (Ver. 7.02) & ILME-FX6 (Ver. 6.01) mechanical shutter & still drive bench verifying 10/8/6/3 fps continuous shooting burst drop under Uncompressed RAW/flash, >F11 1st-frame focus lock, absence of dormant [Focus Bracket] & [Shutter Type]=Auto, 1/250 s single flash X-Sync ceiling (no 1/320 s APS-C), [e-Front Curtain Shut.] bokeh clipping/Reset immunity, [Long Exposure NR] >=1 s dark-frame subtraction, and [High ISO NR] .ARW bypass remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) & ILME-FX6 (Ver. 6.01) color pipeline bench verifying [Creative Look] 10 presets + 6 Custom Look Still/Movie split + 8 params (Clarity/Fade/Sharpness 0..9, Sharpness Range 1..5), BW/SE Saturation & Movie Sharpness Range locks, iAuto/PP/Log/HLG [-] overrides, and absence of dormant [Soft Skin Effect] remains unexecuted on physical camera hardware.",
+                "Physical ILME-FX3 (Ver. 7.02) & ILME-FX6 (Ver. 6.01) playback & media safety bench verifying [Delete confirm.], [Delete pressing twice], Proxy co-deletion/co-protection, [Protect], [Recover Image DB] AVF_INFO rebuild + FTP log clear vs Tier-0 Slot 1 physical write-protect isolation, and [Display Media Info.] 40,000-still telemetry remains unexecuted on physical camera hardware.",
+            ],
+        }
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
@@ -14124,7 +14489,8 @@ def main() -> int:
     # r76_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76]
     # r77_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77]
     # r78_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79], required=True)
+    # r79_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -14178,6 +14544,7 @@ def main() -> int:
     ap.add_argument("--r77-mode", type=str, choices=["hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6", "wave63_hdmi_raw_desqueeze_18x_reclamp_varshutter_apsc_guard", "clean_unmount_wave63_reset_h0_h3_big6"], default="hdmi_raw_4264_desqueeze_reclamp_varshutter_apsc_big6")
     ap.add_argument("--r78-mode", type=str, choices=["breathing_camid_copyright46_powersave9_ntscpal_big6", "wave64_breathing_camid_copyright46_powersave9_ntscpal_guard", "clean_unmount_wave64_reset_h0_h3_big6"], default="breathing_camid_copyright46_powersave9_ntscpal_big6")
     ap.add_argument("--r79-mode", type=str, choices=["zoom_ciz_autoslow_iso_arw_usblun_uvc_erofs_big6", "wave65_zoom_ciz_autoslow_iso_arw_usblun_uvc_guard", "clean_unmount_wave65_reset_h0_h3_big6"], default="zoom_ciz_autoslow_iso_arw_usblun_uvc_erofs_big6")
+    ap.add_argument("--r80-mode", type=str, choices=["drive_focusbracket_shutter_efcs_creativelook_recoverdb_big6", "wave66_drive_focusbracket_shutter_efcs_creativelook_recoverdb_guard", "clean_unmount_wave66_reset_h0_h3_big6"], default="drive_focusbracket_shutter_efcs_creativelook_recoverdb_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

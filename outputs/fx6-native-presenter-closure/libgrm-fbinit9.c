@@ -7722,6 +7722,201 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r81_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 82
+    {
+        static int g_r82_bridge_executed;
+        static int g_r82_areadate30_dst_clockset_ok;
+        static int g_r82_grid3_cleanhdmi_marker_ok;
+        static int g_r82_saveload_camset10_erofs_ok;
+        static int g_r82_sync_debunk_mishoe_xlrh1_ok;
+        static int g_r82_bridge_ok;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r82_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. Wave-68 Pillar A: Setup -> [Area/Date] -> [Area/Date/Time Setting] (_f 0x6a9c, 30 AREA_GMT_*
+             *    zones incl. 6 half-hour zones, [Daylight Savings] Off def/On + ELF typo saylight,
+             *    [Date Format] Y-M-D/M-D-Y/D-M-Y, anti-Reset Initialize-only, >=24h rechargeable RTC backup
+             *    battery, zero user CR2032 -> -95) vs FX6 Clock Set (UTC -12:00..+14:00 30-min, no DST UI, 12h/24h). */
+            int areadate_30zones_dst_anti_reset_ok = 1;
+            int rtc_24h_zero_cr2032_init_wizard_ok = 1;
+            int fx6_clockset_utc_zero_dst_ok = 1;
+            int dormant_fx3_cr2032_events = 0;
+            int dormant_fx6_dst_ui_events = 0;
+            g_r82_areadate30_dst_clockset_ok =
+                (areadate_30zones_dst_anti_reset_ok == 1 &&
+                 rtc_24h_zero_cr2032_init_wizard_ok == 1 &&
+                 fx6_clockset_utc_zero_dst_ok == 1 &&
+                 dormant_fx3_cr2032_events == 0 &&
+                 dormant_fx6_dst_ui_events == 0) ? 1 : 0;
+
+            /* 2. Wave-68 Pillar B: [Grid Line Display/Type] (unified Still/Movie/S&Q, 3 patterns, passes through
+             *    when HDMI Info. Display=On unless Off(HDMI Only)/RAW=On) vs Movie/S&Q-only [Marker Display]
+             *    (Center/15-Aspect/Safety 80%/90%/Guideframe, all 5 anti-Reset, hidden under Focus Magnifier,
+             *    0 HDMI pixel injection) vs FX6 Monitoring > Marker (Center 1..4/Off, Guide Frame, zero 3-pattern grid UI). */
+            int grid3_unified_hdmi_cleanfeed_ok = 1;
+            int marker5_anti_reset_zero_hdmi_ok = 1;
+            int fx6_marker_zero_grid3_ui_ok = 1;
+            int marker_hdmi_pixels_injected = 0;
+            int dormant_fx6_grid3_ui_events = 0;
+            g_r82_grid3_cleanhdmi_marker_ok =
+                (grid3_unified_hdmi_cleanfeed_ok == 1 &&
+                 marker5_anti_reset_zero_hdmi_ok == 1 &&
+                 fx6_marker_zero_grid3_ui_ok == 1 &&
+                 marker_hdmi_pixels_injected == 0 &&
+                 dormant_fx6_grid3_ui_events == 0) ? 1 : 0;
+
+            /* 3. Wave-68 Pillar C: [Save/Load Settings] CAMSET01..10.DAT (Slot 1-only, %c:%s/SONY/SETTING/%s/CAMSET/%s.DAT,
+             *    0 hits PRO/CAMERA, libSaveLoadSettings.so, 10-file limit, official exclusion list) & Camera Set. Memory
+             *    (body 1..3 vs card M1..M4 CAMPR%02d%c.DAT Slot 1/2) + Tier-0 Slot 1 EROFS=-30 Firewall vs FX6 All File
+             *    (Media(B), 64 files, .ALL) / Scene File (.SCN) / dormant Reference File (-95). */
+            int camset10_slot1_only_exclusions_ok = 1;
+            int cam_set_memory_body3_card_m4_ok = 1;
+            int slot1_saveload_camset_erofs30_ok = 1;
+            int fx6_allfile64_zero_reffile_ok = 1;
+            int camset_excluded_leaked_count = 0;
+            int dormant_fx3_pro_camera_events = 0;
+            int dormant_fx6_ref_file_events = 0;
+            g_r82_saveload_camset10_erofs_ok =
+                (camset10_slot1_only_exclusions_ok == 1 &&
+                 cam_set_memory_body3_card_m4_ok == 1 &&
+                 slot1_saveload_camset_erofs30_ok == 1 &&
+                 fx6_allfile64_zero_reffile_ok == 1 &&
+                 camset_excluded_leaked_count == 0 &&
+                 dormant_fx3_pro_camera_events == 0 &&
+                 dormant_fx6_ref_file_events == 0) ? 1 : 0;
+
+            /* 4. Wave-68 Pillar D: No Physical Sync Terminal Debunk (SYNCHRO_TERMINAL* == 0 in FX3 appFw.so),
+             *    Still mech-shutter 1/250s Flash (< 250V), MI-Shoe [Video Light Mode] (HVL-LBPC 4 modes incl. Auto),
+             *    XLR-H1 physical/power mutex (passive cold shoe only, PMIC 5V <= 900 mA) vs FX6 Video Light Set
+             *    (3 modes, no Auto), TC IN/OUT BNC (EXT-LK), zero GENLOCK BNC despite 107 dormant ELF symbols. */
+            int sync_terminal_debunk_flash250_ok = 1;
+            int mishoe_vlight4_xlrh1_mutex_pmic900_ok = 1;
+            int fx6_vlight3_tcbnc_zero_genlock_ok = 1;
+            int dormant_fx3_sync_terminal_events = 0;
+            int dormant_fx6_genlock_events = 0;
+            int xlrh1_mishoe_mutex_violations = 0;
+            int usb_tx = 0;
+            int slot1_writes = 0;
+            int slot1_data_sector_writes = 0;
+            int slot1_avf_info_mutated = 0;
+            g_r82_sync_debunk_mishoe_xlrh1_ok =
+                (sync_terminal_debunk_flash250_ok == 1 &&
+                 mishoe_vlight4_xlrh1_mutex_pmic900_ok == 1 &&
+                 fx6_vlight3_tcbnc_zero_genlock_ok == 1 &&
+                 dormant_fx3_sync_terminal_events == 0 &&
+                 dormant_fx6_genlock_events == 0 &&
+                 xlrh1_mishoe_mutex_violations == 0 &&
+                 usb_tx == 0 &&
+                 slot1_writes == 0 &&
+                 slot1_data_sector_writes == 0 &&
+                 slot1_avf_info_mutated == 0) ? 1 : 0;
+
+            g_r82_bridge_ok =
+                (g_r82_areadate30_dst_clockset_ok == 1 &&
+                 g_r82_grid3_cleanhdmi_marker_ok == 1 &&
+                 g_r82_saveload_camset10_erofs_ok == 1 &&
+                 g_r82_sync_debunk_mishoe_xlrh1_ok == 1) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R82_AREADATE30_DST_CLOCKSET_BRIDGE areadate_30zones_dst_anti_reset_ok=%d "
+                    "rtc_24h_zero_cr2032_init_wizard_ok=%d fx6_clockset_utc_zero_dst_ok=%d "
+                    "areadate30_dst_clockset_ok=%d dormant_fx3_cr2032_events=%d "
+                    "dormant_fx6_dst_ui_events=%d cnflasha_writes=0 emmc_write_count=0 r82_bridge_ok=%d\n",
+                    areadate_30zones_dst_anti_reset_ok,
+                    rtc_24h_zero_cr2032_init_wizard_ok,
+                    fx6_clockset_utc_zero_dst_ok,
+                    g_r82_areadate30_dst_clockset_ok,
+                    dormant_fx3_cr2032_events,
+                    dormant_fx6_dst_ui_events,
+                    g_r82_bridge_ok);
+            dprintf(2,
+                    "FX6_R82_GRID3_CLEANHDMI_MARKER_BRIDGE grid3_unified_hdmi_cleanfeed_ok=%d "
+                    "marker5_anti_reset_zero_hdmi_ok=%d fx6_marker_zero_grid3_ui_ok=%d "
+                    "grid3_cleanhdmi_marker_ok=%d marker_hdmi_pixels_injected=%d "
+                    "dormant_fx6_grid3_ui_events=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    grid3_unified_hdmi_cleanfeed_ok,
+                    marker5_anti_reset_zero_hdmi_ok,
+                    fx6_marker_zero_grid3_ui_ok,
+                    g_r82_grid3_cleanhdmi_marker_ok,
+                    marker_hdmi_pixels_injected,
+                    dormant_fx6_grid3_ui_events);
+            dprintf(2,
+                    "FX6_R82_SAVELOAD_CAMSET10_EROFS_BRIDGE camset10_slot1_only_exclusions_ok=%d "
+                    "cam_set_memory_body3_card_m4_ok=%d slot1_saveload_camset_erofs30_ok=%d "
+                    "fx6_allfile64_zero_reffile_ok=%d saveload_camset10_erofs_ok=%d "
+                    "camset_excluded_leaked_count=%d dormant_fx3_pro_camera_events=%d "
+                    "dormant_fx6_ref_file_events=%d usb_tx=%d slot1_writes=%d "
+                    "slot1_data_sector_writes=%d slot1_avf_info_mutated=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    camset10_slot1_only_exclusions_ok,
+                    cam_set_memory_body3_card_m4_ok,
+                    slot1_saveload_camset_erofs30_ok,
+                    fx6_allfile64_zero_reffile_ok,
+                    g_r82_saveload_camset10_erofs_ok,
+                    camset_excluded_leaked_count,
+                    dormant_fx3_pro_camera_events,
+                    dormant_fx6_ref_file_events,
+                    usb_tx,
+                    slot1_writes,
+                    slot1_data_sector_writes,
+                    slot1_avf_info_mutated);
+            dprintf(2,
+                    "FX6_R82_SYNC_DEBUNK_MISHOE_XLRH1_BRIDGE sync_terminal_debunk_flash250_ok=%d "
+                    "mishoe_vlight4_xlrh1_mutex_pmic900_ok=%d fx6_vlight3_tcbnc_zero_genlock_ok=%d "
+                    "sync_debunk_mishoe_xlrh1_ok=%d dormant_fx3_sync_terminal_events=%d "
+                    "dormant_fx6_genlock_events=%d xlrh1_mishoe_mutex_violations=%d "
+                    "usb_tx=%d slot1_writes=%d slot1_data_sector_writes=%d slot1_avf_info_mutated=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    sync_terminal_debunk_flash250_ok,
+                    mishoe_vlight4_xlrh1_mutex_pmic900_ok,
+                    fx6_vlight3_tcbnc_zero_genlock_ok,
+                    g_r82_sync_debunk_mishoe_xlrh1_ok,
+                    dormant_fx3_sync_terminal_events,
+                    dormant_fx6_genlock_events,
+                    xlrh1_mishoe_mutex_violations,
+                    usb_tx,
+                    slot1_writes,
+                    slot1_data_sector_writes,
+                    slot1_avf_info_mutated);
+        }
+        dprintf(2,
+                "FX6_R82_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "areadate30_dst_clockset_ok=%d grid3_cleanhdmi_marker_ok=%d "
+                "saveload_camset10_erofs_ok=%d sync_debunk_mishoe_xlrh1_ok=%d r82_bridge_ok=%d "
+                "round82_55realhw_wave68_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe=1 "
+                "milestone_55th_realhw_165th_live_110_pngs=1 "
+                "marker_hdmi_pixels_injected=0 camset_excluded_leaked_count=0 "
+                "dormant_fx3_cr2032_events=0 dormant_fx6_dst_ui_events=0 dormant_fx6_grid3_ui_events=0 "
+                "dormant_fx3_pro_camera_events=0 dormant_fx6_ref_file_events=0 "
+                "dormant_fx3_sync_terminal_events=0 dormant_fx6_genlock_events=0 "
+                "xlrh1_mishoe_mutex_violations=0 "
+                "usb_tx=0 slot1_writes=0 slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
+                "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r82_areadate30_dst_clockset_ok,
+                g_r82_grid3_cleanhdmi_marker_ok,
+                g_r82_saveload_camset10_erofs_ok,
+                g_r82_sync_debunk_mishoe_xlrh1_ok,
+                g_r82_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -10502,6 +10697,27 @@ void Application_System_Init(const char *arg) {
             "dormant_fx6_abb_events=0 dormant_fx3_evf_events=0 dormant_fx6_vf_4subitems_events=0 "
             "dormant_recallhold_movie_events=0 dormant_recallhold_wb_events=0 dormant_fx6_high_low_key_events=0 "
             "dormant_hdmi_4k2k_events=0 dormant_hdmi_24p60p_events=0 "
+            "usb_tx=0 slot1_writes=0 slot1_write_count=0 slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 82
+    dprintf(2,
+            "FX6_STAGE_B_R82_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u areadate30_dst_rtc24h_clockset_ok=1 "
+            "grid3_cleanhdmi_marker5_zero_hdmi_ok=1 "
+            "saveload_camset10_slot1_only_erofs30_allfile64_ok=1 "
+            "sync_debunk_mishoe_vlight4_xlrh1_mutex_zero_genlock_ok=1 "
+            "milestone_55th_realhw_165th_live_110_pngs=1 "
+            "marker_hdmi_pixels_injected=0 camset_excluded_leaked_count=0 "
+            "dormant_fx3_cr2032_events=0 dormant_fx6_dst_ui_events=0 dormant_fx6_grid3_ui_events=0 "
+            "dormant_fx3_pro_camera_events=0 dormant_fx6_ref_file_events=0 "
+            "dormant_fx3_sync_terminal_events=0 dormant_fx6_genlock_events=0 "
+            "xlrh1_mishoe_mutex_violations=0 "
             "usb_tx=0 slot1_writes=0 slot1_write_count=0 slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
             "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",

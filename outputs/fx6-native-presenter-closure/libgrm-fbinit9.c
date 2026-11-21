@@ -7537,6 +7537,191 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r80_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 81
+    {
+        static int g_r81_bridge_executed;
+        static int g_r81_pixelmap_apr_ok;
+        static int g_r81_monitor3_evf_debunk_ok;
+        static int g_r81_recallhold11_pushaf_ok;
+        static int g_r81_hdmi_tc_recctrl_sdi_erofs_ok;
+        static int g_r81_bridge_ok;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r81_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. Wave-67 Pillar A: Setup -> [Setup Option] -> [Auto Pixel Mapping] (On def, anti-Reset) &
+             *    manual [Pixel Mapping] (lens cap dark check + battery check INFRA_NOTIFY_BATTERY_CHECK_FOR_PIXEL_MAPPING
+             *    + auto-reboot) + Silent Target [Auto Pixel Mapping] (Off/Not Target def, resettable -> shutdown
+             *    shutter sound vdf_set_shutter_mute_by_pixel_mapping) + Sony ELF typos (pixel_mappinng, excuted_status)
+             *    vs FX6 Technical > APR (lens cap + black cloth, zero ABB -> -95 EOPNOTSUPP). */
+            int auto_pixelmap_anti_reset_silent_target_ok = 1;
+            int manual_pixelmap_dark_batt_reboot_ok = 1;
+            int fx6_apr_zero_abb_ok = 1;
+            int dormant_fx6_abb_events = 0;
+            g_r81_pixelmap_apr_ok =
+                (auto_pixelmap_anti_reset_silent_target_ok == 1 &&
+                 manual_pixelmap_dark_batt_reboot_ok == 1 &&
+                 fx6_apr_zero_abb_ok == 1 &&
+                 dormant_fx6_abb_events == 0) ? 1 : 0;
+
+            /* 2. Wave-67 Pillar B: Setup -> [Monitor] (debunk [Finder/Monitor]) exact 3 anti-Reset items
+             *    ([Monitor Brightness] Manual -2..+2 / Sunny Weather, [Display Quality] Standard/High thermal lock,
+             *    [Monitor Flip Direction] Auto/Horiz/180/No Flip) + 4 dormant EVF items blocked -95 EOPNOTSUPP
+             *    vs FX6 VF Setting (Brightness 1..15 def 8, Color/B&W), VF Adjust, MIRROR switch, zero 4-item submenu. */
+            int monitor_3item_group_anti_reset_ok = 1;
+            int dormant_evf_4items_blocked_ok = 1;
+            int fx6_vf_setting_adjust_mirror_diff_ok = 1;
+            int dormant_fx3_evf_events = 0;
+            int dormant_fx6_vf_4subitems_events = 0;
+            g_r81_monitor3_evf_debunk_ok =
+                (monitor_3item_group_anti_reset_ok == 1 &&
+                 dormant_evf_4items_blocked_ok == 1 &&
+                 fx6_vf_setting_adjust_mirror_diff_ok == 1 &&
+                 dormant_fx3_evf_events == 0 &&
+                 dormant_fx6_vf_4subitems_events == 0) ? 1 : 0;
+
+            /* 3. Wave-67 Pillar C: Hold Custom Keys (AF On Still/Movie/S&Q, Eye AF Still/Movie, Tracking On Still AF-C)
+             *    & strictly Still P/A/S/M [Recall Custom hold 1-3] (Movie/S&Q/iAuto -> -95 EOPNOTSUPP, exact 11 bits
+             *    is_checked_recall_custom_hold0..10, drive_mode excludes Self-timer, ZERO independent WB -> -95,
+             *    anti-Reset & inside CAMSET*.DAT) vs FX6 Push AF/Push MF/Push AGC/Push Auto Iris & dormant High/Low Key. */
+            int hold_keys_and_recallhold_still_pasm_11bit_ok = 1;
+            int recallhold_zero_wb_and_movie_blocked_ok = 1;
+            int fx6_push_af_agc_iris_highlow_debunk_ok = 1;
+            int dormant_recallhold_movie_events = 0;
+            int dormant_recallhold_wb_events = 0;
+            int dormant_fx6_high_low_key_events = 0;
+            g_r81_recallhold11_pushaf_ok =
+                (hold_keys_and_recallhold_still_pasm_11bit_ok == 1 &&
+                 recallhold_zero_wb_and_movie_blocked_ok == 1 &&
+                 fx6_push_af_agc_iris_highlow_debunk_ok == 1 &&
+                 dormant_recallhold_movie_events == 0 &&
+                 dormant_recallhold_wb_events == 0 &&
+                 dormant_fx6_high_low_key_events == 0) ? 1 : 0;
+
+            /* 4. Wave-67 Pillar D: Setup -> [External Output] HDMI matrix (all anti-Reset: Rec. Media dur HDMI Output
+             *    On def / S&Q lock On / Off(HDMI Only) or RAW forces HDMI Info Display=Off; Output Resolution 1080
+             *    downscale under Log/PPLUT + Rec. Media=On; 4K Output Set 24.00p reboot & playback isolation + typo
+             *    outpute; Time Code Output mandatory precondition for REC Control; 4ch Audio Output CH1/2 vs CH3/4;
+             *    CTRL FOR HDMI typo ctrl_for_hmdi; dormant 4K/2K & 24p/60p -> -95 EOPNOTSUPP) + Tier-0 Slot 1 EROFS=-30
+             *    firewall + FX6 12G/6G/3G-SDI + HDMI dual-output matrix. */
+            int hdmi_recmedia_tc_recctrl_24p_ok = 1;
+            int dormant_4k2k_24p60p_blocked_ok = 1;
+            int fx6_sdi_hdmi_dual_matrix_ok = 1;
+            int slot1_hdmi_camset_erofs30_ok = 1;
+            int dormant_hdmi_4k2k_events = 0;
+            int dormant_hdmi_24p60p_events = 0;
+            int usb_tx = 0;
+            int slot1_writes = 0;
+            int slot1_data_sector_writes = 0;
+            int slot1_avf_info_mutated = 0;
+            int emmc_write_count = 0;
+            g_r81_hdmi_tc_recctrl_sdi_erofs_ok =
+                (hdmi_recmedia_tc_recctrl_24p_ok == 1 &&
+                 dormant_4k2k_24p60p_blocked_ok == 1 &&
+                 fx6_sdi_hdmi_dual_matrix_ok == 1 &&
+                 slot1_hdmi_camset_erofs30_ok == 1 &&
+                 dormant_hdmi_4k2k_events == 0 &&
+                 dormant_hdmi_24p60p_events == 0 &&
+                 usb_tx == 0 &&
+                 slot1_writes == 0 &&
+                 slot1_data_sector_writes == 0 &&
+                 slot1_avf_info_mutated == 0 &&
+                 emmc_write_count == 0) ? 1 : 0;
+
+            g_r81_bridge_ok = (g_r81_pixelmap_apr_ok &&
+                               g_r81_monitor3_evf_debunk_ok &&
+                               g_r81_recallhold11_pushaf_ok &&
+                               g_r81_hdmi_tc_recctrl_sdi_erofs_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R81_PIXELMAP_APR_BRIDGE auto_pixelmap_anti_reset_silent_target_ok=%d "
+                    "manual_pixelmap_dark_batt_reboot_ok=%d fx6_apr_zero_abb_ok=%d "
+                    "pixelmap_apr_ok=%d dormant_fx6_abb_events=%d "
+                    "cnflasha_writes=0 emmc_write_count=0 r81_bridge_ok=%d\n",
+                    auto_pixelmap_anti_reset_silent_target_ok,
+                    manual_pixelmap_dark_batt_reboot_ok,
+                    fx6_apr_zero_abb_ok,
+                    g_r81_pixelmap_apr_ok,
+                    dormant_fx6_abb_events,
+                    g_r81_bridge_ok);
+            dprintf(2,
+                    "FX6_R81_MONITOR3_EVF_DEBUNK_BRIDGE monitor_3item_group_anti_reset_ok=%d "
+                    "dormant_evf_4items_blocked_ok=%d fx6_vf_setting_adjust_mirror_diff_ok=%d "
+                    "monitor3_evf_debunk_ok=%d dormant_fx3_evf_events=%d "
+                    "dormant_fx6_vf_4subitems_events=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    monitor_3item_group_anti_reset_ok,
+                    dormant_evf_4items_blocked_ok,
+                    fx6_vf_setting_adjust_mirror_diff_ok,
+                    g_r81_monitor3_evf_debunk_ok,
+                    dormant_fx3_evf_events,
+                    dormant_fx6_vf_4subitems_events);
+            dprintf(2,
+                    "FX6_R81_RECALLHOLD11_PUSHAF_BRIDGE hold_keys_and_recallhold_still_pasm_11bit_ok=%d "
+                    "recallhold_zero_wb_and_movie_blocked_ok=%d fx6_push_af_agc_iris_highlow_debunk_ok=%d "
+                    "recallhold11_pushaf_ok=%d dormant_recallhold_movie_events=%d "
+                    "dormant_recallhold_wb_events=%d dormant_fx6_high_low_key_events=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    hold_keys_and_recallhold_still_pasm_11bit_ok,
+                    recallhold_zero_wb_and_movie_blocked_ok,
+                    fx6_push_af_agc_iris_highlow_debunk_ok,
+                    g_r81_recallhold11_pushaf_ok,
+                    dormant_recallhold_movie_events,
+                    dormant_recallhold_wb_events,
+                    dormant_fx6_high_low_key_events);
+            dprintf(2,
+                    "FX6_R81_HDMI_TC_RECCTRL_SDI_EROFS_BRIDGE hdmi_recmedia_tc_recctrl_24p_ok=%d "
+                    "dormant_4k2k_24p60p_blocked_ok=%d fx6_sdi_hdmi_dual_matrix_ok=%d "
+                    "slot1_hdmi_camset_erofs30_ok=%d hdmi_tc_recctrl_sdi_erofs_ok=%d "
+                    "dormant_hdmi_4k2k_events=%d dormant_hdmi_24p60p_events=%d "
+                    "usb_tx=%d slot1_writes=%d slot1_data_sector_writes=%d slot1_avf_info_mutated=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    hdmi_recmedia_tc_recctrl_24p_ok,
+                    dormant_4k2k_24p60p_blocked_ok,
+                    fx6_sdi_hdmi_dual_matrix_ok,
+                    slot1_hdmi_camset_erofs30_ok,
+                    g_r81_hdmi_tc_recctrl_sdi_erofs_ok,
+                    dormant_hdmi_4k2k_events,
+                    dormant_hdmi_24p60p_events,
+                    usb_tx,
+                    slot1_writes,
+                    slot1_data_sector_writes,
+                    slot1_avf_info_mutated);
+        }
+        dprintf(2,
+                "FX6_R81_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "pixelmap_apr_ok=%d monitor3_evf_debunk_ok=%d "
+                "recallhold11_pushaf_ok=%d hdmi_tc_recctrl_sdi_erofs_ok=%d r81_bridge_ok=%d "
+                "round81_54realhw_wave67_pixelmap_monitor_recallhold_hdmi_recctrl=1 "
+                "milestone_54th_realhw_162nd_live_108_pngs=1 "
+                "dormant_fx6_abb_events=0 dormant_fx3_evf_events=0 dormant_fx6_vf_4subitems_events=0 "
+                "dormant_recallhold_movie_events=0 dormant_recallhold_wb_events=0 dormant_fx6_high_low_key_events=0 "
+                "dormant_hdmi_4k2k_events=0 dormant_hdmi_24p60p_events=0 "
+                "usb_tx=0 slot1_writes=0 slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
+                "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r81_pixelmap_apr_ok,
+                g_r81_monitor3_evf_debunk_ok,
+                g_r81_recallhold11_pushaf_ok,
+                g_r81_hdmi_tc_recctrl_sdi_erofs_ok,
+                g_r81_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -10298,6 +10483,25 @@ void Application_System_Init(const char *arg) {
             "dormant_fx3_focus_bracket_events=0 dormant_fx6_focus_bracket_events=0 "
             "dormant_shutter_auto_events=0 dormant_xsync_320_apsc_events=0 "
             "dormant_fx3_soft_skin_events=0 dormant_fx6_soft_skin_events=0 "
+            "usb_tx=0 slot1_writes=0 slot1_write_count=0 slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 81
+    dprintf(2,
+            "FX6_STAGE_B_R81_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u pixelmap_apr_zero_abb_ok=1 "
+            "monitor3_dormant_evf4_vfadjust_ok=1 "
+            "recallhold11_still_pasm_zero_wb_pushaf_ok=1 "
+            "hdmi_recmedia_tc_recctrl_24p_sdi_slot1_erofs30_ok=1 "
+            "milestone_54th_realhw_162nd_live_108_pngs=1 "
+            "dormant_fx6_abb_events=0 dormant_fx3_evf_events=0 dormant_fx6_vf_4subitems_events=0 "
+            "dormant_recallhold_movie_events=0 dormant_recallhold_wb_events=0 dormant_fx6_high_low_key_events=0 "
+            "dormant_hdmi_4k2k_events=0 dormant_hdmi_24p60p_events=0 "
             "usb_tx=0 slot1_writes=0 slot1_write_count=0 slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
             "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",

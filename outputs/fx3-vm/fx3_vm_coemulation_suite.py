@@ -133,6 +133,7 @@ import realhw_switch_vh_af_stdadj_tcub_copy_slot_coemulator as p312  # noqa: E40
 import realhw_touch_shooting_disp_zero_evf_interval_pb_coemulator as p315  # noqa: E402
 import realhw_usb_mode_hdmi_info_protect_network_reset_coemulator as p285  # noqa: E402
 import realhw_zoom_ciz_autoslow_iso_arw_rawcomp_usblun_uvc_coemulator as p343  # noqa: E402
+import realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_coemulator as p385  # noqa: E402
 import soft_gpe_and_bt_rom_emulator as p29  # noqa: E402
 import tc_genlock_lens_paint_emulator as p67  # noqa: E402
 import touch_af_ciz_assignable_emulator as p78  # noqa: E402
@@ -347,6 +348,9 @@ class CoEmulationConfig:
     include_phase383_realhw_flexexp_shutterangle_activeibis_catalyst_photocap_srt_hil: bool = True
     include_stage88: bool = True
     stage88_realhw_flexexp_shutterangle_activeibis_catalyst_photocap_srt_hil: bool = True
+    include_phase385_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil: bool = True
+    include_stage89: bool = True
+    stage89_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -7140,6 +7144,107 @@ def run_stage88_realhw_flexexp_shutterangle_activeibis_catalyst_photocap_srt_hil
     }
 
 
+def run_stage89_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil(
+    config: Optional[CoEmulationConfig] = None,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 89 (Phase 385, 89/89 Full-Board VM Co-Emulation Stages!): Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-79 Zoom 8-Step Speed (Custom Key Fixed-Only G149, Remote Variable/Fix, CIZ 4 Pre-Lockouts + 5 Degradations, XLR-H1 Zero Zoom Lever) vs FX6 Zoom/Handle Zoom & 0..99 HUD, Setup->Dial Customize Exact 5-Item Matrix & Physical 3-Dial Boundary / My Dial 1..3 Temp Unlock / Function Ring(Lens) vs FX6 Assignable/Multi-Function Dial, Operation Customize 8-Item Bitmask (PP Anti-Initialize G99) / Fn 12+12 / Zero-EVF 4-Page DISP / Select LUT vs Gamma Display Assist (G132) vs FX6 60-Route Display On/Off, and External Output 4-Mode HDMI Resolution / 6-Mode 10bit 4:2:2 4K Output / LCD Blackout / 3 Sony ELF Typos vs FX6 12G-SDI + HDMI 25-Entry Dual Pipeline HIL."""
+    cfg = CoEmulationConfig() if config is None else config
+    cfg.validate()
+    rep = p385.run_phase385_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_coemulation(
+        force_clean_room=cfg.force_clean_room,
+        env=env,
+    )
+    return {
+        "stage": "stage89_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": rep["nop_count"],
+        "guest_code_modification_bytes": rep["guest_code_modification_bytes"],
+        "cp_mutation_bytes": rep["cp_mutation_bytes"],
+        "wbi_mutation_bytes": rep["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": rep["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": rep["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": rep["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": rep["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": rep["bk4_persistent_nvram_writes"],
+        "physical_device_writes": rep["physical_device_writes"],
+        "persistent_emmc_writes_authorized": rep["persistent_emmc_writes_authorized"],
+        "emmc_writes_authorized": rep["emmc_writes_authorized"],
+        "cross_model_flash_authorized": rep["cross_model_flash_authorized"],
+        "hardware_live_attachment_authorized": rep["hardware_live_attachment_authorized"],
+        "live_attach_authorized": rep["live_attach_authorized"],
+        "overall_ready_for_hardware_attach": rep["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": rep["isp_write_authorized"],
+        "emmc_nflasha_write_count": rep["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": rep["emmc_mutation_bytes"],
+        "emmc_corruptions": rep["emmc_corruptions"],
+        "spi_nor_write_authorized": rep["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": rep["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": rep["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": rep["otp_fuse_touches"],
+        "rpmb_counter_increments": rep["rpmb_counter_increments"],
+        "usb_tx_packets": rep["usb_tx_packets"],
+        "physical_usb_packets_emitted": rep["physical_usb_packets_emitted"],
+        "passive_tx_bytes_emitted": rep["passive_tx_bytes_emitted"],
+        "slot1_write_authorized": rep["slot1_write_authorized"],
+        "slot1_writes": rep["slot1_writes"],
+        "slot1_sector_writes": rep["slot1_sector_writes"],
+        "slot1_data_sector_writes": rep["slot1_data_sector_writes"],
+        "slot1_avf_info_mutated": rep["slot1_avf_info_mutated"],
+        "rf_tx_packets": rep["rf_tx_packets"],
+        "rf_packets_transmitted": rep["rf_packets_transmitted"],
+        "rf_nvs_mutation_bytes": rep["rf_nvs_mutation_bytes"],
+        "fx3_custom_key_has_variable_mode": rep["fx3_custom_key_has_variable_mode"],
+        "fx3_g149_custom_key_no_variable_reconciled": rep["fx3_g149_custom_key_no_variable_reconciled"],
+        "fx3_ciz_pre_lockouts_count": rep["fx3_ciz_pre_lockouts_count"],
+        "fx3_ciz_active_degradations_count": rep["fx3_ciz_active_degradations_count"],
+        "fx3_xlr_h1_has_zoom_lever": rep["fx3_xlr_h1_has_zoom_lever"],
+        "fx6_has_digital_zoom": rep["fx6_has_digital_zoom"],
+        "fx6_has_speed_1_99_menu": rep["fx6_has_speed_1_99_menu"],
+        "fx3_dial_customize_exact_items_count": rep["fx3_dial_customize_exact_items_count"],
+        "fx3_physical_dials_count": rep["fx3_physical_dials_count"],
+        "fx3_my_dial_banks_count": rep["fx3_my_dial_banks_count"],
+        "fx3_dormant_dial_exposed_events": rep["fx3_dormant_dial_exposed_events"],
+        "fx6_assignable_dial_options_count": rep["fx6_assignable_dial_options_count"],
+        "fx6_multi_function_dial_options_count": rep["fx6_multi_function_dial_options_count"],
+        "fx3_diff_set_items_count": rep["fx3_diff_set_items_count"],
+        "fx3_g99_pp_anti_init_erratum_reconciled": rep["fx3_g99_pp_anti_init_erratum_reconciled"],
+        "fx3_fn_menu_total_slots": rep["fx3_fn_menu_total_slots"],
+        "fx3_disp_shoot_pages_count": rep["fx3_disp_shoot_pages_count"],
+        "fx3_has_builtin_evf": rep["fx3_has_builtin_evf"],
+        "fx3_dormant_evf_exposed_events": rep["fx3_dormant_evf_exposed_events"],
+        "fx3_select_lut_total_slots": rep["fx3_select_lut_total_slots"],
+        "fx3_g132_log_lut_gamma_split_reconciled": rep["fx3_g132_log_lut_gamma_split_reconciled"],
+        "fx6_display_elf_routes_count": rep["fx6_display_elf_routes_count"],
+        "fx3_hdmi_resolution_exposed_count": rep["fx3_hdmi_resolution_exposed_count"],
+        "fx3_4k_output_set_exposed_count": rep["fx3_4k_output_set_exposed_count"],
+        "fx3_4k_output_has_420_option": rep["fx3_4k_output_has_420_option"],
+        "fx3_dormant_24p_60p_output_elf_hits": rep["fx3_dormant_24p_60p_output_elf_hits"],
+        "fx3_sony_elf_typos_count": rep["fx3_sony_elf_typos_count"],
+        "fx6_sdi_hdmi_matrix_entries_count": rep["fx6_sdi_hdmi_matrix_entries_count"],
+        "fx6_sdi_hdmi_rec_control_modes_count": rep["fx6_sdi_hdmi_rec_control_modes_count"],
+        "rsv_orphan_count": rep["rsv_orphan_count"],
+        "null_gpio_derefs": rep["null_gpio_derefs"],
+        "mailbox_stalls": rep["mailbox_stalls"],
+        "stock_cp_fault_count": rep["stock_cp_fault_count"],
+        "wf12_00342260_hits": rep["wf12_00342260_hits"],
+        "appfw_crashes": rep["appfw_crashes"],
+        "raw_firmware_bytes_leaked": rep["raw_firmware_bytes_leaked"],
+        "donors": rep["donors"],
+        "stage89_probe": rep["stage89_probe"],
+        "submodel_89a_zoom_8step_speed_ciz_lockouts_fx6_handle_zoom": rep["submodel_89a_zoom_8step_speed_ciz_lockouts_fx6_handle_zoom"],
+        "submodel_89b_dial_customize_5item_mydial3_funcring_fx6_dials": rep["submodel_89b_dial_customize_5item_mydial3_funcring_fx6_dials"],
+        "submodel_89c_op_customize_diffset8_disp4_zeroevf_lut_fx6_60disp": rep["submodel_89c_op_customize_diffset8_disp4_zeroevf_lut_fx6_60disp"],
+        "submodel_89d_external_output_hdmi4k_3typos_fx6_12gsdi_dual": rep["submodel_89d_external_output_hdmi4k_3typos_fx6_12gsdi_dual"],
+        "phase385_audit_digest_sha256": rep["phase385_audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -7150,7 +7255,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 88-stage (Phase 33..383, 88/88 Full-Board Stages!) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 89-stage (Phase 33..385, 89/89 Full-Board Stages!) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -7759,6 +7864,17 @@ def run_fx3_vm_coemulation_suite(
             cfg.include_phase383_realhw_flexexp_shutterangle_activeibis_catalyst_photocap_srt_hil
             and cfg.include_stage88
             and cfg.stage88_realhw_flexexp_shutterangle_activeibis_catalyst_photocap_srt_hil
+        )
+        else None
+    )
+    stage89: Optional[Dict[str, object]] = (
+        run_stage89_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil(
+            cfg, env=env
+        )
+        if (
+            cfg.include_phase385_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil
+            and cfg.include_stage89
+            and cfg.stage89_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil
         )
         else None
     )
@@ -11110,6 +11226,83 @@ def run_fx3_vm_coemulation_suite(
         and stage88["appfw_crashes"] == 0
         and stage88["raw_firmware_bytes_leaked"] == 0
     )
+    stage89_ok = True if stage89 is None else (
+        bool(stage89["all_checks_passed"])
+        and stage89["phase_number"] == 385
+        and stage89["milestone"] == "89/89"
+        and stage89["nop_count"] == 0
+        and stage89["guest_code_modification_bytes"] == 0
+        and stage89["cp_mutation_bytes"] == 0
+        and stage89["wbi_mutation_bytes"] == 0
+        and stage89["calibration_mutation_bytes"] == 0
+        and stage89["cnflasha_mutation_bytes"] == 0
+        and bool(stage89["cnflasha_userspace_write_blocked"])
+        and stage89["nvram_persistent_writes"] == 0
+        and stage89["bk4_persistent_nvram_writes"] == 0
+        and stage89["physical_device_writes"] == 0
+        and (not stage89["persistent_emmc_writes_authorized"])
+        and (not stage89["emmc_writes_authorized"])
+        and (not stage89["cross_model_flash_authorized"])
+        and (not stage89["hardware_live_attachment_authorized"])
+        and (not stage89["live_attach_authorized"])
+        and (not stage89["overall_ready_for_hardware_attach"])
+        and (not stage89["isp_write_authorized"])
+        and stage89["emmc_nflasha_write_count"] == 0
+        and stage89["emmc_mutation_bytes"] == 0
+        and stage89["emmc_corruptions"] == 0
+        and (not stage89["spi_nor_write_authorized"])
+        and stage89["spi_nor_mutation_bytes"] == 0
+        and (not stage89["el3_payload_transmit_authorized"])
+        and stage89["otp_fuse_touches"] == 0
+        and stage89["rpmb_counter_increments"] == 0
+        and stage89["usb_tx_packets"] == 0
+        and stage89["physical_usb_packets_emitted"] == 0
+        and stage89["passive_tx_bytes_emitted"] == 0
+        and (not stage89["slot1_write_authorized"])
+        and stage89["slot1_writes"] == 0
+        and stage89["slot1_sector_writes"] == 0
+        and stage89["slot1_data_sector_writes"] == 0
+        and (not stage89["slot1_avf_info_mutated"])
+        and stage89["rf_tx_packets"] == 0
+        and stage89["rf_packets_transmitted"] == 0
+        and stage89["rf_nvs_mutation_bytes"] == 0
+        and (not stage89["fx3_custom_key_has_variable_mode"])
+        and bool(stage89["fx3_g149_custom_key_no_variable_reconciled"])
+        and stage89["fx3_ciz_pre_lockouts_count"] == 4
+        and stage89["fx3_ciz_active_degradations_count"] == 5
+        and (not stage89["fx3_xlr_h1_has_zoom_lever"])
+        and (not stage89["fx6_has_digital_zoom"])
+        and (not stage89["fx6_has_speed_1_99_menu"])
+        and stage89["fx3_dial_customize_exact_items_count"] == 5
+        and stage89["fx3_physical_dials_count"] == 3
+        and stage89["fx3_my_dial_banks_count"] == 3
+        and stage89["fx3_dormant_dial_exposed_events"] == 0
+        and stage89["fx6_assignable_dial_options_count"] == 7
+        and stage89["fx6_multi_function_dial_options_count"] == 5
+        and stage89["fx3_diff_set_items_count"] == 8
+        and bool(stage89["fx3_g99_pp_anti_init_erratum_reconciled"])
+        and stage89["fx3_fn_menu_total_slots"] == 24
+        and stage89["fx3_disp_shoot_pages_count"] == 4
+        and (not stage89["fx3_has_builtin_evf"])
+        and stage89["fx3_dormant_evf_exposed_events"] == 0
+        and stage89["fx3_select_lut_total_slots"] == 19
+        and bool(stage89["fx3_g132_log_lut_gamma_split_reconciled"])
+        and stage89["fx6_display_elf_routes_count"] == 60
+        and stage89["fx3_hdmi_resolution_exposed_count"] == 4
+        and stage89["fx3_4k_output_set_exposed_count"] == 6
+        and (not stage89["fx3_4k_output_has_420_option"])
+        and stage89["fx3_dormant_24p_60p_output_elf_hits"] == 0
+        and stage89["fx3_sony_elf_typos_count"] == 3
+        and stage89["fx6_sdi_hdmi_matrix_entries_count"] == 25
+        and stage89["fx6_sdi_hdmi_rec_control_modes_count"] == 3
+        and stage89["rsv_orphan_count"] == 0
+        and stage89["null_gpio_derefs"] == 0
+        and stage89["mailbox_stalls"] == 0
+        and stage89["stock_cp_fault_count"] == 0
+        and stage89["wf12_00342260_hits"] == 0
+        and stage89["appfw_crashes"] == 0
+        and stage89["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -11201,6 +11394,7 @@ def run_fx3_vm_coemulation_suite(
         and stage86_ok
         and stage87_ok
         and stage88_ok
+        and stage89_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -11876,6 +12070,21 @@ def run_fx3_vm_coemulation_suite(
                 and cfg.include_stage88
                 and cfg.stage88_realhw_flexexp_shutterangle_activeibis_catalyst_photocap_srt_hil
             ),
+            "include_phase385_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil": (
+                cfg.include_phase385_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil
+                and cfg.include_stage89
+                and cfg.stage89_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil
+            ),
+            "include_stage89": (
+                cfg.include_phase385_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil
+                and cfg.include_stage89
+                and cfg.stage89_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil
+            ),
+            "stage89_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil": (
+                cfg.include_phase385_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil
+                and cfg.include_stage89
+                and cfg.stage89_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil
+            ),
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -12104,6 +12313,10 @@ def run_fx3_vm_coemulation_suite(
         core_payload[
             "stage88_realhw_flexexp_shutterangle_activeibis_catalyst_photocap_srt_hil"
         ] = stage88
+    if stage89 is not None:
+        core_payload[
+            "stage89_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil"
+        ] = stage89
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -12115,7 +12328,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 + 289 + 293 + 298 + 301 + 306 + 309 + 312 + 315 + 318 + 322 + 325 + 328 + 330 + 333 + 335 + 337 + 339 + 343 + 346 + 350 + 353 + 357 + 360 + 362 + 365 + 367 + 369 + 372 + 376 + 379 + 383 (88/88 Full-Board Stages!) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 + 281 + 285 + 289 + 293 + 298 + 301 + 306 + 309 + 312 + 315 + 318 + 322 + 325 + 328 + 330 + 333 + 335 + 337 + 339 + 343 + 346 + 350 + 353 + 357 + 360 + 362 + 365 + 367 + 369 + 372 + 376 + 379 + 383 + 385 (89/89 Full-Board Stages!) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -13177,6 +13390,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 88 (Phase 383 88/88 Full-Board Stages! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-78 FlexExp G86 / Shutter Angle / Active IBIS Catalyst / Photo Capture ViewMode G126 / UVC Debunk & SRT Caller-Only HIL)",
     )
     parser.add_argument(
+        "--include-stage89",
+        dest="include_stage89",
+        action="store_true",
+        default=True,
+        help="Include Stage 89 (Phase 385 89/89 Full-Board Stages! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-79 Zoom 8-Step Speed G149 / CIZ 4-Lock 5-Degradation vs FX6 Handle Zoom, Setup->Dial Customize 5-Item / 3-Dial / My Dial 1..3 / Function Ring vs FX6 Dials, Operation Customize 8-Item G99 / Fn 12+12 / Zero-EVF 4-Page DISP / Select LUT vs Gamma Assist G132 vs FX6 60-Route Display, and External Output HDMI 4K 10bit 4:2:2 / LCD Blackout / 3 ELF Typos vs FX6 12G-SDI + HDMI Dual Pipeline HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage89",
+        "--no-include-stage89",
+        dest="skip_stage89",
+        action="store_true",
+        help="Skip optional Stage 89 (alias for --skip-phase385)",
+    )
+    parser.add_argument(
+        "--skip-phase385",
+        action="store_true",
+        help="Skip optional Stage 89 (Phase 385 89/89 Full-Board Stages! Real-Hardware ILME-FX3 Ver. 7.02 vs ILME-FX6 Ver. 6.01 Wave-79 Zoom Speed / My Dial 1..3 / Function Ring / HDMI 4K Out / 12G-SDI HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -13281,6 +13513,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     enable_stage86 = bool(args.include_stage86) and (not args.skip_phase376) and (not args.skip_stage86)
     enable_stage87 = bool(args.include_stage87) and (not args.skip_phase379) and (not args.skip_stage87)
     enable_stage88 = bool(args.include_stage88) and (not args.skip_phase383) and (not args.skip_stage88)
+    enable_stage89 = bool(args.include_stage89) and (not args.skip_phase385) and (not args.skip_stage89)
     cfg = CoEmulationConfig(
         bt_mode=args.bt_mode,
         cine_ei_iso=args.cine_ei_iso,
@@ -13454,6 +13687,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase383_realhw_flexexp_shutterangle_activeibis_catalyst_photocap_srt_hil=enable_stage88,
         include_stage88=enable_stage88,
         stage88_realhw_flexexp_shutterangle_activeibis_catalyst_photocap_srt_hil=enable_stage88,
+        include_phase385_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil=enable_stage89,
+        include_stage89=enable_stage89,
+        stage89_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil=enable_stage89,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -13551,6 +13787,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s86 = rep.get("stage86_realhw_customkey_diffset8_gammadisp_mlut_usblan_cleaning_hil")
         s87 = rep.get("stage87_realhw_movieset_vpg_awbprio_touchpad_screenreader_version_hil")
         s88 = rep.get("stage88_realhw_flexexp_shutterangle_activeibis_catalyst_photocap_srt_hil")
+        s89 = rep.get("stage89_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -14484,6 +14721,19 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s88, dict)
             else ""
         )
+        s89_str = (
+            f" | realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_hil={s89['source_mode']}("
+            f"m89={s89['milestone']},"
+            f"zm=ckvar:{int(s89['fx3_custom_key_has_variable_mode'])}/lck:{s89['fx3_ciz_pre_lockouts_count']}/deg:{s89['fx3_ciz_active_degradations_count']}/fx6dig:{int(s89['fx6_has_digital_zoom'])},"
+            f"dial=5i:{s89['fx3_dial_customize_exact_items_count']}/3d:{s89['fx3_physical_dials_count']}/md:{s89['fx3_my_dial_banks_count']}/dorm:{s89['fx3_dormant_dial_exposed_events']},"
+            f"op=ds:{s89['fx3_diff_set_items_count']}/g99:{int(s89['fx3_g99_pp_anti_init_erratum_reconciled'])}/disp:{s89['fx3_disp_shoot_pages_count']}/evf:{int(s89['fx3_has_builtin_evf'])}/fx6d:{s89['fx6_display_elf_routes_count']},"
+            f"hdmi=res:{s89['fx3_hdmi_resolution_exposed_count']}/4k10:{s89['fx3_4k_output_set_exposed_count']}/420:{int(s89['fx3_4k_output_has_420_option'])}/typos:{s89['fx3_sony_elf_typos_count']}/sdi:{s89['fx6_sdi_hdmi_matrix_entries_count']},"
+            f"s1_wr={s89['slot1_writes']},"
+            f"rf_tx={s89['rf_tx_packets']},"
+            f"emmc_wr={s89['emmc_nflasha_write_count']})"
+            if isinstance(s89, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -14492,7 +14742,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str}{s58_str}{s59_str}{s60_str}{s61_str}{s62_str}{s63_str}{s64_str}{s65_str}{s66_str}{s67_str}{s68_str}{s69_str}{s70_str}{s71_str}{s72_str}{s73_str}{s74_str}{s75_str}{s76_str}{s77_str}{s78_str}{s79_str}{s80_str}{s81_str}{s82_str}{s83_str}{s84_str}{s85_str}{s86_str}{s87_str}{s88_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str}{s56_str}{s57_str}{s58_str}{s59_str}{s60_str}{s61_str}{s62_str}{s63_str}{s64_str}{s65_str}{s66_str}{s67_str}{s68_str}{s69_str}{s70_str}{s71_str}{s72_str}{s73_str}{s74_str}{s75_str}{s76_str}{s77_str}{s78_str}{s79_str}{s80_str}{s81_str}{s82_str}{s83_str}{s84_str}{s85_str}{s86_str}{s87_str}{s88_str}{s89_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

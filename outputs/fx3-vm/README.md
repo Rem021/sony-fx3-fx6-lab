@@ -3074,3 +3074,39 @@ FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTEC
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
 ```
+
+## Phase 385（Stage 89 — `89/89` Full-Board VM Co-Emulation Stages!）：Wave-79 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` `Shooting -> [Zoom]` 8 档变速架构（`[Custom Key Z. Speed]` 仅 Fixed `G149` / CIZ 4 硬锁 5 退化 / `XLR-H1` 无变焦杆）vs FX6 `Handle Zoom` 与 `0..99` HUD、`Setup -> [Dial Customize]` 5 项抗复位矩阵与物理 3 拨轮边界 / `My Dial 1..3` 临时解琐 / `[Function Ring(Lens)]` vs FX6 拨盘、`Setup -> [Operation Customize]` 8 项位掩码（`Picture Profile` 抗 Reset+Init `G99`）/ `Fn 12+12` / 零 EVF 4 页 `[DISP]` / `[Select LUT]` 覆盖 `[Gamma Display Assist]`（`G132`）vs FX6 60 路 `Display On/Off`，以及 `Setup -> [External Output]` HDMI 4K 10-bit 4:2:2 / LCD 熄屏条件 / 3 项 Sony ELF 拼写错误 vs FX6 `12G-SDI + HDMI` 25 项双管线 HIL
+
+[`realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_coemulator.py`](realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_coemulator.py)（Schema `phase385_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_coemulation_v1`）作为 **Stage 89（`89/89` Full-Board VM Co-Emulation Stages!）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase385` / `--skip-stage89` / `--no-include-stage89` 跳过，支持 `--include-stage89`），严格遵循 `os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK` + `<= 4096 B` 受界 `os.pread`、`ready_for_live_camera_attach == False`、`live_attach_authorized == False`、`emmc_writes_authorized == False`、`cross_model_flash_authorized == False`、`hardware_live_attachment_authorized == False`、`slot1_write_authorized == False`、`slot1_writes == 0`、`slot1_sector_writes == 0`、`slot1_data_sector_writes == 0`、`usb_tx_packets == 0`、`rf_tx_packets == 0`、`emmc_nflasha_write_count == 0` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 22 供体 `O_RDONLY | O_NOFOLLOW | O_NONBLOCK` + 受界 `os.pread` 审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` **22 份 Wave-79 真实供体**（`20` 份紧凑供体：`4` 语言 × `3` 变体 FX3 `.uxc` 共 `12` 份 + `4` 语言 × `2` 变体 FX6 `.uxc` 共 `8` 份；以及 `2` 份受界窗口供体：`FX3 appFw.so` `49` 窗口 + `5` 缺席断言与 `FX6 appFw.so` `15` 窗口 + `1` 缺席断言），在无供体环境（`work_root=None` / `FX3_CLEAN_ROOM_TEST=1` / `FX3_FX6_FORCE_CLEAN_ROOM=1` / `FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__`）无缝回退 `CLEAN_ROOM_SYNTHETIC`（`raw_firmware_bytes_leaked == 0`）。
+2. **Sub-Model 89A — `Shooting -> [Zoom]` 8 档变速架构与 CIZ 4 硬锁 5 退化 vs FX6 `Technical > Zoom` & `Handle Zoom`**：
+   - `[Zoom Range]`（`Optical zoom only` 默认 / `ClearImage Zoom` `4K 1.5x` `HD 2.0x` / `Digital Zoom` `4.0x`；`Smart Zoom` 仅 Still `M/S`）与 `[Zoom Ring Rotate]` 抗 `[Camera Settings Reset]`，而 `[Zoom Lever Speed]`（`1st` 默认 `3` / `2nd` 默认 `8`）、`[Custom Key Z. Speed]`（**仅 Fixed `1..8` 默认 `3`，无 `Variable` 模式，`G149` 闭环**）与 `[Remote Zoom Speed]`（`Variable` 默认 / `Fix` + `1..8` 默认 `3`，ELF `BKID_APP_setting_fixed_zoom_speed_type`）均 `Can be reset`；`XLR-H1` 无物理变焦杆；4 大 CIZ/Digital 前置硬锁（Still RAW、Movie `119.88p/100p`、`S&Q >= 100fps`、HDMI RAW）+ 5 项激活退化（`Focus Area` -> Center priority AF、`Metering` -> `Multi`、Face/Eye AF/Multi-Face/Tracking 禁用）。对比 FX6 零 `Digital Zoom`、`Technical > Handle Zoom`（`Off`/`Low 1..8`/`High 1..8`/`Variable`）与 `0..99` 仅作 HUD `Zoom Position Display` 澄清。
+3. **Sub-Model 89B — `Setup -> [Dial Customize]` 精确 5 项矩阵与物理 3 拨轮边界 vs FX6 `Assignable Dial` / `Multi Function Dial`**：
+   - 全部 5 项（`[Custom Key/Dial Set.]`、`[My Dial Settings]`、`[Av/Tv Rotate]`、`[Function Ring(Lens)]`、`[Lock Operation Parts]`）均抗 `[Camera Settings Reset]`；物理 3 拨轮（`Front Dial` / `Rear Dial` / `Control Wheel`）硬边界，阻断休眠 `[Dial Setup]`（`VAL_setting_dial_setup_*` = 0 命中）、`[Dial / Wheel Lock]` 与 `Rear Dial L/R`（`EOPNOTSUPP=95`）；`My Dial 1..3`（Hold/Toggle/`1->2->3` 跳过空组）临时解锁 `[Lock Operation Parts]`；`[Function Ring(Lens)]`（`Power Focus` vs `APS-C/S35` 受 4K/RAW 裁剪锁约束，无环镜头回退 `FUNCTION_RING_INVALID`）。对比 FX6 `Assignable Dial`（含 `ND Filter`）vs `Multi Function Dial`（不含 `ND Filter`，菜单开启时自动禁用）。
+4. **Sub-Model 89C — `Setup -> [Operation Customize]` 8 项位掩码、零 EVF `[DISP]` / `[Finder/Monitor]` 休眠与 `[Select LUT]` vs `[Gamma Display Assist]`**：
+   - `[Different Set for Still/Mv]` 精确 8 项位掩码，**`[Picture Profile]` 勾选框抗 BOTH Reset 和 Initialize（`G99` 闭环）**，`Shutter Mode = Angle` 强制 Still/Movie 快门独立；独立 `[Fn Menu Settings]` `12+12` 槽位（拒绝全空激活）；`[DISP (Screen Disp) Set]` 精确 4 个拍摄页与 3 个回放页，100% 阻断无 EVF 休眠符号（`Graphic Display`、`For viewfinder`、`Monitor Off`、`[Finder/Monitor]`）；Movie Log Shooting 下 `[Select LUT]`（`s709`/`709(800%)`/`S-Log3`/`User1..16`）+ `[Display LUT]` 接管监看并覆盖 `[Gamma Display Assist]`，静态 Log 照片（`_f 0x6538`）与非 Log PP 由 `[Gamma Display Assist]` 承担（`G132` 闭环）。对比 FX6 60 路 `BKID_APP_SETTING_*_DISPLAY`（`104` User Menu 开关）及 `Cine EI` 下 `Gamma Display Assist` 硬锁 `Off`。
+5. **Sub-Model 89D — `Setup -> [External Output]` HDMI 4K/10-bit/RAW 与 3 项 Sony ELF 拼写错误 vs FX6 `12G-SDI + HDMI` 双管线**：
+   - 全部 `[External Output]` 项抗 `[Camera Settings Reset]`；`[HDMI Resolution]` 精确 4 档（`Auto`/`2160p`/`1080p`/`1080i`，无 `720p`）；Log/`PPLUT` 内录降档 `1080p`；`[4K Output Set.(HDMI Only)]` 精确 6 档 `10bit 4:2:2`（无 `4:2:0`、无 `_f 0x748a` `24.00p 8bit`，`24.00p` 重启，`APS-C/S35` 锁禁，`S&Q` 锁 `Rec. Media = On`）；`24p/60p Output` 100% 休眠（`0` ELF 命中）；`[HDMI Info. Display] = On` 仅在 `Rec. Media = On & RAW = Off` 时熄灭机内 LCD（否则自动回退 Clean HDMI + 恢复机内屏）；`[REC Control]` 强依赖 `TC Output = On`；锚定 3 项 Sony ELF 拼写错误（`ctrl_for_hmdi`、`outpute`、`4ch_output_ch`）与 Tier-0 `Slot 1 EROFS=30`。对比 FX6 25 项 `VAL_setting_output_format_sdi_hdmi_*` 双管线（`SDI RAW` + 4K HDMI vs `HDMI RAW` `4240x2392` 锁 SDI `1080P/i` 且禁 `24Hz`、`S&Q > 60fps` 限幅 HDMI `<= 1080p`、3 模 `SDI/HDMI Rec Control`）。
+
+### Phase 385 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 385 Stage 89（89/89 Full-Board VM Co-Emulation Stages!）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_coemulator.py --self-test --json
+
+# 2. 全板 89 阶段（Stage 1..89, 89/89 Full-Board VM Co-Emulation Stages!）统一校验（支持 --include-stage89 与 --skip-phase385 / --skip-stage89 / --no-include-stage89）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage89 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 385 四模式 112 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_coemulator.py -v
+FX3_FX6_MAC_WORK_ROOT=__fx3_fx6_clean_room_donor_disabled__ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_zoomspeed_mydial3_funcring_hdmi4kout_sdi12g_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -t outputs/fx3-vm
+```

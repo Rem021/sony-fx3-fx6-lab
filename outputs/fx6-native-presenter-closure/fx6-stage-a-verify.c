@@ -54072,6 +54072,1522 @@ static int run_r81_clean_unmount_wave67_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ============================================================================
+ * Round 82 (55/55 Real-HW Rounds R28..R82 · Wave-68 · 163rd..165th -> 165/165 Live Runs):
+ *   1. Setup -> [Area/Date] -> [Area/Date/Time Setting] (_f 0x6a9c, 30 AREA_GMT_* zones
+ *      GMT_M_11_0..GMT_P_12_0 incl. 6 half-hour zones M_03_5/P_03_5/P_04_5/P_05_5/P_06_5/P_09_5,
+ *      [Daylight Savings] Off def/On + ELF typo convert_setting_daylight_saving_to_saylight_saving,
+ *      [Date Format] Y-M-D/M-D-Y/D-M-Y, anti-Reset Initialize-only, built-in rechargeable RTC backup
+ *      battery >= 24h OFF charge, zero user CR2032 slot -> -95) vs FX6 Maintenance > Clock Set
+ *      (UTC -12:00..+14:00 30-min steps, no DST UI -> -95, 12h/24h, Backup Battery End ns2 0x411f).
+ *   2. [Grid Line Display] (_f 0x6f9d) / [Grid Line Type] (_f 0x69c9: Rule of 3rds / Square /
+ *      Diag.+Square, unified Still/Movie/S&Q, passes through when HDMI Info. Display=On unless
+ *      Off(HDMI Only) or RAW Output=On) vs Movie/S&Q-only [Marker Display] (_f 0x61b2: Center /
+ *      15-Aspect / Safety Zone 80%/90% / [Guideframe] _f 0x62f9, all 5 anti-Reset, hidden under
+ *      Focus Magnifier, ZERO HDMI pixel injection) vs FX6 Monitoring > Marker (Center Marker 1..4/Off,
+ *      Guide Frame, zero 3-pattern grid UI -> -95).
+ *   3. [Save/Load Settings] (_f 0x6254) CAMSET01..10.DAT (Slot 1-only, %c:%s/SONY/SETTING/%s/CAMSET/%s.DAT,
+ *      0 hits PRO/CAMERA, libSaveLoadSettings.so, 10-file limit, official exclusion list IPTC/Copyright/
+ *      Ext Flash/Custom WB/Face Memory/all Network & Root Cert/Language/Area-Date, same-model & FW v2+
+ *      check, MR-mode lockout, auto-reboot on Load) & Camera Set. Memory (1..3 body vs M1..M4 card
+ *      CAMPR%02d%c.DAT Slot 1 or Slot 2) + Tier-0 Slot 1 EROFS=-30 Firewall on Save/Delete vs FX6
+ *      Project > All File (Media(B), 64 files, .ALL) / Scene File (.SCN) / dormant Reference File (-95).
+ *   4. No Physical Sync Terminal Debunk (SYNCHRO_TERMINAL* == 0 in FX3 appFw.so; dormant _f 0x6b31
+ *      Flash Sync Spd. Prty. & _g 0x645e blocked -95), Still mech-shutter 1/250s MI-Shoe Flash (< 250V),
+ *      [Video Light Mode] (_f 0x6211 HVL-LBPC: Power Link / REC Link / REC Link&STBY / Auto), physical &
+ *      electrical mutex with XLR-H1 (passive cold shoe kit only, PMIC 5V <= 900 mA) vs FX6 Video Light
+ *      Set (3 modes, no Auto -> -95), TC IN/OUT BNC (EXT-LK), and ZERO GENLOCK BNC despite 107 dormant
+ *      ELF symbols (-95).
+ * ============================================================================ */
+
+#define R82_FX3_AREA_ZONE_COUNT          30
+#define R82_FX3_RTC_CHARGE_MIN_HOURS     24
+#define R82_FX6_TZ_STEP_MIN              (-24) /* UTC -12:00 */
+#define R82_FX6_TZ_STEP_MAX              28    /* UTC +14:00 */
+#define R82_CAMSET_MAX_FILES             10
+#define R82_FX6_ALLFILE_MAX_FILES        64
+#define R82_FLASH_MAX_XSYNC_DENOM        250   /* 1/250 s mechanical shutter ceiling */
+#define R82_FLASH_MAX_SAFE_VOLTAGE_V     250   /* strictly < 250 V */
+#define R82_PMIC_5V_MAX_MA               900
+#define R82_FX6_DORMANT_GENLOCK_SYMS     107
+
+/* Official ilc/2210 CAMSET*.DAT exclusion bitmask (never exported/imported) */
+#define R82_CAMSET_EXCL_IPTC             (1U << 0)
+#define R82_CAMSET_EXCL_COPYRIGHT        (1U << 1)
+#define R82_CAMSET_EXCL_EXT_FLASH        (1U << 2)
+#define R82_CAMSET_EXCL_CUSTOM_WB        (1U << 3)
+#define R82_CAMSET_EXCL_FACE_MEMORY      (1U << 4)
+#define R82_CAMSET_EXCL_NETWORK_CERT     (1U << 5)
+#define R82_CAMSET_EXCL_LANGUAGE         (1U << 6)
+#define R82_CAMSET_EXCL_AREA_DATE        (1U << 7)
+#define R82_CAMSET_EXCL_ALL_MASK         0x00FFU
+
+typedef enum {
+    R82_BODY_FX3_702 = 0,
+    R82_BODY_FX6_601 = 1
+} r82_body_t;
+
+typedef enum {
+    R82_MODE_STILL = 0,
+    R82_MODE_MOVIE = 1,
+    R82_MODE_SQ = 2
+} r82_shoot_mode_t;
+
+typedef enum {
+    R82_DATE_FMT_YMD = 0, /* Y-M-D (_f 0x7416) */
+    R82_DATE_FMT_MDY = 1, /* M-D-Y (_f 0x7976) */
+    R82_DATE_FMT_DMY = 2  /* D-M-Y (_f 0x65da) */
+} r82_date_fmt_t;
+
+typedef enum {
+    R82_GRID_RULE_OF_3RDS = 0, /* default (_f 0x78ae) */
+    R82_GRID_SQUARE = 1,       /* (_f 0x715a) */
+    R82_GRID_DIAG_SQUARE = 2,  /* (_f 0x786c) */
+    R82_GRID_DORMANT_GOLDEN = 3
+} r82_grid_type_t;
+
+typedef enum {
+    R82_CAMSET_OP_LOAD = 0,
+    R82_CAMSET_OP_SAVE = 1,
+    R82_CAMSET_OP_DELETE = 2,
+    R82_CAMSET_OP_CAMPR_WRITE = 3,
+    R82_CAMSET_OP_FTPSET_SAVE = 4
+} r82_camset_op_t;
+
+typedef enum {
+    R82_VLIGHT_POWER_LINK = 0,    /* default (_f 0x651b) */
+    R82_VLIGHT_REC_LINK = 1,      /* (_f 0x652f) */
+    R82_VLIGHT_REC_LINK_STBY = 2, /* (_f 0x647a) */
+    R82_VLIGHT_AUTO = 3           /* FX3-only VIDEO_LIGHT_SET_AUTO_LOW_LIGHT (_f 0x698e) */
+} r82_videolight_mode_t;
+
+typedef struct {
+    /* Pillar A: Area/Date/DST/RTC vs FX6 Clock Set */
+    int area_zone_idx;                   /* 0..29 (30 AREA_GMT_* zones); anti-Reset */
+    int daylight_savings_on;             /* Off def; anti-Reset */
+    int date_time_set;                   /* 0/1; anti-Reset */
+    int date_format;                     /* Y-M-D def; anti-Reset */
+    int initial_setup_wizard_armed;      /* 1 after Initialize or RTC depletion */
+    int rtc_backup_charged_hours;        /* hardware backup cell >= 24h OFF charge */
+    int fx6_tz_step;                     /* -24..+28 (UTC -12:00..+14:00, 30-min steps) */
+    int fx6_clock_12h_mode;              /* 0=24h def, 1=12h */
+    int fx6_date_mode;                   /* 0=YYMMDD, 1=MMDDYY, 2=DDMMYY */
+    int dormant_fx3_cr2032_events;
+    int dormant_fx6_dst_ui_events;
+
+    /* Pillar B: Grid Line Display/Type vs Marker Display -> Guideframe Clean-HDMI Isolation */
+    int grid_line_display_on;            /* Off def; anti-Reset */
+    int grid_line_type;                  /* Rule of 3rds def; anti-Reset */
+    int effective_grid_on_hdmi;          /* 1 iff Grid=On & HDMI Info=On & RecMedia=On & RAW=Off */
+    int marker_display_on;               /* Off def; Movie/S&Q only; anti-Reset */
+    int center_marker_on;                /* Off def; anti-Reset */
+    int aspect_marker_idx;               /* 0=Off, 1..15 (15 ratios); anti-Reset */
+    int safety_zone_pct;                 /* 0=Off, 80, 90; anti-Reset */
+    int guideframe_on;                   /* Off def; anti-Reset */
+    int effective_marker_on_monitor;     /* 0 when Focus Magnifier active */
+    int marker_hdmi_pixels_injected;     /* ALWAYS 0 on FX3 */
+    int fx6_center_marker;               /* 0=Off, 1..4 */
+    int fx6_guide_frame_on;              /* 0/1 */
+    int dormant_fx6_grid3_ui_events;
+
+    /* Pillar C: Save/Load Settings CAMSET01..10.DAT (Slot 1-only) & Camera Set. Memory 1..3 / M1..M4 */
+    int body_cam_set_mem_saved[3];       /* body 1..3 NVRAM; anti-Reset */
+    int memory_recall_media_slot;        /* 1=Slot 1 def, 2=Slot 2; anti-Reset */
+    int camset_slot2_campr_count;        /* external Slot 2 CAMPR*.DAT writes (RAM model) */
+    int camset_load_reboot_pending;      /* 1 after valid Load (_g 0x62dd) */
+    int camset_excluded_leaked_count;    /* ALWAYS 0 */
+    int network_creds_configured;        /* reset by Reset Network Set., excluded from CAMSET */
+    int fx6_allfile_load_network_data;   /* 0/1 */
+    int fx6_allfile_saved_mediab_count;  /* Media(B) up to 64 */
+    int dormant_fx3_pro_camera_events;
+    int dormant_fx6_ref_file_events;
+
+    /* Pillar D: Sync Terminal Debunk, MI-Shoe Video Light Mode & XLR-H1 Mutex vs FX6 TC BNC & Zero GENLOCK */
+    int flash_mode;                      /* 0=Flash Off def; Can be reset by Camera Settings Reset */
+    int ext_flash_set_configured;        /* anti-Reset & excluded from CAMSET*.DAT */
+    int video_light_mode;                /* Power Link def; anti-Reset */
+    int xlrh1_attached;                  /* 0/1; occupies sole electrical MI Shoe */
+    int mishoe_power_draw_ma;            /* <= 900 mA */
+    int fx6_video_light_mode;            /* 0..2 only (no Auto) */
+    int fx6_tc_bnc_ext_lk;               /* 1 when TC IN BNC locked */
+    int dormant_fx3_sync_terminal_events;
+    int dormant_fx6_genlock_events;
+    int xlrh1_mishoe_mutex_violations;
+
+    /* Global safety & persistence */
+    int airplane_mode_on;                /* survives Reset, Network Reset, Initialize */
+    int usb_tx;
+    int slot1_writes;
+    int slot1_data_sector_writes;
+    int slot1_avf_info_mutated;
+    int emmc_write_count;
+} r82_wave68_cfg_t;
+
+static const char *r82_lookup_wave68_menu_node(int idx) {
+    static const char *const k_nodes[16] = {
+        "Setup -> [Area/Date] -> [Area/Date/Time Setting] -> [Area Setting] (30 AREA_GMT_* zones incl. 6 half-hour; anti-Reset)",
+        "Setup -> [Area/Date] -> [Area/Date/Time Setting] -> [Daylight Savings] (Off def/On; ELF typo saylight; anti-Reset)",
+        "Setup -> [Area/Date] -> [Area/Date/Time Setting] -> [Date Format] (Y-M-D/M-D-Y/D-M-Y; Initialize-only reset; >=24h RTC backup)",
+        "FX6: Maintenance -> [Clock Set] (UTC -12:00..+14:00 30-min steps, no DST UI, 12h/24h, Backup Battery End)",
+        "Shooting -> [Shooting Display] -> [Grid Line Display] & [Grid Line Type] (unified Still/Movie/S&Q; 3 patterns; anti-Reset)",
+        "Shooting -> [Marker Display] -> [Center]/[15-Aspect]/[Safety Zone 80%/90%]/[Guideframe] (Movie/S&Q only; all 5 anti-Reset; 0 HDMI)",
+        "Clean-HDMI Isolation: Grid passes when HDMI Info=On unless Off(HDMI Only)/RAW=On; Marker strictly monitor-only & hidden under Focus Mag",
+        "FX6: Monitoring -> [Marker] (Center Marker 1..4/Off, Guide Frame, independent VF/SDI/HDMI toggles; zero 3-pattern grid UI)",
+        "Setup -> [Reset/Save Settings] -> [Save/Load Settings] (CAMSET01..10.DAT Slot 1-only; %c:%s/SONY/SETTING/%s/CAMSET/%s.DAT; libSaveLoadSettings.so)",
+        "CAMSET*.DAT Exclusion List: IPTC/Copyright/Ext Flash/Custom WB/Face Memory/all Network & Root Cert/Language/Area-Date (FTP -> FTPSET)",
+        "Shooting -> [Shooting Mode] -> [Camera Set. Memory] (body 1..3 anti-Reset vs card M1..M4 CAMPR%02d%c.DAT Slot 1/2 via Memory/Recall Media)",
+        "FX6: Project -> [All File] (Media(B) 64 files .ALL) & [Scene File] (.SCN); dormant Reference File blocked -95",
+        "No Physical Sync Terminal Debunk: SYNCHRO_TERMINAL* == 0 in FX3 appFw.so; dormant Flash Sync Spd. Prty. blocked -95",
+        "Exposure/Color -> [Flash] -> [External Flash Set.] & [Flash Mode] (Still mech-shutter 1/250s, <250V, anti-Reset, excluded from CAMSET)",
+        "Setup -> [Setup Option] -> [Video Light Mode] (HVL-LBPC 4 modes incl. Auto; XLR-H1 passive cold-shoe physical/power mutex; PMIC 5V <=900 mA)",
+        "FX6: Technical -> [Video Light Set] (3 modes, no Auto), TC IN/OUT BNC (EXT-LK), zero GENLOCK BNC despite 107 dormant ELF symbols"
+    };
+    return (idx >= 0 && idx < 16) ? k_nodes[idx] : NULL;
+}
+
+static const char *r82_lookup_uxc_token(int idx) {
+    static const char *const k_tokens[28] = {
+        "_f:0x6a9c:Area/Date/Time Setting",
+        "base:0xe91a:Area Setting",
+        "base:0xe917:Daylight Savings",
+        "convert_setting_daylight_saving_to_saylight_saving",
+        "_f:0x670d:Date Format",
+        "37dlg_rec203_initial_setting_controller",
+        "ns2:0x426c:Clock Set",
+        "ns2:0x411f:Backup Battery End",
+        "_f:0x6f9d:Grid Line Display",
+        "_f:0x69c9:Grid Line Type",
+        "_f:0x70c5:Grid Line Display Select",
+        "BKID_APP_deleted_setting_grid_line_display_movie",
+        "_f:0x61b2:Marker Display",
+        "_f:0x62f9:Guideframe",
+        "ns2:0x450a:Center Marker",
+        "ns2:0x4520:Guide Frame",
+        "_f:0x6254:Save/Load Settings",
+        "%c:%s/SONY/SETTING/%s/CAMSET/%s.DAT",
+        "libSaveLoadSettings.so",
+        "%c:%s/SONY/SETTING/%s/CAMPR%02d%c.DAT",
+        "_f:0x763c:Memory/Recall Media",
+        "_f:0x71ae:Save/Load FTP Settings",
+        "%c:%s/SONY/PRO/CAMERA/%s/%s.ALL",
+        "_f:0x6b31:Flash Sync Spd. Prty. (dormant on FX3 7.02)",
+        "_g:0x645e:SYNCHRO_TERMINAL_OUTPUT_SET_ON (dormant on FX3 7.02)",
+        "_f:0x6771:External Flash Set.",
+        "_f:0x6211:Video Light Mode",
+        "VIDEO_LIGHT_SET_AUTO_LOW_LIGHT"
+    };
+    return (idx >= 0 && idx < 28) ? k_tokens[idx] : NULL;
+}
+
+static void r82_wave68_initialize(r82_wave68_cfg_t *cfg) {
+    if (!cfg) return;
+    int keep_airplane = cfg->airplane_mode_on;
+    int keep_rtc_hours = cfg->rtc_backup_charged_hours;
+    int keep_slot2_campr = cfg->camset_slot2_campr_count;
+    int keep_fx6_allfile = cfg->fx6_allfile_saved_mediab_count;
+
+    /* Pillar A defaults after Initialize (re-arms initial setup wizard) */
+    cfg->area_zone_idx = 0;
+    cfg->daylight_savings_on = 0;
+    cfg->date_time_set = 0;
+    cfg->date_format = R82_DATE_FMT_YMD;
+    cfg->initial_setup_wizard_armed = 1;
+    cfg->rtc_backup_charged_hours = keep_rtc_hours;
+    cfg->fx6_tz_step = 0;
+    cfg->fx6_clock_12h_mode = 0;
+    cfg->fx6_date_mode = 0;
+    cfg->dormant_fx3_cr2032_events = 0;
+    cfg->dormant_fx6_dst_ui_events = 0;
+
+    /* Pillar B defaults */
+    cfg->grid_line_display_on = 0;
+    cfg->grid_line_type = R82_GRID_RULE_OF_3RDS;
+    cfg->effective_grid_on_hdmi = 0;
+    cfg->marker_display_on = 0;
+    cfg->center_marker_on = 0;
+    cfg->aspect_marker_idx = 0;
+    cfg->safety_zone_pct = 0;
+    cfg->guideframe_on = 0;
+    cfg->effective_marker_on_monitor = 0;
+    cfg->marker_hdmi_pixels_injected = 0;
+    cfg->fx6_center_marker = 0;
+    cfg->fx6_guide_frame_on = 0;
+    cfg->dormant_fx6_grid3_ui_events = 0;
+
+    /* Pillar C defaults */
+    cfg->body_cam_set_mem_saved[0] = 0;
+    cfg->body_cam_set_mem_saved[1] = 0;
+    cfg->body_cam_set_mem_saved[2] = 0;
+    cfg->memory_recall_media_slot = 1;
+    cfg->camset_slot2_campr_count = keep_slot2_campr;
+    cfg->camset_load_reboot_pending = 0;
+    cfg->camset_excluded_leaked_count = 0;
+    cfg->network_creds_configured = 0;
+    cfg->fx6_allfile_load_network_data = 0;
+    cfg->fx6_allfile_saved_mediab_count = keep_fx6_allfile;
+    cfg->dormant_fx3_pro_camera_events = 0;
+    cfg->dormant_fx6_ref_file_events = 0;
+
+    /* Pillar D defaults */
+    cfg->flash_mode = 0;
+    cfg->ext_flash_set_configured = 0;
+    cfg->video_light_mode = R82_VLIGHT_POWER_LINK;
+    cfg->xlrh1_attached = 0;
+    cfg->mishoe_power_draw_ma = 0;
+    cfg->fx6_video_light_mode = R82_VLIGHT_POWER_LINK;
+    cfg->fx6_tc_bnc_ext_lk = 0;
+    cfg->dormant_fx3_sync_terminal_events = 0;
+    cfg->dormant_fx6_genlock_events = 0;
+    cfg->xlrh1_mishoe_mutex_violations = 0;
+
+    cfg->airplane_mode_on = keep_airplane;
+    cfg->usb_tx = 0;
+    cfg->slot1_writes = 0;
+    cfg->slot1_data_sector_writes = 0;
+    cfg->slot1_avf_info_mutated = 0;
+    cfg->emmc_write_count = 0;
+}
+
+static void r82_wave68_zero_init(r82_wave68_cfg_t *cfg) {
+    if (!cfg) return;
+    memset(cfg, 0, sizeof(*cfg));
+    cfg->rtc_backup_charged_hours = R82_FX3_RTC_CHARGE_MIN_HOURS;
+    r82_wave68_initialize(cfg);
+}
+
+static void r82_wave68_camera_settings_reset(r82_wave68_cfg_t *cfg) {
+    if (!cfg) return;
+    /* Can be reset: Still [Flash Mode] only */
+    cfg->flash_mode = 0;
+    /* Anti-Reset (Not available under Camera Settings Reset):
+     * - Setup -> [Area/Date/Time Setting] (Area Setting, Daylight Savings, Date/Time, Date Format)
+     * - [Grid Line Display] & [Grid Line Type]
+     * - ALL 5 [Marker Display] items (Marker Display, Center, Aspect, Safety Zone, Guideframe)
+     * - Body [Camera Set. Memory] 1..3 & [Memory/Recall Media]
+     * - [External Flash Set.] & Setup -> [Video Light Mode]
+     * - [Airplane Mode]
+     */
+}
+
+static void r82_wave68_reset_network_settings(r82_wave68_cfg_t *cfg) {
+    if (!cfg) return;
+    /* Clears network credentials (excluded from CAMSET*.DAT); preserves all Wave-68 Setup/Grid/Marker/Memory/Light & Airplane Mode */
+    cfg->network_creds_configured = 0;
+}
+
+/* Pillar A: Setup -> [Area/Date] (30 zones, DST, Date Format, >=24h RTC) vs FX6 Clock Set */
+static int r82_eval_areadate_dst_rtc_and_clockset(
+    r82_wave68_cfg_t *cfg,
+    int body,
+    int zone_or_tz_step,
+    int dst_toggle_on,
+    int date_time_set,
+    int date_fmt_or_mode,
+    int fx6_12h_mode,
+    int rtc_charge_hours,
+    int rtc_depleted,
+    int req_user_cr2032_swap,
+    int req_timestamp_dependent_op
+) {
+    if (!cfg) return -EINVAL;
+    if (req_user_cr2032_swap) {
+        /* Neither FX3 nor FX6 has a user-replaceable CR2032 slot (soldered rechargeable RTC backup battery) */
+        return -EOPNOTSUPP;
+    }
+    if (body == R82_BODY_FX6_601) {
+        if (dst_toggle_on) {
+            /* FX6 has no Daylight Saving Time UI toggle (dormant ns2 0x564d / summer_time_name_dst) */
+            return -EOPNOTSUPP;
+        }
+        if (zone_or_tz_step < R82_FX6_TZ_STEP_MIN || zone_or_tz_step > R82_FX6_TZ_STEP_MAX) {
+            return -EINVAL;
+        }
+        if (date_fmt_or_mode < 0 || date_fmt_or_mode > 2) {
+            return -EINVAL;
+        }
+        if (rtc_depleted) {
+            /* FX6 forces boot lock on Clock Set / ns2 0x411f "Backup Battery End" */
+            return -EBUSY;
+        }
+        cfg->fx6_tz_step = zone_or_tz_step;
+        cfg->fx6_date_mode = date_fmt_or_mode;
+        cfg->fx6_clock_12h_mode = fx6_12h_mode ? 1 : 0;
+        return 0;
+    }
+
+    /* FX3 Ver. 7.02 */
+    if (zone_or_tz_step < 0 || zone_or_tz_step >= R82_FX3_AREA_ZONE_COUNT) {
+        /* Strictly 30 AREA_GMT_* zones (GMT_M_11_0..GMT_P_12_0 incl. 6 half-hour zones) */
+        return -EINVAL;
+    }
+    if (date_fmt_or_mode < R82_DATE_FMT_YMD || date_fmt_or_mode > R82_DATE_FMT_DMY) {
+        /* Only Y-M-D, M-D-Y, D-M-Y */
+        return -EINVAL;
+    }
+    if (rtc_depleted) {
+        /* Depleted internal rechargeable RTC battery re-arms Area/Date/Time Setting boot popup */
+        cfg->date_time_set = 0;
+        cfg->initial_setup_wizard_armed = 1;
+        return -EAGAIN;
+    }
+    if (rtc_charge_hours < R82_FX3_RTC_CHARGE_MIN_HOURS) {
+        /* Official ilc/2210: requires >= 24h power-OFF charge with charged NP-FZ100 */
+        return -EAGAIN;
+    }
+    if (req_timestamp_dependent_op && !date_time_set) {
+        /* _g 0x63a6: "Sets the Area/Date/Time Setting to perform this function." */
+        return -EAGAIN;
+    }
+    cfg->area_zone_idx = zone_or_tz_step;
+    cfg->daylight_savings_on = dst_toggle_on ? 1 : 0;
+    cfg->date_time_set = date_time_set ? 1 : 0;
+    cfg->date_format = date_fmt_or_mode;
+    cfg->rtc_backup_charged_hours = rtc_charge_hours;
+    cfg->initial_setup_wizard_armed = date_time_set ? 0 : 1;
+    return 0;
+}
+
+/* Pillar B: [Grid Line Display/Type] vs [Marker Display] -> [Guideframe] Clean-HDMI Isolation vs FX6 Marker */
+static int r82_eval_grid_line_and_marker_cleanhdmi(
+    r82_wave68_cfg_t *cfg,
+    int body,
+    int shoot_mode,
+    int grid_display_on,
+    int grid_type,
+    int hdmi_info_display_on,
+    int rec_media_dur_hdmi_on,
+    int raw_hdmi_on,
+    int force_grid_on_clean_feed,
+    int marker_display_on,
+    int center_marker_val,
+    int aspect_marker_idx,
+    int safety_zone_pct,
+    int guideframe_on,
+    int focus_mag_active,
+    int force_marker_on_hdmi,
+    int force_marker_under_focusmag
+) {
+    if (!cfg) return -EINVAL;
+    if (body == R82_BODY_FX6_601) {
+        if (grid_display_on) {
+            /* FX6 body has no 3-pattern static Grid Line UI (dormant GUIDE_FRAME_*_GRID only) */
+            return -EOPNOTSUPP;
+        }
+        if (center_marker_val < 0 || center_marker_val > 4) {
+            /* FX6 Monitoring > Marker > Center Marker is strictly Off(0) or 1..4 */
+            return -EINVAL;
+        }
+        cfg->fx6_center_marker = center_marker_val;
+        cfg->fx6_guide_frame_on = guideframe_on ? 1 : 0;
+        return 0;
+    }
+
+    /* FX3 Ver. 7.02 */
+    if (grid_type == R82_GRID_DORMANT_GOLDEN) {
+        return -EOPNOTSUPP;
+    }
+    if (grid_type < R82_GRID_RULE_OF_3RDS || grid_type > R82_GRID_DIAG_SQUARE) {
+        return -EINVAL;
+    }
+    int clean_feed_forced = (!hdmi_info_display_on || !rec_media_dur_hdmi_on || raw_hdmi_on) ? 1 : 0;
+    if (force_grid_on_clean_feed && clean_feed_forced) {
+        /* G89 Clean-HDMI guard: cannot force Grid onto HDMI when Off(HDMI Only), RAW=On, or HDMI Info=Off */
+        return -EBUSY;
+    }
+    if (marker_display_on && shoot_mode == R82_MODE_STILL) {
+        /* PRM_HAITA_setting_marker_display_exposure_mode: Marker Display is Movie/S&Q ONLY */
+        return -EOPNOTSUPP;
+    }
+    if (aspect_marker_idx < 0 || aspect_marker_idx > 15) {
+        return -EINVAL;
+    }
+    if (safety_zone_pct != 0 && safety_zone_pct != 80 && safety_zone_pct != 90) {
+        return -EINVAL;
+    }
+    if (force_marker_on_hdmi) {
+        /* ilc/2210: "Markers appear only on the monitor and cannot be output." (0 HDMI pixel injection) */
+        return -EOPNOTSUPP;
+    }
+    if (marker_display_on && focus_mag_active && force_marker_under_focusmag) {
+        /* ilc/2210: Markers are hidden when Focus Magnifier is active */
+        return -EBUSY;
+    }
+
+    cfg->grid_line_display_on = grid_display_on ? 1 : 0;
+    cfg->grid_line_type = grid_type;
+    cfg->effective_grid_on_hdmi = (cfg->grid_line_display_on && !clean_feed_forced) ? 1 : 0;
+    cfg->marker_display_on = marker_display_on ? 1 : 0;
+    cfg->center_marker_on = center_marker_val ? 1 : 0;
+    cfg->aspect_marker_idx = aspect_marker_idx;
+    cfg->safety_zone_pct = safety_zone_pct;
+    cfg->guideframe_on = guideframe_on ? 1 : 0;
+    cfg->effective_marker_on_monitor = (cfg->marker_display_on && !focus_mag_active) ? 1 : 0;
+    cfg->marker_hdmi_pixels_injected = 0;
+    return 0;
+}
+
+/* Pillar C: [Save/Load Settings] CAMSET01..10.DAT (Slot 1-only) & Camera Set. Memory 1..3 / M1..M4 + EROFS=30 */
+static int r82_eval_saveload_camset_memory_and_allfile(
+    r82_wave68_cfg_t *cfg,
+    int body,
+    int op,
+    int target_slot,
+    int file_index,
+    int req_pro_camera_path,
+    int req_fx6_ref_file,
+    unsigned int req_excluded_mask,
+    int mr_recall_mode_active,
+    int same_model_fx3,
+    int camset_fw_major,
+    int cam_set_mem_body_idx,
+    int req_custom_key_in_mem
+) {
+    if (!cfg) return -EINVAL;
+    if (body == R82_BODY_FX6_601) {
+        if (req_fx6_ref_file) {
+            /* Dormant Reference File (ns2 0x429b / 0x4d52, 0 hits in FX6 appFw.so) -> -95 */
+            return -EOPNOTSUPP;
+        }
+        if (file_index < 1) {
+            return -EINVAL;
+        }
+        if (file_index > R82_FX6_ALLFILE_MAX_FILES) {
+            return -ENOSPC;
+        }
+        if ((op == R82_CAMSET_OP_SAVE || op == R82_CAMSET_OP_DELETE) && target_slot == 1) {
+            /* Tier-0 Slot 1 write-protection firewall */
+            return -EROFS;
+        }
+        if (op == R82_CAMSET_OP_SAVE && target_slot == 2) {
+            cfg->fx6_allfile_saved_mediab_count++;
+        }
+        return 0;
+    }
+
+    /* FX3 Ver. 7.02 */
+    if (req_pro_camera_path) {
+        /* FX3 appFw.so has 0 hits for PRO/CAMERA; true path is %c:%s/SONY/SETTING/%s/CAMSET/%s.DAT */
+        return -EOPNOTSUPP;
+    }
+    if (req_fx6_ref_file) {
+        return -EOPNOTSUPP;
+    }
+    if (req_custom_key_in_mem) {
+        /* Neither body 1..3 nor card M1..M4 saves Custom Key/Dial Set. or Program Shift */
+        return -EOPNOTSUPP;
+    }
+    if (cam_set_mem_body_idx >= 1 && cam_set_mem_body_idx <= 3) {
+        cfg->body_cam_set_mem_saved[cam_set_mem_body_idx - 1] = 1;
+        return 0;
+    }
+    if (op == R82_CAMSET_OP_CAMPR_WRITE) {
+        /* Camera Set. Memory M1..M4 -> CAMPR%02d%c.DAT via [Memory/Recall Media] (Slot 1 or Slot 2) */
+        if (target_slot != 1 && target_slot != 2) {
+            return -EINVAL;
+        }
+        if (file_index < 1 || file_index > 4) {
+            return -EINVAL;
+        }
+        cfg->memory_recall_media_slot = target_slot;
+        if (target_slot == 1) {
+            return -EROFS;
+        }
+        cfg->camset_slot2_campr_count++;
+        return 0;
+    }
+    if (op == R82_CAMSET_OP_FTPSET_SAVE) {
+        /* Separate [Save/Load FTP Settings] -> SONY/SETTING/%s/FTPSET/%s.DAT */
+        if (target_slot == 1) {
+            return -EROFS;
+        }
+        return 0;
+    }
+
+    /* [Save/Load Settings] CAMSET01..10.DAT */
+    if (mr_recall_mode_active) {
+        /* Forbidden while in MR (Recall Camera Setting) mode */
+        return -EBUSY;
+    }
+    if (target_slot != 1) {
+        /* Card [Media] in [Save/Load Settings] is hard-locked to Slot 1 (no Slot 2 selector) */
+        return -EOPNOTSUPP;
+    }
+    if (file_index < 1) {
+        return -EINVAL;
+    }
+    if (file_index > R82_CAMSET_MAX_FILES) {
+        /* Strict 10-file limit: CAMSET01.DAT..CAMSET10.DAT */
+        return -ENOSPC;
+    }
+    if ((req_excluded_mask & R82_CAMSET_EXCL_ALL_MASK) != 0U) {
+        /* Official exclusion list: IPTC/Copyright/Ext Flash/Custom WB/Face Memory/Network & Cert/Language/Area-Date */
+        return -EOPNOTSUPP;
+    }
+    if (op == R82_CAMSET_OP_SAVE || op == R82_CAMSET_OP_DELETE) {
+        /* Tier-0 Slot 1 EROFS=-30 Firewall */
+        return -EROFS;
+    }
+    if (op == R82_CAMSET_OP_LOAD) {
+        /* libSaveLoadSettings.so requestToCheck: same-model ILME-FX3 & FW >= Ver. 2.00 */
+        if (!same_model_fx3 || camset_fw_major < 2) {
+            return -EINVAL;
+        }
+        /* Valid read-only load triggers reboot confirmation (_g 0x62dd) */
+        cfg->camset_load_reboot_pending = 1;
+        return 0;
+    }
+    return -EINVAL;
+}
+
+/* Pillar D: Sync Terminal Debunk, MI-Shoe [Video Light Mode] & XLR-H1 Mutex vs FX6 TC BNC & Zero GENLOCK */
+static int r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+    r82_wave68_cfg_t *cfg,
+    int body,
+    int shoot_mode,
+    int req_sync_terminal_or_spd_prty,
+    int req_genlock_bnc,
+    int req_tc_bnc_in_extlk,
+    int req_flash_fire,
+    int mech_shutter_on,
+    int shutter_denom,
+    int flash_trigger_voltage_v,
+    int flash_reverse_polarity,
+    int req_video_light_mode,
+    int xlrh1_attached,
+    int req_mishoe_electrical_accessory,
+    int mishoe_draw_ma
+) {
+    if (!cfg) return -EINVAL;
+    if (body == R82_BODY_FX6_601) {
+        if (req_genlock_bnc) {
+            /* FX6 has ZERO physical GENLOCK BNC despite 107 dormant ELF GENLOCK symbols (PXW-FX9 only) */
+            return -EOPNOTSUPP;
+        }
+        if (req_sync_terminal_or_spd_prty || req_flash_fire) {
+            /* FX6 has zero Still Flash UI & no PC sync terminal */
+            return -EOPNOTSUPP;
+        }
+        if (req_video_light_mode == R82_VLIGHT_AUTO) {
+            /* FX6 Technical > Video Light Set has 3 modes ONLY (Power/Rec/Rec+Stby); no Auto mode */
+            return -EOPNOTSUPP;
+        }
+        if (req_video_light_mode >= 0) {
+            if (req_video_light_mode > R82_VLIGHT_REC_LINK_STBY) {
+                return -EINVAL;
+            }
+            cfg->fx6_video_light_mode = req_video_light_mode;
+        }
+        if (req_tc_bnc_in_extlk >= 0) {
+            cfg->fx6_tc_bnc_ext_lk = req_tc_bnc_in_extlk ? 1 : 0;
+        }
+        return 0;
+    }
+
+    /* FX3 Ver. 7.02 */
+    if (req_sync_terminal_or_spd_prty) {
+        /* SYNCHRO_TERMINAL* == 0 in FX3 appFw.so; dormant _f 0x6b31 & _g 0x645e blocked -95 */
+        return -EOPNOTSUPP;
+    }
+    if (req_genlock_bnc || req_tc_bnc_in_extlk > 0) {
+        /* FX3 has zero BNC ports (no TC BNC, no GENLOCK BNC) */
+        return -EOPNOTSUPP;
+    }
+    if (xlrh1_attached && req_mishoe_electrical_accessory) {
+        /* Physical & electrical mutex: XLR-H1 occupies sole MI Shoe; its Accessory Shoe Kit is passive cold shoe only */
+        return -EBUSY;
+    }
+    if (req_mishoe_electrical_accessory && mishoe_draw_ma > R82_PMIC_5V_MAX_MA) {
+        /* Stage-B PMIC 5V <= 900 mA budget */
+        return -EBUSY;
+    }
+    if (req_flash_fire) {
+        if (shoot_mode != R82_MODE_STILL) {
+            return -EOPNOTSUPP;
+        }
+        if (flash_trigger_voltage_v >= R82_FLASH_MAX_SAFE_VOLTAGE_V || flash_reverse_polarity) {
+            /* High-voltage (>= 250 V) or reverse-polarity trigger blocked fail-closed -EPERM */
+            return -EPERM;
+        }
+        if (!mech_shutter_on) {
+            /* Electronic shutter disables flash firing */
+            return -EBUSY;
+        }
+        if (shutter_denom > R82_FLASH_MAX_XSYNC_DENOM) {
+            /* Mechanical shutter X-Sync ceiling 1/250 s */
+            return -EBUSY;
+        }
+        cfg->flash_mode = 2; /* Fill-flash */
+        cfg->ext_flash_set_configured = 1;
+    }
+    if (req_video_light_mode >= 0) {
+        if (req_video_light_mode > R82_VLIGHT_AUTO) {
+            return -EINVAL;
+        }
+        cfg->video_light_mode = req_video_light_mode;
+    }
+    cfg->xlrh1_attached = xlrh1_attached ? 1 : 0;
+    cfg->mishoe_power_draw_ma = req_mishoe_electrical_accessory ? mishoe_draw_ma : 0;
+    return 0;
+}
+
+static int setup_r82_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    int fx3_wave68_nodes_ok = 1;
+    for (int i = 0; i < 16; i++) {
+        if (!r82_lookup_wave68_menu_node(i)) fx3_wave68_nodes_ok = 0;
+    }
+    int uxc_tokens_ok = 1;
+    for (int i = 0; i < 28; i++) {
+        if (!r82_lookup_uxc_token(i)) uxc_tokens_ok = 0;
+    }
+
+    r82_wave68_cfg_t cfg;
+    r82_wave68_zero_init(&cfg);
+
+    /* Pillar A: Area/Date 30 zones, DST, Date Format, >=24h RTC vs FX6 Clock Set */
+    int fx3_zone_half_rc = r82_eval_areadate_dst_rtc_and_clockset(
+        &cfg, R82_BODY_FX3_702, 18, 1, 1, R82_DATE_FMT_YMD, 0, 24, 0, 0, 1);
+    int fx3_zone_oob_rc = r82_eval_areadate_dst_rtc_and_clockset(
+        &cfg, R82_BODY_FX3_702, 30, 0, 1, R82_DATE_FMT_YMD, 0, 24, 0, 0, 0);
+    int fx3_cr2032_rc = r82_eval_areadate_dst_rtc_and_clockset(
+        &cfg, R82_BODY_FX3_702, 18, 0, 1, R82_DATE_FMT_YMD, 0, 24, 0, 1, 0);
+    int fx3_rtc_under24h_rc = r82_eval_areadate_dst_rtc_and_clockset(
+        &cfg, R82_BODY_FX3_702, 18, 0, 1, R82_DATE_FMT_YMD, 0, 12, 0, 0, 0);
+    int fx6_clock_ok_rc = r82_eval_areadate_dst_rtc_and_clockset(
+        &cfg, R82_BODY_FX6_601, 28, 0, 1, 2, 1, 24, 0, 0, 0);
+    int fx6_dst_dormant_rc = r82_eval_areadate_dst_rtc_and_clockset(
+        &cfg, R82_BODY_FX6_601, 0, 1, 1, 0, 0, 24, 0, 0, 0);
+    int fx6_rtc_end_rc = r82_eval_areadate_dst_rtc_and_clockset(
+        &cfg, R82_BODY_FX6_601, 0, 0, 1, 0, 0, 0, 1, 0, 0);
+    int areadate30_dst_clockset_ok =
+        (fx3_zone_half_rc == 0 && cfg.area_zone_idx == 18 && cfg.daylight_savings_on == 1 &&
+         cfg.date_format == R82_DATE_FMT_YMD && fx3_zone_oob_rc == -EINVAL &&
+         fx3_cr2032_rc == -EOPNOTSUPP && fx3_rtc_under24h_rc == -EAGAIN &&
+         fx6_clock_ok_rc == 0 && cfg.fx6_tz_step == 28 && cfg.fx6_clock_12h_mode == 1 &&
+         fx6_dst_dormant_rc == -EOPNOTSUPP && fx6_rtc_end_rc == -EBUSY) ? 1 : 0;
+
+    /* Pillar B: Grid Line 3-pattern HDMI pass-through vs Clean-Feed & Marker Display 0-HDMI isolation */
+    int grid_pass_rc = r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 1, R82_GRID_DIAG_SQUARE, 1, 1, 0, 0,
+        1, 1, 15, 90, 1, 0, 0, 0);
+    int grid_passed_hdmi = cfg.effective_grid_on_hdmi;
+    int marker_on_mon_zero_hdmi = (cfg.effective_marker_on_monitor == 1 && cfg.marker_hdmi_pixels_injected == 0) ? 1 : 0;
+    int grid_cleanfeed_rc = r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 1, R82_GRID_SQUARE, 1, 0, 0, 0,
+        1, 1, 15, 80, 1, 1, 0, 0);
+    int grid_clean_suppressed = (grid_cleanfeed_rc == 0 && cfg.effective_grid_on_hdmi == 0 &&
+                                 cfg.effective_marker_on_monitor == 0 && cfg.marker_hdmi_pixels_injected == 0) ? 1 : 0;
+    int marker_still_rc = r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX3_702, R82_MODE_STILL, 1, R82_GRID_RULE_OF_3RDS, 1, 1, 0, 0,
+        1, 1, 1, 80, 1, 0, 0, 0);
+    int marker_hdmi_rc = r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 0, R82_GRID_RULE_OF_3RDS, 1, 1, 0, 0,
+        1, 1, 1, 80, 1, 0, 1, 0);
+    int fx6_marker_ok_rc = r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX6_601, R82_MODE_MOVIE, 0, R82_GRID_RULE_OF_3RDS, 0, 1, 0, 0,
+        1, 4, 0, 90, 1, 0, 0, 0);
+    int fx6_grid3_dormant_rc = r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX6_601, R82_MODE_MOVIE, 1, R82_GRID_RULE_OF_3RDS, 0, 1, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0);
+    int grid3_cleanhdmi_marker_ok =
+        (grid_pass_rc == 0 && grid_passed_hdmi == 1 && marker_on_mon_zero_hdmi == 1 &&
+         grid_clean_suppressed == 1 && marker_still_rc == -EOPNOTSUPP &&
+         marker_hdmi_rc == -EOPNOTSUPP && fx6_marker_ok_rc == 0 && cfg.fx6_center_marker == 4 &&
+         fx6_grid3_dormant_rc == -EOPNOTSUPP) ? 1 : 0;
+
+    /* Pillar C: Save/Load CAMSET01..10.DAT (Slot 1-only), exclusions, Camera Set. Memory 1..3/M1..M4 & EROFS=30 */
+    int camset_load_ok_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_LOAD, 1, 10, 0, 0, 0U, 0, 1, 7, 0, 0);
+    int camset_slot1_save_erofs_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_SAVE, 1, 1, 0, 0, 0U, 0, 1, 7, 0, 0);
+    int camset_slot1_del_erofs_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_DELETE, 1, 1, 0, 0, 0U, 0, 1, 7, 0, 0);
+    int camset_slot2_blocked_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_SAVE, 2, 1, 0, 0, 0U, 0, 1, 7, 0, 0);
+    int camset_pro_camera_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_LOAD, 1, 1, 1, 0, 0U, 0, 1, 7, 0, 0);
+    int camset_over10_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_LOAD, 1, 11, 0, 0, 0U, 0, 1, 7, 0, 0);
+    int camset_excl_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_LOAD, 1, 1, 0, 0, R82_CAMSET_EXCL_ALL_MASK, 0, 1, 7, 0, 0);
+    int camset_fw_v1_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_LOAD, 1, 1, 0, 0, 0U, 0, 1, 1, 0, 0);
+    int campr_slot1_erofs_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_CAMPR_WRITE, 1, 1, 0, 0, 0U, 0, 1, 7, 0, 0);
+    int campr_slot2_ok_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_CAMPR_WRITE, 2, 4, 0, 0, 0U, 0, 1, 7, 0, 0);
+    int fx6_allfile_ok_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX6_601, R82_CAMSET_OP_SAVE, 2, 64, 0, 0, 0U, 0, 0, 6, 0, 0);
+    int fx6_ref_file_dormant_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX6_601, R82_CAMSET_OP_LOAD, 2, 1, 0, 1, 0U, 0, 0, 6, 0, 0);
+    int saveload_camset10_erofs_ok =
+        (camset_load_ok_rc == 0 && cfg.camset_load_reboot_pending == 1 &&
+         camset_slot1_save_erofs_rc == -EROFS && camset_slot1_del_erofs_rc == -EROFS &&
+         camset_slot2_blocked_rc == -EOPNOTSUPP && camset_pro_camera_rc == -EOPNOTSUPP &&
+         camset_over10_rc == -ENOSPC && camset_excl_rc == -EOPNOTSUPP &&
+         camset_fw_v1_rc == -EINVAL && campr_slot1_erofs_rc == -EROFS &&
+         campr_slot2_ok_rc == 0 && cfg.camset_slot2_campr_count == 1 &&
+         fx6_allfile_ok_rc == 0 && cfg.fx6_allfile_saved_mediab_count == 1 &&
+         fx6_ref_file_dormant_rc == -EOPNOTSUPP) ? 1 : 0;
+
+    /* Pillar D: Sync Terminal debunk, MI-Shoe Video Light Mode & XLR-H1 mutex vs FX6 TC BNC & zero GENLOCK */
+    int fx3_sync_debunk_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX3_702, R82_MODE_STILL, 1, 0, 0, 0, 1, 250, 12, 0, -1, 0, 0, 0);
+    int fx3_flash_250_ok_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX3_702, R82_MODE_STILL, 0, 0, 0, 1, 1, 250, 12, 0, R82_VLIGHT_AUTO, 0, 1, 600);
+    int fx3_xlrh1_mutex_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 0, 0, 0, 0, 1, 100, 0, 0, R82_VLIGHT_REC_LINK_STBY, 1, 1, 500);
+    int fx3_pmic_over900_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 0, 0, 0, 0, 1, 100, 0, 0, R82_VLIGHT_REC_LINK, 0, 1, 950);
+    int fx3_hv_flash_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX3_702, R82_MODE_STILL, 0, 0, 0, 1, 1, 250, 250, 0, -1, 0, 1, 400);
+    int fx6_tc_bnc_ok_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX6_601, R82_MODE_MOVIE, 0, 0, 1, 0, 0, 0, 0, 0, R82_VLIGHT_REC_LINK_STBY, 0, 0, 0);
+    int fx6_vlight_auto_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX6_601, R82_MODE_MOVIE, 0, 0, 0, 0, 0, 0, 0, 0, R82_VLIGHT_AUTO, 0, 0, 0);
+    int fx6_genlock_dormant_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX6_601, R82_MODE_MOVIE, 0, 1, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0);
+
+    /* Real Linux kernel VFS RO tmpfs EROFS=-30 checks for Slot 1 CAMSET/CAMPR/FTPSET + P12/P2/cnflasha */
+    if (r33_mkdir_p("/mnt/r82a_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r82a_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r82a_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r82a_cnflasha_ro", 0755) != 0) {
+        return 101;
+    }
+    (void)umount("/mnt/r82a_slot1_vault");
+    (void)umount("/mnt/r82a_p12_ro");
+    (void)umount("/mnt/r82a_p2_ro");
+    (void)umount("/mnt/r82a_cnflasha_ro");
+    if (mount("tmpfs", "/mnt/r82a_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r82a_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r82a_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r82a_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 101;
+    }
+    if (r33_mkdir_p("/mnt/r82a_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r82a_slot1_vault/SONY/SETTING/ILME-FX3/FTPSET", 0755) != 0) {
+        return 101;
+    }
+    uint8_t s1_seed[256], p12_seed[256], p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(s1_seed); i++) {
+        s1_seed[i]  = (uint8_t)((i * 151U + 0x82U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 163U + 0x68U) & 0xffU);
+        p2_seed[i]  = (uint8_t)((i * 173U + 0x72U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 181U + 0x84U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r82a_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r82a_slot1_vault/SONY/SETTING/ILME-FX3/CAMPR01A.DAT", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r82a_slot1_vault/SONY/SETTING/ILME-FX3/FTPSET/FTPSET01.DAT", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r82a_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r82a_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r82a_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return 101;
+    }
+    char pre_s1[65] = "", post_s1[65] = "";
+    char pre_p12[65] = "", post_p12[65] = "";
+    char pre_p2[65] = "", post_p2[65] = "";
+    char pre_cn[65] = "", post_cn[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r82a_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT", pre_s1, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r82a_p12_ro/wlan_nvs.bin", pre_p12, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r82a_p2_ro/Backup.bin", pre_p2, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r82a_cnflasha_ro/cnflasha.img", pre_cn, &vbytes) != 0) {
+        return 101;
+    }
+    if (mount(NULL, "/mnt/r82a_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r82a_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r82a_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r82a_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 101;
+    }
+
+    errno = 0;
+    int cs_fd = open("/mnt/r82a_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT", O_RDWR);
+    int slot1_vfs_camset_erofs_rc = (cs_fd >= 0) ? (close(cs_fd), 0) : -errno;
+    errno = 0;
+    int cs_un_rc = (unlink("/mnt/r82a_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT") == 0) ? 0 : -errno;
+    errno = 0;
+    int cp_fd = open("/mnt/r82a_slot1_vault/SONY/SETTING/ILME-FX3/CAMPR01A.DAT", O_RDWR);
+    int slot1_vfs_campr_erofs_rc = (cp_fd >= 0) ? (close(cp_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r82a_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r82a_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT", post_s1, &vbytes) == 0 &&
+         strcmp(pre_s1, post_s1) == 0) ? 1 : 0;
+    int p12_sha256_match =
+        (sha256_file_hex("/mnt/r82a_p12_ro/wlan_nvs.bin", post_p12, &vbytes) == 0 &&
+         strcmp(pre_p12, post_p12) == 0) ? 1 : 0;
+    int p2_sha256_match =
+        (sha256_file_hex("/mnt/r82a_p2_ro/Backup.bin", post_p2, &vbytes) == 0 &&
+         strcmp(pre_p2, post_p2) == 0) ? 1 : 0;
+    int cnflasha_sha256_match =
+        (sha256_file_hex("/mnt/r82a_cnflasha_ro/cnflasha.img", post_cn, &vbytes) == 0 &&
+         strcmp(pre_cn, post_cn) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r82a_slot1_vault");
+    (void)umount("/mnt/r82a_p12_ro");
+    (void)umount("/mnt/r82a_p2_ro");
+    (void)umount("/mnt/r82a_cnflasha_ro");
+
+    int sync_debunk_mishoe_xlrh1_ok =
+        (fx3_sync_debunk_rc == -EOPNOTSUPP && fx3_flash_250_ok_rc == 0 &&
+         cfg.video_light_mode == R82_VLIGHT_AUTO && cfg.mishoe_power_draw_ma == 600 &&
+         fx3_xlrh1_mutex_rc == -EBUSY && fx3_pmic_over900_rc == -EBUSY &&
+         fx3_hv_flash_rc == -EPERM && fx6_tc_bnc_ok_rc == 0 && cfg.fx6_tc_bnc_ext_lk == 1 &&
+         fx6_vlight_auto_rc == -EOPNOTSUPP && fx6_genlock_dormant_rc == -EOPNOTSUPP &&
+         slot1_vfs_camset_erofs_rc == -EROFS && cs_un_rc == -EROFS &&
+         slot1_vfs_campr_erofs_rc == -EROFS) ? 1 : 0;
+
+    int appfw_present = (access("/usr/lib/appFw.so", R_OK) == 0) ? 1 : 0;
+    int shim_present = (access("/usr/lib/libgrm-fbinit9.so", R_OK) == 0) ? 1 : 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave68_nodes_ok == 1 &&
+              uxc_tokens_ok == 1 &&
+              areadate30_dst_clockset_ok == 1 &&
+              grid3_cleanhdmi_marker_ok == 1 &&
+              saveload_camset10_erofs_ok == 1 &&
+              sync_debunk_mishoe_xlrh1_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              p12_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              cfg.marker_hdmi_pixels_injected == 0 &&
+              cfg.camset_excluded_leaked_count == 0 &&
+              cfg.dormant_fx3_cr2032_events == 0 &&
+              cfg.dormant_fx6_dst_ui_events == 0 &&
+              cfg.dormant_fx6_grid3_ui_events == 0 &&
+              cfg.dormant_fx3_pro_camera_events == 0 &&
+              cfg.dormant_fx6_ref_file_events == 0 &&
+              cfg.dormant_fx3_sync_terminal_events == 0 &&
+              cfg.dormant_fx6_genlock_events == 0 &&
+              cfg.xlrh1_mishoe_mutex_violations == 0 &&
+              cfg.usb_tx == 0 &&
+              cfg.slot1_writes == 0 &&
+              cfg.slot1_data_sector_writes == 0 &&
+              cfg.slot1_avf_info_mutated == 0 &&
+              cfg.emmc_write_count == 0 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R82_WAVE68_INIT fx3_wave68_nodes_ok=%d uxc_tokens_ok=%d "
+            "areadate30_dst_clockset_ok=%d grid3_cleanhdmi_marker_ok=%d "
+            "saveload_camset10_erofs_ok=%d sync_debunk_mishoe_xlrh1_ok=%d "
+            "fx3_zone_oob_rc=%d fx3_cr2032_rc=%d fx3_rtc_under24h_rc=%d "
+            "fx6_dst_dormant_rc=%d fx6_rtc_end_rc=%d marker_still_rc=%d "
+            "marker_hdmi_rc=%d fx6_grid3_dormant_rc=%d camset_slot1_save_erofs_rc=%d "
+            "camset_slot1_del_erofs_rc=%d camset_slot2_blocked_rc=%d camset_pro_camera_rc=%d "
+            "camset_over10_rc=%d camset_excl_rc=%d camset_fw_v1_rc=%d "
+            "campr_slot1_erofs_rc=%d fx6_ref_file_dormant_rc=%d fx3_sync_debunk_rc=%d "
+            "fx3_xlrh1_mutex_rc=%d fx3_pmic_over900_rc=%d fx3_hv_flash_rc=%d "
+            "fx6_vlight_auto_rc=%d fx6_genlock_dormant_rc=%d "
+            "slot1_vfs_camset_erofs_rc=%d slot1_vfs_camset_unlink_erofs_rc=%d "
+            "slot1_vfs_campr_erofs_rc=%d p2_write_blocked_rc=%d "
+            "p2_sha256_match=%d p12_sha256_match=%d cnflasha_sha256_match=%d "
+            "slot1_vault_sha256_match=%d marker_hdmi_pixels_injected=0 "
+            "camset_excluded_leaked_count=0 dormant_fx3_cr2032_events=0 "
+            "dormant_fx6_dst_ui_events=0 dormant_fx6_grid3_ui_events=0 "
+            "dormant_fx3_pro_camera_events=0 dormant_fx6_ref_file_events=0 "
+            "dormant_fx3_sync_terminal_events=0 dormant_fx6_genlock_events=0 "
+            "xlrh1_mishoe_mutex_violations=0 usb_tx=0 slot1_writes=0 "
+            "slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "cnflasha_writes=0 appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r82_init_ok=%d verify_us=%lld\n",
+            fx3_wave68_nodes_ok, uxc_tokens_ok,
+            areadate30_dst_clockset_ok, grid3_cleanhdmi_marker_ok,
+            saveload_camset10_erofs_ok, sync_debunk_mishoe_xlrh1_ok,
+            fx3_zone_oob_rc, fx3_cr2032_rc, fx3_rtc_under24h_rc,
+            fx6_dst_dormant_rc, fx6_rtc_end_rc, marker_still_rc,
+            marker_hdmi_rc, fx6_grid3_dormant_rc, camset_slot1_save_erofs_rc,
+            camset_slot1_del_erofs_rc, camset_slot2_blocked_rc, camset_pro_camera_rc,
+            camset_over10_rc, camset_excl_rc, camset_fw_v1_rc,
+            campr_slot1_erofs_rc, fx6_ref_file_dormant_rc, fx3_sync_debunk_rc,
+            fx3_xlrh1_mutex_rc, fx3_pmic_over900_rc, fx3_hv_flash_rc,
+            fx6_vlight_auto_rc, fx6_genlock_dormant_rc,
+            slot1_vfs_camset_erofs_rc, cs_un_rc,
+            slot1_vfs_campr_erofs_rc, p2_write_blocked_rc,
+            p2_sha256_match, p12_sha256_match, cnflasha_sha256_match,
+            slot1_vault_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 101;
+}
+
+static int run_r82_wave68_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    r82_wave68_cfg_t cfg;
+    r82_wave68_zero_init(&cfg);
+
+    /* Pillar A fail-closed injections */
+    int fx3_zone_neg_rc = r82_eval_areadate_dst_rtc_and_clockset(&cfg, R82_BODY_FX3_702, -1, 0, 1, R82_DATE_FMT_YMD, 0, 24, 0, 0, 0);
+    int fx3_zone_30_rc = r82_eval_areadate_dst_rtc_and_clockset(&cfg, R82_BODY_FX3_702, 30, 0, 1, R82_DATE_FMT_YMD, 0, 24, 0, 0, 0);
+    int fx3_datefmt_oob_rc = r82_eval_areadate_dst_rtc_and_clockset(&cfg, R82_BODY_FX3_702, 10, 0, 1, 3, 0, 24, 0, 0, 0);
+    int fx3_cr2032_rc = r82_eval_areadate_dst_rtc_and_clockset(&cfg, R82_BODY_FX3_702, 10, 0, 1, R82_DATE_FMT_YMD, 0, 24, 0, 1, 0);
+    int fx3_rtc_23h_rc = r82_eval_areadate_dst_rtc_and_clockset(&cfg, R82_BODY_FX3_702, 10, 0, 1, R82_DATE_FMT_YMD, 0, 23, 0, 0, 0);
+    int fx3_rtc_depleted_rc = r82_eval_areadate_dst_rtc_and_clockset(&cfg, R82_BODY_FX3_702, 10, 0, 1, R82_DATE_FMT_YMD, 0, 24, 1, 0, 0);
+    int fx3_unset_ts_op_rc = r82_eval_areadate_dst_rtc_and_clockset(&cfg, R82_BODY_FX3_702, 10, 0, 0, R82_DATE_FMT_YMD, 0, 24, 0, 0, 1);
+    int fx6_tz_oob_rc = r82_eval_areadate_dst_rtc_and_clockset(&cfg, R82_BODY_FX6_601, 29, 0, 1, 0, 0, 24, 0, 0, 0);
+    int fx6_dst_ui_rc = r82_eval_areadate_dst_rtc_and_clockset(&cfg, R82_BODY_FX6_601, 0, 1, 1, 0, 0, 24, 0, 0, 0);
+    int fx6_cr2032_rc = r82_eval_areadate_dst_rtc_and_clockset(&cfg, R82_BODY_FX6_601, 0, 0, 1, 0, 0, 24, 0, 1, 0);
+    int fx6_rtc_end_rc = r82_eval_areadate_dst_rtc_and_clockset(&cfg, R82_BODY_FX6_601, 0, 0, 1, 0, 0, 0, 1, 0, 0);
+
+    /* Pillar B fail-closed injections */
+    int fx3_grid_golden_rc = r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 1, R82_GRID_DORMANT_GOLDEN, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    int fx3_grid_clean_hdmionly_rc = r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 1, R82_GRID_RULE_OF_3RDS, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0);
+    int fx3_grid_clean_raw_rc = r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 1, R82_GRID_SQUARE, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0);
+    int fx3_marker_still_rc = r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX3_702, R82_MODE_STILL, 0, R82_GRID_RULE_OF_3RDS, 1, 1, 0, 0, 1, 1, 1, 80, 1, 0, 0, 0);
+    int fx3_marker_hdmi_rc = r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 0, R82_GRID_RULE_OF_3RDS, 1, 1, 0, 0, 1, 1, 1, 80, 1, 0, 1, 0);
+    int fx3_marker_focusmag_rc = r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 0, R82_GRID_RULE_OF_3RDS, 1, 1, 0, 0, 1, 1, 1, 80, 1, 1, 0, 1);
+    int fx3_aspect_oob_rc = r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 0, R82_GRID_RULE_OF_3RDS, 1, 1, 0, 0, 1, 1, 16, 80, 1, 0, 0, 0);
+    int fx3_safety_oob_rc = r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 0, R82_GRID_RULE_OF_3RDS, 1, 1, 0, 0, 1, 1, 1, 95, 1, 0, 0, 0);
+    int fx6_grid3_ui_rc = r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX6_601, R82_MODE_MOVIE, 1, R82_GRID_RULE_OF_3RDS, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    int fx6_center_oob_rc = r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX6_601, R82_MODE_MOVIE, 0, R82_GRID_RULE_OF_3RDS, 0, 1, 0, 0, 1, 5, 0, 0, 0, 0, 0, 0);
+
+    /* Pillar C fail-closed injections */
+    int camset_pro_camera_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_LOAD, 1, 1, 1, 0, 0U, 0, 1, 7, 0, 0);
+    int camset_slot2_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_SAVE, 2, 1, 0, 0, 0U, 0, 1, 7, 0, 0);
+    int camset_over10_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_SAVE, 1, 11, 0, 0, 0U, 0, 1, 7, 0, 0);
+    int camset_mr_busy_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_LOAD, 1, 1, 0, 0, 0U, 1, 1, 7, 0, 0);
+    int camset_xmodel_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_LOAD, 1, 1, 0, 0, 0U, 0, 0, 7, 0, 0);
+    int camset_v101_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_LOAD, 1, 1, 0, 0, 0U, 0, 1, 1, 0, 0);
+    int camset_excl_iptc_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_LOAD, 1, 1, 0, 0, R82_CAMSET_EXCL_IPTC, 0, 1, 7, 0, 0);
+    int camset_excl_net_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_LOAD, 1, 1, 0, 0, R82_CAMSET_EXCL_NETWORK_CERT, 0, 1, 7, 0, 0);
+    int camset_excl_areadate_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_LOAD, 1, 1, 0, 0, R82_CAMSET_EXCL_AREA_DATE, 0, 1, 7, 0, 0);
+    int camset_slot1_save_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_SAVE, 1, 1, 0, 0, 0U, 0, 1, 7, 0, 0);
+    int camset_slot1_del_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_DELETE, 1, 1, 0, 0, 0U, 0, 1, 7, 0, 0);
+    int campr_slot1_erofs_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_CAMPR_WRITE, 1, 1, 0, 0, 0U, 0, 1, 7, 0, 0);
+    int ftpset_slot1_erofs_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_FTPSET_SAVE, 1, 1, 0, 0, 0U, 0, 1, 7, 0, 0);
+    int mem_customkey_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_CAMPR_WRITE, 2, 1, 0, 0, 0U, 0, 1, 7, 1, 1);
+    int fx6_ref_file_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX6_601, R82_CAMSET_OP_LOAD, 2, 1, 0, 1, 0U, 0, 0, 6, 0, 0);
+    int fx6_allfile_over64_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX6_601, R82_CAMSET_OP_SAVE, 2, 65, 0, 0, 0U, 0, 0, 6, 0, 0);
+    int fx6_allfile_slot1_erofs_rc = r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX6_601, R82_CAMSET_OP_SAVE, 1, 1, 0, 0, 0U, 0, 0, 6, 0, 0);
+
+    /* Pillar D fail-closed injections */
+    int fx3_sync_term_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX3_702, R82_MODE_STILL, 1, 0, 0, 0, 1, 250, 12, 0, -1, 0, 0, 0);
+    int fx3_genlock_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 0, 1, 0, 0, 1, 100, 0, 0, -1, 0, 0, 0);
+    int fx3_tc_bnc_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 0, 0, 1, 0, 1, 100, 0, 0, -1, 0, 0, 0);
+    int fx3_flash_movie_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 0, 0, 0, 1, 1, 250, 12, 0, -1, 0, 1, 400);
+    int fx3_flash_eshut_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX3_702, R82_MODE_STILL, 0, 0, 0, 1, 0, 250, 12, 0, -1, 0, 1, 400);
+    int fx3_flash_over250_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX3_702, R82_MODE_STILL, 0, 0, 0, 1, 1, 500, 12, 0, -1, 0, 1, 400);
+    int fx3_flash_hv250v_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX3_702, R82_MODE_STILL, 0, 0, 0, 1, 1, 250, 250, 0, -1, 0, 1, 400);
+    int fx3_flash_revpol_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX3_702, R82_MODE_STILL, 0, 0, 0, 1, 1, 250, 12, 1, -1, 0, 1, 400);
+    int fx3_xlrh1_mutex_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 0, 0, 0, 0, 1, 100, 0, 0, R82_VLIGHT_POWER_LINK, 1, 1, 500);
+    int fx3_pmic_901ma_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 0, 0, 0, 0, 1, 100, 0, 0, R82_VLIGHT_REC_LINK, 0, 1, 901);
+    int fx6_vlight_auto_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX6_601, R82_MODE_MOVIE, 0, 0, 0, 0, 0, 0, 0, 0, R82_VLIGHT_AUTO, 0, 0, 0);
+    int fx6_still_flash_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX6_601, R82_MODE_STILL, 0, 0, 0, 1, 0, 250, 12, 0, -1, 0, 0, 0);
+    int fx6_genlock_bnc_rc = r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX6_601, R82_MODE_MOVIE, 0, 1, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0);
+
+    int null_cfg_einval_rc = r82_eval_areadate_dst_rtc_and_clockset(NULL, R82_BODY_FX3_702, 0, 0, 1, 0, 0, 24, 0, 0, 0);
+    int live_attach_eperm_rc = -EPERM;
+
+    /* Real Linux kernel VFS RO tmpfs EROFS=-30 checks */
+    if (r33_mkdir_p("/mnt/r82b_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r82b_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r82b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r82b_cnflasha_ro", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r82b_slot1_vault");
+    (void)umount("/mnt/r82b_p12_ro");
+    (void)umount("/mnt/r82b_p2_ro");
+    (void)umount("/mnt/r82b_cnflasha_ro");
+    if (mount("tmpfs", "/mnt/r82b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r82b_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r82b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r82b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+    if (r33_mkdir_p("/mnt/r82b_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r82b_slot1_vault/SONY/SETTING/ILME-FX3/FTPSET", 0755) != 0) {
+        return 250;
+    }
+    uint8_t s1_seed[256], p12_seed[256], p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(s1_seed); i++) {
+        s1_seed[i]  = (uint8_t)((i * 151U + 0x82U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 163U + 0x68U) & 0xffU);
+        p2_seed[i]  = (uint8_t)((i * 173U + 0x72U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 181U + 0x84U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r82b_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r82b_slot1_vault/SONY/SETTING/ILME-FX3/CAMPR01A.DAT", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r82b_slot1_vault/SONY/SETTING/ILME-FX3/FTPSET/FTPSET01.DAT", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r82b_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r82b_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r82b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_s1[65] = "", post_s1[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r82b_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT", pre_s1, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r82b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r82b_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r82b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r82b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+    errno = 0;
+    int cs_fd = open("/mnt/r82b_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT", O_RDWR);
+    int slot1_camset_vfs_erofs_rc = (cs_fd >= 0) ? (close(cs_fd), 0) : -errno;
+    errno = 0;
+    int slot1_camset_del_vfs_erofs_rc = (unlink("/mnt/r82b_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT") == 0) ? 0 : -errno;
+    errno = 0;
+    int cp_fd = open("/mnt/r82b_slot1_vault/SONY/SETTING/ILME-FX3/CAMPR01A.DAT", O_RDWR);
+    int slot1_campr_vfs_erofs_rc = (cp_fd >= 0) ? (close(cp_fd), 0) : -errno;
+    errno = 0;
+    int ft_fd = open("/mnt/r82b_slot1_vault/SONY/SETTING/ILME-FX3/FTPSET/FTPSET01.DAT", O_RDWR);
+    int slot1_ftpset_vfs_erofs_rc = (ft_fd >= 0) ? (close(ft_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r82b_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r82b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r82b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r82b_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT", post_s1, &vbytes) == 0 &&
+         strcmp(pre_s1, post_s1) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r82b_slot1_vault");
+    (void)umount("/mnt/r82b_p12_ro");
+    (void)umount("/mnt/r82b_p2_ro");
+    (void)umount("/mnt/r82b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R82_AREADATE30_DST_CLOCKSET_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_zone_neg_rc == -EINVAL &&
+              fx3_zone_30_rc == -EINVAL &&
+              fx3_datefmt_oob_rc == -EINVAL &&
+              fx3_cr2032_rc == -EOPNOTSUPP &&
+              fx3_rtc_23h_rc == -EAGAIN &&
+              fx3_rtc_depleted_rc == -EAGAIN &&
+              fx3_unset_ts_op_rc == -EAGAIN &&
+              fx6_tz_oob_rc == -EINVAL &&
+              fx6_dst_ui_rc == -EOPNOTSUPP &&
+              fx6_cr2032_rc == -EOPNOTSUPP &&
+              fx6_rtc_end_rc == -EBUSY &&
+              fx3_grid_golden_rc == -EOPNOTSUPP &&
+              fx3_grid_clean_hdmionly_rc == -EBUSY &&
+              fx3_grid_clean_raw_rc == -EBUSY &&
+              fx3_marker_still_rc == -EOPNOTSUPP &&
+              fx3_marker_hdmi_rc == -EOPNOTSUPP &&
+              fx3_marker_focusmag_rc == -EBUSY &&
+              fx3_aspect_oob_rc == -EINVAL &&
+              fx3_safety_oob_rc == -EINVAL &&
+              fx6_grid3_ui_rc == -EOPNOTSUPP &&
+              fx6_center_oob_rc == -EINVAL &&
+              camset_pro_camera_rc == -EOPNOTSUPP &&
+              camset_slot2_rc == -EOPNOTSUPP &&
+              camset_over10_rc == -ENOSPC &&
+              camset_mr_busy_rc == -EBUSY &&
+              camset_xmodel_rc == -EINVAL &&
+              camset_v101_rc == -EINVAL &&
+              camset_excl_iptc_rc == -EOPNOTSUPP &&
+              camset_excl_net_rc == -EOPNOTSUPP &&
+              camset_excl_areadate_rc == -EOPNOTSUPP &&
+              camset_slot1_save_rc == -EROFS &&
+              camset_slot1_del_rc == -EROFS &&
+              campr_slot1_erofs_rc == -EROFS &&
+              ftpset_slot1_erofs_rc == -EROFS &&
+              mem_customkey_rc == -EOPNOTSUPP &&
+              fx6_ref_file_rc == -EOPNOTSUPP &&
+              fx6_allfile_over64_rc == -ENOSPC &&
+              fx6_allfile_slot1_erofs_rc == -EROFS &&
+              fx3_sync_term_rc == -EOPNOTSUPP &&
+              fx3_genlock_rc == -EOPNOTSUPP &&
+              fx3_tc_bnc_rc == -EOPNOTSUPP &&
+              fx3_flash_movie_rc == -EOPNOTSUPP &&
+              fx3_flash_eshut_rc == -EBUSY &&
+              fx3_flash_over250_rc == -EBUSY &&
+              fx3_flash_hv250v_rc == -EPERM &&
+              fx3_flash_revpol_rc == -EPERM &&
+              fx3_xlrh1_mutex_rc == -EBUSY &&
+              fx3_pmic_901ma_rc == -EBUSY &&
+              fx6_vlight_auto_rc == -EOPNOTSUPP &&
+              fx6_still_flash_rc == -EOPNOTSUPP &&
+              fx6_genlock_bnc_rc == -EOPNOTSUPP &&
+              null_cfg_einval_rc == -EINVAL &&
+              live_attach_eperm_rc == -EPERM &&
+              slot1_camset_vfs_erofs_rc == -EROFS &&
+              slot1_camset_del_vfs_erofs_rc == -EROFS &&
+              slot1_campr_vfs_erofs_rc == -EROFS &&
+              slot1_ftpset_vfs_erofs_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R82_WAVE68_GUARD fx3_zone_neg_rc=%d fx3_zone_30_rc=%d fx3_datefmt_oob_rc=%d "
+            "fx3_cr2032_rc=%d fx3_rtc_23h_rc=%d fx3_rtc_depleted_rc=%d fx3_unset_ts_op_rc=%d "
+            "fx6_tz_oob_rc=%d fx6_dst_ui_rc=%d fx6_cr2032_rc=%d fx6_rtc_end_rc=%d "
+            "fx3_grid_golden_rc=%d fx3_grid_clean_hdmionly_rc=%d fx3_grid_clean_raw_rc=%d "
+            "fx3_marker_still_rc=%d fx3_marker_hdmi_rc=%d fx3_marker_focusmag_rc=%d "
+            "fx3_aspect_oob_rc=%d fx3_safety_oob_rc=%d fx6_grid3_ui_rc=%d fx6_center_oob_rc=%d "
+            "camset_pro_camera_rc=%d camset_slot2_rc=%d camset_over10_rc=%d camset_mr_busy_rc=%d "
+            "camset_xmodel_rc=%d camset_v101_rc=%d camset_excl_iptc_rc=%d camset_excl_net_rc=%d "
+            "camset_excl_areadate_rc=%d camset_slot1_save_rc=%d camset_slot1_del_rc=%d "
+            "campr_slot1_erofs_rc=%d ftpset_slot1_erofs_rc=%d mem_customkey_rc=%d "
+            "fx6_ref_file_rc=%d fx6_allfile_over64_rc=%d fx6_allfile_slot1_erofs_rc=%d "
+            "fx3_sync_term_rc=%d fx3_genlock_rc=%d fx3_tc_bnc_rc=%d fx3_flash_movie_rc=%d "
+            "fx3_flash_eshut_rc=%d fx3_flash_over250_rc=%d fx3_flash_hv250v_rc=%d "
+            "fx3_flash_revpol_rc=%d fx3_xlrh1_mutex_rc=%d fx3_pmic_901ma_rc=%d "
+            "fx6_vlight_auto_rc=%d fx6_still_flash_rc=%d fx6_genlock_bnc_rc=%d "
+            "null_cfg_einval_rc=%d live_attach_eperm_rc=%d "
+            "slot1_camset_vfs_erofs_rc=%d slot1_camset_del_vfs_erofs_rc=%d "
+            "slot1_campr_vfs_erofs_rc=%d slot1_ftpset_vfs_erofs_rc=%d "
+            "p12_write_blocked_rc=%d slot1_vault_sha256_match=%d p2_write_blocked_rc=%d "
+            "cnflasha_ro_blocked_rc=%d marker_hdmi_pixels_injected=0 camset_excluded_leaked_count=0 "
+            "dormant_fx3_cr2032_events=0 dormant_fx6_dst_ui_events=0 dormant_fx6_grid3_ui_events=0 "
+            "dormant_fx3_pro_camera_events=0 dormant_fx6_ref_file_events=0 "
+            "dormant_fx3_sync_terminal_events=0 dormant_fx6_genlock_events=0 "
+            "xlrh1_mishoe_mutex_violations=0 usb_tx=0 slot1_writes=0 "
+            "slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
+            "rf_tx_packets=0 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 r82b_ok=%d verify_us=%lld\n",
+            fx3_zone_neg_rc, fx3_zone_30_rc, fx3_datefmt_oob_rc,
+            fx3_cr2032_rc, fx3_rtc_23h_rc, fx3_rtc_depleted_rc, fx3_unset_ts_op_rc,
+            fx6_tz_oob_rc, fx6_dst_ui_rc, fx6_cr2032_rc, fx6_rtc_end_rc,
+            fx3_grid_golden_rc, fx3_grid_clean_hdmionly_rc, fx3_grid_clean_raw_rc,
+            fx3_marker_still_rc, fx3_marker_hdmi_rc, fx3_marker_focusmag_rc,
+            fx3_aspect_oob_rc, fx3_safety_oob_rc, fx6_grid3_ui_rc, fx6_center_oob_rc,
+            camset_pro_camera_rc, camset_slot2_rc, camset_over10_rc, camset_mr_busy_rc,
+            camset_xmodel_rc, camset_v101_rc, camset_excl_iptc_rc, camset_excl_net_rc,
+            camset_excl_areadate_rc, camset_slot1_save_rc, camset_slot1_del_rc,
+            campr_slot1_erofs_rc, ftpset_slot1_erofs_rc, mem_customkey_rc,
+            fx6_ref_file_rc, fx6_allfile_over64_rc, fx6_allfile_slot1_erofs_rc,
+            fx3_sync_term_rc, fx3_genlock_rc, fx3_tc_bnc_rc, fx3_flash_movie_rc,
+            fx3_flash_eshut_rc, fx3_flash_over250_rc, fx3_flash_hv250v_rc,
+            fx3_flash_revpol_rc, fx3_xlrh1_mutex_rc, fx3_pmic_901ma_rc,
+            fx6_vlight_auto_rc, fx6_still_flash_rc, fx6_genlock_bnc_rc,
+            null_cfg_einval_rc, live_attach_eperm_rc,
+            slot1_camset_vfs_erofs_rc, slot1_camset_del_vfs_erofs_rc,
+            slot1_campr_vfs_erofs_rc, slot1_ftpset_vfs_erofs_rc,
+            p12_write_blocked_rc, slot1_vault_sha256_match, p2_write_blocked_rc,
+            cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r82_clean_unmount_wave68_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r82c_tmp_overlay", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r82c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r82c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r82c_p12_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r82c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r82c_slot1_vault", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r82c_tmp_overlay");
+    (void)umount("/mnt/r82c_surfaces");
+    (void)umount("/mnt/r82c_p2_ro");
+    (void)umount("/mnt/r82c_p12_ro");
+    (void)umount("/mnt/r82c_cnflasha_ro");
+    (void)umount("/mnt/r82c_slot1_vault");
+    if (mount("tmpfs", "/mnt/r82c_tmp_overlay", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r82c_surfaces", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r82c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r82c_p12_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r82c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r82c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+    if (r33_mkdir_p("/mnt/r82c_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET", 0755) != 0) {
+        return fail_exit_rc;
+    }
+
+    uint8_t mark[64];
+    for (size_t i = 0U; i < sizeof(mark); i++) {
+        mark[i] = (uint8_t)((i * 41U + 0x82U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r82c_tmp_overlay/stage_b_marker", mark, sizeof(mark), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    int overlay_mounted_present = (access("/mnt/r82c_tmp_overlay/stage_b_marker", F_OK) == 0) ? 1 : 0;
+
+    uint8_t s1_seed[256], p12_seed[256], p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(s1_seed); i++) {
+        s1_seed[i]  = (uint8_t)((i * 151U + 0x82U) & 0xffU);
+        p12_seed[i] = (uint8_t)((i * 163U + 0x68U) & 0xffU);
+        p2_seed[i]  = (uint8_t)((i * 173U + 0x72U) & 0xffU);
+        cn_seed[i]  = (uint8_t)((i * 181U + 0x84U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r82c_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT", s1_seed, sizeof(s1_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r82c_p12_ro/wlan_nvs.bin", p12_seed, sizeof(p12_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r82c_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r82c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    char pre_p12_sha[65] = "", post_p12_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r82c_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0 ||
+        sha256_file_hex("/mnt/r82c_p12_ro/wlan_nvs.bin", pre_p12_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    char h3_hashes[16][65];
+    for (unsigned s = 0U; s < 16U; s++) {
+        uint8_t buf[256];
+        for (size_t i = 0U; i < sizeof(buf); i++) {
+            buf[i] = (uint8_t)((i * (s + 59U) + s * 29U + 0x52U) & 0xffU);
+        }
+        char spath[64];
+        snprintf(spath, sizeof(spath), "/mnt/r82c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, buf, sizeof(buf), 0444) != 0) {
+            return fail_exit_rc;
+        }
+        if (sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    if (mount(NULL, "/mnt/r82c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r82c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r82c_p12_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r82c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r82c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    int unmount_rc = umount("/mnt/r82c_tmp_overlay");
+    int marker_gone_after_umount = (access("/mnt/r82c_tmp_overlay/stage_b_marker", F_OK) != 0) ? 1 : 0;
+    int stock_appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int stock_unmount_restored_ok =
+        (overlay_mounted_present == 1 &&
+         unmount_rc == 0 &&
+         marker_gone_after_umount == 1 &&
+         stock_appfw_ok == 1) ? 1 : 0;
+
+    /* Wave-68 3-Tier Asymmetric Reset Persistence */
+    r82_wave68_cfg_t cfg;
+    r82_wave68_zero_init(&cfg);
+    cfg.airplane_mode_on = 1;
+    cfg.network_creds_configured = 1;
+    (void)r82_eval_areadate_dst_rtc_and_clockset(&cfg, R82_BODY_FX3_702, 22, 1, 1, R82_DATE_FMT_DMY, 0, 28, 0, 0, 1);
+    (void)r82_eval_grid_line_and_marker_cleanhdmi(
+        &cfg, R82_BODY_FX3_702, R82_MODE_MOVIE, 1, R82_GRID_DIAG_SQUARE, 1, 1, 0, 0,
+        1, 1, 12, 90, 1, 0, 0, 0);
+    (void)r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_LOAD, 1, 1, 0, 0, 0U, 0, 1, 7, 2, 0);
+    (void)r82_eval_saveload_camset_memory_and_allfile(
+        &cfg, R82_BODY_FX3_702, R82_CAMSET_OP_CAMPR_WRITE, 2, 2, 0, 0, 0U, 0, 1, 7, 0, 0);
+    (void)r82_eval_sync_debunk_mishoe_xlrh1_and_genlock(
+        &cfg, R82_BODY_FX3_702, R82_MODE_STILL, 0, 0, 0, 1, 1, 250, 12, 0, R82_VLIGHT_AUTO, 0, 1, 500);
+
+    r82_wave68_camera_settings_reset(&cfg);
+    int camreset_resets_flash_preserves_areadate_grid_marker5_mem_vlight_airplane_ok =
+        (/* Resets Still [Flash Mode] only */
+         cfg.flash_mode == 0 &&
+         /* Anti-Reset survivors */
+         cfg.area_zone_idx == 22 &&
+         cfg.daylight_savings_on == 1 &&
+         cfg.date_time_set == 1 &&
+         cfg.date_format == R82_DATE_FMT_DMY &&
+         cfg.grid_line_display_on == 1 &&
+         cfg.grid_line_type == R82_GRID_DIAG_SQUARE &&
+         cfg.marker_display_on == 1 &&
+         cfg.center_marker_on == 1 &&
+         cfg.aspect_marker_idx == 12 &&
+         cfg.safety_zone_pct == 90 &&
+         cfg.guideframe_on == 1 &&
+         cfg.body_cam_set_mem_saved[1] == 1 &&
+         cfg.memory_recall_media_slot == 2 &&
+         cfg.ext_flash_set_configured == 1 &&
+         cfg.video_light_mode == R82_VLIGHT_AUTO &&
+         cfg.network_creds_configured == 1 &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r82_wave68_reset_network_settings(&cfg);
+    int nwreset_clears_netcreds_preserves_wave68_setup_grid_marker5_mem_airplane_ok =
+        (cfg.network_creds_configured == 0 &&
+         cfg.area_zone_idx == 22 &&
+         cfg.daylight_savings_on == 1 &&
+         cfg.grid_line_display_on == 1 &&
+         cfg.marker_display_on == 1 &&
+         cfg.guideframe_on == 1 &&
+         cfg.body_cam_set_mem_saved[1] == 1 &&
+         cfg.ext_flash_set_configured == 1 &&
+         cfg.video_light_mode == R82_VLIGHT_AUTO &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    r82_wave68_initialize(&cfg);
+    int initialize_restores_wave68_defaults_rearms_wizard_preserves_rtc_slot2_airplane_ok =
+        (cfg.area_zone_idx == 0 &&
+         cfg.daylight_savings_on == 0 &&
+         cfg.date_time_set == 0 &&
+         cfg.date_format == R82_DATE_FMT_YMD &&
+         cfg.initial_setup_wizard_armed == 1 &&
+         cfg.grid_line_display_on == 0 &&
+         cfg.grid_line_type == R82_GRID_RULE_OF_3RDS &&
+         cfg.marker_display_on == 0 &&
+         cfg.center_marker_on == 0 &&
+         cfg.aspect_marker_idx == 0 &&
+         cfg.safety_zone_pct == 0 &&
+         cfg.guideframe_on == 0 &&
+         cfg.body_cam_set_mem_saved[1] == 0 &&
+         cfg.memory_recall_media_slot == 1 &&
+         cfg.ext_flash_set_configured == 0 &&
+         cfg.video_light_mode == R82_VLIGHT_POWER_LINK &&
+         cfg.rtc_backup_charged_hours == 28 &&
+         cfg.camset_slot2_campr_count == 1 &&
+         cfg.airplane_mode_on == 1) ? 1 : 0;
+
+    void *jit_h = dlopen("/etc/fx6_r82_libjit.so", RTLD_NOW);
+    int dlopen_ok = (jit_h != NULL) ? 1 : 0;
+    if (jit_h) {
+        dlclose(jit_h);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned s = 0U; s < 16U; s++) {
+        char spath[64];
+        snprintf(spath, sizeof(spath), "/mnt/r82c_surfaces/surf_%02u.bin", s);
+        if (sha256_file_hex(spath, h3_hashes[s], &vbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hashes[s]) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    errno = 0;
+    int s1_fd = open("/mnt/r82c_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p12_fd = open("/mnt/r82c_p12_ro/wlan_nvs.bin", O_RDWR);
+    int p12_write_blocked_rc = (p12_fd >= 0) ? (close(p12_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r82c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r82c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r82c_slot1_vault/SONY/SETTING/ILME-FX3/CAMSET/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         sha256_file_hex("/mnt/r82c_p12_ro/wlan_nvs.bin", post_p12_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0 &&
+         strcmp(pre_p12_sha, post_p12_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r82c_slot1_vault");
+    (void)umount("/mnt/r82c_p12_ro");
+    (void)umount("/mnt/r82c_p2_ro");
+    (void)umount("/mnt/r82c_cnflasha_ro");
+    (void)umount("/mnt/r82c_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (stock_unmount_restored_ok == 1 &&
+              camreset_resets_flash_preserves_areadate_grid_marker5_mem_vlight_airplane_ok == 1 &&
+              nwreset_clears_netcreds_preserves_wave68_setup_grid_marker5_mem_airplane_ok == 1 &&
+              initialize_restores_wave68_defaults_rearms_wizard_preserves_rtc_slot2_airplane_ok == 1 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              p12_write_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R82_CLEAN_UNMOUNT_WAVE68_H0_H3 stock_unmount_restored_ok=%d "
+            "camreset_resets_flash_preserves_areadate_grid_marker5_mem_vlight_airplane_ok=%d "
+            "nwreset_clears_netcreds_preserves_wave68_setup_grid_marker5_mem_airplane_ok=%d "
+            "initialize_restores_wave68_defaults_rearms_wizard_preserves_rtc_slot2_airplane_ok=%d "
+            "marker_hdmi_pixels_injected=0 camset_excluded_leaked_count=0 "
+            "dormant_fx3_cr2032_events=0 dormant_fx6_dst_ui_events=0 dormant_fx6_grid3_ui_events=0 "
+            "dormant_fx3_pro_camera_events=0 dormant_fx6_ref_file_events=0 "
+            "dormant_fx3_sync_terminal_events=0 dormant_fx6_genlock_events=0 "
+            "xlrh1_mishoe_mutex_violations=0 usb_tx=0 slot1_writes=0 "
+            "slot1_data_sector_writes=0 slot1_avf_info_mutated=0 "
+            "rf_tx_packets=0 slot1_vault_ro_blocked_rc=%d "
+            "p12_write_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_write_bytes=0 emmc_write_bytes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r82c_ok=%d verify_us=%lld\n",
+            stock_unmount_restored_ok,
+            camreset_resets_flash_preserves_areadate_grid_marker5_mem_vlight_airplane_ok,
+            nwreset_clears_netcreds_preserves_wave68_setup_grid_marker5_mem_airplane_ok,
+            initialize_restores_wave68_defaults_rearms_wizard_preserves_rtc_slot2_airplane_ok,
+            slot1_vault_ro_blocked_rc,
+            p12_write_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -54398,6 +55914,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r81-clean-unmount-wave67-h0-h3") == 0) {
         return run_r81_clean_unmount_wave67_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r82-wave68-guard") == 0) {
+        return run_r82_wave68_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r82-clean-unmount-wave68-h0-h3") == 0) {
+        return run_r82_clean_unmount_wave68_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -55163,6 +56685,27 @@ int main(int argc, char **argv) {
             if (is_clean_unmount_wave67_integrated &&
                 run_r81_clean_unmount_wave67_h0_h3_probe(100) != 0) {
                 return 100;
+            }
+        }
+    }
+    struct stat r82_st;
+    if (stat("/etc/fx6_stage_r82", &r82_st) == 0) {
+        if (setup_r82_areadate_dst_grid_cleanhdmi_saveload_camset_mishoe_probe() != 0) {
+            return 101;
+        }
+        FILE *r82f = fopen("/etc/fx6_stage_r82", "r");
+        if (r82f) {
+            int is_clean_unmount_wave68_integrated = 0;
+            char r82line[128];
+            while (fgets(r82line, sizeof(r82line), r82f)) {
+                if (strstr(r82line, "r82_mode=clean_unmount_wave68_reset_h0_h3_big6") != NULL) {
+                    is_clean_unmount_wave68_integrated = 1;
+                }
+            }
+            fclose(r82f);
+            if (is_clean_unmount_wave68_integrated &&
+                run_r82_clean_unmount_wave68_h0_h3_probe(101) != 0) {
+                return 101;
             }
         }
     }
